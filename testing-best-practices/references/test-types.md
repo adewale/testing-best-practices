@@ -64,7 +64,7 @@ project. Tests are organized into three tiers by priority.
 - [ ] External API tests are flaky due to network issues
 
 **How**: Record real API responses to files, replay in tests. See
-`references/advanced-patterns.md`.
+the matching reference file.
 **Cost**: Low maintenance, occasional re-recording needed.
 
 ### Characterization Tests
@@ -74,7 +74,7 @@ project. Tests are organized into three tiers by priority.
 - [ ] Behavior is undocumented and unclear
 
 **How**: Call the code, record actual outputs as assertions. See
-`references/advanced-patterns.md`.
+the matching reference file.
 **Cost**: Low setup, medium maintenance (must decide which behaviors to keep).
 
 ### Differential Tests
@@ -84,7 +84,7 @@ project. Tests are organized into three tiers by priority.
 - [ ] Building an optimized version of known-correct code
 
 **How**: Run same inputs through both implementations, assert outputs match.
-See `references/advanced-patterns.md`.
+See the matching reference file.
 **Cost**: Low if reference exists, high if you must build one.
 
 ### Golden File / Fixture-Based Tests
@@ -95,7 +95,7 @@ See `references/advanced-patterns.md`.
 
 **How**: Store inputs in `tests/fixtures/`, expected outputs in `tests/expected/`.
 Auto-discover fixtures, auto-baseline on first run. See
-`references/advanced-patterns.md`.
+the matching reference file.
 **Cost**: Low setup. Human-reviewable baselines. Catches drift.
 
 ### Pirate Tests (Language-Neutral Conformance)
@@ -106,7 +106,7 @@ Auto-discover fixtures, auto-baseline on first run. See
 
 **How**: Write test cases as data (JSON/YAML). Each implementation provides a
 harness that loads the data and runs assertions. No implementation is privileged.
-See `references/advanced-patterns.md`.
+See the matching reference file.
 **Cost**: Medium (harness per language), but amortized across all implementations.
 
 ## Tier 3: Use With Caution
@@ -123,7 +123,7 @@ See `references/advanced-patterns.md`.
 - **Costs**: 10-100x test runtime. Requires interpretation.
 - **Mitigations**: Run on specific critical modules, nightly not per-commit
 - **Tools**: mutmut (Python), Stryker (JS/TS), PIT (Java), gremlins (Go),
-  cargo-mutants (Rust). See `references/advanced-patterns.md`.
+  cargo-mutants (Rust). See the matching reference file.
 
 ### Performance / Benchmark Tests
 - **When helpful**: A 2x slowdown would be a user-visible bug

@@ -34,9 +34,18 @@ read the matching reference file for framework-specific guidance:
 
 For antipattern detection and fixes, read `references/antipatterns.md`.
 For deciding which test types to use, read `references/test-types.md`.
-For advanced patterns (characterization testing, differential testing, mutation
-testing, exhaustive testing, VCR cassettes, doc-sync testing, test data
-builders), read `references/advanced-patterns.md`.
+
+Load these ONLY when the task matches the trigger:
+
+- Refactoring legacy code? → `references/characterization-testing.md`
+- Reimplementing an algorithm or maintaining multi-language SDKs? → `references/differential-testing.md`
+- Transformation pipeline (HTML→Markdown, compiler)? → `references/golden-file-testing.md`
+- Code calls external APIs? → `references/vcr-cassettes.md`
+- Project has CLI commands or plugin hooks listed in docs? → `references/doc-sync-testing.md`
+- Need to verify test suite catches real bugs? → `references/mutation-testing.md`
+- Small state space (booleans, enums, short arrays)? → `references/exhaustive-testing.md`
+- Domain objects with arithmetic operations? → `references/mathematical-properties.md`
+- Need test factories, fixtures, or assertion helpers? → `references/test-data-builders.md`
 
 ## Core principles
 
@@ -120,7 +129,7 @@ before random values. This catches edge cases in the first few iterations.
 **Exhaustive testing**: When the state space is small (boolean flags, enums,
 short arrays), use PBT to test *every* combination rather than sampling.
 For a 5-element array, test all 120 permutations, all 32 subsets. See
-`references/advanced-patterns.md` for the exhaustive testing pattern.
+`references/exhaustive-testing.md`.
 
 ### 5. E2E testing
 
@@ -141,7 +150,7 @@ the code itself as the source of truth — inspect registries, command lists,
 hook names — and verify docs match. The key pattern: parametrize over the
 code's actual registry and assert each entry appears in docs.
 
-Read `references/advanced-patterns.md` for the concrete pattern.
+Read `references/doc-sync-testing.md` for concrete patterns.
 
 ### 7. Characterization testing for legacy code
 
@@ -150,7 +159,7 @@ behavior — not what you think it should do, but what it actually does. These
 "characterization tests" become a safety net: if a refactoring changes behavior,
 the test breaks and tells you exactly what changed.
 
-Read `references/advanced-patterns.md` for the full pattern.
+Read `references/characterization-testing.md` when needed.
 
 ### 8. Differential testing
 
@@ -166,7 +175,7 @@ execute. No implementation is privileged — the test data IS the specification.
 Use pirate testing when you maintain libraries in multiple languages that must
 behave identically, or when a standard needs a conformance suite.
 
-Read `references/advanced-patterns.md` for both patterns.
+Read `references/differential-testing.md` when needed.
 
 ### 9. Test data builders and fixtures
 
@@ -176,7 +185,7 @@ builders so tests only specify the fields they care about:
 article = ArticleFactory.create(title="Custom")  # all other fields default
 user = make(a(User, with(role, "admin")))
 ```
-Read `references/advanced-patterns.md` for the full pattern.
+Read `references/test-data-builders.md` when needed.
 
 ### 10. Test the sad path
 
@@ -216,7 +225,7 @@ P0 issues.
 Look for mocks that return hardcoded values. Ask: "If the real API changed,
 would this test notice?" If no, flag it. Recommend VCR cassettes (recorded
 real API responses) as a replacement for hand-written mocks — see
-`references/advanced-patterns.md`.
+`references/vcr-cassettes.md`.
 
 ### Step 4: Verify test tier integrity
 
@@ -235,7 +244,7 @@ real API responses) as a replacement for hand-written mocks — see
 
 When coverage is high (80%+) but assertion density is low, recommend mutation
 testing to verify the tests actually catch bugs. See
-`references/advanced-patterns.md` for tool recommendations per language.
+`references/mutation-testing.md` for tool recommendations per language.
 
 ## Upgrade mode: improving weak tests
 
@@ -269,9 +278,19 @@ When writing tests for new code:
 5. Use domain-specific assertion helpers for readability
 6. Include regression test comments linking to the bug/issue being fixed
 7. For transformation pipelines (HTML→Markdown, compilers, code generators),
-   use fixture-based golden file tests — see `references/advanced-patterns.md`
+   use fixture-based golden file tests — see `references/golden-file-testing.md`
 8. Test at the user-facing level (commands, endpoints, API) not internals
 9. Pin non-deterministic inputs (time, randomness) rather than mocking them
+
+### Validation loop: check your own work
+
+After writing tests, validate before reporting done:
+
+1. Run the tests — they must pass (or fail for expected reasons in TDD red phase)
+2. For Python: run `scripts/check_test_quality.py <test_file>` to verify
+   assertion density and detect antipatterns
+3. If the quality check reports LOW density or P0 issues, fix them before proceeding
+4. Verify both positive and negative assertions exist for security-sensitive tests
 
 ## Gotchas
 

@@ -18,6 +18,45 @@
       "prompt": "I need tests for this TypeScript HTML sanitizer in evals/files/sanitizer.ts. It has a sanitize() function that strips dangerous HTML tags and attributes, a stripAllTags() function, and an escapeHtml() function. These are security-critical — I need to make sure XSS vectors are actually blocked.",
       "expected_output": "Security-focused test suite using Vitest with fast-check property tests. Should test XSS vectors (script tags, event handlers, javascript: URIs), verify safe content is preserved, and have high assertion density for security tests.",
       "files": ["evals/files/sanitizer.ts"]
+    },
+    {
+      "id": 4,
+      "prompt": "I have a Go in-memory cache with TTL support in evals/files/go_cache.go. Write tests for it. It has Set, Get, Delete, Len, and Clear methods. The cache is thread-safe.",
+      "expected_output": "Go test file using table-driven tests, t.TempDir or t.Parallel where appropriate, testing concurrency with race detector, testing TTL expiry, boundary cases. Should use Go testing conventions (not a third-party framework).",
+      "files": ["evals/files/go_cache.go"],
+      "assertions": [
+        "Uses Go stdlib testing package (not testify or other frameworks)",
+        "Uses table-driven tests with t.Run subtests",
+        "Tests TTL expiry behavior",
+        "Tests concurrent access (race condition safety)",
+        "Tests boundary cases: empty key, nil value, zero TTL",
+        "Does NOT load references/python.md or references/typescript.md or references/rust.md (wrong language)"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I'm about to refactor this legacy Python URL parser in evals/files/url_parser.py. I don't fully understand what it does in all edge cases. Can you help me write tests that capture its current behavior so I can refactor safely?",
+      "expected_output": "Characterization tests that record current behavior without judging it. Should call functions with diverse inputs and assert on actual outputs. May note surprising behaviors as comments.",
+      "files": ["evals/files/url_parser.py"],
+      "assertions": [
+        "Uses the term 'characterization test' or explicitly captures current behavior",
+        "Records actual outputs as assertions (not expected/ideal behavior)",
+        "Notes surprising behaviors as comments rather than fixing them",
+        "Does NOT load unnecessary reference files (should only need characterization-testing.md and python.md)",
+        "Includes at least 10 different inputs to characterize behavior"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We have a Python function that calls the OpenAI API. I need to test it but I don't want to hit the real API in CI. What's the best approach and can you set up the test infrastructure?",
+      "expected_output": "Recommends VCR cassette testing (pytest-recording). Sets up conftest.py with vcr_config fixture filtering auth headers. Shows how to record and replay.",
+      "files": [],
+      "assertions": [
+        "Recommends VCR cassettes / pytest-recording (not hand-written mocks)",
+        "Shows conftest.py with vcr_config filtering Authorization headers",
+        "Explains the record-once-replay-many workflow",
+        "Does NOT load references/typescript.md, references/go.md, references/rust.md, or other irrelevant files"
+      ]
     }
   ]
 }
