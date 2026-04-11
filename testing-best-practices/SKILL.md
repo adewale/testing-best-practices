@@ -143,7 +143,14 @@ version of a complex system, test against a trusted reference implementation.
 Run the same inputs through both and assert outputs match. The reference IS
 the oracle — no hand-calculated expected values needed.
 
-Read `references/advanced-patterns.md` for examples.
+**Pirate testing** is a related but distinct technique: instead of testing
+against one trusted reference, you write tests as *language-neutral data*
+(JSON/YAML) that multiple implementations across different languages all
+execute. No implementation is privileged — the test data IS the specification.
+Use pirate testing when you maintain libraries in multiple languages that must
+behave identically, or when a standard needs a conformance suite.
+
+Read `references/advanced-patterns.md` for both patterns.
 
 ### 9. Test data builders and fixtures
 

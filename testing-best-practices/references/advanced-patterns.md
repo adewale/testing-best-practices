@@ -103,6 +103,127 @@ def test_roundtrip(tokenizer_factory, text):
 
 ---
 
+## Pirate Testing
+
+Pirate testing is a technique for writing **language-neutral conformance tests**
+that verify multiple implementations behave identically. The tests are expressed
+as data (JSON, YAML, XML) rather than code, and each implementation provides
+a harness that reads the data and executes assertions.
+
+The term comes from Sam Ruby's work on the Pirate virtual machine, building on
+Jon Bentley's concept of "little languages."
+
+### How it differs from differential testing
+
+**Differential testing** picks one implementation as the trusted oracle and
+tests your code against it. There is an asymmetry: one is "right" and the other
+is "under test."
+
+**Pirate testing** treats no implementation as privileged. The *test data* is
+the specification. All implementations are equal peers that must conform to it.
+The tests aggregate lessons learned by every implementation into one
+machine-readable format, turning compatibility and spec compliance into
+empirical matters settled by test cases.
+
+### When to use
+
+- A specification exists with multiple implementations across languages
+  (parsers, encoders, protocols, APIs)
+- You maintain libraries in several languages that must behave identically
+  (e.g., an SDK in Python, Ruby, Java, and Go)
+- An open standard needs a conformance suite
+
+### Pattern: Data-driven conformance tests
+
+```json
+// tests/conformance/url_parsing.json
+[
+  {
+    "input": "https://example.com:8080/path?q=1#frag",
+    "expected": {
+      "scheme": "https",
+      "host": "example.com",
+      "port": 8080,
+      "path": "/path",
+      "query": "q=1",
+      "fragment": "frag"
+    }
+  },
+  {
+    "input": "",
+    "expected": {
+      "scheme": "",
+      "host": "",
+      "port": null,
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  }
+]
+```
+
+Each implementation loads the same JSON and runs its own harness:
+
+```python
+# Python harness
+import json, pytest
+from url_parser import parse_url
+
+with open("tests/conformance/url_parsing.json") as f:
+    cases = json.load(f)
+
+@pytest.mark.parametrize("case", cases, ids=[c["input"] or "<empty>" for c in cases])
+def test_conformance(case):
+    result = parse_url(case["input"])
+    assert result == case["expected"]
+```
+
+```go
+// Go harness
+func TestConformance(t *testing.T) {
+    data, _ := os.ReadFile("tests/conformance/url_parsing.json")
+    var cases []struct {
+        Input    string            `json:"input"`
+        Expected map[string]any    `json:"expected"`
+    }
+    json.Unmarshal(data, &cases)
+    for _, tc := range cases {
+        t.Run(tc.Input, func(t *testing.T) {
+            result := ParseURL(tc.Input)
+            // ... compare fields
+        })
+    }
+}
+```
+
+### Real-world examples
+
+- **Twitter's text processing**: conformance tests in YAML verified that Java
+  and Ruby implementations handled @mentions, hashtags, and URLs identically
+- **JSON Schema Test Suite**: language-neutral test cases that validate JSON
+  Schema implementations across 20+ languages
+- **HTTP/2 conformance tests**: data-driven test cases for protocol compliance
+- **Unicode conformance tests**: test data files that validate Unicode
+  implementations across all languages
+
+### Benefits
+
+- Aggregates lessons from every implementation into one test suite
+- A bug found in the Ruby implementation becomes a test case that protects
+  the Java, Go, and Python implementations too
+- Turns "spec compliance" from opinion into empirical fact
+- New implementations get a ready-made correctness test suite for free
+
+### Costs and limitations
+
+- Cannot test language-specific edge cases (memory management, concurrency)
+- Test suites grow large, discouraging frequent execution
+- Harness design matters — generic error messages make debugging hard
+- Does not replace unit testing; supplements it for interoperability concerns
+
+---
+
 ## Mutation Testing
 
 Mutation testing measures whether your tests actually *catch bugs*, not just

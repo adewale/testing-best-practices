@@ -87,6 +87,17 @@ project. Tests are organized into three tiers by priority.
 See `references/advanced-patterns.md`.
 **Cost**: Low if reference exists, high if you must build one.
 
+### Pirate Tests (Language-Neutral Conformance)
+**Trigger**: ANY of these apply:
+- [ ] A specification has multiple implementations across languages
+- [ ] You maintain SDKs/libraries in several languages that must behave the same
+- [ ] An open standard needs a conformance test suite
+
+**How**: Write test cases as data (JSON/YAML). Each implementation provides a
+harness that loads the data and runs assertions. No implementation is privileged.
+See `references/advanced-patterns.md`.
+**Cost**: Medium (harness per language), but amortized across all implementations.
+
 ## Tier 3: Use With Caution
 
 ### Visual Regression / Screenshot Tests
@@ -137,6 +148,7 @@ Add Tier 2 and 3 tests as trigger conditions apply.
 | VCR cassette | Low | Low | Fast | Medium | Very Low |
 | Characterization | Low | Medium | Fast | Medium | Very Low |
 | Differential | Low | Low | Fast | Very High | Very Low |
+| Pirate | Medium | Low | Medium | High | Very Low |
 | Screenshot | High | High | Slow | Medium | High |
 | Mutation | High | Low | Very Slow | Very High | Very Low |
 
