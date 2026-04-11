@@ -286,11 +286,16 @@ When writing tests for new code:
 
 After writing tests, validate before reporting done:
 
-1. Run the tests — they must pass (or fail for expected reasons in TDD red phase)
-2. For Python: run `scripts/check_test_quality.py <test_file>` to verify
-   assertion density and detect antipatterns
-3. If the quality check reports LOW density or P0 issues, fix them before proceeding
-4. Verify both positive and negative assertions exist for security-sensitive tests
+1. **Run the tests** — they must pass (or fail for expected reasons in TDD red phase)
+2. **Scan for antipatterns** — search your test file for these signals:
+   - Any assertion that only checks "not None" / "not empty" / "is defined" → strengthen it
+   - Any `print` or `console.log` inside a conditional → replace with a real assertion
+   - Any unconditional `skip` / `xit` / `xdescribe` → remove or make conditional
+   - Go: any `t.Log` / `t.Logf` inside an `if` block → change to `t.Errorf`
+3. **Count assertion density** — skim your test functions. If most have only 1-2
+   assertions, add more specific checks. Target: 3+ meaningful assertions per test.
+4. **Verify both directions** for security-sensitive tests — check that dangerous
+   content is removed AND that safe content is preserved
 
 ## Gotchas
 

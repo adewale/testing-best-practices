@@ -4,59 +4,82 @@
     {
       "id": 1,
       "prompt": "I have a Python URL parser in evals/files/url_parser.py. Can you write a thorough test suite for it? The parse_url function takes a URL string and returns a dict with scheme, host, port, path, query, fragment. There's also a normalize_url function.",
-      "expected_output": "A comprehensive test file with unit tests, property-based tests (Hypothesis), edge cases, sad path tests, and high assertion density. Should follow Red-Green TDD principles.",
-      "files": ["evals/files/url_parser.py"]
+      "expected_output": "Comprehensive Python test file with unit tests, Hypothesis property-based tests, edge cases, sad path tests, and high assertion density.",
+      "files": ["evals/files/url_parser.py"],
+      "mode": "write",
+      "language": "python"
     },
     {
       "id": 2,
       "prompt": "Can you review the test quality of evals/files/weak_tests.py? It's the test suite for the URL parser in evals/files/url_parser.py. I want to know if the tests are any good and what should be improved.",
-      "expected_output": "A detailed assessment identifying: unconditional skip, print-instead-of-assert, not-empty assertions, mock-everything integration test, low assertion density. Should prioritize fixes by severity.",
-      "files": ["evals/files/weak_tests.py", "evals/files/url_parser.py"]
+      "expected_output": "Structured assessment identifying antipatterns, with severity-prioritized fixes and an improved test file.",
+      "files": ["evals/files/weak_tests.py", "evals/files/url_parser.py"],
+      "mode": "assess",
+      "language": "python"
     },
     {
       "id": 3,
       "prompt": "I need tests for this TypeScript HTML sanitizer in evals/files/sanitizer.ts. It has a sanitize() function that strips dangerous HTML tags and attributes, a stripAllTags() function, and an escapeHtml() function. These are security-critical — I need to make sure XSS vectors are actually blocked.",
-      "expected_output": "Security-focused test suite using Vitest with fast-check property tests. Should test XSS vectors (script tags, event handlers, javascript: URIs), verify safe content is preserved, and have high assertion density for security tests.",
-      "files": ["evals/files/sanitizer.ts"]
+      "expected_output": "Security-focused Vitest test suite with fast-check property tests, XSS vector coverage, and high assertion density.",
+      "files": ["evals/files/sanitizer.ts"],
+      "mode": "write",
+      "language": "typescript"
     },
     {
       "id": 4,
       "prompt": "I have a Go in-memory cache with TTL support in evals/files/go_cache.go. Write tests for it. It has Set, Get, Delete, Len, and Clear methods. The cache is thread-safe.",
-      "expected_output": "Go test file using table-driven tests, t.TempDir or t.Parallel where appropriate, testing concurrency with race detector, testing TTL expiry, boundary cases. Should use Go testing conventions (not a third-party framework).",
+      "expected_output": "Go test file using table-driven tests, t.Run subtests, concurrency testing, TTL expiry, and boundary cases.",
       "files": ["evals/files/go_cache.go"],
-      "assertions": [
-        "Uses Go stdlib testing package (not testify or other frameworks)",
-        "Uses table-driven tests with t.Run subtests",
-        "Tests TTL expiry behavior",
-        "Tests concurrent access (race condition safety)",
-        "Tests boundary cases: empty key, nil value, zero TTL",
-        "Does NOT load references/python.md or references/typescript.md or references/rust.md (wrong language)"
-      ]
+      "mode": "write",
+      "language": "go"
     },
     {
       "id": 5,
       "prompt": "I'm about to refactor this legacy Python URL parser in evals/files/url_parser.py. I don't fully understand what it does in all edge cases. Can you help me write tests that capture its current behavior so I can refactor safely?",
-      "expected_output": "Characterization tests that record current behavior without judging it. Should call functions with diverse inputs and assert on actual outputs. May note surprising behaviors as comments.",
+      "expected_output": "Characterization tests that record current behavior without judging it. Notes surprising behaviors as comments.",
       "files": ["evals/files/url_parser.py"],
-      "assertions": [
-        "Uses the term 'characterization test' or explicitly captures current behavior",
-        "Records actual outputs as assertions (not expected/ideal behavior)",
-        "Notes surprising behaviors as comments rather than fixing them",
-        "Does NOT load unnecessary reference files (should only need characterization-testing.md and python.md)",
-        "Includes at least 10 different inputs to characterize behavior"
-      ]
+      "mode": "write",
+      "language": "python"
     },
     {
       "id": 6,
       "prompt": "We have a Python function that calls the OpenAI API. I need to test it but I don't want to hit the real API in CI. What's the best approach and can you set up the test infrastructure?",
-      "expected_output": "Recommends VCR cassette testing (pytest-recording). Sets up conftest.py with vcr_config fixture filtering auth headers. Shows how to record and replay.",
+      "expected_output": "Recommends VCR cassette testing (pytest-recording). Sets up conftest.py with vcr_config fixture.",
       "files": [],
-      "assertions": [
-        "Recommends VCR cassettes / pytest-recording (not hand-written mocks)",
-        "Shows conftest.py with vcr_config filtering Authorization headers",
-        "Explains the record-once-replay-many workflow",
-        "Does NOT load references/typescript.md, references/go.md, references/rust.md, or other irrelevant files"
-      ]
+      "mode": "write",
+      "language": "python"
+    },
+    {
+      "id": 7,
+      "prompt": "Can you review this TypeScript test file at evals/files/weak_tests.ts? It's supposed to test an HTML sanitizer. Tell me what's wrong with it and how to fix it.",
+      "expected_output": "Identifies: vi.mock mocking the entire module under test (tautological), toBeDefined as sole assertion, .skip without condition, console.log without assertion, missing security tests.",
+      "files": ["evals/files/weak_tests.ts", "evals/files/sanitizer.ts"],
+      "mode": "assess",
+      "language": "typescript"
+    },
+    {
+      "id": 8,
+      "prompt": "Can you review the test quality of evals/files/weak_tests.go? It tests a Go in-memory cache at evals/files/go_cache.go. Are these tests any good?",
+      "expected_output": "Identifies: t.Log instead of t.Error (logging-not-asserting), sleep-based TTL test (flaky), unused return values, no table-driven tests, no concurrency tests.",
+      "files": ["evals/files/weak_tests.go", "evals/files/go_cache.go"],
+      "mode": "assess",
+      "language": "go"
+    },
+    {
+      "id": 9,
+      "prompt": "I have a Rust INI config parser in evals/files/config_parser.rs. It supports sections, key-value pairs, and comments. Write tests for it — I want to make sure parsing is solid and error cases are handled.",
+      "expected_output": "Rust test module with #[test] functions, table-driven patterns, error case testing, edge cases, and ideally proptest property tests.",
+      "files": ["evals/files/config_parser.rs"],
+      "mode": "write",
+      "language": "rust"
+    },
+    {
+      "id": 10,
+      "prompt": "I need to refactor a Go cache implementation at evals/files/go_cache.go. Before I change anything, I want to lock down its current behavior with tests. Can you write characterization tests for it?",
+      "expected_output": "Characterization tests that observe and record current behavior. Should document edge cases like expired-but-still-in-map items counted by Len().",
+      "files": ["evals/files/go_cache.go"],
+      "mode": "write",
+      "language": "go"
     }
   ]
 }
