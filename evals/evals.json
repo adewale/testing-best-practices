@@ -1,0 +1,23 @@
+{
+  "skill_name": "testing-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a Python URL parser in evals/files/url_parser.py. Can you write a thorough test suite for it? The parse_url function takes a URL string and returns a dict with scheme, host, port, path, query, fragment. There's also a normalize_url function.",
+      "expected_output": "A comprehensive test file with unit tests, property-based tests (Hypothesis), edge cases, sad path tests, and high assertion density. Should follow Red-Green TDD principles.",
+      "files": ["evals/files/url_parser.py"]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you review the test quality of evals/files/weak_tests.py? It's the test suite for the URL parser in evals/files/url_parser.py. I want to know if the tests are any good and what should be improved.",
+      "expected_output": "A detailed assessment identifying: unconditional skip, print-instead-of-assert, not-empty assertions, mock-everything integration test, low assertion density. Should prioritize fixes by severity.",
+      "files": ["evals/files/weak_tests.py", "evals/files/url_parser.py"]
+    },
+    {
+      "id": 3,
+      "prompt": "I need tests for this TypeScript HTML sanitizer in evals/files/sanitizer.ts. It has a sanitize() function that strips dangerous HTML tags and attributes, a stripAllTags() function, and an escapeHtml() function. These are security-critical — I need to make sure XSS vectors are actually blocked.",
+      "expected_output": "Security-focused test suite using Vitest with fast-check property tests. Should test XSS vectors (script tags, event handlers, javascript: URIs), verify safe content is preserved, and have high assertion density for security tests.",
+      "files": ["evals/files/sanitizer.ts"]
+    }
+  ]
+}

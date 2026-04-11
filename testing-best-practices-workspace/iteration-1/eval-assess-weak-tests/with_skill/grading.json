@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Identifies the unconditional @pytest.mark.skip as a problem",
+    "passed": true,
+    "evidence": "assessment.md Step 1, P1 section: '**test_parse_empty** (line 22-24): Skipped with @pytest.mark.skip(\"broken after refactor\"). No issue link, no skipif condition, no expiry. This is silently accumulating tech debt -- the empty-string edge case is completely untested.'"
+  },
+  {
+    "text": "Identifies 'print instead of assert' in test_unicode_url as a bug",
+    "passed": true,
+    "evidence": "assessment.md Step 1, P0 section: '**TestEdgeCases.test_unicode_url** (line 30-32): Uses print() inside a conditional instead of assert. This test will **never fail** regardless of what parse_url returns.'"
+  },
+  {
+    "text": "Identifies 'assert result is not None' as a weak assertion pattern",
+    "passed": true,
+    "evidence": "assessment.md Step 2 table: 'test_parse_basic | 1 | is not None -- any dict passes | Weak (P1)' and 'test_very_long_url | 1 | is not None -- weak | Weak (P1)'. Also: 'Every test with an assertion uses a \"not empty\" check as its sole assertion. A function returning {\"garbage\": True} for all inputs would pass every non-skipped test.'"
+  },
+  {
+    "text": "Identifies the mock-everything integration test as a unit test in disguise",
+    "passed": true,
+    "evidence": "assessment.md Step 3: '**test_normalize_integration** (line 44-50): Patches url_parser.parse_url and provides a hardcoded return value... Mislabeled: Called an \"integration test\" but mocks its only dependency -- it is a unit test in disguise.'"
+  },
+  {
+    "text": "Measures or discusses assertion density and flags it as low",
+    "passed": true,
+    "evidence": "assessment.md Step 2 includes a full assertion density table with counts per test. States: '**Average assertion density: 0.86 per test** (target: 3+)'"
+  },
+  {
+    "text": "Prioritizes fixes by severity (security/critical issues first)",
+    "passed": true,
+    "evidence": "assessment.md Prioritized Fix List: P0 (Fix immediately) lists print-not-assert fix; P1 (Fix before next release) lists assertion upgrades, skipped test fix, sad-path tests, property tests; P2 (Fix soon) lists mock removal, idempotency tests; P3 (Improve when convenient) lists conservation property test."
+  },
+  {
+    "text": "Provides an improved version of the tests (not just critique)",
+    "passed": true,
+    "evidence": "improved_tests.py exists with 38 test functions across classes TestParseUrlHappyPath, TestParseUrlSadPath, TestParseUrlEdgeCases, TestNormalizeUrlHappyPath, TestNormalizeUrlSadPath, TestPropertyBased. Includes assert_parsed_url helper for comprehensive assertions."
+  },
+  {
+    "text": "Improved tests have higher assertion density than the original",
+    "passed": true,
+    "evidence": "Original weak_tests.py had assertion density of 0.86 per test. The improved_tests.py has an effective assertion density of 4.03 per test (counting 8 assertions inside the assert_parsed_url helper per call). Even raw direct assert count is 1.50, which is higher than 0.86."
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "text": "Test file uses pytest as the test framework",
+    "passed": true,
+    "evidence": "Line 3: 'import pytest'; test classes and functions follow pytest conventions (TestParseUrlEmptyAndInvalidInputs, TestParseUrlFullUrls, etc.). No use of unittest.TestCase."
+  },
+  {
+    "text": "Includes property-based tests using Hypothesis",
+    "passed": false,
+    "evidence": "No import of hypothesis anywhere in the file. No @given decorators or hypothesis strategies are used. The file only uses pytest with standard test functions."
+  },
+  {
+    "text": "Has a 'never crashes on arbitrary input' property test for parse_url",
+    "passed": false,
+    "evidence": "No property-based tests exist in the file. There is no test that uses arbitrary input generation to verify parse_url never crashes."
+  },
+  {
+    "text": "Has a roundtrip or idempotency property test",
+    "passed": true,
+    "evidence": "Lines 459-462: 'test_idempotent_normalization' asserts 'normalize_url(url) == normalize_url(normalize_url(url))'. Lines 464-467: 'test_idempotent_with_port_removal' normalizes twice and asserts equality. However, these are example-based, not property-based."
+  },
+  {
+    "text": "Tests boundary/edge cases: empty string, None, very long URL, Unicode",
+    "passed": true,
+    "evidence": "Line 32-33: 'test_empty_string' tests parse_url(''); Line 35-36: 'test_none_input' tests parse_url(None); Lines 312-316: 'test_very_long_url' tests URL with '/a' * 1000; Lines 318-319: 'test_unicode_in_path' tests Unicode characters in path."
+  },
+  {
+    "text": "Tests sad path: invalid input, malformed URLs, missing scheme",
+    "passed": true,
+    "evidence": "Class TestParseUrlEmptyAndInvalidInputs tests empty string, None, integer, boolean, list. Line 103-104: 'test_no_scheme' tests 'example.com/path' (missing scheme). Lines 155-158: 'test_invalid_port_non_numeric' tests non-numeric port."
+  },
+  {
+    "text": "Average assertion density is 3+ assertions per test function",
+    "passed": false,
+    "evidence": "Measured 89 test functions with 103 total assertions = average of 1.16 assertions per test. The vast majority of tests have only 1 assertion. Even tests like test_full_http_url use a single 'assert result == {...}' statement."
+  },
+  {
+    "text": "Tests both parse_url AND normalize_url functions",
+    "passed": true,
+    "evidence": "Line 10: 'from url_parser import parse_url, normalize_url'. parse_url tests span lines 29-343. normalize_url tests span lines 350-467 with classes TestNormalizeUrlBasic, TestNormalizeUrlDefaultPortRemoval, TestNormalizeUrlPath, TestNormalizeUrlQueryAndFragment, TestNormalizeUrlFullRoundTrip."
+  },
+  {
+    "text": "Tests verify specific field values, not just 'result is not None'",
+    "passed": true,
+    "evidence": "Lines 54-61: 'assert result == {\"scheme\": \"http\", \"host\": \"example.com\", \"port\": 8080, ...}'. Line 90: 'assert parse_url(...)['scheme'] == 'http''. Line 354: 'assert normalize_url(...) == \"http://example.com/path\"'. All tests check specific values."
+  }
+]

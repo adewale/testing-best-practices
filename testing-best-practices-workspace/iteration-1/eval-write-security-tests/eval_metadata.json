@@ -1,0 +1,39 @@
+{
+  "eval_id": 3,
+  "eval_name": "write-typescript-security-tests",
+  "prompt": "I need tests for this TypeScript HTML sanitizer in evals/files/sanitizer.ts. It has a sanitize() function that strips dangerous HTML tags and attributes, a stripAllTags() function, and an escapeHtml() function. These are security-critical — I need to make sure XSS vectors are actually blocked.",
+  "assertions": [
+    {
+      "text": "Test file uses Vitest as the test framework",
+      "type": "structural"
+    },
+    {
+      "text": "Includes property-based tests using fast-check",
+      "type": "structural"
+    },
+    {
+      "text": "Tests XSS vectors: script tags, event handlers (onclick etc), javascript: URIs",
+      "type": "security"
+    },
+    {
+      "text": "Tests that safe content is preserved (positive assertions), not just that dangerous content is removed",
+      "type": "quality"
+    },
+    {
+      "text": "Tests all three exported functions: sanitize, stripAllTags, escapeHtml",
+      "type": "completeness"
+    },
+    {
+      "text": "Has a 'never crashes on arbitrary input' property test for sanitize",
+      "type": "structural"
+    },
+    {
+      "text": "Security tests have high assertion density (3+ per test)",
+      "type": "quality"
+    },
+    {
+      "text": "Tests edge cases: empty string, nested tags, malformed HTML, encoded entities",
+      "type": "behavioral"
+    }
+  ]
+}

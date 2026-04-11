@@ -1,0 +1,39 @@
+{
+  "eval_id": 2,
+  "eval_name": "assess-weak-python-tests",
+  "prompt": "Can you review the test quality of evals/files/weak_tests.py? It's the test suite for the URL parser in evals/files/url_parser.py. I want to know if the tests are any good and what should be improved.",
+  "assertions": [
+    {
+      "text": "Identifies the unconditional @pytest.mark.skip as a problem",
+      "type": "detection"
+    },
+    {
+      "text": "Identifies 'print instead of assert' in test_unicode_url as a bug",
+      "type": "detection"
+    },
+    {
+      "text": "Identifies 'assert result is not None' as a weak assertion pattern",
+      "type": "detection"
+    },
+    {
+      "text": "Identifies the mock-everything integration test as a unit test in disguise",
+      "type": "detection"
+    },
+    {
+      "text": "Measures or discusses assertion density and flags it as low",
+      "type": "detection"
+    },
+    {
+      "text": "Prioritizes fixes by severity (security/critical issues first)",
+      "type": "quality"
+    },
+    {
+      "text": "Provides an improved version of the tests (not just critique)",
+      "type": "completeness"
+    },
+    {
+      "text": "Improved tests have higher assertion density than the original",
+      "type": "quality"
+    }
+  ]
+}

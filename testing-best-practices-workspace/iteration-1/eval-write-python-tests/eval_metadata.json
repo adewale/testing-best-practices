@@ -1,0 +1,43 @@
+{
+  "eval_id": 1,
+  "eval_name": "write-python-url-parser-tests",
+  "prompt": "I have a Python URL parser in evals/files/url_parser.py. Can you write a thorough test suite for it? The parse_url function takes a URL string and returns a dict with scheme, host, port, path, query, fragment. There's also a normalize_url function.",
+  "assertions": [
+    {
+      "text": "Test file uses pytest as the test framework",
+      "type": "structural"
+    },
+    {
+      "text": "Includes property-based tests using Hypothesis",
+      "type": "structural"
+    },
+    {
+      "text": "Has a 'never crashes on arbitrary input' property test for parse_url",
+      "type": "behavioral"
+    },
+    {
+      "text": "Has a roundtrip or idempotency property test",
+      "type": "behavioral"
+    },
+    {
+      "text": "Tests boundary/edge cases: empty string, None, very long URL, Unicode",
+      "type": "behavioral"
+    },
+    {
+      "text": "Tests sad path: invalid input, malformed URLs, missing scheme",
+      "type": "behavioral"
+    },
+    {
+      "text": "Average assertion density is 3+ assertions per test function",
+      "type": "quality"
+    },
+    {
+      "text": "Tests both parse_url AND normalize_url functions",
+      "type": "completeness"
+    },
+    {
+      "text": "Tests verify specific field values, not just 'result is not None'",
+      "type": "quality"
+    }
+  ]
+}

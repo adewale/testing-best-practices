@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Test file uses Vitest as the test framework",
+    "passed": true,
+    "evidence": "Line 11: \"import { describe, it, expect } from 'vitest';\" -- uses Vitest's describe/it/expect throughout the file."
+  },
+  {
+    "text": "Includes property-based tests using fast-check",
+    "passed": false,
+    "evidence": "No import of 'fast-check' anywhere in the file. No fc.assert, fc.property, or fc.string() calls. The file uses only example-based tests with hardcoded inputs."
+  },
+  {
+    "text": "Tests XSS vectors: script tags, event handlers (onclick etc), javascript: URIs",
+    "passed": true,
+    "evidence": "Script tags: line 59 'should strip <script> tags and content', lines 65-72 case-insensitive variants. Event handlers: line 131 'should strip onclick attribute', line 139 'should strip onerror attribute', line 145 'should strip onload attribute'. JavaScript URIs: line 179 'should strip javascript: in href', line 185 'should strip javascript: in src'."
+  },
+  {
+    "text": "Tests that safe content is preserved (positive assertions), not just that dangerous content is removed",
+    "passed": true,
+    "evidence": "Line 42: \"expect(sanitize(safe)).toBe(safe)\" for safe HTML '<p>Hello <strong>world</strong></p>'. Line 46: preserves safe attributes. Line 111: \"expect(result).toBe('<p>safe</p><p>also safe</p>')\" after stripping dangerous tags. Line 133: \"expect(result).toContain('click me')\" after stripping onclick."
+  },
+  {
+    "text": "Tests all three exported functions: sanitize, stripAllTags, escapeHtml",
+    "passed": true,
+    "evidence": "Line 12: \"import { sanitize, stripAllTags, escapeHtml } from '...sanitizer';\" -- sanitize tests: lines 29-593; stripAllTags tests: lines 598-675; escapeHtml tests: lines 680-792. All three are thoroughly tested."
+  },
+  {
+    "text": "Has a 'never crashes on arbitrary input' property test for sanitize",
+    "passed": false,
+    "evidence": "No property-based tests exist in the file. There is no test that generates arbitrary strings to verify sanitize never throws. All tests use hardcoded inputs."
+  },
+  {
+    "text": "Security tests have high assertion density (3+ per test)",
+    "passed": false,
+    "evidence": "Measured 120 it() blocks with 130 total expect() calls = average of 1.08 assertions per test. The vast majority of tests have only 1 assertion (e.g., expect(sanitize(input)).toBe('')). This is well below the 3+ threshold."
+  },
+  {
+    "text": "Tests edge cases: empty string, nested tags, malformed HTML, encoded entities",
+    "passed": true,
+    "evidence": "Empty string: line 34 'should return empty string for falsy input'. Nested tags: line 517 'should handle deeply nested safe HTML'. Malformed HTML: lines 511-512 'should handle unclosed script tags', line 529 'should handle HTML comments'. Encoded entities: lines 344-349 'should block javascript: with HTML entities', lines 351-355 'should block javascript: with hex entities'. Line 585-590 'should handle double-encoded content'."
+  }
+]

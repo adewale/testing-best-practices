@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Identifies the unconditional @pytest.mark.skip as a problem",
+    "passed": true,
+    "evidence": "assessment.md section 3: '@pytest.mark.skip(\"broken after refactor\") ... This is the only test for the empty-string edge case, and it is unconditionally skipped. The comment gives no issue number or timeline for fixing it.'"
+  },
+  {
+    "text": "Identifies 'print instead of assert' in test_unicode_url as a bug",
+    "passed": true,
+    "evidence": "assessment.md section 2: 'test_unicode_url uses an if / print pattern instead of an assertion... This test **can never fail**. A wrong host value produces a console warning that is invisible in most CI environments. It should be a hard assert.'"
+  },
+  {
+    "text": "Identifies 'assert result is not None' as a weak assertion pattern",
+    "passed": true,
+    "evidence": "assessment.md section 1 table: 'test_parse_basic | assert result is not None | Only checks that *something* is returned. Does not verify scheme, host, path, or any actual field.' Also identifies 'test_very_long_url | assert result is not None | Identical weakness to test_parse_basic.'"
+  },
+  {
+    "text": "Identifies the mock-everything integration test as a unit test in disguise",
+    "passed": true,
+    "evidence": "assessment.md section 4: 'This is labeled an \"integration test,\" but it mocks out the only dependency (parse_url), turning it into a test of hardcoded return values. It verifies that normalize_url can concatenate strings -- it does **not** verify that normalize_url and parse_url work together correctly.'"
+  },
+  {
+    "text": "Measures or discusses assertion density and flags it as low",
+    "passed": false,
+    "evidence": "The assessment discusses weak assertion quality extensively (section 1 'Weak / Non-Specific Assertions') and lists assertion counts per test, but does not calculate or mention an overall assertion density metric (assertions per test). It does not use the term 'assertion density' or compute an average."
+  },
+  {
+    "text": "Prioritizes fixes by severity (security/critical issues first)",
+    "passed": false,
+    "evidence": "The assessment lists issues numbered 1-6 but does not prioritize them by severity. Issues are ordered as: 1. Weak assertions, 2. Print instead of assert, 3. Skipped test, 4. Over-mocking, 5. Missing coverage, 6. Structural issues. There is no severity classification (P0/P1/P2 or critical/major/minor) and the print-not-assert bug (arguably highest severity) is listed second, not first."
+  },
+  {
+    "text": "Provides an improved version of the tests (not just critique)",
+    "passed": true,
+    "evidence": "improved_tests.py exists with 37 test functions across classes TestParseUrlScheme, TestParseUrlHost, TestParseUrlPort, TestParseUrlPath, TestParseUrlQuery, TestParseUrlFragment, TestParseUrlFullUrls, TestParseUrlEdgeCases, TestNormalizeUrl, TestNormalizeParseIntegration."
+  },
+  {
+    "text": "Improved tests have higher assertion density than the original",
+    "passed": true,
+    "evidence": "The original weak_tests.py had assertion density of approximately 0.86 per test (6 assertions across 7 tests). The improved_tests.py has 55 assertions across 37 tests = 1.49 per test, which is higher. Additionally, tests like test_full_url_with_all_components use full dict equality assertions checking all 6 fields at once."
+  }
+]

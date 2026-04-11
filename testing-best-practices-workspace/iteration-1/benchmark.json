@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "skill_name": "testing-best-practices",
+    "skill_path": "./testing-best-practices",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-04-11T16:01:47Z",
+    "evals_run": ["write-python-url-parser-tests", "assess-weak-python-tests", "write-typescript-security-tests"],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_name": "write-python-url-parser-tests",
+      "config": "with_skill",
+      "pass_rate": 0.889,
+      "passed": 8,
+      "failed": 1,
+      "total": 9,
+      "time_seconds": 149.3,
+      "tokens": 27441,
+      "failed_assertions": ["Average assertion density is 3+ assertions per test function"]
+    },
+    {
+      "eval_name": "write-python-url-parser-tests",
+      "config": "without_skill",
+      "pass_rate": 0.667,
+      "passed": 6,
+      "failed": 3,
+      "total": 9,
+      "time_seconds": 87.0,
+      "tokens": 15641,
+      "failed_assertions": ["Includes property-based tests using Hypothesis", "Has a 'never crashes on arbitrary input' property test for parse_url", "Average assertion density is 3+ assertions per test function"]
+    },
+    {
+      "eval_name": "assess-weak-python-tests",
+      "config": "with_skill",
+      "pass_rate": 1.0,
+      "passed": 8,
+      "failed": 0,
+      "total": 8,
+      "time_seconds": 169.7,
+      "tokens": 26629,
+      "failed_assertions": []
+    },
+    {
+      "eval_name": "assess-weak-python-tests",
+      "config": "without_skill",
+      "pass_rate": 0.75,
+      "passed": 6,
+      "failed": 2,
+      "total": 8,
+      "time_seconds": 88.6,
+      "tokens": 15282,
+      "failed_assertions": ["Measures or discusses assertion density and flags it as low", "Prioritizes fixes by severity (security/critical issues first)"]
+    },
+    {
+      "eval_name": "write-typescript-security-tests",
+      "config": "with_skill",
+      "pass_rate": 1.0,
+      "passed": 8,
+      "failed": 0,
+      "total": 8,
+      "time_seconds": 174.9,
+      "tokens": 37168,
+      "failed_assertions": []
+    },
+    {
+      "eval_name": "write-typescript-security-tests",
+      "config": "without_skill",
+      "pass_rate": 0.625,
+      "passed": 5,
+      "failed": 3,
+      "total": 8,
+      "time_seconds": 171.1,
+      "tokens": 20386,
+      "failed_assertions": ["Includes property-based tests using fast-check", "Has a 'never crashes on arbitrary input' property test for sanitize", "Security tests have high assertion density (3+ per test)"]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 0.96, "stddev": 0.04},
+      "time_seconds": {"mean": 164.6, "stddev": 11.2},
+      "tokens": {"mean": 30413, "stddev": 4577}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.68, "stddev": 0.06},
+      "time_seconds": {"mean": 115.6, "stddev": 39.6},
+      "tokens": {"mean": 17103, "stddev": 2223}
+    },
+    "delta": {
+      "pass_rate": "+0.28",
+      "time_seconds": "+49.0",
+      "tokens": "+13310"
+    }
+  },
+  "notes": [
+    "Property-based testing is the skill's strongest differentiator: all 3 with-skill runs included Hypothesis/fast-check; 0 of 3 without-skill runs did.",
+    "The 'never crashes on arbitrary input' property test appeared in all with-skill write-mode runs but zero without-skill runs.",
+    "Assertion density (2.53 vs 3.0 target in Eval 1) is the one area where with-skill didn't fully meet its own standard — skill guidance on density could be stronger.",
+    "Assess mode showed the biggest quality gap: structured 5-step assessment with severity prioritization vs ad-hoc list.",
+    "Token cost ~1.8x higher with skill (30k vs 17k), but pass rate improved from 68% to 96% — strong ROI.",
+    "No assertions always passed in both configs — all assertions are discriminating."
+  ]
+}
