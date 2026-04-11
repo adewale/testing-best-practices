@@ -34,6 +34,9 @@ read the matching reference file for framework-specific guidance:
 
 For antipattern detection and fixes, read `references/antipatterns.md`.
 For deciding which test types to use, read `references/test-types.md`.
+For advanced patterns (characterization testing, differential testing, mutation
+testing, exhaustive testing, VCR cassettes, doc-sync testing, test data
+builders), read `references/advanced-patterns.md`.
 
 ## Core principles
 
@@ -98,6 +101,11 @@ property test.
 **Boundary-first**: Configure generators to yield min/max boundary values
 before random values. This catches edge cases in the first few iterations.
 
+**Exhaustive testing**: When the state space is small (boolean flags, enums,
+short arrays), use PBT to test *every* combination rather than sampling.
+For a 5-element array, test all 120 permutations, all 32 subsets. See
+`references/advanced-patterns.md` for the exhaustive testing pattern.
+
 ### 5. E2E testing
 
 Every project with user-facing endpoints needs E2E tests. These catch bugs that
@@ -114,9 +122,40 @@ platform-specific behavior.
 
 Test that documented features exist and working features are documented. Use
 the code itself as the source of truth — inspect registries, command lists,
-hook names — and verify docs match.
+hook names — and verify docs match. The key pattern: parametrize over the
+code's actual registry and assert each entry appears in docs.
 
-### 7. Test the sad path
+Read `references/advanced-patterns.md` for the concrete pattern.
+
+### 7. Characterization testing for legacy code
+
+Before refactoring unfamiliar code, write tests that capture its *current*
+behavior — not what you think it should do, but what it actually does. These
+"characterization tests" become a safety net: if a refactoring changes behavior,
+the test breaks and tells you exactly what changed.
+
+Read `references/advanced-patterns.md` for the full pattern.
+
+### 8. Differential testing
+
+When reimplementing an algorithm, porting code, or building a simplified
+version of a complex system, test against a trusted reference implementation.
+Run the same inputs through both and assert outputs match. The reference IS
+the oracle — no hand-calculated expected values needed.
+
+Read `references/advanced-patterns.md` for examples.
+
+### 9. Test data builders and fixtures
+
+Test setup should express *intent*, not *structure*. Use factory functions or
+builders so tests only specify the fields they care about:
+```
+article = ArticleFactory.create(title="Custom")  # all other fields default
+user = make(a(User, with(role, "admin")))
+```
+Read `references/advanced-patterns.md` for the full pattern.
+
+### 10. Test the sad path
 
 For every happy-path test, write at least one sad-path test: invalid input,
 missing data, permission denied, network failure. Use boundary values:
@@ -151,7 +190,9 @@ P0 issues.
 ### Step 3: Check for mock-reality drift
 
 Look for mocks that return hardcoded values. Ask: "If the real API changed,
-would this test notice?" If no, flag it.
+would this test notice?" If no, flag it. Recommend VCR cassettes (recorded
+real API responses) as a replacement for hand-written mocks — see
+`references/advanced-patterns.md`.
 
 ### Step 4: Verify test tier integrity
 
@@ -165,6 +206,12 @@ would this test notice?" If no, flag it.
 - Branch coverage (`branch = true`) should be enabled, not just line coverage
 - Coverage should measure production code only (exclude test files)
 - Coverage thresholds should be pragmatic (75-90%), not 100%
+
+### Step 6: Recommend mutation testing for high-coverage, low-quality suites
+
+When coverage is high (80%+) but assertion density is low, recommend mutation
+testing to verify the tests actually catch bugs. See
+`references/advanced-patterns.md` for tool recommendations per language.
 
 ## Upgrade mode: improving weak tests
 

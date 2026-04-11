@@ -57,6 +57,36 @@ project. Tests are organized into three tiers by priority.
 
 **How**: Validate mock return values against reality in a real environment.
 
+### VCR Cassette Tests (External API Testing)
+**Trigger**: ANY of these apply:
+- [ ] Code calls third-party APIs (LLM providers, payment, auth)
+- [ ] Tests use hand-written mock HTTP responses
+- [ ] External API tests are flaky due to network issues
+
+**How**: Record real API responses to files, replay in tests. See
+`references/advanced-patterns.md`.
+**Cost**: Low maintenance, occasional re-recording needed.
+
+### Characterization Tests
+**Trigger**: ANY of these apply:
+- [ ] About to refactor legacy or unfamiliar code
+- [ ] No existing test suite for the code being changed
+- [ ] Behavior is undocumented and unclear
+
+**How**: Call the code, record actual outputs as assertions. See
+`references/advanced-patterns.md`.
+**Cost**: Low setup, medium maintenance (must decide which behaviors to keep).
+
+### Differential Tests
+**Trigger**: ANY of these apply:
+- [ ] Reimplementing a known algorithm (tokenizer, encoder, hash)
+- [ ] A trusted reference implementation exists (PyTorch, tiktoken, stdlib)
+- [ ] Building an optimized version of known-correct code
+
+**How**: Run same inputs through both implementations, assert outputs match.
+See `references/advanced-patterns.md`.
+**Cost**: Low if reference exists, high if you must build one.
+
 ## Tier 3: Use With Caution
 
 ### Visual Regression / Screenshot Tests
@@ -67,9 +97,11 @@ project. Tests are organized into three tiers by priority.
 
 ### Mutation Testing
 - **When helpful**: After quality audit reveals low assertion density; for
-  security-critical code
+  security-critical code; when coverage is 80%+ but bug escapes persist
 - **Costs**: 10-100x test runtime. Requires interpretation.
-- **Mitigations**: Run on specific modules, nightly not per-commit
+- **Mitigations**: Run on specific critical modules, nightly not per-commit
+- **Tools**: mutmut (Python), Stryker (JS/TS), PIT (Java), gremlins (Go),
+  cargo-mutants (Rust). See `references/advanced-patterns.md`.
 
 ### Performance / Benchmark Tests
 - **When helpful**: A 2x slowdown would be a user-visible bug
@@ -102,6 +134,9 @@ Add Tier 2 and 3 tests as trigger conditions apply.
 | E2E | High | Medium | Slow | High | Medium |
 | Doc-sync | Low | Low | Fast | Low* | Very Low |
 | Contract | Medium | Medium | Medium | High | Low |
+| VCR cassette | Low | Low | Fast | Medium | Very Low |
+| Characterization | Low | Medium | Fast | Medium | Very Low |
+| Differential | Low | Low | Fast | Very High | Very Low |
 | Screenshot | High | High | Slow | Medium | High |
 | Mutation | High | Low | Very Slow | Very High | Very Low |
 
