@@ -109,6 +109,17 @@ harness that loads the data and runs assertions. No implementation is privileged
 See the matching reference file.
 **Cost**: Medium (harness per language), but amortized across all implementations.
 
+### Fuzzy Checking (Statistical Hypothesis Tests)
+**Trigger**: ANY of these apply:
+- [ ] Code uses randomness internally (Monte Carlo, random walks, sampling)
+- [ ] Correct behavior is a statistical property ("~25% of the time")
+- [ ] Bugs manifest as biases, not crashes or wrong types
+- [ ] Threshold-based assertions (`abs(x - 0.25) < tol`) are either flaky or miss bugs
+
+**How**: Run many trials, count outcomes, assert proportions using Bayes factors
+instead of arbitrary tolerances. See the matching reference file.
+**Cost**: Medium (many trials needed), but deterministic with seeded RNG.
+
 ## Tier 3: Use With Caution
 
 ### Visual Regression / Screenshot Tests
@@ -161,6 +172,7 @@ Add Tier 2 and 3 tests as trigger conditions apply.
 | Differential | Low | Low | Fast | Very High | Very Low |
 | Golden file | Low | Low | Fast | Medium | Very Low |
 | Pirate | Medium | Low | Medium | High | Very Low |
+| Fuzzy checking | Medium | Low | Medium | Very High | Very Low |
 | Screenshot | High | High | Slow | Medium | High |
 | Mutation | High | Low | Very Slow | Very High | Very Low |
 

@@ -46,6 +46,7 @@ Load these ONLY when the task matches the trigger:
 - Small state space (booleans, enums, short arrays)? → `references/exhaustive-testing.md`
 - Domain objects with arithmetic operations? → `references/mathematical-properties.md`
 - Need test factories, fixtures, or assertion helpers? → `references/test-data-builders.md`
+- Stochastic simulation or randomized algorithm? → `references/fuzzy-checking.md`
 
 ## Core principles
 
