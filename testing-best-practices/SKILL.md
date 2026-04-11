@@ -56,7 +56,17 @@ test becomes a permanent regression test.
 ### 2. Test quality over quantity
 
 A test suite's value is measured by what bugs it catches, not by coverage
-percentage or test count.
+percentage or test count. Kent Beck's Test Desiderata identifies 12 properties
+of good tests — they trade off against each other:
+
+- **Behavioral** — sensitive to behavior changes (if behavior changes, test fails)
+- **Structure-insensitive** — tolerates refactoring without breaking
+- **Fast**, **Isolated**, **Deterministic** — reliable and quick
+- **Specific** — when it fails, the cause is obvious
+- **Predictive** — if tests pass, the code is production-ready
+
+Some properties conflict: making tests more Predictive (E2E against real infra)
+makes them slower and flakier. Good tests navigate this tradeoff space.
 
 **Assertion density**: Aim for 3+ meaningful assertions per test. Tests with
 only 1 assertion — especially "not empty" checks — are weak.
@@ -97,6 +107,12 @@ property test.
 | Monotonic | Counting/measuring | `f(x + more) >= f(x)` |
 | Conservation | Stripping/filtering | Output characters are a subset of input |
 | Valid-or-absent | Parsing with fallback | Result is valid or `None`, never invalid |
+| Associative | Arithmetic/composition | `(a + b) + c == a + (b + c)` |
+| Commutative | Arithmetic/sets | `a + b == b + a` |
+| Distributive | Arithmetic with scaling | `k * (a + b) == k*a + k*b` |
+
+When a domain object implements operators (`+`, `*`, `==`), test that it works
+with the language's built-in functions too (`sum()`, `sorted()`, `in`, sets).
 
 **Boundary-first**: Configure generators to yield min/max boundary values
 before random values. This catches edge cases in the first few iterations.
@@ -187,6 +203,7 @@ for the full detection signal list. Key signals:
 - `t.Log` / `console.log` / `print` inside conditional blocks (logging not asserting)
 - Empty test bodies or tests with no assertions
 - Tests where the only assertion is `!= ""` / `toBeDefined()` / `toBeTruthy()`
+- Tests that pass alone but fail when run after other tests (ordering dependency)
 
 ### Step 2: Measure assertion density
 
@@ -251,6 +268,10 @@ When writing tests for new code:
 4. Use test data builders/factories for setup — express intent, not structure
 5. Use domain-specific assertion helpers for readability
 6. Include regression test comments linking to the bug/issue being fixed
+7. For transformation pipelines (HTML→Markdown, compilers, code generators),
+   use fixture-based golden file tests — see `references/advanced-patterns.md`
+8. Test at the user-facing level (commands, endpoints, API) not internals
+9. Pin non-deterministic inputs (time, randomness) rather than mocking them
 
 ## Gotchas
 

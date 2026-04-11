@@ -87,6 +87,17 @@ project. Tests are organized into three tiers by priority.
 See `references/advanced-patterns.md`.
 **Cost**: Low if reference exists, high if you must build one.
 
+### Golden File / Fixture-Based Tests
+**Trigger**: ANY of these apply:
+- [ ] Code transforms input files to output files (HTML→Markdown, compilation)
+- [ ] Code generates complex output that's hard to assert on field-by-field
+- [ ] You have real-world input files to test against
+
+**How**: Store inputs in `tests/fixtures/`, expected outputs in `tests/expected/`.
+Auto-discover fixtures, auto-baseline on first run. See
+`references/advanced-patterns.md`.
+**Cost**: Low setup. Human-reviewable baselines. Catches drift.
+
 ### Pirate Tests (Language-Neutral Conformance)
 **Trigger**: ANY of these apply:
 - [ ] A specification has multiple implementations across languages
@@ -148,6 +159,7 @@ Add Tier 2 and 3 tests as trigger conditions apply.
 | VCR cassette | Low | Low | Fast | Medium | Very Low |
 | Characterization | Low | Medium | Fast | Medium | Very Low |
 | Differential | Low | Low | Fast | Very High | Very Low |
+| Golden file | Low | Low | Fast | Medium | Very Low |
 | Pirate | Medium | Low | Medium | High | Very Low |
 | Screenshot | High | High | Slow | Medium | High |
 | Mutation | High | Low | Very Slow | Very High | Very Low |

@@ -188,6 +188,73 @@ func TestWithFakeServer(t *testing.T) {
 }
 ```
 
+## testdata/ Convention
+
+Go has a standard convention: the `testdata/` directory is ignored by the Go
+tool and is used for test fixtures (saved feed snapshots, golden files, etc.).
+
+```go
+func TestParseRealFeed(t *testing.T) {
+    data, err := os.ReadFile("testdata/daringfireball-feed.xml")
+    if err != nil {
+        t.Fatalf("failed to read fixture: %v", err)
+    }
+    result := Parse(data)
+    // ... assertions against real-world feed data
+}
+```
+
+Commit fixtures to the repo. This eliminates network flakiness and makes
+tests reproducible.
+
+## t.Helper(), t.Cleanup(), TestMain
+
+### t.Helper() — better error reporting for test helpers
+
+```go
+func assertContains(t *testing.T, haystack, needle string) {
+    t.Helper()  // Error reports the caller's line, not this line
+    if !strings.Contains(haystack, needle) {
+        t.Errorf("expected %q to contain %q", haystack, needle)
+    }
+}
+```
+
+### t.Cleanup() — alternative to defer
+
+```go
+func TestWithResource(t *testing.T) {
+    db := openTestDB(t)
+    t.Cleanup(func() { db.Close() })
+    // ... test runs, db.Close() called even on failure
+}
+```
+
+### TestMain — suite-level setup/teardown
+
+```go
+func TestMain(m *testing.M) {
+    // Setup (runs once before all tests)
+    db := setupGlobalTestDB()
+    defer db.Close()
+
+    // Run all tests
+    os.Exit(m.Run())
+}
+```
+
+## Example Tests as Documentation
+
+```go
+func ExampleReverse() {
+    fmt.Println(Reverse("hello"))
+    // Output: olleh
+}
+```
+
+Example tests are both tests AND documentation — they appear in `go doc`
+output and on pkg.go.dev. The `// Output:` comment is the assertion.
+
 ## Parallel Tests and Serial Markers
 
 ```go

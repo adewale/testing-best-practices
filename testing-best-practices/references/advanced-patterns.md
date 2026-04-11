@@ -558,3 +558,190 @@ export function assertCountChanged(before: number, after: number, delta: number)
   expect(after - before).toBe(delta);
 }
 ```
+
+### Pattern: File tree builders (for filesystem tests)
+
+For tools that operate on files (Git, compilers, bundlers), describe directory
+structures declaratively:
+
+```javascript
+// From maryrosecook/gitlet — nested objects become directories
+createFilesFromTree({
+  src: {
+    "index.ts": "import { app } from './app';",
+    lib: {
+      "utils.ts": "export function helper() {}",
+    },
+  },
+  "package.json": '{"name": "test"}',
+});
+```
+
+```python
+# Python equivalent
+def create_tree(base, structure):
+    for name, content in structure.items():
+        path = base / name
+        if isinstance(content, dict):
+            path.mkdir(parents=True, exist_ok=True)
+            create_tree(path, content)
+        else:
+            path.write_text(content)
+```
+
+### Pattern: Pin non-deterministic inputs
+
+Rather than mocking the clock or filesystem, pin the non-deterministic part:
+
+```javascript
+// From maryrosecook/gitlet — freeze time for deterministic commit hashes
+beforeEach(() => {
+    Date.prototype.toString = () => "Sat Aug 30 2014 09:16:45 GMT-0400 (EDT)";
+});
+afterEach(() => {
+    Date.prototype.toString = originalDateToString;
+});
+```
+
+This gives you real filesystem operations + real logic, with only the
+non-deterministic input (time) controlled.
+
+---
+
+## Fixture-Based Golden File Testing
+
+For transformation pipelines (HTML→Markdown, compilers, template engines, code
+generators), the most effective pattern is fixture-based golden file tests.
+
+### How it works
+
+1. Put input files in `tests/fixtures/` (e.g., HTML pages, source files)
+2. Run the transformation and save output to `tests/expected/`
+3. On subsequent runs, compare output against expected files
+4. If no expected file exists, create a baseline automatically
+5. To update: delete the expected file and re-run
+
+### The pattern (from kepano/defuddle)
+
+```typescript
+describe('Fixtures Tests', () => {
+  const fixtures = getFixtures();  // Auto-discovers all .html files
+
+  test.each(fixtures)('should process: $name', async ({ name, path }) => {
+    const input = readFileSync(path, 'utf-8');
+    const result = transform(input);
+    const expected = loadExpected(name);
+
+    if (!expected) {
+      // First run — create baseline
+      saveExpected(name, result);
+      return;
+    }
+
+    expect(result.trim()).toEqual(expected.trim());
+  });
+});
+```
+
+### Auto-discovery helper
+
+```typescript
+function getFixtures() {
+  const dir = join(__dirname, 'fixtures');
+  return readdirSync(dir)
+    .filter(f => f.endsWith('.html'))
+    .map(f => ({ name: basename(f, '.html'), path: join(dir, f) }));
+}
+```
+
+### Why this pattern is strong
+
+- **Zero-code test creation**: add a fixture file = add a test case
+- **Human-readable expected output**: Markdown/text, not binary blobs
+- **Real-world inputs**: use actual web pages, documents, source files
+- **Drift detection**: any change to transformation logic is caught
+- **Easy to update**: delete expected file, re-run, review the new baseline
+
+### When to use
+
+- HTML → Markdown extraction (defuddle)
+- Code formatting / pretty-printing
+- Template rendering
+- Compiler output
+- Data migration / transformation pipelines
+- API response normalization
+
+### Naming convention for fixtures
+
+Use `category--source-description.extension`:
+```
+codeblocks--stripe.html
+codeblocks--pygments-lineno.html
+comments--news.ycombinator.com.html
+author-contact-block.html
+```
+
+### Multi-environment testing
+
+Run the same fixtures against different backends:
+
+```typescript
+const USE_JSDOM = process.env.DOM === 'jsdom';
+export const parseDocument = USE_JSDOM ? parseWithJSDOM : parseLinkedomHTML;
+```
+
+---
+
+## Mathematical Property Tests
+
+For domain objects with arithmetic operations, test mathematical properties.
+These are property tests that verify algebraic laws.
+
+### Associativity
+
+```python
+@given(
+    a=st.integers(), b=st.integers(), c=st.integers()
+)
+def test_addition_is_associative(a, b, c):
+    assert (Money(a, "USD") + Money(b, "USD")) + Money(c, "USD") == \
+           Money(a, "USD") + (Money(b, "USD") + Money(c, "USD"))
+```
+
+### Commutativity
+
+```python
+@given(x=st.integers(), y=st.integers())
+def test_addition_is_commutative(x, y):
+    assert Money(x, "USD") + Money(y, "USD") == Money(y, "USD") + Money(x, "USD")
+```
+
+### Distributivity
+
+```python
+@given(k=st.integers(min_value=-100, max_value=100),
+       a=st.integers(), b=st.integers())
+def test_multiplication_distributes_over_addition(k, a, b):
+    left = k * (Money(a, "USD") + Money(b, "USD"))
+    right = (k * Money(a, "USD")) + (k * Money(b, "USD"))
+    assert left == right
+```
+
+### Language integration tests
+
+When your object implements operators, test it with the language's builtins:
+
+```python
+def test_works_with_sum():
+    items = [Money(5, "USD"), Money(10, "USD"), Money(15, "USD")]
+    assert sum(items, Money(0, "USD")) == Money(30, "USD")
+
+def test_works_with_sorted():
+    items = [Money(30, "USD"), Money(10, "USD"), Money(20, "USD")]
+    assert sorted(items) == [Money(10, "USD"), Money(20, "USD"), Money(30, "USD")]
+
+def test_works_with_set_membership():
+    s = {Money(5, "USD"), Money(10, "USD")}
+    assert Money(5, "USD") in s
+```
+```
