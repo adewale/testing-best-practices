@@ -1,0 +1,37 @@
+[
+  {
+    "text": "Identifies t.Log instead of t.Error",
+    "passed": true,
+    "evidence": "Assessment section 'P0 -- Logging not asserting (every test)' (lines 16-27) explicitly states 'All five tests use t.Log() or t.Logf() where they should use t.Errorf() or t.Fatalf(). In Go, t.Log prints a message but never fails the test.' Includes a table showing each test and line number using t.Log."
+  },
+  {
+    "text": "Identifies sleep-based TTL as flaky",
+    "passed": true,
+    "evidence": "Assessment line 84: 'TestTTL uses time.Sleep(200ms) -- this is a time-dependent test. Under load (slow CI machines), the sleep duration might not be enough, or the timing might cause flaky results. Better to inject a clock.' Listed as P2 priority."
+  },
+  {
+    "text": "Identifies unused return values",
+    "passed": true,
+    "evidence": "Assessment section 'P0 -- Discarded return value (TestSetAndGet)' (lines 29-31) identifies 'Line 16: _ = val explicitly discards the retrieved value' and notes 'A cache that always returns (\"wrong\", true) would pass.'"
+  },
+  {
+    "text": "Identifies missing table-driven tests",
+    "passed": true,
+    "evidence": "Assessment line 106: 'P3: Not using table-driven test pattern (Go convention) -- All tests'. Listed in the summary table as a P3 issue affecting all tests."
+  },
+  {
+    "text": "Prioritizes by severity",
+    "passed": true,
+    "evidence": "Issues are organized by priority: P0 (Logging not asserting, Discarded return value, Empty assertion body), P1 (Zero assertion density, Clear untested), P2 (No sad-path tests, No concurrent access tests, Flaky time-based test), P3 (Not using table-driven pattern). Summary table at lines 96-106."
+  },
+  {
+    "text": "Provides improved tests",
+    "passed": true,
+    "evidence": "The file weak_tests_improved.go exists (350 lines) and contains a complete rewritten test suite with table-driven tests, proper assertions, coverage for all API methods (Set, Get, Delete, Len, Clear), TTL tests, concurrency tests, and sad-path tests."
+  },
+  {
+    "text": "Improved tests use t.Errorf not t.Log",
+    "passed": true,
+    "evidence": "The improved test file uses t.Errorf and t.Fatalf throughout (e.g., lines 45-49, 59, 61, 75-79, 89-97, 105, etc.). Zero occurrences of t.Log as assertion replacement. Also includes a helper function assertGet (lines 12-21) that uses t.Errorf."
+  }
+]

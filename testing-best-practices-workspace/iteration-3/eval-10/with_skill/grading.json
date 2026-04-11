@@ -1,0 +1,27 @@
+[
+  {
+    "text": "Uses 'characterization' concept (captures current behavior)",
+    "passed": true,
+    "evidence": "Package comment (lines 1-7): 'Characterization tests for the cache package. These tests capture the CURRENT behavior of the cache implementation before refactoring. They are change-detection tests, not correctness tests. If a refactoring causes any of these to fail, investigate whether the old behavior was a bug (update the test) or a feature (fix the refactoring).' Multiple tests explicitly note they capture current behavior."
+  },
+  {
+    "text": "Records actual outputs as assertions",
+    "passed": true,
+    "evidence": "Tests assert exact observed values: e.g., TestSetGet_StringValue asserts val == 'hello' (line 44), TestSetGet_IntValue asserts val == 42 (line 57), TestSet_OverwritesExistingKey asserts val == 'second' and Len() == 1 (lines 124-128). All assertions record the actual current behavior as the expected value."
+  },
+  {
+    "text": "Notes surprising behaviors (Len counts expired, negative TTL)",
+    "passed": true,
+    "evidence": "Len counts expired: TestLen_IncludesExpiredItems (line 256) comments 'Characterization: Len counts ALL items in the map, including expired ones. Expired items are not lazily removed by Get, and there is no cleanup goroutine.' Negative TTL: TestSet_NegativeTTLBehavesLikeZero (line 193) comments 'Characterization: negative TTL does NOT cause immediate expiry. The condition ttl > 0 means negative TTL leaves expiresAt as zero-value, which is treated as never expires by Get.' Also TestGet_DoesNotRemoveExpiredItem (line 379) notes expired items are NOT lazily removed."
+  },
+  {
+    "text": "Tests at least 10 different scenarios",
+    "passed": true,
+    "evidence": "The file contains 25 test functions: TestNew_ReturnsNonNilCache, TestSetGet_StringValue, TestSetGet_IntValue, TestSetGet_NilValue, TestSetGet_StructValue, TestSetGet_EmptyStringKey, TestSet_OverwritesExistingKey, TestSet_OverwriteChangesTypeAndTTL, TestGet_MissingKey, TestGet_EmptyCache, TestSet_ZeroTTLNeverExpires, TestSet_NegativeTTLBehavesLikeZero, TestGet_ExpiredItemReturnsNilFalse, TestLen_EmptyCache, TestLen_CountsMultipleItems, TestLen_IncludesExpiredItems, TestDelete_RemovesExistingKey, TestDelete_NonexistentKeyIsNoOp, TestDelete_OnEmptyCache, TestClear_RemovesAllItems, TestClear_OnEmptyCacheIsNoOp, TestClear_CacheIsReusableAfterClear, TestGet_DoesNotRemoveExpiredItem, TestMultipleKeys_IndependentStorage, TestConcurrentAccess_NoRaceOrPanic, plus table-driven tests with 4 sub-scenarios."
+  },
+  {
+    "text": "Uses t.Errorf not t.Log",
+    "passed": true,
+    "evidence": "All assertions use t.Errorf, t.Error, t.Fatal, or t.Fatalf. For example: line 28 t.Error, line 44 t.Errorf, line 57 t.Errorf, line 127 t.Errorf, line 155 t.Error, line 229 t.Errorf. Zero instances of t.Log used for assertions anywhere in the file."
+  }
+]

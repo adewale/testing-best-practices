@@ -1,0 +1,32 @@
+[
+  {
+    "text": "Go stdlib testing (not testify)",
+    "passed": true,
+    "evidence": "File imports only 'testing' from stdlib (line 5). No testify imports. All assertions use t.Fatalf, t.Errorf, and manual if-checks, which is standard Go testing library usage."
+  },
+  {
+    "text": "Table-driven with t.Run",
+    "passed": true,
+    "evidence": "TestSetAndGet_BasicTypes (lines 14-47) uses a table of test cases with []struct{name, key, value} and iterates with 'for _, tt := range tests' calling 't.Run(tt.name, ...)'. TestParseUrlSchemes-style parametric testing via table-driven pattern. TestSet_SpecialCharacterKeys also uses a slice of keys."
+  },
+  {
+    "text": "TTL expiry",
+    "passed": true,
+    "evidence": "TestGet_ExpiredItem (lines 91-115) sets a 10ms TTL, verifies the item exists before expiry, sleeps 20ms, then verifies Get returns ok=false and nil. TestSet_ZeroTTLNeverExpires (lines 117-132) verifies zero-TTL items persist. TestSet_OverwriteRefreshesTTL (lines 157-177) tests TTL refresh on overwrite."
+  },
+  {
+    "text": "Concurrent access",
+    "passed": true,
+    "evidence": "TestConcurrentSetAndGet (lines 420-453) uses 50 goroutines doing 100 ops each with sync.WaitGroup. TestConcurrentMixedOperations (lines 455-507) tests concurrent Set/Get/Delete/Len/Clear. TestConcurrentSetSameKey (lines 509-541) tests 100 goroutines writing to the same key."
+  },
+  {
+    "text": "Boundary cases (empty key, nil, zero TTL)",
+    "passed": true,
+    "evidence": "Empty key: TestSet_EmptyStringKey (lines 364-380) sets and gets with '' key. Nil value: table test includes {nil value, 'nothing', nil} in TestSetAndGet_BasicTypes (line 27). Zero TTL: TestSet_ZeroTTLNeverExpires (lines 117-132). Also tests special character keys including emoji and unicode (lines 382-414)."
+  },
+  {
+    "text": "Does NOT reference python/typescript/rust refs",
+    "passed": true,
+    "evidence": "The file contains only Go code. No references to Python, TypeScript, Rust, or any non-Go languages. All imports are Go stdlib packages (fmt, sync, testing, time)."
+  }
+]

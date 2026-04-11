@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Uses Vitest",
+    "passed": true,
+    "evidence": "Line 1: \"import { describe, it, expect } from 'vitest';\" -- all test constructs come from Vitest."
+  },
+  {
+    "text": "Includes fast-check PBT",
+    "passed": true,
+    "evidence": "Line 2: \"import fc from 'fast-check';\" -- fast-check is used extensively in property-based test sections for sanitize (lines 350-436), stripAllTags (lines 513-555), and escapeHtml (lines 635-697)."
+  },
+  {
+    "text": "XSS vectors (script, onclick, javascript:)",
+    "passed": true,
+    "evidence": "Script: lines 99-106 removes script tags with attributes. Onclick: lines 149-155 removes onclick via it.each(DANGEROUS_ATTRS). Javascript: lines 189-198 removes javascript: protocol from href. Also tests data: URLs, style-based attacks, iframe phishing, base tag hijacking, and combined attacks."
+  },
+  {
+    "text": "Safe content preserved (positive assertions)",
+    "passed": true,
+    "evidence": "Lines 43-86: 'preserves safe content' describe block with tests for plain text, safe tags (it.each(SAFE_TAGS)), safe attributes (href, class, id), nested safe HTML structure, and legitimate https URLs. Assertions use toContain to verify safe content survives."
+  },
+  {
+    "text": "Tests all 3 functions",
+    "passed": true,
+    "evidence": "sanitize: lines 21-437. stripAllTags: lines 443-556. escapeHtml: lines 562-699. All three imported functions have dedicated describe blocks with multiple tests each."
+  },
+  {
+    "text": "'Never crashes' property",
+    "passed": true,
+    "evidence": "sanitize: line 351 'never throws on arbitrary string input and always returns a string' with fc.property(fc.string(), ...) and numRuns: 500. stripAllTags: line 514 'never throws on arbitrary input'. escapeHtml: line 637 'never throws on arbitrary input'. All three functions have never-crashes properties."
+  },
+  {
+    "text": "Security assertion density 3+",
+    "passed": true,
+    "evidence": "Most security tests have 3+ assertions. E.g., 'removes script tags with attributes' (lines 99-106) has 4 assertions (not.toContain for <script, alert, evil.js, </script>). 'removes event handlers while preserving safe attributes' (lines 158-165) has 5 assertions. 'blocks combined tag + attribute attacks' (lines 302-311) has 6 assertions."
+  },
+  {
+    "text": "Edge cases (empty, nested, malformed, encoded)",
+    "passed": true,
+    "evidence": "Empty: lines 25-37 tests empty string and falsy values. Nested: line 69 tests nested safe HTML structure. Malformed: line 340 'handles tags within attribute values'. Encoded: line 325 'handles HTML entities in text content'. Also tests whitespace-only input (line 317), multiline content (line 283)."
+  }
+]

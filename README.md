@@ -1,15 +1,16 @@
 # testing-best-practices
 
-An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from analysis of real-world testing patterns across 10 GitHub accounts and grounded in the work of practitioners like Nat Pryce (GOOS), Graydon Hoare (Rust), and Andrej Karpathy.
+An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from analysis of real-world testing patterns across 13 GitHub accounts and grounded in the work of practitioners like Kent Beck (TDD), Nat Pryce (GOOS), Graydon Hoare (Rust), and Andrej Karpathy.
 
 ## What it does
 
 When an agent uses this skill, it produces higher-quality tests than it would on its own. Specifically:
 
-- **Property-based tests appear** (Hypothesis, fast-check) where they wouldn't otherwise
+- **Property-based tests appear** (Hypothesis, fast-check, proptest) where they wouldn't otherwise
 - **Assertion density increases** from ~1 to 3+ meaningful assertions per test
 - **Assessments become structured** with severity-prioritized findings (P0/P1/P2/P3) instead of ad-hoc lists
 - **Anti-patterns get detected**: skipped tests, logging-instead-of-asserting, mock-everything "integration" tests, weak "not empty" assertions
+- **Language-appropriate patterns** are used: table-driven tests in Go, `#[test]` modules in Rust, Vitest + fast-check in TypeScript
 
 ## Install
 
@@ -23,102 +24,145 @@ The skill operates in four modes:
 
 | Mode | When | What it does |
 |------|------|-------------|
-| **Write** | Writing new tests | Red-Green TDD, property-based tests, boundary values, sad path coverage |
+| **Write** | Writing new tests | Red-Green TDD, property-based tests, boundary values, sad path coverage, validation loop |
 | **Assess** | Reviewing existing tests | 6-step quality audit: sabotage detection, assertion density, mock drift, tier integrity, coverage config, mutation testing readiness |
 | **Upgrade** | Improving weak tests | Prioritized fixes for flaky, weak, or sabotaged tests |
-| **Detect** | Finding hidden problems | Unconditional skips, print-not-assert, tests that fake coverage |
+| **Detect** | Finding hidden problems | Unconditional skips, print-not-assert, ordering dependencies, tests that fake coverage |
 
-Language-specific guidance (framework setup, PBT libraries, fixture patterns) loads on demand based on the project's language. The core principles apply universally.
+Language-specific guidance loads on demand based on the project's language. Advanced pattern references load only when their trigger condition matches (e.g., `references/characterization-testing.md` loads only when refactoring legacy code). This keeps token usage efficient.
 
 ## What's covered
 
-### Core principles (always loaded)
+### Core principles (always loaded, ~3,200 tokens)
 
 - Red-Green TDD
-- Test quality over quantity (assertion density, not just coverage)
+- Test quality over quantity (Kent Beck's Test Desiderata, assertion density)
 - Real objects over mocks (with a preference hierarchy)
-- Property-based testing (6 invariant patterns: never-crashes, roundtrip, idempotent, monotonic, conservation, valid-or-absent)
+- Property-based testing (9 invariant patterns including mathematical properties)
 - E2E testing
 - Documentation-code sync testing
 - Characterization testing for legacy code
-- Differential testing (reference implementation as oracle)
-- Pirate testing (language-neutral conformance suites)
+- Differential and pirate testing
 - Test data builders and fixtures
 - Sad path and boundary testing
+- Validation loop (self-check before reporting done)
 
-### Reference files (loaded when needed)
+### Reference files (loaded on demand)
+
+**Language-specific** (one loaded per project):
 
 | File | Content |
 |------|---------|
-| `references/python.md` | pytest, Hypothesis, VCR cassettes, async testing, Click CLI testing |
-| `references/typescript.md` | Vitest, fast-check, Playwright, mock contract tests, typed API clients |
-| `references/go.md` | Table-driven tests, `t.TempDir()`, `httptest`, build tags, fake servers |
-| `references/rust.md` | `#[test]`, proptest, exhaustigen, cargo-mutants, CLI binary integration tests |
+| `references/python.md` | pytest, Hypothesis, VCR cassettes, async testing, CLI testing |
+| `references/typescript.md` | Vitest, fast-check, Playwright, mock contract tests, API clients |
+| `references/go.md` | Table-driven tests, `t.TempDir()`, `httptest`, build tags, `testdata/`, `t.Helper()` |
+| `references/rust.md` | `#[test]`, proptest, exhaustigen, cargo-mutants, CLI binary tests |
+
+**Always available**:
+
+| File | Content |
+|------|---------|
 | `references/antipatterns.md` | 12 anti-patterns with detection signals, severity levels, and fixes |
 | `references/test-types.md` | 3-tier decision guide with trigger checklists and cost-benefit table |
-| `references/advanced-patterns.md` | Characterization, differential, pirate, mutation, exhaustive, VCR, doc-sync, test data builders |
+
+**Topic-specific** (loaded only when the trigger matches):
+
+| File | Trigger |
+|------|---------|
+| `references/characterization-testing.md` | Refactoring legacy code |
+| `references/differential-testing.md` | Reimplementing algorithms, multi-language SDKs |
+| `references/golden-file-testing.md` | Transformation pipelines (HTML→Markdown, compilers) |
+| `references/vcr-cassettes.md` | Code calling external APIs |
+| `references/doc-sync-testing.md` | CLI commands or plugin hooks in docs |
+| `references/mutation-testing.md` | Verifying test suite catches real bugs |
+| `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |
+| `references/mathematical-properties.md` | Domain objects with arithmetic |
+| `references/test-data-builders.md` | Need factories, fixtures, or assertion helpers |
 
 ## Eval results
 
-Evaluated with 3 test cases comparing with-skill vs without-skill outputs:
+Evaluated with 10 test cases across Python, TypeScript, Go, and Rust:
 
-| Eval | With Skill | Without Skill |
-|------|-----------|---------------|
-| Write Python URL parser tests | 89% (8/9) | 67% (6/9) |
-| Assess intentionally weak tests | 100% (8/8) | 75% (6/8) |
-| Write TypeScript security tests | 100% (8/8) | 63% (5/8) |
-| **Overall pass rate** | **96%** | **68%** |
-
-The skill's strongest differentiator: property-based testing appeared in all 3 with-skill runs and zero without-skill runs. Token cost is ~1.8x higher (30k vs 17k), which is acceptable for a +28% quality improvement.
+| Eval | Language | Mode | Description |
+|------|----------|------|-------------|
+| 1 | Python | Write | URL parser test suite |
+| 2 | Python | Assess | Weak test quality review |
+| 3 | TypeScript | Write | Security-focused sanitizer tests |
+| 4 | Go | Write | Cache with TTL and concurrency |
+| 5 | Python | Write | Characterization tests for legacy code |
+| 6 | Python | Write | VCR cassette setup for API testing |
+| 7 | TypeScript | Assess | Weak test quality review |
+| 8 | Go | Assess | Weak test quality review |
+| 9 | Rust | Write | INI config parser tests |
+| 10 | Go | Write | Characterization tests for cache |
 
 Full eval data is in `testing-best-practices-workspace/`.
 
 ## Research corpus
 
-The skill was built from analysis of testing patterns across:
+Built from analysis of testing patterns across 13 GitHub accounts:
 
-- [adewale](https://github.com/adewale) (30 repos) -- property-based testing, mock fidelity, test quality audits
-- [simonw](https://github.com/simonw) (datasette, sqlite-utils, llm) -- documentation-as-tests, real databases, VCR cassettes
-- [chrischabot](https://github.com/chrischabot) (the-wire, foundry, code-search) -- 5-tier test architecture, API scenario tests, acceptance batteries
+- [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule
 - [graydon](https://github.com/graydon) (Rust creator) -- exhaustigen-rs, proptest-arbitrary-interop
 - [karpathy](https://github.com/karpathy) -- differential testing against PyTorch/tiktoken
+- [kepano](https://github.com/kepano) -- fixture-based golden file testing (defuddle)
+- [maryrosecook](https://github.com/maryrosecook) -- gitlet test suite, file tree builders
+- [simonw](https://github.com/simonw) (datasette, sqlite-utils, llm) -- documentation-as-tests, VCR cassettes
 - [bradfitz](https://github.com/bradfitz) (Go team) -- protocol-faithful fake servers
-- [joewalnes](https://github.com/joewalnes) -- minimalist testing frameworks (47-line jstinytest)
+- [joewalnes](https://github.com/joewalnes) -- minimalist testing frameworks
 - [ivanmoore](https://github.com/ivanmoore) -- TDD katas, mock object exercises
+- [adewale](https://github.com/adewale) -- property-based testing, mock fidelity, test quality audits
+- [chrischabot](https://github.com/chrischabot) -- 5-tier test architecture, API scenario tests
 - [tirsen](https://github.com/tirsen) -- retry patterns
 
-Research documents are in `research/` and are not part of the shipped skill.
+Individual research documents are in `research/` (one per practitioner/account).
 
 ## Project structure
 
 ```
-testing-best-practices/          # The skill (ships to agents)
-  SKILL.md                       # Core instructions (269 lines)
-  references/                    # Loaded on demand
-    python.md
-    typescript.md
-    go.md
-    rust.md
-    antipatterns.md
-    test-types.md
-    advanced-patterns.md
+testing-best-practices/             # The skill (ships to agents)
+  SKILL.md                          # Core instructions (~310 lines)
+  references/                       # Loaded on demand
+    python.md                       # Language: Python
+    typescript.md                   # Language: TypeScript
+    go.md                           # Language: Go
+    rust.md                         # Language: Rust
+    antipatterns.md                 # Always: detection signals + fixes
+    test-types.md                   # Always: decision guide
+    characterization-testing.md    # Topic: legacy code
+    differential-testing.md        # Topic: reference implementations
+    golden-file-testing.md         # Topic: transformation pipelines
+    vcr-cassettes.md               # Topic: external APIs
+    doc-sync-testing.md            # Topic: documentation drift
+    mutation-testing.md            # Topic: test quality verification
+    exhaustive-testing.md          # Topic: small state spaces
+    mathematical-properties.md    # Topic: algebraic laws
+    test-data-builders.md          # Topic: factories and fixtures
 
-research/                        # Source material (does not ship)
-  LESSONS_FROM_ADEWALE_REPOS.md
+research/                           # Source material (does not ship)
+  LESSONS_FROM_KENTBECK.md
+  LESSONS_FROM_NPRYCE.md
+  LESSONS_FROM_GRAYDON.md
+  LESSONS_FROM_KARPATHY.md
+  LESSONS_FROM_KEPANO.md
+  LESSONS_FROM_MARYROSECOOK.md
   LESSONS_FROM_SIMONW_REPOS.md
+  LESSONS_FROM_BRADFITZ.md
+  LESSONS_FROM_JOEWALNES.md
+  LESSONS_FROM_IVANMOORE.md
+  LESSONS_FROM_ADEWALE_REPOS.md
   LESSONS_FROM_CHRISCHABOT_REPOS.md
-  LESSONS_FROM_PRACTITIONERS.md
+  LESSONS_FROM_TIRSEN.md
   ANTIPATTERNS.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
 
-evals/                           # Test cases for the skill itself
-  evals.json
-  files/                         # Fixture code for eval prompts
+evals/                              # Test cases for the skill itself
+  evals.json                        # 10 eval cases across 4 languages
+  files/                            # Fixture code for eval prompts
 
-testing-best-practices-workspace/  # Eval results
-  iteration-1/
+testing-best-practices-workspace/   # Eval results by iteration
 ```
 
 ## License

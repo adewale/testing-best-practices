@@ -1,0 +1,47 @@
+[
+  {
+    "text": "Uses pytest",
+    "passed": true,
+    "evidence": "File imports pytest (line 14: 'import pytest') and uses pytest.mark.parametrize decorators throughout."
+  },
+  {
+    "text": "Includes Hypothesis PBT",
+    "passed": true,
+    "evidence": "File imports Hypothesis (lines 15-16: 'from hypothesis import given, settings' and 'from hypothesis import strategies as st') and has multiple @given-decorated property tests in TestParseUrlProperties and TestNormalizeUrlProperties classes."
+  },
+  {
+    "text": "Has 'never crashes' property",
+    "passed": true,
+    "evidence": "Line 542-545: test_never_crashes_on_arbitrary_input uses @given(text=st.text()) and asserts isinstance(result, dict), verifying parse_url never crashes on arbitrary string input."
+  },
+  {
+    "text": "Has roundtrip/idempotency",
+    "passed": true,
+    "evidence": "Roundtrip: test_roundtrip_reconstructed_url (line 579) builds a URL from components, parses it, and verifies components match. Idempotency: test_idempotent_normalization (line 642) verifies normalize(normalize(url)) == normalize(url), plus TestNormalizeUrlIdempotent class (line 507) with parametrized idempotency tests."
+  },
+  {
+    "text": "Edge cases (empty, None, long, Unicode)",
+    "passed": true,
+    "evidence": "Empty: test_empty_string (line 161). None: test_none_input (line 169). Long: test_very_long_url (line 311, '/a' * 500). Unicode: test_unicode_in_host (line 323, '\u00e9xample.com') and test_unicode_in_path (line 329, '/caf\u00e9')."
+  },
+  {
+    "text": "Sad path (invalid, malformed, missing scheme)",
+    "passed": true,
+    "evidence": "TestParseUrlSadPath class covers: empty string, None, non-string integer, non-string list, bare host no scheme (line 188), invalid port non-numeric (line 203), only scheme 'http://' (line 210), fragment-only URL, query-only URL, double slash no scheme."
+  },
+  {
+    "text": "Assertion density 3+",
+    "passed": true,
+    "evidence": "Most tests have 3+ assertions. E.g., test_full_url_with_all_components (lines 35-41) has 6 assertions checking scheme, host, port, path, query, fragment. test_http_url_no_port has 6 assertions. test_empty_string has 6 assertions."
+  },
+  {
+    "text": "Tests both parse_url AND normalize_url",
+    "passed": true,
+    "evidence": "parse_url is tested in TestParseUrlHappyPath, TestParseUrlSadPath, TestParseUrlEdgeCases, TestParseUrlProperties, etc. normalize_url is tested in TestNormalizeUrlHappyPath, TestNormalizeUrlEdgeCases, TestNormalizeUrlIdempotent, TestNormalizeUrlProperties. Both are imported on line 23."
+  },
+  {
+    "text": "Specific field values not just 'not None'",
+    "passed": true,
+    "evidence": "Tests check exact values throughout, e.g. assert result['scheme'] == 'https', assert result['host'] == 'example.com', assert result['port'] == 8080, assert result['path'] == '/path/to/page', assert result == 'http://example.com/path'. No tests rely solely on 'is not None'."
+  }
+]

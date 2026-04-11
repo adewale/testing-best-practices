@@ -1,0 +1,32 @@
+[
+  {
+    "text": "Uses #[test] and #[cfg(test)] (Rust stdlib)",
+    "passed": true,
+    "evidence": "Line 14: '#[cfg(test)]' wraps the test module. Every test function uses '#[test]' attribute (lines 22, 33, 57, 79, etc.). Uses standard Rust assert_eq! and assert! macros. No external test framework."
+  },
+  {
+    "text": "Tests error cases (missing bracket, empty section, empty key)",
+    "passed": true,
+    "evidence": "Missing bracket: test error_missing_closing_bracket (line 296) verifies parse returns Err with 'Missing closing bracket'. Empty section: error_empty_section_name (line 309) and error_whitespace_only_section_name_treated_as_empty (line 322). Empty key: error_empty_key (line 335). Also tests invalid line without '=' (line 348) and line number reporting (line 366)."
+  },
+  {
+    "text": "Tests happy path (sections, key-value, comments)",
+    "passed": true,
+    "evidence": "Sections: parse_single_section_with_key_value_pairs (line 23), parse_multiple_sections (line 34). Key-value: verified with assert_eq!(config.get(...), Some(...)). Comments: parse_comments_are_ignored (line 58) tests both # and ; comment styles. Also parse_realistic_config_file (line 426) tests a comprehensive real-world config."
+  },
+  {
+    "text": "Edge cases (empty input, whitespace, values with =)",
+    "passed": true,
+    "evidence": "Empty input: parse_empty_string_produces_empty_config (line 188). Whitespace: whitespace_trimmed_from_keys_and_values (line 93), whitespace_trimmed_from_section_names (line 105), leading_whitespace_on_lines_is_trimmed (line 114). Values with =: value_containing_equals_sign_preserves_everything_after_first_equals (line 126) checks 'a = b + c'. Also empty value (line 135), duplicate keys/sections, section with no keys."
+  },
+  {
+    "text": "Assertion density 3+",
+    "passed": true,
+    "evidence": "parse_single_section_with_key_value_pairs has 4 assert_eq! calls. parse_multiple_sections has 6 assertions. parse_comments_are_ignored has 4 assertions. parse_realistic_config_file has 12+ assertions. Most tests have 3+ assertions checking specific values, section counts, and key presence."
+  },
+  {
+    "text": "No mocks used",
+    "passed": true,
+    "evidence": "The file contains no mock objects, no mock frameworks, no test doubles. All tests operate directly on Config::parse() and the returned Config struct using real implementations. The only include is the source file itself (line 12: 'include!(\"config_parser.rs\")')."
+  }
+]

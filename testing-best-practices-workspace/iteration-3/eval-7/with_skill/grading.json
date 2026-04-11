@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Identifies vi.mock mocking entire module",
+    "passed": true,
+    "evidence": "Assessment section '1. Entire module is mocked -- no real code is ever tested' (lines 11-25) explicitly identifies 'vi.mock('../../src/sanitizer', ...)' as the critical problem, calling it 'testing the mock antipattern' and noting 'The real sanitizer code is never executed.'"
+  },
+  {
+    "text": "Identifies toBeDefined as weak",
+    "passed": true,
+    "evidence": "Assessment section '5. Not-empty assertions as sole checks' (lines 66-72) explicitly identifies 'expect(result).toBeDefined()' at lines 19 and 33 as weak, noting 'toBeDefined() passes for any non-undefined value, including error objects.'"
+  },
+  {
+    "text": "Identifies .skip without condition",
+    "passed": true,
+    "evidence": "Assessment section '4. Unconditional it.skip on security test' (lines 56-63) identifies 'it.skip('should handle nested script tags', ...)' as unconditionally skipped with 'no reason, no tracking issue, and no skipIf condition.'"
+  },
+  {
+    "text": "Identifies console.log without assertion",
+    "passed": true,
+    "evidence": "Assessment section '2. Logging not asserting in security-critical test' (lines 29-39) identifies the test that uses 'console.log('Escaped result:', result)' with '// No assertion -- just logging' as a P0 antipattern."
+  },
+  {
+    "text": "Measures assertion density",
+    "passed": true,
+    "evidence": "Section 'Assertion Density' (lines 109-119) provides a table measuring meaningful assertions per test, finding 0 meaningful assertions across all 5 active tests. States 'Overall assertion density: 0 meaningful assertions across 5 active tests.'"
+  },
+  {
+    "text": "Prioritizes by severity",
+    "passed": true,
+    "evidence": "Issues are categorized as P0 (Critical/Security): mocking entire module, logging not asserting, weak toBeTruthy. P1 (High): unconditional skip, weak assertions. P2 (Medium): fake integration test, no sad-path tests, no property-based tests. Clear priority ordering throughout."
+  },
+  {
+    "text": "Provides improved tests",
+    "passed": true,
+    "evidence": "The file improved_tests.ts exists and contains a complete rewritten test suite (307 lines) that removes vi.mock, imports real module, uses specific assertions, enables the skipped test, adds property-based tests with fast-check, and covers all three functions."
+  },
+  {
+    "text": "Improved tests have higher density",
+    "passed": true,
+    "evidence": "Improved tests consistently have 3+ assertions per test. E.g., 'removes script tags and preserves safe content' has 3 assertions (not.toContain x2, toContain x1). 'removes dangerous event handler attributes' has 3 assertions. 'escapes all special characters in combination' has 7 assertions. Original had 0 meaningful assertions; improved has 3+ per test."
+  }
+]
