@@ -3,6 +3,11 @@
 For code that calls external APIs, record real responses once and replay them
 in tests. Better than hand-written mocks, cheaper than live API calls in CI.
 
+VCR is the **network-boundary specialization** of snapshot testing — the
+cassette is both the stub *and* the snapshot. For the broader idiom (golden
+files, structured-output snapshots, session/trace goldens), see
+`snapshot-testing.md`.
+
 ## How it works
 
 1. First run: real HTTP calls, responses recorded to YAML/JSON files
@@ -45,6 +50,16 @@ afterAll(() => server.close());
 - Any test calling a third-party API (LLM providers, payment, auth)
 - API client libraries
 - Integration tests where external service is unreliable or paid
+
+## When NOT to use VCR (use a different snapshot dialect instead)
+
+- Pure transformation (input file → output file) → use golden-file (Dialect A
+  in `snapshot-testing.md`)
+- Single function returning a structured value with no network → use
+  structured-output snapshots (Dialect B)
+- Multi-step agent/pipeline where the trace of operations matters more than
+  any single HTTP call → use session/trace goldens (Dialect C). VCR captures
+  one boundary; trace goldens capture the whole story.
 
 ## Gotchas
 

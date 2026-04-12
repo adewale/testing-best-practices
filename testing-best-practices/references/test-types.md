@@ -87,16 +87,22 @@ the matching reference file.
 See the matching reference file.
 **Cost**: Low if reference exists, high if you must build one.
 
-### Golden File / Fixture-Based Tests
+### Snapshot Tests (umbrella: golden file, structured-output, session/trace)
 **Trigger**: ANY of these apply:
-- [ ] Code transforms input files to output files (HTML→Markdown, compilation)
-- [ ] Code generates complex output that's hard to assert on field-by-field
-- [ ] You have real-world input files to test against
+- [ ] Code transforms input files to output files (HTML→Markdown, compilation) → **Dialect A: golden-file**
+- [ ] Code returns a structured value (JSON/HTML/serialized object) that's hard to assert field-by-field → **Dialect B: structured-output snapshot** (Jest, syrupy, insta, Verify)
+- [ ] System is a multi-step agent/pipeline where the *trace* of operations matters (LLM apps, orchestrators) → **Dialect C: session/trace golden**
+- [ ] You have real-world input files or recorded scenarios to test against
 
-**How**: Store inputs in `tests/fixtures/`, expected outputs in `tests/expected/`.
-Auto-discover fixtures, auto-baseline on first run. See
-the matching reference file.
-**Cost**: Low setup. Human-reviewable baselines. Catches drift.
+**How**: Run the system, serialize the output (or full execution trace), store
+as a baseline, diff on subsequent runs. Normalize unstable fields (timestamps,
+IDs, random values) at write time. See `snapshot-testing.md` for dialect
+selection and the stable/unstable field discipline.
+**Cost**: Low setup. Human-reviewable baselines. Catches drift. Risk:
+rubber-stamping `--update` without reviewing diffs.
+
+> Note: VCR cassettes (below) are the network-boundary specialization of this
+> umbrella. If the snapshot is HTTP traffic, prefer VCR.
 
 ### Pirate Tests (Language-Neutral Conformance)
 **Trigger**: ANY of these apply:
@@ -159,7 +165,9 @@ Add Tier 2 and 3 tests as trigger conditions apply.
 | VCR cassette | Low | Low | Fast | Medium | Very Low |
 | Characterization | Low | Medium | Fast | Medium | Very Low |
 | Differential | Low | Low | Fast | Very High | Very Low |
-| Golden file | Low | Low | Fast | Medium | Very Low |
+| Snapshot — golden file (A) | Low | Low | Fast | Medium | Very Low |
+| Snapshot — structured (B) | Low | Medium | Fast | Medium | Low (rubber-stamp risk) |
+| Snapshot — session/trace (C) | Medium | Medium | Medium | High | Low |
 | Pirate | Medium | Low | Medium | High | Very Low |
 | Screenshot | High | High | Slow | Medium | High |
 | Mutation | High | Low | Very Slow | Very High | Very Low |

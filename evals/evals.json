@@ -80,6 +80,38 @@
       "files": ["evals/files/go_cache.go"],
       "mode": "write",
       "language": "go"
+    },
+    {
+      "id": 11,
+      "prompt": "I'm building a multi-step LLM agent in evals/files/agent_pipeline.py. It calls an LLM, picks tools, calls them, then synthesizes an answer. The bugs I keep hitting are things like 'agent stopped calling search before fetch' or 'agent now calls summarize twice'. Mocking the LLM and checking one return value isn't catching these. What testing approach should I use and can you sketch it out?",
+      "expected_output": "Recommends session/trace golden testing (Dialect C from snapshot-testing.md) — capture the full sequence of llm_call/tool_call/tool_result/final_answer events as a YAML trace, normalize unstable fields (timestamps, request_ids) at write time, switchable mock_mode for the LLM, layered programmatic assertions for ordering invariants. Should NOT recommend VCR alone (misses the trace) or per-call unit-test mocking (misses the sequence).",
+      "files": ["evals/files/agent_pipeline.py"],
+      "mode": "write",
+      "language": "python"
+    },
+    {
+      "id": 12,
+      "prompt": "I have a serializer in evals/files/serializer.py that produces deeply nested dicts for HTTP responses. Writing field-by-field assertions for every test case is tedious and the tests break whenever I add a field. What's a better way to test this?",
+      "expected_output": "Recommends structured-output snapshot testing (Dialect B from snapshot-testing.md) using syrupy. Notes the need to scrub the created_at timestamp before serializing (to avoid flake) and warns against rubber-stamping --snapshot-update without reviewing diffs. Should not recommend characterization testing (wrong use case — this is new code, not legacy) or VCR (no HTTP).",
+      "files": ["evals/files/serializer.py"],
+      "mode": "write",
+      "language": "python"
+    },
+    {
+      "id": 13,
+      "prompt": "Review the test suite at evals/files/rubber_stamped_snapshots.py. It tests the serializer at evals/files/serializer.py. Are these tests any good?",
+      "expected_output": "Identifies multiple snapshot anti-patterns: (1) snapshotting raw datetime.utcnow() output without scrubbers causes flake; (2) test_admin_preserved uses 'is not None' as sole assertion (rubber-stamp friendly, catches nothing); (3) @pytest.mark.skip without tracking issue or skipif condition; (4) workflow comment about CI auto-running --snapshot-update is the canonical rubber-stamp anti-pattern. Should propose: scrub timestamps at serialize time or pre-snapshot, replace weak assertion with field-specific check, remove or condition the skip, and require human review of snapshot diffs in PRs.",
+      "files": ["evals/files/rubber_stamped_snapshots.py", "evals/files/serializer.py"],
+      "mode": "assess",
+      "language": "python"
+    },
+    {
+      "id": 14,
+      "prompt": "I have a CLI tool that takes Markdown files as input and produces HTML files. I want to make sure that as I refactor the rendering pipeline, the output for our existing examples doesn't change unexpectedly. What kind of test should I write?",
+      "expected_output": "Recommends golden-file testing (Dialect A from snapshot-testing.md): put .md inputs in tests/fixtures/, .html expected outputs in tests/expected/, auto-discover and parametrize, auto-baseline on first run, delete-and-rerun to update. Should NOT recommend Dialect B (this is a transformation pipeline, not a single function returning a structured value) or Dialect C (no multi-step trace to capture).",
+      "files": [],
+      "mode": "write",
+      "language": "any"
     }
   ]
 }

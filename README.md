@@ -71,8 +71,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 |------|---------|
 | `references/characterization-testing.md` | Refactoring legacy code |
 | `references/differential-testing.md` | Reimplementing algorithms, multi-language SDKs |
-| `references/golden-file-testing.md` | Transformation pipelines (HTML→Markdown, compilers) |
-| `references/vcr-cassettes.md` | Code calling external APIs |
+| `references/snapshot-testing.md` | Stable structured output: golden files (transformation pipelines), structured-output snapshots (Jest/syrupy/insta/Verify), session/trace goldens (multi-step agents) |
+| `references/vcr-cassettes.md` | Code calling external APIs (network-boundary specialization of snapshot-testing) |
 | `references/doc-sync-testing.md` | CLI commands or plugin hooks in docs |
 | `references/mutation-testing.md` | Verifying test suite catches real bugs |
 | `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |
@@ -81,7 +81,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 ## Eval results
 
-Evaluated with 10 test cases across Python, TypeScript, Go, and Rust:
+Evaluated with 14 test cases across Python, TypeScript, Go, and Rust:
 
 | Eval | Language | Mode | Description |
 |------|----------|------|-------------|
@@ -95,6 +95,10 @@ Evaluated with 10 test cases across Python, TypeScript, Go, and Rust:
 | 8 | Go | Assess | Weak test quality review |
 | 9 | Rust | Write | INI config parser tests |
 | 10 | Go | Write | Characterization tests for cache |
+| 11 | Python | Write | Session/trace golden tests for an LLM agent pipeline |
+| 12 | Python | Write | Structured-output snapshot tests for a serializer |
+| 13 | Python | Assess | Rubber-stamped snapshot suite (anti-pattern detection) |
+| 14 | Any | Write | Golden-file tests for a Markdown→HTML transformation pipeline |
 
 Full eval data is in `testing-best-practices-workspace/`.
 
@@ -132,7 +136,7 @@ testing-best-practices/             # The skill (ships to agents)
     test-types.md                   # Always: decision guide
     characterization-testing.md    # Topic: legacy code
     differential-testing.md        # Topic: reference implementations
-    golden-file-testing.md         # Topic: transformation pipelines
+    snapshot-testing.md            # Topic: snapshot/golden umbrella (transformation, structured-output, session-trace)
     vcr-cassettes.md               # Topic: external APIs
     doc-sync-testing.md            # Topic: documentation drift
     mutation-testing.md            # Topic: test quality verification

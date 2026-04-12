@@ -39,8 +39,8 @@ Load these ONLY when the task matches the trigger:
 
 - Refactoring legacy code? → `references/characterization-testing.md`
 - Reimplementing an algorithm or maintaining multi-language SDKs? → `references/differential-testing.md`
-- Transformation pipeline (HTML→Markdown, compiler)? → `references/golden-file-testing.md`
-- Code calls external APIs? → `references/vcr-cassettes.md`
+- Output is stable text/JSON/HTML/trace and you want to detect any change? → `references/snapshot-testing.md` (covers golden files for transformation pipelines, structured-output snapshots like Jest/syrupy/insta, and session/trace goldens for multi-step agents)
+- Code calls external APIs? → `references/vcr-cassettes.md` (network-boundary specialization of `snapshot-testing.md`)
 - Project has CLI commands or plugin hooks listed in docs? → `references/doc-sync-testing.md`
 - Need to verify test suite catches real bugs? → `references/mutation-testing.md`
 - Small state space (booleans, enums, short arrays)? → `references/exhaustive-testing.md`
@@ -278,7 +278,8 @@ When writing tests for new code:
 5. Use domain-specific assertion helpers for readability
 6. Include regression test comments linking to the bug/issue being fixed
 7. For transformation pipelines (HTML→Markdown, compilers, code generators),
-   use fixture-based golden file tests — see `references/golden-file-testing.md`
+   complex serialized output, or multi-step agent traces, use snapshot
+   testing — see `references/snapshot-testing.md`
 8. Test at the user-facing level (commands, endpoints, API) not internals
 9. Pin non-deterministic inputs (time, randomness) rather than mocking them
 

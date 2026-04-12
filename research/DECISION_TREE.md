@@ -160,6 +160,57 @@ def test_commands_are_documented(documented_commands, command):
 
 ---
 
+### Snapshot Tests (umbrella: golden file, structured-output, session/trace)
+
+**When**: The code produces complex output that is hard to assert on
+field-by-field, OR the system is a multi-step process where the *trace* of
+operations matters more than any single assertion.
+
+**What they catch**: Drift. Unanticipated behavioral change anywhere in the
+recorded surface — including the *absence* of an expected event, the
+reordering of steps, or a silently-changed field that no targeted assertion
+covered.
+
+**Cost**: Low setup. Medium maintenance (must review baseline diffs with
+code-review rigor; rubber-stamping `--update` defeats the purpose).
+
+**Three dialects** — pick the one whose recorded artifact matches your system:
+
+| Dialect | Record what | Use when | Example tools |
+|---|---|---|---|
+| **A. Golden file** | Output file from input file | Transformation pipelines (HTML→Markdown, compiler, formatter) | Go `testdata/`, kepano/defuddle pattern |
+| **B. Structured-output snapshot** | Serialized in-memory value | Single function returns complex JSON/HTML/object | `syrupy`, Jest snapshot, `insta`, `Verify` |
+| **C. Session / trace golden** | Full execution trace (args, HTTP, DB, LLM, tool calls, side effects) | Multi-step agents, LLM apps, pipelines | Custom (Zod/Pydantic schemas → YAML traces) |
+
+**Trigger conditions** (if ANY apply, write snapshot tests):
+- [ ] Output is structured text (JSON/HTML/Markdown) and changes should be reviewed
+- [ ] Tests would otherwise need 20+ field-by-field assertions
+- [ ] You have real-world inputs/scenarios to test against
+- [ ] The system has multi-step execution where ordering and side effects matter
+- [ ] You're refactoring legacy code and need a behavior safety net (combine with characterization testing)
+
+**Rules**:
+- Normalize unstable fields (timestamps, IDs, random) at write time
+- Tag every field as stable or unstable in your serializer
+- Review baseline diffs as you would code
+- Shard by scenario; avoid monolithic snapshots
+- For security-sensitive output, layer programmatic assertions on top of the diff
+
+**Anti-patterns** (especially Dialect C):
+- Regex-matching stable fields (hides values you control)
+- Surgical extraction with grep/jq/awk (reverts to unit-test mentality)
+- Snapshotting non-deterministic output without scrubbers (flaky)
+- Auto-running `--update` in CI
+
+**Decision**: Is your output structured and stable enough to diff, or is your
+system a multi-step trace where "what happened" is the spec? → Write snapshot
+tests. See `references/snapshot-testing.md` for dialect selection.
+
+> **Network boundary special case**: if the snapshot is HTTP traffic, prefer
+> VCR cassettes (Tier 2 entry below) — they add replay semantics on top.
+
+---
+
 ### Contract Tests
 
 **When**: The code uses mocks in unit tests OR depends on external APIs.
@@ -283,6 +334,13 @@ START: New feature or bug fix
 │     └─ Is there a multi-step workflow?
 │        └─ YES → Write E2E test (Tier 2)
 │
+├─ Does it produce structured output (JSON/HTML/file/trace)?
+│  └─ YES → Choose snapshot dialect (Tier 2):
+│     ├─ Input file → output file?         → Dialect A (golden file)
+│     ├─ Returns structured value?          → Dialect B (Jest/syrupy/insta/Verify)
+│     ├─ Multi-step trace matters?          → Dialect C (session/trace golden)
+│     └─ HTTP boundary?                     → VCR cassettes (specialization)
+│
 ├─ Is it documented?
 │  └─ YES → Add doc-sync test (Tier 2)
 │
@@ -309,6 +367,10 @@ START: New feature or bug fix
 | E2E tests | High | Medium | Slow | High | Medium |
 | Doc-sync tests | Low | Low | Fast | Low (but embarrassment-saving) | Very Low |
 | Contract tests | Medium | Medium | Medium | High | Low |
+| Snapshot — golden file (A) | Low | Low | Fast | Medium | Very Low |
+| Snapshot — structured (B) | Low | Medium | Fast | Medium | Low (rubber-stamp) |
+| Snapshot — session/trace (C) | Medium | Medium | Medium | High | Low |
+| VCR cassettes | Low | Low | Fast | Medium | Very Low |
 | Visual regression | High | High | Slow | Medium | High |
 | Mutation testing | High | Low | Very Slow | Very High | Very Low |
 | Performance tests | Medium | Medium | Slow | Low | High |
