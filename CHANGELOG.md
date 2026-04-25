@@ -3,6 +3,18 @@
 All notable changes to the testing-best-practices skill are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3] - 2026-04-25
+
+### Changed
+- **Renamed core principle** from "Red-Green TDD" to "Red-Green-Refactor TDD" to match Beck's canonical three-step cycle and surface the Refactor step LLM agents most commonly skip
+- **Sharpened the Refactor bullet** with Beck's actual wording ("committing whatever sins necessary" for Green; duplication removal for Refactor) and Fowler's behavior-preservation definition
+
+### Added
+- **Two Hats rule** (Beck, *Tidy First?*) — behavior changes (Red/Green) and structure changes (Refactor) never share a commit; commit Green before Refactor so reverts are clean
+- **Augmented coding warning signs** (Beck, *Augmented Coding: Beyond the Vibes*) listed in the Red-Green-Refactor section: unrequested functionality, unnecessary loops/branches, disabling/deleting tests, hardcoding `__eq__` or test inputs, stubbing tested modules
+- **Anti-cheat rule** in Write mode — tests are read-only during Refactor; if a refactor breaks a test, revert (do not edit the test); explicit list of forbidden shortcuts (operator overloads, special-casing test inputs, stubbed modules, weakened assertions)
+- **Cheat-scan step** added to the validation loop — agent re-reads its own diff for the documented LLM reward-hacking patterns (ImpossibleBench, METR) before reporting done
+
 ## [0.2] - 2026-04-11
 
 ### Added
