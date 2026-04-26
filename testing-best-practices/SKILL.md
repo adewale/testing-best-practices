@@ -67,8 +67,9 @@ The cycle (Kent Beck, *Test-Driven Development: By Example*):
    add speculative abstractions, new features, or new files.
 
 **Two Hats** (Beck, *Tidy First?*): behavior changes (Red/Green) and structure
-changes (Refactor) never share a commit. Wear one hat at a time. Commit after
-Green, before starting Refactor, so you can revert cleanly.
+changes (Refactor) never share a commit. **Green is a commit boundary; each
+Refactor transformation is its own separate commit.** Wear one hat per commit
+so reverts are surgical.
 
 **Refactor is behavior-preserving by definition** (Fowler, *Refactoring*).
 Tests are the operational proof. Therefore: **never modify tests during the
@@ -314,35 +315,83 @@ When writing tests for new code:
 8. Test at the user-facing level (commands, endpoints, API) not internals
 9. Pin non-deterministic inputs (time, randomness) rather than mocking them
 
-### Anti-cheat rule: tests are read-only during Refactor
+### TDD operating procedure
 
-Refactoring is *behavior-preserving*. The test suite is the proof. So during
-the Refactor step (and during any post-Green tidy-up), **do not edit tests**.
+**Preconditions** (verify once, before starting any cycle):
 
-If a refactor turns a test red:
+- You're on a feature branch, not main
+- `git status` is clean — no uncommitted prior work. If not, ask the user
+  before continuing
+- The full test suite passes — so future reds are attributable to your
+  changes, not to pre-existing breakage
 
-1. **Revert the refactor** — `git reset --hard` to the last green commit.
-2. Try a smaller transformation, or skip the refactor entirely (it's optional).
-3. Never edit the test to match what the refactored code now produces.
+**The cycle:**
 
-A test you want to change is announcing that your change is *behavioral*, not
-structural. Behavioral changes start a new Red-Green cycle: revert, write a
-new failing test for the new behavior, then make it pass.
+1. **Pick one behavior.** Add it to plan.md or note it inline.
+2. **Red.** Write the failing test. Run it. Confirm it fails for the *right*
+   reason — not a typo, missing import, or wrong fixture. If it passes on
+   first run, the test is wrong; fix it.
+3. **Green.** Write the minimum production code. Run the **full** test suite,
+   not just the new test. All tests must pass. If any pre-existing test now
+   fails, fix the production code — not the test.
+4. **Commit Green.** A behavior-change commit, named for the driving test.
+   This commit is the precondition for any Refactor — it is the green state
+   you can recover to.
+5. **Refactor (optional, repeat per transformation):**
+   - Verify `git status` is clean (only the just-made green commit; nothing
+     else outstanding)
+   - Apply *one* small transformation (rename, extract, inline, deduplicate)
+   - Run the full suite
+   - **Green** → commit as a separate, structure-only commit
+   - **Red** → undo (see Recovery hierarchy below). Try a smaller step, or
+     stop refactoring
+6. Loop to step 1.
 
-Forbidden shortcuts to "make the test pass" (these are reward-hacking, not
-TDD):
+### Recovery hierarchy: when a refactor turns a test red
+
+The first answer is **undo the refactor**, never edit the test. Pick the
+narrowest tool that fits:
+
+| Situation | Tool | Why |
+|---|---|---|
+| Uncommitted refactor; tree was clean before | `git restore <files>` | Surgical; only undoes what you just did |
+| Want to inspect the broken refactor later | `git stash` | Recoverable; preserves the diff |
+| Broken refactor already committed | `git reset --hard HEAD~1` | Drops the bad commit; `git reflog` is the safety net |
+| Broken refactor was pushed | `git revert <sha>` | Preserves history |
+| Tree had unrelated changes before refactor | `git stash --keep-index` first, then restore | Protects unrelated work |
+
+`git reset --hard` with no argument is **never** the right first answer — it
+either targets the wrong commit (the broken refactor itself) or assumes a
+clean tree the agent never verified. Always name the target (`HEAD~1`, a
+SHA, a tag) and check `git status` first.
+
+After undoing, try a smaller transformation, or skip the refactor entirely
+(it's optional per cycle).
+
+### Escalation rule: when you can't make a test pass
+
+**Stop and surface the disagreement to the user.** Do not improvise.
+
+A test you want to bend is announcing one of two things:
+
+1. The desired behavior changed and the test is now stale → that belongs in
+   a *new* Red-Green cycle (revert your current changes; write a new failing
+   test for the new behavior; make it pass)
+2. Your implementation is wrong and you don't yet know how to fix it → ask
+   for help
+
+The following are forbidden shortcuts. They are documented LLM reward-hacking
+patterns (ImpossibleBench, METR), not TDD:
 
 - Modifying the assertion, the input, or the expected value
-- Overriding `__eq__`, `__hash__`, `==`, or comparison operators on a domain
+- Overriding `__eq__` / `__hash__` / `==` / comparison operators on a domain
   class so the assertion happens to succeed
-- Adding a special case in production code that recognises the exact input the
-  test uses
+- Adding a special case in production code that recognises the exact input
+  the test uses
 - Stubbing or mocking out the module the test exercises
 - `@skip` / `xit` / `xdescribe` / commented-out test bodies
 - "Temporarily" loosening an assertion (`assert x is not None` instead of
   `assert x == expected`)
-
-If you're stuck, surface the disagreement to the user — don't bend the test.
 
 ### Validation loop: check your own work
 
@@ -360,9 +409,14 @@ After writing tests, validate before reporting done:
    content is removed AND that safe content is preserved
 5. **Scan your own diff for cheating** — if you touched test files while
    resolving a refactor or a failing run, ask: did the production behavior
-   actually change, or did I bend the test to match broken code? If the latter,
-   revert. Also flag: new `__eq__` / `__hash__` overrides, hardcoded test
-   inputs in production code, freshly-stubbed modules, weakened assertions.
+   actually change, or did I bend the test to match broken code? If the
+   latter, revert (see Recovery hierarchy). Flag: new `__eq__` / `__hash__`
+   overrides, hardcoded test inputs in production code, freshly-stubbed
+   modules, weakened assertions, newly-`@skip`-ed tests.
+6. **Verify commit hygiene** — your commits should alternate by hat: a Green
+   commit (test + production change) should not also contain renames or
+   extractions; a Refactor commit should touch no test logic. If a single
+   commit mixes both, split it (`git reset --soft HEAD~1`, then re-stage).
 
 ## Gotchas
 
