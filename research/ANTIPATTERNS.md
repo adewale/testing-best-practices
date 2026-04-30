@@ -460,6 +460,122 @@ For every feature, write tests for:
 
 ---
 
+## 13. Logical Defense-in-Depth (Shotgun Validation)
+
+### What It Is
+
+The same invariant is checked — and tested — at three or more internal layers
+of a system, when no trust boundary sits between them. Every layer "defends"
+against the same failure that the others already catch. "This should never
+happen" tests are the dual: they only exist because the type permits the state
+they're guarding against.
+
+This is the test-design face of the LangSec community's "shotgun parsing"
+antipattern: validation scattered everywhere, none of it remembered, none of
+it definitive.
+
+### How It Occurs
+
+- Team treats security-style "defense in depth" as a universal good and
+  applies it to internal program logic
+- A bug escaped at the boundary; the team adds a downstream check "just in
+  case" instead of fixing the boundary
+- Language is dynamic or has nominal-only types; invariants cannot be encoded
+  structurally, so they get spread across runtime checks
+- "This should never happen" assertions accumulate as developers refuse to
+  trust the type they're holding
+
+### Real Pattern
+
+```python
+# Controller
+def update_user(user_id):
+    if user_id is None:                    # check #1
+        raise BadRequest()
+    return service.update(user_id)
+
+# Service
+def update(user_id):
+    if not user_id:                        # check #2 (slightly different!)
+        raise ValueError()
+    return repo.find_and_update(user_id)
+
+# Repository
+def find_and_update(user_id):
+    assert user_id is not None             # check #3 ("should never happen")
+    db.execute("UPDATE … WHERE id = ?", (user_id,))
+```
+
+Three checks, three different shapes, three test files asserting "rejects
+None." The boundary check (the controller) is the only one that defends
+against an actual failure: a malformed HTTP request. The other two defend
+against the absence of a `UserId` type.
+
+### Distinguish From
+
+Defense-in-depth at a *trust boundary* is **not** this antipattern. Examples
+that should keep all their layers and all their tests:
+
+- HTTP request parsing + authentication + authorization + parameterized SQL
+- Mock + contract test + VCR cassette + E2E across an external API
+- Retry + circuit breaker + fallback for an unreliable downstream
+
+In each case the layers defend against *different* failure modes. The rule:
+
+> Defense-in-depth is virtue when each layer defends against a *different*
+> failure mode. It is an antipattern when each layer defends against the
+> *same* failure mode.
+
+### Detection
+
+- The same invariant is asserted in 3+ test files for functions in the same
+  module
+- Tests named `test_X_rejects_null`, `test_X_rejects_empty`,
+  `test_X_rejects_negative` repeated across functions
+- `if x is None: raise ...` near the top of many functions whose parameter
+  type is `T` (not `Optional[T]`)
+- Comments like "this should never happen" / "defensive check"
+- A builder lets you construct an invalid object, and a test asserts that the
+  invalid object is rejected
+- Coverage of internal validation branches is high while the boundary parser
+  has no property-based test
+
+### Fix
+
+1. **Lift the invariant into a type** at the outermost trust boundary it
+   crosses: smart constructor, branded type, `NonEmpty`, `EmailAddress`,
+   newtype.
+2. **Delete every downstream check and its test.** This is the win.
+3. **Replace per-function "rejects invalid" tests with one parser test**,
+   ideally property-based with the *valid-or-absent* invariant: for any
+   input, the result is either `None` or it satisfies every promise the
+   type makes.
+4. **If the language cannot express the invariant in the type system**, keep
+   exactly one runtime check at the outermost layer. Do not duplicate it.
+
+### Prevention
+
+- Code review: for every new defensive check, ask "what trust boundary does
+  this defend?" If the answer is "none" or "the same one as the layer above,"
+  reject it.
+- Test review: for every "rejects invalid input" test, ask "could the
+  function's type make this input unconstructible?" If yes, fix the type
+  instead.
+- During Assess mode: count layers that re-check the same invariant. Three
+  or more is a smell.
+
+### What To Do Instead
+
+See `CORRECTNESS_BY_CONSTRUCTION.md` for the full thesis and language-specific
+patterns. The short version:
+
+- Parse, don't validate. Make illegal states unrepresentable.
+- Test the parser at the boundary. Trust the type inside the boundary.
+- Every "this should never happen" comment is a confession that the type is
+  too loose. Tighten it; delete the comment and the assertion.
+
+---
+
 ## Quick Reference: Detection Signals
 
 | Anti-Pattern | Grep/Search Signal |
@@ -472,3 +588,4 @@ For every feature, write tests for:
 | Test pollution | `os.environ[...] =` without monkeypatch |
 | Flaky time tests | `sleep(`, `time.time()`, `Date.now()` in test files |
 | Stale snapshots | Snapshot update commits with no code changes |
+| Logical defense-in-depth | Same `is None`/`!= ""` guard repeated across layers; "should never happen" comments; multiple test files asserting the same rejection |

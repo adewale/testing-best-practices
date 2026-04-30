@@ -13,6 +13,7 @@
 | Flaky time tests | `sleep(`, `time.time()`, `Date.now()` in tests | P2 |
 | Testing the mock | Asserted value identical to mock's configured return | P3 |
 | Stale snapshots | Snapshot updates with no code changes | P3 |
+| Logical defense-in-depth | Same invariant checked & tested at 3+ internal layers; "this should never happen" tests | P2 |
 
 ## Anti-Pattern Details
 
@@ -114,3 +115,37 @@ Developers blindly update without review.
 
 **Fix**: Delete and re-record periodically. Require explicit reviewer approval
 for snapshot changes. Filter volatile data from cassettes.
+
+### 13. Logical defense-in-depth (shotgun validation)
+
+**What**: The same invariant is checked — and tested — at three or more
+internal layers (controller, service, repository, …) when no trust boundary
+sits between them. Every layer "defends" against the same failure that the
+others already catch. "This should never happen" tests are the same antipattern
+viewed from the other side: they only exist because the type permits the
+state they're guarding against.
+
+**Detection signals**:
+- Tests like `test_X_rejects_null`, `test_X_rejects_empty`, `test_X_rejects_negative`
+  repeated across several functions in the same module
+- `assert x is not None` near the top of many functions whose parameter type is
+  `T` (not `Optional[T]`)
+- Comments saying "should never happen" / "defensive check" near assertions
+- Builder lets you construct an invalid object, then a test asserts it is invalid
+- Same `if not user_id` guard appears in 5 places
+
+**Distinguish from**: defense-in-depth at a *trust boundary* (HTTP request
+parsing + auth + authz; or parser + contract test + VCR cassette across an
+external API). Each of those layers defends against a *different* failure
+mode and is not this antipattern.
+
+**Fix**:
+1. Lift the invariant into a type at the outermost trust boundary it crosses
+   (smart constructor, branded type, `NonEmpty`, `EmailAddress`, newtype).
+2. Delete every downstream check and **its test**.
+3. Replace per-function "rejects invalid input" tests with one parser test,
+   ideally property-based with the *valid-or-absent* invariant.
+4. If the language genuinely cannot express the invariant in the type system,
+   keep exactly one runtime check at the outermost layer. Do not duplicate it.
+
+See `references/correctness-by-construction.md` for language-specific patterns.

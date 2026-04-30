@@ -3,6 +3,49 @@
 Read this file when deciding which types of tests to write for a feature or
 project. Tests are organized into three tiers by priority.
 
+## Step Zero: can the type replace the test?
+
+Before reaching the tier system, ask: *could this test exist only because the
+function's parameter type is too loose?*
+
+| Test you were about to write | Type-level alternative |
+|---|---|
+| `test_X_rejects_null` | Make the parameter `T`, not `Optional[T]` |
+| `test_X_rejects_empty` | Make the parameter `NonEmpty[T]` |
+| `test_X_rejects_negative` | Use `u32` / smart constructor / `NonNegative` newtype |
+| `test_X_rejects_invalid_email` | Make the parameter `EmailAddress`, parsed at the boundary |
+| `test_invalid_state_transition` | Use sealed enum / typestate / phantom types |
+| `test_builder_rejects_missing_required_field` | Make the field a required builder argument |
+| `assert_should_never_happen` | Tighten the type so the state is unrepresentable |
+
+If a tighter type would make the assertion structural rather than defensive,
+fix the type and **don't** write the test. See
+`references/correctness-by-construction.md`.
+
+This applies *inside* a trust boundary. **Across** a trust boundary (HTTP,
+file, IPC, external API, user input) the wire format is untyped, so parser
+tests, contract tests, and VCR cassettes still earn their keep — they are
+correctness-by-construction re-erected at the boundary.
+
+## The trust-boundary lens
+
+```
+   UNTYPED INPUT             TYPED INTERIOR                   UNTYPED OUTPUT
+   (HTTP, file, user)        (rich domain types)              (DB, external API)
+   ──────────────────────────────────────────────────────────────────────────
+        │                          │                                 │
+        ▼                          ▼                                 ▼
+   Parser tests at         Behavior tests on the              Contract tests,
+   boundary (PBT,          public interface (test what        VCR cassettes,
+   valid-or-absent)        it DOES, not what it rejects)      E2E across boundary
+```
+
+- **At the inbound boundary**: parse, don't validate. One parser test per
+  type, ideally property-based.
+- **In the typed interior**: behavior tests on the public interface. Do not
+  re-test invariants the types already enforce.
+- **At the outbound boundary**: contract tests, VCR cassettes, E2E.
+
 ## Tier 1: Always Required
 
 ### Unit Tests
@@ -138,12 +181,23 @@ See the matching reference file.
 ## Minimum Viable Test Suite
 
 For any project, start with:
+0. **Step Zero pass**: invariants encoded in types where the language allows.
+   You write the type instead of the test.
 1. One smoke test (app starts and responds)
-2. Unit tests for business logic (3+ assertions, happy + sad path)
+2. Unit tests for business logic (3+ assertions, happy + sad path) — exercise
+   *behavior* on the precise types, not validation the types already enforce
 3. Regression test for every bug fix (written before the fix)
-4. Property test for every parser/serializer ("never crashes" at minimum)
+4. Property test for every parser at a trust boundary
+   (`valid-or-absent` invariant at minimum)
 
 Add Tier 2 and 3 tests as trigger conditions apply.
+
+## After writing tests: the dual question
+
+For each test you wrote, ask: *could a tighter type have replaced this?* If
+yes, do the type change and delete the test. The goal is a small,
+behavior-focused test suite anchored by a strong type system, not a large
+suite that re-enacts the type system at runtime.
 
 ## Cost-Benefit Summary
 

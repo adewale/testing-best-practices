@@ -46,6 +46,8 @@ Load these ONLY when the task matches the trigger:
 - Small state space (booleans, enums, short arrays)? → `references/exhaustive-testing.md`
 - Domain objects with arithmetic operations? → `references/mathematical-properties.md`
 - Need test factories, fixtures, or assertion helpers? → `references/test-data-builders.md`
+- Same invariant checked at 3+ layers, or "this should never happen" tests? → `references/correctness-by-construction.md`
+- Typed language (Rust, TS, OCaml, Haskell, Scala) and considering deleting tests in favor of types? → `references/correctness-by-construction.md`
 
 ## Core principles
 
@@ -187,7 +189,26 @@ user = make(a(User, with(role, "admin")))
 ```
 Read `references/test-data-builders.md` when needed.
 
-### 10. Test the sad path
+### 10. Correctness by construction (don't write tests the type could replace)
+
+Before writing a test, ask: *can this invariant live in the type instead?*
+A test that exists because the function's signature is too loose is debt, not
+coverage.
+
+- "Parse, don't validate": at every trust boundary, parse untyped input into
+  a precise type; downstream code accepts the precise type and skips the check
+- "Make illegal states unrepresentable": prefer `NonEmpty<T>`, `EmailAddress`,
+  branded types, smart constructors over runtime guards
+- A "this should never happen" assertion is a confession that the type
+  permits it — tighten the type and delete the assertion
+- Defense-in-depth is virtue when each layer defends against a *different*
+  failure mode (security, IPC, retries vs. circuit breaker). It is an
+  antipattern when each layer defends against the *same* failure mode
+
+When the audit shows the same invariant checked and tested at three or more
+internal layers, read `references/correctness-by-construction.md`.
+
+### 11. Test the sad path
 
 For every happy-path test, write at least one sad-path test: invalid input,
 missing data, permission denied, network failure. Use boundary values:
@@ -246,6 +267,29 @@ When coverage is high (80%+) but assertion density is low, recommend mutation
 testing to verify the tests actually catch bugs. See
 `references/mutation-testing.md` for tool recommendations per language.
 
+### Step 7: Detect logical defense-in-depth (shotgun validation)
+
+For each invariant the tests defend, ask: how many internal layers check the
+same thing? Three or more is a smell.
+
+- Search for the same `is None` / `!= ""` / `len(...) > 0` guard repeated
+  across controller, service, and repository layers
+- Find tests named `test_X_rejects_null` (or `_empty`, `_negative`) duplicated
+  across multiple functions in the same module
+- Find comments like "this should never happen" or "defensive check"
+- Find builders that allow constructing invalid objects, paired with tests
+  that assert invalid objects are rejected
+
+These signal a missing type at the trust boundary. Recommend
+`references/correctness-by-construction.md`: lift the invariant into a type,
+delete the downstream checks **and their tests**, and replace per-function
+"rejects invalid" tests with one parser test (ideally property-based with the
+*valid-or-absent* invariant).
+
+Rule for distinguishing real defense-in-depth from this antipattern: each
+layer must defend against a *different* failure mode. Layers that defend
+against the same failure mode are debt.
+
 ## Upgrade mode: improving weak tests
 
 When upgrading tests, prioritize by risk:
@@ -271,6 +315,11 @@ When upgrading tests, prioritize by risk:
 
 When writing tests for new code:
 
+0. **Step zero: can the type replace the test?** Before writing a test that
+   asserts "function X rejects bad input," ask whether X's parameter type
+   could make the bad input unconstructible (smart constructor, branded type,
+   `NonEmpty`, newtype). If yes, fix the type and skip the test. See
+   `references/correctness-by-construction.md`.
 1. Determine which test types are needed (read `references/test-types.md`)
 2. Read the language-specific reference for framework conventions
 3. Follow Red-Green-Refactor TDD: write the failing test first
@@ -296,6 +345,11 @@ After writing tests, validate before reporting done:
    assertions, add more specific checks. Target: 3+ meaningful assertions per test.
 4. **Verify both directions** for security-sensitive tests — check that dangerous
    content is removed AND that safe content is preserved
+5. **Could a type have replaced this test?** For each test you wrote, ask
+   whether the function's signature is too loose. If a precise return type
+   (or branded parameter type) would make the assertion structural, prefer
+   the type and delete the test. A test that only exists because the type
+   permits the wrong state is debt.
 
 ## Gotchas
 
