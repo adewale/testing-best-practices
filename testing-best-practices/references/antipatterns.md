@@ -118,34 +118,48 @@ for snapshot changes. Filter volatile data from cassettes.
 
 ### 13. Logical defense-in-depth (shotgun validation)
 
-**What**: The same invariant is checked — and tested — at three or more
-internal layers (controller, service, repository, …) when no trust boundary
-sits between them. Every layer "defends" against the same failure that the
-others already catch. "This should never happen" tests are the same antipattern
-viewed from the other side: they only exist because the type permits the
-state they're guarding against.
+**What**: Defense-in-depth applied to internal program logic in a
+non-adversarial, already-typed context. Every layer defends against the
+*same* failure mode in the *absence* of an adversary, instead of lifting
+the invariant into a type, schema, or contract once at the boundary.
 
-**Detection signals**:
-- Tests like `test_X_rejects_null`, `test_X_rejects_empty`, `test_X_rejects_negative`
-  repeated across several functions in the same module
-- `assert x is not None` near the top of many functions whose parameter type is
-  `T` (not `Optional[T]`)
-- Comments saying "should never happen" / "defensive check" near assertions
-- Builder lets you construct an invalid object, then a test asserts it is invalid
-- Same `if not user_id` guard appears in 5 places
+**Detection signals** (any one is enough; co-occurrence is diagnostic):
+- **Repeated validation everywhere** — same `is None` / `!= ""` / `len > 0`
+  guard at controller, service, and repo
+- **Loose strings** flowing through the whole system instead of being
+  parsed into a precise type at the boundary
+- **Status enums duplicated across layers** — `OrderStatus` redeclared in
+  DTO, service, repo, UI
+- **Catch-all retries** — `for _ in range(3): try: ... except Exception:`
+- **Silent fallback behavior** — `lookup() or default()` hiding failure
+- **Post-hoc sanitizer patches** — regex stripping characters that should
+  never have been representable
+- **Runtime guards instead of state machines / types / schema constraints**
+- **"This should never happen"** comments and assertions
+- **Tests `test_X_rejects_null` / `_empty` / `_negative`** duplicated
+  across many functions in one module
+- **Builders that permit invalid objects** plus tests asserting the
+  invalid objects are rejected
 
-**Distinguish from**: defense-in-depth at a *trust boundary* (HTTP request
-parsing + auth + authz; or parser + contract test + VCR cassette across an
-external API). Each of those layers defends against a *different* failure
-mode and is not this antipattern.
+**Distinguish from**: defense-in-depth where each layer faces a
+*different* failure mode or *different* adversary — hostile input, auth
+boundaries, SSRF/XSS/injection, external system failure, rate limits,
+retries, observability, recovery. Those layers and their tests are
+not this antipattern.
 
 **Fix**:
-1. Lift the invariant into a type at the outermost trust boundary it crosses
-   (smart constructor, branded type, `NonEmpty`, `EmailAddress`, newtype).
+1. Lift the invariant into a type, schema, or sealed enum at the outermost
+   trust boundary (smart constructor, branded type, `NonEmpty`,
+   `EmailAddress`, newtype, state machine, schema constraint).
 2. Delete every downstream check and **its test**.
-3. Replace per-function "rejects invalid input" tests with one parser test,
-   ideally property-based with the *valid-or-absent* invariant.
-4. If the language genuinely cannot express the invariant in the type system,
-   keep exactly one runtime check at the outermost layer. Do not duplicate it.
+3. Add the two tests that survive: (A) a property-based test that *proves*
+   the invariant holds for valid inputs, and (B) a test that tries to
+   construct each invalid state the type claims to forbid and asserts the
+   construction fails. If (B) passes by *succeeding* in construction, the
+   model has a hole — fix the model, not the test.
+4. If the language cannot express the invariant in the type system, keep
+   exactly one runtime check at the outermost layer and one test for it.
 
-See `references/correctness-by-construction.md` for language-specific patterns.
+See `references/correctness-by-construction.md` for language-specific
+patterns and the canonical lineage (Hoare → Dijkstra → Meyer →
+Praxis/SPARK → seL4 → Minsky → King → LangSec).

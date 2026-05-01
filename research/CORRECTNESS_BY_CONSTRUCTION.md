@@ -10,20 +10,32 @@
 
 ## TL;DR
 
-- **Defense-in-depth** is the right model across *trust boundaries* (network, OS,
-  persistence, untrusted user input). Multiple independent controls defend
-  against multiple independent threat models.
-- **Defense-in-depth** is the wrong model *inside* a trust boundary, where the
-  same invariant is re-checked at every layer "just in case." This is shotgun
-  parsing dressed up as virtue. It bloats code, hides ownership of the
-  invariant, and — most relevant here — **explodes the test surface**.
-- **Correctness-by-construction** says: encode the invariant in the type or the
-  shape of the data so that the wrong state is *unrepresentable*. Then there is
-  exactly one place to test it (the parser at the boundary), and every
-  downstream consumer is correct for free.
-- This reframes several practices already in this skill — *real objects over
-  mocks*, *test data builders*, *property-based testing's "valid-or-absent"
-  pattern*, *no-skipped-tests* — as facets of a single principle.
+- **Defense-in-depth** is right where it came from: an *adversarial* doctrine
+  for layered controls against hostile input, auth boundaries,
+  SSRF/XSS/injection, external system failure, rate limits, retries,
+  observability, recovery. Each layer defends a different failure mode or
+  different adversary. (Roman/Byzantine military doctrine; NIST SP 800-39,
+  800-53 PL-8(1), 800-82.)
+- **Defense-in-depth becomes an antipattern** when transplanted inside a
+  typed program: repeated validation everywhere, loose strings flowing
+  through every layer, status enums duplicated across layers, catch-all
+  retries, silent fallbacks, post-hoc sanitizer patches, runtime guards
+  instead of state machines / types / schema constraints. Each layer
+  defends the *same* failure in the *absence* of an adversary.
+- **Correctness-by-construction** is the alternative — and it is older and
+  more rigorous than the modern "parse, don't validate" framing alone
+  suggests. The lineage runs Hoare → Dijkstra → Meyer → Praxis/SPARK →
+  seL4 → Minsky → King → LangSec. The shared move: lift the invariant into
+  the spec, type, contract, or schema so the wrong state is unrepresentable.
+- **The two tests that survive** when invariants live in the type:
+  (A) tests that *prove* the invariant for all valid inputs (PBT — Hoare
+  triple at runtime), and (B) tests that *try to construct each forbidden
+  state and assert the construction fails* — if it succeeds, the model has
+  a hole. (B) is the test most often missing.
+- This reframes several practices already in this skill — *real objects
+  over mocks*, *test data builders*, *property-based testing's
+  "valid-or-absent" pattern*, *no-skipped-tests* — as facets of a single
+  principle.
 
 ---
 
@@ -61,30 +73,63 @@ The test-relevant rule:
 
 ## 2. The correctness-by-construction alternative
 
-Three formulations, each by a different community, point at the same idea.
+The lineage is older, more rigorous, and more industrially proven than the
+modern "parse, don't validate" framing alone suggests. The same idea has been
+re-discovered and re-named by every generation of practitioners since the
+1960s:
 
-| Author | Slogan | Domain |
+| Year | Author / community | Slogan / contribution |
 |---|---|---|
-| Alexis King | "Parse, don't validate" | Functional programming / Haskell |
-| Yaron Minsky | "Make illegal states unrepresentable" | OCaml / typed FP |
-| Edwin Brady | "Type, define, refine" (vs. "red, green, refactor") | Dependent types / Idris |
-| Tony Hoare | "So simple that there are obviously no bugs" | General |
-| LangSec | "Full recognition before processing" | Security |
+| 1969 | C. A. R. Hoare | `{P} S {Q}` — pre/postconditions and invariants as the unit of program reasoning |
+| 1976 | E. W. Dijkstra, *A Discipline of Programming* | Weakest-precondition calculus; "derive the program from the spec" |
+| 1986 | Bertrand Meyer | Design by Contract: preconditions, postconditions, class invariants encoded in Eiffel |
+| 1990s–today | Praxis (Altran) + AdaCore | Industrial "Correctness by Construction" using SPARK Ada; track record at DO-178B level A and Common Criteria EAL5+; Tokeneer (NSA) is the open case study |
+| 2009 | Klein et al., seL4 | First full functional-correctness proof of a general-purpose OS kernel — ~200K lines of Isabelle/HOL proof for ~8.7K lines of C |
+| 2014 | Yaron Minsky | "Make illegal states unrepresentable" |
+| 2019 | Alexis King | "Parse, don't validate" |
+| 2016+ | LangSec community | "Full input recognition before processing"; *shotgun parsing* as the antipattern |
 
-The shared move: **lift a runtime check into a structural property of the
-data**. Once `EmailAddress` exists as a type whose only constructor is the
+The shared move: **lift the invariant into the spec, type, contract, or
+schema.** Once `EmailAddress` exists as a type whose only constructor is the
 parser, no function downstream needs to "check whether this string is an
-email." It already is one. ([Make Illegal States
-Unrepresentable](https://functional-architecture.org/make_illegal_states_unrepresentable/);
-[F# for fun and profit](https://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/).)
+email." It already is one. The same move at industrial scale is what lets
+Praxis ship avionics with order-of-magnitude lower defect rates than
+test-driven shops, and what lets seL4 be invulnerable to entire categories
+of bugs by construction rather than by patching.
 
-Yaron Minsky's claim in particular is the testing-relevant one:
+Yaron Minsky's claim is the testing-relevant one:
 
 > "Making the wrong thing hard to express is better than checking for the
 > wrong thing at runtime."
 
-That is a claim about *where the check lives*, and therefore about *where the
-test lives*.
+That is a claim about *where the check lives*, and therefore about *where
+the test lives*.
+
+### The "defense in depth" the principle is *not* attacking
+
+Defense-in-depth has a long, legitimate pedigree the testing critique must
+respect. The military doctrine ([Defence in
+depth](https://en.wikipedia.org/wiki/Defence_in_depth)) goes back to Roman
+and Byzantine strategy and is faithfully preserved in NIST's cybersecurity
+formulation ([SP 800-39, SP 800-53
+PL-8(1)](https://csrc.nist.gov/glossary/term/defense_in_depth), [SP
+800-82](https://nvlpubs.nist.gov/) for OT/ICS):
+
+> "Organizations strategically allocate security and privacy controls in
+> the security and privacy architectures so that adversaries must overcome
+> multiple controls to achieve their objective."
+
+The defining feature in both military and security versions is an
+**adversary** and **independent failure modes**. A WAF, parameterized
+queries, output escaping, and CSP defend against orthogonal attack
+classes. Removing any one leaves a real residual risk against a real
+adversary.
+
+The phrase only becomes an antipattern when it is *transplanted* — without
+the adversary, without the orthogonal failure modes — into the inside of a
+typed program where each layer "defends" against the same failure mode that
+its neighbors already catch. Then it is shotgun parsing wearing the
+costume of a security strategy.
 
 ---
 
@@ -253,33 +298,137 @@ that doesn't deserve a test.
 
 ---
 
-## 4. When defense-in-depth in tests *is* warranted
+## 4. The sharp boundary: when each side applies
 
-The principle has a sharp boundary. Defense-in-depth tests pay their cost
-when the layers defend against *different, independent* failure modes. The
-clearest cases:
+### "Defense in depth is an antipattern" is right when it means
 
-**Trust boundaries.** A `UserId` type guarantees the value is a valid id
-*inside* the application. It does not guarantee the database row still
-exists, that the user has not been deleted, or that the request is
-authorized. Tests for those are not redundant — they cover different failures.
+- **Repeated validation everywhere** — the same `is None` / `!= ""` /
+  `len > 0` check at every layer
+- **Loose strings passed through the whole system** — `addr: str` flowing
+  controller → service → repo → SQL, re-validated at each step, instead of
+  an `EmailAddress` lifted at the boundary
+- **Status enums duplicated across layers** — `OrderStatus` redeclared in
+  the API DTO, the service, the repo, and the UI, each with its own
+  mapping tests
+- **Catch-all retries** — `for _ in range(3): try: ... except Exception:`
+  hiding both *what* failed and *whether it should have been retried*
+- **Silent fallback behavior** — `lookup() or default()` masking the
+  failure of the primary path
+- **Post-hoc sanitizer patches** — a regex stripping a character that
+  should never have been representable upstream
+- **Runtime guards instead of state machines, types, or schema constraints**
+  — `if order.status == "paid" and order.items: ...` re-deriving an
+  invariant on every read
 
-**Cross-language / cross-process contracts.** When your Python code calls a
-TypeScript service over HTTP, the TS type system gives you nothing. Mock
-fidelity tests, contract tests, and VCR cassettes (already in the skill) are
-correctness-by-construction *re-erected* at the boundary where types stop
-working.
+In each, every layer defends against the *same* failure in the *absence* of
+an adversary. The test surface explodes because every layer demands its own
+"rejects bad input" test. Collapse it: one parser at the boundary, one
+type, no duplication.
 
-**Security-in-depth.** Input sanitization, output escaping, parameterized
-queries, and CSP each defend against a distinct attack class. Tests for each
-are not redundant.
+### Defense in depth is still necessary for
 
-**Independent failure modes.** A retry tests a different failure (transient
-network) than a circuit breaker (sustained downstream failure) than a
-fallback (degraded response). All three deserve tests.
+- **Hostile input** — boundary parser + schema validation + output
+  sanitization are independent layers against a real adversary
+- **Auth / security boundaries** — authentication, authorization, tenancy
+  isolation, audit logging
+- **SSRF / XSS / injection / secrets** — output escaping, parameterized
+  queries, content-security policy, secret rotation, allowlists
+- **External system failure** — timeouts, retries, circuit breakers,
+  fallbacks each handle a *different* downstream-failure regime
+- **Rate limits** — application-level + edge + per-tenant
+- **Retries** — idempotency keys + bounded retry + jittered backoff +
+  dead-letter queue
+- **Observability** — logs, metrics, traces, alerts as independent signals
+  so one failure mode doesn't blind you to another
+- **Recovery and forensics** — backups, replay logs, immutable audit
+  trails
 
-The invariant: *if removing one layer would expose a real risk that the other
-layers do not catch, the layer earns its test.*
+In each, layers face *different* failure modes or *different* adversaries.
+Removing any one leaves real residual risk. Tests for each layer are not
+redundant — they exercise different failures.
+
+### The rule in one line
+
+> Defense-in-depth is virtue when each layer defends against a *different*
+> failure mode or a *different* adversary. It is an antipattern when each
+> layer defends against the *same* failure mode in a non-adversarial,
+> already-typed context.
+
+---
+
+## 4a. The two tests that survive
+
+Once invariants are in the type/schema/contract, two test tactics together
+do most of the work that scattered defensive tests used to do — and do it
+better. Most projects have only the first; the second is the highest-yield
+practice the testing literature underweights.
+
+### Tactic A — Tests that *prove* the invariant
+
+The runtime shadow of `{P} S {Q}`. For any input satisfying the
+precondition, the postcondition holds. Property-based testing is the
+practical mechanism.
+
+```python
+@given(orders())
+def test_cancel_invariant(order):
+    cancelled = order.cancel()
+    assert cancelled.status is OrderStatus.CANCELLED   # postcondition
+    assert cancelled.items == order.items              # postcondition
+    # Class invariant survives the operation
+    if cancelled.status is OrderStatus.PAID:
+        assert len(cancelled.items) >= 1
+```
+
+These tests survive refactoring because they assert *what must always be
+true*, not *what the implementation does today*. They are, in effect, Hoare
+triples evaluated at runtime against sampled inputs.
+
+### Tactic B — Tests that *reveal invalid states the model still permits*
+
+The adversarial twin. The type or schema *claims* certain states are
+impossible. Test that claim by trying to reach them. If you can, the model
+is incomplete — fix the model, not the test.
+
+```python
+def test_order_model_forbids_paid_empty():
+    """The model claims `Paid + items=[]` is impossible. Prove it."""
+    with pytest.raises((ValueError, TypeError)):
+        Order(status=OrderStatus.PAID, items=[])
+```
+
+For larger state spaces, exhaustively enumerate over small enums and
+short tuples, or use property-based testing with shrinking:
+
+```python
+@given(st.from_type(OrderStatus), st.integers(min_value=0, max_value=3))
+def test_no_invalid_state_is_constructible(status, n):
+    items = [Item("x") for _ in range(n)]
+    invalid = (status is OrderStatus.PAID and n == 0)
+    if invalid:
+        with pytest.raises((ValueError, TypeError)):
+            Order(status=status, items=items)
+    else:
+        Order(status=status, items=items)         # must succeed
+```
+
+**This is the test most often missing.** Tactic A says "the function is
+correct given the contract." Tactic B says "the contract actually
+excludes what we claim it excludes." Without B, a regression that loosens
+the model — a developer relaxing a constructor check, removing an enum
+variant constraint, weakening a schema — goes undetected. The model
+silently drifts back toward shotgun parsing, and the test suite is
+silent because it was never asking the right question.
+
+A useful framing:
+
+| Tactic | Question it answers |
+|---|---|
+| A | Does the function obey its contract? |
+| B | Does the contract actually exclude what it claims to exclude? |
+| (Old defensive tests) | Does layer N catch the invalid input layer N-1 already caught? |
+
+A and B together replace the third class entirely.
 
 ---
 
@@ -326,23 +475,75 @@ rules are correct, restated.
 
 ## 6. Sources
 
-- Alexis King, [Parse, don't validate](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/) (2019)
-- Yaron Minsky, [Effective ML (OCaml.org / Jane Street)](https://blog.janestreet.com/effective-ml-revisited/), and the popular gloss [Make Illegal States Unrepresentable](https://functional-architecture.org/make_illegal_states_unrepresentable/)
-- Scott Wlaschin, [Designing with types: Making illegal states unrepresentable](https://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/)
-- LangSec, [The Seven Turrets of Babel: A Taxonomy of LangSec Errors and How to Expunge Them](https://langsec.org/papers/langsec-cwes-secdev2016.pdf)
-- Edwin Brady, [Type-Driven Development with Idris](https://www.manning.com/books/type-driven-development-with-idris) — "type, define, refine"
-- Hillel Wayne, [tag: formal methods](https://www.hillelwayne.com/tags/formal-methods/) — formal-methods framing of correct-by-construction
-- Hacker News, ["This should never happen" is a design pattern of defensive programming](https://news.ycombinator.com/item?id=11396438)
-- Ilya Priven, [Defensive Programming Anti-Patterns](https://medium.com/@ikonst/defensive-programming-anti-patterns-9ae0d6958fe2)
+### The lineage of correctness-by-construction
+
+- C. A. R. Hoare, "An Axiomatic Basis for Computer Programming" (CACM, 1969)
+  — the `{P} S {Q}` triple
+- E. W. Dijkstra, *A Discipline of Programming* (1976) and "Guarded
+  commands, nondeterminacy and formal derivation of programs" — weakest
+  precondition calculus; deriving programs from specs ([UMD course
+  handout](https://www.cs.umd.edu/~mvz/handouts/weakest-precondition.pdf))
+- Bertrand Meyer, *Object-Oriented Software Construction* (1988/1997) and
+  ["Applying Design by
+  Contract"](https://www.kth.se/social/files/59526bfb56be5b4f17000807/meyer-92-contracts.pdf)
+  — preconditions, postconditions, class invariants in Eiffel
+- Praxis (Altran) + AdaCore, [Correctness by Construction (Chapman, NIST
+  paper)](https://samate.nist.gov/SSATTM_Content/papers/Correctness%20by%20Construction%20-%20Chapman.pdf)
+  and the SPARK Ada toolchain — industrial track record since 1990; DO-178B
+  level A, Common Criteria EAL5+; the open Tokeneer NSA case study
+- Klein et al., [seL4: Formal Verification of an OS Kernel (SOSP
+  2009)](https://www.sigops.org/s/conferences/sosp/2009/papers/klein-sosp09.pdf)
+  — first machine-checked functional-correctness proof of a general-purpose
+  OS kernel
+- Yaron Minsky, [Effective
+  ML](https://blog.janestreet.com/effective-ml-revisited/) — the
+  "make illegal states unrepresentable" formulation
+- Scott Wlaschin, [Designing with types: Making illegal states
+  unrepresentable](https://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/)
+- Alexis King, [Parse, don't
+  validate](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/)
+  (2019) — the modern programmer's gloss
+- LangSec, [The Seven Turrets of Babel: A Taxonomy of LangSec
+  Errors](https://langsec.org/papers/langsec-cwes-secdev2016.pdf) — full
+  input recognition before processing; shotgun parsing as the antipattern
+- Edwin Brady, [Type-Driven Development with
+  Idris](https://www.manning.com/books/type-driven-development-with-idris)
+  — "type, define, refine"
+
+### Defense-in-depth as a legitimate doctrine
+
+- [Defence in depth (Wikipedia)](https://en.wikipedia.org/wiki/Defence_in_depth)
+  — Roman/Byzantine military origin; the strategy is to *delay* the attacker
+- NIST SP 800-39, SP 800-53 PL-8(1) — defense-in-depth as coordinated,
+  mutually reinforcing controls across architectural layers
+  ([CSRC glossary](https://csrc.nist.gov/glossary/term/defense_in_depth);
+  [PL-8(1)](https://csf.tools/reference/nist-sp-800-53/r5/pl/pl-8/pl-8-1/))
+- NIST SP 800-82r3 — defense-in-depth applied to operational technology /
+  ICS environments
+- CISA, [Recommended Practice: Defense in
+  Depth](https://www.cisa.gov/sites/default/files/recommended_practices/NCCIC_ICS-CERT_Defense_in_Depth_2016_S508C.pdf)
+
+### Critique of defensive programming
+
+- Hacker News, ["This should never happen" is a design pattern of
+  defensive programming](https://news.ycombinator.com/item?id=11396438)
+- Ilya Priven, [Defensive Programming
+  Anti-Patterns](https://medium.com/@ikonst/defensive-programming-anti-patterns-9ae0d6958fe2)
+- Hillel Wayne, [Formal methods writing](https://www.hillelwayne.com/tags/formal-methods/)
 
 ---
 
 ## 7. One-paragraph version
 
-A test that exists because the type is too loose is debt, not coverage. Push
-the invariant into the type at the outermost trust boundary; delete the
-downstream checks and their tests. Keep defense-in-depth where the layers
-defend against *different* failure modes (security, cross-process boundaries,
-independent transient faults). Reject it where every layer defends against
-the same failure — those layers, and their tests, are shotgun parsing in slow
-motion.
+Push invariants into types, schemas, and contracts at the outermost trust
+boundary. Delete the scattered downstream checks and the tests that only
+existed because those checks did. Replace them with two tests: (A) a
+property-based test that *proves* the invariant holds for all inputs
+satisfying the precondition, and (B) a test that *tries to construct each
+invalid state the model claims to forbid* — if construction succeeds, the
+model has a hole. Keep defense-in-depth where the layers face different
+failure modes or different adversaries: hostile input, auth and security
+boundaries, SSRF/XSS/injection/secrets, external system failure, rate
+limits, retries, observability, recovery and forensics. Reject it where
+every layer defends against the same failure mode in a non-adversarial,
+already-typed context — that is shotgun parsing in slow motion.

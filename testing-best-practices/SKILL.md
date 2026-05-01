@@ -191,22 +191,37 @@ Read `references/test-data-builders.md` when needed.
 
 ### 10. Correctness by construction (don't write tests the type could replace)
 
-Before writing a test, ask: *can this invariant live in the type instead?*
-A test that exists because the function's signature is too loose is debt, not
-coverage.
+Push invariants into types, schemas, and contracts. Then the tests that
+matter most are the two that follow from the invariant:
 
-- "Parse, don't validate": at every trust boundary, parse untyped input into
-  a precise type; downstream code accepts the precise type and skips the check
-- "Make illegal states unrepresentable": prefer `NonEmpty<T>`, `EmailAddress`,
-  branded types, smart constructors over runtime guards
-- A "this should never happen" assertion is a confession that the type
-  permits it — tighten the type and delete the assertion
-- Defense-in-depth is virtue when each layer defends against a *different*
-  failure mode (security, IPC, retries vs. circuit breaker). It is an
-  antipattern when each layer defends against the *same* failure mode
+- **Tests that *prove* the invariant** — for any input satisfying the
+  precondition, assert the postcondition holds (Hoare triple, expressed as
+  property-based testing)
+- **Tests that *reveal invalid states the model still permits*** — try to
+  construct each forbidden state; if construction succeeds, the model is
+  too loose
 
-When the audit shows the same invariant checked and tested at three or more
-internal layers, read `references/correctness-by-construction.md`.
+A test that exists because the function's signature is too loose is debt,
+not coverage. Lineage: Dijkstra (weakest preconditions) → Hoare (`{P} S {Q}`)
+→ Meyer (Design by Contract) → Praxis/SPARK Ada (industrial Correctness by
+Construction) → seL4 (full kernel proof) → Minsky (make illegal states
+unrepresentable) → King (parse, don't validate) → LangSec (full recognition
+before processing).
+
+**Defense-in-depth is the antipattern when it means** any of: repeated
+validation everywhere; loose strings flowing through the whole system;
+status enums duplicated across layers; catch-all retries; silent fallback
+behavior; post-hoc sanitizer patches; runtime guards instead of state
+machines, types, or schema constraints.
+
+**Defense-in-depth is still necessary for** hostile input; auth/security
+boundaries; SSRF/XSS/injection/secrets; external system failure; rate
+limits; retries; observability; recovery and forensics. Each layer
+defends a *different* failure mode or adversary.
+
+When the audit shows the same invariant checked and tested at three or
+more internal layers — or any of the antipattern signals above — read
+`references/correctness-by-construction.md`.
 
 ### 11. Test the sad path
 
@@ -269,26 +284,43 @@ testing to verify the tests actually catch bugs. See
 
 ### Step 7: Detect logical defense-in-depth (shotgun validation)
 
-For each invariant the tests defend, ask: how many internal layers check the
-same thing? Three or more is a smell.
+Scan for the concrete signals that defense-in-depth is being misapplied to
+internal program logic (where it is an antipattern), not to hostile input
+or external systems (where it is correct):
 
-- Search for the same `is None` / `!= ""` / `len(...) > 0` guard repeated
-  across controller, service, and repository layers
-- Find tests named `test_X_rejects_null` (or `_empty`, `_negative`) duplicated
-  across multiple functions in the same module
-- Find comments like "this should never happen" or "defensive check"
-- Find builders that allow constructing invalid objects, paired with tests
-  that assert invalid objects are rejected
+- **Repeated validation everywhere** — same `is None` / `!= ""` / `len > 0`
+  guard at controller, service, and repo
+- **Loose strings flowing through the system** — `addr: str` everywhere
+  instead of `EmailAddress` lifted from the boundary
+- **Status enums duplicated across layers** — `OrderStatus` redeclared in
+  DTO, service, repo, UI, with mapping tests at every boundary
+- **Catch-all retries** — `for _ in range(3): try: ... except Exception:`
+  hiding what failed and what is retryable
+- **Silent fallback behavior** — `lookup() or default()` masking that the
+  primary path failed
+- **Post-hoc sanitizer patches** — regex stripping a character that should
+  never have been representable
+- **Runtime guards instead of state machines / types / schema constraints**
+- **"This should never happen"** comments and assertions
+- **Tests named `test_X_rejects_null` / `_empty` / `_negative`** duplicated
+  across many functions in one module
+- **Builders that permit constructing invalid objects**, paired with tests
+  asserting invalid objects are rejected
 
-These signal a missing type at the trust boundary. Recommend
-`references/correctness-by-construction.md`: lift the invariant into a type,
-delete the downstream checks **and their tests**, and replace per-function
-"rejects invalid" tests with one parser test (ideally property-based with the
-*valid-or-absent* invariant).
+For each signal, recommend `references/correctness-by-construction.md`:
+lift the invariant into a type, schema, or sealed enum at the outermost
+trust boundary; delete the downstream checks **and their tests**; replace
+per-function "rejects invalid" tests with the two tests that matter — (A)
+a PBT that *proves the invariant*, and (B) a test that tries to reach each
+state the model claims to forbid.
 
-Rule for distinguishing real defense-in-depth from this antipattern: each
-layer must defend against a *different* failure mode. Layers that defend
-against the same failure mode are debt.
+**Rule for distinguishing this antipattern from real defense-in-depth:**
+each layer must defend against a *different* failure mode or *different*
+adversary. Layers that defend against the same failure mode in a
+non-adversarial, already-typed context are debt. Layers that defend
+against hostile input, auth/security boundaries, SSRF/XSS/injection,
+external system failure, rate limits, retries, observability, or recovery
+are not — keep them and their tests.
 
 ## Upgrade mode: improving weak tests
 
@@ -318,7 +350,12 @@ When writing tests for new code:
 0. **Step zero: can the type replace the test?** Before writing a test that
    asserts "function X rejects bad input," ask whether X's parameter type
    could make the bad input unconstructible (smart constructor, branded type,
-   `NonEmpty`, newtype). If yes, fix the type and skip the test. See
+   `NonEmpty`, newtype, sealed enum, schema constraint). If yes, fix the type
+   and skip the test. Then write the two tests that *do* matter:
+   (A) a test that **proves the invariant** holds (PBT for any input meeting
+   the precondition, the postcondition holds), and (B) a test that **tries
+   to reach each invalid state the type claims to forbid** — if you can
+   construct it, the model is too loose. See
    `references/correctness-by-construction.md`.
 1. Determine which test types are needed (read `references/test-types.md`)
 2. Read the language-specific reference for framework conventions
@@ -350,6 +387,12 @@ After writing tests, validate before reporting done:
    (or branded parameter type) would make the assertion structural, prefer
    the type and delete the test. A test that only exists because the type
    permits the wrong state is debt.
+6. **Did you cover both invariant tactics?** For the function's central
+   invariant, you should have *both*: (A) a property-based test that the
+   invariant holds for valid inputs, and (B) a test that each state the
+   invariant claims to forbid is unreachable. Tactic B is the one most
+   commonly missed; without it, a regression that loosens the model goes
+   undetected.
 
 ## Gotchas
 

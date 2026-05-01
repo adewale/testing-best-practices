@@ -27,6 +27,39 @@ file, IPC, external API, user input) the wire format is untyped, so parser
 tests, contract tests, and VCR cassettes still earn their keep — they are
 correctness-by-construction re-erected at the boundary.
 
+### After Step Zero: the two invariant tests
+
+Once the invariant lives in the type, write *both* tests below. Most
+projects write only the first; the second is the highest-yield audit
+practice the testing literature underweights.
+
+**Tactic A — invariant-proof.** A property-based test asserting that, for
+any input satisfying the precondition, the postcondition holds. This is
+the runtime shadow of a Hoare triple `{P} S {Q}`.
+
+```python
+@given(orders())
+def test_cancel_invariant(order):
+    cancelled = order.cancel()
+    assert cancelled.status is OrderStatus.CANCELLED
+    assert cancelled.items == order.items
+```
+
+**Tactic B — model-gap.** A test that tries to construct each invalid state
+the type claims to forbid, and asserts the construction fails. *If the
+construction succeeds, the model is too loose — fix the model, not the
+test.*
+
+```python
+def test_paid_empty_is_unrepresentable():
+    with pytest.raises((ValueError, TypeError)):
+        Order(status=OrderStatus.PAID, items=[])
+```
+
+A and B together replace per-layer "rejects invalid input" tests entirely.
+A says "the function obeys its contract." B says "the contract actually
+excludes what we claim it excludes."
+
 ## The trust-boundary lens
 
 ```

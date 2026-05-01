@@ -25,14 +25,24 @@ parameter type is too loose is debt, not coverage.
 | `test_builder_rejects_missing_required_field` | Make the field a required argument of the builder |
 | `assert_should_never_happen` | Tighten the type so the impossible state is unrepresentable |
 
-**The rule:** lift invariants into types at the *outermost trust boundary*
-they cross. Then the only test you need is the parser test at the boundary
-(ideally property-based with the *valid-or-absent* invariant). Every
-downstream consumer is correct for free.
+**The rule:** lift invariants into types/schemas/contracts at the *outermost
+trust boundary* they cross. Then the surviving tests are the two that
+follow from the invariant:
 
-**The corollary:** when an Assess-mode audit finds the same invariant tested
-in three or more places, that is the antipattern called *logical defense in
-depth* (see `ANTIPATTERNS.md` #13). Collapse it.
+- **Tactic A — invariant-proof.** A property-based test that, for any input
+  satisfying the precondition, the postcondition holds. The runtime shadow
+  of a Hoare triple `{P} S {Q}`.
+- **Tactic B — model-gap.** A test that tries to construct each invalid
+  state the type claims to forbid, and asserts the construction fails. If
+  it *succeeds* in constructing, the model is too loose — fix the model,
+  not the test.
+
+A and B together replace per-layer "rejects invalid input" tests. The
+second is the one most often missing.
+
+**The corollary:** when an Assess-mode audit finds the same invariant
+tested in three or more places, that is the antipattern called *logical
+defense in depth* (see `ANTIPATTERNS.md` #13). Collapse it.
 
 **When this does *not* apply:**
 - Across trust boundaries (HTTP, IPC, file, DB, external API), wire formats

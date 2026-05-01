@@ -528,30 +528,48 @@ In each case the layers defend against *different* failure modes. The rule:
 
 ### Detection
 
-- The same invariant is asserted in 3+ test files for functions in the same
-  module
-- Tests named `test_X_rejects_null`, `test_X_rejects_empty`,
-  `test_X_rejects_negative` repeated across functions
-- `if x is None: raise ...` near the top of many functions whose parameter
-  type is `T` (not `Optional[T]`)
-- Comments like "this should never happen" / "defensive check"
-- A builder lets you construct an invalid object, and a test asserts that the
-  invalid object is rejected
-- Coverage of internal validation branches is high while the boundary parser
-  has no property-based test
+Concrete signals (any single one is enough; co-occurrence is diagnostic):
+
+- **Repeated validation everywhere** — same `is None` / `!= ""` / `len > 0`
+  guard at controller, service, and repository
+- **Loose strings flowing through the whole system** — `addr: str` carried
+  through every layer and re-validated, instead of an `EmailAddress`
+  parsed once at the boundary
+- **Status enums duplicated across layers** — `OrderStatus` redeclared in
+  the API DTO, the service, the repo, and the UI; mapping tests at every
+  boundary
+- **Catch-all retries** — `for _ in range(3): try: ... except Exception:`
+  hiding what failed and what is retryable
+- **Silent fallback behavior** — `lookup() or default()` masking that the
+  primary path failed
+- **Post-hoc sanitizer patches** — a regex stripping a character that
+  should never have been representable
+- **Runtime guards instead of state machines, types, or schema constraints**
+  — `if order.status == "paid" and order.items: ...` re-deriving an
+  invariant on every read
+- **"This should never happen"** comments and assertions
+- **Tests named `test_X_rejects_null` / `_empty` / `_negative`** duplicated
+  across many functions in the same module
+- **Builders that permit constructing invalid objects**, paired with tests
+  that assert the invalid object is rejected
+- **Coverage of internal validation branches is high while the boundary
+  parser has no property-based test or no model-gap test**
 
 ### Fix
 
-1. **Lift the invariant into a type** at the outermost trust boundary it
-   crosses: smart constructor, branded type, `NonEmpty`, `EmailAddress`,
-   newtype.
+1. **Lift the invariant into a type, schema, or sealed enum** at the
+   outermost trust boundary it crosses: smart constructor, branded type,
+   `NonEmpty`, `EmailAddress`, newtype, schema constraint, state machine.
 2. **Delete every downstream check and its test.** This is the win.
-3. **Replace per-function "rejects invalid" tests with one parser test**,
-   ideally property-based with the *valid-or-absent* invariant: for any
-   input, the result is either `None` or it satisfies every promise the
-   type makes.
-4. **If the language cannot express the invariant in the type system**, keep
-   exactly one runtime check at the outermost layer. Do not duplicate it.
+3. **Add the two tests that survive:**
+   - **(A) An invariant-proof test** — property-based: for any input
+     satisfying the precondition, the postcondition holds (Hoare triple).
+   - **(B) A model-gap test** — try to construct each invalid state the
+     type claims to forbid, and assert the construction fails. If it
+     succeeds, the model is too loose; fix the model, not the test.
+4. **If the language cannot express the invariant in the type system**,
+   keep exactly one runtime check at the outermost layer and one test for
+   it. Do not duplicate either.
 
 ### Prevention
 
