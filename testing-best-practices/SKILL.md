@@ -2,7 +2,7 @@
 name: testing-best-practices
 description: >
   Enforce testing best practices when writing, reviewing, or improving tests.
-  Covers Red-Green TDD, property-based testing, real objects over mocks, test
+  Covers Red-Green-Refactor TDD, property-based testing, real objects over mocks, test
   quality assessment (assertion density, not just coverage), E2E testing,
   contract tests, flaky test upgrades, and detection of sabotaged/skipped tests.
   Use when writing tests, reviewing test quality, fixing flaky tests, or when
@@ -19,7 +19,7 @@ metadata:
 
 This skill operates in four modes depending on what's needed:
 
-1. **Write** — Writing new tests using Red-Green TDD
+1. **Write** — Writing new tests using Red-Green-Refactor TDD
 2. **Assess** — Evaluating existing test quality (not just coverage)
 3. **Upgrade** — Improving weak, flaky, or low-quality tests
 4. **Detect** — Finding tests that are skipped, sabotaged, or faking coverage
@@ -51,7 +51,7 @@ Load these ONLY when the task matches the trigger:
 
 These apply to every language and every project.
 
-### 1. Red-Green TDD
+### 1. Red-Green-Refactor TDD
 
 Always follow the Red-Green-Refactor cycle:
 
@@ -273,7 +273,7 @@ When writing tests for new code:
 
 1. Determine which test types are needed (read `references/test-types.md`)
 2. Read the language-specific reference for framework conventions
-3. Follow Red-Green TDD: write the failing test first
+3. Follow Red-Green-Refactor TDD: write the failing test first
 4. Use test data builders/factories for setup — express intent, not structure
 5. Use domain-specific assertion helpers for readability
 6. Include regression test comments linking to the bug/issue being fixed
