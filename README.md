@@ -102,7 +102,7 @@ Full eval data is in `testing-best-practices-workspace/`.
 
 ## Research corpus
 
-Built from analysis of testing patterns across 13 GitHub accounts:
+Built from analysis of testing patterns across 13 GitHub accounts and one organization:
 
 - [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule
@@ -117,6 +117,7 @@ Built from analysis of testing patterns across 13 GitHub accounts:
 - [adewale](https://github.com/adewale) -- property-based testing, mock fidelity, test quality audits
 - [chrischabot](https://github.com/chrischabot) -- 5-tier test architecture, API scenario tests
 - [tirsen](https://github.com/tirsen) -- retry patterns
+- [janestreet](https://github.com/janestreet) -- expect tests, library-level simulation, `Time_source`, Bonsai testing
 
 Individual research documents are in `research/` (one per practitioner/account).
 
@@ -156,6 +157,7 @@ research/                           # Source material (does not ship)
   LESSONS_FROM_ADEWALE_REPOS.md
   LESSONS_FROM_CHRISCHABOT_REPOS.md
   LESSONS_FROM_TIRSEN.md
+  LESSONS_FROM_JANE_STREET.md
   ANTIPATTERNS.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
