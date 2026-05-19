@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Recognises that Order{Status: Paid, Items: nil} is constructible directly",
+    "passed": true,
+    "evidence": "Opening bullet: 'Order struct is a public-fielded struct with no constructor, so Order{Status: StatusPaid, Items: nil} constructs fine.' Reinforced by TestModelGap_PaidWithEmptyItemsIsConstructible which constructs that exact value and verifies the construction succeeded."
+  },
+  {
+    "text": "Explicitly flags that a naive tactic-B test passes trivially against the zero value",
+    "passed": true,
+    "evidence": "Quote: 'I do NOT assert `Order{Status: Paid, Items: nil}` panics — it doesn't, and that test would pass vacuously per the skill's caveat. Instead I construct the forbidden states and document via t.Logf that the model permits them.'"
+  },
+  {
+    "text": "Writes tactic-A invariant-proof tests for state transitions",
+    "passed": true,
+    "evidence": "TestTransitionMatrix_Exhaustive enumerates the full 4×3 (status × transition) matrix and for each cell asserts: allowed transitions return nil error and produce the expected post-state; forbidden transitions return an error AND leave status unchanged AND leave items unmodified. TestReachablePaidOrderHasItems is the forward-path invariant proof."
+  },
+  {
+    "text": "Documents the convention-only nature of struct-level invariants",
+    "passed": true,
+    "evidence": "TestModelGap_PaidWithEmptyItemsIsConstructible logs 'MODEL GAP: Order{Status: Paid, Items: nil} constructed without error. Fix: unexport Status/Items and require a constructor.' Test comments explicitly say 'When the model is tightened ... this construction should stop compiling, at which point this test should be deleted.'"
+  },
+  {
+    "text": "Writes table-driven state-transition tests",
+    "passed": true,
+    "evidence": "TestTransitionMatrix_Exhaustive uses a slice of transition structs and a nested map of allowed transitions, with t.Run subtests named statusName(from)+\"_\"+tr.name. Idiomatic Go table-driven style."
+  },
+  {
+    "text": "BONUS: catches Cancel accepting out-of-range Status as a behavioral gap",
+    "passed": true,
+    "evidence": "TestModelGap_OutOfRangeStatusIsConstructible discovers that Cancel(Status(99)) succeeds because Cancel's guard is 'Status != Paid'. Documents this as 'MODEL GAP: Cancel accepts unknown Status(99) as a from-state.' This is an audit finding beyond the obvious zero-value gap."
+  },
+  {
+    "text": "BONUS: flags silent fallback antipattern in Total",
+    "passed": true,
+    "evidence": "TestTotal_SilentlyDropsNegativeQuantities exercises Total with a Quantity=-5 item and documents that Total silently drops it: 'ANTIPATTERN: Total silently drops Quantity<0 rather than refusing to construct such an Item. Lift the invariant into Item's constructor.'"
+  },
+  {
+    "text": "BONUS: distinguishes documented-gap (t.Logf) from currently-failing (t.Errorf)",
+    "passed": true,
+    "evidence": "Subtle but correct: TestModelGap_PaidWithEmptyItemsIsConstructible uses t.Logf to document a gap that is the current (intended-to-be-bad) behavior; TestModelGap_OutOfRangeStatusIsConstructible escalates to t.Errorf because Cancel actually accepts Status(99) which is a real behavioral bug. The agent reasoned about the distinction without explicit prompting."
+  }
+]

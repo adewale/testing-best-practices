@@ -33,7 +33,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 ## What's covered
 
-### Core principles (always loaded, ~3,200 tokens)
+### Core principles (always loaded, ~5,000 tokens)
 
 - Red-Green-Refactor TDD
 - Test quality over quantity (Kent Beck's Test Desiderata, assertion density)

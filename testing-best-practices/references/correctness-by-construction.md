@@ -148,6 +148,26 @@ model is incomplete — fix the model, not the test.
 This is the testing tactic the user community most often skips. It's the
 single most useful audit you can run against a typed system.
 
+**Caveat — weak runtime enforcement.** A tactic-B test that asserts
+"this state is unconstructible" passes *trivially* if no mechanism
+actually rejects it. Two cases to watch for:
+
+1. **Go zero values.** `Email{}` constructs fine; the unexported-field
+   trick only forces *outside* callers through `ParseEmail`. A tactic-B
+   test on the zero value passes vacuously. Either add a `Valid() bool`
+   method and exercise it with tactic-A tests, or document that the
+   invariant is enforced by convention and is *not* tactic-B-testable.
+2. **Dynamic languages without a constructor check.** If `Order(status,
+   items)` is a plain dataclass with no `__post_init__`, you must add
+   the runtime check first, then write the tactic-B test that exercises
+   it. Writing the test against an unprotected constructor is worse than
+   writing nothing — it documents a model that doesn't exist.
+
+**Rule:** tactic B is only meaningful when a runtime or compile-time
+mechanism *can* reject the state. If there isn't one, add one before
+writing the test, or skip tactic B for that invariant and rely on the
+boundary parser plus contract tests.
+
 ```python
 def test_order_model_forbids_paid_empty():
     """The Order type claims `Paid + items=[]` is impossible. Prove it."""

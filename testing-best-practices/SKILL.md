@@ -2,11 +2,15 @@
 name: testing-best-practices
 description: >
   Enforce testing best practices when writing, reviewing, or improving tests.
-  Covers Red-Green-Refactor TDD, property-based testing, real objects over mocks, test
-  quality assessment (assertion density, not just coverage), E2E testing,
-  contract tests, flaky test upgrades, and detection of sabotaged/skipped tests.
+  Covers Red-Green-Refactor TDD, property-based testing (invariant-proof and
+  model-gap tactics), real objects over mocks, correctness by construction
+  (types and schemas over runtime validation), test quality assessment
+  (assertion density, not just coverage), E2E testing, contract tests, flaky
+  test upgrades, and detection of sabotaged/skipped tests and logical
+  defense-in-depth.
   Use when writing tests, reviewing test quality, fixing flaky tests, or when
-  the user mentions TDD, testing, coverage, mocks, or test quality.
+  the user mentions TDD, testing, coverage, mocks, invariants, types vs tests,
+  defense in depth, or test quality.
 compatibility: Works with any language. Language-specific guidance in references/.
 metadata:
   author: adewale
@@ -219,6 +223,13 @@ boundaries; SSRF/XSS/injection/secrets; external system failure; rate
 limits; retries; observability; recovery and forensics. Each layer
 defends a *different* failure mode or adversary.
 
+**Caveat for weakly-enforced languages** (Go zero values, Python without
+`__post_init__`, JS without runtime branding): tactic B passes
+*trivially* if no constructor exists to reject the state. Add the
+constructor check first, or document that the invariant is enforced by
+convention only — don't write a tactic-B test against an unprotected
+type.
+
 When the audit shows the same invariant checked and tested at three or
 more internal layers — or any of the antipattern signals above — read
 `references/correctness-by-construction.md`.
@@ -229,7 +240,18 @@ For every happy-path test, write at least one sad-path test: invalid input,
 missing data, permission denied, network failure. Use boundary values:
 empty, null, max, min, zero, one-past-max.
 
-Pre-build invalid input collections for validation testing:
+**Sad-path tests cover *reachable* error conditions** — network failure,
+permission denied, timeout, disk full, partial data — i.e., failures that
+can occur even when every input has a valid type. They are **not** a
+substitute for type-level invariants: if `EmailAddress` is parsed at the
+boundary, you do not need `test_send_email_rejects_missing_at_sign` at
+every call site. That is principle §10's job, not §11's. The two compose:
+§10 eliminates type-rejected sad-path tests; §11 still requires sad-path
+tests for failure modes the type cannot rule out (I/O, time, permissions,
+resource exhaustion).
+
+Pre-build invalid input collections for validation testing **at the
+boundary parser**, not at downstream call sites:
 ```
 INVALID_EMAILS = ['', 'notanemail', 'user@', '@domain.com']
 CONTENT_LENGTHS = {EMPTY: '', MIN: 'a', MAX: 'a' * 280, OVERFLOW: 'a' * 281}
