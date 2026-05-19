@@ -447,29 +447,37 @@ rules are correct, restated.
 | Coverage as informational, not blocking (§2) | Belt-and-suspenders coverage produces antipattern #11 |
 | Tier integrity (`SKILL.md` Step 4) | Each test tier should defend against a *different* failure mode |
 
-### Suggested additions when this gets folded into the skill
+### What was folded into the skill
 
-1. **A new `references/correctness-by-construction.md`** loaded when the
-   project uses a typed language with smart constructors / branded types /
-   newtypes (Rust, TypeScript, OCaml, Haskell, Scala, modern Kotlin/Swift).
-   Contents: how to lift invariants into types, when to delete tests in
-   favor of types, smart-constructor patterns per language.
+1. **`testing-best-practices/references/correctness-by-construction.md`** —
+   on-demand reference with language-specific patterns (TS branded types,
+   Rust newtype, Python smart constructor, Go unexported field), the
+   right-when/still-necessary lists, the two test tactics (A invariant-proof,
+   B model-gap), and the canonical-sources list.
 
-2. **A new entry #13 in `ANTIPATTERNS.md`: "Logical Defense-in-Depth /
-   Shotgun Validation."** Detection signal: same invariant checked at three
-   or more layers; same invariant tested at three or more layers. Fix: lift
-   to a type at the outermost trust boundary; delete the inner checks and
-   their tests.
+2. **Entry #13 in `references/antipatterns.md` and `research/ANTIPATTERNS.md`:
+   Logical Defense-in-Depth (Shotgun Validation)** — with the concrete signal
+   list (repeated validation, loose strings, status-enum duplication,
+   catch-all retries, silent fallbacks, post-hoc sanitizers, runtime guards
+   instead of state machines / types / schema constraints) and the fix that
+   includes both surviving test tactics.
 
-3. **An audit step in Assess mode (`SKILL.md` §Step 4 or new Step 7):**
-   *"For each defensive check, identify the trust boundary it defends. If two
-   tests defend the same invariant at the same trust boundary, one of them is
-   debt."*
+3. **`SKILL.md` §10 Correctness by construction** — new core principle.
+   Renumbered "Test the sad path" from §10 to §11.
 
-4. **A line in the validation loop (§Write mode):**
-   *"After writing tests for a function, ask whether any test exists only
-   because the function's signature is too loose. If yes, tighten the
-   signature and delete the test."*
+4. **`SKILL.md` Write-mode Step Zero** — *can the type replace the test?* —
+   with the tactic A and tactic B prescriptions.
+
+5. **`SKILL.md` validation-loop check 6** — *did you cover both invariant
+   tactics?*
+
+6. **`SKILL.md` Assess-mode Step 7** — detect logical defense-in-depth via
+   the concrete signal list, with the "different vs same failure mode" rule
+   for distinguishing it from real defense-in-depth.
+
+7. **Step Zero and trust-boundary lens** in
+   `testing-best-practices/references/test-types.md` and
+   `research/DECISION_TREE.md`.
 
 ---
 

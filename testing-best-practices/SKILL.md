@@ -202,11 +202,11 @@ matter most are the two that follow from the invariant:
   too loose
 
 A test that exists because the function's signature is too loose is debt,
-not coverage. Lineage: Dijkstra (weakest preconditions) → Hoare (`{P} S {Q}`)
-→ Meyer (Design by Contract) → Praxis/SPARK Ada (industrial Correctness by
-Construction) → seL4 (full kernel proof) → Minsky (make illegal states
-unrepresentable) → King (parse, don't validate) → LangSec (full recognition
-before processing).
+not coverage. Lineage: Hoare (`{P} S {Q}`, 1969) → Dijkstra (weakest
+preconditions, 1976) → Meyer (Design by Contract, 1986) → Praxis/SPARK Ada
+(industrial Correctness by Construction) → seL4 (full kernel proof, 2009)
+→ Minsky (make illegal states unrepresentable) → King (parse, don't
+validate) → LangSec (full recognition before processing).
 
 **Defense-in-depth is the antipattern when it means** any of: repeated
 validation everywhere; loose strings flowing through the whole system;
