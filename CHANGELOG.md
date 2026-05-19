@@ -3,6 +3,11 @@
 All notable changes to the testing-best-practices skill are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3] - 2026-05-19
+
+### Changed
+- Renamed core principle from "Red-Green TDD" to "Red-Green-Refactor TDD" to match Beck's canonical three-step cycle (SKILL.md, README.md, DECISION_TREE.md)
+
 ## [0.2] - 2026-04-11
 
 ### Added
