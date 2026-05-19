@@ -43,7 +43,8 @@ Load these ONLY when the task matches the trigger:
 
 - Refactoring legacy code? → `references/characterization-testing.md`
 - Reimplementing an algorithm or maintaining multi-language SDKs? → `references/differential-testing.md`
-- Transformation pipeline (HTML→Markdown, compiler)? → `references/golden-file-testing.md`
+- Transformation pipeline, complex output, or snapshot-style tests? → `references/golden-file-testing.md`
+- Code depends on time, timers, scheduling, or has flaky time-sensitive tests? → `references/deterministic-time.md`
 - Code calls external APIs? → `references/vcr-cassettes.md`
 - Project has CLI commands or plugin hooks listed in docs? → `references/doc-sync-testing.md`
 - Need to verify test suite catches real bugs? → `references/mutation-testing.md`
@@ -359,7 +360,7 @@ When upgrading tests, prioritize by risk:
 
 | Flake cause | Fix |
 |-------------|-----|
-| Time-dependent | Inject a clock or freeze time |
+| Time-dependent | Virtualize time or inject a clock — see `references/deterministic-time.md`. Never `sleep()` with real time. |
 | Order-dependent | Reset shared state in setup/teardown |
 | Network-dependent | Use VCR cassettes or committed fixtures |
 | Race conditions | Add synchronization or use deterministic alternatives |

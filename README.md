@@ -72,7 +72,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 |------|---------|
 | `references/characterization-testing.md` | Refactoring legacy code |
 | `references/differential-testing.md` | Reimplementing algorithms, multi-language SDKs |
-| `references/golden-file-testing.md` | Transformation pipelines (HTML→Markdown, compilers) |
+| `references/golden-file-testing.md` | Transformation pipelines, snapshot tests, promote workflow |
+| `references/deterministic-time.md` | Code depends on time, timers, scheduling, or flaky time tests |
 | `references/vcr-cassettes.md` | Code calling external APIs |
 | `references/doc-sync-testing.md` | CLI commands or plugin hooks in docs |
 | `references/mutation-testing.md` | Verifying test suite catches real bugs |
@@ -135,7 +136,8 @@ testing-best-practices/             # The skill (ships to agents)
     test-types.md                   # Always: decision guide
     characterization-testing.md    # Topic: legacy code
     differential-testing.md        # Topic: reference implementations
-    golden-file-testing.md         # Topic: transformation pipelines
+    golden-file-testing.md         # Topic: transformation pipelines, snapshot tests
+    deterministic-time.md          # Topic: clock injection, time virtualization
     vcr-cassettes.md               # Topic: external APIs
     doc-sync-testing.md            # Topic: documentation drift
     mutation-testing.md            # Topic: test quality verification
