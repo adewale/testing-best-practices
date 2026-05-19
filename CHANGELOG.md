@@ -3,6 +3,47 @@
 All notable changes to the testing-best-practices skill are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+- **Core principle #10: Correctness by construction** — push invariants into
+  types/schemas/contracts so the wrong state is unrepresentable; the two
+  test tactics that survive are (A) invariant-proof PBT and (B) model-gap
+  tests that try to construct each forbidden state. Anchored in the
+  Hoare → Dijkstra → Meyer → Praxis/SPARK → seL4 → Minsky → King → LangSec
+  lineage.
+- **`references/correctness-by-construction.md`** — on-demand reference with
+  language-specific patterns (TS branded types, Rust newtype, Python smart
+  constructor, Go unexported field), right-when/still-necessary lists, and
+  the canonical sources.
+- **Antipattern #13: Logical defense-in-depth (shotgun validation)** — added
+  to both `references/antipatterns.md` (skill) and `research/ANTIPATTERNS.md`.
+  Detection signals: repeated validation everywhere, loose strings flowing
+  through layers, status enums duplicated across layers, catch-all retries,
+  silent fallback behavior, post-hoc sanitizer patches, runtime guards
+  instead of state machines / types / schema constraints.
+- **Step Zero** in Write mode and the decision tree — *can the type replace
+  the test?* — with a worked table mapping common "rejects X" tests to
+  their type-level alternative.
+- **Assess-mode Step 7** — detect logical defense-in-depth via the concrete
+  signal list.
+- **Validation-loop check 6** in Write mode — "did you cover both invariant
+  tactics (A invariant-proof + B model-gap)?"
+- **Trust-boundary lens** in `references/test-types.md` and
+  `research/DECISION_TREE.md` — untyped input → typed interior → untyped
+  output, with the corresponding test types per boundary.
+- **`research/CORRECTNESS_BY_CONSTRUCTION.md`** — research note framing the
+  thesis with full canonical lineage and the legitimate home of
+  defense-in-depth (NIST SP 800-39 / 800-53 PL-8(1) / 800-82; Roman
+  military doctrine).
+
+### Changed
+- **README**: core-principles list now includes correctness-by-construction;
+  reference-files table includes the new on-demand reference;
+  `antipatterns.md` count updated to 13.
+- **SKILL.md numbering**: "Test the sad path" renumbered from §10 to §11 to
+  make room for correctness-by-construction at §10.
+
 ## [0.3] - 2026-05-19
 
 ### Changed

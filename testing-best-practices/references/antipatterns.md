@@ -13,6 +13,7 @@
 | Flaky time tests | `sleep(`, `time.time()`, `Date.now()` in tests | P2 |
 | Testing the mock | Asserted value identical to mock's configured return | P3 |
 | Stale snapshots | Snapshot updates with no code changes | P3 |
+| Logical defense-in-depth | Same invariant checked & tested at 3+ internal layers; "this should never happen" tests | P2 |
 
 ## Anti-Pattern Details
 
@@ -114,3 +115,51 @@ Developers blindly update without review.
 
 **Fix**: Delete and re-record periodically. Require explicit reviewer approval
 for snapshot changes. Filter volatile data from cassettes.
+
+### 13. Logical defense-in-depth (shotgun validation)
+
+**What**: Defense-in-depth applied to internal program logic in a
+non-adversarial, already-typed context. Every layer defends against the
+*same* failure mode in the *absence* of an adversary, instead of lifting
+the invariant into a type, schema, or contract once at the boundary.
+
+**Detection signals** (any one is enough; co-occurrence is diagnostic):
+- **Repeated validation everywhere** — same `is None` / `!= ""` / `len > 0`
+  guard at controller, service, and repo
+- **Loose strings** flowing through the whole system instead of being
+  parsed into a precise type at the boundary
+- **Status enums duplicated across layers** — `OrderStatus` redeclared in
+  DTO, service, repo, UI
+- **Catch-all retries** — `for _ in range(3): try: ... except Exception:`
+- **Silent fallback behavior** — `lookup() or default()` hiding failure
+- **Post-hoc sanitizer patches** — regex stripping characters that should
+  never have been representable
+- **Runtime guards instead of state machines / types / schema constraints**
+- **"This should never happen"** comments and assertions
+- **Tests `test_X_rejects_null` / `_empty` / `_negative`** duplicated
+  across many functions in one module
+- **Builders that permit invalid objects** plus tests asserting the
+  invalid objects are rejected
+
+**Distinguish from**: defense-in-depth where each layer faces a
+*different* failure mode or *different* adversary — hostile input, auth
+boundaries, SSRF/XSS/injection, external system failure, rate limits,
+retries, observability, recovery. Those layers and their tests are
+not this antipattern.
+
+**Fix**:
+1. Lift the invariant into a type, schema, or sealed enum at the outermost
+   trust boundary (smart constructor, branded type, `NonEmpty`,
+   `EmailAddress`, newtype, state machine, schema constraint).
+2. Delete every downstream check and **its test**.
+3. Add the two tests that survive: (A) a property-based test that *proves*
+   the invariant holds for valid inputs, and (B) a test that tries to
+   construct each invalid state the type claims to forbid and asserts the
+   construction fails. If (B) passes by *succeeding* in construction, the
+   model has a hole — fix the model, not the test.
+4. If the language cannot express the invariant in the type system, keep
+   exactly one runtime check at the outermost layer and one test for it.
+
+See `references/correctness-by-construction.md` for language-specific
+patterns and the canonical lineage (Hoare → Dijkstra → Meyer →
+Praxis/SPARK → seL4 → Minsky → King → LangSec).

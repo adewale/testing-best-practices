@@ -80,6 +80,22 @@
       "files": ["evals/files/go_cache.go"],
       "mode": "write",
       "language": "go"
+    },
+    {
+      "id": 11,
+      "prompt": "Can you review evals/files/subscription.py and write a good test suite for it? The module handles subscription creation and upgrade eligibility.",
+      "expected_output": "Identifies logical defense-in-depth across the three layers; recommends lifting UserId, PlanName, and MonthlyCents into types with smart constructors; writes one parser/constructor test per type (tactic A, property-based with valid-or-absent invariant); writes tactic-B model-gap tests asserting invalid combinations are unconstructible; does NOT write redundant test_X_rejects_null tests at every layer; flags the silent fallback in _repo_insert as a separate bug.",
+      "files": ["evals/files/subscription.py"],
+      "mode": "write",
+      "language": "python"
+    },
+    {
+      "id": 12,
+      "prompt": "Write tests for the Order state machine in evals/files/order_state.go. I want to make sure invalid transitions cannot happen.",
+      "expected_output": "Recognises that the Go struct allows constructing Order{Status: Paid, Items: nil} directly (no constructor protects the invariant); explicitly flags that a naive tactic-B test passes trivially against the zero value; either (a) recommends adding NewOrder/MustValidate to make the invariant enforceable then writes tactic-B tests against that, or (b) writes tactic-A invariant-proof tests for Submit/Pay/Cancel state transitions and documents that struct-level invariants are enforced by convention only. Writes table-driven state-transition tests.",
+      "files": ["evals/files/order_state.go"],
+      "mode": "write",
+      "language": "go"
     }
   ]
 }

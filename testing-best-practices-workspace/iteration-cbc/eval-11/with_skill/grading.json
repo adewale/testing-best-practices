@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Identifies logical defense-in-depth across the three layers",
+    "passed": true,
+    "evidence": "Opening bullet: 'The module is a textbook logical-defense-in-depth antipattern (same invariant validated at controller, service, repo, plus can_upgrade).' The summary explicitly enumerates the duplicated validation across create_subscription, _service_create, _repo_insert, and can_upgrade."
+  },
+  {
+    "text": "Recommends lifting UserId, PlanName, and MonthlyCents into types with smart constructors",
+    "passed": true,
+    "evidence": "Closing 'Recommended refactor' section: 'introduce Plan = Literal[...] or a Plan enum, a UserId smart constructor (@dataclass(frozen=True) with __post_init__), and a MonthlyCents newtype. Parse at create_subscription's entry, then delete validation from _service_create and _repo_insert.'"
+  },
+  {
+    "text": "Writes tactic-A property-based invariant-proof tests on the public boundary",
+    "passed": true,
+    "evidence": "test_create_subscription_postcondition_holds_for_all_valid_inputs uses @given(args=valid_subscription_args()) and asserts the full postcondition (fields preserved, plan canonical, cents non-negative, created_at is datetime). test_create_subscription_is_deterministic_modulo_timestamp adds a determinism property."
+  },
+  {
+    "text": "Writes tactic-B model-gap tests probing forbidden states",
+    "passed": true,
+    "evidence": "TestModelGap_UserId, TestModelGap_PlanName, TestModelGap_MonthlyCents — three classes of model-gap tests probing each forbidden input class with both parametrize and @given strategies."
+  },
+  {
+    "text": "Does NOT write redundant test_X_rejects_null tests at every layer",
+    "passed": true,
+    "evidence": "Inline comment in TestModelGap section: 'We test ONLY at the public entry point (create_subscription). We do NOT duplicate these for _service_create / _repo_insert — that would lock in the defense-in-depth antipattern.'"
+  },
+  {
+    "text": "Flags the silent fallback in _repo_insert as a separate bug",
+    "passed": true,
+    "evidence": "test_repo_silent_fallback_is_a_bug exercises _repo_insert(-100) directly and documents 'current behavior: silent coercion' with a comment that says the test should be deleted alongside the silent-fallback branch when refactored."
+  },
+  {
+    "text": "BONUS: surfaces a real model gap via tactic B",
+    "passed": true,
+    "evidence": "In TestModelGap_UserId.test_non_int_user_id_rejected, the agent discovered that Python's `isinstance(True, int)` is True, so a boolean slips through as a user_id. Documents the gap as 'MODEL GAP: bool accepted as int' rather than asserting it away. This is exactly the audit value tactic B is supposed to deliver."
+  },
+  {
+    "text": "BONUS: mathematical property invariants for can_upgrade",
+    "passed": true,
+    "evidence": "TestCanUpgrade_Properties includes test_no_self_upgrade (reflexivity), test_antisymmetry (one direction max), test_transitivity. TestCanUpgrade_Exhaustive enumerates all 3×3 plan pairs against the rank comparison — matches the skill's small-state-space guidance to exhaust rather than sample."
+  }
+]

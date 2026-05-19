@@ -33,7 +33,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 ## What's covered
 
-### Core principles (always loaded, ~3,200 tokens)
+### Core principles (always loaded, ~5,000 tokens)
 
 - Red-Green-Refactor TDD
 - Test quality over quantity (Kent Beck's Test Desiderata, assertion density)
@@ -44,8 +44,9 @@ Language-specific guidance loads on demand based on the project's language. Adva
 - Characterization testing for legacy code
 - Differential and pirate testing
 - Test data builders and fixtures
+- Correctness by construction — types over runtime checks; invariant-proof tests (PBT) plus model-gap tests (try to construct each forbidden state)
 - Sad path and boundary testing
-- Validation loop (self-check before reporting done)
+- Validation loop (self-check before reporting done, including "could a type have replaced this test?")
 
 ### Reference files (loaded on demand)
 
@@ -62,8 +63,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 | File | Content |
 |------|---------|
-| `references/antipatterns.md` | 12 anti-patterns with detection signals, severity levels, and fixes |
-| `references/test-types.md` | 3-tier decision guide with trigger checklists and cost-benefit table |
+| `references/antipatterns.md` | 13 anti-patterns with detection signals, severity levels, and fixes |
+| `references/test-types.md` | Decision guide with Step Zero (types-vs-tests), trust-boundary lens, and 3-tier hierarchy |
 
 **Topic-specific** (loaded only when the trigger matches):
 
@@ -78,6 +79,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 | `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |
 | `references/mathematical-properties.md` | Domain objects with arithmetic |
 | `references/test-data-builders.md` | Need factories, fixtures, or assertion helpers |
+| `references/correctness-by-construction.md` | Same invariant checked at 3+ layers, "should never happen" tests, status enums duplicated across layers, loose strings through the system, or typed language with smart constructors |
 
 ## Eval results
 
