@@ -2,8 +2,8 @@
 name: testing-best-practices
 description: >
   Enforce testing best practices when writing, reviewing, or improving tests.
-  Covers Red-Green-Refactor TDD, property-based testing, real objects over mocks,
-  test quality assessment (assertion density, not just coverage), E2E testing,
+  Covers Red-Green TDD, property-based testing, real objects over mocks, test
+  quality assessment (assertion density, not just coverage), E2E testing,
   contract tests, flaky test upgrades, and detection of sabotaged/skipped tests.
   Use when writing tests, reviewing test quality, fixing flaky tests, or when
   the user mentions TDD, testing, coverage, mocks, or test quality.
@@ -19,7 +19,7 @@ metadata:
 
 This skill operates in four modes depending on what's needed:
 
-1. **Write** — Writing new tests using Red-Green-Refactor TDD
+1. **Write** — Writing new tests using Red-Green TDD
 2. **Assess** — Evaluating existing test quality (not just coverage)
 3. **Upgrade** — Improving weak, flaky, or low-quality tests
 4. **Detect** — Finding tests that are skipped, sabotaged, or faking coverage
@@ -51,48 +51,16 @@ Load these ONLY when the task matches the trigger:
 
 These apply to every language and every project.
 
-### 1. Red-Green-Refactor TDD
+### 1. Red-Green TDD
 
-The cycle (Kent Beck, *Test-Driven Development: By Example*):
+Always follow the Red-Green-Refactor cycle:
 
-1. **Red** — Write a failing test that describes the desired behavior. If the
-   test passes on first run, it isn't testing what you think; fix the test.
-2. **Green** — Make the test pass quickly. Beck's actual phrasing is
-   "committing whatever sins necessary in the process." Constants, duplication,
-   and copy-paste are fine here — they get cleaned up in step 3.
-3. **Refactor** — Apply *behavior-preserving* transformations, primarily
-   **duplication removal** (including duplication between the test and the
-   production code — that's what drives emergent design). Optional per cycle
-   (Beck, *Canon TDD*): skip it when there is no duplication to remove. Do not
-   add speculative abstractions, new features, or new files.
+1. **Red** — Write a failing test that describes the desired behavior
+2. **Green** — Write the minimum code to make the test pass
+3. **Refactor** — Clean up while keeping tests green
 
-**Two Hats** (Beck, *Tidy First?*): behavior changes (Red/Green) and structure
-changes (Refactor) never share a commit. Wear one hat at a time. Commit after
-Green, before starting Refactor, so you can revert cleanly.
-
-**Refactor is behavior-preserving by definition** (Fowler, *Refactoring*).
-Tests are the operational proof. Therefore: **never modify tests during the
-Refactor step.** If a refactor turns a test red, the refactor is wrong — revert
-to the last green commit and try a smaller step. Editing the test to match is
-not refactoring; it is unannounced behavior change, and it belongs in a new
-Red-Green cycle.
-
-**For bug fixes**: write the test that reproduces the bug BEFORE fixing it.
-This test becomes a permanent regression test.
-
-**Augmented coding warning signs** (Beck, *Augmented Coding: Beyond the
-Vibes*) — stop and revert when you notice yourself:
-
-- Implementing functionality nobody asked for, even if it seems like a
-  reasonable next step
-- Adding loops, branches, or abstractions that no current test requires
-- Disabling, deleting, `@skip`-ing, or weakening tests to reach green
-- Hardcoding `__eq__` / comparison operators / per-call counters / exact test
-  inputs to make assertions pass
-- Stubbing out modules the tests depend on so the tests trivially pass
-
-These are documented LLM reward-hacking patterns (ImpossibleBench, METR), not
-TDD.
+For bug fixes: write the test that reproduces the bug BEFORE fixing it. This
+test becomes a permanent regression test.
 
 ### 2. Test quality over quantity
 
@@ -305,7 +273,7 @@ When writing tests for new code:
 
 1. Determine which test types are needed (read `references/test-types.md`)
 2. Read the language-specific reference for framework conventions
-3. Follow Red-Green-Refactor TDD: write the failing test first
+3. Follow Red-Green TDD: write the failing test first
 4. Use test data builders/factories for setup — express intent, not structure
 5. Use domain-specific assertion helpers for readability
 6. Include regression test comments linking to the bug/issue being fixed
@@ -313,36 +281,6 @@ When writing tests for new code:
    use fixture-based golden file tests — see `references/golden-file-testing.md`
 8. Test at the user-facing level (commands, endpoints, API) not internals
 9. Pin non-deterministic inputs (time, randomness) rather than mocking them
-
-### Anti-cheat rule: tests are read-only during Refactor
-
-Refactoring is *behavior-preserving*. The test suite is the proof. So during
-the Refactor step (and during any post-Green tidy-up), **do not edit tests**.
-
-If a refactor turns a test red:
-
-1. **Revert the refactor** — `git reset --hard` to the last green commit.
-2. Try a smaller transformation, or skip the refactor entirely (it's optional).
-3. Never edit the test to match what the refactored code now produces.
-
-A test you want to change is announcing that your change is *behavioral*, not
-structural. Behavioral changes start a new Red-Green cycle: revert, write a
-new failing test for the new behavior, then make it pass.
-
-Forbidden shortcuts to "make the test pass" (these are reward-hacking, not
-TDD):
-
-- Modifying the assertion, the input, or the expected value
-- Overriding `__eq__`, `__hash__`, `==`, or comparison operators on a domain
-  class so the assertion happens to succeed
-- Adding a special case in production code that recognises the exact input the
-  test uses
-- Stubbing or mocking out the module the test exercises
-- `@skip` / `xit` / `xdescribe` / commented-out test bodies
-- "Temporarily" loosening an assertion (`assert x is not None` instead of
-  `assert x == expected`)
-
-If you're stuck, surface the disagreement to the user — don't bend the test.
 
 ### Validation loop: check your own work
 
@@ -358,11 +296,6 @@ After writing tests, validate before reporting done:
    assertions, add more specific checks. Target: 3+ meaningful assertions per test.
 4. **Verify both directions** for security-sensitive tests — check that dangerous
    content is removed AND that safe content is preserved
-5. **Scan your own diff for cheating** — if you touched test files while
-   resolving a refactor or a failing run, ask: did the production behavior
-   actually change, or did I bend the test to match broken code? If the latter,
-   revert. Also flag: new `__eq__` / `__hash__` overrides, hardcoded test
-   inputs in production code, freshly-stubbed modules, weakened assertions.
 
 ## Gotchas
 

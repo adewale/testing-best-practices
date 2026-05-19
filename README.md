@@ -24,7 +24,7 @@ The skill operates in four modes:
 
 | Mode | When | What it does |
 |------|------|-------------|
-| **Write** | Writing new tests | Red-Green-Refactor TDD, property-based tests, boundary values, sad path coverage, anti-cheat rule, validation loop |
+| **Write** | Writing new tests | Red-Green TDD, property-based tests, boundary values, sad path coverage, validation loop |
 | **Assess** | Reviewing existing tests | 6-step quality audit: sabotage detection, assertion density, mock drift, tier integrity, coverage config, mutation testing readiness |
 | **Upgrade** | Improving weak tests | Prioritized fixes for flaky, weak, or sabotaged tests |
 | **Detect** | Finding hidden problems | Unconditional skips, print-not-assert, ordering dependencies, tests that fake coverage |
@@ -35,7 +35,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 ### Core principles (always loaded, ~3,200 tokens)
 
-- Red-Green-Refactor TDD (with Two Hats discipline and an anti-cheat rule for the Refactor step)
+- Red-Green TDD
 - Test quality over quantity (Kent Beck's Test Desiderata, assertion density)
 - Real objects over mocks (with a preference hierarchy)
 - Property-based testing (9 invariant patterns including mathematical properties)

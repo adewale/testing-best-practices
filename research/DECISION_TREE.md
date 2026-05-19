@@ -60,7 +60,7 @@ async def test_app_starts():
 **Cost**: Low. Write the test that reproduces the bug, then fix the bug.
 
 **Rules**:
-- Write the test BEFORE fixing the bug (Red-Green-Refactor TDD)
+- Write the test BEFORE fixing the bug (red-green TDD)
 - Name the test after the bug/issue number
 - Include a comment explaining the original bug
 
