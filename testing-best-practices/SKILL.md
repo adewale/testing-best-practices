@@ -194,7 +194,27 @@ user = make(a(User, with(role, "admin")))
 ```
 Read `references/test-data-builders.md` when needed.
 
-### 10. Correctness by construction (don't write tests the type could replace)
+### 10. Types vs tests
+
+Types and tests answer different questions:
+
+- **Types** answer *can this bug exist?* — invariants enforced at compile
+  or parse time, free at runtime
+- **Tests** answer *does observable behavior match the spec?* — invariants
+  enforced at runtime, every run
+
+A type and a test that assert the same invariant are redundant — pick one.
+Types are cheaper when the language enforces them. Tests are mandatory for
+what types can't reach: behavior, integration, liveness, performance,
+concurrency, and the external world.
+
+When the type is too loose for an invariant it should carry, the test
+surface explodes. Probe each forbidden state the model still permits, and
+mark those tests as deletable when the type tightens (with `xfail`,
+`@deprecated`, or an inline comment). When you tighten a type, delete the
+now-redundant tests in the same commit. See §11 for the deep treatment.
+
+### 11. Correctness by construction (don't write tests the type could replace)
 
 Push invariants into types, schemas, and contracts. Then the tests that
 matter most are the two that follow from the invariant:
@@ -235,7 +255,7 @@ When the audit shows the same invariant checked and tested at three or
 more internal layers — or any of the antipattern signals above — read
 `references/correctness-by-construction.md`.
 
-### 11. Test the sad path
+### 12. Test the sad path
 
 For every happy-path test, write at least one sad-path test: invalid input,
 missing data, permission denied, network failure. Use boundary values:
@@ -246,8 +266,8 @@ permission denied, timeout, disk full, partial data — i.e., failures that
 can occur even when every input has a valid type. They are **not** a
 substitute for type-level invariants: if `EmailAddress` is parsed at the
 boundary, you do not need `test_send_email_rejects_missing_at_sign` at
-every call site. That is principle §10's job, not §11's. The two compose:
-§10 eliminates type-rejected sad-path tests; §11 still requires sad-path
+every call site. That is principle §11's job, not §12's. The two compose:
+§11 eliminates type-rejected sad-path tests; §12 still requires sad-path
 tests for failure modes the type cannot rule out (I/O, time, permissions,
 resource exhaustion).
 
