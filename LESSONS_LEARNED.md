@@ -22,6 +22,14 @@ Telling the agent to self-check its work before reporting done (scan for weak as
 
 Early versions of the language references explained what pytest is, what Vitest is, basic `describe`/`it` syntax. The agent knows this. Keep only the non-obvious parts: boundary-first Hypothesis strategies, `@cloudflare/vitest-pool-workers`, `t.Helper()` in Go.
 
+### Abstract framings can sit beside detailed references without being redundant
+
+§10 "Types vs tests" (17 lines, abstract — the mental model) sits next to §11 "Correctness by construction" (45+ lines, detailed — the techniques). Both load by default. The short principle gives the question each tool answers; the deep reference gives the tactics. Without §10, agents reach §11 but use only its tactical machinery; with §10, they frame their work around *which question this test answers* before reaching for tactics.
+
+### Naming concrete mechanisms in an abstract section is what moves behavior across languages
+
+§10 v1 said "delete the now-redundant tests in the same commit" — abstract and language-neutral. It moved TS and Go agents but left Python tied. §10 v2 added "(with `xfail`, `@deprecated`, or an inline comment)" — naming the mechanism. Naming mechanisms moved every language: Python agents reached for `xfail` and `TODO[CBC]`, TS for `should be DELETED`, Go for `deletable`. The conceptual instruction alone is not enough; each language needs a concrete anchor to translate the principle into its idiom.
+
 ## Research
 
 ### Scan real repos, not documentation
@@ -43,6 +51,14 @@ The most valuable insights came from reading actual test files in production rep
 
 We initially lumped 7 practitioners into one `LESSONS_FROM_PRACTITIONERS.md`. Individual contributions got buried. Splitting into one file per person made each practitioner's key idea stand out and made the research navigable.
 
+### Cross-source synthesis produces better skill content than any single source
+
+§10 "Types vs tests" emerged from combining Jane Street's "make illegal states unrepresentable" (Minsky) + Alexis King's "parse, don't validate" + the team's existing defense-in-depth-as-antipattern work + the practical observation that agents over-write per-function rejection tests. No single source produced the 17-line framing; the combination did. The lesson: research artifacts compound. A new practitioner's contribution may not be a new principle — it may be the missing piece that finally fits an existing one into a usable form.
+
+### Infrastructure-specific patterns can still generalize if you extract the underlying invariant
+
+Jane Street's library-level simulation testing — `Time_source` parameterization, the compiler-enforced `Require_explicit_time_source` — is uniquely OCaml. But the underlying idea ("make every source of non-determinism an explicit parameter") generalizes. The skill captures the pattern in `deterministic-time.md` (clock injection vs virtualization) without requiring OCaml. The cross-language lesson is "what would this look like in Java, Go, Python, TS" applied to every practitioner's contribution.
+
 ## Evals
 
 ### Without-skill baselines are essential
@@ -61,6 +77,22 @@ Our `weak_tests.py` fixture was effective because it contained real antipatterns
 
 The skill-creator's `generate_review.py --static` produced an HTML file with JavaScript alerts on every interaction. We abandoned it and presented results inline in conversation. For future iterations: present results directly rather than depending on external viewer tools.
 
+### Ceiling effects mask signal — purpose-build fixtures when testing a specific contribution
+
+The first attempt to evaluate §10 reused existing CBC evals (subscription, order_state). Both scored 8/8 *without* §10 and 8/8 *with* §10 — proving non-regression but not improvement. The signal that §10 was working came only after building three new fixtures (`user_service.py`, `order_service.ts`, `payment_service.go`) deliberately shaped to test loose-types-could-replace-runtime-validation reasoning. Those fixtures scored 13/16 without §10 and 16/16 with v2 — a +18.75pp delta visible only because the fixtures weren't already at ceiling.
+
+### A/B with language-isomorphic fixtures isolates language-specific gaps
+
+Building the same shape across Python, TypeScript, and Go (each a small service with primitive params + runtime validation) let us see that §10 v1 helped TS and Go (+0.5, +1.5) but left Python tied. Without per-language fixtures we'd have averaged the aggregate and missed Python entirely. The fixtures must be *isomorphic* — same number of functions, same kind of invariants, same complexity — so the only variable is the language.
+
+### Iterate on the section, never the rubric
+
+When v1 of §10 didn't help Python, the temptation was to widen the rubric until v1 looked good. Instead we left the rubric fixed and changed §10 to v2. Result: a clean signal that the change to §10 (not the grader's generosity) moved Python from 4.5/5 to 5/5. Rubrics drift when iterated alongside the code being graded; freeze them before running A/B.
+
+### Parallel agents make A/B affordable inside one session
+
+6 agent runs (3 fixtures × 2 conditions) ran in parallel in ~2 minutes. Without parallelism the same experiment would take 10-15 minutes serially. For iteration cycles that need to converge in a single session, parallel dispatch is essential — and the parent agent doesn't need to do anything during the wait beyond commit hygiene.
+
 ## Evolution
 
 ### Iteration history
@@ -70,9 +102,24 @@ The skill-creator's `generate_review.py --static` produced an HTML file with Jav
 | 1 | 3 | Python, TypeScript | 96% (24/25) | Initial skill |
 | 2 | 3 | Python, TypeScript | 100% (25/25) | Added Test Desiderata, mathematical properties, golden files, Go patterns |
 | 3 | 7 | Python, TypeScript, Go, Rust | 100% (49/49) | Split advanced-patterns, balanced evals, language-agnostic validation |
+| 4 | 12 | + CBC fixtures (Python subscription, Go order_state) | 100% | §11 Correctness by construction + decision-tree rework + tactic A/B framing |
+| 5 | + 3 types-vs-tests fixtures | Python, TS, Go | 16/16 with §10 v2 (13/16 without) | Jane Street research; §10 "Types vs tests"; `deterministic-time.md`; snapshot-tests in `golden-file-testing.md` |
 
-The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages).
+The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages). Iteration 5's signal was the +18.75pp aggregate from §10 v2 — only visible because we built new fixtures that weren't already at ceiling.
+
+### The improvement story for §10 specifically
+
+§10 went through three states:
+- **None** (baseline): agents identify CBC antipatterns but don't consistently mark redundant tests as deletable
+- **v1**: added abstract "delete now-redundant tests when you tighten a type" — moved TS and Go scores, Python tied
+- **v2**: added "(with `xfail`, `@deprecated`, or an inline comment)" — moved all three languages to ceiling
+
+The pattern: the conceptual instruction wasn't enough on its own. The mechanism names gave each language an anchor to translate the principle into idiomatic test annotations.
+
+### Rebases mid-task work when the overlapping work is complementary
+
+Mid-iteration we rebased the Jane Street branch on top of main's CBC work. The conflict was in `test-types.md` where my "Types vs tests" section overlapped with main's larger "Step Zero" rewrite. The resolution was simple — drop my section, take main's — because main's was strictly more developed and covered everything mine did. The lesson: when overlapping work emerges in parallel, the team that committed first sets the foundation, and later work integrates by deferring to whichever version is more developed.
 
 ### Token cost tracked but not optimized prematurely
 
-We measured token cost throughout (iteration 1: ~30k with-skill, iteration 3: ~30k average) but optimized for quality first. Token savings came naturally from splitting files — we didn't sacrifice content to save tokens.
+We measured token cost throughout (iteration 1: ~30k with-skill, iteration 3: ~30k average) but optimized for quality first. Token savings came naturally from splitting files — we didn't sacrifice content to save tokens. Iteration 5 added ~5K tokens (deterministic-time.md, expanded golden-file-testing.md, §10) for a +18.75pp eval signal on the new fixtures and no regression on existing ones — a worthwhile trade.

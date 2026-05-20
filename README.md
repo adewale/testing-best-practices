@@ -72,7 +72,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 |------|---------|
 | `references/characterization-testing.md` | Refactoring legacy code |
 | `references/differential-testing.md` | Reimplementing algorithms, multi-language SDKs |
-| `references/golden-file-testing.md` | Transformation pipelines (HTML→Markdown, compilers) |
+| `references/golden-file-testing.md` | Transformation pipelines, snapshot tests, promote workflow |
+| `references/deterministic-time.md` | Code depends on time, timers, scheduling, or flaky time tests |
 | `references/vcr-cassettes.md` | Code calling external APIs |
 | `references/doc-sync-testing.md` | CLI commands or plugin hooks in docs |
 | `references/mutation-testing.md` | Verifying test suite catches real bugs |
@@ -102,7 +103,7 @@ Full eval data is in `testing-best-practices-workspace/`.
 
 ## Research corpus
 
-Built from analysis of testing patterns across 13 GitHub accounts:
+Built from analysis of testing patterns across 13 GitHub accounts and one organization:
 
 - [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule
@@ -117,6 +118,7 @@ Built from analysis of testing patterns across 13 GitHub accounts:
 - [adewale](https://github.com/adewale) -- property-based testing, mock fidelity, test quality audits
 - [chrischabot](https://github.com/chrischabot) -- 5-tier test architecture, API scenario tests
 - [tirsen](https://github.com/tirsen) -- retry patterns
+- [janestreet](https://github.com/janestreet) -- expect tests, library-level simulation, `Time_source`, Bonsai testing
 
 Individual research documents are in `research/` (one per practitioner/account).
 
@@ -134,7 +136,8 @@ testing-best-practices/             # The skill (ships to agents)
     test-types.md                   # Always: decision guide
     characterization-testing.md    # Topic: legacy code
     differential-testing.md        # Topic: reference implementations
-    golden-file-testing.md         # Topic: transformation pipelines
+    golden-file-testing.md         # Topic: transformation pipelines, snapshot tests
+    deterministic-time.md          # Topic: clock injection, time virtualization
     vcr-cassettes.md               # Topic: external APIs
     doc-sync-testing.md            # Topic: documentation drift
     mutation-testing.md            # Topic: test quality verification
@@ -156,6 +159,7 @@ research/                           # Source material (does not ship)
   LESSONS_FROM_ADEWALE_REPOS.md
   LESSONS_FROM_CHRISCHABOT_REPOS.md
   LESSONS_FROM_TIRSEN.md
+  LESSONS_FROM_JANE_STREET.md
   ANTIPATTERNS.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
