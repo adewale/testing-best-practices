@@ -1,0 +1,7 @@
+{
+  "eval_id": "E23-python-hypothesis-parser-contract",
+  "language": "python",
+  "good_command": "python3 tests/hidden_test.py",
+  "mutant_command": "IMPL=mutant python3 tests/hidden_test.py",
+  "claim": "Parser tests should reject crashes and malformed structured errors."
+}

@@ -1,0 +1,13 @@
+{
+  "eval_id": "E27-typescript-playwright-flake-locators",
+  "language": "typescript",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "rejects waitForTimeout/sleeps",
+    "uses user-facing locators",
+    "uses web-first assertions",
+    "rejects skip/only"
+  ]
+}

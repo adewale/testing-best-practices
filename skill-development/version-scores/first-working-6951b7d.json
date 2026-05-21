@@ -1,0 +1,299 @@
+{
+  "score": 28.0,
+  "possible": 100.0,
+  "percent": 28.0,
+  "categories": {
+    "A router/usability": {
+      "score": 6.0,
+      "possible": 15.0
+    },
+    "B safety/calibration": {
+      "score": 6.0,
+      "possible": 25.0
+    },
+    "C language coverage": {
+      "score": 12.0,
+      "possible": 15.0
+    },
+    "D technique breadth": {
+      "score": 0.0,
+      "possible": 20.0
+    },
+    "E correctness-by-construction": {
+      "score": 2.0,
+      "possible": 15.0
+    },
+    "F validation/reporting": {
+      "score": 2.0,
+      "possible": 10.0
+    }
+  },
+  "details": [
+    {
+      "category": "A router/usability",
+      "name": "SKILL.md <=350 lines",
+      "points": 3,
+      "passed": true,
+      "note": "216 lines <= 350"
+    },
+    {
+      "category": "A router/usability",
+      "name": "mode workflows for write/assess/upgrade/detect",
+      "points": 3,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "A router/usability",
+      "name": "first-context checklist",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "A router/usability",
+      "name": "reference matrix / lazy loading",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "A router/usability",
+      "name": "final report/validation contract",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "no weak toBeDefined PBT example",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "no six/seven contradiction",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "VCR vs MSW distinction",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "integration not external-only",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "positive+negative rule scoped",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "no unsafe downstream deletion wording",
+      "points": 3,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "TDD evidence/feasibility calibrated",
+      "points": 3,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "assertion count calibrated",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "B safety/calibration",
+      "name": "Go table-driven guidance not universal",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "C language coverage",
+      "name": "Python reference exists",
+      "points": 3,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "C language coverage",
+      "name": "TypeScript reference exists",
+      "points": 3,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "C language coverage",
+      "name": "Go reference exists",
+      "points": 3,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "C language coverage",
+      "name": "Rust reference exists",
+      "points": 3,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "C language coverage",
+      "name": "unsupported-language fallback",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "deterministic time",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "characterization testing",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "differential/conformance testing",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "golden/snapshot testing",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "doc-sync testing",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "exhaustive testing",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "mathematical properties",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "mutation testing",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "test data builders",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "D technique breadth",
+      "name": "VCR/recorded fixtures",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "E correctness-by-construction",
+      "name": "dedicated correctness-by-construction reference",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "E correctness-by-construction",
+      "name": "deletion safety preconditions",
+      "points": 4,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "E correctness-by-construction",
+      "name": "Go zero-value caveat",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "E correctness-by-construction",
+      "name": "scope control for production type changes",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "E correctness-by-construction",
+      "name": "preserves real defense-in-depth",
+      "points": 2,
+      "passed": true,
+      "note": "pass"
+    },
+    {
+      "category": "F validation/reporting",
+      "name": "validation loop",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "F validation/reporting",
+      "name": "reports commands/results/gaps",
+      "points": 3,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "F validation/reporting",
+      "name": "mutation/gap analysis guidance",
+      "points": 2,
+      "passed": false,
+      "note": "fail"
+    },
+    {
+      "category": "F validation/reporting",
+      "name": "anti-sabotage checks",
+      "points": 2,
+      "passed": true,
+      "note": "pass"
+    }
+  ]
+}

@@ -56,11 +56,17 @@ tests/
 ```typescript
 import fc from 'fast-check';
 
-it('never throws on arbitrary input', () => {
+it('returns a valid result or structured error for arbitrary input', () => {
   fc.assert(
     fc.property(fc.string(), (input) => {
+      expect(() => parse(input)).not.toThrow();
       const result = parse(input);
-      expect(result).toBeDefined();
+
+      if (result.ok) {
+        expect(result.ast).toMatchObject({ type: expect.any(String) });
+      } else {
+        expect(result.error).toMatchObject({ message: expect.any(String) });
+      }
     }),
     { numRuns: 500 }
   );

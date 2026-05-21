@@ -1,0 +1,7 @@
+{
+  "eval_id": "E25-go-tempdir-and-fake-dependency",
+  "language": "go",
+  "good_command": "cd good && go test ./...",
+  "mutant_command": "cd mutant && go test ./...",
+  "claim": "Report tests should catch notifier-error handling mutants while using temp dirs/fakes."
+}

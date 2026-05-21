@@ -1,0 +1,41 @@
+{
+  "first-github-6951b7d": {
+    "skill_md": {
+      "chars": 8893,
+      "words": 1315,
+      "approx_tokens_chars_div_4": 2223
+    },
+    "installable_total": {
+      "chars": 35620,
+      "words": 4685,
+      "approx_tokens_chars_div_4": 8905
+    },
+    "file_count": 7
+  },
+  "github-origin-main-6e8cd8b": {
+    "skill_md": {
+      "chars": 22286,
+      "words": 3235,
+      "approx_tokens_chars_div_4": 5572
+    },
+    "installable_total": {
+      "chars": 105221,
+      "words": 14483,
+      "approx_tokens_chars_div_4": 26305
+    },
+    "file_count": 18
+  },
+  "local-working-tree": {
+    "skill_md": {
+      "chars": 10980,
+      "words": 1421,
+      "approx_tokens_chars_div_4": 2745
+    },
+    "installable_total": {
+      "chars": 95791,
+      "words": 12880,
+      "approx_tokens_chars_div_4": 23948
+    },
+    "file_count": 18
+  }
+}

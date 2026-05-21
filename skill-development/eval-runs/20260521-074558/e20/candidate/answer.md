@@ -1,0 +1,3 @@
+No. In Go, an exported `Email` type always has a constructible zero value (`var e Email`), and code inside the package can still make invalid literals. An unexported field plus `NewEmail` only prevents outside callers from setting arbitrary field contents directly.
+
+Keep tests for the trust boundary: invalid raw strings are rejected by `NewEmail`/`ParseEmail`, valid inputs produce an `Email` that satisfies the invariant, and zero-value behavior is documented/tested if it can reach public APIs. You can delete only duplicate downstream invalid-email tests where APIs now accept `Email` and the constructor boundary is already covered.

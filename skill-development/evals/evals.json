@@ -1,0 +1,2277 @@
+{
+  "skill_name": "testing-best-practices",
+  "version": 1,
+  "how_to_use": "Run each prompt as a before/after prompt eval against the skill. Score with evals/rubric.md. Prefer runnable fixtures and command logs; if a fixture is not implemented yet, mark the score provisional in evals/scorecard.md rather than treating it as release evidence.",
+  "evals": [
+    {
+      "id": "E01-bugfix-red-green-project-context",
+      "critical": true,
+      "mode": "write",
+      "prompt": "Fix a bug in a TypeScript URL sanitizer where javascript: URLs are not removed. Add tests.",
+      "fixture": "TypeScript/Vitest project with existing sanitizer tests, package.json scripts, and a sanitizer accepting arbitrary strings.",
+      "expected_behavior": [
+        "Inspect package.json/test config and adjacent sanitizer tests before writing.",
+        "Add or describe a regression test that would fail before the fix.",
+        "Verify both dangerous content is removed and safe URLs survive, because this is sanitizer/security-sensitive.",
+        "Use specific assertions, not only toBeDefined/toBeTruthy.",
+        "Run nearest relevant Vitest command or state exact command if unable."
+      ],
+      "red_flags": [
+        "Only checks result is defined/non-empty.",
+        "Claims red phase happened without evidence.",
+        "Rewrites sanitizer architecture without scope/approval."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "D",
+        "F",
+        "H"
+      ],
+      "taxonomy": {
+        "language_framework": "typescript/vitest",
+        "techniques": [
+          "unit",
+          "regression"
+        ],
+        "risk_classes": [
+          "security",
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "weak-assertion",
+          "red-phase-claim"
+        ]
+      },
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [
+          "Targeted Vitest command fails before implementation and passes after fix when runnable.",
+          "Hidden sanitizer cases fail with weak/non-specific assertions.",
+          "Use `evals/fixtures/e01-typescript-vitest-sanitizer/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log.",
+          "Fixture oracle available: `evals/fixtures/e01-typescript-vitest-sanitizer`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving unit, regression without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [],
+          "runtime_checks": [
+            "Targeted Vitest command fails before implementation and passes after fix when runnable.",
+            "Hidden sanitizer cases fail with weak/non-specific assertions.",
+            "Use `evals/fixtures/e01-typescript-vitest-sanitizer/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log.",
+            "Fixture oracle available: `evals/fixtures/e01-typescript-vitest-sanitizer`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E02-assess-sabotaged-tests",
+      "critical": true,
+      "mode": "assess",
+      "prompt": "Audit these tests for quality: there are pytest tests with @pytest.mark.skip('broken'), print statements inside conditionals, and assertions like assert result != ''.",
+      "fixture": "Python pytest file containing unconditional skip, logging-not-asserting, empty assertion, and one good parametrized test.",
+      "expected_behavior": [
+        "Classify unconditional skip and logging-not-asserting as high-severity false-confidence issues.",
+        "Flag sole not-empty assertion as weak and suggest behavior-specific assertions.",
+        "Call out the good parametrized test as positive evidence.",
+        "Recommend fixes without inflating severity for harmless style issues."
+      ],
+      "red_flags": [
+        "Only recommends increasing line coverage.",
+        "Misses skipped tests.",
+        "Says print/log output is acceptable verification."
+      ],
+      "rubric_focus": [
+        "A",
+        "C",
+        "H"
+      ],
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "anti-pattern-detection"
+        ],
+        "risk_classes": [
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "skipped-test",
+          "logging-not-asserting",
+          "weak-assertion"
+        ]
+      },
+      "measurement": {
+        "static_checks": [
+          "Seed fixture includes unconditional skip, logging-not-asserting, weak not-empty assertion, and one good parametrized test. Response should identify the first three without condemning the good test."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle assess tasks involving anti-pattern-detection without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Seed fixture includes unconditional skip, logging-not-asserting, weak not-empty assertion, and one good parametrized test. Response should identify the first three without condemning the good test."
+          ],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E03-assertion-density-calibration",
+      "critical": true,
+      "mode": "assess",
+      "prompt": "Review this Go table-driven test. Each subtest has one strong equality assertion over expected output. Is that bad because it has fewer than 3 assertions?",
+      "fixture": "Go test with 10 table cases for a pure formatting function and one assert per subtest.",
+      "expected_behavior": [
+        "Do not blindly fail it for fewer than 3 assertions.",
+        "Explain that table cases can have one strong oracle per case.",
+        "Suggest adding boundary/sad cases only if behavior gaps exist.",
+        "Preserve Go idioms."
+      ],
+      "red_flags": [
+        "Demands 3 assertions per subtest.",
+        "Suggests assertion stuffing."
+      ],
+      "rubric_focus": [
+        "C",
+        "G"
+      ],
+      "taxonomy": {
+        "language_framework": "go",
+        "techniques": [
+          "unit",
+          "table-driven"
+        ],
+        "risk_classes": [
+          "calibration"
+        ],
+        "failure_modes": [
+          "overbroad-universal-rule",
+          "assertion-stuffing"
+        ]
+      },
+      "measurement": {
+        "static_checks": [
+          "Response must not recommend adding assertions solely to reach a count threshold; it should mention table/property/exception calibration."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle assess tasks involving unit, table-driven without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Response must not recommend adding assertions solely to reach a count threshold; it should mention table/property/exception calibration."
+          ],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E04-correctness-by-construction-safety",
+      "critical": true,
+      "mode": "upgrade",
+      "prompt": "We validate EmailAddress at the HTTP boundary, service layer, and repository. Should we delete the downstream checks and tests?",
+      "fixture": "Typed service with boundary parser, internal EmailAddress type, repository constraints, and auth/security concerns.",
+      "expected_behavior": [
+        "Use a safety checklist before deletion: trust boundary, adversary model, constructor/schema enforcement, boundary tests, invalid-state reachability.",
+        "Recommend collapsing duplicate internal validation only if EmailAddress is unconstructible when invalid.",
+        "Keep security/external failure defenses that address different failure modes.",
+        "If production changes are needed, ask/confirm scope before applying."
+      ],
+      "red_flags": [
+        "Immediately tells user to delete all downstream checks/tests.",
+        "Deletes auth/security validation as redundant.",
+        "Ignores weakly enforced languages/zero values."
+      ],
+      "rubric_focus": [
+        "D",
+        "E"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "correctness-by-construction"
+        ],
+        "risk_classes": [
+          "type-invariant",
+          "security",
+          "scope-control"
+        ],
+        "failure_modes": [
+          "unsafe-check-deletion"
+        ]
+      },
+      "measurement": {
+        "static_checks": [
+          "Response must include trust-boundary/adversary/model-enforcement/boundary-test safety checks before deletion."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving correctness-by-construction without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Response must include trust-boundary/adversary/model-enforcement/boundary-test safety checks before deletion."
+          ],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E05-property-based-typescript-never-throws",
+      "critical": true,
+      "mode": "write",
+      "prompt": "Add a fast-check property test for a JSON-ish parser: arbitrary strings should never crash, and parse should return either a valid AST or a structured error.",
+      "fixture": "TypeScript project with parser returning { ok: true, ast } | { ok: false, error }.",
+      "expected_behavior": [
+        "Use fast-check idiomatically.",
+        "Assert not throwing and validate the returned discriminated union shape.",
+        "Avoid sole toBeDefined/toBeTruthy assertions.",
+        "Prefer valid-or-absent/valid-or-error invariant."
+      ],
+      "red_flags": [
+        "Uses expect(result).toBeDefined() as the only assertion.",
+        "Catches and ignores parser exceptions."
+      ],
+      "rubric_focus": [
+        "C",
+        "G"
+      ],
+      "taxonomy": {
+        "language_framework": "typescript/fast-check",
+        "techniques": [
+          "property-based"
+        ],
+        "risk_classes": [
+          "parser",
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "weak-assertion",
+          "swallowed-exception"
+        ]
+      },
+      "measurement": {
+        "static_checks": [
+          "No sole toBeDefined/toBeTruthy assertion in the property body.",
+          "Property validates ok/error discriminant or equivalent output invariant."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving property-based without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "No sole toBeDefined/toBeTruthy assertion in the property body.",
+            "Property validates ok/error discriminant or equivalent output invariant."
+          ],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E06-integration-tier-classification",
+      "critical": false,
+      "mode": "assess",
+      "prompt": "Are these integration tests mislabeled? They exercise controller + service + in-memory repository in-process, with no real external service.",
+      "fixture": "Project has unit tests for pure services, in-process integration tests, and separate E2E tests.",
+      "expected_behavior": [
+        "Recognize valid in-process integration across real internal component boundaries.",
+        "Do not require every integration test to hit an external dependency.",
+        "Suggest clear tier naming if project conventions differ."
+      ],
+      "red_flags": [
+        "Says integration tests must have an external dependency.",
+        "Recommends adding network/database only to satisfy a label."
+      ],
+      "rubric_focus": [
+        "F"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "integration"
+        ],
+        "risk_classes": [
+          "test-tiering"
+        ],
+        "failure_modes": [
+          "integration-misclassification"
+        ]
+      },
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle assess tasks involving integration without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E07-vcr-vs-handwritten-http-mocks",
+      "critical": false,
+      "mode": "upgrade",
+      "prompt": "Our API client tests use MSW handlers with hand-written {status: 200} bodies. The real API sometimes returns statusCode. Should we use VCR cassettes?",
+      "fixture": "TypeScript API client with hand-written MSW mocks and occasional schema drift.",
+      "expected_behavior": [
+        "Explain difference between deterministic HTTP mocks and recorded/replayed cassettes.",
+        "Recommend recorded fixtures/cassettes or contract tests when mock-reality drift matters.",
+        "Keep MSW as useful for controlled error scenarios if shapes are generated from real fixtures."
+      ],
+      "red_flags": [
+        "Calls hand-written MSW mocks VCR cassettes.",
+        "Suggests live API calls in normal CI without gating."
+      ],
+      "rubric_focus": [
+        "F",
+        "G"
+      ],
+      "taxonomy": {
+        "language_framework": "typescript",
+        "techniques": [
+          "vcr-recorded-fixture",
+          "contract"
+        ],
+        "risk_classes": [
+          "external-boundary",
+          "mock-drift"
+        ],
+        "failure_modes": [
+          "mock-reality-drift",
+          "live-network"
+        ]
+      },
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving vcr-recorded-fixture, contract without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E08-flaky-time-tests",
+      "critical": true,
+      "mode": "upgrade",
+      "prompt": "A test waits with sleep(2) for a scheduled job to run. It flakes in CI. Improve it.",
+      "fixture": "Any language; code supports injecting a clock or scheduler with small changes.",
+      "expected_behavior": [
+        "Replace wall-clock sleep with virtual/injected time, condition-based waiting, or deterministic scheduler.",
+        "Avoid increasing sleep timeout as primary fix.",
+        "Run or propose targeted flaky test validation."
+      ],
+      "red_flags": [
+        "Increases sleep to 10 seconds.",
+        "Marks/skips the test unconditionally."
+      ],
+      "rubric_focus": [
+        "F",
+        "H"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "deterministic-time"
+        ],
+        "risk_classes": [
+          "flake"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "skipped-test"
+        ]
+      },
+      "measurement": {
+        "static_checks": [
+          "No increased sleep/timeouts as primary fix."
+        ],
+        "runtime_checks": [
+          "Use `evals/fixtures/e08-deterministic-time/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log.",
+          "Fixture oracle available: `evals/fixtures/e08-deterministic-time`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving deterministic-time without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "No increased sleep/timeouts as primary fix."
+          ],
+          "runtime_checks": [
+            "Use `evals/fixtures/e08-deterministic-time/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log.",
+            "Fixture oracle available: `evals/fixtures/e08-deterministic-time`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E09-legacy-characterization",
+      "critical": false,
+      "mode": "write",
+      "prompt": "Refactor this legacy discount-calculation module safely. It has almost no tests.",
+      "fixture": "Legacy code with unclear intended behavior and many edge cases.",
+      "expected_behavior": [
+        "Recommend characterization tests capturing current behavior before refactor.",
+        "Avoid asserting guessed desired behavior as truth unless user confirms.",
+        "Use golden/differential/table tests if appropriate for many cases."
+      ],
+      "red_flags": [
+        "Refactors first, tests later.",
+        "Changes behavior without surfacing it."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "characterization"
+        ],
+        "risk_classes": [
+          "legacy-refactor"
+        ],
+        "failure_modes": [
+          "behavior-change-without-characterization"
+        ]
+      },
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving characterization without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E10-high-coverage-low-quality",
+      "critical": false,
+      "mode": "detect",
+      "prompt": "Coverage is 96%, but bugs keep escaping. Most tests just call methods and assert not null. What should we do?",
+      "fixture": "Suite with high line coverage, low branch coverage, trivial assertions, and no mutation testing.",
+      "expected_behavior": [
+        "Explain coverage is informational and line coverage does not prove bug detection.",
+        "Recommend assertion quality review and mutation/pseudo-mutation testing.",
+        "Prioritize critical paths over broad test-count increases."
+      ],
+      "red_flags": [
+        "Recommends raising coverage threshold to 100%.",
+        "Ignores weak assertions."
+      ],
+      "rubric_focus": [
+        "C",
+        "H"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "mutation",
+          "assertion-quality"
+        ],
+        "risk_classes": [
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "coverage-inflation",
+          "weak-assertion"
+        ]
+      },
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle detect tasks involving mutation, assertion-quality without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E11-e2e-scope-control",
+      "critical": false,
+      "mode": "write",
+      "prompt": "Add tests for a new checkout flow. Should we E2E test every endpoint?",
+      "fixture": "Web app with checkout API, frontend, payment provider sandbox, and existing unit/integration tests.",
+      "expected_behavior": [
+        "Recommend a small number of high-value E2E user journeys, not every endpoint.",
+        "Use unit/integration/contract tests for lower-level behavior.",
+        "Gate real payment/sandbox dependencies behind env markers."
+      ],
+      "red_flags": [
+        "Mandates E2E for every endpoint.",
+        "Mocks the whole system under test and calls it E2E."
+      ],
+      "rubric_focus": [
+        "D",
+        "F"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "e2e",
+          "integration",
+          "contract"
+        ],
+        "risk_classes": [
+          "scope-control",
+          "external-boundary"
+        ],
+        "failure_modes": [
+          "overbroad-e2e",
+          "mocked-e2e"
+        ]
+      },
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving e2e, integration, contract without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E12-final-report-validation-honesty",
+      "critical": true,
+      "mode": "write",
+      "prompt": "Add tests and tell me when done. The test command fails because a dependency is missing in the sandbox.",
+      "fixture": "Any project where test runner exits with missing dependency or unavailable service.",
+      "expected_behavior": [
+        "Report exact command run and failure reason.",
+        "Do not claim tests passed.",
+        "Provide next-best validation and exact command for user/local run.",
+        "Summarize tests changed and behavior covered."
+      ],
+      "red_flags": [
+        "Says all tests pass despite failing command.",
+        "Omits validation status."
+      ],
+      "rubric_focus": [
+        "H"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "validation-reporting"
+        ],
+        "risk_classes": [
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "fabricated-validation"
+        ]
+      },
+      "measurement": {
+        "static_checks": [
+          "Final answer must not contain passing-test claim when supplied command log failed."
+        ],
+        "runtime_checks": [
+          "Compare final answer against injected missing-dependency command failure.",
+          "Use `evals/fixtures/e12-validation-honesty/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log.",
+          "Fixture oracle available: `evals/fixtures/e12-validation-honesty`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving validation-reporting without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Final answer must not contain passing-test claim when supplied command log failed."
+          ],
+          "runtime_checks": [
+            "Compare final answer against injected missing-dependency command failure.",
+            "Use `evals/fixtures/e12-validation-honesty/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log.",
+            "Fixture oracle available: `evals/fixtures/e12-validation-honesty`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E13-unsupported-language-fallback",
+      "critical": false,
+      "mode": "write",
+      "prompt": "Add tests for this Kotlin module. There is no Kotlin reference in the skill.",
+      "fixture": "Kotlin/Gradle project with existing JUnit tests.",
+      "expected_behavior": [
+        "Inspect project conventions and existing tests instead of forcing Python/TS/Go/Rust guidance.",
+        "Use generic principles plus framework-specific evidence from the repo.",
+        "State unsupported-reference fallback if needed."
+      ],
+      "red_flags": [
+        "Claims the skill only works for listed languages.",
+        "Applies unrelated language APIs."
+      ],
+      "rubric_focus": [
+        "B",
+        "G"
+      ],
+      "taxonomy": {
+        "language_framework": "unsupported/kotlin",
+        "techniques": [
+          "unit"
+        ],
+        "risk_classes": [
+          "unsupported-language"
+        ],
+        "failure_modes": [
+          "framework-mismatch"
+        ]
+      },
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving unit without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [],
+          "runtime_checks": [],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E14-scope-creep-type-refactor",
+      "critical": true,
+      "mode": "write",
+      "prompt": "Only add tests for current behavior: sendEmail(addr: string) rejects malformed addresses. Do not change production code.",
+      "fixture": "Typed language where branded EmailAddress would be better, but user explicitly forbids production changes.",
+      "expected_behavior": [
+        "Respect user scope and do not change production code.",
+        "Add boundary/parser behavior tests for current API.",
+        "Mention type tightening as a follow-up recommendation, not an applied change."
+      ],
+      "red_flags": [
+        "Changes signature/type despite explicit instruction.",
+        "Refuses to add tests solely because a type would be better."
+      ],
+      "rubric_focus": [
+        "D",
+        "E"
+      ],
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "correctness-by-construction",
+          "unit"
+        ],
+        "risk_classes": [
+          "scope-control",
+          "type-invariant"
+        ],
+        "failure_modes": [
+          "unsafe-type-refactor"
+        ]
+      },
+      "measurement": {
+        "static_checks": [
+          "Patch/answer must not change production code or function signature when prompt says tests only."
+        ],
+        "runtime_checks": [
+          "Tests target current API behavior; production diff is empty outside test files if fixture runner exists."
+        ],
+        "judge_checks": [
+          "Score response with evals/rubric.md focus dimensions and critical overrides.",
+          "Compare final claimed command results with supplied failing command log."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving correctness-by-construction, unit without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Patch/answer must not change production code or function signature when prompt says tests only."
+          ],
+          "runtime_checks": [
+            "Tests target current API behavior; production diff is empty outside test files if fixture runner exists."
+          ],
+          "judge_checks": [
+            "Score response with evals/rubric.md focus dimensions and critical overrides.",
+            "Compare final claimed command results with supplied failing command log."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E15-doc-sync-cli-registry",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "doc-sync"
+        ],
+        "risk_classes": [
+          "maintenance-drift"
+        ],
+        "failure_modes": [
+          "docs-code-drift"
+        ]
+      },
+      "prompt": "Add tests that ensure documented CLI commands stay in sync with the command registry. The docs currently list some commands manually.",
+      "fixture": "CLI project with src/commands registry and docs/commands.md containing a stale command list.",
+      "expected_behavior": [
+        "Use code registry as source of truth, not duplicated hand-written expected list.",
+        "Parametrize over actual registered commands and assert each appears in docs.",
+        "Also detect documented commands that no longer exist when feasible.",
+        "Run nearest doc-sync/unit test command or report exact command."
+      ],
+      "red_flags": [
+        "Copies the stale docs list into the test as expected data.",
+        "Only snapshots the whole docs file without checking command semantics."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "F",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Test reads/imports actual command registry or generated command list."
+        ],
+        "runtime_checks": [
+          "Seeded stale/missing command causes test failure."
+        ],
+        "judge_checks": [
+          "Score registry-as-source-of-truth and validation honesty."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving doc-sync without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Test reads/imports actual command registry or generated command list."
+          ],
+          "runtime_checks": [
+            "Seeded stale/missing command causes test failure."
+          ],
+          "judge_checks": [
+            "Score registry-as-source-of-truth and validation honesty."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E16-golden-review-discipline",
+      "critical": false,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "golden-snapshot"
+        ],
+        "risk_classes": [
+          "maintenance-drift"
+        ],
+        "failure_modes": [
+          "blind-snapshot-update"
+        ]
+      },
+      "prompt": "A transformation test changed 40 golden files. Should we just update all snapshots?",
+      "fixture": "HTML-to-Markdown or codegen project with golden files, some expected changes and one regression hidden in the diff.",
+      "expected_behavior": [
+        "Do not blindly update snapshots/goldens.",
+        "Review representative diffs and identify semantic vs incidental changes.",
+        "Filter volatile fields or normalize nondeterministic output.",
+        "Require explicit approval for large golden updates and preserve failing regression evidence."
+      ],
+      "red_flags": [
+        "Runs update snapshots as the only action.",
+        "Treats golden output as truth without reviewing diff."
+      ],
+      "rubric_focus": [
+        "C",
+        "D",
+        "F",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "No unconditional update-snapshot recommendation without review step."
+        ],
+        "runtime_checks": [
+          "Hidden regression remains detected until approved fix/update."
+        ],
+        "judge_checks": [
+          "Score diff-review discipline and nondeterminism handling."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving golden-snapshot without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "No unconditional update-snapshot recommendation without review step."
+          ],
+          "runtime_checks": [
+            "Hidden regression remains detected until approved fix/update."
+          ],
+          "judge_checks": [
+            "Score diff-review discipline and nondeterminism handling."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E17-rust-differential-port",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "rust",
+        "techniques": [
+          "differential",
+          "pirate-conformance"
+        ],
+        "risk_classes": [
+          "porting",
+          "oracle-quality"
+        ],
+        "failure_modes": [
+          "handcomputed-oracle-gap"
+        ]
+      },
+      "prompt": "We are porting a tokenizer from Python to Rust. Add tests that prove the Rust version matches the Python reference.",
+      "fixture": "Rust crate plus trusted Python reference tokenizer and shared JSON fixtures.",
+      "expected_behavior": [
+        "Recommend/run differential tests against the trusted Python implementation.",
+        "Use shared language-neutral fixtures for cross-language conformance when appropriate.",
+        "Include edge cases and arbitrary/generated inputs if feasible.",
+        "Do not rely only on hand-calculated expected values."
+      ],
+      "red_flags": [
+        "Writes only a couple of hand-picked examples while ignoring the reference.",
+        "Treats the new Rust implementation as its own oracle."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "G",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Test invokes or compares against reference/fixture corpus."
+        ],
+        "runtime_checks": [
+          "Seeded Rust divergence is caught."
+        ],
+        "judge_checks": [
+          "Score oracle quality and Rust idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving differential, pirate-conformance without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Test invokes or compares against reference/fixture corpus."
+          ],
+          "runtime_checks": [
+            "Seeded Rust divergence is caught."
+          ],
+          "judge_checks": [
+            "Score oracle quality and Rust idiom."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E18-test-data-builder-intent",
+      "critical": false,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "test-data-builder"
+        ],
+        "risk_classes": [
+          "maintainability"
+        ],
+        "failure_modes": [
+          "brittle-fixture-noise"
+        ]
+      },
+      "prompt": "These tests construct User/Order objects with 12 required fields inline in every test. Improve the tests without hiding the behavior under test.",
+      "fixture": "Test file with repeated long object literals where each test cares about one or two fields.",
+      "expected_behavior": [
+        "Introduce factories/builders with valid defaults.",
+        "Keep tests explicit about fields relevant to the behavior.",
+        "Add domain-specific assertion helpers where they reduce noise.",
+        "Avoid builders that permit invalid objects unless intentionally testing boundary parsing."
+      ],
+      "red_flags": [
+        "Creates a magic builder that hides all intent.",
+        "Continues duplicating full object literals everywhere."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "E"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Reduced repeated literal setup while preserving explicit relevant fields."
+        ],
+        "runtime_checks": [
+          "Existing behavior tests still pass."
+        ],
+        "judge_checks": [
+          "Score intent clarity and builder safety."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving test-data-builder without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Reduced repeated literal setup while preserving explicit relevant fields."
+          ],
+          "runtime_checks": [
+            "Existing behavior tests still pass."
+          ],
+          "judge_checks": [
+            "Score intent clarity and builder safety."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E19-detect-order-pollution",
+      "critical": true,
+      "mode": "detect",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "anti-pattern-detection",
+          "isolation"
+        ],
+        "risk_classes": [
+          "flake"
+        ],
+        "failure_modes": [
+          "test-order-dependency",
+          "global-state-leak",
+          "skipped-test"
+        ]
+      },
+      "prompt": "These tests pass alone but fail when run after the plugin tests. Find the likely test-quality problem and propose a fix.",
+      "fixture": "Suite with global registry/env var mutation and missing teardown.",
+      "expected_behavior": [
+        "Diagnose shared state/order dependency rather than treating it as random flake.",
+        "Recommend reset/teardown, isolated registry, monkeypatch/afterEach cleanup, or fresh process as appropriate.",
+        "Do not skip or reorder tests as the primary fix.",
+        "Suggest reproducing with randomized order or targeted sequence."
+      ],
+      "red_flags": [
+        "Adds skip/retry as primary fix.",
+        "Only increases timeouts."
+      ],
+      "rubric_focus": [
+        "C",
+        "F",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "No unconditional skip/retry as fix."
+        ],
+        "runtime_checks": [
+          "Problem reproduces before cleanup and passes after cleanup in seeded fixture.",
+          "Use `evals/fixtures/e19-order-pollution/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score order-dependency diagnosis.",
+          "Fixture oracle available: `evals/fixtures/e19-order-pollution`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle detect tasks involving anti-pattern-detection, isolation without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "No unconditional skip/retry as fix."
+          ],
+          "runtime_checks": [
+            "Problem reproduces before cleanup and passes after cleanup in seeded fixture.",
+            "Use `evals/fixtures/e19-order-pollution/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score order-dependency diagnosis.",
+            "Fixture oracle available: `evals/fixtures/e19-order-pollution`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E20-go-zero-value-invariant",
+      "critical": true,
+      "mode": "assess",
+      "taxonomy": {
+        "language_framework": "go",
+        "techniques": [
+          "correctness-by-construction"
+        ],
+        "risk_classes": [
+          "type-invariant"
+        ],
+        "failure_modes": [
+          "zero-value-invalid-state"
+        ]
+      },
+      "prompt": "In Go, we made Email have an unexported field and NewEmail constructor. Does that make invalid Email values unconstructible, so we can delete all invalid-email tests?",
+      "fixture": "Go package with type Email struct { value string } and constructor validation, plus consumers inside/outside package.",
+      "expected_behavior": [
+        "Mention Go zero value: var e Email is still constructible.",
+        "Do not claim external Email{} composite literal works when fields are unexported.",
+        "Recommend designing zero value to be valid or adding validity checks at use boundaries.",
+        "Delete only redundant downstream tests after constructor/boundary and zero-value behavior are covered."
+      ],
+      "red_flags": [
+        "Claims unexported fields make invalid states impossible in Go.",
+        "Uses Email{} outside package as the decisive example.",
+        "Deletes all tests without zero-value coverage."
+      ],
+      "rubric_focus": [
+        "E",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Answer mentions zero value and avoids false external Email{} claim."
+        ],
+        "runtime_checks": [
+          "Go zero-value test demonstrates behavior if fixture exists.",
+          "Use `evals/fixtures/e20-go-zero-value/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score Go type-system accuracy.",
+          "Fixture oracle available: `evals/fixtures/e20-go-zero-value`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle assess tasks involving correctness-by-construction without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Answer mentions zero value and avoids false external Email{} claim."
+          ],
+          "runtime_checks": [
+            "Go zero-value test demonstrates behavior if fixture exists.",
+            "Use `evals/fixtures/e20-go-zero-value/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score Go type-system accuracy.",
+            "Fixture oracle available: `evals/fixtures/e20-go-zero-value`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E21-implementation-detail-mock-call-count",
+      "critical": false,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "mock-fidelity",
+          "unit"
+        ],
+        "risk_classes": [
+          "maintainability"
+        ],
+        "failure_modes": [
+          "implementation-detail-coupling",
+          "over-mocking"
+        ]
+      },
+      "prompt": "A refactor changed private helper calls, and tests failed because they assert exact mock call counts. Behavior is unchanged. Improve the tests.",
+      "fixture": "Service tests verifying internal collaborator call count/order rather than public outcome or side effect.",
+      "expected_behavior": [
+        "Identify implementation-detail coupling.",
+        "Prefer assertions on public behavior/output/side effects.",
+        "Keep mocks only for true boundaries and verify contract-level outcomes, not incidental call choreography.",
+        "Do not weaken tests to no assertions."
+      ],
+      "red_flags": [
+        "Updates call counts to match new implementation without questioning oracle.",
+        "Deletes assertions entirely."
+      ],
+      "rubric_focus": [
+        "C",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Fewer incidental call-count/order assertions; meaningful behavior assertions remain."
+        ],
+        "runtime_checks": [
+          "Behavior-preserving refactor no longer breaks tests."
+        ],
+        "judge_checks": [
+          "Score mock use and oracle strength."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving mock-fidelity, unit without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Fewer incidental call-count/order assertions; meaningful behavior assertions remain."
+          ],
+          "runtime_checks": [
+            "Behavior-preserving refactor no longer breaks tests."
+          ],
+          "judge_checks": [
+            "Score mock use and oracle strength."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E22-contract-schema-drift",
+      "critical": false,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "contract",
+          "vcr-recorded-fixture"
+        ],
+        "risk_classes": [
+          "external-boundary",
+          "mock-drift"
+        ],
+        "failure_modes": [
+          "mock-reality-drift",
+          "live-network"
+        ]
+      },
+      "prompt": "Our provider mock still returns {status: 200}, but production now receives {statusCode: 200}. How should tests catch this earlier?",
+      "fixture": "API client using hand-written mocks and available OpenAPI/schema or recorded real response sample.",
+      "expected_behavior": [
+        "Recommend contract/schema validation or recorded real fixtures/cassettes for provider shape.",
+        "Use hand-written mocks only for controlled scenarios and derive their shape from schema/fixtures.",
+        "Avoid live network in normal CI unless gated.",
+        "Add a mock-fidelity or contract test that fails on status/statusCode drift."
+      ],
+      "red_flags": [
+        "Keeps hand-written mock as the only oracle.",
+        "Runs live provider calls unconditionally in CI."
+      ],
+      "rubric_focus": [
+        "C",
+        "F",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Test validates mock/fixture against schema or recorded shape."
+        ],
+        "runtime_checks": [
+          "status/statusCode drift is caught."
+        ],
+        "judge_checks": [
+          "Score contract boundary choice."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving contract, vcr-recorded-fixture without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Test validates mock/fixture against schema or recorded shape."
+          ],
+          "runtime_checks": [
+            "status/statusCode drift is caught."
+          ],
+          "judge_checks": [
+            "Score contract boundary choice."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E23-python-hypothesis-parser-contract",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest-hypothesis",
+        "techniques": [
+          "property-based",
+          "unit"
+        ],
+        "risk_classes": [
+          "parser",
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "weak-assertion",
+          "swallowed-exception",
+          "framework-mismatch"
+        ]
+      },
+      "prompt": "Add pytest/Hypothesis tests for a Python config parser. Arbitrary text should never crash; the parser returns either a Config object satisfying invariants or a structured ParseError. Follow the project's existing pytest style.",
+      "fixture": "Python package with pyproject.toml, pytest tests, parser returning Config | ParseError, and existing fixture helpers.",
+      "expected_behavior": [
+        "Inspect pyproject/test config and adjacent pytest tests first.",
+        "Use Hypothesis strategies idiomatically with enough examples/settings for the project.",
+        "Assert no unexpected crash and verify Config invariants or structured ParseError fields.",
+        "Avoid sole not-None/truthy assertions and avoid swallowing exceptions.",
+        "Run nearest pytest command or report exact command if blocked."
+      ],
+      "red_flags": [
+        "Uses only assert result is not None.",
+        "Catches all exceptions and passes.",
+        "Uses TypeScript/Go patterns instead of pytest/Hypothesis."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "G",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Property contains meaningful Config/Error invariant assertions, not only not-None."
+        ],
+        "runtime_checks": [
+          "Seeded malformed input does not crash and malformed ParseError shape is asserted.",
+          "Use `evals/fixtures/e23-python-hypothesis-parser/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score Python idiom, oracle strength, and validation honesty.",
+          "Fixture oracle available: `evals/fixtures/e23-python-hypothesis-parser`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving property-based, unit without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Property contains meaningful Config/Error invariant assertions, not only not-None."
+          ],
+          "runtime_checks": [
+            "Seeded malformed input does not crash and malformed ParseError shape is asserted.",
+            "Use `evals/fixtures/e23-python-hypothesis-parser/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score Python idiom, oracle strength, and validation honesty.",
+            "Fixture oracle available: `evals/fixtures/e23-python-hypothesis-parser`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E24-python-recorded-api-fixture",
+      "critical": false,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "vcr-recorded-fixture",
+          "contract"
+        ],
+        "risk_classes": [
+          "external-boundary",
+          "mock-drift"
+        ],
+        "failure_modes": [
+          "mock-reality-drift",
+          "live-network"
+        ]
+      },
+      "prompt": "Our Python API client tests monkeypatch requests.get to return a hand-written dict. The provider changed a field name and tests missed it. Upgrade the tests.",
+      "fixture": "Python requests/httpx client with pytest tests, hand-written monkeypatch response, and optional VCR.py/pytest-recording dependency.",
+      "expected_behavior": [
+        "Explain mock-reality drift and distinguish hand-written monkeypatches from recorded cassettes.",
+        "Use VCR/recorded fixtures or schema/contract validation if available.",
+        "Filter secrets and keep normal CI offline.",
+        "Keep controlled monkeypatches only for deliberate error/timeout scenarios."
+      ],
+      "red_flags": [
+        "Keeps hand-written dict as sole oracle.",
+        "Calls live provider unconditionally in CI."
+      ],
+      "rubric_focus": [
+        "C",
+        "F",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Recorded fixture/schema validation appears in recommendation or patch."
+        ],
+        "runtime_checks": [
+          "status/statusCode-style drift is caught by upgraded test.",
+          "Use `evals/fixtures/e24-python-recorded-api-fixture/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score external-boundary choice and Python idiom.",
+          "Fixture oracle available: `evals/fixtures/e24-python-recorded-api-fixture`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving vcr-recorded-fixture, contract without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Recorded fixture/schema validation appears in recommendation or patch."
+          ],
+          "runtime_checks": [
+            "status/statusCode-style drift is caught by upgraded test.",
+            "Use `evals/fixtures/e24-python-recorded-api-fixture/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score external-boundary choice and Python idiom.",
+            "Fixture oracle available: `evals/fixtures/e24-python-recorded-api-fixture`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E25-go-tempdir-and-fake-dependency",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go",
+        "techniques": [
+          "unit",
+          "table-driven"
+        ],
+        "risk_classes": [
+          "flake",
+          "maintainability"
+        ],
+        "failure_modes": [
+          "live-network",
+          "global-state-leak",
+          "framework-mismatch"
+        ]
+      },
+      "prompt": "Add Go tests for a function that writes reports to disk and calls a notifier interface. Cover success, write failure, and notifier failure without touching the real filesystem outside the test or real network.",
+      "fixture": "Go module with report writer, Notifier interface, existing go test table style, and no external services in tests.",
+      "expected_behavior": [
+        "Use t.TempDir for filesystem isolation.",
+        "Use a small purpose-built fake notifier instead of a broad mock or real network.",
+        "Use table-driven cases where useful but do not force one assertion-count rule per subtest.",
+        "Run targeted go test command or report exact command."
+      ],
+      "red_flags": [
+        "Writes to a shared path or depends on test order cleanup.",
+        "Calls a real notifier/network.",
+        "Demands 3 assertions per table row regardless of oracle strength."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "F",
+        "G",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Uses t.TempDir and fake notifier; no real network."
+        ],
+        "runtime_checks": [
+          "Seeded write/notifier failures are asserted.",
+          "Use `evals/fixtures/e25-go-tempdir-fake/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score Go idiom and deterministic isolation.",
+          "Fixture oracle available: `evals/fixtures/e25-go-tempdir-fake`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving unit, table-driven without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "Uses t.TempDir and fake notifier; no real network."
+          ],
+          "runtime_checks": [
+            "Seeded write/notifier failures are asserted.",
+            "Use `evals/fixtures/e25-go-tempdir-fake/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score Go idiom and deterministic isolation.",
+            "Fixture oracle available: `evals/fixtures/e25-go-tempdir-fake`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E26-rust-result-proptest-and-no-unwrap",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "rust",
+        "techniques": [
+          "property-based",
+          "unit"
+        ],
+        "risk_classes": [
+          "parser",
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "weak-assertion",
+          "swallowed-exception",
+          "framework-mismatch"
+        ]
+      },
+      "prompt": "Add Rust tests for parse_rule(input: &str) -> Result<Rule, RuleError>. Arbitrary strings must not panic; Ok rules must satisfy invariants and Err values must expose a useful kind/span.",
+      "fixture": "Rust crate with Cargo.toml, existing #[test] tests, optional proptest dependency, and parse_rule returning Result.",
+      "expected_behavior": [
+        "Inspect Cargo.toml and existing Rust test style.",
+        "Use proptest or an existing property-test framework when available; otherwise explain fallback.",
+        "Assert no panic and validate Ok invariants or Err kind/span.",
+        "Avoid unwrap in the property except after checking Ok/Err.",
+        "Run cargo test targeted command or report exact command."
+      ],
+      "red_flags": [
+        "Uses unwrap on arbitrary parse results in the property.",
+        "Only checks is_ok or is_err without invariants.",
+        "Uses non-Rust testing APIs."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "G",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "No unconditional unwrap on arbitrary parse result; Ok/Err invariants asserted."
+        ],
+        "runtime_checks": [
+          "Seeded panic/malformed error mutant is caught.",
+          "Use `evals/fixtures/e26-rust-result-proptest/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score Rust idiom and oracle strength.",
+          "Fixture oracle available: `evals/fixtures/e26-rust-result-proptest`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle write tasks involving property-based, unit without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "No unconditional unwrap on arbitrary parse result; Ok/Err invariants asserted."
+          ],
+          "runtime_checks": [
+            "Seeded panic/malformed error mutant is caught.",
+            "Use `evals/fixtures/e26-rust-result-proptest/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score Rust idiom and oracle strength.",
+            "Fixture oracle available: `evals/fixtures/e26-rust-result-proptest`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E27-typescript-playwright-flake-locators",
+      "critical": true,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "typescript/playwright",
+        "techniques": [
+          "e2e",
+          "deterministic-time"
+        ],
+        "risk_classes": [
+          "flake"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "framework-mismatch",
+          "weak-assertion"
+        ]
+      },
+      "prompt": "A Playwright test uses page.waitForTimeout(2000) before checking a toast. It flakes under slow CI. Upgrade it using project conventions.",
+      "fixture": "TypeScript Playwright project with existing tests using role/text locators and web-first assertions.",
+      "expected_behavior": [
+        "Read existing Playwright tests/config first.",
+        "Replace hard wait with locator/web-first assertion or event/condition wait.",
+        "Use user-facing locators where possible.",
+        "Avoid test.only/skip and arbitrary timeout inflation.",
+        "Run targeted Playwright command or report exact command."
+      ],
+      "red_flags": [
+        "Increases waitForTimeout duration.",
+        "Uses brittle CSS/XPath when accessible locator exists.",
+        "Skips the test in CI."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "F",
+        "G",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "No waitForTimeout/sleep as synchronization; no test.only/skip."
+        ],
+        "runtime_checks": [
+          "Delayed-toast fixture passes repeated runs.",
+          "Use `evals/fixtures/e27-typescript-playwright-flake/oracle.py` to validate candidate output when fixture is materialized."
+        ],
+        "judge_checks": [
+          "Score Playwright idiom and flake fix.",
+          "Fixture oracle available: `evals/fixtures/e27-typescript-playwright-flake`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can handle upgrade tasks involving e2e, deterministic-time without the listed failure modes.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
+        "backing": {
+          "static_checks": [
+            "No waitForTimeout/sleep as synchronization; no test.only/skip."
+          ],
+          "runtime_checks": [
+            "Delayed-toast fixture passes repeated runs.",
+            "Use `evals/fixtures/e27-typescript-playwright-flake/oracle.py` to validate candidate output when fixture is materialized."
+          ],
+          "judge_checks": [
+            "Score Playwright idiom and flake fix.",
+            "Fixture oracle available: `evals/fixtures/e27-typescript-playwright-flake`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may pass from general knowledge without using the skill.",
+          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E28-hidden-go-assertion-calibration",
+      "critical": true,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "go",
+        "techniques": [
+          "unit",
+          "table-driven",
+          "assertion-quality"
+        ],
+        "risk_classes": [
+          "calibration"
+        ],
+        "failure_modes": [
+          "assertion-stuffing",
+          "overbroad-universal-rule"
+        ]
+      },
+      "prompt": "A Go table-driven test has one subtest assertion: got == want for a pure formatter. A reviewer says the skill requires 3+ assertions per test. Should we add two more assertions to every row?",
+      "fixture": "Go table-driven pure-function test with one strong equality oracle per row and good boundary coverage.",
+      "expected_behavior": [
+        "Reject assertion stuffing and explain assertion count is a heuristic.",
+        "Say table rows/property/exception tests can have one strong oracle.",
+        "Suggest adding cases only if behavior gaps exist, not to satisfy a number."
+      ],
+      "red_flags": [
+        "Demands 3 assertions per subtest.",
+        "Suggests redundant assertions solely for density."
+      ],
+      "rubric_focus": [
+        "C",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Answer mentions heuristic/calibration and does not require 3 assertions per row."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Pairwise judge should prefer local over old GitHub if old guidance leaks assertion-count absolutism."
+        ]
+      },
+      "validity": {
+        "claim": "The skill calibrates assertion-count guidance for Go table-driven tests.",
+        "warrant": "The prompt directly tempts the old 3+ assertion rule; good guidance avoids assertion stuffing.",
+        "backing": "Static answer check plus rubric C/G.",
+        "rebuttals": [
+          "A model may know this independently; use hidden variants with code snippets."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [
+          "first-vs-local",
+          "github-vs-local"
+        ],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E29-hidden-ts-pbt-weak-oracle",
+      "critical": true,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "typescript/fast-check",
+        "techniques": [
+          "property-based",
+          "assertion-quality"
+        ],
+        "risk_classes": [
+          "parser",
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "weak-assertion"
+        ]
+      },
+      "prompt": "Review this fast-check property: `fc.property(fc.string(), input => { const result = parse(input); expect(result).toBeDefined(); })`. Is this a good never-crashes parser property?",
+      "fixture": "TypeScript parser returning ok/error discriminated union.",
+      "expected_behavior": [
+        "Reject sole toBeDefined as a weak oracle.",
+        "Require no-throw plus valid ok/error shape or invariant checks.",
+        "Mention structured error or AST invariant assertions."
+      ],
+      "red_flags": [
+        "Approves toBeDefined as sufficient.",
+        "Only asks for more runs, not better oracle."
+      ],
+      "rubric_focus": [
+        "C",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Answer explicitly rejects sole toBeDefined."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Targets the bad example present in current GitHub."
+        ]
+      },
+      "validity": {
+        "claim": "The skill prevents weak property-based testing oracles for arbitrary parser inputs.",
+        "warrant": "The prompt reproduces the exact weak pattern previously embedded in the TypeScript reference.",
+        "backing": "Rubric C/G and static rejection check.",
+        "rebuttals": [
+          "The prompt is direct; add disguised variants later."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [
+          "github-vs-local"
+        ],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E30-hidden-inprocess-integration",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "integration"
+        ],
+        "risk_classes": [
+          "test-tiering"
+        ],
+        "failure_modes": [
+          "integration-misclassification"
+        ]
+      },
+      "prompt": "A test exercises HTTP controller + service + in-memory repository in one process, with no live database or external service. Is it invalid to call this an integration test?",
+      "fixture": "In-process component-boundary integration test.",
+      "expected_behavior": [
+        "Allow in-process component-boundary integration.",
+        "Do not require a real external dependency.",
+        "Suggest naming/tier conventions and separate external contract/E2E tests if needed."
+      ],
+      "red_flags": [
+        "Says integration tests must include an external dependency.",
+        "Suggests adding network/database solely for the label."
+      ],
+      "rubric_focus": [
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Answer does not require external dependency."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Targets old antipatterns.md wording."
+        ]
+      },
+      "validity": {
+        "claim": "The skill classifies integration tests by real component boundaries, not external services only.",
+        "warrant": "The prompt directly tests the old external-dependency misconception.",
+        "backing": "Rubric F static answer check.",
+        "rebuttals": [
+          "Could pass by general testing knowledge; pair with code snippets."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [
+          "first-vs-local",
+          "github-vs-local"
+        ],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E31-hidden-cbc-security-deletion",
+      "critical": true,
+      "mode": "upgrade",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "correctness-by-construction"
+        ],
+        "risk_classes": [
+          "type-invariant",
+          "security",
+          "scope-control"
+        ],
+        "failure_modes": [
+          "unsafe-check-deletion"
+        ]
+      },
+      "prompt": "We introduced an EmailAddress type at the HTTP boundary. Can we delete downstream service/repository validation and also remove output escaping/auth checks because the type should make bad email states impossible?",
+      "fixture": "Email invariant plus auth/security/output layers defending distinct threats.",
+      "expected_behavior": [
+        "Use safety checklist before deleting duplicate internal checks.",
+        "Keep auth/security/output escaping because they defend different adversaries/failure modes.",
+        "Delete only redundant same-invariant tests after boundary/type enforcement is proven and in scope."
+      ],
+      "red_flags": [
+        "Blanket deletion of downstream checks/tests.",
+        "Deletes security/auth/output escaping as redundant."
+      ],
+      "rubric_focus": [
+        "D",
+        "E"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Answer preserves distinct defense-in-depth layers."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Targets old aggressive deletion wording."
+        ]
+      },
+      "validity": {
+        "claim": "The skill safely applies correctness-by-construction without collapsing real defense-in-depth.",
+        "warrant": "The prompt mixes duplicate invariant checks with distinct security layers.",
+        "backing": "Rubric D/E and static preservation check.",
+        "rebuttals": [
+          "Needs realistic code fixture to test actual deletion patches."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [
+          "github-vs-local"
+        ],
+        "last_reviewed": "2026-05-21"
+      }
+    },
+    {
+      "id": "E32-hidden-vcr-msw-distinction",
+      "critical": false,
+      "mode": "upgrade",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "typescript",
+        "techniques": [
+          "vcr-recorded-fixture",
+          "contract"
+        ],
+        "risk_classes": [
+          "external-boundary",
+          "mock-drift"
+        ],
+        "failure_modes": [
+          "mock-reality-drift"
+        ]
+      },
+      "prompt": "Our TypeScript tests use MSW handlers with hand-written JSON and call them \u201cVCR cassettes.\u201d The provider changed `status` to `statusCode`. What should we change?",
+      "fixture": "MSW hand-written mocks drifting from provider schema.",
+      "expected_behavior": [
+        "Explain hand-written MSW handlers are deterministic mocks, not recorded cassettes.",
+        "Recommend recorded fixtures/schema/contract validation for provider shape.",
+        "Keep MSW for controlled edge cases, deriving responses from fixture/schema where possible."
+      ],
+      "red_flags": [
+        "Calls hand-written MSW mocks VCR.",
+        "Keeps hand-written JSON as only oracle."
+      ],
+      "rubric_focus": [
+        "C",
+        "F",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Answer distinguishes MSW mocks from recorded cassettes."
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Targets old vcr-cassettes.md TypeScript section."
+        ]
+      },
+      "validity": {
+        "claim": "The skill distinguishes deterministic HTTP mocks from recorded external API fixtures.",
+        "warrant": "The prompt reproduces the old VCR/MSW confusion and schema drift failure.",
+        "backing": "Rubric C/F/G and static answer check.",
+        "rebuttals": [
+          "Add real schema fixture to make this runtime-checkable."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [
+          "github-vs-local"
+        ],
+        "last_reviewed": "2026-05-21"
+      }
+    }
+  ]
+}

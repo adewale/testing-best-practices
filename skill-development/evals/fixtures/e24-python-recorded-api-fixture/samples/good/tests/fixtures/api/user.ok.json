@@ -1,0 +1,7 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": "user_123",
+    "email": "a@example.com"
+  }
+}

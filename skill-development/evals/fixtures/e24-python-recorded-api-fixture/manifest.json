@@ -1,0 +1,13 @@
+{
+  "eval_id": "E24-python-recorded-api-fixture",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "uses recorded fixture or contract/schema validation",
+    "keeps normal CI offline",
+    "does not rely solely on hand-written monkeypatch dicts",
+    "catches provider field drift"
+  ]
+}

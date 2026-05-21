@@ -1,0 +1,12 @@
+{
+  "eval_id": "E08-flaky-time-tests",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "rejects arbitrary sleeps/timeouts",
+    "expects fake or injected clock/scheduler",
+    "expects condition-based deterministic validation"
+  ]
+}

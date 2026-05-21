@@ -1,0 +1,13 @@
+{
+  "eval_id": "E23-python-hypothesis-parser-contract",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "uses Hypothesis/@given",
+    "asserts Config or ParseError invariants",
+    "rejects weak not-None-only tests",
+    "rejects swallowed exceptions"
+  ]
+}

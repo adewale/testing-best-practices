@@ -30,7 +30,7 @@ go tool cover -func=cover.out         # Per-function summary
 
 ## Table-Driven Tests
 
-The standard Go pattern. Every test should use this:
+The standard Go pattern for covering multiple input/output cases. Use this when a behavior has several examples or boundaries:
 
 ```go
 func TestValidateURL(t *testing.T) {

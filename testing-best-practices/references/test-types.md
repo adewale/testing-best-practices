@@ -83,7 +83,8 @@ excludes what we claim it excludes."
 
 ### Unit Tests
 - **When**: Every function with non-trivial logic (`if`, loops, arithmetic)
-- **Rules**: 3+ assertions per test, happy + sad path, no network/filesystem
+- **Rules**: meaningful behavior oracle, relevant happy/sad/boundary paths, no live network or persistent shared filesystem. Temp dirs, in-memory stores, and local fakes are fine.
+- **Assertion calibration**: example-based behavior tests often need multiple assertions; table rows, property tests, and exception tests may have one strong oracle.
 - **Cost**: Low setup, fast, stable
 
 ### Smoke Tests
@@ -139,8 +140,8 @@ excludes what we claim it excludes."
 - [ ] Tests use hand-written mock HTTP responses
 - [ ] External API tests are flaky due to network issues
 
-**How**: Record real API responses to files, replay in tests. See
-the matching reference file.
+**How**: Record real API responses to files and replay in tests. See
+`references/vcr-cassettes.md`.
 **Cost**: Low maintenance, occasional re-recording needed.
 
 ### Characterization Tests
@@ -149,8 +150,8 @@ the matching reference file.
 - [ ] No existing test suite for the code being changed
 - [ ] Behavior is undocumented and unclear
 
-**How**: Call the code, record actual outputs as assertions. See
-the matching reference file.
+**How**: Call the code and record actual outputs as assertions. See
+`references/characterization-testing.md`.
 **Cost**: Low setup, medium maintenance (must decide which behaviors to keep).
 
 ### Differential Tests
@@ -159,8 +160,8 @@ the matching reference file.
 - [ ] A trusted reference implementation exists (PyTorch, tiktoken, stdlib)
 - [ ] Building an optimized version of known-correct code
 
-**How**: Run same inputs through both implementations, assert outputs match.
-See the matching reference file.
+**How**: Run same inputs through both implementations and assert outputs match.
+See `references/differential-testing.md`.
 **Cost**: Low if reference exists, high if you must build one.
 
 ### Golden File / Fixture-Based Tests
@@ -171,7 +172,7 @@ See the matching reference file.
 
 **How**: Store inputs in `tests/fixtures/`, expected outputs in `tests/expected/`.
 Auto-discover fixtures, auto-baseline on first run. See
-the matching reference file.
+`references/golden-file-testing.md`.
 **Cost**: Low setup. Human-reviewable baselines. Catches drift.
 
 ### Pirate Tests (Language-Neutral Conformance)
@@ -182,7 +183,7 @@ the matching reference file.
 
 **How**: Write test cases as data (JSON/YAML). Each implementation provides a
 harness that loads the data and runs assertions. No implementation is privileged.
-See the matching reference file.
+See `references/differential-testing.md`.
 **Cost**: Medium (harness per language), but amortized across all implementations.
 
 ## Tier 3: Use With Caution
@@ -199,7 +200,7 @@ See the matching reference file.
 - **Costs**: 10-100x test runtime. Requires interpretation.
 - **Mitigations**: Run on specific critical modules, nightly not per-commit
 - **Tools**: mutmut (Python), Stryker (JS/TS), PIT (Java), gremlins (Go),
-  cargo-mutants (Rust). See the matching reference file.
+  cargo-mutants (Rust). See `references/mutation-testing.md`.
 
 ### Performance / Benchmark Tests
 - **When helpful**: A 2x slowdown would be a user-visible bug

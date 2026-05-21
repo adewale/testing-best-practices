@@ -62,11 +62,14 @@ of these:
   transition expressed as ad-hoc if-statements; the model permits
   `Paid + empty items`, so every consumer must check.
 
-In all six cases, every layer defends against the *same* failure mode. The
+In all these cases, every layer defends against the *same* failure mode. The
 test surface explodes — every layer demands its own "rejects bad input" test
 — and ownership of the invariant is unclear. The fix is to push the
 invariant into a single structural form (type, smart constructor, sealed
-enum, schema constraint) and delete the duplicates *and their tests*.
+enum, schema constraint). Only remove duplicate downstream checks and tests
+after verifying the context is internal/non-adversarial, the invariant is
+enforced structurally, boundary tests cover hostile input, and security or
+external-failure layers are not defending distinct threats.
 
 ## When defense-in-depth is still necessary (keep all layers and all tests)
 
@@ -152,8 +155,9 @@ single most useful audit you can run against a typed system.
 "this state is unconstructible" passes *trivially* if no mechanism
 actually rejects it. Two cases to watch for:
 
-1. **Go zero values.** `Email{}` constructs fine; the unexported-field
-   trick only forces *outside* callers through `ParseEmail`. A tactic-B
+1. **Go zero values.** `var e Email` is always constructible; the
+   unexported-field trick only prevents *outside* callers from using
+   composite literals and nudges them through `ParseEmail`. A tactic-B
    test on the zero value passes vacuously. Either add a `Valid() bool`
    method and exercise it with tactic-A tests, or document that the
    invariant is enforced by convention and is *not* tactic-B-testable.
@@ -291,10 +295,11 @@ func (e Email) String() string { return e.s }
 Tests:
 - A: Table-driven test that for every valid input, `ParseEmail` returns an
   `Email` whose `String()` round-trips.
-- B: Confirm `Email{}` outside the package compiles (it does — Go has no
-  way to forbid the zero value), then write a *contract test* that any
-  `Email` obtained by `ParseEmail` is non-empty. The gap is the zero
-  value; documenting it is the test.
+- B: Confirm the zero value `var e Email` is constructible. Outside the
+  package, `Email{}` with unexported fields is blocked, but the zero value is
+  still unavoidable. Then write a *contract test* that any `Email` obtained by
+  `ParseEmail` is non-empty. The gap is the zero value; documenting it is the
+  test.
 
 ---
 

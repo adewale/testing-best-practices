@@ -1,0 +1,13 @@
+{
+  "eval_id": "E20-go-zero-value-invariant",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "mentions Go zero value",
+    "does not claim unexported fields make invalid state impossible",
+    "does not use outside-package Email{} claim",
+    "keeps boundary/constructor tests"
+  ]
+}

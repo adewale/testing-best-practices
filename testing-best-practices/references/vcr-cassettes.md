@@ -24,21 +24,37 @@ def vcr_config():
     return {"filter_headers": ["Authorization", "X-API-KEY"]}
 ```
 
-## TypeScript (msw)
+## TypeScript
+
+Hand-written MSW handlers are deterministic HTTP mocks, not cassettes. They
+are useful for controlled errors, auth states, and edge cases, but they do not
+prove the shape still matches the real provider. For drift-prone APIs, derive
+MSW responses from recorded fixtures or validate them against the provider's
+schema/contract.
 
 ```typescript
+import { readFileSync } from 'node:fs';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+const realResponse = JSON.parse(
+  readFileSync('tests/fixtures/api/query.ok.json', 'utf8')
+);
+
 const server = setupServer(
   http.post('https://api.example.com/v1/query', () => {
-    return HttpResponse.json({ status: 'ok', data: [1, 2, 3] });
+    return HttpResponse.json(realResponse);
   })
 );
 
 beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
+
+If no recorder exists in the project, treat this as recorded-fixture replay:
+refresh the fixture from a real provider response in an explicit, reviewed
+workflow, filter secrets, and keep normal CI offline.
 
 ## When to use
 

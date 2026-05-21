@@ -1,0 +1,12 @@
+{
+  "eval_id": "E26-rust-result-proptest-and-no-unwrap",
+  "language": "rust",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "uses proptest/property testing",
+    "does not unwrap arbitrary parse results",
+    "asserts Ok invariants and Err kind/span"
+  ]
+}

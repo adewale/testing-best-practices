@@ -1,0 +1,7 @@
+{
+  "eval_id": "E01-bugfix-red-green-project-context",
+  "language": "javascript",
+  "good_command": "node --test test/hidden.test.mjs",
+  "mutant_command": "IMPL=mutant node --test test/hidden.test.mjs",
+  "claim": "Tests should catch javascript: URL sanitizer mutants while preserving safe URLs."
+}

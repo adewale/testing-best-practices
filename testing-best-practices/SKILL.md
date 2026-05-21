@@ -2,453 +2,211 @@
 name: testing-best-practices
 description: >
   Enforce testing best practices when writing, reviewing, or improving tests.
-  Covers Red-Green-Refactor TDD, property-based testing (invariant-proof and
-  model-gap tactics), real objects over mocks, correctness by construction
-  (types and schemas over runtime validation), test quality assessment
-  (assertion density, not just coverage), E2E testing, contract tests, flaky
-  test upgrades, and detection of sabotaged/skipped tests and logical
-  defense-in-depth.
-  Use when writing tests, reviewing test quality, fixing flaky tests, or when
-  the user mentions TDD, testing, coverage, mocks, invariants, types vs tests,
-  defense in depth, or test quality.
+  Covers TDD/red-green-refactor, property-based testing, real objects over
+  mocks, correctness by construction, assertion quality, E2E/contract tests,
+  flaky-test upgrades, mock-reality drift, mutation-style gap analysis, and
+  sabotaged/skipped/weak tests. Use when writing tests, reviewing test quality,
+  fixing flaky tests, improving coverage quality, or when the user mentions
+  TDD, testing, coverage, mocks, invariants, types vs tests, defense in depth,
+  or test quality.
 compatibility: Works with any language. Language-specific guidance in references/.
 metadata:
   author: adewale
-  version: "0.1"
+  version: "0.2"
 ---
 
 # Testing Best Practices
 
-## How to use this skill
+This skill has four modes:
 
-This skill operates in four modes depending on what's needed:
+1. **Write** — add tests or test-first bug fixes/features.
+2. **Assess** — review an existing suite for quality, not just coverage.
+3. **Upgrade** — strengthen weak/flaky/over-mocked tests.
+4. **Detect** — find skipped, sabotaged, fake-coverage, or gap-prone tests.
 
-1. **Write** — Writing new tests using Red-Green-Refactor TDD
-2. **Assess** — Evaluating existing test quality (not just coverage)
-3. **Upgrade** — Improving weak, flaky, or low-quality tests
-4. **Detect** — Finding tests that are skipped, sabotaged, or faking coverage
+## First 90 seconds
 
-Before writing or modifying tests, determine the project's primary language and
-read the matching reference file for framework-specific guidance:
+Before writing or changing tests:
 
-- Python: read `references/python.md`
-- TypeScript/JavaScript: read `references/typescript.md`
-- Go: read `references/go.md`
-- Rust: read `references/rust.md`
+1. **Detect language/framework** from repo files and adjacent tests.
+2. **Read nearby tests** for naming, fixtures, builders, assertion style, and runner commands.
+3. **Find the nearest validation command** before broad full-suite commands.
+4. **Identify the risk boundary**: pure logic, internal component boundary, external API, UI/user journey, security boundary, or type/schema invariant.
+5. **Choose the smallest useful test tier** from `references/test-types.md`.
+6. **Load only relevant references** from the matrix below.
 
-For antipattern detection and fixes, read `references/antipatterns.md`.
-For deciding which test types to use, read `references/test-types.md`.
+If the language is unsupported by a dedicated reference, follow project conventions plus the generic principles here.
 
-Load these ONLY when the task matches the trigger:
+## Reference matrix
 
-- Refactoring legacy code? → `references/characterization-testing.md`
-- Reimplementing an algorithm or maintaining multi-language SDKs? → `references/differential-testing.md`
-- Transformation pipeline, complex output, or snapshot-style tests? → `references/golden-file-testing.md`
-- Code depends on time, timers, scheduling, or has flaky time-sensitive tests? → `references/deterministic-time.md`
-- Code calls external APIs? → `references/vcr-cassettes.md`
-- Project has CLI commands or plugin hooks listed in docs? → `references/doc-sync-testing.md`
-- Need to verify test suite catches real bugs? → `references/mutation-testing.md`
-- Small state space (booleans, enums, short arrays)? → `references/exhaustive-testing.md`
-- Domain objects with arithmetic operations? → `references/mathematical-properties.md`
-- Need test factories, fixtures, or assertion helpers? → `references/test-data-builders.md`
-- Same invariant checked at 3+ layers, or "this should never happen" tests? → `references/correctness-by-construction.md`
-- Typed language (Rust, TS, OCaml, Haskell, Scala) and considering deleting tests in favor of types? → `references/correctness-by-construction.md`
+Always consider:
+- Test type selection → `references/test-types.md`
+- Anti-pattern detection → `references/antipatterns.md`
+
+Language/framework references:
+- Python / pytest / Hypothesis → `references/python.md`
+- TypeScript/JavaScript / Vitest/Jest/fast-check/Playwright → `references/typescript.md`
+- Go → `references/go.md`
+- Rust → `references/rust.md`
+
+Topical references by trigger:
+- Legacy/refactor safety → `references/characterization-testing.md`
+- Reimplementation, port, multi-language SDK → `references/differential-testing.md`
+- Complex outputs, snapshots, transformation pipelines → `references/golden-file-testing.md`
+- Time, timers, schedules, sleeps, flaky time tests → `references/deterministic-time.md`
+- External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
+- CLI/plugin/docs registry sync → `references/doc-sync-testing.md`
+- High coverage but escaping bugs → `references/mutation-testing.md`
+- Small finite state spaces → `references/exhaustive-testing.md`
+- Arithmetic/domain operators/laws → `references/mathematical-properties.md`
+- Fixtures/builders/assertion helpers → `references/test-data-builders.md`
+- Same invariant checked across layers, type-vs-test decisions, invalid states → `references/correctness-by-construction.md`
 
 ## Core principles
 
-These apply to every language and every project.
+### Test behavior through public contracts
 
-### 1. Red-Green-Refactor TDD
+Good tests describe observable behavior: outputs, state transitions, side effects, rendered UI, persisted data, API contracts, or invariants. Avoid tests that break under behavior-preserving refactors: private methods, incidental call order, exact SQL strings, or broad mock choreography.
 
-Always follow the Red-Green-Refactor cycle:
+### Use red-green-refactor when feasible
 
-1. **Red** — Write a failing test that describes the desired behavior
-2. **Green** — Write the minimum code to make the test pass
-3. **Refactor** — Clean up while keeping tests green
+For bug fixes and new behavior, default to:
 
-For bug fixes: write the test that reproduces the bug BEFORE fixing it. This
-test becomes a permanent regression test.
+1. **Red** — add a focused test that fails for the current bug/missing behavior.
+2. **Green** — implement the smallest change that passes.
+3. **Refactor** — clean up while tests stay green.
 
-### 2. Test quality over quantity
+The evidence matters: if you cannot run or observe the red phase, say so and report the exact command you would run. Do not claim TDD happened without a failing-test signal. For exploratory prototypes, generated code, or user-scoped “tests only” tasks, stay within scope and state the deviation.
 
-A test suite's value is measured by what bugs it catches, not by coverage
-percentage or test count. Kent Beck's Test Desiderata identifies 12 properties
-of good tests — they trade off against each other:
+### Quality beats coverage
 
-- **Behavioral** — sensitive to behavior changes (if behavior changes, test fails)
-- **Structure-insensitive** — tolerates refactoring without breaking
-- **Fast**, **Isolated**, **Deterministic** — reliable and quick
-- **Specific** — when it fails, the cause is obvious
-- **Predictive** — if tests pass, the code is production-ready
+Coverage shows what ran; it does not prove bugs would be caught. Prefer branch coverage over line coverage and treat coverage as a map for finding untested paths, not a quality gate by itself.
 
-Some properties conflict: making tests more Predictive (E2E against real infra)
-makes them slower and flakier. Good tests navigate this tradeoff space.
+Assertion count is a heuristic, not a law. Example-based behavior tests often need multiple meaningful assertions to verify structure, state, and negative cases. But a property test, table row, or exception test may have one excellent oracle. Flag weak sole assertions such as “not empty,” `toBeDefined()`, `toBeTruthy()`, `Assert.IsNotNull(result)`, or logging without assertions.
 
-**Assertion density**: Aim for 3+ meaningful assertions per test. Tests with
-only 1 assertion — especially "not empty" checks — are weak.
+For sanitizers, validators, filters, auth/security checks, and transformations, verify both directions where applicable: dangerous/invalid content is rejected or removed, and safe/valid content is preserved.
 
-**Both directions**: Every test should verify what SHOULD be present (positive)
-AND what SHOULD NOT be present (negative). A sanitizer test must check that
-safe content survives AND dangerous content is removed.
+### Prefer real behavior over mocks
 
-**Coverage as informational, not blocking**: Use coverage to find untested code
-paths, not as a merge gate. Branch coverage is more valuable than line coverage.
+Prefer, in order:
 
-### 3. Real objects over mocks
+1. Real in-memory/local objects, temp dirs, in-memory databases, real parsers.
+2. Purpose-built fakes that implement the same interface and can record history.
+3. Deterministic stubs for controlled edge cases.
+4. Framework mocks as a last resort.
 
-Prefer this hierarchy (best to worst):
+When tests depend on hand-written mocks for external systems, add mock-fidelity, contract, schema, or recorded-fixture tests so real API shape drift is caught.
 
-1. **Real objects** — in-memory databases, real filesystems with temp dirs
-2. **Purpose-built fakes** — implementations of real interfaces with history tracking
-3. **Deterministic stubs** — hash-based stubs that produce consistent output
-4. **Framework mocks** — `unittest.mock`, `vi.mock()` as last resort
+### Use properties for broad input spaces
 
-When you must use mocks: write mock fidelity tests that verify mock behavior
-matches the real system. Add contract tests that validate mock assumptions
-in a real environment.
+Use property-based testing when functions process arbitrary strings, numbers, binary data, parser inputs, encodings, orderings, or transformations. Common properties:
 
-### 4. Property-based testing
+| Pattern | Example |
+|---|---|
+| Never crashes | parser handles arbitrary bytes/strings without throwing unexpectedly |
+| Valid-or-error | result is a valid value or a structured error, never malformed |
+| Roundtrip | `decode(encode(x)) == x` |
+| Idempotent | `normalize(normalize(x)) == normalize(x)` |
+| Conservation | filtered output contains only allowed input-derived data |
+| Monotonic | adding input cannot decrease count/score where domain requires |
+| Algebraic laws | associativity, commutativity, distributivity where operations claim them |
 
-Use property-based tests for any function that processes arbitrary input. Every
-parser and normalizer needs at minimum a "never crashes on arbitrary input"
-property test.
+For small finite spaces, prefer exhaustive generation over sampling; see `references/exhaustive-testing.md`.
 
-**Key invariant patterns**:
-
-| Pattern | When to use | Example |
-|---------|-------------|---------|
-| Never crashes | Every parser/normalizer | `parse(arbitrary_string)` doesn't throw |
-| Roundtrip | Serialization/encoding | `decode(encode(x)) == x` |
-| Idempotent | Normalization/formatting | `f(f(x)) == f(x)` |
-| Monotonic | Counting/measuring | `f(x + more) >= f(x)` |
-| Conservation | Stripping/filtering | Output characters are a subset of input |
-| Valid-or-absent | Parsing with fallback | Result is valid or `None`, never invalid |
-| Associative | Arithmetic/composition | `(a + b) + c == a + (b + c)` |
-| Commutative | Arithmetic/sets | `a + b == b + a` |
-| Distributive | Arithmetic with scaling | `k * (a + b) == k*a + k*b` |
-
-When a domain object implements operators (`+`, `*`, `==`), test that it works
-with the language's built-in functions too (`sum()`, `sorted()`, `in`, sets).
-
-**Boundary-first**: Configure generators to yield min/max boundary values
-before random values. This catches edge cases in the first few iterations.
-
-**Exhaustive testing**: When the state space is small (boolean flags, enums,
-short arrays), use PBT to test *every* combination rather than sampling.
-For a 5-element array, test all 120 permutations, all 32 subsets. See
-`references/exhaustive-testing.md`.
-
-### 5. E2E testing
-
-Every project with user-facing endpoints needs E2E tests. These catch bugs that
-unit tests fundamentally cannot: wrong routes, broken integration contracts,
-platform-specific behavior.
-
-- Test the golden path first (most common user workflow)
-- Gate infrastructure-dependent tests behind environment variables
-- Limit to 5-15 E2E tests (supplement, don't replace unit tests)
-- For platform-specific runtimes (Cloudflare Workers, Pyodide): E2E against real
-  infrastructure is non-optional
-
-### 6. Documentation-code sync
-
-Test that documented features exist and working features are documented. Use
-the code itself as the source of truth — inspect registries, command lists,
-hook names — and verify docs match. The key pattern: parametrize over the
-code's actual registry and assert each entry appears in docs.
-
-Read `references/doc-sync-testing.md` for concrete patterns.
-
-### 7. Characterization testing for legacy code
-
-Before refactoring unfamiliar code, write tests that capture its *current*
-behavior — not what you think it should do, but what it actually does. These
-"characterization tests" become a safety net: if a refactoring changes behavior,
-the test breaks and tells you exactly what changed.
-
-Read `references/characterization-testing.md` when needed.
-
-### 8. Differential testing
-
-When reimplementing an algorithm, porting code, or building a simplified
-version of a complex system, test against a trusted reference implementation.
-Run the same inputs through both and assert outputs match. The reference IS
-the oracle — no hand-calculated expected values needed.
-
-**Pirate testing** is a related but distinct technique: instead of testing
-against one trusted reference, you write tests as *language-neutral data*
-(JSON/YAML) that multiple implementations across different languages all
-execute. No implementation is privileged — the test data IS the specification.
-Use pirate testing when you maintain libraries in multiple languages that must
-behave identically, or when a standard needs a conformance suite.
-
-Read `references/differential-testing.md` when needed.
-
-### 9. Test data builders and fixtures
-
-Test setup should express *intent*, not *structure*. Use factory functions or
-builders so tests only specify the fields they care about:
-```
-article = ArticleFactory.create(title="Custom")  # all other fields default
-user = make(a(User, with(role, "admin")))
-```
-Read `references/test-data-builders.md` when needed.
-
-### 10. Types vs tests
+### Push internal invariants into types/schemas/contracts
 
 Types and tests answer different questions:
 
-- **Types** answer *can this bug exist?* — invariants enforced at compile
-  or parse time, free at runtime
-- **Tests** answer *does observable behavior match the spec?* — invariants
-  enforced at runtime, every run
+- Types/schemas/contracts: “Can this invalid state exist?”
+- Tests: “Does observable behavior match the spec?”
 
-A type and a test that assert the same invariant are redundant — pick one.
-Types are cheaper when the language enforces them. Tests are mandatory for
-what types can't reach: behavior, integration, liveness, performance,
-concurrency, and the external world.
+When an invariant is repeated across internal layers, consider lifting it to a boundary parser, smart constructor, schema, sealed enum, state machine, or database constraint. Before deleting checks or their tests, verify all of this:
 
-When the type is too loose for an invariant it should carry, the test
-surface explodes. Probe each forbidden state the model still permits, and
-mark those tests as deletable when the type tightens (with `xfail`,
-`@deprecated`, or an inline comment). When you tighten a type, delete the
-now-redundant tests in the same commit. See §11 for the deep treatment.
+- the context is internal and non-adversarial,
+- the invariant is actually enforced by the type/schema/constructor,
+- boundary tests cover hostile or malformed input,
+- security/auth/external-failure layers defend different failure modes,
+- production type changes are in scope or explicitly approved.
 
-### 11. Correctness by construction (don't write tests the type could replace)
+If user scope says “tests only” or “do not change production code,” add tests for the current API and list type/schema tightening as a follow-up.
 
-Push invariants into types, schemas, and contracts. Then the tests that
-matter most are the two that follow from the invariant:
+## Mode workflows
 
-- **Tests that *prove* the invariant** — for any input satisfying the
-  precondition, assert the postcondition holds (Hoare triple, expressed as
-  property-based testing)
-- **Tests that *reveal invalid states the model still permits*** — try to
-  construct each forbidden state; if construction succeeds, the model is
-  too loose
+### Write mode
 
-A test that exists because the function's signature is too loose is debt,
-not coverage. Lineage: Hoare (`{P} S {Q}`, 1969) → Dijkstra (weakest
-preconditions, 1976) → Meyer (Design by Contract, 1986) → Praxis/SPARK Ada
-(industrial Correctness by Construction) → seL4 (full kernel proof, 2009)
-→ Minsky (make illegal states unrepresentable) → King (parse, don't
-validate) → LangSec (full recognition before processing).
+1. Read adjacent tests/config and load the relevant language reference.
+2. Choose test tier from `references/test-types.md`.
+3. For bugs/new behavior, add the failing regression test first when feasible.
+4. Use builders/factories where setup noise hides intent.
+5. Prefer user-facing/public interfaces over internals.
+6. Pin nondeterminism: time, randomness, network, filesystem, order.
+7. Run nearest tests, then broader checks when practical.
 
-**Defense-in-depth is the antipattern when it means** any of: repeated
-validation everywhere; loose strings flowing through the whole system;
-status enums duplicated across layers; catch-all retries; silent fallback
-behavior; post-hoc sanitizer patches; runtime guards instead of state
-machines, types, or schema constraints.
+For transformations or complex generated output, use golden files with explicit review discipline; see `references/golden-file-testing.md`. For external APIs, prefer recorded real fixtures/cassettes or contract checks over live CI calls; see `references/vcr-cassettes.md`.
 
-**Defense-in-depth is still necessary for** hostile input; auth/security
-boundaries; SSRF/XSS/injection/secrets; external system failure; rate
-limits; retries; observability; recovery and forensics. Each layer
-defends a *different* failure mode or adversary.
+### Assess mode
 
-**Caveat for weakly-enforced languages** (Go zero values, Python without
-`__post_init__`, JS without runtime branding): tactic B passes
-*trivially* if no constructor exists to reject the state. Add the
-constructor check first, or document that the invariant is enforced by
-convention only — don't write a tactic-B test against an unprotected
-type.
+Report evidence by severity and include positive observations. Check:
 
-When the audit shows the same invariant checked and tested at three or
-more internal layers — or any of the antipattern signals above — read
-`references/correctness-by-construction.md`.
+1. **Sabotage / false confidence**: skipped/focused tests, no assertions, logging-not-asserting, commented-out assertions, always-true assertions.
+2. **Oracle strength**: weak sole assertions, missing negative/error/state/structural assertions, tautologies.
+3. **Mock-reality drift**: hardcoded mocks that would not notice real API/schema changes.
+4. **Tier integrity**: unit tests hitting live network, integration tests mocking every boundary they claim to exercise, E2E tests that mock the system under test.
+5. **Determinism**: sleeps, wall-clock time, unseeded random, order dependence, global state leaks.
+6. **Coverage quality**: branch coverage, mutation/gap analysis for high-coverage suites with escaping bugs.
+7. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
 
-### 12. Test the sad path
+### Upgrade mode
 
-For every happy-path test, write at least one sad-path test: invalid input,
-missing data, permission denied, network failure. Use boundary values:
-empty, null, max, min, zero, one-past-max.
+Prioritize by risk:
 
-**Sad-path tests cover *reachable* error conditions** — network failure,
-permission denied, timeout, disk full, partial data — i.e., failures that
-can occur even when every input has a valid type. They are **not** a
-substitute for type-level invariants: if `EmailAddress` is parsed at the
-boundary, you do not need `test_send_email_rejects_missing_at_sign` at
-every call site. That is principle §11's job, not §12's. The two compose:
-§11 eliminates type-rejected sad-path tests; §12 still requires sad-path
-tests for failure modes the type cannot rule out (I/O, time, permissions,
-resource exhaustion).
+1. **P0**: security/auth/injection/sanitizer tests with weak or missing assertions.
+2. **P1**: tests that only assert not-null/not-empty/truthy.
+3. **P2**: flaky tests: sleeps, live network, wall-clock, order coupling.
+4. **P3**: mock-heavy “integration” tests and implementation-coupled mocks.
+5. **P4**: fixture noise, duplication, unclear names, missing builders.
 
-Pre-build invalid input collections for validation testing **at the
-boundary parser**, not at downstream call sites:
+Common upgrades:
+- Replace `sleep()` with virtual time, injected clocks, or condition-based waits.
+- Replace live API calls with recorded cassettes or committed fixtures.
+- Replace broad mocks with fakes, contract tests, or assertions on public behavior.
+- Replace repeated object literals with builders that keep behavior-specific fields explicit.
+
+### Detect mode
+
+Use concrete search signals from `references/antipatterns.md`:
+
+- `@skip`, `skip`, `skipif` without real condition, `test.only`, `fit`, `xit`, `xdescribe`.
+- `print`, `console.log`, `t.Log`, `Debug.WriteLine` used instead of assertions.
+- Assertion-free tests or only truthy/not-empty/not-null checks.
+- `sleep`, `waitForTimeout`, `Thread.Sleep`, `Task.Delay` for synchronization.
+- Try/catch swallowing exceptions.
+- Mock return values identical to assertions.
+- Global state/env/registry mutations without cleanup.
+- Snapshot/golden updates without diff review.
+
+## Validation loop
+
+After writing or changing tests:
+
+1. Run the nearest relevant test command.
+2. If bug-fix TDD was intended, confirm the new test fails before the fix or state why that could not be observed.
+3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling.
+4. For security/transformation tests, verify both rejection/removal and preservation.
+5. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
+6. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.
+
+## Final report contract
+
+End testing work with:
+
+```md
+Tests changed/assessed:
+Behavior covered:
+Commands run:
+Results:
+Gaps / risks:
+Follow-ups:
 ```
-INVALID_EMAILS = ['', 'notanemail', 'user@', '@domain.com']
-CONTENT_LENGTHS = {EMPTY: '', MIN: 'a', MAX: 'a' * 280, OVERFLOW: 'a' * 281}
-```
 
-## Assess mode: evaluating test quality
-
-When assessing existing tests, check these in order:
-
-### Step 1: Detect sabotage
-
-Search for tests being silently disabled. Read `references/antipatterns.md`
-for the full detection signal list. Key signals:
-
-- `@skip`, `@pytest.mark.skip`, `test.skip`, `xit`, `xdescribe` without conditions
-- `t.Log` / `console.log` / `print` inside conditional blocks (logging not asserting)
-- Empty test bodies or tests with no assertions
-- Tests where the only assertion is `!= ""` / `toBeDefined()` / `toBeTruthy()`
-- Tests that pass alone but fail when run after other tests (ordering dependency)
-
-### Step 2: Measure assertion density
-
-Count assertions per test function. Flag files where the ratio is below 3.
-Security-critical tests (XSS, auth, injection) with low assertion density are
-P0 issues.
-
-### Step 3: Check for mock-reality drift
-
-Look for mocks that return hardcoded values. Ask: "If the real API changed,
-would this test notice?" If no, flag it. Recommend VCR cassettes (recorded
-real API responses) as a replacement for hand-written mocks — see
-`references/vcr-cassettes.md`.
-
-### Step 4: Verify test tier integrity
-
-- Files in `tests/integration/` that mock all dependencies are unit tests in
-  disguise — flag them
-- Files in `tests/unit/` that hit the network are integration tests — flag them
-- E2E tests that mock the system under test are not E2E tests — flag them
-
-### Step 5: Check coverage configuration
-
-- Branch coverage (`branch = true`) should be enabled, not just line coverage
-- Coverage should measure production code only (exclude test files)
-- Coverage thresholds should be pragmatic (75-90%), not 100%
-
-### Step 6: Recommend mutation testing for high-coverage, low-quality suites
-
-When coverage is high (80%+) but assertion density is low, recommend mutation
-testing to verify the tests actually catch bugs. See
-`references/mutation-testing.md` for tool recommendations per language.
-
-### Step 7: Detect logical defense-in-depth (shotgun validation)
-
-Scan for the concrete signals that defense-in-depth is being misapplied to
-internal program logic (where it is an antipattern), not to hostile input
-or external systems (where it is correct):
-
-- **Repeated validation everywhere** — same `is None` / `!= ""` / `len > 0`
-  guard at controller, service, and repo
-- **Loose strings flowing through the system** — `addr: str` everywhere
-  instead of `EmailAddress` lifted from the boundary
-- **Status enums duplicated across layers** — `OrderStatus` redeclared in
-  DTO, service, repo, UI, with mapping tests at every boundary
-- **Catch-all retries** — `for _ in range(3): try: ... except Exception:`
-  hiding what failed and what is retryable
-- **Silent fallback behavior** — `lookup() or default()` masking that the
-  primary path failed
-- **Post-hoc sanitizer patches** — regex stripping a character that should
-  never have been representable
-- **Runtime guards instead of state machines / types / schema constraints**
-- **"This should never happen"** comments and assertions
-- **Tests named `test_X_rejects_null` / `_empty` / `_negative`** duplicated
-  across many functions in one module
-- **Builders that permit constructing invalid objects**, paired with tests
-  asserting invalid objects are rejected
-
-For each signal, recommend `references/correctness-by-construction.md`:
-lift the invariant into a type, schema, or sealed enum at the outermost
-trust boundary; delete the downstream checks **and their tests**; replace
-per-function "rejects invalid" tests with the two tests that matter — (A)
-a PBT that *proves the invariant*, and (B) a test that tries to reach each
-state the model claims to forbid.
-
-**Rule for distinguishing this antipattern from real defense-in-depth:**
-each layer must defend against a *different* failure mode or *different*
-adversary. Layers that defend against the same failure mode in a
-non-adversarial, already-typed context are debt. Layers that defend
-against hostile input, auth/security boundaries, SSRF/XSS/injection,
-external system failure, rate limits, retries, observability, or recovery
-are not — keep them and their tests.
-
-## Upgrade mode: improving weak tests
-
-When upgrading tests, prioritize by risk:
-
-1. **P0**: Security tests with low assertion density or logging-not-asserting
-2. **P1**: Tests with only "not empty" assertions — add specific content checks
-3. **P2**: Flaky tests — replace `sleep()` with condition-based waiting, network
-   tests behind markers, committed fixtures instead of live data
-4. **P3**: Integration tests that mock everything — either rename to unit tests
-   or add real integration tests alongside them
-
-### Upgrading flaky tests
-
-| Flake cause | Fix |
-|-------------|-----|
-| Time-dependent | Virtualize time or inject a clock — see `references/deterministic-time.md`. Never `sleep()` with real time. |
-| Order-dependent | Reset shared state in setup/teardown |
-| Network-dependent | Use VCR cassettes or committed fixtures |
-| Race conditions | Add synchronization or use deterministic alternatives |
-| Visual/font rendering | Skip in CI, run locally with `animations: 'disabled'` |
-
-## Write mode: generating new tests
-
-When writing tests for new code:
-
-0. **Step zero: can the type replace the test?** Before writing a test that
-   asserts "function X rejects bad input," ask whether X's parameter type
-   could make the bad input unconstructible (smart constructor, branded type,
-   `NonEmpty`, newtype, sealed enum, schema constraint). If yes, fix the type
-   and skip the test. Then write the two tests that *do* matter:
-   (A) a test that **proves the invariant** holds (PBT for any input meeting
-   the precondition, the postcondition holds), and (B) a test that **tries
-   to reach each invalid state the type claims to forbid** — if you can
-   construct it, the model is too loose. See
-   `references/correctness-by-construction.md`.
-1. Determine which test types are needed (read `references/test-types.md`)
-2. Read the language-specific reference for framework conventions
-3. Follow Red-Green-Refactor TDD: write the failing test first
-4. Use test data builders/factories for setup — express intent, not structure
-5. Use domain-specific assertion helpers for readability
-6. Include regression test comments linking to the bug/issue being fixed
-7. For transformation pipelines (HTML→Markdown, compilers, code generators),
-   use fixture-based golden file tests — see `references/golden-file-testing.md`
-8. Test at the user-facing level (commands, endpoints, API) not internals
-9. Pin non-deterministic inputs (time, randomness) rather than mocking them
-
-### Validation loop: check your own work
-
-After writing tests, validate before reporting done:
-
-1. **Run the tests** — they must pass (or fail for expected reasons in TDD red phase)
-2. **Scan for antipatterns** — search your test file for these signals:
-   - Any assertion that only checks "not None" / "not empty" / "is defined" → strengthen it
-   - Any `print` or `console.log` inside a conditional → replace with a real assertion
-   - Any unconditional `skip` / `xit` / `xdescribe` → remove or make conditional
-   - Go: any `t.Log` / `t.Logf` inside an `if` block → change to `t.Errorf`
-3. **Count assertion density** — skim your test functions. If most have only 1-2
-   assertions, add more specific checks. Target: 3+ meaningful assertions per test.
-4. **Verify both directions** for security-sensitive tests — check that dangerous
-   content is removed AND that safe content is preserved
-5. **Could a type have replaced this test?** For each test you wrote, ask
-   whether the function's signature is too loose. If a precise return type
-   (or branded parameter type) would make the assertion structural, prefer
-   the type and delete the test. A test that only exists because the type
-   permits the wrong state is debt.
-6. **Did you cover both invariant tactics?** For the function's central
-   invariant, you should have *both*: (A) a property-based test that the
-   invariant holds for valid inputs, and (B) a test that each state the
-   invariant claims to forbid is unreachable. Tactic B is the one most
-   commonly missed; without it, a regression that loosens the model goes
-   undetected.
-
-## Gotchas
-
-- `t.Logf` in Go is NOT an assertion — it never fails the test. Use `t.Errorf`.
-- `expect(x).toBeDefined()` passes for any non-undefined value including errors.
-  Use specific value assertions.
-- Coverage of 100% with 1 assertion per test is worse than 80% with 5
-  assertions per test. Assertion density reveals test quality; coverage reveals
-  test quantity.
-- A mock that returns `{status: 200}` will pass even if the real API returns
-  `{statusCode: 200}`. Mock shape must match reality.
-- Visual regression tests that pass locally but fail in CI are usually font
-  rendering differences, not real bugs. Skip in CI or use high pixel tolerance.
-- `@pytest.mark.skip("broken")` without a tracking issue is tech debt that grows
-  silently. Require `skipif(condition)` or delete the test.
-- Integration tests that patch `http_fetch` are unit tests wearing a costume.
+Keep it concise, but make validation and remaining risk auditable.

@@ -46,8 +46,11 @@ one E2E test against real infrastructure.
 They're unit tests in disguise.
 
 **Fix**: Either rename to `tests/unit/` (honest labeling) or add real
-integration tests alongside. An integration test must have at least one real
-external dependency.
+component-boundary integration tests alongside. An integration test should
+exercise at least one real dependency or component boundary: an in-process
+controller + service + repository can be integration even without a live
+external service. Do not add network/database dependencies just to satisfy a
+label.
 
 ### 5. Testing the mock
 

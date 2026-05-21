@@ -1,0 +1,12 @@
+{
+  "eval_id": "E19-detect-order-pollution",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "diagnoses shared global state/order dependency",
+    "requires cleanup/reset/teardown",
+    "rejects skip/retry/reorder as primary fix"
+  ]
+}

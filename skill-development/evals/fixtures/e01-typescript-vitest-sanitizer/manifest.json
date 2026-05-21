@@ -1,0 +1,13 @@
+{
+  "eval_id": "E01-bugfix-red-green-project-context",
+  "language": "typescript",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "uses Vitest/project test style",
+    "asserts javascript: URL rejection/removal",
+    "asserts safe URL preservation",
+    "rejects weak toBeDefined/toBeTruthy-only oracles"
+  ]
+}

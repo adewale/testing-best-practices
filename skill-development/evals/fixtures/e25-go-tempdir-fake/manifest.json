@@ -1,0 +1,13 @@
+{
+  "eval_id": "E25-go-tempdir-and-fake-dependency",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "uses t.TempDir",
+    "uses purpose-built fake notifier",
+    "does not use real network or shared paths",
+    "covers write and notifier failures"
+  ]
+}
