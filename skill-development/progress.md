@@ -56,10 +56,10 @@ python3 scripts/check-all.py
 ```
 
 ## Fixture-backed prompt run
-- Run directory: `eval-runs/20260521-074558`
-- Runner: `delegate` subagents with fresh context, instructed to load the updated skill and read each fixture prompt only.
+- Historical runner: `delegate` subagents with fresh context, instructed to load the updated skill and read each fixture prompt only.
 - Oracle result: 10 passed, 0 failed.
 - Scorecard updated with `3*` for the 10 oracle-backed evals (`*` = executable oracle pass, not full human/rubric release score).
+- Raw generated `eval-runs/` directories are intentionally ignored; tracked artifacts are fixtures, oracles, summaries, and scorecards.
 
 ## Remaining non-automated work
 - Human/rubric-score the saved candidates if a full 0–4 release score is needed.

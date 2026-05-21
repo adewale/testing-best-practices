@@ -18,6 +18,7 @@ MINI = ROOT / "evals" / "mini-repos"
 
 def run(command: str, cwd: Path) -> subprocess.CompletedProcess[str]:
     env = os.environ.copy()
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
     # Support simple `cd dir && command` and leading VAR=value commands.
     if command.startswith("cd ") and "&&" in command:
         prefix, command = command.split("&&", 1)

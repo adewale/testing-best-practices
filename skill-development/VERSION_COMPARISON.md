@@ -11,8 +11,7 @@ Artifacts:
 - First skill copy: `skill-development/github-skill-first-working/testing-best-practices/`
 - Current GitHub skill copy: `skill-development/github-skill-origin-main/testing-best-practices/`
 - Version score JSON: `skill-development/version-scores/*.json`
-- Current prompt run: `skill-development/eval-runs/20260521-074558/`
-- GitHub prompt run: `skill-development/eval-runs/github-origin-main-20260521-075957/`
+- Prompt-run summaries are captured in `evals/scorecard.md`; raw `skill-development/eval-runs/` outputs are generated locally and ignored.
 
 ## Main score: skill artifact rubric
 

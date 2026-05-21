@@ -22,11 +22,14 @@
           "expected_behavior",
           "red_flags",
           "rubric_focus",
-          "measurement"
+          "measurement",
+          "validity",
+          "eval_health"
         ],
         "properties": {
           "id": { "type": "string", "pattern": "^E[0-9]{2}-[a-z0-9-]+$" },
           "critical": { "type": "boolean" },
+          "hidden": { "type": "boolean" },
           "mode": { "enum": ["write", "assess", "upgrade", "detect"] },
           "taxonomy": {
             "type": "object",
@@ -51,6 +54,28 @@
               "static_checks": { "type": "array", "items": { "type": "string" } },
               "runtime_checks": { "type": "array", "items": { "type": "string" } },
               "judge_checks": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          },
+          "validity": {
+            "type": "object",
+            "required": ["claim", "warrant", "backing", "rebuttals"],
+            "properties": {
+              "claim": { "type": "string", "minLength": 20 },
+              "warrant": { "type": "string", "minLength": 20 },
+              "backing": {},
+              "rebuttals": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          },
+          "eval_health": {
+            "type": "object",
+            "required": ["difficulty", "saturation_status", "known_discriminates_versions", "last_reviewed"],
+            "properties": {
+              "difficulty": { "enum": ["easy", "medium", "hard", "adversarial"] },
+              "saturation_status": { "enum": ["unknown", "saturated_public", "hidden_probe", "active", "retired"] },
+              "known_discriminates_versions": { "type": "array", "items": { "type": "string" } },
+              "last_reviewed": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" }
             },
             "additionalProperties": false
           }

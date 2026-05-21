@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.py[cod]
+.pytest_cache/
+.hypothesis/
+
+# JavaScript / TypeScript
+node_modules/
+coverage/
+.nyc_output/
+
+# Rust / Go build artifacts
+target/
+bin/
+*.test
+
+# Local/generated eval outputs
+skill-development/eval-runs/

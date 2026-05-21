@@ -13,6 +13,7 @@ COMMANDS = [
     [sys.executable, "scripts/run-fixture-oracles.py"],
     [sys.executable, "scripts/run-mini-repos.py"],
     [sys.executable, "scripts/eval-health-report.py"],
+    [sys.executable, "scripts/audit-best-practices.py"],
     [sys.executable, "scripts/score-skill-version.py", "--skill-root", "../testing-best-practices"],
 ]
 

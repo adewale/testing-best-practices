@@ -24,7 +24,13 @@ REQUIRED_EVAL = {
     "red_flags",
     "rubric_focus",
     "measurement",
+    "validity",
+    "eval_health",
 }
+REQUIRED_VALIDITY = {"claim", "warrant", "backing", "rebuttals"}
+REQUIRED_EVAL_HEALTH = {"difficulty", "saturation_status", "known_discriminates_versions", "last_reviewed"}
+DIFFICULTIES = {"easy", "medium", "hard", "adversarial"}
+SATURATION_STATUSES = {"unknown", "saturated_public", "hidden_probe", "active", "retired"}
 REQUIRED_TAXONOMY = {"language_framework", "techniques", "risk_classes", "failure_modes"}
 REQUIRED_MEASUREMENT = {"static_checks", "runtime_checks", "judge_checks"}
 MODES = {"write", "assess", "upgrade", "detect"}
@@ -116,6 +122,30 @@ def validate(data: dict) -> tuple[list[str], dict[str, Counter]]:
         for key in REQUIRED_MEASUREMENT:
             if key in meas and not isinstance(meas[key], list):
                 fail(errors, f"{ev_id}: measurement.{key} must be list")
+        validity = ev.get("validity", {})
+        if not isinstance(validity, dict):
+            fail(errors, f"{ev_id}: validity must be object")
+            validity = {}
+        missing_validity = REQUIRED_VALIDITY - set(validity)
+        if missing_validity:
+            fail(errors, f"{ev_id}: validity missing {sorted(missing_validity)}")
+        if not isinstance(validity.get("rebuttals", []), list) or not validity.get("rebuttals"):
+            fail(errors, f"{ev_id}: validity.rebuttals must be non-empty list")
+        health = ev.get("eval_health", {})
+        if not isinstance(health, dict):
+            fail(errors, f"{ev_id}: eval_health must be object")
+            health = {}
+        missing_health = REQUIRED_EVAL_HEALTH - set(health)
+        if missing_health:
+            fail(errors, f"{ev_id}: eval_health missing {sorted(missing_health)}")
+        if health.get("difficulty") not in DIFFICULTIES:
+            fail(errors, f"{ev_id}: invalid eval_health.difficulty {health.get('difficulty')!r}")
+        if health.get("saturation_status") not in SATURATION_STATUSES:
+            fail(errors, f"{ev_id}: invalid eval_health.saturation_status {health.get('saturation_status')!r}")
+        if not isinstance(health.get("known_discriminates_versions", []), list):
+            fail(errors, f"{ev_id}: eval_health.known_discriminates_versions must be list")
+        if "hidden" in ev and not isinstance(ev["hidden"], bool):
+            fail(errors, f"{ev_id}: hidden must be boolean when present")
         counters["mode"][ev.get("mode")] += 1
         counters["critical"]["critical" if ev.get("critical") else "noncritical"] += 1
 
