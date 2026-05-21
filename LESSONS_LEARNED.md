@@ -93,6 +93,30 @@ When v1 of §10 didn't help Python, the temptation was to widen the rubric until
 
 6 agent runs (3 fixtures × 2 conditions) ran in parallel in ~2 minutes. Without parallelism the same experiment would take 10-15 minutes serially. For iteration cycles that need to converge in a single session, parallel dispatch is essential — and the parent agent doesn't need to do anything during the wait beyond commit hygiene.
 
+### Public prompt oracles can saturate across genuinely different skill versions
+
+The 10 fixture-backed prompt oracles passed for the first working GitHub version, the previous GitHub main version, and the improved local version. That does not mean the versions are equally good; it means the public prompt/oracle setup measured a narrower claim than intended. Treat saturated prompt oracles as smoke tests, not release-quality discrimination.
+
+### Score the artifact when behavior evals stop discriminating
+
+The version rubric separated first GitHub (28/100), previous GitHub (69/100), and the local skill (100/100) while the prompt fixtures stayed at 10/10. Artifact rubrics are not a replacement for runtime evals, but they catch stale contradictions, bad router structure, unsafe universal rules, and token bloat that single-prompt outputs can route around.
+
+### Evals need validity metadata, not just prompts
+
+Adding claim/warrant/backing/rebuttal fields forced each eval to say what interpretation it supports and how it could still be misleading. This turned “does the model pass?” into “what decision can this score justify?” That distinction matters once evals are used for release decisions.
+
+### Generated eval runs are evidence, not source
+
+Committing raw `eval-runs/` directories and `__pycache__` files made the repo look more reproducible while actually mixing generated artifacts with maintained source. The better pattern is to track fixtures, oracles, scorecards, summaries, and scripts; keep raw run outputs ignored unless they are deliberately curated as fixtures.
+
+### Schema and audit gates must evolve with eval design
+
+After adding `validity`, `eval_health`, hidden probes, and mini-repos, the JSON schema still validated only the older prompt fields. The best-practices audit caught that mismatch. Every new eval concept needs a gate, or it becomes convention instead of infrastructure.
+
+### Optimize the always-loaded router first
+
+The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~2,745 estimated tokens. That matters more operationally because the router is always loaded while references are conditional. Progressive disclosure pays off most when the entrypoint is short and the triggers are sharp.
+
 ## Evolution
 
 ### Iteration history
@@ -104,6 +128,7 @@ When v1 of §10 didn't help Python, the temptation was to widen the rubric until
 | 3 | 7 | Python, TypeScript, Go, Rust | 100% (49/49) | Split advanced-patterns, balanced evals, language-agnostic validation |
 | 4 | 12 | + CBC fixtures (Python subscription, Go order_state) | 100% | §11 Correctness by construction + decision-tree rework + tactic A/B framing |
 | 5 | + 3 types-vs-tests fixtures | Python, TS, Go | 16/16 with §10 v2 (13/16 without) | Jane Street research; §10 "Types vs tests"; `deterministic-time.md`; snapshot-tests in `golden-file-testing.md` |
+| 6 | 32 eval definitions + 10 fixture oracles + 3 mini-repos | Python, TS, Go, Rust | artifact rubric 100/100; static 0 P0/0 P1; public oracles 10/10 saturated; mini-repo mutants 3/3 | Eval validity metadata, hidden hard probes, generated-artifact hygiene, best-practices audit |
 
 The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages). Iteration 5's signal was the +18.75pp aggregate from §10 v2 — only visible because we built new fixtures that weren't already at ceiling.
 
@@ -123,3 +148,5 @@ Mid-iteration we rebased the Jane Street branch on top of main's CBC work. The c
 ### Token cost tracked but not optimized prematurely
 
 We measured token cost throughout (iteration 1: ~30k with-skill, iteration 3: ~30k average) but optimized for quality first. Token savings came naturally from splitting files — we didn't sacrifice content to save tokens. Iteration 5 added ~5K tokens (deterministic-time.md, expanded golden-file-testing.md, §10) for a +18.75pp eval signal on the new fixtures and no regression on existing ones — a worthwhile trade.
+
+Iteration 6 reversed the always-loaded token trend: the full installable skill is still broad, but the router dropped by roughly half versus the previous GitHub main version. The release lesson is to track entrypoint tokens separately from total package tokens; users pay the router cost first.

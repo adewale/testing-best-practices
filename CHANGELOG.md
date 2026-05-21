@@ -5,49 +5,49 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.3] - 2026-05-21
+
 ### Added
-- **Core principle #10: Correctness by construction** — push invariants into
-  types/schemas/contracts so the wrong state is unrepresentable; the two
-  test tactics that survive are (A) invariant-proof PBT and (B) model-gap
-  tests that try to construct each forbidden state. Anchored in the
-  Hoare → Dijkstra → Meyer → Praxis/SPARK → seL4 → Minsky → King → LangSec
-  lineage.
-- **`references/correctness-by-construction.md`** — on-demand reference with
-  language-specific patterns (TS branded types, Rust newtype, Python smart
-  constructor, Go unexported field), right-when/still-necessary lists, and
-  the canonical sources.
-- **Antipattern #13: Logical defense-in-depth (shotgun validation)** — added
-  to both `references/antipatterns.md` (skill) and `research/ANTIPATTERNS.md`.
-  Detection signals: repeated validation everywhere, loose strings flowing
-  through layers, status enums duplicated across layers, catch-all retries,
-  silent fallback behavior, post-hoc sanitizer patches, runtime guards
-  instead of state machines / types / schema constraints.
-- **Step Zero** in Write mode and the decision tree — *can the type replace
-  the test?* — with a worked table mapping common "rejects X" tests to
-  their type-level alternative.
-- **Assess-mode Step 7** — detect logical defense-in-depth via the concrete
-  signal list.
-- **Validation-loop check 6** in Write mode — "did you cover both invariant
-  tactics (A invariant-proof + B model-gap)?"
-- **Trust-boundary lens** in `references/test-types.md` and
-  `research/DECISION_TREE.md` — untyped input → typed interior → untyped
-  output, with the corresponding test types per boundary.
-- **`research/CORRECTNESS_BY_CONSTRUCTION.md`** — research note framing the
-  thesis with full canonical lineage and the legitimate home of
-  defense-in-depth (NIST SP 800-39 / 800-53 PL-8(1) / 800-82; Roman
-  military doctrine).
+- **Core principle #10: Correctness by construction** — push invariants into types/schemas/contracts so the wrong state is unrepresentable; surviving test tactics are invariant-proof PBT and model-gap tests that try to construct each forbidden state.
+- **`references/correctness-by-construction.md`** — on-demand reference with TypeScript branded types, Rust newtypes, Python smart constructors, Go unexported fields, right-when/still-necessary checks, and canonical sources.
+- **Step Zero decision tree** — ask “can the type replace the test?” before writing another rejection test.
+- **Trust-boundary lens** in `references/test-types.md` — untyped input → typed interior → untyped output, with test types matched to each boundary.
+- **Antipattern #13: Logical defense-in-depth / shotgun validation** — repeated validation everywhere, loose strings through layers, duplicated status enums, runtime guards instead of state machines/types/schema constraints.
+- **Eval development workspace** in `skill-development/` with rubrics, taxonomy, scorecards, version comparison, and non-LLM gates.
+- **32 eval definitions** with claim/warrant/backing/rebuttal validity metadata and difficulty/saturation/discrimination health metadata.
+- **5 hidden hard/adversarial eval probes** for assertion calibration, weak PBT oracles, in-process integration classification, correctness-by-construction deletion safety, and VCR/MSW distinction.
+- **10 fixture-backed public oracles** covering Python, Go, TypeScript, and Rust.
+- **3 mutation-backed mini-repos** that kill seeded JS/Python/Go mutants.
+- **Best-practices audit gate** for installable-skill boundaries, generated artifact hygiene, schema coverage, eval metadata, hidden probes, and mutation-backed fixtures.
+- **Token report** comparing first GitHub, previous GitHub, and current skill versions.
 
 ### Changed
-- **README**: core-principles list now includes correctness-by-construction;
-  reference-files table includes the new on-demand reference;
-  `antipatterns.md` count updated to 13.
-- **SKILL.md numbering**: "Test the sad path" renumbered from §10 to §11 to
-  make room for correctness-by-construction at §10.
+- **`SKILL.md` router refactor** — cut the always-loaded entrypoint from ~5,572 estimated tokens in the previous GitHub version to ~2,745 estimated tokens while preserving reference breadth.
+- **Reference calibration fixes** in TypeScript, Go, test-types, antipatterns, VCR cassettes, and correctness-by-construction guidance.
+- **Red-Green TDD renamed to Red-Green-Refactor TDD** to match Beck’s canonical cycle.
+- **Assertion guidance calibrated** — assertion density is a smell/heuristic, not a universal “3+ assertions per test” rule.
+- **Integration-test guidance calibrated** — in-process component-boundary integration is valid; external dependencies are not required just to earn the label.
+- **VCR guidance clarified** — hand-written MSW mocks are deterministic mocks, not recorded cassettes.
+- **Correctness-by-construction deletion guidance hardened** — delete redundant same-invariant checks only after proving boundary/type enforcement; keep auth/security/output-escaping defense-in-depth.
+- **Eval scoring split into layers**: artifact rubric, static audit, fixture oracles, mini-repo mutation checks, and best-practices audit.
 
-## [0.3] - 2026-05-19
+### Removed
+- Generated prompt-run outputs and Python caches from tracked source; raw `skill-development/eval-runs/` are now local/generated artifacts.
+- Development/eval artifacts from the installable skill directory; installable contents are limited to `SKILL.md` and `references/*.md`.
 
-### Changed
-- Renamed core principle from "Red-Green TDD" to "Red-Green-Refactor TDD" to match Beck's canonical three-step cycle (SKILL.md, README.md, DECISION_TREE.md)
+### Eval Results
+- Skill artifact rubric: first GitHub `28/100`, previous GitHub `69/100`, v0.3 `100/100`.
+- Static audit: previous GitHub `6 P0 / 6 P1`, v0.3 `0 P0 / 0 P1`.
+- Fixture prompt oracles: first/current/v0.3 all `10/10`, confirming public oracle saturation rather than release-quality discrimination.
+- Mini-repo mutants killed: `3/3`.
+- Best-practices audit: `100/100` after hygiene fixes.
+- Final local gate: `python3 skill-development/scripts/check-all.py` passes.
+
+### Token Impact
+- `SKILL.md`: ~5,572 → ~2,745 estimated tokens vs previous GitHub main (**-50.7%**).
+- Full installable skill: ~26,305 → ~23,948 estimated tokens (**-9.0%**).
 
 ## [0.2] - 2026-04-11
 
