@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1116" viewBox="0 0 1480 1116" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+<rect x="0.0" y="0.0" width="1480.0" height="1116.0" rx="0" ry="0" fill="#ffffff" stroke="none" stroke-width="1"/>
+<text x="26.0" y="50.0" font-size="26" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#0f172a" text-anchor="start">How testing techniques relate</text>
+<text x="26.0" y="72.0" font-size="13" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#475569" text-anchor="start">Grouped by oracle (how you know the right answer). Color = oracle family. Badges trace the skill’s trust-boundary lens.</text>
+<rect x="26.0" y="86.0" width="468.0" height="30.0" rx="6" ry="6" fill="#cffafe" stroke="none" stroke-width="1"/>
+<text x="264.0" y="106.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="600" fill="#0e7490" text-anchor="middle">INBOUND boundary  →  parse, don’t validate</text>
+<rect x="506.0" y="86.0" width="468.0" height="30.0" rx="6" ry="6" fill="#e0e7ff" stroke="none" stroke-width="1"/>
+<text x="740.0" y="106.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="600" fill="#4338ca" text-anchor="middle">TYPED INTERIOR  →  behavior on public API</text>
+<rect x="982.0" y="86.0" width="468.0" height="30.0" rx="6" ry="6" fill="#ede9fe" stroke="none" stroke-width="1"/>
+<text x="1216.0" y="106.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="600" fill="#7c3aed" text-anchor="middle">OUTBOUND boundary  →  contract / VCR / E2E</text>
+<rect x="26.0" y="136.0" width="1428.0" height="40.0" rx="8" ry="8" fill="#0f172a" stroke="none" stroke-width="1"/>
+<text x="42.0" y="153.0" font-size="13" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#7dd3fc" text-anchor="start">STEP ZERO  ·  before any test</text>
+<text x="42.0" y="169.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#e2e8f0" text-anchor="start">Correctness-by-construction — if a tighter type makes the bad state unrepresentable, encode the type and delete the test.</text>
+<rect x="26.0" y="194.0" width="342.0" height="166.0" rx="10" ry="10" fill="#eff4ff" stroke="#bfd2fb" stroke-width="1"/>
+<path d="M26.0,204.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#2563eb"/>
+<text x="38.0" y="210.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Tier 1 · Foundation</text>
+<text x="38.0" y="223.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">always required</text>
+<rect x="36.0" y="240.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#bfd2fb" stroke-width="1"/>
+<text x="48.0" y="259.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Unit</text>
+<rect x="36.0" y="278.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#bfd2fb" stroke-width="1"/>
+<text x="48.0" y="297.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Smoke</text>
+<rect x="36.0" y="316.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#bfd2fb" stroke-width="1"/>
+<text x="48.0" y="335.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Regression (test-before-fix)</text>
+<rect x="388.0" y="194.0" width="342.0" height="166.0" rx="10" ry="10" fill="#eef0fe" stroke="#c7caf6" stroke-width="1"/>
+<path d="M388.0,204.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#4f46e5"/>
+<text x="400.0" y="210.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Specified oracle</text>
+<text x="400.0" y="223.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">you assert exact values</text>
+<rect x="398.0" y="240.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#c7caf6" stroke-width="1"/>
+<text x="410.0" y="259.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Table-driven</text>
+<rect x="398.0" y="278.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#c7caf6" stroke-width="1"/>
+<text x="410.0" y="297.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Integration</text>
+<rect x="398.0" y="316.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#c7caf6" stroke-width="1"/>
+<text x="410.0" y="335.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">End-to-End (E2E)</text>
+<rect x="750.0" y="194.0" width="342.0" height="242.0" rx="10" ry="10" fill="#e7faf6" stroke="#a7e9df" stroke-width="1"/>
+<path d="M750.0,204.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#0d9488"/>
+<text x="762.0" y="210.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Property / invariant oracle</text>
+<text x="762.0" y="223.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">assert relations, not values</text>
+<rect x="760.0" y="240.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a7e9df" stroke-width="1"/>
+<text x="772.0" y="259.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Property-based (PBT)</text>
+<rect x="760.0" y="278.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a7e9df" stroke-width="1"/>
+<text x="772.0" y="297.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Metamorphic</text>
+<rect x="760.0" y="316.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a7e9df" stroke-width="1"/>
+<text x="772.0" y="335.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Combinatorial / Pairwise</text>
+<rect x="760.0" y="354.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a7e9df" stroke-width="1"/>
+<text x="772.0" y="373.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Bounded-exhaustive</text>
+<rect x="760.0" y="392.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a7e9df" stroke-width="1"/>
+<text x="772.0" y="411.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Fuzz  · also Security</text>
+<rect x="1112.0" y="194.0" width="342.0" height="166.0" rx="10" ry="10" fill="#e6fafe" stroke="#a5e9f4" stroke-width="1"/>
+<path d="M1112.0,204.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#0891b2"/>
+<text x="1124.0" y="210.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Reference oracle</text>
+<text x="1124.0" y="223.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">compare to another impl</text>
+<rect x="1122.0" y="240.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a5e9f4" stroke-width="1"/>
+<text x="1134.0" y="259.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Differential</text>
+<rect x="1122.0" y="278.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a5e9f4" stroke-width="1"/>
+<text x="1134.0" y="297.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Pirate / Conformance</text>
+<rect x="1122.0" y="316.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a5e9f4" stroke-width="1"/>
+<text x="1134.0" y="335.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Compatibility (matrix)</text>
+<rect x="26.0" y="378.0" width="342.0" height="204.0" rx="10" ry="10" fill="#f2edfe" stroke="#d6c6fb" stroke-width="1"/>
+<path d="M26.0,388.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#7c3aed"/>
+<text x="38.0" y="394.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Recorded oracle</text>
+<text x="38.0" y="407.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">capture once, replay</text>
+<rect x="36.0" y="424.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#d6c6fb" stroke-width="1"/>
+<text x="48.0" y="443.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Golden / Snapshot / Approval</text>
+<rect x="36.0" y="462.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#d6c6fb" stroke-width="1"/>
+<text x="48.0" y="481.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Characterization (legacy)</text>
+<rect x="36.0" y="500.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#d6c6fb" stroke-width="1"/>
+<text x="48.0" y="519.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">VCR cassette (HTTP)</text>
+<rect x="36.0" y="538.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#d6c6fb" stroke-width="1"/>
+<text x="48.0" y="557.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Visual / Screenshot</text>
+<rect x="388.0" y="378.0" width="342.0" height="242.0" rx="10" ry="10" fill="#f6ecfe" stroke="#e0c6fb" stroke-width="1"/>
+<path d="M388.0,388.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#9333ea"/>
+<text x="400.0" y="394.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Contract / model / spec oracle</text>
+<text x="400.0" y="407.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">derive from a spec</text>
+<rect x="398.0" y="424.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#e0c6fb" stroke-width="1"/>
+<text x="410.0" y="443.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Contract (Pact)</text>
+<rect x="398.0" y="462.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#e0c6fb" stroke-width="1"/>
+<text x="410.0" y="481.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Doc ↔ Code sync</text>
+<rect x="398.0" y="500.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#e0c6fb" stroke-width="1"/>
+<text x="410.0" y="519.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Model-based / Stateful</text>
+<rect x="398.0" y="538.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#e0c6fb" stroke-width="1"/>
+<text x="410.0" y="557.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Spec-based / Formal</text>
+<rect x="398.0" y="576.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#e0c6fb" stroke-width="1"/>
+<text x="410.0" y="595.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Concolic / Symbolic exec</text>
+<rect x="1112.0" y="378.0" width="342.0" height="242.0" rx="10" ry="10" fill="#fef6e6" stroke="#f7dca0" stroke-width="1"/>
+<path d="M1112.0,388.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#d97706"/>
+<text x="1124.0" y="394.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Resilience / non-functional</text>
+<text x="1124.0" y="407.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">stress the system, not logic</text>
+<rect x="1122.0" y="424.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f7dca0" stroke-width="1"/>
+<text x="1134.0" y="443.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Load</text>
+<rect x="1122.0" y="462.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f7dca0" stroke-width="1"/>
+<text x="1134.0" y="481.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Stress</text>
+<rect x="1122.0" y="500.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f7dca0" stroke-width="1"/>
+<text x="1134.0" y="519.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Soak / Endurance</text>
+<rect x="1122.0" y="538.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f7dca0" stroke-width="1"/>
+<text x="1134.0" y="557.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Performance / Benchmark</text>
+<rect x="1122.0" y="576.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f7dca0" stroke-width="1"/>
+<text x="1134.0" y="595.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Chaos engineering</text>
+<rect x="750.0" y="454.0" width="342.0" height="166.0" rx="10" ry="10" fill="#feeceb" stroke="#f6b9b4" stroke-width="1"/>
+<path d="M750.0,464.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#dc2626"/>
+<text x="762.0" y="470.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Security oracle</text>
+<text x="762.0" y="483.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">find what shouldn&#x27;t happen</text>
+<rect x="760.0" y="500.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9b4" stroke-width="1"/>
+<text x="772.0" y="519.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Penetration / Security scan</text>
+<rect x="760.0" y="538.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9b4" stroke-width="1"/>
+<text x="772.0" y="557.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Adversarial / Red-team</text>
+<rect x="760.0" y="576.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9b4" stroke-width="1"/>
+<text x="772.0" y="595.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Fuzz  · also Property</text>
+<rect x="26.0" y="600.0" width="342.0" height="204.0" rx="10" ry="10" fill="#e9faef" stroke="#a9e7bd" stroke-width="1"/>
+<path d="M26.0,610.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#16a34a"/>
+<text x="38.0" y="616.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Release-stage &amp; human-driven</text>
+<text x="38.0" y="629.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">process, not code</text>
+<rect x="36.0" y="646.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a9e7bd" stroke-width="1"/>
+<text x="48.0" y="665.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Sanity (vs Smoke)</text>
+<rect x="36.0" y="684.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a9e7bd" stroke-width="1"/>
+<text x="48.0" y="703.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Canary / Progressive rollout</text>
+<rect x="36.0" y="722.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a9e7bd" stroke-width="1"/>
+<text x="48.0" y="741.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Exploratory (session-based)</text>
+<rect x="36.0" y="760.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#a9e7bd" stroke-width="1"/>
+<text x="48.0" y="779.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">ATDD / BDD / Acceptance</text>
+<rect x="388.0" y="638.0" width="342.0" height="242.0" rx="10" ry="10" fill="#fdebf3" stroke="#f6b9d6" stroke-width="1"/>
+<path d="M388.0,648.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#db2777"/>
+<text x="400.0" y="654.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">AI-system oracle</text>
+<text x="400.0" y="667.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">non-deterministic outputs</text>
+<rect x="398.0" y="684.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9d6" stroke-width="1"/>
+<text x="410.0" y="703.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">LLM eval-driven</text>
+<rect x="398.0" y="722.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9d6" stroke-width="1"/>
+<text x="410.0" y="741.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Prompt regression</text>
+<rect x="398.0" y="760.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9d6" stroke-width="1"/>
+<text x="410.0" y="779.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Vibes / Semantic assertion</text>
+<rect x="398.0" y="798.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9d6" stroke-width="1"/>
+<text x="410.0" y="817.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Guardrail</text>
+<rect x="398.0" y="836.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#f6b9d6" stroke-width="1"/>
+<text x="410.0" y="855.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">AI-generated-code verification</text>
+<rect x="750.0" y="638.0" width="342.0" height="128.0" rx="10" ry="10" fill="#f1fae0" stroke="#cfe89a" stroke-width="1"/>
+<path d="M750.0,648.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#65a30d"/>
+<text x="762.0" y="654.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Domain-specific</text>
+<text x="762.0" y="667.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">specialized conformance</text>
+<rect x="760.0" y="684.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#cfe89a" stroke-width="1"/>
+<text x="772.0" y="703.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Data-quality / validation</text>
+<rect x="760.0" y="722.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#cfe89a" stroke-width="1"/>
+<text x="772.0" y="741.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Accessibility / WCAG</text>
+<rect x="1112.0" y="638.0" width="342.0" height="166.0" rx="10" ry="10" fill="#eef1f5" stroke="#c6cfdb" stroke-width="1"/>
+<path d="M1112.0,648.0 a10,10 0 0 1 10,-10 h322.0 a10,10 0 0 1 10,10 v24 h-342.0 z" fill="#475569"/>
+<text x="1124.0" y="654.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#ffffff" text-anchor="start">Meta · audits the suite itself</text>
+<text x="1124.0" y="667.0" font-size="10.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="500" fill="#ffffff" text-anchor="start">tests the tests</text>
+<rect x="1122.0" y="684.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#c6cfdb" stroke-width="1"/>
+<text x="1134.0" y="703.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Mutation</text>
+<rect x="1122.0" y="722.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#c6cfdb" stroke-width="1"/>
+<text x="1134.0" y="741.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Coverage</text>
+<rect x="1122.0" y="760.0" width="322.0" height="30.0" rx="7" ry="7" fill="#ffffff" stroke="#c6cfdb" stroke-width="1"/>
+<text x="1134.0" y="779.5" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#1f2937" text-anchor="start">Assertion quality</text>
+<rect x="26.0" y="902.0" width="1428.0" height="188.0" rx="10" ry="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+<text x="42.0" y="924.0" font-size="13.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="700" fill="#0f172a" text-anchor="start">How the families connect:</text>
+<text x="42.0" y="942.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">•  Pirate = a symmetric Differential test (the data IS the spec; no impl is privileged).</text>
+<text x="42.0" y="960.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">•  Metamorphic = a relational Property test; Combinatorial/Bounded-exhaustive = input-space coverage strategies for it.</text>
+<text x="42.0" y="978.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">•  Characterization = a Golden/Snapshot test on legacy code where “correct” is unknown — it records what IS, not what SHOULD be.</text>
+<text x="42.0" y="996.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">•  Fuzz straddles Property (“never crashes”) and Security (untrusted input); Adversarial/Red-team is its AI-era sibling.</text>
+<text x="42.0" y="1014.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">•  Contract / VCR / Doc-sync all guard a boundary against drift between two sides that must agree.</text>
+<text x="42.0" y="1032.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">•  Meta layer (Mutation / Coverage / Assertion-quality) doesn’t test the code — it tests whether the suite above would catch a bug.</text>
+<text x="42.0" y="1050.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">•  Tiering: solid Tier 1 always; Tier 2 (PBT, E2E, contract, VCR, characterization, differential, golden, pirate, doc-sync) when triggered;</text>
+<text x="42.0" y="1068.0" font-size="12.5" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" font-weight="400" fill="#334155" text-anchor="start">    Tier 3 with caution (visual, mutation, performance, fuzz). Non-functional &amp; release-stage families sit outside the functional tiers.</text>
+</svg>
