@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="820" viewBox="0 0 1080 820">
+<rect width="1080" height="820" fill="#fafaf7"/>
+<text x="44.0" y="54.0" font-size="24" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">Which tests pay off: bug power against setup cost</text>
+<text x="44.0" y="80.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start">Up = catches more bugs. Left = cheaper to stand up. The top-left corner is where the cheap, high-yield tests live.</text>
+<line x1="230.0" y1="640.0" x2="230.0" y2="150.0" stroke="#6b665d" stroke-width="0.75"/>
+<line x1="230.0" y1="640.0" x2="720.0" y2="640.0" stroke="#6b665d" stroke-width="0.75"/>
+<line x1="230.0" y1="640.0" x2="230.0" y2="645.0" stroke="#6b665d" stroke-width="0.75"/>
+<text x="230.0" y="660.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="middle">very low</text>
+<line x1="393.3" y1="640.0" x2="393.3" y2="645.0" stroke="#6b665d" stroke-width="0.75"/>
+<text x="393.3" y="660.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="middle">low</text>
+<line x1="556.7" y1="640.0" x2="556.7" y2="645.0" stroke="#6b665d" stroke-width="0.75"/>
+<text x="556.7" y="660.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="middle">medium</text>
+<line x1="720.0" y1="640.0" x2="720.0" y2="645.0" stroke="#6b665d" stroke-width="0.75"/>
+<text x="720.0" y="660.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="middle">high</text>
+<text x="216.0" y="644.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="end">low</text>
+<text x="216.0" y="480.7" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="end">medium</text>
+<text x="216.0" y="317.3" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="end">high</text>
+<text x="216.0" y="154.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="end">very high</text>
+<text x="475.0" y="684.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="middle">setup cost  →</text>
+<text x="144.0" y="395.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="middle" transform="rotate(-90 144.0 395.0)">bug-catching power  →</text>
+<circle cx="393.3" cy="150.0" r="5.5" fill="#b3261e"/>
+<text x="405.3" y="144.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#b3261e" text-anchor="start">Differential</text>
+<circle cx="556.7" cy="150.0" r="5.5" fill="#b3261e"/>
+<text x="568.7" y="144.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#b3261e" text-anchor="start">Property-based</text>
+<circle cx="720.0" cy="150.0" r="4.5" fill="#1a1a1a"/>
+<text x="732.0" y="144.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Mutation</text>
+<circle cx="393.3" cy="313.3" r="5.5" fill="#b3261e"/>
+<text x="405.3" y="305.3" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#b3261e" text-anchor="start">Regression</text>
+<circle cx="556.7" cy="313.3" r="4.5" fill="#1a1a1a"/>
+<text x="570.7" y="307.3" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Contract</text>
+<text x="570.7" y="322.3" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Pirate / conf.</text>
+<circle cx="720.0" cy="313.3" r="4.5" fill="#1a1a1a"/>
+<text x="732.0" y="317.3" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">End-to-end</text>
+<circle cx="393.3" cy="476.7" r="4.5" fill="#1a1a1a"/>
+<text x="407.3" y="480.7" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Characterization</text>
+<text x="407.3" y="495.7" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Golden file</text>
+<text x="407.3" y="510.7" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Unit</text>
+<text x="407.3" y="525.7" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">VCR cassette</text>
+<circle cx="720.0" cy="476.7" r="4.5" fill="#1a1a1a"/>
+<text x="732.0" y="480.7" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Screenshot</text>
+<circle cx="230.0" cy="640.0" r="4.5" fill="#1a1a1a"/>
+<text x="242.0" y="630.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Smoke</text>
+<circle cx="393.3" cy="640.0" r="4.5" fill="#1a1a1a"/>
+<text x="405.3" y="630.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Doc-sync</text>
+<text x="319.8" y="185.9" font-size="12.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#b3261e" text-anchor="start">cheap + powerful</text>
+<line x1="311.7" y1="199.0" x2="385.3" y2="154.0" stroke="#b3261e" stroke-width="0.75" stroke-dasharray="2,3"/>
+</svg>
