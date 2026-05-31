@@ -21,27 +21,29 @@ import colorsys
 import pathlib
 
 # --- neutral tokens -----------------------------------------------------------
-PAPER  = "#fbfaf7"
-INK    = "#1f1d1a"
-SECOND = "#5f5a52"
-MUTED  = "#8a857c"
-RULE   = "#e2ded4"
-REL    = "#6b665d"   # relationship notes — hue-neutral so family color leads
+# Background: a clean cool near-white. Not warm cream — that's the slop list's
+# "default tasteful AI surface".
+PAPER  = "#fcfcfd"
+INK    = "#16161a"
+SECOND = "#52525b"
+MUTED  = "#86868f"
+RULE   = "#e6e6ea"
+REL    = "#5b5b62"   # relationship notes
 
-# --- type system (impeccable/typeset): an intentional superfamily, not -------
-# generic defaults. IBM Plex — Serif for display (structure + authority),
-# Sans for body, Mono for all-caps eyebrows. Three genuine contrasts in one
-# coherent type-design language.
-DISPLAY = "IBM Plex Serif"   # title + family card headers
-BODYF   = "IBM Plex Sans"    # technique labels, deck, notes
-MONO    = "IBM Plex Mono"    # eyebrows / all-caps labels
+# --- type system --------------------------------------------------------------
+# Modern, distinctive, and deliberately not on the impeccable "overused" list
+# (Inter, Geist, Space Grotesk, Instrument Serif). Bricolage Grotesque pairs
+# a wide humanist display with subtle expressiveness; Hanken Grotesk is a
+# clean, refined neutral for body. Two faces — no all-caps eyebrows, so no mono.
+DISPLAY = "Bricolage Grotesque"   # title + family card headers
+BODYF   = "Hanken Grotesk"        # body, deck, notes, footer
 
-# Modular scale, ratio 1.25 (major third) off a 15px base. Committed — four
-# steps with real contrast, no muddy 14/15/16 neighbours.
-SZ_CAPTION = 12   # eyebrows, subheads, notes      (base / 1.25)
-SZ_BODY    = 15   # technique labels, deck         (base)
-SZ_HEADING = 19   # family card headers           (base * 1.25)
-SZ_DISPLAY = 32   # title                         (display jump)
+# Committed modular scale (~1.25). Body 16px (skill minimum); display jumps
+# hard for the title so hierarchy reads at a glance.
+SZ_CAPTION = 13   # notes, footer
+SZ_BODY    = 16   # technique labels, deck
+SZ_HEADING = 21   # family card headers
+SZ_DISPLAY = 38   # title
 
 
 # --- curated categorical palette (constant S/L => harmonious, not garish) -----
@@ -57,11 +59,10 @@ HUES = [205, 230, 168, 188, 262, 288, 32, 8, 330, 142, 96, 50]
 def family_colors(i):
     h = HUES[i % len(HUES)]
     return {
-        "header": hsl(h, 0.42, 0.40),   # solid header, white text sits on it
-        "tint":   hsl(h, 0.55, 0.955),  # very light body wash
-        "border": hsl(h, 0.40, 0.84),
+        "header": hsl(h, 0.46, 0.38),   # header fill — white text sits on it
+        "tint":   hsl(h, 0.50, 0.965),  # very light body wash
         "dot":    hsl(h, 0.55, 0.46),
-        "key":    hsl(h, 0.50, 0.50),   # gradient-rule stop
+        "key":    hsl(h, 0.52, 0.50),   # gradient-rule stop
     }
 
 
@@ -80,7 +81,7 @@ FAMILIES = [
         ["Golden / Snapshot", "Characterization", "VCR cassette",
          "Visual / Screenshot"]),
     ("Contract / model / spec", "derive from a spec",
-        ["Contract (Pact)", "Doc ↔ Code sync", "Model-based / Stateful",
+        ["Contract (Pact)", "Doc / Code sync", "Model-based / Stateful",
          "Spec-based / Formal", "Concolic / Symbolic"]),
     ("Resilience · non-functional", "stress the system, not logic",
         ["Load", "Stress", "Soak / Endurance", "Performance / Benchmark",
@@ -108,9 +109,9 @@ NOTE_FOR = {
     "Mutation":             "audits any suite above",
     "Coverage":             "audits any suite above",
     "Assertion quality":    "audits any suite above",
-    "Doc ↔ Code sync":      "guards the docs↔code boundary",
+    "Doc / Code sync":      "guards the docs / code boundary",
     "VCR cassette":         "guards the HTTP boundary",
-    "Contract (Pact)":      "guards a consumer↔producer boundary",
+    "Contract (Pact)":      "guards a consumer / producer boundary",
 }
 
 
@@ -153,11 +154,11 @@ def build():
     GUT = 24
     COL_W = (W - 2 * M - (COLS - 1) * GUT) / COLS
 
-    HDR_H = 52
-    PAD_TOP = 14
-    LINE_H = 24      # body 15 * ~1.6 — vertical rhythm unit
-    NOTE_H = 17
-    PAD_BOT = 16
+    HDR_H = 60
+    PAD_TOP = 16
+    LINE_H = 26      # body 16 * ~1.6 — vertical rhythm unit
+    NOTE_H = 19
+    PAD_BOT = 18
 
     def card_h(items):
         notes = sum(1 for it in items if it in NOTE_FOR)
@@ -165,18 +166,25 @@ def build():
 
     body = []
 
-    # ---- title (display: Plex Serif Bold, tightened tracking) ----
-    body.append(t(M, 60, "A map of testing techniques",
-                  size=SZ_DISPLAY, weight="700", family=DISPLAY, fill=INK,
-                  ls_em=-0.01))
-    # deck (body size, secondary colour — measure kept ~70ch)
-    body.append(t(M, 88,
-                  "Every technique, grouped by its oracle — how you know the "
-                  "right answer. Colour is the family.",
+    # ---- title (Bricolage Grotesque SemiBold, optically tightened) ----
+    body.append(t(M, 64, "A map of testing techniques",
+                  size=SZ_DISPLAY, weight="600", family=DISPLAY, fill=INK,
+                  ls_em=-0.018))
+    # deck — one line, measure kept moderate
+    body.append(t(M, 94,
+                  "Every testing technique, grouped by its oracle — how you "
+                  "know the right answer. Colour is the family.",
                   size=SZ_BODY, fill=SECOND))
+    # Step-Zero + boundary lens, folded into one quiet italic sentence.
+    # No eyebrow, no banner, no editorial scaffolding. Italic is Hanken
+    # (Bricolage has no italic master).
+    body.append(t(M, 122,
+                  "Before any test, encode the invariant in the type when "
+                  "you can; otherwise tests live somewhere along  inbound  →  "
+                  "typed interior  →  outbound.",
+                  size=SZ_BODY, fill=INK, family=BODYF, italic=True))
 
-    # ---- gradient accent rule = the colour key ----
-    grad_y = 100
+    # ---- defs: gradient + soft elevation -----------------------------------
     stops = "".join(
         f'<stop offset="{i/(len(FAMILIES)-1)*100:.1f}%" '
         f'stop-color="{family_colors(i)["key"]}"/>'
@@ -185,43 +193,14 @@ def build():
     defs = (f'<defs><linearGradient id="famkey" x1="0" y1="0" x2="1" y2="0">'
             f'{stops}</linearGradient>'
             f'<filter id="soft" x="-25%" y="-25%" width="150%" height="160%">'
-            f'<feDropShadow dx="0" dy="1.5" stdDeviation="3.5" '
-            f'flood-color="#3a342b" flood-opacity="0.16"/></filter></defs>')
-    body.append(rrect(M, grad_y, W - 2 * M, 5, 2.5, "url(#famkey)"))
-    body.append(t(W - M, grad_y - 2, "TWELVE FAMILIES", size=SZ_CAPTION - 1.5,
-                  fill=MUTED, anchor="end", family=MONO, weight="500",
-                  ls_em=0.08))
+            f'<feDropShadow dx="0" dy="2" stdDeviation="5" '
+            f'flood-color="#0a0a14" flood-opacity="0.08"/></filter></defs>')
 
-    # ---- trust-boundary lens (soft tinted strip) ----
-    sb_y = grad_y + 26
-    seg_w = (W - 2 * M) / 3
-    segs = [
-        ("INBOUND", "parse, don’t validate", "#eef4f8"),
-        ("TYPED INTERIOR", "behaviour on the public API", "#f0eef8"),
-        ("OUTBOUND", "contract · VCR · E2E", "#f6eef2"),
-    ]
-    for i, (cap, sub, tint) in enumerate(segs):
-        x = M + i * seg_w + (4 if i else 0)
-        body.append(rrect(x, sb_y, seg_w - 8, 36, 6, tint))
-        body.append(t(x + 14, sb_y + 16, cap, size=SZ_CAPTION - 1, fill=SECOND,
-                      weight="500", family=MONO, ls_em=0.08))
-        body.append(t(x + 14, sb_y + 30, sub, size=SZ_CAPTION, fill=MUTED,
-                      italic=True))
+    # ---- gradient colour key (no caption — the gradient is self-explaining)
+    grad_y = 148
+    body.append(rrect(M, grad_y, W - 2 * M, 4, 2, "url(#famkey)"))
 
-    # ---- Step Zero band ----
-    sz_y = sb_y + 48
-    body.append(rrect(M, sz_y, W - 2 * M, 42, 7, INK))
-    body.append(t(M + 16, sz_y + 18, "STEP ZERO", size=SZ_CAPTION - 1,
-                  weight="500", fill="#f2c9c4", family=MONO, ls_em=0.1))
-    body.append(t(M + 132, sz_y + 18,
-                  "before any test — correctness-by-construction",
-                  size=SZ_CAPTION + 1, weight="600", fill="#ffffff"))
-    body.append(t(M + 16, sz_y + 34,
-                  "If a tighter type makes the bad state unrepresentable, "
-                  "encode the type and delete the test.",
-                  size=SZ_CAPTION, fill="#d8d3ca", italic=True))
-
-    grid_top = sz_y + 42 + 26
+    grid_top = grad_y + 28
 
     # ---- packed coloured cards ----
     col_y = [grid_top] * COLS
@@ -236,27 +215,26 @@ def build():
 
     for i, head, sub, items, x, y, h in cards:
         col = family_colors(i)
-        # soft shadow + body
-        body.append(rrect(x, y, COL_W, h, 9, PAPER, stroke="none"))
+        # Card body with soft elevation only — no border (slop rule: commit
+        # to a defined edge OR a soft elevation, never both).
         body.append(f'<g filter="url(#soft)">'
-                    + rrect(x, y, COL_W, h, 9, col["tint"],
-                            stroke=col["border"], sw=1) + '</g>')
-        # header (display serif semibold + caption-size italic subhead)
-        body.append(header_path(x, y, COL_W, HDR_H, 9, col["header"]))
-        body.append(t(x + 15, y + 24, head, size=SZ_HEADING, weight="600",
-                      family=DISPLAY, fill="#ffffff"))
-        body.append(t(x + 15, y + 41, sub, size=SZ_CAPTION, fill="#f3f1ee",
-                      italic=True))
-        # techniques (body: Plex Sans regular)
-        cy = y + HDR_H + PAD_TOP + 7
+                    + rrect(x, y, COL_W, h, 10, col["tint"]) + '</g>')
+        # Header (Bricolage Grotesque SemiBold + Hanken italic subhead)
+        body.append(header_path(x, y, COL_W, HDR_H, 10, col["header"]))
+        body.append(t(x + 18, y + 28, head, size=SZ_HEADING, weight="600",
+                      family=DISPLAY, fill="#ffffff", ls_em=-0.005))
+        body.append(t(x + 18, y + 47, sub, size=SZ_CAPTION, fill="#eef0f3",
+                      italic=True, family=BODYF))
+        # Techniques (Hanken Grotesk Regular)
+        cy = y + HDR_H + PAD_TOP + 8
         for it in items:
-            body.append(f'<circle cx="{x+15:.1f}" cy="{cy-5:.1f}" r="3.2" '
+            body.append(f'<circle cx="{x+18:.1f}" cy="{cy-5:.1f}" r="3.5" '
                         f'fill="{col["dot"]}"/>')
-            body.append(t(x + 27, cy, it, size=SZ_BODY, fill=INK,
-                          family=BODYF))
+            body.append(t(x + 30, cy, it, size=SZ_BODY, fill=INK,
+                          family=BODYF, weight="500"))
             cy += LINE_H
             if it in NOTE_FOR:
-                body.append(t(x + 27, cy - LINE_H + NOTE_H, "↳ " + NOTE_FOR[it],
+                body.append(t(x + 30, cy - LINE_H + NOTE_H, "→  " + NOTE_FOR[it],
                               size=SZ_CAPTION, fill=REL, italic=True,
                               family=BODYF))
                 cy += NOTE_H
@@ -264,15 +242,15 @@ def build():
     grid_bottom = max(col_y)
 
     # ---- footer key ----
-    fy = grid_bottom + 4
-    body.append(line(M, fy, W - M, fy, RULE, 0.75))
-    fy += 22
+    fy = grid_bottom + 8
+    body.append(line(M, fy, W - M, fy, RULE, 0.6))
+    fy += 26
     body.append(t(M, fy,
                   "Each colour is one oracle family.   "
-                  "↳ italic notes name a technique’s closest relative outside "
+                  "→ italic notes name a technique’s closest relative outside "
                   "its family (“is a kind of”, or “audits” for the meta layer).",
                   size=SZ_CAPTION, fill=SECOND, italic=True))
-    fy += 24
+    fy += 26
 
     H = int(fy + 8)
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
@@ -285,14 +263,15 @@ def build():
 
 
 def main():
-    # Requires the IBM Plex superfamily on the system (fontconfig). Install with:
-    #   mkdir -p ~/.fonts/ibmplex && cd ~/.fonts/ibmplex
+    # Requires Bricolage Grotesque + Hanken Grotesk on the system (fontconfig).
+    # Install (variable TTFs from google/fonts):
+    #   mkdir -p ~/.fonts/modern && cd ~/.fonts/modern
     #   B=https://raw.githubusercontent.com/google/fonts/main/ofl
-    #   curl -LO $B/ibmplexserif/IBMPlexSerif-{Bold,SemiBold,Medium}.ttf
-    #   curl -LO $B/ibmplexmono/IBMPlexMono-{Medium,SemiBold}.ttf
-    #   # Plex Sans is variable-only on google/fonts; fetch static from IBM/plex:
-    #   P=https://cdn.jsdelivr.net/gh/IBM/plex@v6.4.0/IBM-Plex-Sans/fonts/complete/ttf
-    #   curl -LO $P/IBMPlexSans-{Regular,Medium,SemiBold,Italic}.ttf && fc-cache -f
+    #   curl -Lo "BricolageGrotesque[opsz,wdth,wght].ttf" \
+    #     "$B/bricolagegrotesque/BricolageGrotesque%5Bopsz%2Cwdth%2Cwght%5D.ttf"
+    #   curl -Lo "HankenGrotesk[wght].ttf"        "$B/hankengrotesk/HankenGrotesk%5Bwght%5D.ttf"
+    #   curl -Lo "HankenGrotesk-Italic[wght].ttf" "$B/hankengrotesk/HankenGrotesk-Italic%5Bwght%5D.ttf"
+    #   fc-cache -f ~/.fonts
     import cairosvg
     here = pathlib.Path(__file__).parent
     svg, (w, h) = build()
