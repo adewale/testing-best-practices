@@ -28,8 +28,20 @@ MUTED  = "#8a857c"
 RULE   = "#e2ded4"
 REL    = "#6b665d"   # relationship notes — hue-neutral so family color leads
 
-SERIF = "Georgia, 'Times New Roman', serif"
-SANS  = "-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif"
+# --- type system (impeccable/typeset): an intentional superfamily, not -------
+# generic defaults. IBM Plex — Serif for display (structure + authority),
+# Sans for body, Mono for all-caps eyebrows. Three genuine contrasts in one
+# coherent type-design language.
+DISPLAY = "IBM Plex Serif"   # title + family card headers
+BODYF   = "IBM Plex Sans"    # technique labels, deck, notes
+MONO    = "IBM Plex Mono"    # eyebrows / all-caps labels
+
+# Modular scale, ratio 1.25 (major third) off a 15px base. Committed — four
+# steps with real contrast, no muddy 14/15/16 neighbours.
+SZ_CAPTION = 12   # eyebrows, subheads, notes      (base / 1.25)
+SZ_BODY    = 15   # technique labels, deck         (base)
+SZ_HEADING = 19   # family card headers           (base * 1.25)
+SZ_DISPLAY = 32   # title                         (display jump)
 
 
 # --- curated categorical palette (constant S/L => harmonious, not garish) -----
@@ -103,13 +115,15 @@ NOTE_FOR = {
 
 
 # --- svg helpers --------------------------------------------------------------
-def t(x, y, s, size=12, fill=INK, weight="400", anchor="start",
-      family=SERIF, ls=None, italic=False):
-    extra = f' letter-spacing="{ls}"' if ls else ""
+def t(x, y, s, size=SZ_BODY, fill=INK, weight="400", anchor="start",
+      family=BODYF, ls_em=None, italic=False):
+    # letter-spacing expressed in em, converted to user units
+    extra = f' letter-spacing="{ls_em*size:.2f}"' if ls_em else ""
     style = ' font-style="italic"' if italic else ""
     return (f'<text x="{x:.1f}" y="{y:.1f}" font-size="{size}" '
             f'font-family="{family}" font-weight="{weight}" fill="{fill}" '
-            f'text-anchor="{anchor}"{extra}{style}>{escape(s)}</text>')
+            f'text-anchor="{anchor}" font-kerning="normal"{extra}{style}'
+            f'>{escape(s)}</text>')
 
 
 def rrect(x, y, w, h, r, fill, stroke="none", sw=1, opacity=None):
@@ -139,11 +153,11 @@ def build():
     GUT = 24
     COL_W = (W - 2 * M - (COLS - 1) * GUT) / COLS
 
-    HDR_H = 48
+    HDR_H = 52
     PAD_TOP = 14
-    LINE_H = 23
-    NOTE_H = 15
-    PAD_BOT = 14
+    LINE_H = 24      # body 15 * ~1.6 — vertical rhythm unit
+    NOTE_H = 17
+    PAD_BOT = 16
 
     def card_h(items):
         notes = sum(1 for it in items if it in NOTE_FOR)
@@ -151,13 +165,15 @@ def build():
 
     body = []
 
-    # ---- title ----
-    body.append(t(M, 58, "A map of testing techniques",
-                  size=30, weight="700", fill=INK))
-    body.append(t(M, 86,
-                  "Every technique the skill knows, grouped by its oracle — "
-                  "how you know the right answer. Colour is the family.",
-                  size=14, fill=SECOND))
+    # ---- title (display: Plex Serif Bold, tightened tracking) ----
+    body.append(t(M, 60, "A map of testing techniques",
+                  size=SZ_DISPLAY, weight="700", family=DISPLAY, fill=INK,
+                  ls_em=-0.01))
+    # deck (body size, secondary colour — measure kept ~70ch)
+    body.append(t(M, 88,
+                  "Every technique, grouped by its oracle — how you know the "
+                  "right answer. Colour is the family.",
+                  size=SZ_BODY, fill=SECOND))
 
     # ---- gradient accent rule = the colour key ----
     grad_y = 100
@@ -172,8 +188,9 @@ def build():
             f'<feDropShadow dx="0" dy="1.5" stdDeviation="3.5" '
             f'flood-color="#3a342b" flood-opacity="0.16"/></filter></defs>')
     body.append(rrect(M, grad_y, W - 2 * M, 5, 2.5, "url(#famkey)"))
-    body.append(t(W - M, grad_y + 4, "← twelve families →", size=10.5,
-                  fill=MUTED, anchor="end", family=SANS, italic=True))
+    body.append(t(W - M, grad_y - 2, "TWELVE FAMILIES", size=SZ_CAPTION - 1.5,
+                  fill=MUTED, anchor="end", family=MONO, weight="500",
+                  ls_em=0.08))
 
     # ---- trust-boundary lens (soft tinted strip) ----
     sb_y = grad_y + 26
@@ -185,25 +202,26 @@ def build():
     ]
     for i, (cap, sub, tint) in enumerate(segs):
         x = M + i * seg_w + (4 if i else 0)
-        body.append(rrect(x, sb_y, seg_w - 8, 34, 6, tint))
-        body.append(t(x + 14, sb_y + 15, cap, size=10.5, fill=SECOND,
-                      weight="700", family=SANS, ls="0.1em"))
-        body.append(t(x + 14, sb_y + 28, sub, size=11, fill=MUTED, italic=True))
+        body.append(rrect(x, sb_y, seg_w - 8, 36, 6, tint))
+        body.append(t(x + 14, sb_y + 16, cap, size=SZ_CAPTION - 1, fill=SECOND,
+                      weight="500", family=MONO, ls_em=0.08))
+        body.append(t(x + 14, sb_y + 30, sub, size=SZ_CAPTION, fill=MUTED,
+                      italic=True))
 
     # ---- Step Zero band ----
-    sz_y = sb_y + 46
-    body.append(rrect(M, sz_y, W - 2 * M, 40, 7, INK))
-    body.append(t(M + 16, sz_y + 17, "STEP ZERO", size=11, weight="700",
-                  fill="#f2c9c4", family=SANS, ls="0.14em"))
-    body.append(t(M + 120, sz_y + 17,
+    sz_y = sb_y + 48
+    body.append(rrect(M, sz_y, W - 2 * M, 42, 7, INK))
+    body.append(t(M + 16, sz_y + 18, "STEP ZERO", size=SZ_CAPTION - 1,
+                  weight="500", fill="#f2c9c4", family=MONO, ls_em=0.1))
+    body.append(t(M + 132, sz_y + 18,
                   "before any test — correctness-by-construction",
-                  size=12.5, weight="600", fill="#ffffff"))
-    body.append(t(M + 16, sz_y + 33,
+                  size=SZ_CAPTION + 1, weight="600", fill="#ffffff"))
+    body.append(t(M + 16, sz_y + 34,
                   "If a tighter type makes the bad state unrepresentable, "
                   "encode the type and delete the test.",
-                  size=11.5, fill="#d8d3ca", italic=True))
+                  size=SZ_CAPTION, fill="#d8d3ca", italic=True))
 
-    grid_top = sz_y + 40 + 24
+    grid_top = sz_y + 42 + 26
 
     # ---- packed coloured cards ----
     col_y = [grid_top] * COLS
@@ -223,22 +241,24 @@ def build():
         body.append(f'<g filter="url(#soft)">'
                     + rrect(x, y, COL_W, h, 9, col["tint"],
                             stroke=col["border"], sw=1) + '</g>')
-        # header
+        # header (display serif semibold + caption-size italic subhead)
         body.append(header_path(x, y, COL_W, HDR_H, 9, col["header"]))
-        body.append(t(x + 14, y + 21, head, size=14, weight="700",
-                      family=SERIF, fill="#ffffff"))
-        body.append(t(x + 14, y + 38, sub, size=10.5, fill="#ffffff",
+        body.append(t(x + 15, y + 24, head, size=SZ_HEADING, weight="600",
+                      family=DISPLAY, fill="#ffffff"))
+        body.append(t(x + 15, y + 41, sub, size=SZ_CAPTION, fill="#f3f1ee",
                       italic=True))
-        # techniques
-        cy = y + HDR_H + PAD_TOP + 6
+        # techniques (body: Plex Sans regular)
+        cy = y + HDR_H + PAD_TOP + 7
         for it in items:
-            body.append(f'<circle cx="{x+14:.1f}" cy="{cy-4:.1f}" r="3.2" '
+            body.append(f'<circle cx="{x+15:.1f}" cy="{cy-5:.1f}" r="3.2" '
                         f'fill="{col["dot"]}"/>')
-            body.append(t(x + 26, cy, it, size=12.5, fill=INK, family=SANS))
+            body.append(t(x + 27, cy, it, size=SZ_BODY, fill=INK,
+                          family=BODYF))
             cy += LINE_H
             if it in NOTE_FOR:
-                body.append(t(x + 26, cy - LINE_H + NOTE_H, "↳ " + NOTE_FOR[it],
-                              size=10, fill=REL, italic=True, family=SERIF))
+                body.append(t(x + 27, cy - LINE_H + NOTE_H, "↳ " + NOTE_FOR[it],
+                              size=SZ_CAPTION, fill=REL, italic=True,
+                              family=BODYF))
                 cy += NOTE_H
 
     grid_bottom = max(col_y)
@@ -251,7 +271,7 @@ def build():
                   "Each colour is one oracle family.   "
                   "↳ italic notes name a technique’s closest relative outside "
                   "its family (“is a kind of”, or “audits” for the meta layer).",
-                  size=11.5, fill=SECOND, italic=True))
+                  size=SZ_CAPTION, fill=SECOND, italic=True))
     fy += 24
 
     H = int(fy + 8)
@@ -265,6 +285,14 @@ def build():
 
 
 def main():
+    # Requires the IBM Plex superfamily on the system (fontconfig). Install with:
+    #   mkdir -p ~/.fonts/ibmplex && cd ~/.fonts/ibmplex
+    #   B=https://raw.githubusercontent.com/google/fonts/main/ofl
+    #   curl -LO $B/ibmplexserif/IBMPlexSerif-{Bold,SemiBold,Medium}.ttf
+    #   curl -LO $B/ibmplexmono/IBMPlexMono-{Medium,SemiBold}.ttf
+    #   # Plex Sans is variable-only on google/fonts; fetch static from IBM/plex:
+    #   P=https://cdn.jsdelivr.net/gh/IBM/plex@v6.4.0/IBM-Plex-Sans/fonts/complete/ttf
+    #   curl -LO $P/IBMPlexSans-{Regular,Medium,SemiBold,Italic}.ttf && fc-cache -f
     import cairosvg
     here = pathlib.Path(__file__).parent
     svg, (w, h) = build()

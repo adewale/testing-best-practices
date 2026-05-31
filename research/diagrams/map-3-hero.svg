@@ -1,181 +1,181 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1540" height="916" viewBox="0 0 1540 916">
+<svg xmlns="http://www.w3.org/2000/svg" width="1540" height="961" viewBox="0 0 1540 961">
 <defs><linearGradient id="famkey" x1="0" y1="0" x2="1" y2="0"><stop offset="0.0%" stop-color="#408abf"/><stop offset="9.1%" stop-color="#4055bf"/><stop offset="18.2%" stop-color="#40bfa6"/><stop offset="27.3%" stop-color="#40aebf"/><stop offset="36.4%" stop-color="#6f40bf"/><stop offset="45.5%" stop-color="#a640bf"/><stop offset="54.5%" stop-color="#bf8440"/><stop offset="63.6%" stop-color="#bf5140"/><stop offset="72.7%" stop-color="#bf4080"/><stop offset="81.8%" stop-color="#40bf6f"/><stop offset="90.9%" stop-color="#73bf40"/><stop offset="100.0%" stop-color="#bfaa40"/></linearGradient><filter id="soft" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="1.5" stdDeviation="3.5" flood-color="#3a342b" flood-opacity="0.16"/></filter></defs>
-<rect x="0.0" y="0.0" width="1540.0" height="916.0" rx="0" ry="0" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<text x="32.0" y="58.0" font-size="30" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1f1d1a" text-anchor="start">A map of testing techniques</text>
-<text x="32.0" y="86.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#5f5a52" text-anchor="start">Every technique the skill knows, grouped by its oracle — how you know the right answer. Colour is the family.</text>
+<rect x="0.0" y="0.0" width="1540.0" height="961.0" rx="0" ry="0" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<text x="32.0" y="60.0" font-size="32" font-family="IBM Plex Serif" font-weight="700" fill="#1f1d1a" text-anchor="start" font-kerning="normal" letter-spacing="-0.32">A map of testing techniques</text>
+<text x="32.0" y="88.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#5f5a52" text-anchor="start" font-kerning="normal">Every technique, grouped by its oracle — how you know the right answer. Colour is the family.</text>
 <rect x="32.0" y="100.0" width="1476.0" height="5.0" rx="2.5" ry="2.5" fill="url(#famkey)" stroke="none" stroke-width="1"/>
-<text x="1508.0" y="104.0" font-size="10.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#8a857c" text-anchor="end" font-style="italic">← twelve families →</text>
-<rect x="32.0" y="126.0" width="484.0" height="34.0" rx="6" ry="6" fill="#eef4f8" stroke="none" stroke-width="1"/>
-<text x="46.0" y="141.0" font-size="10.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="700" fill="#5f5a52" text-anchor="start" letter-spacing="0.1em">INBOUND</text>
-<text x="46.0" y="154.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">parse, don’t validate</text>
-<rect x="528.0" y="126.0" width="484.0" height="34.0" rx="6" ry="6" fill="#f0eef8" stroke="none" stroke-width="1"/>
-<text x="542.0" y="141.0" font-size="10.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="700" fill="#5f5a52" text-anchor="start" letter-spacing="0.1em">TYPED INTERIOR</text>
-<text x="542.0" y="154.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">behaviour on the public API</text>
-<rect x="1020.0" y="126.0" width="484.0" height="34.0" rx="6" ry="6" fill="#f6eef2" stroke="none" stroke-width="1"/>
-<text x="1034.0" y="141.0" font-size="10.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="700" fill="#5f5a52" text-anchor="start" letter-spacing="0.1em">OUTBOUND</text>
-<text x="1034.0" y="154.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">contract · VCR · E2E</text>
-<rect x="32.0" y="172.0" width="1476.0" height="40.0" rx="7" ry="7" fill="#1f1d1a" stroke="none" stroke-width="1"/>
-<text x="48.0" y="189.0" font-size="11" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="700" fill="#f2c9c4" text-anchor="start" letter-spacing="0.14em">STEP ZERO</text>
-<text x="152.0" y="189.0" font-size="12.5" font-family="Georgia, 'Times New Roman', serif" font-weight="600" fill="#ffffff" text-anchor="start">before any test — correctness-by-construction</text>
-<text x="48.0" y="205.0" font-size="11.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#d8d3ca" text-anchor="start" font-style="italic">If a tighter type makes the bad state unrepresentable, encode the type and delete the test.</text>
-<rect x="32.0" y="236.0" width="351.0" height="145.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="32.0" y="236.0" width="351.0" height="145.0" rx="9" ry="9" fill="#edf5fa" stroke="#c6d9e7" stroke-width="1"/></g>
-<path d="M32.0,245.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#3b6d91"/>
-<text x="46.0" y="257.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Foundation</text>
-<text x="46.0" y="274.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">tier 1 · always required</text>
-<circle cx="46.0" cy="300.0" r="3.2" fill="#3580b6"/>
-<text x="58.0" y="304.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Unit</text>
-<circle cx="46.0" cy="323.0" r="3.2" fill="#3580b6"/>
-<text x="58.0" y="327.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Smoke</text>
-<circle cx="46.0" cy="346.0" r="3.2" fill="#3580b6"/>
-<text x="58.0" y="350.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Regression</text>
-<rect x="407.0" y="236.0" width="351.0" height="145.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="407.0" y="236.0" width="351.0" height="145.0" rx="9" ry="9" fill="#edeffa" stroke="#c6cbe7" stroke-width="1"/></g>
-<path d="M407.0,245.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#3b4991"/>
-<text x="421.0" y="257.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Specified oracle</text>
-<text x="421.0" y="274.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">assert exact values</text>
-<circle cx="421.0" cy="300.0" r="3.2" fill="#354ab6"/>
-<text x="433.0" y="304.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Table-driven</text>
-<circle cx="421.0" cy="323.0" r="3.2" fill="#354ab6"/>
-<text x="433.0" y="327.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Integration</text>
-<circle cx="421.0" cy="346.0" r="3.2" fill="#354ab6"/>
-<text x="433.0" y="350.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">End-to-end</text>
-<rect x="782.0" y="236.0" width="351.0" height="221.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="782.0" y="236.0" width="351.0" height="221.0" rx="9" ry="9" fill="#edfaf7" stroke="#c6e7e0" stroke-width="1"/></g>
-<path d="M782.0,245.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#3b9180"/>
-<text x="796.0" y="257.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Property / invariant</text>
-<text x="796.0" y="274.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">assert relations</text>
-<circle cx="796.0" cy="300.0" r="3.2" fill="#35b69c"/>
-<text x="808.0" y="304.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Property-based</text>
-<circle cx="796.0" cy="323.0" r="3.2" fill="#35b69c"/>
-<text x="808.0" y="327.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Metamorphic</text>
-<text x="808.0" y="342.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ relational variant of Property-based</text>
-<circle cx="796.0" cy="361.0" r="3.2" fill="#35b69c"/>
-<text x="808.0" y="365.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Combinatorial / Pairwise</text>
-<circle cx="796.0" cy="384.0" r="3.2" fill="#35b69c"/>
-<text x="808.0" y="388.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Bounded-exhaustive</text>
-<circle cx="796.0" cy="407.0" r="3.2" fill="#35b69c"/>
-<text x="808.0" y="411.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Fuzz</text>
-<text x="808.0" y="426.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ structured = Property-based; sibling of Red-team</text>
-<rect x="1157.0" y="236.0" width="351.0" height="160.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="1157.0" y="236.0" width="351.0" height="160.0" rx="9" ry="9" fill="#edf8fa" stroke="#c6e2e7" stroke-width="1"/></g>
-<path d="M1157.0,245.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#3b8591"/>
-<text x="1171.0" y="257.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Reference oracle</text>
-<text x="1171.0" y="274.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">compare to another impl</text>
-<circle cx="1171.0" cy="300.0" r="3.2" fill="#35a5b6"/>
-<text x="1183.0" y="304.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Differential</text>
-<circle cx="1171.0" cy="323.0" r="3.2" fill="#35a5b6"/>
-<text x="1183.0" y="327.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Pirate / Conformance</text>
-<text x="1183.0" y="342.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ symmetric variant of Differential</text>
-<circle cx="1171.0" cy="361.0" r="3.2" fill="#35a5b6"/>
-<text x="1183.0" y="365.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Compatibility</text>
-<rect x="32.0" y="403.0" width="351.0" height="198.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="32.0" y="403.0" width="351.0" height="198.0" rx="9" ry="9" fill="#f2edfa" stroke="#d2c6e7" stroke-width="1"/></g>
-<path d="M32.0,412.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#5b3b91"/>
-<text x="46.0" y="424.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Recorded oracle</text>
-<text x="46.0" y="441.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">capture &amp; replay</text>
-<circle cx="46.0" cy="467.0" r="3.2" fill="#6435b6"/>
-<text x="58.0" y="471.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Golden / Snapshot</text>
-<circle cx="46.0" cy="490.0" r="3.2" fill="#6435b6"/>
-<text x="58.0" y="494.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Characterization</text>
-<text x="58.0" y="509.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ Golden applied to legacy code</text>
-<circle cx="46.0" cy="528.0" r="3.2" fill="#6435b6"/>
-<text x="58.0" y="532.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">VCR cassette</text>
-<text x="58.0" y="547.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ guards the HTTP boundary</text>
-<circle cx="46.0" cy="566.0" r="3.2" fill="#6435b6"/>
-<text x="58.0" y="570.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Visual / Screenshot</text>
-<rect x="407.0" y="403.0" width="351.0" height="221.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="407.0" y="403.0" width="351.0" height="221.0" rx="9" ry="9" fill="#f7edfa" stroke="#e0c6e7" stroke-width="1"/></g>
-<path d="M407.0,412.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#803b91"/>
-<text x="421.0" y="424.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Contract / model / spec</text>
-<text x="421.0" y="441.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">derive from a spec</text>
-<circle cx="421.0" cy="467.0" r="3.2" fill="#9c35b6"/>
-<text x="433.0" y="471.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Contract (Pact)</text>
-<text x="433.0" y="486.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ guards a consumer↔producer boundary</text>
-<circle cx="421.0" cy="505.0" r="3.2" fill="#9c35b6"/>
-<text x="433.0" y="509.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Doc ↔ Code sync</text>
-<text x="433.0" y="524.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ guards the docs↔code boundary</text>
-<circle cx="421.0" cy="543.0" r="3.2" fill="#9c35b6"/>
-<text x="433.0" y="547.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Model-based / Stateful</text>
-<circle cx="421.0" cy="566.0" r="3.2" fill="#9c35b6"/>
-<text x="433.0" y="570.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Spec-based / Formal</text>
-<circle cx="421.0" cy="589.0" r="3.2" fill="#9c35b6"/>
-<text x="433.0" y="593.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Concolic / Symbolic</text>
-<rect x="1157.0" y="418.0" width="351.0" height="191.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="1157.0" y="418.0" width="351.0" height="191.0" rx="9" ry="9" fill="#faf4ed" stroke="#e7d7c6" stroke-width="1"/></g>
-<path d="M1157.0,427.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#91693b"/>
-<text x="1171.0" y="439.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Resilience · non-functional</text>
-<text x="1171.0" y="456.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">stress the system, not logic</text>
-<circle cx="1171.0" cy="482.0" r="3.2" fill="#b67a35"/>
-<text x="1183.0" y="486.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Load</text>
-<circle cx="1171.0" cy="505.0" r="3.2" fill="#b67a35"/>
-<text x="1183.0" y="509.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Stress</text>
-<circle cx="1171.0" cy="528.0" r="3.2" fill="#b67a35"/>
-<text x="1183.0" y="532.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Soak / Endurance</text>
-<circle cx="1171.0" cy="551.0" r="3.2" fill="#b67a35"/>
-<text x="1183.0" y="555.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Performance / Benchmark</text>
-<circle cx="1171.0" cy="574.0" r="3.2" fill="#b67a35"/>
-<text x="1183.0" y="578.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Chaos</text>
-<rect x="782.0" y="479.0" width="351.0" height="122.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="782.0" y="479.0" width="351.0" height="122.0" rx="9" ry="9" fill="#faefed" stroke="#e7cac6" stroke-width="1"/></g>
-<path d="M782.0,488.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#91473b"/>
-<text x="796.0" y="500.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Security oracle</text>
-<text x="796.0" y="517.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">find what shouldn&#x27;t happen</text>
-<circle cx="796.0" cy="543.0" r="3.2" fill="#b64635"/>
-<text x="808.0" y="547.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Penetration / Scan</text>
-<circle cx="796.0" cy="566.0" r="3.2" fill="#b64635"/>
-<text x="808.0" y="570.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Adversarial / Red-team</text>
-<rect x="32.0" y="623.0" width="351.0" height="191.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="32.0" y="623.0" width="351.0" height="191.0" rx="9" ry="9" fill="#faedf4" stroke="#e7c6d6" stroke-width="1"/></g>
-<path d="M32.0,632.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#913b66"/>
-<text x="46.0" y="644.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">AI-system oracle</text>
-<text x="46.0" y="661.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">non-deterministic outputs</text>
-<circle cx="46.0" cy="687.0" r="3.2" fill="#b63575"/>
-<text x="58.0" y="691.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">LLM eval-driven</text>
-<circle cx="46.0" cy="710.0" r="3.2" fill="#b63575"/>
-<text x="58.0" y="714.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Prompt regression</text>
-<circle cx="46.0" cy="733.0" r="3.2" fill="#b63575"/>
-<text x="58.0" y="737.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Vibes / Semantic</text>
-<circle cx="46.0" cy="756.0" r="3.2" fill="#b63575"/>
-<text x="58.0" y="760.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Guardrail</text>
-<circle cx="46.0" cy="779.0" r="3.2" fill="#b63575"/>
-<text x="58.0" y="783.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">AI-code verification</text>
-<rect x="782.0" y="623.0" width="351.0" height="168.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="782.0" y="623.0" width="351.0" height="168.0" rx="9" ry="9" fill="#edfaf2" stroke="#c6e7d2" stroke-width="1"/></g>
-<path d="M782.0,632.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#3b915b"/>
-<text x="796.0" y="644.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Release-stage &amp; human</text>
-<text x="796.0" y="661.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">process, not code</text>
-<circle cx="796.0" cy="687.0" r="3.2" fill="#35b664"/>
-<text x="808.0" y="691.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Sanity (vs Smoke)</text>
-<circle cx="796.0" cy="710.0" r="3.2" fill="#35b664"/>
-<text x="808.0" y="714.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Canary / Rollout</text>
-<circle cx="796.0" cy="733.0" r="3.2" fill="#35b664"/>
-<text x="808.0" y="737.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Exploratory</text>
-<circle cx="796.0" cy="756.0" r="3.2" fill="#35b664"/>
-<text x="808.0" y="760.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">ATDD / BDD / Acceptance</text>
-<rect x="1157.0" y="631.0" width="351.0" height="122.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="1157.0" y="631.0" width="351.0" height="122.0" rx="9" ry="9" fill="#f2faed" stroke="#d3e7c6" stroke-width="1"/></g>
-<path d="M1157.0,640.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#5d913b"/>
-<text x="1171.0" y="652.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Domain-specific</text>
-<text x="1171.0" y="669.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">specialised conformance</text>
-<circle cx="1171.0" cy="695.0" r="3.2" fill="#68b635"/>
-<text x="1183.0" y="699.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Data-quality / validation</text>
-<circle cx="1171.0" cy="718.0" r="3.2" fill="#68b635"/>
-<text x="1183.0" y="722.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Accessibility / WCAG</text>
-<rect x="407.0" y="646.0" width="351.0" height="190.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
-<g filter="url(#soft)"><rect x="407.0" y="646.0" width="351.0" height="190.0" rx="9" ry="9" fill="#faf8ed" stroke="#e7e1c6" stroke-width="1"/></g>
-<path d="M407.0,655.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v39.0 h-351.0 z" fill="#91833b"/>
-<text x="421.0" y="667.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#ffffff" text-anchor="start">Meta · audits the suite</text>
-<text x="421.0" y="684.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#ffffff" text-anchor="start" font-style="italic">tests the tests</text>
-<circle cx="421.0" cy="710.0" r="3.2" fill="#b6a035"/>
-<text x="433.0" y="714.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Mutation</text>
-<text x="433.0" y="729.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ audits any suite above</text>
-<circle cx="421.0" cy="748.0" r="3.2" fill="#b6a035"/>
-<text x="433.0" y="752.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Coverage</text>
-<text x="433.0" y="767.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ audits any suite above</text>
-<circle cx="421.0" cy="786.0" r="3.2" fill="#b6a035"/>
-<text x="433.0" y="790.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1f1d1a" text-anchor="start">Assertion quality</text>
-<text x="433.0" y="805.0" font-size="10" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start" font-style="italic">↳ audits any suite above</text>
-<line x1="32.0" y1="862.0" x2="1508.0" y2="862.0" stroke="#e2ded4" stroke-width="0.75" stroke-linecap="round"/>
-<text x="32.0" y="884.0" font-size="11.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#5f5a52" text-anchor="start" font-style="italic">Each colour is one oracle family.   ↳ italic notes name a technique’s closest relative outside its family (“is a kind of”, or “audits” for the meta layer).</text>
+<text x="1508.0" y="98.0" font-size="10.5" font-family="IBM Plex Mono" font-weight="500" fill="#8a857c" text-anchor="end" font-kerning="normal" letter-spacing="0.84">TWELVE FAMILIES</text>
+<rect x="32.0" y="126.0" width="484.0" height="36.0" rx="6" ry="6" fill="#eef4f8" stroke="none" stroke-width="1"/>
+<text x="46.0" y="142.0" font-size="11" font-family="IBM Plex Mono" font-weight="500" fill="#5f5a52" text-anchor="start" font-kerning="normal" letter-spacing="0.88">INBOUND</text>
+<text x="46.0" y="156.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#8a857c" text-anchor="start" font-kerning="normal" font-style="italic">parse, don’t validate</text>
+<rect x="528.0" y="126.0" width="484.0" height="36.0" rx="6" ry="6" fill="#f0eef8" stroke="none" stroke-width="1"/>
+<text x="542.0" y="142.0" font-size="11" font-family="IBM Plex Mono" font-weight="500" fill="#5f5a52" text-anchor="start" font-kerning="normal" letter-spacing="0.88">TYPED INTERIOR</text>
+<text x="542.0" y="156.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#8a857c" text-anchor="start" font-kerning="normal" font-style="italic">behaviour on the public API</text>
+<rect x="1020.0" y="126.0" width="484.0" height="36.0" rx="6" ry="6" fill="#f6eef2" stroke="none" stroke-width="1"/>
+<text x="1034.0" y="142.0" font-size="11" font-family="IBM Plex Mono" font-weight="500" fill="#5f5a52" text-anchor="start" font-kerning="normal" letter-spacing="0.88">OUTBOUND</text>
+<text x="1034.0" y="156.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#8a857c" text-anchor="start" font-kerning="normal" font-style="italic">contract · VCR · E2E</text>
+<rect x="32.0" y="174.0" width="1476.0" height="42.0" rx="7" ry="7" fill="#1f1d1a" stroke="none" stroke-width="1"/>
+<text x="48.0" y="192.0" font-size="11" font-family="IBM Plex Mono" font-weight="500" fill="#f2c9c4" text-anchor="start" font-kerning="normal" letter-spacing="1.10">STEP ZERO</text>
+<text x="164.0" y="192.0" font-size="13" font-family="IBM Plex Sans" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">before any test — correctness-by-construction</text>
+<text x="48.0" y="208.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#d8d3ca" text-anchor="start" font-kerning="normal" font-style="italic">If a tighter type makes the bad state unrepresentable, encode the type and delete the test.</text>
+<rect x="32.0" y="242.0" width="351.0" height="154.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="32.0" y="242.0" width="351.0" height="154.0" rx="9" ry="9" fill="#edf5fa" stroke="#c6d9e7" stroke-width="1"/></g>
+<path d="M32.0,251.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#3b6d91"/>
+<text x="47.0" y="266.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Foundation</text>
+<text x="47.0" y="283.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">tier 1 · always required</text>
+<circle cx="47.0" cy="310.0" r="3.2" fill="#3580b6"/>
+<text x="59.0" y="315.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Unit</text>
+<circle cx="47.0" cy="334.0" r="3.2" fill="#3580b6"/>
+<text x="59.0" y="339.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Smoke</text>
+<circle cx="47.0" cy="358.0" r="3.2" fill="#3580b6"/>
+<text x="59.0" y="363.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Regression</text>
+<rect x="407.0" y="242.0" width="351.0" height="154.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="407.0" y="242.0" width="351.0" height="154.0" rx="9" ry="9" fill="#edeffa" stroke="#c6cbe7" stroke-width="1"/></g>
+<path d="M407.0,251.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#3b4991"/>
+<text x="422.0" y="266.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Specified oracle</text>
+<text x="422.0" y="283.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">assert exact values</text>
+<circle cx="422.0" cy="310.0" r="3.2" fill="#354ab6"/>
+<text x="434.0" y="315.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Table-driven</text>
+<circle cx="422.0" cy="334.0" r="3.2" fill="#354ab6"/>
+<text x="434.0" y="339.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Integration</text>
+<circle cx="422.0" cy="358.0" r="3.2" fill="#354ab6"/>
+<text x="434.0" y="363.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">End-to-end</text>
+<rect x="782.0" y="242.0" width="351.0" height="236.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="782.0" y="242.0" width="351.0" height="236.0" rx="9" ry="9" fill="#edfaf7" stroke="#c6e7e0" stroke-width="1"/></g>
+<path d="M782.0,251.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#3b9180"/>
+<text x="797.0" y="266.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Property / invariant</text>
+<text x="797.0" y="283.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">assert relations</text>
+<circle cx="797.0" cy="310.0" r="3.2" fill="#35b69c"/>
+<text x="809.0" y="315.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Property-based</text>
+<circle cx="797.0" cy="334.0" r="3.2" fill="#35b69c"/>
+<text x="809.0" y="339.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Metamorphic</text>
+<text x="809.0" y="356.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ relational variant of Property-based</text>
+<circle cx="797.0" cy="375.0" r="3.2" fill="#35b69c"/>
+<text x="809.0" y="380.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Combinatorial / Pairwise</text>
+<circle cx="797.0" cy="399.0" r="3.2" fill="#35b69c"/>
+<text x="809.0" y="404.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Bounded-exhaustive</text>
+<circle cx="797.0" cy="423.0" r="3.2" fill="#35b69c"/>
+<text x="809.0" y="428.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Fuzz</text>
+<text x="809.0" y="445.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ structured = Property-based; sibling of Red-team</text>
+<rect x="1157.0" y="242.0" width="351.0" height="171.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="1157.0" y="242.0" width="351.0" height="171.0" rx="9" ry="9" fill="#edf8fa" stroke="#c6e2e7" stroke-width="1"/></g>
+<path d="M1157.0,251.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#3b8591"/>
+<text x="1172.0" y="266.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Reference oracle</text>
+<text x="1172.0" y="283.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">compare to another impl</text>
+<circle cx="1172.0" cy="310.0" r="3.2" fill="#35a5b6"/>
+<text x="1184.0" y="315.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Differential</text>
+<circle cx="1172.0" cy="334.0" r="3.2" fill="#35a5b6"/>
+<text x="1184.0" y="339.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Pirate / Conformance</text>
+<text x="1184.0" y="356.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ symmetric variant of Differential</text>
+<circle cx="1172.0" cy="375.0" r="3.2" fill="#35a5b6"/>
+<text x="1184.0" y="380.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Compatibility</text>
+<rect x="32.0" y="418.0" width="351.0" height="212.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="32.0" y="418.0" width="351.0" height="212.0" rx="9" ry="9" fill="#f2edfa" stroke="#d2c6e7" stroke-width="1"/></g>
+<path d="M32.0,427.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#5b3b91"/>
+<text x="47.0" y="442.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Recorded oracle</text>
+<text x="47.0" y="459.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">capture &amp; replay</text>
+<circle cx="47.0" cy="486.0" r="3.2" fill="#6435b6"/>
+<text x="59.0" y="491.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Golden / Snapshot</text>
+<circle cx="47.0" cy="510.0" r="3.2" fill="#6435b6"/>
+<text x="59.0" y="515.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Characterization</text>
+<text x="59.0" y="532.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ Golden applied to legacy code</text>
+<circle cx="47.0" cy="551.0" r="3.2" fill="#6435b6"/>
+<text x="59.0" y="556.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">VCR cassette</text>
+<text x="59.0" y="573.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ guards the HTTP boundary</text>
+<circle cx="47.0" cy="592.0" r="3.2" fill="#6435b6"/>
+<text x="59.0" y="597.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Visual / Screenshot</text>
+<rect x="407.0" y="418.0" width="351.0" height="236.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="407.0" y="418.0" width="351.0" height="236.0" rx="9" ry="9" fill="#f7edfa" stroke="#e0c6e7" stroke-width="1"/></g>
+<path d="M407.0,427.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#803b91"/>
+<text x="422.0" y="442.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Contract / model / spec</text>
+<text x="422.0" y="459.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">derive from a spec</text>
+<circle cx="422.0" cy="486.0" r="3.2" fill="#9c35b6"/>
+<text x="434.0" y="491.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Contract (Pact)</text>
+<text x="434.0" y="508.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ guards a consumer↔producer boundary</text>
+<circle cx="422.0" cy="527.0" r="3.2" fill="#9c35b6"/>
+<text x="434.0" y="532.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Doc ↔ Code sync</text>
+<text x="434.0" y="549.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ guards the docs↔code boundary</text>
+<circle cx="422.0" cy="568.0" r="3.2" fill="#9c35b6"/>
+<text x="434.0" y="573.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Model-based / Stateful</text>
+<circle cx="422.0" cy="592.0" r="3.2" fill="#9c35b6"/>
+<text x="434.0" y="597.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Spec-based / Formal</text>
+<circle cx="422.0" cy="616.0" r="3.2" fill="#9c35b6"/>
+<text x="434.0" y="621.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Concolic / Symbolic</text>
+<rect x="1157.0" y="435.0" width="351.0" height="202.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="1157.0" y="435.0" width="351.0" height="202.0" rx="9" ry="9" fill="#faf4ed" stroke="#e7d7c6" stroke-width="1"/></g>
+<path d="M1157.0,444.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#91693b"/>
+<text x="1172.0" y="459.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Resilience · non-functional</text>
+<text x="1172.0" y="476.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">stress the system, not logic</text>
+<circle cx="1172.0" cy="503.0" r="3.2" fill="#b67a35"/>
+<text x="1184.0" y="508.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Load</text>
+<circle cx="1172.0" cy="527.0" r="3.2" fill="#b67a35"/>
+<text x="1184.0" y="532.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Stress</text>
+<circle cx="1172.0" cy="551.0" r="3.2" fill="#b67a35"/>
+<text x="1184.0" y="556.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Soak / Endurance</text>
+<circle cx="1172.0" cy="575.0" r="3.2" fill="#b67a35"/>
+<text x="1184.0" y="580.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Performance / Benchmark</text>
+<circle cx="1172.0" cy="599.0" r="3.2" fill="#b67a35"/>
+<text x="1184.0" y="604.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Chaos</text>
+<rect x="782.0" y="500.0" width="351.0" height="130.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="782.0" y="500.0" width="351.0" height="130.0" rx="9" ry="9" fill="#faefed" stroke="#e7cac6" stroke-width="1"/></g>
+<path d="M782.0,509.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#91473b"/>
+<text x="797.0" y="524.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Security oracle</text>
+<text x="797.0" y="541.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">find what shouldn&#x27;t happen</text>
+<circle cx="797.0" cy="568.0" r="3.2" fill="#b64635"/>
+<text x="809.0" y="573.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Penetration / Scan</text>
+<circle cx="797.0" cy="592.0" r="3.2" fill="#b64635"/>
+<text x="809.0" y="597.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Adversarial / Red-team</text>
+<rect x="32.0" y="652.0" width="351.0" height="202.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="32.0" y="652.0" width="351.0" height="202.0" rx="9" ry="9" fill="#faedf4" stroke="#e7c6d6" stroke-width="1"/></g>
+<path d="M32.0,661.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#913b66"/>
+<text x="47.0" y="676.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">AI-system oracle</text>
+<text x="47.0" y="693.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">non-deterministic outputs</text>
+<circle cx="47.0" cy="720.0" r="3.2" fill="#b63575"/>
+<text x="59.0" y="725.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">LLM eval-driven</text>
+<circle cx="47.0" cy="744.0" r="3.2" fill="#b63575"/>
+<text x="59.0" y="749.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Prompt regression</text>
+<circle cx="47.0" cy="768.0" r="3.2" fill="#b63575"/>
+<text x="59.0" y="773.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Vibes / Semantic</text>
+<circle cx="47.0" cy="792.0" r="3.2" fill="#b63575"/>
+<text x="59.0" y="797.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Guardrail</text>
+<circle cx="47.0" cy="816.0" r="3.2" fill="#b63575"/>
+<text x="59.0" y="821.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">AI-code verification</text>
+<rect x="782.0" y="652.0" width="351.0" height="178.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="782.0" y="652.0" width="351.0" height="178.0" rx="9" ry="9" fill="#edfaf2" stroke="#c6e7d2" stroke-width="1"/></g>
+<path d="M782.0,661.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#3b915b"/>
+<text x="797.0" y="676.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Release-stage &amp; human</text>
+<text x="797.0" y="693.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">process, not code</text>
+<circle cx="797.0" cy="720.0" r="3.2" fill="#35b664"/>
+<text x="809.0" y="725.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Sanity (vs Smoke)</text>
+<circle cx="797.0" cy="744.0" r="3.2" fill="#35b664"/>
+<text x="809.0" y="749.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Canary / Rollout</text>
+<circle cx="797.0" cy="768.0" r="3.2" fill="#35b664"/>
+<text x="809.0" y="773.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Exploratory</text>
+<circle cx="797.0" cy="792.0" r="3.2" fill="#35b664"/>
+<text x="809.0" y="797.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">ATDD / BDD / Acceptance</text>
+<rect x="1157.0" y="659.0" width="351.0" height="130.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="1157.0" y="659.0" width="351.0" height="130.0" rx="9" ry="9" fill="#f2faed" stroke="#d3e7c6" stroke-width="1"/></g>
+<path d="M1157.0,668.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#5d913b"/>
+<text x="1172.0" y="683.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Domain-specific</text>
+<text x="1172.0" y="700.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">specialised conformance</text>
+<circle cx="1172.0" cy="727.0" r="3.2" fill="#68b635"/>
+<text x="1184.0" y="732.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Data-quality / validation</text>
+<circle cx="1172.0" cy="751.0" r="3.2" fill="#68b635"/>
+<text x="1184.0" y="756.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Accessibility / WCAG</text>
+<rect x="407.0" y="676.0" width="351.0" height="205.0" rx="9" ry="9" fill="#fbfaf7" stroke="none" stroke-width="1"/>
+<g filter="url(#soft)"><rect x="407.0" y="676.0" width="351.0" height="205.0" rx="9" ry="9" fill="#faf8ed" stroke="#e7e1c6" stroke-width="1"/></g>
+<path d="M407.0,685.0 a9,9 0 0 1 9,-9 h333.0 a9,9 0 0 1 9,9 v43.0 h-351.0 z" fill="#91833b"/>
+<text x="422.0" y="700.0" font-size="19" font-family="IBM Plex Serif" font-weight="600" fill="#ffffff" text-anchor="start" font-kerning="normal">Meta · audits the suite</text>
+<text x="422.0" y="717.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#f3f1ee" text-anchor="start" font-kerning="normal" font-style="italic">tests the tests</text>
+<circle cx="422.0" cy="744.0" r="3.2" fill="#b6a035"/>
+<text x="434.0" y="749.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Mutation</text>
+<text x="434.0" y="766.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ audits any suite above</text>
+<circle cx="422.0" cy="785.0" r="3.2" fill="#b6a035"/>
+<text x="434.0" y="790.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Coverage</text>
+<text x="434.0" y="807.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ audits any suite above</text>
+<circle cx="422.0" cy="826.0" r="3.2" fill="#b6a035"/>
+<text x="434.0" y="831.0" font-size="15" font-family="IBM Plex Sans" font-weight="400" fill="#1f1d1a" text-anchor="start" font-kerning="normal">Assertion quality</text>
+<text x="434.0" y="848.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#6b665d" text-anchor="start" font-kerning="normal" font-style="italic">↳ audits any suite above</text>
+<line x1="32.0" y1="907.0" x2="1508.0" y2="907.0" stroke="#e2ded4" stroke-width="0.75" stroke-linecap="round"/>
+<text x="32.0" y="929.0" font-size="12" font-family="IBM Plex Sans" font-weight="400" fill="#5f5a52" text-anchor="start" font-kerning="normal" font-style="italic">Each colour is one oracle family.   ↳ italic notes name a technique’s closest relative outside its family (“is a kind of”, or “audits” for the meta layer).</text>
 </svg>
