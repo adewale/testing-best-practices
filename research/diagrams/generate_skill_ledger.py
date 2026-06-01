@@ -62,12 +62,12 @@ SZ_TITLE   = 40
 # (VH=5, H=4, M=3, L=2). Fuzz/Performance not in that table: Fuzz=4 (its whole
 # job is finding crashes on untrusted input), Performance=2 (niche power).
 LEDGER = [
-    (1, "Always", "Required on every project from day one.", [
+    (1, "Always", "Required on every project, no trigger needed.", [
         ("Unit",       "Any function with non-trivial logic: branches, loops, arithmetic.", 3, None),
         ("Smoke",      "Every deployable unit. The app boots and answers.", 2, "low power, catches the embarrassing failures"),
         ("Regression", "After every bug fix; the failing test comes first.", 4, None),
     ]),
-    (2, "When triggered", "Add the moment the project’s situation calls for it.", [
+    (2, "When triggered", "Add when a specific condition below appears.", [
         ("Property-based",       "Parsers, serializers, transforms, rankings: anything generative.", 5, None),
         ("Differential",         "Reimplementing a known algorithm against a trusted reference.", 5, None),
         ("Pirate / Conformance", "One specification, several language implementations.", 4, "a symmetric Differential test"),
@@ -78,7 +78,7 @@ LEDGER = [
         ("Golden file",          "Input-to-output transforms; complex generated output.", 3, None),
         ("Doc / Code sync",      "CLI commands, plugin hooks, or config described in docs.", 2, "guards the docs / code seam"),
     ]),
-    (3, "With caution", "Real value, real cost. Reach only when the trade earns it.", [
+    (3, "With caution", "Slow, costly, or flaky. Reach only when the payoff clears the cost.", [
         ("Mutation",            "Critical modules; or coverage is high yet bugs still escape.", 5, "audits the suites above"),
         ("Fuzz",                "Security-sensitive code parsing untrusted input.", 4, "structured = Property-based"),
         ("Visual / Screenshot", "UI work where exact pixel layout is the contract.", 3, None),
@@ -166,7 +166,48 @@ def build():
                "earns its keep.",
                size=SZ_DECK - 2, fill=MUTED, family=TEXT, italic=True))
 
-    y = 178
+    # ---- the rhythm: red, green, refactor — the loop every tier is written in
+    # A discipline, not a 17th technique. It wraps the whole ledger, so it sits
+    # above the tiers rather than inside one.
+    p.append(line(M, 156, W - M, 156, HAIR, 1))
+    ly = 188
+    p.append(t(M, ly, "The rhythm", size=SZ_GLOSS, weight="600",
+               family=DISPLAY, fill=INK, ls_em=-0.01))
+    p.append(t(M, ly + 18, "every fix, every feature",
+               size=SZ_MICRO, fill=MUTED, family=TEXT))
+
+    phases = [
+        ("Red", "a test that fails first"),
+        ("Green", "the smallest code that passes"),
+        ("Refactor", "clean up, stays green"),
+    ]
+    pxs = [M + 212, M + 520, M + 828]
+    for (word, gloss), px in zip(phases, pxs):
+        p.append(f'<circle cx="{px-15:.1f}" cy="{ly-5:.1f}" r="3.5" '
+                 f'fill="{ACCENT}"/>')
+        p.append(t(px, ly, word, size=SZ_NAME, weight="600", family=DISPLAY,
+                   fill=INK, ls_em=-0.006))
+        p.append(t(px, ly + 18, gloss, size=SZ_MICRO, fill=BODY, family=TEXT))
+    # coral step arrows between phases
+    for i in (0, 1):
+        ax = (pxs[i] + pxs[i + 1]) / 2 + 26
+        p.append(t(ax, ly, "→", size=SZ_NAME + 2, fill=ACCENT, family=TEXT,
+                   anchor="middle"))
+    # curved return arrow: Refactor loops back to Red ("repeat")
+    rx0 = pxs[2] + 138
+    rx1 = pxs[0] - 22
+    dip = ly + 32
+    p.append(f'<path d="M {rx0:.1f},{ly+7:.1f} C {rx0:.1f},{dip:.1f} '
+             f'{rx1:.1f},{dip:.1f} {rx1+5:.1f},{ly+11:.1f}" fill="none" '
+             f'stroke="{ACCENT}" stroke-width="1.4"/>')
+    p.append(f'<path d="M {rx1+5:.1f},{ly+11:.1f} l -5,7 l 9,-1 z" '
+             f'fill="{ACCENT}"/>')
+    p.append(t((rx0 + rx1) / 2, dip + 4, "repeat until green, then clean",
+               size=SZ_MICRO, fill=ACCENT, family=TEXT, anchor="middle",
+               italic=True))
+
+    p.append(line(M, ly + 58, W - M, ly + 58, HAIR, 1))
+    y = ly + 86
 
     for tier_no, tier_name, gloss, items in LEDGER:
         tcol = TIER_INK[tier_no]
