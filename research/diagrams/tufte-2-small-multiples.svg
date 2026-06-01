@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="720" viewBox="0 0 1320 720">
+<rect width="1320" height="720" fill="#fafaf7"/>
+<text x="40.0" y="54.0" font-size="24" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">The same fourteen techniques across five attributes</text>
+<text x="40.0" y="80.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start">Rows share one order (by bug power). Read down a panel for that attribute; read across a row for one technique&#x27;s profile.</text>
+<text x="40.0" y="128.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start" letter-spacing="0.06em">Technique</text>
+<text x="40.0" y="170.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Differential</text>
+<text x="40.0" y="208.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Property-based</text>
+<text x="40.0" y="246.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Mutation</text>
+<text x="40.0" y="284.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Regression</text>
+<text x="40.0" y="322.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Contract</text>
+<text x="40.0" y="360.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Pirate / conf.</text>
+<text x="40.0" y="398.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">End-to-end</text>
+<text x="40.0" y="436.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Characterization</text>
+<text x="40.0" y="474.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Golden file</text>
+<text x="40.0" y="512.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Unit</text>
+<text x="40.0" y="550.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">VCR cassette</text>
+<text x="40.0" y="588.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Screenshot</text>
+<text x="40.0" y="626.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Smoke</text>
+<text x="40.0" y="664.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Doc-sync</text>
+<text x="250.0" y="112.0" font-size="12.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start">Setup</text>
+<text x="250.0" y="127.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">lower better</text>
+<text x="250.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very low</text>
+<text x="400.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">high</text>
+<line x1="250.0" y1="152.0" x2="400.0" y2="152.0" stroke="#d8d4cc" stroke-width="0.75"/>
+<line x1="250.0" y1="166.0" x2="400.0" y2="166.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="300.0" cy="166.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="204.0" x2="400.0" y2="204.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="350.0" cy="204.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="242.0" x2="400.0" y2="242.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="400.0" cy="242.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="280.0" x2="400.0" y2="280.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="300.0" cy="280.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="318.0" x2="400.0" y2="318.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="350.0" cy="318.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="356.0" x2="400.0" y2="356.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="350.0" cy="356.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="394.0" x2="400.0" y2="394.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="400.0" cy="394.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="432.0" x2="400.0" y2="432.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="300.0" cy="432.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="470.0" x2="400.0" y2="470.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="300.0" cy="470.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="508.0" x2="400.0" y2="508.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="300.0" cy="508.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="546.0" x2="400.0" y2="546.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="300.0" cy="546.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="584.0" x2="400.0" y2="584.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="400.0" cy="584.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="622.0" x2="400.0" y2="622.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="250.0" cy="622.0" r="4.0" fill="#1a1a1a"/>
+<line x1="250.0" y1="660.0" x2="400.0" y2="660.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="300.0" cy="660.0" r="4.0" fill="#1a1a1a"/>
+<text x="460.0" y="112.0" font-size="12.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start">Maint.</text>
+<text x="460.0" y="127.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">lower better</text>
+<text x="460.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very low</text>
+<text x="610.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">high</text>
+<line x1="460.0" y1="152.0" x2="610.0" y2="152.0" stroke="#d8d4cc" stroke-width="0.75"/>
+<line x1="460.0" y1="166.0" x2="610.0" y2="166.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="166.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="204.0" x2="610.0" y2="204.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="204.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="242.0" x2="610.0" y2="242.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="242.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="280.0" x2="610.0" y2="280.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="280.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="318.0" x2="610.0" y2="318.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="560.0" cy="318.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="356.0" x2="610.0" y2="356.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="356.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="394.0" x2="610.0" y2="394.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="560.0" cy="394.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="432.0" x2="610.0" y2="432.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="560.0" cy="432.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="470.0" x2="610.0" y2="470.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="470.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="508.0" x2="610.0" y2="508.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="508.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="546.0" x2="610.0" y2="546.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="546.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="584.0" x2="610.0" y2="584.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="610.0" cy="584.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="622.0" x2="610.0" y2="622.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="460.0" cy="622.0" r="4.0" fill="#1a1a1a"/>
+<line x1="460.0" y1="660.0" x2="610.0" y2="660.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="510.0" cy="660.0" r="4.0" fill="#1a1a1a"/>
+<text x="670.0" y="112.0" font-size="12.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start">Speed</text>
+<text x="670.0" y="127.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">higher better</text>
+<text x="670.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very slow</text>
+<text x="820.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">fast</text>
+<line x1="670.0" y1="152.0" x2="820.0" y2="152.0" stroke="#d8d4cc" stroke-width="0.75"/>
+<line x1="670.0" y1="166.0" x2="820.0" y2="166.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="166.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="204.0" x2="820.0" y2="204.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="770.0" cy="204.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="242.0" x2="820.0" y2="242.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="670.0" cy="242.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="280.0" x2="820.0" y2="280.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="280.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="318.0" x2="820.0" y2="318.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="770.0" cy="318.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="356.0" x2="820.0" y2="356.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="770.0" cy="356.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="394.0" x2="820.0" y2="394.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="720.0" cy="394.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="432.0" x2="820.0" y2="432.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="432.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="470.0" x2="820.0" y2="470.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="470.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="508.0" x2="820.0" y2="508.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="508.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="546.0" x2="820.0" y2="546.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="546.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="584.0" x2="820.0" y2="584.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="720.0" cy="584.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="622.0" x2="820.0" y2="622.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="622.0" r="4.0" fill="#1a1a1a"/>
+<line x1="670.0" y1="660.0" x2="820.0" y2="660.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="820.0" cy="660.0" r="4.0" fill="#1a1a1a"/>
+<text x="880.0" y="112.0" font-size="12.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#b3261e" text-anchor="start">Bug power</text>
+<text x="880.0" y="127.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">higher better</text>
+<text x="880.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">low</text>
+<text x="1030.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">very high</text>
+<line x1="880.0" y1="152.0" x2="1030.0" y2="152.0" stroke="#d8d4cc" stroke-width="0.75"/>
+<line x1="880.0" y1="166.0" x2="1030.0" y2="166.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1030.0" cy="166.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="204.0" x2="1030.0" y2="204.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1030.0" cy="204.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="242.0" x2="1030.0" y2="242.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1030.0" cy="242.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="280.0" x2="1030.0" y2="280.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="992.5" cy="280.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="318.0" x2="1030.0" y2="318.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="992.5" cy="318.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="356.0" x2="1030.0" y2="356.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="992.5" cy="356.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="394.0" x2="1030.0" y2="394.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="992.5" cy="394.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="432.0" x2="1030.0" y2="432.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="955.0" cy="432.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="470.0" x2="1030.0" y2="470.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="955.0" cy="470.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="508.0" x2="1030.0" y2="508.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="955.0" cy="508.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="546.0" x2="1030.0" y2="546.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="955.0" cy="546.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="584.0" x2="1030.0" y2="584.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="955.0" cy="584.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="622.0" x2="1030.0" y2="622.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="917.5" cy="622.0" r="5.0" fill="#b3261e"/>
+<line x1="880.0" y1="660.0" x2="1030.0" y2="660.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="917.5" cy="660.0" r="5.0" fill="#b3261e"/>
+<text x="1090.0" y="112.0" font-size="12.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start">Flake risk</text>
+<text x="1090.0" y="127.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">lower better</text>
+<text x="1090.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very low</text>
+<text x="1240.0" y="142.0" font-size="9" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">high</text>
+<line x1="1090.0" y1="152.0" x2="1240.0" y2="152.0" stroke="#d8d4cc" stroke-width="0.75"/>
+<line x1="1090.0" y1="166.0" x2="1240.0" y2="166.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="166.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="204.0" x2="1240.0" y2="204.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1140.0" cy="204.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="242.0" x2="1240.0" y2="242.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="242.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="280.0" x2="1240.0" y2="280.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="280.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="318.0" x2="1240.0" y2="318.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1140.0" cy="318.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="356.0" x2="1240.0" y2="356.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="356.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="394.0" x2="1240.0" y2="394.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1190.0" cy="394.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="432.0" x2="1240.0" y2="432.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="432.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="470.0" x2="1240.0" y2="470.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="470.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="508.0" x2="1240.0" y2="508.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="508.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="546.0" x2="1240.0" y2="546.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="546.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="584.0" x2="1240.0" y2="584.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1240.0" cy="584.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="622.0" x2="1240.0" y2="622.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1140.0" cy="622.0" r="4.0" fill="#1a1a1a"/>
+<line x1="1090.0" y1="660.0" x2="1240.0" y2="660.0" stroke="#e7e3da" stroke-width="2"/>
+<circle cx="1090.0" cy="660.0" r="4.0" fill="#1a1a1a"/>
+</svg>

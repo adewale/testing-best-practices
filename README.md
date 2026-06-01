@@ -2,6 +2,8 @@
 
 An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from analysis of real-world testing patterns across 13 GitHub accounts and grounded in the work of practitioners like Kent Beck (TDD), Nat Pryce (GOOS), Graydon Hoare (Rust), and Andrej Karpathy.
 
+![A typographic ledger of the sixteen testing techniques this skill teaches, organised into three tiers — Always (Unit, Smoke, Regression); When triggered (Property-based, End-to-end, Doc/Code sync, Contract, VCR cassette, Characterization, Differential, Golden file, Pirate/Conformance); With caution (Visual/Screenshot, Mutation, Performance, Fuzz). A top strip frames the red-green-refactor rhythm: a test that fails first, the smallest code that passes, clean up while green.](research/diagrams/skill-ledger.png)
+
 ## What it does
 
 When an agent uses this skill, it produces higher-quality tests than it would on its own. Specifically:

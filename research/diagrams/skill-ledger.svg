@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1141" viewBox="0 0 1400 1141">
+<rect width="1400" height="1141" fill="#fcfcfd"/>
+<text x="52.0" y="70.0" font-size="40" font-family="Bricolage Grotesque" font-weight="700" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.80">Testing techniques</text>
+<text x="467.0" y="70.0" font-size="40" font-family="Bricolage Grotesque" font-weight="300" fill="#8a8d96" text-anchor="start" font-kerning="normal" letter-spacing="-0.80">a working order</text>
+<text x="52.0" y="102.0" font-size="17" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Sixteen techniques, ordered by how much they ask of you. Read top to bottom: obligation falls, cost rises.</text>
+<text x="52.0" y="128.0" font-size="15" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal" font-style="italic">Before any of them, encode the invariant in the type when you can. Otherwise a test along inbound → interior → outbound earns its keep.</text>
+<line x1="52.0" y1="156.0" x2="1348.0" y2="156.0" stroke="#e9e9ee" stroke-width="1"/>
+<text x="52.0" y="188.0" font-size="15" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.15">The rhythm</text>
+<text x="52.0" y="206.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">every fix, every feature</text>
+<circle cx="249.0" cy="183.0" r="3" fill="#8a8d96"/>
+<text x="264.0" y="188.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Red</text>
+<text x="264.0" y="206.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">a test that fails first</text>
+<circle cx="557.0" cy="183.0" r="3" fill="#8a8d96"/>
+<text x="572.0" y="188.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Green</text>
+<text x="572.0" y="206.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">the smallest code that passes</text>
+<circle cx="865.0" cy="183.0" r="3" fill="#8a8d96"/>
+<text x="880.0" y="188.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Refactor</text>
+<text x="880.0" y="206.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">clean up while green</text>
+<text x="444.0" y="188.0" font-size="20" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="middle" font-kerning="normal">→</text>
+<text x="752.0" y="188.0" font-size="20" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="middle" font-kerning="normal">→</text>
+<line x1="52.0" y1="224.0" x2="1348.0" y2="224.0" stroke="#e9e9ee" stroke-width="1"/>
+<text x="52.0" y="302.0" font-size="58" font-family="Bricolage Grotesque" font-weight="700" fill="#1c505f" text-anchor="start" font-kerning="normal" letter-spacing="-1.74">1</text>
+<text x="116.0" y="276.0" font-size="21" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.21">Always</text>
+<text x="116.0" y="298.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Required on every project,</text>
+<text x="116.0" y="316.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">no trigger needed.</text>
+<circle cx="305.0" cy="261.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="266.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Unit</text>
+<text x="318.0" y="288.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Any function with non-trivial logic: branches, loops, arithmetic.</text>
+<line x1="318.0" y1="315.0" x2="803.0" y2="315.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="305.0" cy="332.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="337.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Smoke</text>
+<text x="318.0" y="359.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Every deployable unit. The app starts and responds.</text>
+<text x="318.0" y="379.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">low power, catches the embarrassing failures</text>
+<line x1="318.0" y1="404.0" x2="803.0" y2="404.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="850.0" cy="261.0" r="3" fill="#8a8d96"/>
+<text x="863.0" y="266.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Regression</text>
+<text x="863.0" y="288.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">After every bug fix; the failing test comes first.</text>
+<line x1="863.0" y1="315.0" x2="1348.0" y2="315.0" stroke="#e9e9ee" stroke-width="1"/>
+<text x="52.0" y="488.0" font-size="58" font-family="Bricolage Grotesque" font-weight="700" fill="#2e7684" text-anchor="start" font-kerning="normal" letter-spacing="-1.74">2</text>
+<text x="116.0" y="462.0" font-size="21" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.21">When triggered</text>
+<text x="116.0" y="484.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Add when a specific</text>
+<text x="116.0" y="502.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">condition below appears.</text>
+<circle cx="305.0" cy="447.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="452.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Property-based</text>
+<text x="318.0" y="474.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Parsers, serializers, transforms, or anything that ranks or scores.</text>
+<line x1="318.0" y1="501.0" x2="803.0" y2="501.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="305.0" cy="518.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="523.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Differential</text>
+<text x="318.0" y="545.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Reimplementing a known algorithm against a trusted reference.</text>
+<line x1="318.0" y1="572.0" x2="803.0" y2="572.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="305.0" cy="589.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="594.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Pirate / Conformance</text>
+<text x="318.0" y="616.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">One specification, several language implementations.</text>
+<text x="318.0" y="636.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">a symmetric Differential test</text>
+<line x1="318.0" y1="661.0" x2="803.0" y2="661.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="305.0" cy="678.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="683.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Contract</text>
+<text x="318.0" y="705.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Unit tests use mocks for an external service.</text>
+<text x="318.0" y="725.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">guards a consumer / producer seam</text>
+<line x1="318.0" y1="750.0" x2="803.0" y2="750.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="305.0" cy="767.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="772.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">End-to-end</text>
+<text x="318.0" y="794.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">HTTP endpoints, CLI workflows, a platform-specific runtime.</text>
+<line x1="318.0" y1="821.0" x2="803.0" y2="821.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="850.0" cy="447.0" r="3" fill="#8a8d96"/>
+<text x="863.0" y="452.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">VCR cassette</text>
+<text x="863.0" y="474.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Code calls third-party APIs: LLM, payments, auth.</text>
+<text x="863.0" y="494.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">guards the HTTP seam</text>
+<line x1="863.0" y1="519.0" x2="1348.0" y2="519.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="850.0" cy="536.0" r="3" fill="#8a8d96"/>
+<text x="863.0" y="541.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Characterization</text>
+<text x="863.0" y="563.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Refactoring legacy code with no test suite to lean on.</text>
+<text x="863.0" y="583.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">a Golden test on unknown behaviour</text>
+<line x1="863.0" y1="608.0" x2="1348.0" y2="608.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="850.0" cy="625.0" r="3" fill="#8a8d96"/>
+<text x="863.0" y="630.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Golden file</text>
+<text x="863.0" y="652.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Input-to-output transforms; complex generated output.</text>
+<line x1="863.0" y1="679.0" x2="1348.0" y2="679.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="850.0" cy="696.0" r="3" fill="#8a8d96"/>
+<text x="863.0" y="701.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Doc / Code sync</text>
+<text x="863.0" y="723.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">CLI commands, plugin hooks, or config described in docs.</text>
+<text x="863.0" y="743.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">guards the docs / code seam</text>
+<line x1="863.0" y1="768.0" x2="1348.0" y2="768.0" stroke="#e9e9ee" stroke-width="1"/>
+<text x="52.0" y="905.0" font-size="58" font-family="Bricolage Grotesque" font-weight="700" fill="#489da8" text-anchor="start" font-kerning="normal" letter-spacing="-1.74">3</text>
+<text x="116.0" y="879.0" font-size="21" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.21">With caution</text>
+<text x="116.0" y="901.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Slow, costly, or flaky.</text>
+<text x="116.0" y="919.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Reach only when the payoff</text>
+<text x="116.0" y="937.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">clears the cost.</text>
+<circle cx="305.0" cy="864.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="869.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Mutation</text>
+<text x="318.0" y="891.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Critical modules; or coverage is high yet bugs still escape.</text>
+<text x="318.0" y="911.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">audits the suites above</text>
+<line x1="318.0" y1="936.0" x2="803.0" y2="936.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="305.0" cy="953.0" r="3" fill="#8a8d96"/>
+<text x="318.0" y="958.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Fuzz</text>
+<text x="318.0" y="980.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Security-sensitive code processing untrusted input.</text>
+<text x="318.0" y="1000.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal" font-style="italic">structured = Property-based</text>
+<line x1="318.0" y1="1025.0" x2="803.0" y2="1025.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="850.0" cy="864.0" r="3" fill="#8a8d96"/>
+<text x="863.0" y="869.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Visual / Screenshot</text>
+<text x="863.0" y="891.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">UI work where exact pixel layout is the contract.</text>
+<line x1="863.0" y1="918.0" x2="1348.0" y2="918.0" stroke="#e9e9ee" stroke-width="1"/>
+<circle cx="850.0" cy="935.0" r="3" fill="#8a8d96"/>
+<text x="863.0" y="940.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Performance</text>
+<text x="863.0" y="962.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">When a 2× slowdown would itself be a user-visible bug.</text>
+<line x1="863.0" y1="989.0" x2="1348.0" y2="989.0" stroke="#e9e9ee" stroke-width="1"/>
+<line x1="52.0" y1="1061.0" x2="1348.0" y2="1061.0" stroke="#dededd" stroke-width="1"/>
+<text x="52.0" y="1087.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Italic notes name a technique’s nearest relative, or the boundary it guards.</text>
+<text x="52.0" y="1107.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Full triggers and costs: references/test-types.md</text>
+</svg>

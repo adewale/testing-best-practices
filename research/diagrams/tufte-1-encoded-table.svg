@@ -1,0 +1,507 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="760" viewBox="0 0 1180 760">
+<rect width="1180" height="760" fill="#fafaf7"/>
+<text x="44.0" y="56.0" font-size="25" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">Fourteen testing techniques, ranked by bug-catching power</text>
+<text x="44.0" y="84.0" font-size="13" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start">Each cell is a level on that attribute&#x27;s own low→high scale; the dot is the value, the track is the range. Sorted by payoff, then by setup cost.</text>
+<text x="44.0" y="104.0" font-size="11.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">Source: test-types.md cost-benefit summary  ·  red = the payoff column</text>
+<text x="44.0" y="138.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start" letter-spacing="0.06em">Technique</text>
+<text x="250.0" y="138.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="middle" letter-spacing="0.06em">Tier</text>
+<text x="300.0" y="124.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start" letter-spacing="0.06em">Setup</text>
+<text x="300.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very low</text>
+<text x="404.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">high</text>
+<text x="300.0" y="152.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">lower better</text>
+<text x="468.0" y="124.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start" letter-spacing="0.06em">Maint.</text>
+<text x="468.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very low</text>
+<text x="572.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">high</text>
+<text x="468.0" y="152.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">lower better</text>
+<text x="636.0" y="124.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start" letter-spacing="0.06em">Speed</text>
+<text x="636.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very slow</text>
+<text x="740.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">fast</text>
+<text x="636.0" y="152.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">higher better</text>
+<text x="804.0" y="124.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#b3261e" text-anchor="start" letter-spacing="0.06em">Bug power</text>
+<text x="804.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">low</text>
+<text x="908.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">very high</text>
+<text x="804.0" y="152.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">higher better</text>
+<text x="972.0" y="124.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#8a857c" text-anchor="start" letter-spacing="0.06em">Flake risk</text>
+<text x="972.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">very low</text>
+<text x="1076.0" y="138.0" font-size="9.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="end">high</text>
+<text x="972.0" y="152.0" font-size="9" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="start">lower better</text>
+<line x1="44.0" y1="162.0" x2="1136.0" y2="162.0" stroke="#1a1a1a" stroke-width="1"/>
+<text x="44.0" y="190.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Differential</text>
+<text x="250.0" y="190.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T1</text>
+<line x1="300.0" y1="186.0" x2="404.0" y2="186.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="182.0" x2="300.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="182.0" x2="334.7" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="182.0" x2="369.3" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="182.0" x2="404.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="334.7" cy="186.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="186.0" x2="572.0" y2="186.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="182.0" x2="468.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="182.0" x2="502.7" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="182.0" x2="537.3" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="182.0" x2="572.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="186.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="186.0" x2="740.0" y2="186.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="182.0" x2="636.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="182.0" x2="670.7" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="182.0" x2="705.3" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="182.0" x2="740.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="186.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="186.0" x2="908.0" y2="186.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="182.0" x2="804.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="182.0" x2="830.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="182.0" x2="856.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="182.0" x2="882.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="182.0" x2="908.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="908.0" cy="186.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="186.0" x2="1076.0" y2="186.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="182.0" x2="972.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="182.0" x2="1006.7" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="182.0" x2="1041.3" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="182.0" x2="1076.0" y2="190.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="186.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="201.0" x2="1136.0" y2="201.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="228.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Property-based</text>
+<text x="250.0" y="228.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="224.0" x2="404.0" y2="224.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="220.0" x2="300.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="220.0" x2="334.7" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="220.0" x2="369.3" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="220.0" x2="404.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="369.3" cy="224.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="224.0" x2="572.0" y2="224.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="220.0" x2="468.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="220.0" x2="502.7" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="220.0" x2="537.3" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="220.0" x2="572.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="224.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="224.0" x2="740.0" y2="224.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="220.0" x2="636.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="220.0" x2="670.7" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="220.0" x2="705.3" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="220.0" x2="740.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="705.3" cy="224.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="224.0" x2="908.0" y2="224.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="220.0" x2="804.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="220.0" x2="830.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="220.0" x2="856.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="220.0" x2="882.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="220.0" x2="908.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="908.0" cy="224.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="224.0" x2="1076.0" y2="224.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="220.0" x2="972.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="220.0" x2="1006.7" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="220.0" x2="1041.3" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="220.0" x2="1076.0" y2="228.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="1006.7" cy="224.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="239.0" x2="1136.0" y2="239.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="266.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Mutation</text>
+<text x="250.0" y="266.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T3</text>
+<line x1="300.0" y1="262.0" x2="404.0" y2="262.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="258.0" x2="300.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="258.0" x2="334.7" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="258.0" x2="369.3" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="258.0" x2="404.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="404.0" cy="262.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="262.0" x2="572.0" y2="262.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="258.0" x2="468.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="258.0" x2="502.7" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="258.0" x2="537.3" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="258.0" x2="572.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="262.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="262.0" x2="740.0" y2="262.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="258.0" x2="636.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="258.0" x2="670.7" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="258.0" x2="705.3" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="258.0" x2="740.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="636.0" cy="262.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="262.0" x2="908.0" y2="262.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="258.0" x2="804.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="258.0" x2="830.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="258.0" x2="856.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="258.0" x2="882.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="258.0" x2="908.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="908.0" cy="262.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="262.0" x2="1076.0" y2="262.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="258.0" x2="972.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="258.0" x2="1006.7" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="258.0" x2="1041.3" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="258.0" x2="1076.0" y2="266.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="262.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="277.0" x2="1136.0" y2="277.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="304.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Regression</text>
+<text x="250.0" y="304.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T1</text>
+<line x1="300.0" y1="300.0" x2="404.0" y2="300.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="296.0" x2="300.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="296.0" x2="334.7" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="296.0" x2="369.3" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="296.0" x2="404.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="334.7" cy="300.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="300.0" x2="572.0" y2="300.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="296.0" x2="468.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="296.0" x2="502.7" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="296.0" x2="537.3" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="296.0" x2="572.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="300.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="300.0" x2="740.0" y2="300.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="296.0" x2="636.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="296.0" x2="670.7" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="296.0" x2="705.3" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="296.0" x2="740.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="300.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="300.0" x2="908.0" y2="300.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="296.0" x2="804.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="296.0" x2="830.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="296.0" x2="856.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="296.0" x2="882.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="296.0" x2="908.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="882.0" cy="300.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="300.0" x2="1076.0" y2="300.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="296.0" x2="972.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="296.0" x2="1006.7" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="296.0" x2="1041.3" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="296.0" x2="1076.0" y2="304.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="300.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="315.0" x2="1136.0" y2="315.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="342.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Contract</text>
+<text x="250.0" y="342.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="338.0" x2="404.0" y2="338.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="334.0" x2="300.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="334.0" x2="334.7" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="334.0" x2="369.3" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="334.0" x2="404.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="369.3" cy="338.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="338.0" x2="572.0" y2="338.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="334.0" x2="468.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="334.0" x2="502.7" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="334.0" x2="537.3" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="334.0" x2="572.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="537.3" cy="338.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="338.0" x2="740.0" y2="338.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="334.0" x2="636.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="334.0" x2="670.7" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="334.0" x2="705.3" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="334.0" x2="740.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="705.3" cy="338.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="338.0" x2="908.0" y2="338.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="334.0" x2="804.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="334.0" x2="830.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="334.0" x2="856.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="334.0" x2="882.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="334.0" x2="908.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="882.0" cy="338.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="338.0" x2="1076.0" y2="338.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="334.0" x2="972.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="334.0" x2="1006.7" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="334.0" x2="1041.3" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="334.0" x2="1076.0" y2="342.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="1006.7" cy="338.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="353.0" x2="1136.0" y2="353.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="380.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Pirate / conf.</text>
+<text x="250.0" y="380.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="376.0" x2="404.0" y2="376.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="372.0" x2="300.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="372.0" x2="334.7" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="372.0" x2="369.3" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="372.0" x2="404.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="369.3" cy="376.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="376.0" x2="572.0" y2="376.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="372.0" x2="468.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="372.0" x2="502.7" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="372.0" x2="537.3" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="372.0" x2="572.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="376.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="376.0" x2="740.0" y2="376.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="372.0" x2="636.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="372.0" x2="670.7" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="372.0" x2="705.3" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="372.0" x2="740.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="705.3" cy="376.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="376.0" x2="908.0" y2="376.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="372.0" x2="804.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="372.0" x2="830.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="372.0" x2="856.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="372.0" x2="882.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="372.0" x2="908.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="882.0" cy="376.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="376.0" x2="1076.0" y2="376.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="372.0" x2="972.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="372.0" x2="1006.7" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="372.0" x2="1041.3" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="372.0" x2="1076.0" y2="380.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="376.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="391.0" x2="1136.0" y2="391.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="418.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">End-to-end</text>
+<text x="250.0" y="418.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="414.0" x2="404.0" y2="414.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="410.0" x2="300.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="410.0" x2="334.7" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="410.0" x2="369.3" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="410.0" x2="404.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="404.0" cy="414.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="414.0" x2="572.0" y2="414.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="410.0" x2="468.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="410.0" x2="502.7" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="410.0" x2="537.3" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="410.0" x2="572.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="537.3" cy="414.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="414.0" x2="740.0" y2="414.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="410.0" x2="636.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="410.0" x2="670.7" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="410.0" x2="705.3" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="410.0" x2="740.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="670.7" cy="414.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="414.0" x2="908.0" y2="414.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="410.0" x2="804.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="410.0" x2="830.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="410.0" x2="856.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="410.0" x2="882.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="410.0" x2="908.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="882.0" cy="414.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="414.0" x2="1076.0" y2="414.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="410.0" x2="972.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="410.0" x2="1006.7" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="410.0" x2="1041.3" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="410.0" x2="1076.0" y2="418.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="1041.3" cy="414.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="429.0" x2="1136.0" y2="429.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="456.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Characterization</text>
+<text x="250.0" y="456.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="452.0" x2="404.0" y2="452.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="448.0" x2="300.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="448.0" x2="334.7" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="448.0" x2="369.3" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="448.0" x2="404.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="334.7" cy="452.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="452.0" x2="572.0" y2="452.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="448.0" x2="468.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="448.0" x2="502.7" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="448.0" x2="537.3" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="448.0" x2="572.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="537.3" cy="452.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="452.0" x2="740.0" y2="452.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="448.0" x2="636.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="448.0" x2="670.7" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="448.0" x2="705.3" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="448.0" x2="740.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="452.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="452.0" x2="908.0" y2="452.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="448.0" x2="804.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="448.0" x2="830.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="448.0" x2="856.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="448.0" x2="882.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="448.0" x2="908.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="856.0" cy="452.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="452.0" x2="1076.0" y2="452.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="448.0" x2="972.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="448.0" x2="1006.7" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="448.0" x2="1041.3" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="448.0" x2="1076.0" y2="456.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="452.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="467.0" x2="1136.0" y2="467.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="494.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Golden file</text>
+<text x="250.0" y="494.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="490.0" x2="404.0" y2="490.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="486.0" x2="300.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="486.0" x2="334.7" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="486.0" x2="369.3" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="486.0" x2="404.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="334.7" cy="490.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="490.0" x2="572.0" y2="490.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="486.0" x2="468.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="486.0" x2="502.7" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="486.0" x2="537.3" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="486.0" x2="572.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="490.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="490.0" x2="740.0" y2="490.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="486.0" x2="636.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="486.0" x2="670.7" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="486.0" x2="705.3" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="486.0" x2="740.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="490.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="490.0" x2="908.0" y2="490.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="486.0" x2="804.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="486.0" x2="830.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="486.0" x2="856.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="486.0" x2="882.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="486.0" x2="908.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="856.0" cy="490.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="490.0" x2="1076.0" y2="490.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="486.0" x2="972.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="486.0" x2="1006.7" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="486.0" x2="1041.3" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="486.0" x2="1076.0" y2="494.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="490.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="505.0" x2="1136.0" y2="505.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="532.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Unit</text>
+<text x="250.0" y="532.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T1</text>
+<line x1="300.0" y1="528.0" x2="404.0" y2="528.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="524.0" x2="300.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="524.0" x2="334.7" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="524.0" x2="369.3" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="524.0" x2="404.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="334.7" cy="528.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="528.0" x2="572.0" y2="528.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="524.0" x2="468.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="524.0" x2="502.7" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="524.0" x2="537.3" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="524.0" x2="572.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="528.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="528.0" x2="740.0" y2="528.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="524.0" x2="636.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="524.0" x2="670.7" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="524.0" x2="705.3" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="524.0" x2="740.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="528.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="528.0" x2="908.0" y2="528.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="524.0" x2="804.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="524.0" x2="830.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="524.0" x2="856.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="524.0" x2="882.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="524.0" x2="908.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="856.0" cy="528.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="528.0" x2="1076.0" y2="528.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="524.0" x2="972.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="524.0" x2="1006.7" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="524.0" x2="1041.3" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="524.0" x2="1076.0" y2="532.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="528.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="543.0" x2="1136.0" y2="543.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="570.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">VCR cassette</text>
+<text x="250.0" y="570.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="566.0" x2="404.0" y2="566.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="562.0" x2="300.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="562.0" x2="334.7" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="562.0" x2="369.3" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="562.0" x2="404.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="334.7" cy="566.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="566.0" x2="572.0" y2="566.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="562.0" x2="468.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="562.0" x2="502.7" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="562.0" x2="537.3" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="562.0" x2="572.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="566.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="566.0" x2="740.0" y2="566.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="562.0" x2="636.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="562.0" x2="670.7" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="562.0" x2="705.3" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="562.0" x2="740.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="566.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="566.0" x2="908.0" y2="566.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="562.0" x2="804.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="562.0" x2="830.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="562.0" x2="856.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="562.0" x2="882.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="562.0" x2="908.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="856.0" cy="566.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="566.0" x2="1076.0" y2="566.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="562.0" x2="972.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="562.0" x2="1006.7" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="562.0" x2="1041.3" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="562.0" x2="1076.0" y2="570.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="566.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="581.0" x2="1136.0" y2="581.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="608.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Screenshot</text>
+<text x="250.0" y="608.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T3</text>
+<line x1="300.0" y1="604.0" x2="404.0" y2="604.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="600.0" x2="300.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="600.0" x2="334.7" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="600.0" x2="369.3" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="600.0" x2="404.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="404.0" cy="604.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="604.0" x2="572.0" y2="604.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="600.0" x2="468.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="600.0" x2="502.7" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="600.0" x2="537.3" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="600.0" x2="572.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="572.0" cy="604.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="604.0" x2="740.0" y2="604.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="600.0" x2="636.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="600.0" x2="670.7" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="600.0" x2="705.3" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="600.0" x2="740.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="670.7" cy="604.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="604.0" x2="908.0" y2="604.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="600.0" x2="804.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="600.0" x2="830.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="600.0" x2="856.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="600.0" x2="882.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="600.0" x2="908.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="856.0" cy="604.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="604.0" x2="1076.0" y2="604.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="600.0" x2="972.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="600.0" x2="1006.7" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="600.0" x2="1041.3" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="600.0" x2="1076.0" y2="608.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="1076.0" cy="604.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="619.0" x2="1136.0" y2="619.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="646.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Smoke</text>
+<text x="250.0" y="646.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T1</text>
+<line x1="300.0" y1="642.0" x2="404.0" y2="642.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="638.0" x2="300.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="638.0" x2="334.7" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="638.0" x2="369.3" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="638.0" x2="404.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="300.0" cy="642.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="642.0" x2="572.0" y2="642.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="638.0" x2="468.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="638.0" x2="502.7" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="638.0" x2="537.3" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="638.0" x2="572.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="468.0" cy="642.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="642.0" x2="740.0" y2="642.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="638.0" x2="636.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="638.0" x2="670.7" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="638.0" x2="705.3" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="638.0" x2="740.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="642.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="642.0" x2="908.0" y2="642.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="638.0" x2="804.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="638.0" x2="830.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="638.0" x2="856.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="638.0" x2="882.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="638.0" x2="908.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="830.0" cy="642.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="642.0" x2="1076.0" y2="642.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="638.0" x2="972.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="638.0" x2="1006.7" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="638.0" x2="1041.3" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="638.0" x2="1076.0" y2="646.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="1006.7" cy="642.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="657.0" x2="1136.0" y2="657.0" stroke="#e7e3da" stroke-width="0.75"/>
+<text x="44.0" y="684.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Doc-sync</text>
+<text x="250.0" y="684.0" font-size="11" font-family="'DejaVu Sans Mono', monospace" font-weight="400" fill="#8a857c" text-anchor="middle">T2</text>
+<line x1="300.0" y1="680.0" x2="404.0" y2="680.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="300.0" y1="676.0" x2="300.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="334.7" y1="676.0" x2="334.7" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="369.3" y1="676.0" x2="369.3" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="404.0" y1="676.0" x2="404.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="334.7" cy="680.0" r="4.0" fill="#1a1a1a"/>
+<line x1="468.0" y1="680.0" x2="572.0" y2="680.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="468.0" y1="676.0" x2="468.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="502.7" y1="676.0" x2="502.7" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="537.3" y1="676.0" x2="537.3" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="572.0" y1="676.0" x2="572.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="502.7" cy="680.0" r="4.0" fill="#1a1a1a"/>
+<line x1="636.0" y1="680.0" x2="740.0" y2="680.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="636.0" y1="676.0" x2="636.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="670.7" y1="676.0" x2="670.7" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="705.3" y1="676.0" x2="705.3" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="740.0" y1="676.0" x2="740.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="740.0" cy="680.0" r="4.0" fill="#1a1a1a"/>
+<line x1="804.0" y1="680.0" x2="908.0" y2="680.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="804.0" y1="676.0" x2="804.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="830.0" y1="676.0" x2="830.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="856.0" y1="676.0" x2="856.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="882.0" y1="676.0" x2="882.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="908.0" y1="676.0" x2="908.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="830.0" cy="680.0" r="5.0" fill="#b3261e"/>
+<line x1="972.0" y1="680.0" x2="1076.0" y2="680.0" stroke="#e7e3da" stroke-width="3"/>
+<line x1="972.0" y1="676.0" x2="972.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1006.7" y1="676.0" x2="1006.7" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1041.3" y1="676.0" x2="1041.3" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<line x1="1076.0" y1="676.0" x2="1076.0" y2="684.0" stroke="#e7e3da" stroke-width="1"/>
+<circle cx="972.0" cy="680.0" r="4.0" fill="#1a1a1a"/>
+<line x1="44.0" y1="695.0" x2="1136.0" y2="695.0" stroke="#e7e3da" stroke-width="0.75"/>
+<line x1="44.0" y1="713.0" x2="1136.0" y2="713.0" stroke="#d8d4cc" stroke-width="1"/>
+<text x="44.0" y="734.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">Smoke and Doc-sync carry low bug power but catch critical, embarrassing failures — keep them anyway.</text>
+</svg>
