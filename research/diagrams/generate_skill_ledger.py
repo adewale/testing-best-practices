@@ -1,19 +1,14 @@
 #!/usr/bin/env python3
-"""Testing techniques as a commitment ledger — the impeccable-workflow redesign.
+"""Testing techniques as a commitment ledger.
 
-Workflow applied (pbakaus/impeccable): register = brand; critique found the
-card grid is the "identical card grids" absolute ban and the editorial-serif
-escape is the "editorial-typographic" reflex-reject lane. distill + brand
-direct the fix: no cards, a committed POV, colour that ENCODES meaning.
+A faithful map of the techniques the skill teaches in
+testing-best-practices/SKILL.md and references/test-types.md, organised by
+the skill's own tier structure (always required, when triggered, with caution)
+and framed by the skill's red-green-refactor rhythm.
 
-POV / named reference: a Field-Notes / risograph spec sheet — two committed
-inks (a teal obligation-ramp + one coral spot) on cool paper. Not SaaS-cream,
-not Klim-editorial, not a card grid.
-
-Composition: a ledger, not a grid. Colour encodes the commitment gradient
-(obligation falls, cost rises across tiers). Each technique carries a
-bug-catching-power meter from the skill's own cost-benefit table — the real
-data layer, so the piece is information design, not a styled list.
+Composition: a typographic ledger. The numeral on each tier carries the only
+colour, tier teal, deepening with obligation; everything else is neutral so
+the type does the work.
 
 Fonts: Bricolage Grotesque (display) + Hanken Grotesk (text). Neither is on
 the impeccable reflex-reject font list. See generate_hero_map.py for install.
@@ -28,8 +23,6 @@ INK    = "#15171a"
 BODY   = "#4a4d55"   # trigger text — ~8:1 on paper
 MUTED  = "#8a8d96"
 HAIR   = "#e9e9ee"
-
-ACCENT = "#ef5a40"   # the single spot colour (bug-power meters, focal marks)
 
 
 def hsl(h, s, l):
@@ -64,14 +57,14 @@ SZ_TITLE   = 40
 LEDGER = [
     (1, "Always", "Required on every project, no trigger needed.", [
         ("Unit",       "Any function with non-trivial logic: branches, loops, arithmetic.", 3, None),
-        ("Smoke",      "Every deployable unit. The app boots and answers.", 2, "low power, catches the embarrassing failures"),
+        ("Smoke",      "Every deployable unit. The app starts and responds.", 2, "low power, catches the embarrassing failures"),
         ("Regression", "After every bug fix; the failing test comes first.", 4, None),
     ]),
     (2, "When triggered", "Add when a specific condition below appears.", [
-        ("Property-based",       "Parsers, serializers, transforms, rankings: anything generative.", 5, None),
+        ("Property-based",       "Parsers, serializers, transforms, or anything that ranks or scores.", 5, None),
         ("Differential",         "Reimplementing a known algorithm against a trusted reference.", 5, None),
         ("Pirate / Conformance", "One specification, several language implementations.", 4, "a symmetric Differential test"),
-        ("Contract",             "Unit tests lean on mocks for an external service.", 4, "guards a consumer / producer seam"),
+        ("Contract",             "Unit tests use mocks for an external service.", 4, "guards a consumer / producer seam"),
         ("End-to-end",           "HTTP endpoints, CLI workflows, a platform-specific runtime.", 4, None),
         ("VCR cassette",         "Code calls third-party APIs: LLM, payments, auth.", 3, "guards the HTTP seam"),
         ("Characterization",     "Refactoring legacy code with no test suite to lean on.", 3, "a Golden test on unknown behaviour"),
@@ -80,7 +73,7 @@ LEDGER = [
     ]),
     (3, "With caution", "Slow, costly, or flaky. Reach only when the payoff clears the cost.", [
         ("Mutation",            "Critical modules; or coverage is high yet bugs still escape.", 5, "audits the suites above"),
-        ("Fuzz",                "Security-sensitive code parsing untrusted input.", 4, "structured = Property-based"),
+        ("Fuzz",                "Security-sensitive code processing untrusted input.", 4, "structured = Property-based"),
         ("Visual / Screenshot", "UI work where exact pixel layout is the contract.", 3, None),
         ("Performance",         "When a 2× slowdown would itself be a user-visible bug.", 2, None),
     ]),
@@ -101,19 +94,6 @@ def t(x, y, s, size=SZ_TRIGGER, fill=INK, weight="400", anchor="start",
 def line(x1, y1, x2, y2, stroke, w=1):
     return (f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" '
             f'stroke="{stroke}" stroke-width="{w}"/>')
-
-
-def meter(x, y, power, on=ACCENT, off="#eceaea"):
-    """Five-segment bug-power meter, right-anchored at x."""
-    seg, gap, n = 13, 4, 5
-    total = n * seg + (n - 1) * gap
-    sx = x - total
-    out = []
-    for i in range(n):
-        c = on if i < power else off
-        out.append(f'<rect x="{sx+i*(seg+gap):.1f}" y="{y:.1f}" width="{seg}" '
-                   f'height="5" rx="2.5" fill="{c}"/>')
-    return "".join(out), sx
 
 
 def wrap(text, max_chars):
@@ -139,7 +119,7 @@ def build():
     entries_x = M + RAIL
     entries_w = W - M - entries_x
     col_w = (entries_w - COL_GAP) / 2
-    meas = int((col_w - 70) / 7.0)   # chars/line for triggers (leave room for meter)
+    meas = int((col_w - 24) / 7.0)   # chars/line for triggers
 
     p = []
 
@@ -179,35 +159,23 @@ def build():
     phases = [
         ("Red", "a test that fails first"),
         ("Green", "the smallest code that passes"),
-        ("Refactor", "clean up, stays green"),
+        ("Refactor", "clean up while green"),
     ]
     pxs = [M + 212, M + 520, M + 828]
     for (word, gloss), px in zip(phases, pxs):
-        p.append(f'<circle cx="{px-15:.1f}" cy="{ly-5:.1f}" r="3.5" '
-                 f'fill="{ACCENT}"/>')
+        p.append(f'<circle cx="{px-15:.1f}" cy="{ly-5:.1f}" r="3" '
+                 f'fill="{MUTED}"/>')
         p.append(t(px, ly, word, size=SZ_NAME, weight="600", family=DISPLAY,
                    fill=INK, ls_em=-0.006))
         p.append(t(px, ly + 18, gloss, size=SZ_MICRO, fill=BODY, family=TEXT))
-    # coral step arrows between phases
+    # neutral step arrows between phases (no return loop)
     for i in (0, 1):
         ax = (pxs[i] + pxs[i + 1]) / 2 + 26
-        p.append(t(ax, ly, "→", size=SZ_NAME + 2, fill=ACCENT, family=TEXT,
+        p.append(t(ax, ly, "→", size=SZ_NAME + 2, fill=MUTED, family=TEXT,
                    anchor="middle"))
-    # curved return arrow: Refactor loops back to Red ("repeat")
-    rx0 = pxs[2] + 138
-    rx1 = pxs[0] - 22
-    dip = ly + 32
-    p.append(f'<path d="M {rx0:.1f},{ly+7:.1f} C {rx0:.1f},{dip:.1f} '
-             f'{rx1:.1f},{dip:.1f} {rx1+5:.1f},{ly+11:.1f}" fill="none" '
-             f'stroke="{ACCENT}" stroke-width="1.4"/>')
-    p.append(f'<path d="M {rx1+5:.1f},{ly+11:.1f} l -5,7 l 9,-1 z" '
-             f'fill="{ACCENT}"/>')
-    p.append(t((rx0 + rx1) / 2, dip + 4, "repeat until green, then clean",
-               size=SZ_MICRO, fill=ACCENT, family=TEXT, anchor="middle",
-               italic=True))
 
-    p.append(line(M, ly + 58, W - M, ly + 58, HAIR, 1))
-    y = ly + 86
+    p.append(line(M, ly + 36, W - M, ly + 36, HAIR, 1))
+    y = ly + 64
 
     for tier_no, tier_name, gloss, items in LEDGER:
         tcol = TIER_INK[tier_no]
@@ -231,14 +199,12 @@ def build():
         for ci, colitems in enumerate(columns):
             cx = entries_x + ci * (col_w + COL_GAP)
             cy = y
-            for (name, trig, power, note) in colitems:
-                # name + meter on the same baseline
-                p.append(f'<circle cx="{cx+3:.1f}" cy="{cy+9:.1f}" r="3.5" '
-                         f'fill="{tcol}"/>')
+            for (name, trig, _power, note) in colitems:
+                # neutral bullet, no meter
+                p.append(f'<circle cx="{cx+3:.1f}" cy="{cy+9:.1f}" r="3" '
+                         f'fill="{MUTED}"/>')
                 p.append(t(cx + 16, cy + 14, name, size=SZ_NAME, weight="600",
                            family=DISPLAY, fill=INK, ls_em=-0.006))
-                segs, _ = meter(cx + col_w, cy + 7, power)
-                p.append(segs)
 
                 ty = cy + 36
                 for ln in wrap(trig, meas):
@@ -247,7 +213,7 @@ def build():
                     ty += 19
                 if note:
                     p.append(t(cx + 16, ty + 1, note, size=SZ_MICRO,
-                               fill=tcol, family=TEXT, italic=True))
+                               fill=BODY, family=TEXT, italic=True))
                     ty += 18
 
                 cy = ty + 16
@@ -256,38 +222,17 @@ def build():
 
         y = max(col_bottoms) + 26
 
-    # ---- footer key: one row per encoding, stacked so nothing overlaps -----
+    # ---- footer key: conventions only --------------------------------------
     y += 2
     p.append(line(M, y, W - M, y, "#dededd", 1))
-    y += 28
-    LBL = M + 50   # shared label column, clears every sample
-
-    # row 1: power meter
-    segs, _ = meter(M + 81, y - 9, 4)          # right-anchored -> spans M..M+81
-    p.append(segs)
-    p.append(t(M + 95, y - 4,
-               "bug-catching power: more filled bars, more bugs caught",
-               size=SZ_MICRO, fill=MUTED, family=TEXT))
-    y += 24
-
-    # row 2: tier teal (three deepening dots)
-    for i, n in enumerate((1, 2, 3)):
-        p.append(f'<circle cx="{M+i*15:.1f}" cy="{y-8:.1f}" r="4" '
-                 f'fill="{TIER_INK[n]}"/>')
-    p.append(t(LBL, y - 4,
-               "numeral and bullets carry the tier’s teal; deeper teal = more "
-               "often required",
-               size=SZ_MICRO, fill=MUTED, family=TEXT))
-    y += 24
-
-    # row 3: conventions
+    y += 26
     p.append(t(M, y,
                "Italic notes name a technique’s nearest relative, or the "
                "boundary it guards.",
                size=SZ_MICRO, fill=MUTED, family=TEXT))
     y += 20
     p.append(t(M, y,
-               "Power ratings and full triggers: references/test-types.md",
+               "Full triggers and costs: references/test-types.md",
                size=SZ_MICRO, fill=MUTED, family=TEXT))
     y += 18
 
