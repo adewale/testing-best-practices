@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1185" viewBox="0 0 1400 1185">
-<rect width="1400" height="1185" fill="#fcfcfd"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1251" viewBox="0 0 1400 1251">
+<rect width="1400" height="1251" fill="#fcfcfd"/>
 <text x="52.0" y="70.0" font-size="40" font-family="Bricolage Grotesque" font-weight="700" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.80">Testing techniques</text>
 <text x="467.0" y="70.0" font-size="40" font-family="Bricolage Grotesque" font-weight="300" fill="#8a8d96" text-anchor="start" font-kerning="normal" letter-spacing="-0.80">a working order</text>
 <text x="52.0" y="102.0" font-size="17" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">Sixteen techniques, ordered by how much they ask of you. Read top to bottom: obligation falls, cost rises.</text>
@@ -26,7 +26,6 @@
 <text x="116.0" y="298.0" font-size="21" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.21">Always</text>
 <text x="116.0" y="320.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Required on every project,</text>
 <text x="116.0" y="338.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">no trigger needed.</text>
-<text x="52.0" y="348.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">3 of 16</text>
 <circle cx="305.0" cy="283.0" r="3.5" fill="#1c505f"/>
 <text x="318.0" y="288.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Unit</text>
 <rect x="722.0" y="281.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="739.0" y="281.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="756.0" y="281.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="773.0" y="281.0" width="13" height="5" rx="2.5" fill="#eceaea"/><rect x="790.0" y="281.0" width="13" height="5" rx="2.5" fill="#eceaea"/>
@@ -48,7 +47,6 @@
 <text x="116.0" y="503.0" font-size="21" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.21">When triggered</text>
 <text x="116.0" y="525.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Add when a specific</text>
 <text x="116.0" y="543.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">condition below appears.</text>
-<text x="52.0" y="553.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">9 of 16</text>
 <circle cx="305.0" cy="488.0" r="3.5" fill="#2e7684"/>
 <text x="318.0" y="493.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Property-based</text>
 <rect x="722.0" y="486.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="739.0" y="486.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="756.0" y="486.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="773.0" y="486.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="790.0" y="486.0" width="13" height="5" rx="2.5" fill="#ef5a40"/>
@@ -105,7 +103,6 @@
 <text x="116.0" y="961.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Slow, costly, or flaky.</text>
 <text x="116.0" y="979.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Reach only when the payoff</text>
 <text x="116.0" y="997.0" font-size="13" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">clears the cost.</text>
-<text x="52.0" y="989.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">4 of 16</text>
 <circle cx="305.0" cy="924.0" r="3.5" fill="#489da8"/>
 <text x="318.0" y="929.0" font-size="18" font-family="Bricolage Grotesque" font-weight="600" fill="#15171a" text-anchor="start" font-kerning="normal" letter-spacing="-0.11">Mutation</text>
 <rect x="722.0" y="922.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="739.0" y="922.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="756.0" y="922.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="773.0" y="922.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="790.0" y="922.0" width="13" height="5" rx="2.5" fill="#ef5a40"/>
@@ -129,7 +126,12 @@
 <text x="863.0" y="1022.0" font-size="14" font-family="Hanken Grotesk" font-weight="400" fill="#4a4d55" text-anchor="start" font-kerning="normal">When a 2× slowdown would itself be a user-visible bug.</text>
 <line x1="863.0" y1="1049.0" x2="1348.0" y2="1049.0" stroke="#e9e9ee" stroke-width="1"/>
 <line x1="52.0" y1="1121.0" x2="1348.0" y2="1121.0" stroke="#dededd" stroke-width="1"/>
-<rect x="59.0" y="1138.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="76.0" y="1138.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="93.0" y="1138.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="110.0" y="1138.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="127.0" y="1138.0" width="13" height="5" rx="2.5" fill="#eceaea"/>
-<text x="52.0" y="1142.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Power</text>
-<text x="152.0" y="1142.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">bug-catching power, from the skill’s cost-benefit table.   Teal depth tracks the tier.   Italic notes name a technique’s nearest relative or the boundary it guards.   Full triggers and costs: references/test-types.md</text>
+<rect x="52.0" y="1140.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="69.0" y="1140.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="86.0" y="1140.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="103.0" y="1140.0" width="13" height="5" rx="2.5" fill="#ef5a40"/><rect x="120.0" y="1140.0" width="13" height="5" rx="2.5" fill="#eceaea"/>
+<text x="147.0" y="1145.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">bug-catching power: more filled bars, more bugs caught</text>
+<circle cx="52.0" cy="1165.0" r="4" fill="#1c505f"/>
+<circle cx="67.0" cy="1165.0" r="4" fill="#2e7684"/>
+<circle cx="82.0" cy="1165.0" r="4" fill="#489da8"/>
+<text x="102.0" y="1169.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">numeral and bullets carry the tier’s teal; deeper teal = more often required</text>
+<text x="52.0" y="1197.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Italic notes name a technique’s nearest relative, or the boundary it guards.</text>
+<text x="52.0" y="1217.0" font-size="12" font-family="Hanken Grotesk" font-weight="400" fill="#8a8d96" text-anchor="start" font-kerning="normal">Power ratings and full triggers: references/test-types.md</text>
 </svg>

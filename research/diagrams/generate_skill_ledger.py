@@ -222,9 +222,6 @@ def build():
         for i, ln in enumerate(wrap(gloss, 26)):
             p.append(t(M + 64, y + 46 + i * 18, ln, size=SZ_MICRO + 1,
                        fill=MUTED, family=TEXT))
-        # count, quietly, under the numeral
-        p.append(t(M, y + 74, f"{len(items)} of 16", size=SZ_MICRO,
-                   fill=MUTED, family=TEXT))
 
         # ---- entries: two columns, no cards ------------------------------
         half = (len(items) + 1) // 2
@@ -259,22 +256,40 @@ def build():
 
         y = max(col_bottoms) + 26
 
-    # ---- footer legend (one quiet line, no eyebrow) ------------------------
+    # ---- footer key: one row per encoding, stacked so nothing overlaps -----
     y += 2
     p.append(line(M, y, W - M, y, "#dededd", 1))
-    y += 26
-    legend = []
-    segs, sx = meter(M + 88, y - 9, 4)
-    legend.append(segs)
-    legend.append(t(M, y - 5, "Power", size=SZ_MICRO, fill=MUTED, family=TEXT))
-    legend.append(t(M + 100, y - 5,
-                    "bug-catching power, from the skill’s cost-benefit table.   "
-                    "Teal depth tracks the tier.   Italic notes name a "
-                    "technique’s nearest relative or the boundary it guards.   "
-                    "Full triggers and costs: references/test-types.md",
-                    size=SZ_MICRO, fill=MUTED, family=TEXT))
-    p.extend(legend)
-    y += 22
+    y += 28
+    LBL = M + 50   # shared label column, clears every sample
+
+    # row 1: power meter
+    segs, _ = meter(M + 81, y - 9, 4)          # right-anchored -> spans M..M+81
+    p.append(segs)
+    p.append(t(M + 95, y - 4,
+               "bug-catching power: more filled bars, more bugs caught",
+               size=SZ_MICRO, fill=MUTED, family=TEXT))
+    y += 24
+
+    # row 2: tier teal (three deepening dots)
+    for i, n in enumerate((1, 2, 3)):
+        p.append(f'<circle cx="{M+i*15:.1f}" cy="{y-8:.1f}" r="4" '
+                 f'fill="{TIER_INK[n]}"/>')
+    p.append(t(LBL, y - 4,
+               "numeral and bullets carry the tier’s teal; deeper teal = more "
+               "often required",
+               size=SZ_MICRO, fill=MUTED, family=TEXT))
+    y += 24
+
+    # row 3: conventions
+    p.append(t(M, y,
+               "Italic notes name a technique’s nearest relative, or the "
+               "boundary it guards.",
+               size=SZ_MICRO, fill=MUTED, family=TEXT))
+    y += 20
+    p.append(t(M, y,
+               "Power ratings and full triggers: references/test-types.md",
+               size=SZ_MICRO, fill=MUTED, family=TEXT))
+    y += 18
 
     H = int(y + 16)
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
