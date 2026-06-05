@@ -1,5 +1,7 @@
 # testing-best-practices
 
+[![skills.sh](https://skills.sh/b/adewale/testing-best-practices)](https://skills.sh/adewale/testing-best-practices)
+
 An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from analysis of real-world testing patterns across 13 GitHub accounts and grounded in the work of practitioners like Kent Beck (TDD), Nat Pryce (GOOS), Graydon Hoare (Rust), and Andrej Karpathy.
 
 ![A typographic ledger of the sixteen testing techniques this skill teaches, organised into three tiers — Always (Unit, Smoke, Regression); When triggered (Property-based, End-to-end, Doc/Code sync, Contract, VCR cassette, Characterization, Differential, Golden file, Pirate/Conformance); With caution (Visual/Screenshot, Mutation, Performance, Fuzz). A top strip frames the red-green-refactor rhythm: a test that fails first, the smallest code that passes, clean up while green.](research/diagrams/skill-ledger.png)
@@ -19,6 +21,8 @@ When an agent uses this skill, it produces higher-quality tests than it would on
 ```bash
 npx skills add adewale/testing-best-practices
 ```
+
+Skills appear on skills.sh automatically after users install the repo with the skills CLI. Install counts and leaderboard rankings come from anonymous CLI telemetry; opt out with `DISABLE_TELEMETRY=1`. The repo page customization in `skills.sh.json` is picked up after the repository is seen by telemetry and the cache refreshes.
 
 ## How it works
 

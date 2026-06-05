@@ -1,0 +1,11 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Testing",
+      "description": "TDD, property-based testing, assertion quality, test audits, and language-specific testing practices.",
+      "skills": ["testing-best-practices"]
+    }
+  ]
+}
