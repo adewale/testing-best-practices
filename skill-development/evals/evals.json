@@ -2272,6 +2272,91 @@
         ],
         "last_reviewed": "2026-05-21"
       }
+    },
+    {
+      "id": "E33-python-fault-injection-error-paths",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "fault-injection",
+          "unit"
+        ],
+        "risk_classes": [
+          "external-boundary",
+          "error-handling",
+          "reliability"
+        ],
+        "failure_modes": [
+          "untested-error-path",
+          "happy-path-only",
+          "swallowed-exception"
+        ]
+      },
+      "prompt": "Add pytest tests for save_report(report, store). store.put(key, data) persists to a remote object store and may raise ConnectionError on transient failure; save_report retries up to 3 attempts, raises ReportSaveError if all fail, returns the key on success, and raises ValueError on an empty report. Make sure the error handling is actually exercised. Follow the project's existing pytest style.",
+      "fixture": "Python package with save_report, a store dependency whose put() can raise ConnectionError, ReportSaveError/ValueError types, and existing pytest helpers. See evals/fixtures/e33-python-fault-injection.",
+      "expected_behavior": [
+        "Inject a downstream dependency failure (a fake store that raises ConnectionError, or a side_effect exception), not just invalid input.",
+        "Assert transient failures are retried and recover (e.g. fail twice then succeed).",
+        "Assert exhausted retries surface a wrapped ReportSaveError, not a raw ConnectionError or a crash/hang.",
+        "Keep argument-validation (empty report -> ValueError) as one case, not the only failure case.",
+        "Run nearest pytest command or report the exact command if blocked."
+      ],
+      "red_flags": [
+        "Only tests the happy path plus empty-report ValueError; never injects a dependency failure.",
+        "Lets the raw ConnectionError propagate instead of asserting the wrapped ReportSaveError.",
+        "Treats argument validation as if it were error-path coverage."
+      ],
+      "rubric_focus": [
+        "B",
+        "C",
+        "D",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Test injects a failing dependency (failing fake or side_effect exception), not only invalid arguments."
+        ],
+        "runtime_checks": [
+          "Seeded transient failures are retried and recover; exhausted retries assert a wrapped ReportSaveError.",
+          "Use `evals/fixtures/e33-python-fault-injection/oracle.py` to validate candidate output against the bundled good/bad samples."
+        ],
+        "judge_checks": [
+          "Score whether error-handling paths (not just input validation) are exercised via injected failure.",
+          "Fixture oracle available: `evals/fixtures/e33-python-fault-injection`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill exercises error-handling paths by injecting downstream failures, distinct from argument validation.",
+        "warrant": "Passing supports the claim because expected behavior and red flags target the untested-error-path failure mode that the new SKILL.md principle addresses.",
+        "backing": {
+          "static_checks": [
+            "Test injects a failing dependency (failing fake or side_effect exception), not only invalid arguments."
+          ],
+          "runtime_checks": [
+            "Seeded transient failures are retried and recover; exhausted retries assert a wrapped ReportSaveError.",
+            "Use `evals/fixtures/e33-python-fault-injection/oracle.py` to validate candidate output against the bundled good/bad samples."
+          ],
+          "judge_checks": [
+            "Score whether error-handling paths (not just input validation) are exercised via injected failure.",
+            "Fixture oracle available: `evals/fixtures/e33-python-fault-injection`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may inject failures from general knowledge without using the skill.",
+          "The textual oracle checks failure injection is present, not that retry/recovery semantics are fully correct, until a full mini-repo fixture exists.",
+          "Public prompts can become saturated and should gain hidden variants."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "previous-vs-local"
+        ],
+        "last_reviewed": "2026-06-09"
+      }
     }
   ]
 }
