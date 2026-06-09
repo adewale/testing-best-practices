@@ -60,6 +60,28 @@ def main() -> int:
     ignore_ok = all(token in ignore for token in ["__pycache__/", "*.pyc", "skill-development/eval-runs/"])
     check("generated-artifact ignore rules", ignore_ok, ".gitignore covers caches and eval-runs", 5, rows)
 
+    # Every new technique section must ship with a registered hidden adversarial
+    # probe that guards against over-application. This makes "each section needs
+    # an over-application guard" infrastructure rather than convention.
+    section_probes = {
+        ("references/differential-testing.md", "build a trivial shadow model"): "E38-hidden-trivial-fn-no-shadow-model",
+        ("references/differential-testing.md", "Approximate, probabilistic"): "E37-hidden-exact-output-no-threshold",
+    }
+    by_id = {e["id"]: e for e in evals}
+    unguarded = []
+    for (rel, marker), probe_id in section_probes.items():
+        ref = REPO / "testing-best-practices" / rel
+        has_section = ref.exists() and marker in ref.read_text(encoding="utf-8")
+        probe = by_id.get(probe_id, {})
+        ok_one = (
+            has_section
+            and probe.get("hidden") is True
+            and probe.get("eval_health", {}).get("difficulty") == "adversarial"
+        )
+        if not ok_one:
+            unguarded.append(f"{rel}:{marker!r}->{probe_id}")
+    check("new-section adversarial-probe coverage", not unguarded, f"unguarded sections: {unguarded[:5]}", 10, rows)
+
     total = sum(r["weight"] for r in rows)
     score = sum(r["score"] for r in rows)
     result = {"score": score, "total": total, "percent": round(score / total * 100, 1), "checks": rows}

@@ -2488,6 +2488,397 @@
         ],
         "last_reviewed": "2026-06-09"
       }
+    },
+    {
+      "id": "E33-python-shadow-model-lru",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "shadow-model",
+          "property-based"
+        ],
+        "risk_classes": [
+          "data-structure-correctness"
+        ],
+        "failure_modes": [
+          "weak-assertion",
+          "example-only-tests"
+        ]
+      },
+      "prompt": "Add pytest tests for a custom LruCache(capacity) with put/get/items/__len__ where no reference implementation exists.",
+      "fixture": "Python project with an LruCache class and no canonical reference to diff against.",
+      "expected_behavior": [
+        "Build a trivial parallel shadow model (dict + recency list) that is obviously correct.",
+        "Drive both the cache and the model with the same seeded random operation sequence.",
+        "Assert agreement on multiple observables: each lookup and the full contents/length."
+      ],
+      "red_flags": [
+        "Only a couple of hand-picked example tests.",
+        "Unseeded randomness.",
+        "Single observable checked (no contents comparison)."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e33-python-shadow-model-lru/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Shadow-model fuzz disagreement surfaces an injected eviction bug."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm a seeded model-based comparison, not example-only tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill induces model-based (shadow-oracle) testing for stateful structures that have no reference implementation.",
+        "warrant": "Passing supports the claim because the oracle requires a seeded op sequence compared against an independent model on multiple observables.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may write a fuzz test unprompted.",
+          "Static oracle detects shape, not full correctness of the model."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E34-go-shadow-model-ringbuffer",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "differential",
+          "shadow-model"
+        ],
+        "risk_classes": [
+          "data-structure-correctness"
+        ],
+        "failure_modes": [
+          "example-only-tests",
+          "single-observable"
+        ]
+      },
+      "prompt": "Add Go tests for a fixed-capacity RingBuffer (Push/Pop/Len) where no reference implementation exists.",
+      "fixture": "Go package with a RingBuffer and no canonical reference; isomorphic holdback for the shadow-model insight.",
+      "expected_behavior": [
+        "Build a slice-backed shadow model and drive both with a seeded random op sequence.",
+        "Assert contents agreement via reflect.DeepEqual plus length, not just absence of panics."
+      ],
+      "red_flags": [
+        "Single Push/Pop example test.",
+        "Unseeded math/rand.",
+        "No contents comparison."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e34-go-shadow-model-ringbuffer/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the shadow-model behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm seeded model-based comparison in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The shadow-model behavior generalizes to Go and is not overfit to the Python dev fixture.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go idiom differences may require separate mechanism anchors.",
+          "Static oracle detects shape, not full correctness."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E35-python-ann-recall-oracle",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "statistical-oracle",
+          "property-based"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "flaky-nondeterminism"
+        ]
+      },
+      "prompt": "Add pytest tests for AnnIndex.query(q, k), an approximate nearest-neighbor search with no single correct answer set.",
+      "fixture": "Python project with an approximate ANN index and an available exact (brute-force) computation.",
+      "expected_behavior": [
+        "Build a brute-force/linear oracle and compute recall against the approximate result.",
+        "Assert a recall threshold with stated margin, and exact scores on the overlapping items.",
+        "Seed all randomness so the approximate test is reproducible, not flaky."
+      ],
+      "red_flags": [
+        "Exact-equality assertion against an approximate algorithm.",
+        "Length-only / not-empty assertion.",
+        "Vacuous threshold (e.g. recall >= 0.01)."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e35-python-ann-recall-oracle/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Recall threshold catches a degraded index build; exact-overlap check catches score drift."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm brute-force oracle + calibrated threshold, not exact equality."
+        ]
+      },
+      "validity": {
+        "claim": "The skill induces statistical-oracle testing (recall vs brute force) for approximate/probabilistic outputs.",
+        "warrant": "Passing supports the claim because the oracle requires a brute-force reference, a recall metric, and a margin threshold.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A loose threshold can pass while being near-vacuous; rubric must check margin.",
+          "Static oracle detects shape, not threshold calibration quality."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E36-go-approx-recall-oracle",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "flaky-nondeterminism"
+        ]
+      },
+      "prompt": "Add Go tests for Index.Query(q, k), an approximate top-k retriever with no single correct answer set.",
+      "fixture": "Go package with an approximate retriever and an available exact computation; isomorphic holdback for the statistical-oracle insight.",
+      "expected_behavior": [
+        "Build a brute-force/linear oracle and compute recall against the approximate result.",
+        "Assert a recall threshold with margin and seed the RNG."
+      ],
+      "red_flags": [
+        "Length-only assertion.",
+        "Exact-equality against approximate output.",
+        "Unseeded randomness."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e36-go-approx-recall-oracle/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms statistical-oracle behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm brute-force oracle + margin threshold in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The statistical-oracle behavior generalizes to Go and is not overfit to the Python dev fixture.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go idiom (if recall < t) differs from Python; oracle must accept both.",
+          "Static oracle detects shape, not calibration."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E37-hidden-exact-output-no-threshold",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "over-application",
+          "bug-masking"
+        ],
+        "failure_modes": [
+          "statistical-oracle-on-exact-output"
+        ]
+      },
+      "prompt": "Add pytest tests for quicksort(xs), a deterministic in-memory sort.",
+      "fixture": "Adversarial restraint probe: a deterministic, exact output that must NOT receive a statistical/closeness oracle.",
+      "expected_behavior": [
+        "Assert exact equality against the known-correct sorted output.",
+        "Do NOT introduce a recall/closeness threshold; that would hide real regressions."
+      ],
+      "red_flags": [
+        "Uses recall/tolerance/assertAlmostEqual on a deterministic sort.",
+        "Replaces exact equality with a >= 0.x threshold."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e37-hidden-exact-output-no-threshold/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Over-applied statistical oracle would pass a broken sort; restraint avoids that."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires exact equality and no statistical-oracle over-application."
+        ]
+      },
+      "validity": {
+        "claim": "The statistical-oracle guidance does not cause over-application to deterministic, exact outputs.",
+        "warrant": "Passing supports the claim because restraint (exact equality, no threshold) is the only way to satisfy the oracle.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A model might add a redundant exact-vs-builtin diff that is harmless; oracle tolerates that."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E38-hidden-trivial-fn-no-shadow-model",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "shadow-model",
+          "property-based"
+        ],
+        "risk_classes": [
+          "over-application",
+          "redundant-reimplementation"
+        ],
+        "failure_modes": [
+          "shadow-model-for-trivial-pure-fn"
+        ]
+      },
+      "prompt": "Add pytest tests for slugify(s), a trivial pure function that lowercases text and hyphenates whitespace runs.",
+      "fixture": "Adversarial restraint probe: a trivial pure function that must NOT receive a parallel shadow-model reimplementation.",
+      "expected_behavior": [
+        "Use direct example assertions and a light property (idempotence).",
+        "Do NOT reimplement slugify as a shadow model and fuzz against it; a model that can carry its own bugs is worse here."
+      ],
+      "red_flags": [
+        "Defines a second slugify-like function in the test.",
+        "Uses 'shadow'/'reference' reimplementation plus a random fuzz loop on a trivial pure function."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e38-hidden-trivial-fn-no-shadow-model/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A reimplemented shadow model adds risk without added coverage for a trivial pure fn."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires direct/property tests and no redundant shadow model."
+        ]
+      },
+      "validity": {
+        "claim": "The shadow-model guidance does not cause over-application to trivial pure functions.",
+        "warrant": "Passing supports the claim because restraint (examples/properties, no parallel model) is required to satisfy the oracle.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Some pure functions still benefit from PBT; this probe targets redundant reimplementation specifically."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
     }
   ]
 }

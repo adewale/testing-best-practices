@@ -1,0 +1,11 @@
+{
+  "eval_id": "E37-hidden-exact-output-no-threshold",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "uses exact equality for a deterministic sort",
+    "does NOT introduce a recall/closeness threshold (over-application guard)"
+  ]
+}

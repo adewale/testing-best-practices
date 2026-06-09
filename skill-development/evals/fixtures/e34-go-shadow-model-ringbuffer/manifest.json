@@ -1,0 +1,13 @@
+{
+  "eval_id": "E34-go-shadow-model-ringbuffer",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "drives the ring buffer with a seeded random op sequence",
+    "compares against a slice-backed shadow model",
+    "asserts contents, not just no-panic",
+    "rejects example-only tests"
+  ]
+}

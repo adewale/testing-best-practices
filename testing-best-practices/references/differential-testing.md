@@ -45,6 +45,89 @@ def test_roundtrip(text):
 
 ---
 
+## When no reference exists: build a trivial shadow model
+
+The oracle does not have to be a pre-existing library. For a custom data
+structure or stateful component with no canonical implementation, write a
+**deliberately dumb reference** that is obviously correct, drive both with the
+same seeded random operations, and assert they agree on *every* observable
+(return value of each op, size, contents, iteration order). This is
+model-based testing: the model trades performance for obvious correctness.
+
+```python
+# Test a custom LRU cache against a dict + list shadow model.
+import random
+
+def test_lru_matches_shadow_model():
+    rng = random.Random(1234)           # seed so a failure is reproducible
+    cache = LruCache(capacity=8)
+    keys, model = [], {}                  # the "always tells the truth" model
+    for _ in range(10_000):
+        k = rng.randrange(0, 20)
+        if rng.random() < 0.7:           # bias toward writes
+            v = rng.randrange(1_000)
+            cache.put(k, v)
+            model[k] = v
+            keys = [x for x in keys if x != k] + [k]
+            if len(keys) > 8:            # model the eviction rule independently
+                del model[keys.pop(0)]
+        else:
+            assert cache.get(k) == model.get(k)   # agree on every lookup
+    assert sorted(cache.items()) == sorted(model.items())  # and on full contents
+```
+
+Keys to make it bite:
+- **Seed the RNG explicitly** and print/log the seed; never rely on an
+  unseeded global RNG, whose sequence varies by platform and run.
+- **Bias toward edge cases** the structure encodes specially (here, evictions;
+  for trees, deletes; for nullable values, `None`).
+- **Compare multiple observables**, not just "didn't crash."
+
+**When NOT to use it:** if the shadow model would be as complex as the system
+under test (or would just reimplement it), skip it — a model that can carry its
+own bugs is worse than targeted example/property tests. For a pure function
+with a stated algebraic law, a property test is the lighter tool; reach for a
+shadow model only when there is real *state* to mirror.
+
+---
+
+## Approximate, probabilistic, or non-deterministic outputs
+
+Exact equality is the wrong oracle for approximate nearest-neighbor search,
+sampling, sketches, fuzzy matching, or rankers. Test against a **brute-force
+oracle with a statistical threshold**, and separately assert the results you
+*do* return are individually correct.
+
+```python
+# Approximate k-NN (e.g. an HNSW index) vs. an exact linear scan.
+def test_recall_against_brute_force():
+    rng = random.Random(42)
+    vectors = [random_unit_vector(rng, dim=128) for _ in range(20_000)]
+    index = AnnIndex(vectors)
+    query = random_unit_vector(rng, dim=128)
+
+    approx = set(index.query(query, k=50))
+    exact = set(brute_force_topk(vectors, query, k=50))   # the oracle
+
+    recall = len(approx & exact) / 50
+    assert recall >= 0.90, f"recall {recall:.2f} below 0.90 threshold"   # statistical
+    for item in approx & exact:                                          # exact-on-overlap
+        assert abs(index.score(item, query) - exact_score(item, query)) < 1e-4
+```
+
+Discipline that keeps this honest:
+- **State the threshold with margin and justify it** (a known-good build's
+  recall minus headroom). A threshold of `>= 0.01` is a test that never fails —
+  that is a vacuous assertion, not a statistical one. Flag those in review.
+- **Pin every seed** so "approximate" never means "flaky."
+- **Add an exact mode to the product if you can** (a "give me the true answer"
+  flag), so the oracle ships with the code instead of living only in tests.
+- **Don't reach for a threshold when the output is actually exact.** A sort, a
+  parser, or a deterministic serializer must be asserted with equality;
+  replacing that with a recall/closeness threshold *hides* real regressions.
+
+---
+
 ## Pirate Testing
 
 Language-neutral conformance tests written as data (JSON/YAML) that multiple

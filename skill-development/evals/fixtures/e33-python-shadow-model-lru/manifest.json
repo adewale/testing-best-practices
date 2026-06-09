@@ -1,0 +1,13 @@
+{
+  "eval_id": "E33-python-shadow-model-lru",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "drives the cache with a seeded random op sequence",
+    "compares against a trivial parallel shadow model",
+    "asserts multiple observables (lookups + full contents)",
+    "rejects a handful of example-only tests"
+  ]
+}
