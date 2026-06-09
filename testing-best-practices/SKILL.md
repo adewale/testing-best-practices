@@ -115,7 +115,9 @@ For small finite spaces, prefer exhaustive generation over sampling; see `refere
 
 ### Test error-handling paths, not just invalid input
 
-Most critical production failures are shallow: they live in error-handling code that only runs when a dependency *already* failed — a disk-write error, a dropped connection, a timeout, a partial response. Empirical studies of catastrophic distributed-systems failures find the majority were reachable by simple tests that exercised those paths. So "sad path" means more than rejecting bad arguments: inject the downstream failure (a fake/stub that raises, an injected I/O error, a `side_effect` exception) and assert the system degrades correctly — retries, wraps the error, releases resources, or surfaces a structured failure rather than crashing or corrupting state.
+Most critical production failures are shallow: they live in error-handling code that only runs when a dependency *already* failed — a disk-write error, a dropped connection, a timeout, a partial response. Empirical studies of catastrophic distributed-systems failures find the majority were reachable by simple tests that exercised those paths. So "sad path" means more than rejecting bad arguments: inject the downstream failure (a fake/stub that raises, an injected I/O error, a `side_effect` exception) and assert the system degrades correctly.
+
+Assert the failure behavior the code *actually* has, not one you wish it had. Read the spec or observe the code to learn what a failure should do — propagate, retry, wrap, fall back, roll back — and test that. Do not invent a retry budget, a custom error type, or rollback semantics the contract never promised; that tests a fictional contract and is scope creep. If the intended failure behavior is unspecified, characterize what the code does today and flag the gap as a follow-up rather than designing new production behavior inside a test.
 
 ### Push internal invariants into types/schemas/contracts
 

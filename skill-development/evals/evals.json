@@ -2378,17 +2378,17 @@
           "happy-path-only"
         ]
       },
-      "prompt": "Write a pytest test suite for save_report(report, store) in report.py. It serializes a report and saves it via store.put(key, data), returning the storage key.",
-      "fixture": "Python report writer whose store dependency can fail at runtime. The prompt deliberately omits any mention of failures, retries, or error types; a strong suite must still probe what happens when store.put fails.",
+      "prompt": "Write a pytest test suite for save_report(report, store) in report.py. It serializes a report and saves it via store.put(key, data), returning the storage key. The store interface and save_report are FIXED: store.put either succeeds or raises, and save_report has no retry, backoff, or error-wrapping logic, so a store failure propagates unchanged to the caller. Test the code as specified; do not change the production contract.",
+      "fixture": "Python report writer whose store dependency can raise at runtime. The contract is stated as fixed (failures propagate, no retries/wrapping). A strong suite probes the failure path against THAT contract; a weak one ignores failures or invents retry/wrapping behavior.",
       "expected_behavior": [
-        "Proactively inject a downstream store failure (store.put raises), even though the prompt never mentions failures.",
-        "Assert the failure path behaves sanely (error surfaces or is handled) rather than only testing the happy path.",
-        "Cover the success path and obvious edge cases without stopping there."
+        "Test the success path (returns the storage key, store.put called with serialized data).",
+        "Probe the failure path: inject a failing store (store.put raises) and assert the exception propagates unchanged from save_report.",
+        "Stay within the stated contract: do NOT invent retries, a retry budget, a custom error type, or rollback the contract does not promise."
       ],
       "red_flags": [
-        "Only tests the happy path and trivial input variations.",
-        "Assumes store.put always succeeds; never simulates a failing dependency.",
-        "Treats 'no error spec in the prompt' as 'no error paths to test'."
+        "Only tests the happy path; never simulates a failing store.",
+        "Invents retry/backoff/error-wrapping and asserts it (tests a fictional contract that contradicts the prompt).",
+        "Asserts a specific retry count or a custom error type the prompt explicitly says does not exist."
       ],
       "rubric_focus": [
         "C",
@@ -2396,24 +2396,22 @@
       ],
       "measurement": {
         "static_checks": [],
-        "runtime_checks": [
-          "The generic e33 oracle is reusable here: `python3 evals/fixtures/e33-python-fault-injection/oracle.py <candidate-dir>` passes only if a downstream failure was injected and its handling asserted."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
-          "Score whether the model injects a downstream store failure UNPROMPTED and asserts its handling; a happy-path-only suite is the discriminating failure."
+          "Score whether the suite probes the failing-store path AND respects the fixed contract: exception propagates, no invented retries/wrapping. Both happy-path-only (misses C) and invented-retry-contract (fails D scope control) are discriminating failures."
         ]
       },
       "validity": {
-        "claim": "The skill makes the model test error-handling paths even when the prompt does not name any failure mode.",
-        "warrant": "Withholding the retry/error spec removes the cue a base model leans on, so passing reflects the skill's 'test error-handling paths' principle rather than prompt-following.",
-        "backing": "Rubric C/D plus the reusable e33 fixture oracle as an objective floor.",
+        "claim": "The skill probes error-handling paths while respecting the stated contract, rather than ignoring failures or inventing production behavior.",
+        "warrant": "The prompt fixes the contract (failures propagate, no retries), so the only correct move is to test the real failure path without adding behavior; this isolates the tightened 'test the failure behavior the code actually has' clause.",
+        "backing": "Rubric C (probes failure path) and D (no scope creep into a fictional contract), judge-scored.",
         "rebuttals": [
-          "A strong base model may probe failures from general engineering instinct without the skill.",
-          "Judge variance on C/D; corroborate with the e33 oracle and repeat runs."
+          "A strong base model may already probe failures and respect scope without the skill.",
+          "Judge variance on C/D; corroborate with repeat runs and record in scorecard.md."
         ]
       },
       "eval_health": {
-        "difficulty": "hard",
+        "difficulty": "adversarial",
         "saturation_status": "hidden_probe",
         "known_discriminates_versions": [
           "github-vs-local"
