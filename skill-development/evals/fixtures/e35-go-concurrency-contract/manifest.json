@@ -1,0 +1,12 @@
+{
+  "eval_id": "E35-go-concurrency-contract",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "exercises shared state from concurrent goroutines with synchronization",
+    "asserts the compute-at-most-once contract with a failing-capable check",
+    "does not merely log the observed compute count and tolerate the race"
+  ]
+}

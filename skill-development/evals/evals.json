@@ -2418,6 +2418,76 @@
         ],
         "last_reviewed": "2026-06-09"
       }
+    },
+    {
+      "id": "E35-go-concurrency-contract",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go",
+        "techniques": [
+          "concurrency-stress",
+          "unit"
+        ],
+        "risk_classes": [
+          "concurrency",
+          "flake"
+        ],
+        "failure_modes": [
+          "unpinned-concurrency-contract",
+          "logging-not-asserting",
+          "happy-path-only"
+        ]
+      },
+      "prompt": "Write Go tests for a Cache whose GetOrCompute(key, compute) is documented to compute a missing key's value once and is intended to be safe for concurrent use by many goroutines. The implementation reads under a lock, computes outside the lock, then stores under the lock. Follow the project's existing go test style.",
+      "fixture": "Go package with a Cache.GetOrCompute that computes outside the lock (a TOCTOU double-compute race). See evals/fixtures/e35-go-concurrency-contract.",
+      "expected_behavior": [
+        "Exercise the shared cache from many concurrent goroutines, released together (start barrier) to maximize contention.",
+        "Recommend/run under the race detector (go test -race), and treat a green concurrent test as weaker evidence.",
+        "Pin the concurrency contract: assert compute runs at most once per key, surfacing the double-compute race as a failing test or explicit defect flag.",
+        "Do NOT merely log the observed compute count and tolerate whatever happens.",
+        "Run the targeted go test command or report the exact command if blocked."
+      ],
+      "red_flags": [
+        "Only sequential tests, or concurrent tests that assert nothing about the compute count.",
+        "Adds a compute counter and t.Logf's it instead of asserting it (bakes the race into expected behavior).",
+        "Papers over the race with sleeps or by asserting 'compute may run more than once' against a 'once' contract."
+      ],
+      "rubric_focus": [
+        "C",
+        "F",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "Concurrent test asserts a compute-count invariant, not only logs it."
+        ],
+        "runtime_checks": [
+          "Asserts the compute-at-most-once contract under concurrency with a failing-capable check.",
+          "Use `evals/fixtures/e35-go-concurrency-contract/oracle.py` to validate candidate output against the bundled good/bad samples."
+        ],
+        "judge_checks": [
+          "Score whether the suite pins the concurrency contract (assert compute-at-most-once) vs logging the race.",
+          "Fixture oracle available: `evals/fixtures/e35-go-concurrency-contract`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes concurrent tests pin the promised concurrency contract instead of logging an observed race.",
+        "warrant": "A capable base model detected the TOCTOU race but only logged the compute count and tolerated it; the skill principle redirects that into a failing assertion.",
+        "backing": "Rubric C/F/H plus the e35 fixture oracle (good asserts compute-once, bad only logs it).",
+        "rebuttals": [
+          "A strong base model may assert the contract without the skill.",
+          "Text oracle checks the assertion is present, not that the test reliably triggers the race; pair with -race and repeated runs."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "github-vs-local"
+        ],
+        "last_reviewed": "2026-06-09"
+      }
     }
   ]
 }

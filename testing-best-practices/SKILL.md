@@ -136,6 +136,12 @@ When an invariant is repeated across internal layers, consider lifting it to a b
 
 If user scope says “tests only” or “do not change production code,” add tests for the current API and list type/schema tightening as a follow-up.
 
+### Test concurrent code under a race detector, and pin the concurrency contract
+
+For code meant to be used by multiple goroutines/threads, sequential tests prove almost nothing. Drive the shared state from many workers released together (a start barrier maximizes contention) and run under a race detector or thread sanitizer (`go test -race`, ThreadSanitizer / `-fsanitize=thread`, repeated runs via `-count`). Treat a green concurrent test as weaker evidence than a sequential one — races are probabilistic.
+
+Assert the invariant the API actually promises — no lost updates, a monotonic/linearizable count, compute-at-most-once — instead of logging whatever count you happened to observe and moving on. If the implementation can violate that contract (e.g. it computes outside the lock, so two callers double-compute), that is a defect to surface with a failing test or an explicit flag, not a `t.Logf` that quietly bakes the race into the expected behavior.
+
 ## Mode workflows
 
 ### Write mode

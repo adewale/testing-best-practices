@@ -11,6 +11,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - **Eval `E33-python-fault-injection-error-paths`** — runnable fixture oracle (good/bad samples) plus prompt-eval entry guarding the error-path principle.
 - **Eval `E34-hidden-fault-injection-unprompted`** — adversarial hidden probe: the prompt fixes the contract (failures propagate, no retries), so inventing retry/wrapping is unambiguously scope creep. Now 6 hidden hard/adversarial probes.
 - **`skill-development/scripts/run-prompt-evals.py`** — before/after prompt-eval runner with pluggable generation backends (sub-agent via `--candidate-dir`, shell via `--agent-cmd`) and a rubric judge backend (`--judge-cmd`, e.g. `claude -p`) that computes eval score = min(rubric_focus dims) with the critical-failure override.
+- **Core principle: Test concurrent code under a race detector, and pin the concurrency contract** — drive shared state from many workers released together, run under `-race`/ThreadSanitizer, and assert the promised invariant (compute-at-most-once, no lost updates) instead of logging the observed count and tolerating the race. Found via an eval-driven probe where a capable base model detected a TOCTOU double-compute race but only `t.Logf`'d it.
+- **Eval `E35-go-concurrency-contract`** — fixture-backed (good asserts compute-once under contention; bad only logs it). The oracle is scoped to the concurrent test function so asserting the contract only sequentially does not pass.
 
 ## [0.3] - 2026-05-21
 
