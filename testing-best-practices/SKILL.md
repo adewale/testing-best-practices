@@ -113,6 +113,10 @@ Use property-based testing when functions process arbitrary strings, numbers, bi
 
 For small finite spaces, prefer exhaustive generation over sampling; see `references/exhaustive-testing.md`.
 
+### Test error-handling paths, not just invalid input
+
+Most critical production failures are shallow: they live in error-handling code that only runs when a dependency *already* failed — a disk-write error, a dropped connection, a timeout, a partial response. Empirical studies of catastrophic distributed-systems failures find the majority were reachable by simple tests that exercised those paths. So "sad path" means more than rejecting bad arguments: inject the downstream failure (a fake/stub that raises, an injected I/O error, a `side_effect` exception) and assert the system degrades correctly — retries, wraps the error, releases resources, or surfaces a structured failure rather than crashing or corrupting state.
+
 ### Push internal invariants into types/schemas/contracts
 
 Types and tests answer different questions:

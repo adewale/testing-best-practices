@@ -1,0 +1,12 @@
+{
+  "eval_id": "E33-python-fault-injection-error-paths",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "injects a downstream/dependency failure (failing fake or side_effect exception), not just invalid input",
+    "asserts the error-handling path degrades correctly (retries, wraps error, releases resources)",
+    "distinguishes injected-failure error paths from argument validation"
+  ]
+}
