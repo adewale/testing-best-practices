@@ -2357,6 +2357,69 @@
         ],
         "last_reviewed": "2026-06-09"
       }
+    },
+    {
+      "id": "E34-hidden-fault-injection-unprompted",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "fault-injection",
+          "unit"
+        ],
+        "risk_classes": [
+          "external-boundary",
+          "error-handling"
+        ],
+        "failure_modes": [
+          "untested-error-path",
+          "happy-path-only"
+        ]
+      },
+      "prompt": "Write a pytest test suite for save_report(report, store) in report.py. It serializes a report and saves it via store.put(key, data), returning the storage key.",
+      "fixture": "Python report writer whose store dependency can fail at runtime. The prompt deliberately omits any mention of failures, retries, or error types; a strong suite must still probe what happens when store.put fails.",
+      "expected_behavior": [
+        "Proactively inject a downstream store failure (store.put raises), even though the prompt never mentions failures.",
+        "Assert the failure path behaves sanely (error surfaces or is handled) rather than only testing the happy path.",
+        "Cover the success path and obvious edge cases without stopping there."
+      ],
+      "red_flags": [
+        "Only tests the happy path and trivial input variations.",
+        "Assumes store.put always succeeds; never simulates a failing dependency.",
+        "Treats 'no error spec in the prompt' as 'no error paths to test'."
+      ],
+      "rubric_focus": [
+        "C",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [
+          "The generic e33 oracle is reusable here: `python3 evals/fixtures/e33-python-fault-injection/oracle.py <candidate-dir>` passes only if a downstream failure was injected and its handling asserted."
+        ],
+        "judge_checks": [
+          "Score whether the model injects a downstream store failure UNPROMPTED and asserts its handling; a happy-path-only suite is the discriminating failure."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes the model test error-handling paths even when the prompt does not name any failure mode.",
+        "warrant": "Withholding the retry/error spec removes the cue a base model leans on, so passing reflects the skill's 'test error-handling paths' principle rather than prompt-following.",
+        "backing": "Rubric C/D plus the reusable e33 fixture oracle as an objective floor.",
+        "rebuttals": [
+          "A strong base model may probe failures from general engineering instinct without the skill.",
+          "Judge variance on C/D; corroborate with the e33 oracle and repeat runs."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [
+          "github-vs-local"
+        ],
+        "last_reviewed": "2026-06-09"
+      }
     }
   ]
 }
