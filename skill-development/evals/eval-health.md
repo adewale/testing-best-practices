@@ -25,6 +25,11 @@ This file applies the lesson from Lun Wang, “Your Evals Will Break and You Won
 - For every major real-world miss, add or update an eval within the same week.
 - Prefer evals that combine static checks, runtime fixtures, and rubric judgment; do not rely on one layer.
 
+## Current shared-harness saturation response
+- `neg-no-red-claim` was saturated in the 2026-06-08 baseline smoke run (`with_skill=1.0`, `without_skill=1.0`) because the objective accepted the prompt-leaked keyword `red`.
+- The shared smoke case now probes green-only evidence: it requires red-vs-green evidence separation, an observed passing command/result, a concrete next step for proving the missing pre-fix failure, and a guard against unqualified completed-TDD claims.
+- If this case saturates again, add a hidden or rotating variant with a saved green log and no public wording that names the missing red phase.
+
 ## Core language coverage requirement
 The eval validator enforces at least two evals and one critical eval for each core language family:
 - Python

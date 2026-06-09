@@ -1,0 +1,1 @@
+{"scripts":{"test":"vitest"},"devDependencies":{"vitest":"latest","fast-check":"latest"}}
