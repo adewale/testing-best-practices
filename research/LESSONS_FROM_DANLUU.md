@@ -21,11 +21,23 @@ In hardware, hand-written tests are 1–25% of test effort and find far fewer bu
 
 ## Fuzz.jl — "World's Dumbest Fuzzer"
 
-A few-minutes-of-effort, maximally-naive random fuzzer for Julia. It generates random expressions, feeds them to the compiler/runtime, and watches for crashes and hangs. No coverage guidance, no grammar awareness, no minimization — Csmith and jsfunfuzz it is not.
+A few-minutes-of-effort, maximally-naive random fuzzer for Julia. `fuzz_fns` picks random functions and feeds them random arguments (`generate_rand_strings`, etc.), watching for crashes and hangs. No coverage guidance, no grammar awareness, no minimization — Csmith and jsfunfuzz it is not. The README says it plainly:
 
-It found **10+ confirmed bugs** anyway: parser location-tracking errors, BLAS segfaults, symbol-handling crashes, array-sizing errors, a Unicode parsing hang. His own note: it produced bugs *faster than he could debug them*.
+> You probably don't want to use this. I spent a few minutes writing the most naive possible fuzzer, to see if it would turn up any bugs. Turns out, this terrible method can generate bugs faster than I can debug them.
+
+It produced a string of real, confirmed Julia bugs — parser location-tracking errors, segfaults, and hangs — captured with gdb backtraces (`sandbox/.../segfaults`) and filed upstream (e.g. JuliaLang/julia#8353).
 
 **Lesson**: The dumbest fuzzer that exists beats the sophisticated one you keep meaning to write. Don't let "I should build a proper generator" block the hour of work that finds real bugs today. (His 2026 update sharpens this: heavyweight property/fuzz *frameworks* carry execution-speed overhead that often outweighs their cleverness — a tight hand-rolled random loop frequently wins. The transferable insight is "randomized inputs work surprisingly well," not any particular framework.)
+
+### The harness mechanics matter more than the generator
+
+The interesting engineering in Fuzz.jl isn't the random generator — it's the three tricks that keep a dumb fuzzer *productive*:
+
+- **Seed from a CLI arg** (`srand(int(args[1]))`) so any run is reproducible — a found bug is a seed, not a one-off.
+- **Run every call in a try/catch and log the inputs** so one crash doesn't stop the run, and failures can be replayed (`reproduce-hang-bug.jl`: "everything was run in a try/catch block to throw away exceptions").
+- **Keep a denylist** (`banned.txt`) routing around known hangs/slow/noisy operations (`sprandn` hangs, `readlines` blocks on STDIN, `bessely` is too slow) so the fuzzer spends its time finding *new* bugs instead of re-hitting stuck ones.
+
+**Lesson**: A fuzzer is only as good as its harness. Determinism (seed), survivability (catch + log + replay), and a denylist for known-bad sinks are what turn "random inputs" into a tool that keeps finding bugs overnight.
 
 ## The dets / QuickCheck Story
 
@@ -45,6 +57,12 @@ Tooling that injects corruption into filesystems via device-mapper (offset → s
 
 **Lesson**: Test the error paths, not just the happy path. The bugs that escape are in code that only runs when something *else* already went wrong — so inject the fault and assert the system degrades correctly. This is exactly the class Yuan et al. found dominates critical failures.
 
+## secvisor-formal-verification & kodkod-clj — The Formal-Methods Thread
+
+Two lower-profile repos round out the picture: `secvisor-formal-verification` (formal verification of a secure hypervisor) and `kodkod-clj` (experiments with Kodkod, the SAT-based model finder behind Alloy). They connect to the article's point that distributed-systems test *generators* like BloomUnit lean on SAT solvers to produce valid orderings.
+
+**Lesson**: Random testing and formal/automated reasoning aren't rivals — they sit on one spectrum of "let the machine explore the state space for you." When inputs must satisfy constraints (valid interleavings, well-formed configs), a solver-backed generator beats both hand-written cases and unconstrained random ones.
+
 ## post-mortems & debugging-stories — Testing Culture
 
 Two of his most-starred repos (12k / 3.8k) are *curated collections of failures*, not code. They encode a hardware habit: every escaped bug gets a post-mortem, and the system is designed for testability up front specifically so bugs can be caught.
@@ -54,7 +72,8 @@ Two of his most-starred repos (12k / 3.8k) are *curated collections of failures*
 ## Key Insights
 
 1. **Reach for generators before more examples.** Random + coverage-guided generation finds more bugs per hour than hand-written cases; software under-uses both.
-2. **The dumbest fuzzer beats the unwritten one.** An hour of naive random input found 10+ real Julia bugs. Ship the crude version now.
+2. **The dumbest fuzzer beats the unwritten one.** A few minutes of naive random input found real, filed Julia bugs "faster than I can debug them." Ship the crude version now.
+2b. **A fuzzer is only as good as its harness.** Seed for reproducibility, wrap calls in try/catch + log inputs to survive and replay crashes, and denylist known hangs/slow sinks so it keeps finding *new* bugs.
 3. **Most critical failures are shallow.** ~58% are reachable by simple error-path tests — so test the error paths (fault injection), not just the happy path.
 4. **PBT shrinking converts heisenbugs to minimal reproducers.** Month-of-debugging → day-of-QuickCheck with ≤5-call repros.
 5. **Differential-test "simple" formats.** Run many implementations against shared fixtures; the disagreements are the bugs (csv).
