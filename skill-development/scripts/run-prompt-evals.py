@@ -114,22 +114,26 @@ def run_judge(judge_cmd: str, judge_prompt: str) -> str:
 
 
 def parse_judge(stdout: str) -> dict | None:
+    """Extract the first JSON object from judge stdout, tolerating code fences
+    and surrounding prose. Uses json.raw_decode (not brace counting) so braces
+    inside string values do not throw off the boundary."""
     fence = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", stdout, re.DOTALL)
-    blob = fence.group(1) if fence else None
-    if blob is None:  # fall back to first balanced {...}
-        start = stdout.find("{")
-        if start == -1:
-            return None
-        depth = 0
-        for i in range(start, len(stdout)):
-            depth += (stdout[i] == "{") - (stdout[i] == "}")
-            if depth == 0:
-                blob = stdout[start:i + 1]
-                break
-    try:
-        return json.loads(blob) if blob else None
-    except json.JSONDecodeError:
-        return None
+    if fence:
+        try:
+            return json.loads(fence.group(1))
+        except json.JSONDecodeError:
+            pass
+    decoder = json.JSONDecoder()
+    idx = stdout.find("{")
+    while idx != -1:
+        try:
+            obj, _ = decoder.raw_decode(stdout[idx:])
+            if isinstance(obj, dict):
+                return obj
+        except json.JSONDecodeError:
+            pass
+        idx = stdout.find("{", idx + 1)
+    return None
 
 
 def judge_score(ev: dict, parsed: dict) -> tuple[float | None, bool]:
@@ -260,7 +264,7 @@ def main() -> int:
     stamp = _dt.datetime.now().strftime("%Y%m%d-%H%M%S")
     run_dir = RUNS / stamp / match["id"]
     run_dir.mkdir(parents=True, exist_ok=True)
-    candidate_dir = Path(args.candidate_dir) if args.candidate_dir else None
+    candidate_dir = Path(args.candidate_dir).resolve() if args.candidate_dir else None
 
     res = score_one(match, fixture, run_dir, args.agent_cmd, candidate_dir, args.judge_cmd)
     print_result(res)

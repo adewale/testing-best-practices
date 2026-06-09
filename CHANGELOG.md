@@ -5,7 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+- **Core principle: Test error-handling paths, not just invalid input** — inject the downstream failure (a fake/stub that raises, an injected I/O error, a `side_effect` exception) and assert the system degrades correctly. Backed by the empirical "most critical failures are shallow" finding. Includes a scope-control clause: assert the failure behavior the code *actually* has; do not invent a retry budget, error type, or rollback the contract never promised — characterize and flag the gap instead.
+- **Research: `research/LESSONS_FROM_DANLUU.md`** — lessons from Dan Luu (danluu.com/testing + GitHub: Fuzz.jl harness mechanics, csv differential testing, fs-errors fault injection, kodkod-clj/secvisor formal-methods thread). Corpus now 14 accounts.
+- **Eval `E33-python-fault-injection-error-paths`** — runnable fixture oracle (good/bad samples) plus prompt-eval entry guarding the error-path principle.
+- **Eval `E34-hidden-fault-injection-unprompted`** — adversarial hidden probe: the prompt fixes the contract (failures propagate, no retries), so inventing retry/wrapping is unambiguously scope creep. Now 6 hidden hard/adversarial probes.
+- **`skill-development/scripts/run-prompt-evals.py`** — before/after prompt-eval runner with pluggable generation backends (sub-agent via `--candidate-dir`, shell via `--agent-cmd`) and a rubric judge backend (`--judge-cmd`, e.g. `claude -p`) that computes eval score = min(rubric_focus dims) with the critical-failure override.
 
 ## [0.3] - 2026-05-21
 

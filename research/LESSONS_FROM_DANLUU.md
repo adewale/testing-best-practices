@@ -73,10 +73,10 @@ Two of his most-starred repos (12k / 3.8k) are *curated collections of failures*
 
 1. **Reach for generators before more examples.** Random + coverage-guided generation finds more bugs per hour than hand-written cases; software under-uses both.
 2. **The dumbest fuzzer beats the unwritten one.** A few minutes of naive random input found real, filed Julia bugs "faster than I can debug them." Ship the crude version now.
-2b. **A fuzzer is only as good as its harness.** Seed for reproducibility, wrap calls in try/catch + log inputs to survive and replay crashes, and denylist known hangs/slow sinks so it keeps finding *new* bugs.
-3. **Most critical failures are shallow.** ~58% are reachable by simple error-path tests — so test the error paths (fault injection), not just the happy path.
-4. **PBT shrinking converts heisenbugs to minimal reproducers.** Month-of-debugging → day-of-QuickCheck with ≤5-call repros.
-5. **Differential-test "simple" formats.** Run many implementations against shared fixtures; the disagreements are the bugs (csv).
-6. **Spend the compute.** A dedicated fuzzing machine is cheap against developer salaries; a long test run is not "too slow."
-7. **Coverage numbers can be a lie.** 100% line coverage ≠ tested; edge/path approximation (AFL-style) is what correlates with finding bugs.
-8. **Testing is a culture choice.** Post-mortems, design-for-testability, and treating escaped bugs as defects-in-process are upstream of any framework.
+3. **A fuzzer is only as good as its harness.** Seed for reproducibility, wrap calls in try/catch + log inputs to survive and replay crashes, and denylist known hangs/slow sinks so it keeps finding *new* bugs.
+4. **Most critical failures are shallow.** ~58% are reachable by simple error-path tests — so test the error paths (fault injection), not just the happy path.
+5. **PBT shrinking converts heisenbugs to minimal reproducers.** Month-of-debugging → day-of-QuickCheck with ≤5-call repros.
+6. **Differential-test "simple" formats.** Run many implementations against shared fixtures; the disagreements are the bugs (csv).
+7. **Spend the compute.** A dedicated fuzzing machine is cheap against developer salaries; a long test run is not "too slow."
+8. **Coverage numbers can be a lie.** 100% line coverage ≠ tested; edge/path approximation (AFL-style) is what correlates with finding bugs.
+9. **Testing is a culture choice.** Post-mortems, design-for-testability, and treating escaped bugs as defects-in-process are upstream of any framework.
