@@ -16,7 +16,9 @@ def main() -> int:
         errors.append("no brute-force/linear oracle")
     if "recall" not in low:
         errors.append("no recall metric against the oracle")
-    if not re.search(r"recall\s*[<>]=?\s*0?\.\d|>=\s*0\.[5-9]|<\s*0\.[5-9]", low):
+    has_cmp = re.search(r"recall\s*[<>]=?|[<>]=?\s*recall", low)
+    has_threshold_literal = re.search(r"0\.[4-9]\d?", low)  # literal or named-const value
+    if not (has_cmp and has_threshold_literal):
         errors.append("no recall threshold with margin")
     for e in errors: print(e, file=sys.stderr)
     return 1 if errors else 0

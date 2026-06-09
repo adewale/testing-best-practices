@@ -2552,7 +2552,9 @@
       "eval_health": {
         "difficulty": "medium",
         "saturation_status": "active",
-        "known_discriminates_versions": [],
+        "known_discriminates_versions": [
+          "iter7: with-section PASS vs without-section FAIL"
+        ],
         "last_reviewed": "2026-06-09"
       }
     },
@@ -2617,7 +2619,9 @@
       "eval_health": {
         "difficulty": "medium",
         "saturation_status": "active",
-        "known_discriminates_versions": [],
+        "known_discriminates_versions": [
+          "iter7: with-section PASS vs without-section FAIL"
+        ],
         "last_reviewed": "2026-06-09"
       }
     },
@@ -2678,12 +2682,13 @@
         },
         "rebuttals": [
           "A loose threshold can pass while being near-vacuous; rubric must check margin.",
-          "Static oracle detects shape, not threshold calibration quality."
+          "Static oracle detects shape, not threshold calibration quality.",
+          "iter7 ablation did not discriminate: the prompt names the brute-force helper, cueing the behavior even without the section; needs a cue-free fixture."
         ]
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-09"
       }
@@ -2743,12 +2748,13 @@
         },
         "rebuttals": [
           "Go idiom (if recall < t) differs from Python; oracle must accept both.",
-          "Static oracle detects shape, not calibration."
+          "Static oracle detects shape, not calibration.",
+          "iter7 ablation did not discriminate: the prompt names the brute-force helper, cueing the behavior even without the section; needs a cue-free fixture."
         ]
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-09"
       }

@@ -10,8 +10,10 @@ def main() -> int:
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.cwd()
     text = read(root, "py"); low = text.lower()
     errors = []
-    # Restraint: a trivial pure fn does not warrant a parallel model that re-implements it.
-    reimpl = len(re.findall(r"def \w*slug\w*", low)) >= 1  # a second slugify defined in the test
+    # Restraint: a trivial pure fn does not warrant a parallel model that
+    # re-implements it. Flag a NON-test helper that rebuilds slugify (test
+    # functions named test_slugify_* are fine), or explicit shadow/reference markers.
+    reimpl = bool(re.search(r"def (?!test)\w*slug", low))  # non-test slugify-like helper
     if "shadow" in low or "reference_impl" in low or "reimplement" in low or reimpl:
         errors.append("built a redundant shadow-model reimplementation for a trivial pure function")
     if low.count("assert") < 2:

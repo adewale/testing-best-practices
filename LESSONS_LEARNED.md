@@ -145,6 +145,37 @@ The repo ended up with an internal development suite (fixture oracles, determini
 
 Committing raw `eval-runs/` directories and `__pycache__` files made the repo look more reproducible while actually mixing generated artifacts with maintained source. The better pattern is to track fixtures, oracles, scorecards, summaries, and scripts; keep raw run outputs ignored unless they are deliberately curated as fixtures.
 
+### Cue leakage puts a fixture at ceiling before you even run it
+
+Iteration 7's statistical-oracle fixtures (E35/E36) named the `brute_force_topk`
+helper right in the prompt. Both with-section and without-section runs then
+produced recall-vs-brute-force tests — the prompt did the teaching, not the
+skill. The ablation measured nothing about the section. The fix for next time:
+the prompt must describe the *situation* ("an approximate index, no single
+correct answer") without naming the technique's machinery. A fixture that
+mentions the oracle is testing the model's reading comprehension, not the skill.
+
+### Adversarial probes earn their keep, and oracles need their own scrutiny
+
+The E38 restraint probe (trivial pure function) immediately caught the
+shadow-model guidance inducing a redundant `_reference_slugify` reimplementation
+— a real over-application we then fixed in the guidance. But grading also
+exposed two bugs in the probe oracles themselves: a false negative (a recall
+threshold held in a named constant slipped past a literal-only regex) and a
+false positive (`def \w*slug` matched the test function names). An oracle that
+hasn't been adversarially checked against realistic-but-different outputs will
+both miss real failures and punish good work. Self-tests (good/pass + bad/fail)
+catch the crude cases; realistic agent output catches the rest.
+
+### Ship-but-flag is an honest state for an unproven section
+
+The statistical-oracle section is plausibly useful and passes every gate, but
+the ablation did not prove it changes behavior. Rather than delete it or
+overclaim, we shipped it and marked its fixtures `saturated_public` with a
+rebuttal noting the cue leak. "Validated" (shadow-model) and "shipped but
+unproven" (statistical-oracle) are different claims, and the eval metadata
+should say which one each section has earned.
+
 ### Schema and audit gates must evolve with eval design
 
 After adding `validity`, `eval_health`, hidden probes, and mini-repos, the JSON schema still validated only the older prompt fields. The best-practices audit caught that mismatch. Every new eval concept needs a gate, or it becomes convention instead of infrastructure.
@@ -166,6 +197,7 @@ The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~
 | 5 | + 3 types-vs-tests fixtures | Python, TS, Go | 16/16 with §10 v2 (13/16 without) | Jane Street research; §10 "Types vs tests"; `deterministic-time.md`; snapshot-tests in `golden-file-testing.md` |
 | 6 | 32 eval definitions + 10 fixture oracles + 3 mini-repos | Python, TS, Go, Rust | artifact rubric 100/100; static 0 P0/0 P1; public oracles 10/10 saturated; mini-repo mutants 3/3 | Eval validity metadata, hidden hard probes, generated-artifact hygiene, best-practices audit |
 | 7 | 35 eval definitions + 12 fixture oracles; +2 shared-benchmark tune cases | Python, TS, Go, Rust | paired A/B: error-path principle D 2→3 after scope clause; concurrency oracle discriminates baseline (FAIL) vs full-SKILL.md (PASS); gates 100/100 | Dan Luu research; error-path + concurrency-contract principles; E33/E34/E35; prompt-eval runner with pluggable sub-agent/judge backends |
+| 8 | 41 eval definitions + 18 fixture oracles | + shadow-model, statistical-oracle, restraint probes | shadow-model discriminates + generalizes; statistical-oracle at ceiling (cue leak); over-application found+fixed; audit 110/110 | antirez insights: shadow-oracle + statistical-oracle sections, new-section adversarial-probe gate |
 
 The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages). Iteration 5's signal was the +18.75pp aggregate from §10 v2 — only visible because we built new fixtures that weren't already at ceiling.
 

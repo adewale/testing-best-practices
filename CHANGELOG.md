@@ -13,6 +13,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - **`skill-development/scripts/run-prompt-evals.py`** — before/after prompt-eval runner with pluggable generation backends (sub-agent via `--candidate-dir`, shell via `--agent-cmd`) and a rubric judge backend (`--judge-cmd`, e.g. `claude -p`) that computes eval score = min(rubric_focus dims) with the critical-failure override.
 - **Core principle: Test concurrent code under a race detector, and pin the concurrency contract** — drive shared state from many workers released together, run under `-race`/ThreadSanitizer, and assert the promised invariant (compute-at-most-once, no lost updates) instead of logging the observed count and tolerating the race. Found via an eval-driven probe where a capable base model detected a TOCTOU double-compute race but only `t.Logf`'d it.
 - **Eval `E35-go-concurrency-contract`** — fixture-backed (good asserts compute-once under contention; bad only logs it). The oracle is scoped to the concurrent test function so asserting the contract only sequentially does not pass.
+- **`references/differential-testing.md` — "When no reference exists: build a trivial shadow model"** — model-based fuzzing against an obviously-correct reference, seeded for reproducibility, compared on multiple observables, with an explicit do-not-over-apply clause (from antirez's rax/redis fuzzing).
+- **`references/differential-testing.md` — "Approximate, probabilistic, or non-deterministic outputs"** — brute-force oracle with a recall/closeness threshold plus exact-on-overlap checks, and a clause forbidding statistical oracles on deterministic outputs (from antirez's Vector Sets recall testing).
+- **6 eval fixtures** (E33–E38): E33/E35 dev (Python), E34/E36 isomorphic Go holdbacks, E37/E38 hidden adversarial restraint probes — each with a self-testing good/bad oracle.
+- **`audit-best-practices.py` gate**: every new technique section must ship with a registered hidden adversarial probe (audit now 110/110).
+
+### Changed
+- **Strengthened the Differential Testing "When NOT to use it" guidance** after an adversarial probe (E38) showed the section could induce a redundant reference reimplementation for a trivial pure function.
+
+### Eval Results (iteration 7, ablation; sonnet, n=1 per cell)
+- Shadow-model section **discriminates and generalizes**: E33 (Python dev) and E34 (Go holdback) pass with the section, fail without it.
+- Statistical-oracle section **at ceiling / did not discriminate**: E35/E36 pass with and without, because the prompt names the brute-force helper and cues the behavior. Marked `saturated_public`; needs a cue-free fixture next iteration.
+- Restraint: E37 (deterministic sort) restrained; E38 (trivial pure fn) over-applied first, then restrained after the guidance fix.
+- Two fixture-oracle calibration bugs (E36 named-constant threshold false negative; E38 test-name false positive) found and fixed; all 16 oracle self-tests pass.
 
 ### Research
 - Added **Salvatore Sanfilippo / antirez** (`research/LESSONS_FROM_ANTIREZ.md`) — scanned his actual repos (rax, sds, redis, Vector Sets, ds4). Captures: differential fuzzing against a "tells the truth" reference oracle with a seeded platform-independent RNG (rax); content-digest persistence roundtrips and the `DEBUG` command surface as a deliberate testability affordance (redis); `assert_encoding`, `wait_for_condition` (poll, never sleep), fuzz-vs-Tcl-model across encodings, and replication-stream assertions; statistical recall testing of an approximate ANN index against a brute-force oracle plus SIMD-boundary/overflow fuzzing (Vector Sets); allocating test effort by reuse risk (libraries fuzzed hard, teaching code untested); and agent-as-QA-engineer driven by objective oracles instead of hardcoded baselines (ds4 `AGENT.md`).
