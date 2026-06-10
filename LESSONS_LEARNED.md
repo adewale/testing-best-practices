@@ -55,6 +55,14 @@ We initially lumped 7 practitioners into one `LESSONS_FROM_PRACTITIONERS.md`. In
 
 §10 "Types vs tests" emerged from combining Jane Street's "make illegal states unrepresentable" (Minsky) + Alexis King's "parse, don't validate" + the team's existing defense-in-depth-as-antipattern work + the practical observation that agents over-write per-function rejection tests. No single source produced the 17-line framing; the combination did. The lesson: research artifacts compound. A new practitioner's contribution may not be a new principle — it may be the missing piece that finally fits an existing one into a usable form.
 
+### Verbatim source beats fetched summaries
+
+The first Dan Luu research pass used fetched-page summaries; the second used GitHub API search that returns raw file content. The API pass surfaced what the summaries flattened: the actual harness mechanics that make a "dumb" fuzzer productive (seed-from-arg reproducibility, try/catch + input logging for crash replay, a `banned.txt` denylist), two repos the profile-page summary missed entirely (kodkod-clj, secvisor-formal-verification), and grounds to drop an unverifiable "10+ bugs" claim in favor of what the repo actually shows. Research with tools that return artifacts, not paraphrases — the interesting details live below summary resolution. Corollary: global search endpoints (code/issue search) often work even when direct per-repo reads are access-restricted.
+
+### A confirming research pass is still valuable — but the deliverable is the delta
+
+Most of Dan Luu's testing thesis was already in the skill (property-based testing, fuzzing, differential testing, coverage skepticism, mutation). The temptation was to restate it all; the discipline was to add only the one genuine gap (error-handling paths exercised by injected dependency failure) and let the research file carry the confirmations. A new practitioner who mostly validates the existing skill is evidence the skill is right — not an invitation to bloat it.
+
 ### Infrastructure-specific patterns can still generalize if you extract the underlying invariant
 
 Jane Street's library-level simulation testing — `Time_source` parameterization, the compiler-enforced `Require_explicit_time_source` — is uniquely OCaml. But the underlying idea ("make every source of non-determinism an explicit parameter") generalizes. The skill captures the pattern in `deterministic-time.md` (clock injection vs virtualization) without requiring OCaml. The cross-language lesson is "what would this look like in Java, Go, Python, TS" applied to every practitioner's contribution.
@@ -105,6 +113,34 @@ The version rubric separated first GitHub (28/100), previous GitHub (69/100), an
 
 Adding claim/warrant/backing/rebuttal fields forced each eval to say what interpretation it supports and how it could still be misleading. This turned “does the model pass?” into “what decision can this score justify?” That distinction matters once evals are used for release decisions.
 
+### Probe with a capable baseline before writing skill text
+
+The concurrency principle started as an eval, not as writing: a no-skill baseline run against a cache with a TOCTOU double-compute race. The baseline *detected* the race (it added a compute counter) but then `t.Logf`'d the count and "allowed" the contract violation — proving the gap was real and unsaturated before any skill text existed. This is the inverse of "without-skill baselines are essential": don't just use baselines to validate a change after the fact, use them first to find what's worth changing. A gap a frontier model already handles isn't worth tokens.
+
+### Eval the over-application failure mode, not just the under-application one
+
+"Test error-handling paths" worked — and then E34 showed it pushed the model to *invent* a retry budget and custom error type the contract never specified, tripping scope control (D: 4→2). Any "do more X" instruction has a sharp edge where X becomes over-engineering; the fix was a paired scope clause ("assert the failure behavior the code actually has, not one you wish it had"), verified by an isolation re-run. When adding a behavioral push, build the eval for its over-application before shipping it.
+
+### Validate oracles against real model output, not just hand-built samples
+
+The e35 oracle passed its good/bad self-tests, then falsely passed the real baseline candidate — which asserted compute-once in a *sequential* test while only logging it in the *concurrent* one. Hand-authored bad samples encode the failure you imagined; real candidates produce failures you didn't. The fix (scope the check to the function containing `go func`) only became visible by running the oracle against actual model output. Self-tests are necessary, not sufficient.
+
+### Change one variable per re-run, or you can't attribute the result
+
+Fixing the E34 scope-creep finding involved tightening the principle *and* hardening the prompt. Both arms then scored 4/4 — pleasant, but unattributable. The result only became evidence after an isolation run that held the original soft prompt constant and changed nothing but the principle (D: 2→3, invented contract gone). When a fix touches both the skill and the eval, re-run the original eval with only the skill changed before claiming the skill change worked.
+
+### Sub-agents are a complete eval backend; keep the harness deterministic
+
+The prompt-eval runner never calls a model: its core is fixture-oracle execution plus rubric arithmetic (score = min of focused dimensions, critical-failure override). Candidate generation and judging are pluggable backends — parallel sub-agents for A/B arms, `claude -p` headless as the judge. This made paired with/without-skill runs affordable inside one session with zero API setup. One sharp edge: parsing judge JSON by brace-counting breaks on braces inside string values; use `json.raw_decode`.
+
+### Hardened probes stop discriminating but keep guarding
+
+After hardening E34 (contract stated as fixed) both the baseline and with-skill arms scored 4/4 — the probe no longer separates skill from no-skill on a frontier model. That's not failure; its job changed from *discriminator* to *regression guard* for the specific over-engineering it originally caught. Track the distinction in eval health metadata rather than deleting saturated probes that still pin a real failure mode.
+
+### Two eval mechanisms have distinct jobs; mirror cases deliberately
+
+The repo ended up with an internal development suite (fixture oracles, deterministic gates — fast find-and-fix) and the shared benchmark (paired protocol, tune/holdout/holdback splits — slow prove-and-compare). That's a feature, not duplication, but it creates a sync obligation: when the dev suite finds a gap (error paths, concurrency), check whether the shared benchmark covers it and mirror a case if not — minding its keyword-leakage trap (assertion values must be terms a good answer produces but the prompt doesn't contain).
+
 ### Generated eval runs are evidence, not source
 
 Committing raw `eval-runs/` directories and `__pycache__` files made the repo look more reproducible while actually mixing generated artifacts with maintained source. The better pattern is to track fixtures, oracles, scorecards, summaries, and scripts; keep raw run outputs ignored unless they are deliberately curated as fixtures.
@@ -129,6 +165,7 @@ The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~
 | 4 | 12 | + CBC fixtures (Python subscription, Go order_state) | 100% | §11 Correctness by construction + decision-tree rework + tactic A/B framing |
 | 5 | + 3 types-vs-tests fixtures | Python, TS, Go | 16/16 with §10 v2 (13/16 without) | Jane Street research; §10 "Types vs tests"; `deterministic-time.md`; snapshot-tests in `golden-file-testing.md` |
 | 6 | 32 eval definitions + 10 fixture oracles + 3 mini-repos | Python, TS, Go, Rust | artifact rubric 100/100; static 0 P0/0 P1; public oracles 10/10 saturated; mini-repo mutants 3/3 | Eval validity metadata, hidden hard probes, generated-artifact hygiene, best-practices audit |
+| 7 | 35 eval definitions + 12 fixture oracles; +2 shared-benchmark tune cases | Python, TS, Go, Rust | paired A/B: error-path principle D 2→3 after scope clause; concurrency oracle discriminates baseline (FAIL) vs full-SKILL.md (PASS); gates 100/100 | Dan Luu research; error-path + concurrency-contract principles; E33/E34/E35; prompt-eval runner with pluggable sub-agent/judge backends |
 
 The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages). Iteration 5's signal was the +18.75pp aggregate from §10 v2 — only visible because we built new fixtures that weren't already at ceiling.
 

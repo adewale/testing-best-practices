@@ -113,6 +113,12 @@ Use property-based testing when functions process arbitrary strings, numbers, bi
 
 For small finite spaces, prefer exhaustive generation over sampling; see `references/exhaustive-testing.md`.
 
+### Test error-handling paths, not just invalid input
+
+Most critical production failures are shallow: they live in error-handling code that only runs when a dependency *already* failed — a disk-write error, a dropped connection, a timeout, a partial response. Empirical studies of catastrophic distributed-systems failures find the majority were reachable by simple tests that exercised those paths. So "sad path" means more than rejecting bad arguments: inject the downstream failure (a fake/stub that raises, an injected I/O error, a `side_effect` exception) and assert the system degrades correctly.
+
+Assert the failure behavior the code *actually* has, not one you wish it had. Read the spec or observe the code to learn what a failure should do — propagate, retry, wrap, fall back, roll back — and test that. Do not invent a retry budget, a custom error type, or rollback semantics the contract never promised; that tests a fictional contract and is scope creep. If the intended failure behavior is unspecified, characterize what the code does today and flag the gap as a follow-up rather than designing new production behavior inside a test.
+
 ### Push internal invariants into types/schemas/contracts
 
 Types and tests answer different questions:
@@ -129,6 +135,12 @@ When an invariant is repeated across internal layers, consider lifting it to a b
 - production type changes are in scope or explicitly approved.
 
 If user scope says “tests only” or “do not change production code,” add tests for the current API and list type/schema tightening as a follow-up.
+
+### Test concurrent code under a race detector, and pin the concurrency contract
+
+For code meant to be used by multiple goroutines/threads, sequential tests prove almost nothing. Drive the shared state from many workers released together (a start barrier maximizes contention) and run under a race detector or thread sanitizer (`go test -race`, ThreadSanitizer / `-fsanitize=thread`, repeated runs via `-count`). Treat a green concurrent test as weaker evidence than a sequential one — races are probabilistic.
+
+Assert the invariant the API actually promises — no lost updates, a monotonic/linearizable count, compute-at-most-once — instead of logging whatever count you happened to observe and moving on. If the implementation can violate that contract (e.g. it computes outside the lock, so two callers double-compute), that is a defect to surface with a failing test or an explicit flag, not a `t.Logf` that quietly bakes the race into the expected behavior.
 
 ## Mode workflows
 

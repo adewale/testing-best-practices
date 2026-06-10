@@ -2,7 +2,7 @@
 
 [![skills.sh](https://skills.sh/b/adewale/testing-best-practices)](https://skills.sh/adewale/testing-best-practices)
 
-An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from analysis of real-world testing patterns across 13 GitHub accounts and grounded in the work of practitioners like Kent Beck (TDD), Nat Pryce (GOOS), Graydon Hoare (Rust), and Andrej Karpathy.
+An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from analysis of real-world testing patterns across 14 GitHub accounts and grounded in the work of practitioners like Kent Beck (TDD), Nat Pryce (GOOS), Graydon Hoare (Rust), and Andrej Karpathy.
 
 ![A typographic ledger of the sixteen testing techniques this skill teaches, organised into three tiers — Always (Unit, Smoke, Regression); When triggered (Property-based, End-to-end, Doc/Code sync, Contract, VCR cassette, Characterization, Differential, Golden file, Pirate/Conformance); With caution (Visual/Screenshot, Mutation, Performance, Fuzz). A top strip frames the red-green-refactor rhythm: a test that fails first, the smallest code that passes, clean up while green.](research/diagrams/skill-ledger.png)
 
@@ -109,7 +109,7 @@ Full eval data is in `testing-best-practices-workspace/`.
 
 ## Research corpus
 
-Built from analysis of testing patterns across 13 GitHub accounts and one organization:
+Built from analysis of testing patterns across 14 GitHub accounts and one organization:
 
 - [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule
@@ -125,6 +125,7 @@ Built from analysis of testing patterns across 13 GitHub accounts and one organi
 - [chrischabot](https://github.com/chrischabot) -- 5-tier test architecture, API scenario tests
 - [tirsen](https://github.com/tirsen) -- retry patterns
 - [janestreet](https://github.com/janestreet) -- expect tests, library-level simulation, `Time_source`, Bonsai testing
+- [danluu](https://github.com/danluu) -- random/coverage-guided generation thesis, "world's dumbest fuzzer" (Fuzz.jl: seed/try-catch-log/denylist harness mechanics), differential testing (csv), fault injection (fs-errors), solver-backed generation (kodkod-clj, secvisor-formal-verification)
 
 Individual research documents are in `research/` (one per practitioner/account).
 
@@ -166,6 +167,7 @@ research/                           # Source material (does not ship)
   LESSONS_FROM_CHRISCHABOT_REPOS.md
   LESSONS_FROM_TIRSEN.md
   LESSONS_FROM_JANE_STREET.md
+  LESSONS_FROM_DANLUU.md
   ANTIPATTERNS.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
