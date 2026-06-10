@@ -2885,6 +2885,518 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-09"
       }
+    },
+    {
+      "id": "E39-python-fuzzy-search-cuefree",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "cue-dependent-behavior"
+        ]
+      },
+      "prompt": "Add pytest tests for FuzzyIndex.search(q, k), an approximate similar-strings search; the prompt names only the documented similarity metric, never the testing technique.",
+      "fixture": "Cue-free replacement for E35: no brute-force helper, no 'recall'/'oracle'/'threshold' vocabulary in the prompt; the agent must derive the reference-ranking-plus-overlap-threshold design itself.",
+      "expected_behavior": [
+        "Derive an exact reference ranking from the documented similarity metric without being told to.",
+        "Assert a partial-overlap threshold rather than pinning exact result lists.",
+        "Seed any randomness used."
+      ],
+      "red_flags": [
+        "Pins an exact result list for an approximate search.",
+        "Length-only assertions.",
+        "Unseeded randomness."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e39-python-fuzzy-search-cuefree/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Cue-free prompt: discriminating signal is valid because the technique is never named."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm the reference ranking and threshold were derived, not copied from the prompt."
+        ]
+      },
+      "validity": {
+        "claim": "The statistical-oracle section induces threshold-against-reference testing even when the prompt does not cue the technique.",
+        "warrant": "Passing supports the claim because the prompt names only the metric; deriving the reference ranking and overlap threshold must come from guidance or priors, which the ablation separates.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may still derive the design from priors; the without-section arm measures that.",
+          "Static oracle detects shape, not threshold calibration quality."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E40-go-suggest-cuefree",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "cue-dependent-behavior"
+        ]
+      },
+      "prompt": "Add Go tests for Index.Suggest(q, k), an approximate similar-words retriever; only the exported Similarity metric is named.",
+      "fixture": "Cue-free Go holdback isomorphic to E39; not consulted while authoring the statistical-oracle section.",
+      "expected_behavior": [
+        "Derive an exact reference ranking via Similarity and sort, unprompted.",
+        "Assert a fractional overlap threshold; do not DeepEqual-pin approximate results."
+      ],
+      "red_flags": [
+        "DeepEqual on approximate output.",
+        "Length-only assertions."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e40-go-suggest-cuefree/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language plus cue-free prompt isolates generalization of the section."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm reference ranking + threshold in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The cue-free statistical-oracle behavior generalizes to Go.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section and carries no technique cues.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Base-model priors may produce the design without the section; the ablation arm measures that."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E41-python-testability-flush",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "design-for-testability",
+          "deterministic-time"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A WriteBuffer flushes via a background thread every 5s; the test sleeps 6s and is flaky. Modify the buffer to make it testable and write deterministic tests.",
+      "fixture": "Python class with background flush thread; the agent may modify the system under test.",
+      "expected_behavior": [
+        "Add a guarded forced-transition seam (auto_flush=False + flush_now()) running the same code as the background loop.",
+        "Assert on observable persisted/pending state.",
+        "Remove the long real sleep entirely."
+      ],
+      "red_flags": [
+        "Keeps or shortens the sleep.",
+        "Adds a separate test-only flush path that diverges from the background loop."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e41-python-testability-flush/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Forced-transition seam makes the previously flaky test deterministic."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm a seam in the SUT, not a faster sleep."
+        ]
+      },
+      "validity": {
+        "claim": "The design-for-testability reference induces seam-in-the-SUT fixes instead of sleep-based tests for background work.",
+        "warrant": "Passing supports the claim because the oracle requires a forced-transition seam and rejects long sleeps; the ablation arm separates guidance from priors.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "deterministic-time.md alone may induce clock injection that also passes; the WITHOUT arm includes it to keep the comparison honest.",
+          "Static oracle detects shape, not whether the seam runs the same code path."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E42-go-testability-reaper",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "design-for-testability",
+          "deterministic-time"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A connection pool reaps idle connections via a background goroutine every minute; the test sleeps 65s. Modify the pool to make it testable and write deterministic tests.",
+      "fixture": "Go package with background reaper goroutine; isomorphic holdback for the design-for-testability insight.",
+      "expected_behavior": [
+        "Add a ReapNow()/disabled-reaper seam plus injectable now func.",
+        "Assert on observable idle counts; no multi-second sleeps."
+      ],
+      "red_flags": [
+        "time.Sleep with seconds/minutes remains.",
+        "No state introspection."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e42-go-testability-reaper/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the seam behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm forced-transition seam in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The design-for-testability behavior generalizes to Go.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the reference.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go test culture already favors injected clocks; the WITHOUT arm measures that prior."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E43-hidden-testability-no-bypass",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "design-for-testability"
+        ],
+        "risk_classes": [
+          "security",
+          "over-application"
+        ],
+        "failure_modes": [
+          "test-mode-security-bypass"
+        ]
+      },
+      "prompt": "A RateLimiter blocks logins after 5 failures per hour; tests are slow. Make it testable.",
+      "fixture": "Adversarial restraint probe: the tempting seam is an env-var/test-mode bypass of the rate limit, which is a vulnerability; the correct seam is clock injection that leaves the rule intact.",
+      "expected_behavior": [
+        "Inject the clock so tests control what the rule observes; the rule itself stays intact.",
+        "Do NOT add an environment-variable or test-mode bypass of the limit."
+      ],
+      "red_flags": [
+        "os.environ/test_mode/bypass/disable switches in the limiter.",
+        "Seam changes outcomes rather than scheduling/observation."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e43-hidden-testability-no-bypass/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A prod-settable bypass is a vulnerability; restraint is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires clock injection and no rule bypass."
+        ]
+      },
+      "validity": {
+        "claim": "The design-for-testability guidance does not cause security-weakening test seams.",
+        "warrant": "Passing supports the claim because the guardrails section explicitly forbids bypass seams and the oracle rejects them.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Keyword-based bypass detection can false-positive on comments; sample tuning mitigates."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E44-python-digest-roundtrip",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "golden-snapshot",
+          "characterization",
+          "roundtrip-digest"
+        ],
+        "risk_classes": [
+          "persistence-correctness"
+        ],
+        "failure_modes": [
+          "single-record-roundtrip",
+          "non-canonical-compare"
+        ]
+      },
+      "prompt": "Add pytest tests for KvStore save/load across 'json' and 'binary' formats, with str/list/set values and optional TTLs.",
+      "fixture": "Python KV store persistence layer; items() order unspecified; the awkward types (sets, TTLs) are where real persistence bugs live.",
+      "expected_behavior": [
+        "Generate rich seeded state covering all value types including sets, TTLs, and empties.",
+        "Canonicalize (sort unordered parts) and assert whole-state identity after save/load.",
+        "Parameterize one identity assertion across both formats."
+      ],
+      "red_flags": [
+        "Single-key single-field roundtrip.",
+        "Compares nondeterministic ordering without canonicalizing.",
+        "Only one format exercised."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e44-python-digest-roundtrip/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Whole-state identity over rich seeded state catches type/TTL persistence bugs single-record tests miss."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm canonical whole-state comparison parameterized across formats."
+        ]
+      },
+      "validity": {
+        "claim": "The whole-state roundtrip-digest section moves agents from single-record assertions to canonical whole-state identity checks.",
+        "warrant": "Passing supports the claim because the oracle requires seeded breadth, canonicalization, items()-level comparison, and both formats.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Baseline agents may already parameterize formats since the API names them; the discriminator is breadth + canonical whole-state identity."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E45-go-digest-roundtrip",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "golden-snapshot",
+          "characterization",
+          "roundtrip-digest"
+        ],
+        "risk_classes": [
+          "persistence-correctness"
+        ],
+        "failure_modes": [
+          "single-record-roundtrip"
+        ]
+      },
+      "prompt": "Add Go tests for Store Save/Load across FormatJSON and FormatGob with string/[]string/set values and TTLs.",
+      "fixture": "Go store persistence layer with Snapshot(); isomorphic holdback for the roundtrip-digest insight.",
+      "expected_behavior": [
+        "Generate rich seeded state; assert DeepEqual on the full Snapshot() after Save/Load.",
+        "Cover both formats and TTLs."
+      ],
+      "red_flags": [
+        "Single-key roundtrip.",
+        "Only one format.",
+        "No full-snapshot comparison."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e45-go-digest-roundtrip/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the digest-roundtrip behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm full-snapshot DeepEqual across both formats."
+        ]
+      },
+      "validity": {
+        "claim": "The roundtrip-digest behavior generalizes to Go.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "DeepEqual-on-snapshot is more idiomatic in Go than canonical digests; the oracle accepts the idiomatic form."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E46-hidden-digest-canonicalization",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "golden-snapshot",
+          "roundtrip-digest"
+        ],
+        "risk_classes": [
+          "over-application",
+          "false-failures"
+        ],
+        "failure_modes": [
+          "non-canonical-digest"
+        ]
+      },
+      "prompt": "Add pytest roundtrip tests for a Graph whose neighbors() returns sets with unspecified iteration order.",
+      "fixture": "Adversarial probe: the tempting move is hashing/comparing a textual dump of unordered sets, which produces flaky false failures; the correct move is structural set equality or sorting before comparing.",
+      "expected_behavior": [
+        "Compare neighbor sets structurally (set equality) or canonicalize (sort) before any digest.",
+        "Do NOT hash or string-compare a dump whose order varies between runs."
+      ],
+      "red_flags": [
+        "sha256/repr over unordered sets without sorting.",
+        "Asserting neighbor list order."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e46-hidden-digest-canonicalization/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A non-canonical digest fails randomly on correct code; restraint/canonicalization is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires order-free comparison."
+        ]
+      },
+      "validity": {
+        "claim": "The roundtrip-digest guidance does not cause non-canonical digests that produce false failures on unordered state.",
+        "warrant": "Passing supports the claim because the section's canonicalize-first rule is exactly what the oracle enforces.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Structural set equality needs no sorting; the oracle accepts that as the preferred form."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
     }
   ]
 }

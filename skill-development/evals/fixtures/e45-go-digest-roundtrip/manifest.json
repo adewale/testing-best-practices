@@ -1,0 +1,13 @@
+{
+  "eval_id": "E45-go-digest-roundtrip",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "generates rich seeded state",
+    "asserts whole-snapshot identity (DeepEqual) after Save/Load",
+    "covers both FormatJSON and FormatGob",
+    "rejects single-key roundtrips"
+  ]
+}

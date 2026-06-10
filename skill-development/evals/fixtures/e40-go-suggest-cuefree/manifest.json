@@ -1,0 +1,12 @@
+{
+  "eval_id": "E40-go-suggest-cuefree",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "builds an exact reference ranking from the exported Similarity metric (prompt does NOT cue this)",
+    "asserts a fractional overlap threshold",
+    "rejects DeepEqual pinning of approximate results"
+  ]
+}

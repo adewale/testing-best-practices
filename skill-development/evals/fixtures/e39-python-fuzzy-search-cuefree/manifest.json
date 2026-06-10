@@ -1,0 +1,12 @@
+{
+  "eval_id": "E39-python-fuzzy-search-cuefree",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "builds an exact reference ranking from the documented similarity metric (prompt does NOT cue this)",
+    "asserts a partial-overlap threshold, not exact list equality",
+    "rejects pinning exact result lists for an approximate search"
+  ]
+}

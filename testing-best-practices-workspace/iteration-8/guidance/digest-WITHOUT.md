@@ -220,46 +220,6 @@ is trivial and stable, tests get written. From "The Joy of Expect Tests":
 *"The real art lies in producing output that tells a concise story, capturing
 the state you care about."*
 
-## Whole-state roundtrip digests (save/load, migration)
-
-For persistence layers — save/load, serialization formats, schema migrations —
-the highest-value characterization test is an **identity check over the whole
-state**, not field assertions on one record. (Pattern source: Redis's
-`DEBUG RELOAD` + dataset digest: snapshot a fingerprint, reload, assert the
-fingerprint is unchanged.)
-
-1. **Generate rich state with a seeded RNG** — many keys, every supported
-   value type, the awkward ones especially (empty collections, TTLs, unicode,
-   nesting). Hand-picked single-record tests miss exactly the types that break.
-2. **Canonicalize, then fingerprint.** Produce a canonical dump of the entire
-   state — **sort anything unordered** (sets, map iteration) before comparing
-   or hashing. Digesting a non-canonical dump turns legitimate passes into
-   flaky failures; structural equality on canonical forms is often better than
-   a hash because failures show a diff instead of two checksums.
-3. **Assert save→load is the identity**, comparing full canonical state.
-4. **Parameterize the reload step across every format/path** — JSON and
-   binary, snapshot and incremental, migration v1→v2→v1 — same state, same
-   identity assertion, one parameterized test.
-5. **On mismatch, emit both canonical dumps** so the failure is a reviewable
-   diff, not "digests differ."
-
-```python
-@pytest.mark.parametrize("fmt", ["json", "binary"])
-def test_save_load_roundtrip_identity(tmp_path, fmt):
-    store = build_seeded_store(random.Random(1234), keys=500)  # all value types
-    before = canonical_dump(store)                # sorted, normalized
-    save(store, tmp_path / "db", format=fmt)
-    reloaded = load(tmp_path / "db", format=fmt)
-    assert canonical_dump(reloaded) == before     # whole-state identity
-```
-
-Two failure modes to defend against:
-- **A digest that ignores fields gives false confidence** — if `canonical_dump`
-  skips TTLs, TTL persistence bugs are invisible. The dump must cover every
-  field the format claims to persist.
-- **A digest over nondeterministic ordering gives false failures** — hashing
-  `str(a_set)` fails randomly. Canonicalize first, always.
-
 ## Multi-environment testing
 
 ```typescript

@@ -1,0 +1,11 @@
+{
+  "eval_id": "E43-hidden-testability-no-bypass",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "makes a rate limiter testable via clock injection, keeping the rule intact",
+    "does NOT add an env-var/test-mode bypass of the limit (over-application guard)"
+  ]
+}
