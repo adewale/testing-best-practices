@@ -939,6 +939,100 @@
         "fixture-backed",
         "audit-manifest"
       ]
+    },
+    {
+      "id": "pos-fault-injection-error-paths",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Write pytest tests for save_report(report, store) in report.py. It serializes a report and saves it via store.put(key, data), returning the storage key.",
+      "expected_behavior": [
+        "Inject a downstream store failure (store.put raises) even though the prompt never mentions failures, and assert its handling.",
+        "Do not invent retry/wrapping behavior the contract never promised; characterize and flag unspecified failure behavior."
+      ],
+      "assertions": [
+        {
+          "name": "injects-dependency-failure",
+          "type": "contains_any",
+          "values": [
+            "side_effect",
+            "ConnectionError",
+            "OSError",
+            "IOError",
+            "failing store",
+            "store that raises",
+            "fault injection",
+            "dependency failure"
+          ]
+        },
+        {
+          "name": "failure-path-asserted",
+          "type": "contains_any",
+          "values": [
+            "pytest.raises",
+            "propagat",
+            "exception is raised",
+            "surfaces the error"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Probes error-handling paths via injected failure, not only input validation",
+            "Does not invent an unspecified retry/error-wrapping contract",
+            "Validation honesty"
+          ]
+        }
+      ],
+      "tags": [
+        "fault-injection",
+        "error-paths"
+      ]
+    },
+    {
+      "id": "pos-concurrency-contract-pinning",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Write Go tests for a Cache whose GetOrCompute(key, compute) is documented to compute a missing key's value once and must be safe for concurrent use by many goroutines. The implementation reads under a lock, computes outside the lock, then stores under the lock.",
+      "expected_behavior": [
+        "Drive the cache from many goroutines released together and run under the race detector.",
+        "Assert the compute-at-most-once contract with a failing-capable check, surfacing the double-compute defect instead of logging the observed count."
+      ],
+      "assertions": [
+        {
+          "name": "race-detector",
+          "type": "contains_any",
+          "values": [
+            "-race",
+            "race detector"
+          ]
+        },
+        {
+          "name": "surfaces-double-compute",
+          "type": "contains_any",
+          "values": [
+            "double-compute",
+            "computed more than once",
+            "called more than once",
+            "TOCTOU",
+            "check-then-act",
+            "violates the documented"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Pins compute-at-most-once with a failing assertion in the concurrent test, not a t.Logf of the observed count",
+            "Start-barrier/high-contention design",
+            "Surfaces the defect rather than tolerating it"
+          ]
+        }
+      ],
+      "tags": [
+        "concurrency",
+        "contract-pinning"
+      ]
     }
   ],
   "ablations": [
@@ -991,6 +1085,27 @@
         "Reports success without commands/evidence."
       ],
       "applies_to_cases": []
+    },
+    {
+      "id": "no-error-path-principle",
+      "removed_component": "test error-handling paths principle",
+      "expected_regressions": [
+        "Happy-path plus input-validation only; never injects a dependency failure.",
+        "Or invents a retry/error-wrapping contract the spec never promised."
+      ],
+      "applies_to_cases": [
+        "pos-fault-injection-error-paths"
+      ]
+    },
+    {
+      "id": "no-concurrency-contract",
+      "removed_component": "concurrency-contract principle",
+      "expected_regressions": [
+        "Detects the race but only logs the compute count instead of asserting compute-at-most-once."
+      ],
+      "applies_to_cases": [
+        "pos-concurrency-contract-pinning"
+      ]
     }
   ]
 }
