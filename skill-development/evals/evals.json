@@ -2490,7 +2490,7 @@
       }
     },
     {
-      "id": "E33-python-shadow-model-lru",
+      "id": "E36-python-shadow-model-lru",
       "critical": true,
       "mode": "write",
       "taxonomy": {
@@ -2527,7 +2527,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e33-python-shadow-model-lru/oracle.py over candidate output"
+          "evals/fixtures/e36-python-shadow-model-lru/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Shadow-model fuzz disagreement surfaces an injected eviction bug."
@@ -2553,13 +2553,13 @@
         "difficulty": "medium",
         "saturation_status": "active",
         "known_discriminates_versions": [
-          "iter7: with-section PASS vs without-section FAIL"
+          "iter8: with-section PASS vs without-section FAIL"
         ],
         "last_reviewed": "2026-06-09"
       }
     },
     {
-      "id": "E34-go-shadow-model-ringbuffer",
+      "id": "E37-go-shadow-model-ringbuffer",
       "critical": false,
       "mode": "write",
       "taxonomy": {
@@ -2594,7 +2594,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e34-go-shadow-model-ringbuffer/oracle.py over candidate output"
+          "evals/fixtures/e37-go-shadow-model-ringbuffer/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Held-back language: confirms the shadow-model behavior generalizes from the Python dev fixture."
@@ -2620,13 +2620,13 @@
         "difficulty": "medium",
         "saturation_status": "active",
         "known_discriminates_versions": [
-          "iter7: with-section PASS vs without-section FAIL"
+          "iter8: with-section PASS vs without-section FAIL"
         ],
         "last_reviewed": "2026-06-09"
       }
     },
     {
-      "id": "E35-python-ann-recall-oracle",
+      "id": "E38-python-ann-recall-oracle",
       "critical": true,
       "mode": "write",
       "taxonomy": {
@@ -2663,7 +2663,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e35-python-ann-recall-oracle/oracle.py over candidate output"
+          "evals/fixtures/e38-python-ann-recall-oracle/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Recall threshold catches a degraded index build; exact-overlap check catches score drift."
@@ -2694,7 +2694,7 @@
       }
     },
     {
-      "id": "E36-go-approx-recall-oracle",
+      "id": "E39-go-approx-recall-oracle",
       "critical": false,
       "mode": "write",
       "taxonomy": {
@@ -2729,7 +2729,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e36-go-approx-recall-oracle/oracle.py over candidate output"
+          "evals/fixtures/e39-go-approx-recall-oracle/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Held-back language: confirms statistical-oracle behavior generalizes from the Python dev fixture."
@@ -2760,7 +2760,7 @@
       }
     },
     {
-      "id": "E37-hidden-exact-output-no-threshold",
+      "id": "E40-hidden-exact-output-no-threshold",
       "critical": false,
       "mode": "write",
       "hidden": true,
@@ -2794,7 +2794,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e37-hidden-exact-output-no-threshold/oracle.py over candidate output"
+          "evals/fixtures/e40-hidden-exact-output-no-threshold/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Over-applied statistical oracle would pass a broken sort; restraint avoids that."
@@ -2823,7 +2823,7 @@
       }
     },
     {
-      "id": "E38-hidden-trivial-fn-no-shadow-model",
+      "id": "E41-hidden-trivial-fn-no-shadow-model",
       "critical": false,
       "mode": "write",
       "hidden": true,
@@ -2858,7 +2858,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e38-hidden-trivial-fn-no-shadow-model/oracle.py over candidate output"
+          "evals/fixtures/e41-hidden-trivial-fn-no-shadow-model/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "A reimplemented shadow model adds risk without added coverage for a trivial pure fn."
@@ -2887,7 +2887,7 @@
       }
     },
     {
-      "id": "E39-python-fuzzy-search-cuefree",
+      "id": "E42-python-fuzzy-search-cuefree",
       "critical": true,
       "mode": "write",
       "taxonomy": {
@@ -2905,7 +2905,7 @@
         ]
       },
       "prompt": "Add pytest tests for FuzzyIndex.search(q, k), an approximate similar-strings search; the prompt names only the documented similarity metric, never the testing technique.",
-      "fixture": "Cue-free replacement for E35: no brute-force helper, no 'recall'/'oracle'/'threshold' vocabulary in the prompt; the agent must derive the reference-ranking-plus-overlap-threshold design itself.",
+      "fixture": "Cue-free replacement for E38: no brute-force helper, no 'recall'/'oracle'/'threshold' vocabulary in the prompt; the agent must derive the reference-ranking-plus-overlap-threshold design itself.",
       "expected_behavior": [
         "Derive an exact reference ranking from the documented similarity metric without being told to.",
         "Assert a partial-overlap threshold rather than pinning exact result lists.",
@@ -2923,7 +2923,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e39-python-fuzzy-search-cuefree/oracle.py over candidate output"
+          "evals/fixtures/e42-python-fuzzy-search-cuefree/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Cue-free prompt: discriminating signal is valid because the technique is never named."
@@ -2949,13 +2949,13 @@
         "difficulty": "hard",
         "saturation_status": "active",
         "known_discriminates_versions": [
-          "iter8: with-section PASS vs without-section FAIL (cue-free prompt; without-arm pinned gap-gated exact set equality)"
+          "iter9: with-section PASS vs without-section FAIL (cue-free prompt; without-arm pinned gap-gated exact set equality)"
         ],
         "last_reviewed": "2026-06-10"
       }
     },
     {
-      "id": "E40-go-suggest-cuefree",
+      "id": "E43-go-suggest-cuefree",
       "critical": false,
       "mode": "write",
       "taxonomy": {
@@ -2973,7 +2973,7 @@
         ]
       },
       "prompt": "Add Go tests for Index.Suggest(q, k), an approximate similar-words retriever; only the exported Similarity metric is named.",
-      "fixture": "Cue-free Go holdback isomorphic to E39; not consulted while authoring the statistical-oracle section.",
+      "fixture": "Cue-free Go holdback isomorphic to E42; not consulted while authoring the statistical-oracle section.",
       "expected_behavior": [
         "Derive an exact reference ranking via Similarity and sort, unprompted.",
         "Assert a fractional overlap threshold; do not DeepEqual-pin approximate results."
@@ -2989,7 +2989,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e40-go-suggest-cuefree/oracle.py over candidate output"
+          "evals/fixtures/e43-go-suggest-cuefree/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Held-back language plus cue-free prompt isolates generalization of the section."
@@ -3021,7 +3021,7 @@
       }
     },
     {
-      "id": "E41-python-testability-flush",
+      "id": "E44-python-testability-flush",
       "critical": true,
       "mode": "write",
       "taxonomy": {
@@ -3056,7 +3056,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e41-python-testability-flush/oracle.py over candidate output"
+          "evals/fixtures/e44-python-testability-flush/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Forced-transition seam makes the previously flaky test deterministic."
@@ -3087,7 +3087,7 @@
       }
     },
     {
-      "id": "E42-go-testability-reaper",
+      "id": "E45-go-testability-reaper",
       "critical": false,
       "mode": "write",
       "taxonomy": {
@@ -3121,7 +3121,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e42-go-testability-reaper/oracle.py over candidate output"
+          "evals/fixtures/e45-go-testability-reaper/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Held-back language: confirms the seam behavior generalizes from the Python dev fixture."
@@ -3151,7 +3151,7 @@
       }
     },
     {
-      "id": "E43-hidden-testability-no-bypass",
+      "id": "E46-hidden-testability-no-bypass",
       "critical": false,
       "mode": "write",
       "hidden": true,
@@ -3184,7 +3184,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e43-hidden-testability-no-bypass/oracle.py over candidate output"
+          "evals/fixtures/e46-hidden-testability-no-bypass/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "A prod-settable bypass is a vulnerability; restraint is the only passing shape."
@@ -3213,7 +3213,7 @@
       }
     },
     {
-      "id": "E44-python-digest-roundtrip",
+      "id": "E47-python-digest-roundtrip",
       "critical": true,
       "mode": "write",
       "taxonomy": {
@@ -3250,7 +3250,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e44-python-digest-roundtrip/oracle.py over candidate output"
+          "evals/fixtures/e47-python-digest-roundtrip/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Whole-state identity over rich seeded state catches type/TTL persistence bugs single-record tests miss."
@@ -3280,7 +3280,7 @@
       }
     },
     {
-      "id": "E45-go-digest-roundtrip",
+      "id": "E48-go-digest-roundtrip",
       "critical": false,
       "mode": "write",
       "taxonomy": {
@@ -3315,7 +3315,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e45-go-digest-roundtrip/oracle.py over candidate output"
+          "evals/fixtures/e48-go-digest-roundtrip/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "Held-back language: confirms the digest-roundtrip behavior generalizes from the Python dev fixture."
@@ -3340,13 +3340,13 @@
         "difficulty": "medium",
         "saturation_status": "active",
         "known_discriminates_versions": [
-          "iter8: with-section PASS vs without-section FAIL (without-arm wrote handpicked single-key roundtrips plus golden-bytes comparison, no whole-state load identity, no seeded breadth)"
+          "iter9: with-section PASS vs without-section FAIL (without-arm wrote handpicked single-key roundtrips plus golden-bytes comparison, no whole-state load identity, no seeded breadth)"
         ],
         "last_reviewed": "2026-06-10"
       }
     },
     {
-      "id": "E46-hidden-digest-canonicalization",
+      "id": "E49-hidden-digest-canonicalization",
       "critical": false,
       "mode": "write",
       "hidden": true,
@@ -3380,7 +3380,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e46-hidden-digest-canonicalization/oracle.py over candidate output"
+          "evals/fixtures/e49-hidden-digest-canonicalization/oracle.py over candidate output"
         ],
         "runtime_checks": [
           "A non-canonical digest fails randomly on correct code; restraint/canonicalization is the only passing shape."

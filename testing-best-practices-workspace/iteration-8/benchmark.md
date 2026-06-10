@@ -1,85 +1,74 @@
-# Iteration 8 — cue-free statistical fixtures + design-for-testability + digest roundtrips
+# Iteration 8 — antirez insights: shadow-oracle + statistical-oracle
 
-Three goals: (1) resolve iteration 7's open question — does the statistical-oracle
-section actually change behavior, or was E35/E36's pass driven by prompt cues;
-(2) ship and measure `references/design-for-testability.md`; (3) ship and
-measure the whole-state roundtrip-digest section in `golden-file-testing.md`.
+Adds two unique insights from the antirez research as on-demand guidance in
+`references/differential-testing.md`, with fixtures, hidden adversarial
+restraint probes, and an audit gate. This iteration's job was to *measure*
+whether the new guidance changes agent behavior — via ablation (with-section
+vs without-section), an isomorphic Go holdback per insight, and adversarial
+over-application probes.
 
 ## Method
 
-- **Cue-free prompts** for the statistical insight: E39/E40 name only the
-  documented `similarity` metric — never "brute force", "recall", "oracle", or
-  "threshold". The design has to come from the guidance or priors; the ablation
-  separates which.
-- **Strong baselines**: the testability WITHOUT-arm includes
-  `deterministic-time.md` (the closest existing reference), so a win would mean
-  marginal value over the strongest current guidance, not over nothing.
-- Ablation with/without per section; isomorphic Go holdbacks; two hidden
-  adversarial restraint probes; sonnet, n=1 per cell (directional, not effect
-  size). All outputs graded by self-tested fixture oracles, every FAIL
-  manually verified against the artifact before being trusted.
+- **Ablation.** Same prompt run twice: once with `differential-testing.md`
+  including the new sections, once with those two sections stripped out. Only
+  the two sections differ.
+- **Holdback.** The Go fixtures (E37, E39) were never inspected while writing
+  the sections; they test whether the behavior generalizes beyond the Python
+  dev fixtures (E36, E38).
+- **Adversarial restraint.** E40 (deterministic sort) and E41 (trivial pure
+  function) check that the new guidance does not cause *over-application*.
+- **Grading.** Each output graded by the matching fixture oracle
+  (`scripts/run-fixture-oracles.py` self-tests every oracle good/pass + bad/fail).
+- **Generation model:** sonnet, one sample per cell. Single-sample, so deltas
+  are directional signal, not effect sizes.
 
 ## Results
 
-| Insight | Eval | Lang | Role | with | without | Verdict |
-|---------|------|------|------|------|---------|---------|
-| Statistical-oracle (cue-free) | E39 | python | dev | PASS | FAIL | **discriminates** |
-| Statistical-oracle (cue-free) | E40 | go | holdback | PASS | FAIL* | weak discrimination |
-| Design-for-testability | E41 | python | dev | PASS | PASS | ceiling (strong baseline) |
-| Design-for-testability | E42 | go | holdback | PASS | PASS | ceiling (strong baseline) |
-| Digest roundtrip | E44 | python | dev | PASS | PASS | ceiling |
-| Digest roundtrip | E45 | go | holdback | PASS | FAIL | **discriminates** |
-| Restraint: no security-bypass seam | E43 | python | adversarial | PASS | — | guard holds |
-| Restraint: canonicalize before digest | E46 | python | adversarial | PASS | — | guard holds |
-
-\* E40/without built a tie-only-tolerant exact oracle — a defensible reading of
-the prompt's "near-ties may differ" wording. Shape disagreement, not clear
-inferiority. The prompt should state the approximation degree explicitly.
+| Insight | Eval | Lang | Role | with-section | without-section | Verdict |
+|---------|------|------|------|--------------|-----------------|---------|
+| Shadow-model | E36 | python | dev | PASS | FAIL | **discriminates** |
+| Shadow-model | E37 | go | holdback | PASS | FAIL | **generalizes** |
+| Statistical-oracle | E38 | python | dev | PASS | PASS | ceiling (cue leak) |
+| Statistical-oracle | E39 | go | holdback | PASS | PASS | ceiling (cue leak) |
+| Restraint: exact output | E40 | python | adversarial | PASS (restrained) | — | guard holds |
+| Restraint: trivial fn | E41 | python | adversarial | FAIL → PASS | — | over-application found, guard added |
 
 ## Findings
 
-1. **Iteration 7's open question is resolved: the statistical-oracle section is
-   now validated.** With cue-free prompts, the with-section Python run produced
-   the taught shape (brute-force reference, recall ≥ 0.80 with stated headroom,
-   exact scores on the overlap, seeded corpus) while the without-section run
-   pinned gap-gated **exact set equality** against its reference — precisely the
-   failure mode the section warns about. The iteration-7 "pass" of E35/E36 was
-   indeed the prompt doing the teaching. E35/E36 stay `saturated_public`;
-   E39/E40 are the discriminating pair now.
+1. **The shadow-model section works and generalizes.** Without it, agents wrote
+   a handful of unseeded example tests for `LruCache`/`RingBuffer`; with it,
+   they built a seeded shadow model compared on multiple observables — in both
+   Python (dev) and Go (held-back). This is the clean win of the iteration.
 
-2. **Design-for-testability did not discriminate against the strongest
-   baseline.** Both without-arms (deterministic-time.md only) added genuine
-   seams: Python exposed a public `flush()` and injectable interval; Go built a
-   full injectable clock + ticker. On these fixtures, existing guidance plus
-   model priors already produce seam-in-the-SUT behavior. The section stays
-   shipped (its guardrails content is what E43 validates — the restraint probe
-   passed: clock injection, no env-var bypass of the rate limit), but its
-   forced-transition teaching is **unproven marginal value**; both fixtures are
-   marked `saturated_public`.
+2. **The statistical-oracle fixtures are at ceiling and did not discriminate.**
+   Both with- and without-section runs produced recall-vs-brute-force tests,
+   because the prompt named the `brute_force_topk` helper, cueing the behavior.
+   This is the repo's documented "ceiling effects mask signal" lesson recurring.
+   The section is plausibly useful but **unproven here**; the next iteration
+   needs a cue-free fixture (no brute-force helper named in the prompt) to
+   isolate it. E38/E39 are marked `saturated_public` accordingly.
 
-3. **Digest roundtrip: validated in Go, ceiling in Python.** The Go without-arm
-   wrote handpicked single-key roundtrips plus a golden-bytes comparison — no
-   whole-state load identity, no seeded breadth — while the with-arm hand-rolled
-   a `canonicalDump` (sorted keys, every field incl. TTL) over seeded stores and
-   asserted identity across both formats. In Python the existing snapshot
-   guidance ("stable serialization, sorted keys") already carried the
-   without-arm to a sorted canonical snapshot, so the dev fixture saturated.
+3. **An adversarial probe caught a real over-application, which we fixed.** The
+   first E41 run (slugify, a trivial pure function) built a `_reference_slugify`
+   reimplementation and diffed against it — a reference that just duplicates the
+   code and can carry its own bugs. We strengthened the "When NOT to use it"
+   guidance in the Differential Testing section; the re-run (E41 v2) showed
+   restraint (pinned examples + idempotence + invariants, no reimplementation).
+   n=1, so this is suggestive, not conclusive.
 
-4. **Four oracle calibration bugs, all false negatives punishing good work:**
-   `.sort(key=...)` not recognized as a ranking (E39), `random.Random(seed)`
-   via variable not recognized as seeded (E39), hand-rolled `canonicalDump` not
-   recognized as a whole-state comparison (E45), and a public `flush()` seam
-   not recognized because the keyword list expected `flush_now` (E41 — this one
-   initially flipped the verdict from ceiling to discriminates; manual review
-   caught it). Keyword oracles must encode behavioral shapes, not identifier
-   spellings, and every FAIL must be read against the artifact before being
-   believed.
+4. **Two oracle calibration bugs were found and fixed during grading**, a
+   reminder that adversarial oracles need their own scrutiny:
+   - E39 false negative: a recall threshold stored in a *named constant*
+     (`recallThreshold = 0.80`) was missed by a literal-only regex.
+   - E41 false positive: `def \w*slug` matched the *test function names*
+     (`test_slugify_examples`); narrowed to non-test helpers only.
+   Both fixture oracles still pass their good/pass + bad/fail self-tests.
 
 ## Net
 
-- Statistical-oracle section: **validated** (Python clean, Go weak-positive).
-- Digest-roundtrip section: **validated in the Go holdback**, saturated in Python.
-- Design-for-testability: **shipped but unproven** against the strong baseline;
-  its security guardrail is validated by E43.
-- Both new sections' adversarial probes (E43, E46) pass and are enforced by the
-  audit gate's section→probe mapping.
+- Shadow-model insight: **validated** (discriminates + generalizes), shipped.
+- Statistical-oracle insight: **shipped but unproven** (fixtures at ceiling);
+  flagged for a cue-free fixture next iteration.
+- Both sections ship with a hidden adversarial probe enforced by
+  `audit-best-practices.py` (now 110/110); E41 probe already paid for itself.
+</content>

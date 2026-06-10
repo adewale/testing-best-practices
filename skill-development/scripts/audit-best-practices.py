@@ -64,10 +64,10 @@ def main() -> int:
     # probe that guards against over-application. This makes "each section needs
     # an over-application guard" infrastructure rather than convention.
     section_probes = {
-        ("references/differential-testing.md", "build a trivial shadow model"): "E38-hidden-trivial-fn-no-shadow-model",
-        ("references/differential-testing.md", "Approximate, probabilistic"): "E37-hidden-exact-output-no-threshold",
-        ("references/design-for-testability.md", "Guardrails"): "E43-hidden-testability-no-bypass",
-        ("references/golden-file-testing.md", "Whole-state roundtrip digests"): "E46-hidden-digest-canonicalization",
+        ("references/differential-testing.md", "build a trivial shadow model"): "E41-hidden-trivial-fn-no-shadow-model",
+        ("references/differential-testing.md", "Approximate, probabilistic"): "E40-hidden-exact-output-no-threshold",
+        ("references/design-for-testability.md", "Guardrails"): "E46-hidden-testability-no-bypass",
+        ("references/golden-file-testing.md", "Whole-state roundtrip digests"): "E49-hidden-digest-canonicalization",
     }
     by_id = {e["id"]: e for e in evals}
     unguarded = []

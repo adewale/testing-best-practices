@@ -1,5 +1,5 @@
 {
-  "eval_id": "E45-go-digest-roundtrip",
+  "eval_id": "E48-go-digest-roundtrip",
   "language": "go",
   "oracle": "oracle.py",
   "good_sample": "samples/good",

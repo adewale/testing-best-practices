@@ -1,13 +1,13 @@
 {
-  "eval_id": "E35-python-ann-recall-oracle",
-  "language": "python",
+  "eval_id": "E39-go-approx-recall-oracle",
+  "language": "go",
   "oracle": "oracle.py",
   "good_sample": "samples/good",
   "bad_sample": "samples/bad",
   "checks": [
     "builds a brute-force/linear oracle",
     "asserts a recall threshold with margin",
-    "checks exact scores on the overlap",
-    "rejects exact-equality or length-only assertions on approximate output"
+    "seeds the RNG",
+    "rejects length-only assertions on approximate output"
   ]
 }

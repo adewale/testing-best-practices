@@ -147,7 +147,7 @@ Committing raw `eval-runs/` directories and `__pycache__` files made the repo lo
 
 ### Cue leakage puts a fixture at ceiling before you even run it
 
-Iteration 7's statistical-oracle fixtures (E35/E36) named the `brute_force_topk`
+Iteration 8's statistical-oracle fixtures (E38/E39) named the `brute_force_topk`
 helper right in the prompt. Both with-section and without-section runs then
 produced recall-vs-brute-force tests — the prompt did the teaching, not the
 skill. The ablation measured nothing about the section. The fix for next time:
@@ -157,7 +157,7 @@ mentions the oracle is testing the model's reading comprehension, not the skill.
 
 ### Adversarial probes earn their keep, and oracles need their own scrutiny
 
-The E38 restraint probe (trivial pure function) immediately caught the
+The E41 restraint probe (trivial pure function) immediately caught the
 shadow-model guidance inducing a redundant `_reference_slugify` reimplementation
 — a real over-application we then fixed in the guidance. But grading also
 exposed two bugs in the probe oracles themselves: a false negative (a recall
@@ -169,9 +169,9 @@ catch the crude cases; realistic agent output catches the rest.
 
 ### Cue-free fixtures answer what cue-leaked ones can't
 
-Iteration 8 rebuilt the statistical-oracle fixtures with prompts that name only
+Iteration 9 rebuilt the statistical-oracle fixtures with prompts that name only
 the documented metric — no "brute force", "recall", "oracle", or "threshold".
-The result reversed iteration 7's non-finding: with the section, agents derived
+The result reversed iteration 8's non-finding: with the section, agents derived
 the reference-ranking-plus-recall-threshold design themselves; without it, they
 pinned exact set equality against their own reference — the exact failure mode
 the section exists to prevent. Same section, same model; the only change was
@@ -189,7 +189,7 @@ items"), or the ablation conflates guidance effects with prompt interpretation.
 
 ### Keyword oracles false-negative good work; read every FAIL before believing it
 
-Iteration 8's grading hit four oracle calibration bugs — all false negatives on
+Iteration 9's grading hit four oracle calibration bugs — all false negatives on
 high-quality outputs that used different identifiers than the oracle expected:
 `.sort(key=...)` for `sorted(`, `random.Random(seed)` via variable for a
 literal seed, a hand-rolled `canonicalDump` for `DeepEqual`, and a public
