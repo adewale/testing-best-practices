@@ -14,13 +14,13 @@ def main() -> int:
         errors.append("pins an exact result list for an approximate search")
     if "similarity(" not in low:
         errors.append("does not use the documented metric to build a reference")
-    if not re.search(r"sorted\(.{0,120}similarity|similarity.{0,120}sorted\(", low, re.S):
+    if not re.search(r"(sorted|\.sort)\(.{0,120}similarity|similarity.{0,120}(sorted|\.sort)\(", low, re.S):
         errors.append("no exact reference ranking computed from the metric")
     if not re.search(r"&|\.intersection\(", text):
         errors.append("no overlap computed between approximate and reference results")
     if not re.search(r"[><]=\s*(0\.\d+|\d)", text):
         errors.append("no threshold assertion on the overlap")
-    if re.search(r"\brandom\b", low) and not re.search(r"random\(\s*\d+|\.seed\(", low):
+    if re.search(r"\brandom\b", low) and not re.search(r"random\(\s*\d|\.seed\(|random\(\s*[a-z_]", low):
         errors.append("unseeded randomness in an approximate-output test")
     for e in errors: print(e, file=sys.stderr)
     return 1 if errors else 0

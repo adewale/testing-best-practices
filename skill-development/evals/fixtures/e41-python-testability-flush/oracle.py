@@ -12,7 +12,7 @@ def main() -> int:
     errors = []
     if re.search(r"sleep\(\s*[1-9]", low):
         errors.append("long real sleep still present; transition was not made forceable")
-    if not re.search(r"flush_now|force_flush|run_once|drain\(|auto_flush\s*=\s*false|start\s*=\s*false|no_thread|background\s*=\s*false", low):
+    if not re.search(r"flush_now|force_flush|\.flush\(\)|run_once|drain\(|auto_flush\s*=\s*false|start\s*=\s*false|no_thread|background\s*=\s*false", low):
         errors.append("no forced-transition seam added to the system under test")
     if not re.search(r"pending|read|contents|getvalue|records", low):
         errors.append("no assertion on observable persisted/pending state")

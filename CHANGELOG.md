@@ -18,8 +18,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - **6 eval fixtures** (E33–E38): E33/E35 dev (Python), E34/E36 isomorphic Go holdbacks, E37/E38 hidden adversarial restraint probes — each with a self-testing good/bad oracle.
 - **`audit-best-practices.py` gate**: every new technique section must ship with a registered hidden adversarial probe (audit now 110/110).
 
+### Added (iteration 8)
+- **`references/design-for-testability.md`** — forced-transition seams, read-only state introspection, poll-as-last-resort, and guardrails forbidding security-weakening seams (from antirez's Redis `DEBUG` surface). Wired into the SKILL.md reference matrix.
+- **Whole-state roundtrip digest section** in `references/golden-file-testing.md` — seeded rich state, canonicalize-then-compare, save→load identity parameterized across formats (from antirez's `DEBUG RELOAD` + dataset digest). Golden-file trigger now covers save/load and migration roundtrips.
+- **8 more eval fixtures** (E39–E46): cue-free statistical pair (prompts name only the metric, never the technique), testability dev/holdback plus a no-security-bypass restraint probe, digest dev/holdback plus a canonicalization restraint probe. Audit gate maps both new sections to their hidden adversarial probes.
+
 ### Changed
 - **Strengthened the Differential Testing "When NOT to use it" guidance** after an adversarial probe (E38) showed the section could induce a redundant reference reimplementation for a trivial pure function.
+
+### Eval Results (iteration 8, cue-free ablation; sonnet, n=1 per cell)
+- **Statistical-oracle section validated**, resolving iteration 7's open question: cue-free E39 discriminates cleanly (with: brute-force reference + recall ≥ 0.80 with headroom + exact-on-overlap; without: gap-gated exact set equality — the warned-against failure mode). E40 (Go holdback) discriminates weakly; its without-arm's tie-only tolerance is a defensible reading of underspecified prompt wording.
+- **Digest-roundtrip section validated in the Go holdback** (E45: without-arm wrote single-key roundtrips + golden-bytes, no whole-state load identity); Python dev fixture at ceiling because existing snapshot guidance already teaches stable serialization.
+- **Design-for-testability at ceiling against the strongest baseline**: with `deterministic-time.md` alone, both arms added genuine seams (public `flush()`, injectable clock+ticker). Marked unproven marginal value; its security guardrail is validated by the E43 restraint probe (clock injection, no env-var bypass).
+- Both new restraint probes (E43, E46) pass. Four oracle calibration bugs — all false negatives on good work using unexpected identifiers — found by manually reading every FAIL, then fixed; 24/24 oracle self-tests green.
 
 ### Eval Results (iteration 7, ablation; sonnet, n=1 per cell)
 - Shadow-model section **discriminates and generalizes**: E33 (Python dev) and E34 (Go holdback) pass with the section, fail without it.

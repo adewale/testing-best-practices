@@ -2948,7 +2948,9 @@
       "eval_health": {
         "difficulty": "hard",
         "saturation_status": "active",
-        "known_discriminates_versions": [],
+        "known_discriminates_versions": [
+          "iter8: with-section PASS vs without-section FAIL (cue-free prompt; without-arm pinned gap-gated exact set equality)"
+        ],
         "last_reviewed": "2026-06-10"
       }
     },
@@ -3005,13 +3007,16 @@
           ]
         },
         "rebuttals": [
-          "Base-model priors may produce the design without the section; the ablation arm measures that."
+          "Base-model priors may produce the design without the section; the ablation arm measures that.",
+          "The prompt's 'near-ties may differ' wording under-specifies the approximation degree; a tie-only-tolerant exact oracle is a defensible alternative, so this FAIL is shape disagreement, not clear inferiority."
         ]
       },
       "eval_health": {
         "difficulty": "hard",
         "saturation_status": "active",
-        "known_discriminates_versions": [],
+        "known_discriminates_versions": [
+          "iter8 (weak): with PASS vs without FAIL on shape, but without-arm's tie-only tolerance is a defensible reading of the 'near-ties' prompt wording"
+        ],
         "last_reviewed": "2026-06-10"
       }
     },
@@ -3070,12 +3075,13 @@
         },
         "rebuttals": [
           "deterministic-time.md alone may induce clock injection that also passes; the WITHOUT arm includes it to keep the comparison honest.",
-          "Static oracle detects shape, not whether the seam runs the same code path."
+          "Static oracle detects shape, not whether the seam runs the same code path.",
+          "iter8 ablation at ceiling: the deterministic-time baseline alone induced a public flush() seam with no sleeps; the section's marginal contribution is not visible on this fixture."
         ]
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-10"
       }
@@ -3133,12 +3139,13 @@
           ]
         },
         "rebuttals": [
-          "Go test culture already favors injected clocks; the WITHOUT arm measures that prior."
+          "Go test culture already favors injected clocks; the WITHOUT arm measures that prior.",
+          "iter8 ablation at ceiling: Go idiom plus the deterministic-time baseline produced clock injection and ticker control without the new reference."
         ]
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-10"
       }
@@ -3261,12 +3268,13 @@
           ]
         },
         "rebuttals": [
-          "Baseline agents may already parameterize formats since the API names them; the discriminator is breadth + canonical whole-state identity."
+          "Baseline agents may already parameterize formats since the API names them; the discriminator is breadth + canonical whole-state identity.",
+          "iter8 ablation at ceiling: the golden/snapshot guidance's stable-serialization advice already induced sorted canonical snapshots in Python."
         ]
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-10"
       }
@@ -3331,7 +3339,9 @@
       "eval_health": {
         "difficulty": "medium",
         "saturation_status": "active",
-        "known_discriminates_versions": [],
+        "known_discriminates_versions": [
+          "iter8: with-section PASS vs without-section FAIL (without-arm wrote handpicked single-key roundtrips plus golden-bytes comparison, no whole-state load identity, no seeded breadth)"
+        ],
         "last_reviewed": "2026-06-10"
       }
     },

@@ -14,7 +14,7 @@ def main() -> int:
         errors.append("does not exercise both persistence formats")
     if not re.search(r"newsource\(|rand\.seed\(|for i := 0; i < [2-9]\d", low):
         errors.append("no rich generated state (seeded RNG or wide generation loop)")
-    if "deepequal(" not in low:
+    if not re.search(r"deepequal\(|canonical", low):
         errors.append("no whole-state structural comparison")
     if "snapshot(" not in low:
         errors.append("does not compare the full snapshot")

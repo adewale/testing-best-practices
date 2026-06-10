@@ -167,6 +167,46 @@ hasn't been adversarially checked against realistic-but-different outputs will
 both miss real failures and punish good work. Self-tests (good/pass + bad/fail)
 catch the crude cases; realistic agent output catches the rest.
 
+### Cue-free fixtures answer what cue-leaked ones can't
+
+Iteration 8 rebuilt the statistical-oracle fixtures with prompts that name only
+the documented metric — no "brute force", "recall", "oracle", or "threshold".
+The result reversed iteration 7's non-finding: with the section, agents derived
+the reference-ranking-plus-recall-threshold design themselves; without it, they
+pinned exact set equality against their own reference — the exact failure mode
+the section exists to prevent. Same section, same model; the only change was
+removing the teaching from the prompt. A fixture that names the technique's
+machinery measures reading comprehension, not the skill.
+
+### Specify the degree of nondeterminism, or agents will model exactly what you said
+
+The Go cue-free prompt said results "may differ on near-ties." The
+without-section agent took that literally and built a tie-only-tolerant exact
+oracle — defensible given the wording, but not the taught shape, which made the
+FAIL ambiguous evidence. Fixture prompts for approximate systems must state the
+*kind and degree* of allowed variation ("may return slightly less similar
+items"), or the ablation conflates guidance effects with prompt interpretation.
+
+### Keyword oracles false-negative good work; read every FAIL before believing it
+
+Iteration 8's grading hit four oracle calibration bugs — all false negatives on
+high-quality outputs that used different identifiers than the oracle expected:
+`.sort(key=...)` for `sorted(`, `random.Random(seed)` via variable for a
+literal seed, a hand-rolled `canonicalDump` for `DeepEqual`, and a public
+`flush()` seam for `flush_now`. One of them initially flipped a verdict from
+"ceiling" to "discriminates"; manually reading the artifact caught it. Oracles
+should encode behavioral shapes, not identifier spellings — and an ablation
+verdict is not real until each FAIL has been verified against the artifact.
+
+### A strong adjacent reference can absorb a new section's contribution
+
+Design-for-testability did not discriminate because the ablation baseline
+included `deterministic-time.md` — and that, plus priors, already produced
+seam-in-the-SUT behavior in both languages. That is the right way to fail: a
+win against an empty baseline would have been claimable but meaningless. Test
+new sections against the strongest adjacent guidance, and when the baseline
+absorbs the contribution, say "unproven marginal value," not "validated".
+
 ### Ship-but-flag is an honest state for an unproven section
 
 The statistical-oracle section is plausibly useful and passes every gate, but
@@ -198,6 +238,7 @@ The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~
 | 6 | 32 eval definitions + 10 fixture oracles + 3 mini-repos | Python, TS, Go, Rust | artifact rubric 100/100; static 0 P0/0 P1; public oracles 10/10 saturated; mini-repo mutants 3/3 | Eval validity metadata, hidden hard probes, generated-artifact hygiene, best-practices audit |
 | 7 | 35 eval definitions + 12 fixture oracles; +2 shared-benchmark tune cases | Python, TS, Go, Rust | paired A/B: error-path principle D 2→3 after scope clause; concurrency oracle discriminates baseline (FAIL) vs full-SKILL.md (PASS); gates 100/100 | Dan Luu research; error-path + concurrency-contract principles; E33/E34/E35; prompt-eval runner with pluggable sub-agent/judge backends |
 | 8 | 41 eval definitions + 18 fixture oracles | + shadow-model, statistical-oracle, restraint probes | shadow-model discriminates + generalizes; statistical-oracle at ceiling (cue leak); over-application found+fixed; audit 110/110 | antirez insights: shadow-oracle + statistical-oracle sections, new-section adversarial-probe gate |
+| 9 | 49 eval definitions + 26 fixture oracles | + cue-free statistical, testability, digest roundtrip | statistical-oracle validated cue-free (Python discriminates, Go weak); digest validated in Go holdback; testability at ceiling vs deterministic-time baseline; both restraint probes hold; 4 oracle false negatives found by reading artifacts | design-for-testability reference + whole-state digest section; cue-free fixture discipline; strongest-adjacent-baseline ablation |
 
 The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages). Iteration 5's signal was the +18.75pp aggregate from §10 v2 — only visible because we built new fixtures that weren't already at ceiling.
 
