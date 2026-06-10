@@ -1,0 +1,996 @@
+{
+  "version": 1,
+  "skill_name": "testing-best-practices",
+  "harness": {
+    "name": "skill-eval-harness",
+    "url": "https://github.com/adewale/skill-eval-harness",
+    "version": ">=0.1.1"
+  },
+  "skill_paths": [
+    "testing-best-practices/SKILL.md"
+  ],
+  "old_skill_paths": [],
+  "variants": [
+    "with_skill",
+    "without_skill"
+  ],
+  "optional_variants": [
+    "old_skill"
+  ],
+  "split_policy": {
+    "tune": "Visible cases used during iteration. Failures may drive skill/reference edits.",
+    "holdout": "Hidden cases scored only at end-of-round or merge. Prefer prompt_ref files outside committed docs/examples.",
+    "holdback": "Examples not shown in SKILL.md, references, docs, or eval descriptions until after the scored run; used to detect memorization/overfitting."
+  },
+  "run_protocol": {
+    "paired": "Run with_skill and without_skill in the same round; optionally run old_skill from a pinned artifact/branch.",
+    "outputs": "Save outputs as runs/<case_id>/<variant>/output.md and metadata as runs/<case_id>/<variant>/metadata.json.",
+    "metadata": [
+      "elapsed_ms",
+      "input_tokens",
+      "output_tokens",
+      "total_tokens",
+      "model"
+    ],
+    "analyst_pass": "After benchmark, review saturated, flaky, non-discriminating, and with-skill-failed cases before editing the skill."
+  },
+  "notes": "Baseline smoke 2026-06-08 flagged neg-no-red-claim as saturated/non-discriminating: both variants passed because the objective accepted the leaked keyword \"red\". That case now avoids prompt keyword leakage, requires explicit red-vs-green evidence separation, and checks against unqualified TDD success claims.",
+  "cases": [
+    {
+      "id": "pos-deterministic-time",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Upgrade flaky tests that use sleep/timeouts; replace with deterministic time.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-deterministic-time",
+          "type": "contains_any",
+          "values": [
+            "clock",
+            "fake timers",
+            "sleep"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "pos-api-contract-vcr",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Write tests for API client; use contract/VCR cassette rather than live CI or hand mocks.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-api-contract-vcr",
+          "type": "contains_any",
+          "values": [
+            "VCR",
+            "cassette",
+            "contract"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "pos-cli-doc-sync",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Add CLI docs-code sync test for documented commands.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-cli-doc-sync",
+          "type": "contains_any",
+          "values": [
+            "docs",
+            "CLI",
+            "sync"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "pos-mutation-escaping-bug",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "High coverage suite still misses bug; perform mutation-style gap analysis.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-mutation-escaping-bug",
+          "type": "contains_any",
+          "values": [
+            "mutation",
+            "escaping",
+            "oracle"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "pos-finite-enum-exhaustive",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Enum/state space is tiny; choose exhaustive testing.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-finite-enum-exhaustive",
+          "type": "contains_any",
+          "values": [
+            "exhaustive",
+            "finite",
+            "enum"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "pos-mock-reality-drift",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "External API mock drifted from schema. Upgrade tests.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-mock-reality-drift",
+          "type": "contains_any",
+          "values": [
+            "mock",
+            "drift",
+            "schema"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "pos-golden-transform",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Transformation pipeline needs golden-file tests with review discipline.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-golden-transform",
+          "type": "contains_any",
+          "values": [
+            "golden",
+            "promote",
+            "review"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "pos-parser-property",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Parser accepts arbitrary strings; add fuzz/property tests.",
+      "expected_behavior": [
+        "Use appropriate testing technique without over-application."
+      ],
+      "assertions": [
+        {
+          "name": "detect-parser-property",
+          "type": "contains_any",
+          "values": [
+            "property",
+            "Hypothesis",
+            "fast-check",
+            "never crashes"
+          ]
+        },
+        {
+          "name": "validation",
+          "type": "contains_any",
+          "values": [
+            "run",
+            "validation",
+            "assert"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Evidence",
+            "No mock drift"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "neg-no-pbt-finite",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "Do not add sampled property tests when exhaustive finite cases are better.",
+      "expected_behavior": [
+        "Avoid over-application and preserve necessary boundary tests."
+      ],
+      "assertions": [
+        {
+          "name": "avoid-no-pbt-finite",
+          "type": "contains_any",
+          "values": [
+            "exhaustive",
+            "not property",
+            "finite"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Type-vs-test safety"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "neg-no-mock-module-under-test",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "Do not mock the module under test just to assert calls.",
+      "expected_behavior": [
+        "Avoid over-application and preserve necessary boundary tests."
+      ],
+      "assertions": [
+        {
+          "name": "avoid-no-mock-module-under-test",
+          "type": "contains_any",
+          "values": [
+            "do not mock",
+            "public behavior"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Type-vs-test safety"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "neg-do-not-delete-boundary-security",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "Types exist internally; do not delete boundary/security tests.",
+      "expected_behavior": [
+        "Avoid over-application and preserve necessary boundary tests."
+      ],
+      "assertions": [
+        {
+          "name": "avoid-do-not-delete-boundary-security",
+          "type": "contains_any",
+          "values": [
+            "boundary",
+            "security",
+            "keep"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Type-vs-test safety"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "neg-no-mutation-tiny",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "Tiny throwaway script; do not demand mutation testing.",
+      "expected_behavior": [
+        "Avoid over-application and preserve necessary boundary tests."
+      ],
+      "assertions": [
+        {
+          "name": "avoid-no-mutation-tiny",
+          "type": "contains_any",
+          "values": [
+            "proportionate",
+            "not mutation"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Type-vs-test safety"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "neg-no-red-claim",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "A user asks for a final status after a bug fix: \"Can I tell the team this was done with TDD?\"\n\nFacts you can cite:\n- You added a regression test before editing the implementation.\n- The only command output you actually observed is after the implementation change: `npm test -- sanitizer.test.ts` => PASS.\n- You do not have any pre-fix failing test output or saved failure log.\n\nGive the honest concise status and next verification step. Do not over-apply testing doctrine.",
+      "expected_behavior": [
+        "Separate observed green evidence from missing red/failing-test evidence.",
+        "Do not claim completed TDD/red-green-refactor from a green-only log.",
+        "State a calibrated status such as TDD-style/test-first intent with red phase unverified, plus the exact next check to prove it.",
+        "Avoid broad unrelated testing recommendations."
+      ],
+      "assertions": [
+        {
+          "name": "red-evidence-honesty",
+          "type": "regex",
+          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['’]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
+          "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence."
+        },
+        {
+          "name": "green-evidence-reported",
+          "type": "contains_any",
+          "values": [
+            "npm test -- sanitizer.test.ts",
+            "green evidence",
+            "passing command",
+            "observed pass",
+            "PASS"
+          ],
+          "description": "Must cite the observed passing/green command evidence rather than treating it as proof of TDD."
+        },
+        {
+          "name": "next-red-verification-step",
+          "type": "contains_any",
+          "values": [
+            "pre-fix",
+            "before the fix",
+            "revert the fix",
+            "run the test against the old code",
+            "failing output",
+            "failure log"
+          ],
+          "description": "Must name a concrete next step to verify the missing failing-test phase."
+        },
+        {
+          "name": "no-unqualified-tdd-success-claim",
+          "type": "not_regex",
+          "pattern": "(?m)^\\s*(?:(?:yes[,;:\\- ]+)?(?:we|i|this)\\s+(?:did|completed|used|followed)\\s+(?:strict\\s+)?(?:TDD|red[- ]green[- ]refactor)\\b|(?:TDD|red[- ]green[- ]refactor)\\s+(?:was\\s+)?(?:completed|done|used)\\b)",
+          "description": "Must not make an unqualified completed-TDD claim."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "TDD evidence honesty",
+            "Validation reporting",
+            "Over-application restraint"
+          ]
+        },
+        {
+          "name": "final-report-contract",
+          "type": "contains_all",
+          "values": [
+            "Tests changed/assessed",
+            "TDD evidence"
+          ],
+          "description": "Skill final report should distinguish changed tests and TDD evidence."
+        }
+      ],
+      "tags": [
+        "tdd",
+        "validation-honesty",
+        "over-application",
+        "smoke-hardening"
+      ]
+    },
+    {
+      "id": "neg-no-live-api-ci",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "Tests currently hit live API in CI; fix without live network.",
+      "expected_behavior": [
+        "Avoid over-application and preserve necessary boundary tests."
+      ],
+      "assertions": [
+        {
+          "name": "avoid-no-live-api-ci",
+          "type": "contains_any",
+          "values": [
+            "no live",
+            "cassette",
+            "fixture"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Type-vs-test safety"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "neg-no-assertion-count-blind",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "A property test has one strong oracle; do not count assertions blindly.",
+      "expected_behavior": [
+        "Avoid over-application and preserve necessary boundary tests."
+      ],
+      "assertions": [
+        {
+          "name": "avoid-no-assertion-count-blind",
+          "type": "contains_any",
+          "values": [
+            "strong oracle",
+            "not count",
+            "property"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Type-vs-test safety"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "trig-write-tests",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: write tests for this parser\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "trig-flaky",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: fix flaky tests\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "trig-mocks",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: are these mocks drifting from reality?\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "trig-invariants",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: test invariants for this type\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "trig-ab-copy",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: A/B testing copy\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return NO_TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*NO_TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "trig-cricket",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: test cricket score rules\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return NO_TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*NO_TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "trig-product-idea",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: testing a product idea\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return NO_TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*NO_TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "trig-qa-plan",
+      "split": "tune",
+      "kind": "trigger",
+      "prompt": "Trigger decision eval. User prompt: write QA project-management plan with no code\n\nReturn exactly one label first: TRIGGER or NO_TRIGGER. Then give one short reason.",
+      "expected_behavior": [
+        "Should return NO_TRIGGER for this skill."
+      ],
+      "assertions": [
+        {
+          "name": "expected-trigger-label",
+          "type": "regex",
+          "pattern": "(?m)^\\s*NO_TRIGGER\\b",
+          "description": "First line must be the exact trigger decision label."
+        }
+      ],
+      "tags": [
+        "trigger"
+      ]
+    },
+    {
+      "id": "holdout-unseen-python-parser-01",
+      "split": "holdout",
+      "kind": "testing",
+      "scenario": "Unseen Python parser fixture with generated failures",
+      "prompt_ref": "holdout/unseen-python-parser-01.txt",
+      "expected_behavior": [
+        "Choose PBT/fuzz and strong oracle."
+      ],
+      "assertions": [
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Property quality",
+            "Validation honesty"
+          ]
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "holdback-real-weak-test-go-01",
+      "split": "holdback",
+      "kind": "testing",
+      "scenario": "Private holdback case. Exact scenario and answer key live outside committed docs/eval descriptions.",
+      "prompt_ref": "holdback/real-weak-test-go-01.txt",
+      "answer_ref": "holdback/answers/real-weak-test-go-01.json",
+      "expected_behavior": [
+        "Private holdback scoring: load prompt and answer key only for the scored run, then reveal after scoring if desired."
+      ],
+      "assertions": [
+        {
+          "name": "private-holdback-review",
+          "type": "judge",
+          "rubric": [
+            "Use the private answer key; do not rely on public manifest wording."
+          ]
+        }
+      ],
+      "tags": [
+        "holdback-private"
+      ]
+    },
+    {
+      "id": "pos-parser-property-test-not-coverage-only",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Improve tests for a URL parser that handles arbitrary strings. Current suite has 96% line coverage from three examples and one `toBeTruthy()` assertion. What tests would you add and why?",
+      "expected_behavior": [
+        "Do not accept coverage percentage as proof.",
+        "Recommend strong oracles and property/fuzz tests for arbitrary strings plus examples for known edge cases."
+      ],
+      "assertions": [
+        {
+          "name": "coverage-not-proof",
+          "type": "contains_any",
+          "values": [
+            "coverage is not proof",
+            "coverage shows what ran",
+            "not sufficient",
+            "false confidence"
+          ]
+        },
+        {
+          "name": "property-testing",
+          "type": "contains_any",
+          "values": [
+            "property-based",
+            "fast-check",
+            "Hypothesis",
+            "fuzz"
+          ]
+        },
+        {
+          "name": "strong-oracle",
+          "type": "contains_any",
+          "values": [
+            "roundtrip",
+            "valid-or-error",
+            "never crashes",
+            "structured error",
+            "oracle"
+          ]
+        },
+        {
+          "name": "weak-assertion-flagged",
+          "type": "contains_any",
+          "values": [
+            "toBeTruthy",
+            "weak assertion",
+            "truthy"
+          ]
+        },
+        {
+          "name": "round-2-qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Technique selection",
+            "Assertion quality",
+            "Evidence-oriented validation"
+          ]
+        }
+      ],
+      "tags": [
+        "round-2",
+        "anthropic-gap",
+        "property-testing"
+      ]
+    },
+    {
+      "id": "round3-fixture-url-parser-tests",
+      "split": "tune",
+      "kind": "testing",
+      "files": [
+        "fixtures/round3-url-parser/src/parser.ts",
+        "fixtures/round3-url-parser/test/parser.test.ts",
+        "fixtures/round3-url-parser/package.json"
+      ],
+      "prompt": "Assess and improve the attached URL parser tests. Focus on test quality rather than coverage percentage.",
+      "expected_behavior": [
+        "Flag toBeTruthy weak assertion.",
+        "Recommend property/fuzz tests and valid-or-error/roundtrip/no-crash oracles for arbitrary strings."
+      ],
+      "assertions": [
+        {
+          "name": "flags-weak-truthy",
+          "type": "contains_any",
+          "values": [
+            "toBeTruthy",
+            "weak assertion",
+            "truthy"
+          ]
+        },
+        {
+          "name": "property-or-fuzz",
+          "type": "contains_any",
+          "values": [
+            "property-based",
+            "fast-check",
+            "fuzz",
+            "arbitrary strings"
+          ]
+        },
+        {
+          "name": "strong-oracles",
+          "type": "contains_any",
+          "values": [
+            "valid-or-error",
+            "roundtrip",
+            "never crashes",
+            "structured error"
+          ]
+        },
+        {
+          "name": "coverage-not-enough",
+          "type": "contains_any",
+          "values": [
+            "coverage is not proof",
+            "coverage",
+            "false confidence",
+            "quality beats coverage",
+            "observable behavior",
+            "not truthiness",
+            "quality"
+          ],
+          "description": "Must prioritize behavior/test quality over shallow coverage/truthiness signals."
+        },
+        {
+          "name": "round-3-qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Assertion quality",
+            "Technique selection",
+            "Fixture-specific recommendations"
+          ]
+        }
+      ],
+      "tags": [
+        "round-3",
+        "fixture-backed",
+        "audit-manifest"
+      ]
+    }
+  ],
+  "ablations": [
+    {
+      "id": "no-reference-matrix",
+      "removed_component": "reference matrix",
+      "expected_regressions": [
+        "Loads wrong/no language-specific guidance."
+      ],
+      "applies_to_cases": []
+    },
+    {
+      "id": "no-red-evidence",
+      "removed_component": "TDD red-phase evidence",
+      "expected_regressions": [
+        "Claims TDD without observed failure."
+      ],
+      "applies_to_cases": [
+        "neg-no-red-claim"
+      ]
+    },
+    {
+      "id": "no-antipatterns",
+      "removed_component": "anti-pattern detection",
+      "expected_regressions": [
+        "Misses skips/logging/weak assertions/sleeps."
+      ],
+      "applies_to_cases": []
+    },
+    {
+      "id": "no-types-vs-tests",
+      "removed_component": "types-vs-tests guidance",
+      "expected_regressions": [
+        "Deletes boundary tests or over-tests internal invariants."
+      ],
+      "applies_to_cases": []
+    },
+    {
+      "id": "no-real-objects",
+      "removed_component": "real-objects-over-mocks hierarchy",
+      "expected_regressions": [
+        "Over-mocks and tests mock behavior."
+      ],
+      "applies_to_cases": []
+    },
+    {
+      "id": "no-final-report",
+      "removed_component": "validation report contract",
+      "expected_regressions": [
+        "Reports success without commands/evidence."
+      ],
+      "applies_to_cases": []
+    }
+  ]
+}

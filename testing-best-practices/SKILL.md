@@ -76,7 +76,7 @@ For bug fixes and new behavior, default to:
 2. **Green** — implement the smallest change that passes.
 3. **Refactor** — clean up while tests stay green.
 
-The evidence matters: if you cannot run or observe the red phase, say so and report the exact command you would run. Do not claim TDD happened without a failing-test signal. For exploratory prototypes, generated code, or user-scoped “tests only” tasks, stay within scope and state the deviation.
+The evidence matters. Separate **red evidence** (exact command and failing output before the fix) from **green evidence** (passing command/result after the fix). Only claim completed TDD/red-green-refactor when both were observed in order. If only a passing/green run is available, say tests were added and now pass, but the red phase was not observed/unverified; do not backfill a TDD claim from a green-only log. For exploratory prototypes, generated code, or user-scoped “tests only” tasks, stay within scope and state the deviation.
 
 ### Quality beats coverage
 
@@ -190,7 +190,7 @@ Use concrete search signals from `references/antipatterns.md`:
 After writing or changing tests:
 
 1. Run the nearest relevant test command.
-2. If bug-fix TDD was intended, confirm the new test fails before the fix or state why that could not be observed.
+2. If bug-fix TDD was intended, report red evidence separately from green evidence; if the pre-fix failing run was not observed, call the red phase unverified instead of claiming completed TDD.
 3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling.
 4. For security/transformation tests, verify both rejection/removal and preservation.
 5. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
@@ -205,6 +205,7 @@ Tests changed/assessed:
 Behavior covered:
 Commands run:
 Results:
+TDD evidence (if claimed):
 Gaps / risks:
 Follow-ups:
 ```
