@@ -63,6 +63,10 @@ The first Dan Luu research pass used fetched-page summaries; the second used Git
 
 Most of Dan Luu's testing thesis was already in the skill (property-based testing, fuzzing, differential testing, coverage skepticism, mutation). The temptation was to restate it all; the discipline was to add only the one genuine gap (error-handling paths exercised by injected dependency failure) and let the research file carry the confirmations. A new practitioner who mostly validates the existing skill is evidence the skill is right — not an invitation to bloat it.
 
+### A literature pass after an engineering decision is cheap corroboration — and a gap detector
+
+After iteration 10 folded design-for-testability on ablation evidence, a literature review found the canon had already reached the same hierarchy (substitutable dependencies over test hooks; Meszaros's "Test Logic in Production"; Feathers's enabling points outside production text), and the flaky-test literature's recommended fix (condition-based synchronization, Luo et al. FSE 2014) is exactly the seam shape our baseline arms built from priors — explaining *why* the teaching didn't discriminate: it's already in the models. The same pass surfaced precisely one concept the corpus lacked (Voas's fault-hiding/PIE theory of testability) and quantified honesty backing (Sharma et al. 2023: developer-plausible testability smells don't survive measurement). The pattern: make the decision on your own evidence, then check it against the literature — agreement converts a local result into a corroborated one, and the residue is a focused list of what you actually don't know.
+
 ### Infrastructure-specific patterns can still generalize if you extract the underlying invariant
 
 Jane Street's library-level simulation testing — `Time_source` parameterization, the compiler-enforced `Require_explicit_time_source` — is uniquely OCaml. But the underlying idea ("make every source of non-determinism an explicit parameter") generalizes. The skill captures the pattern in `deterministic-time.md` (clock injection vs virtualization) without requiring OCaml. The cross-language lesson is "what would this look like in Java, Go, Python, TS" applied to every practitioner's contribution.
@@ -145,6 +149,89 @@ The repo ended up with an internal development suite (fixture oracles, determini
 
 Committing raw `eval-runs/` directories and `__pycache__` files made the repo look more reproducible while actually mixing generated artifacts with maintained source. The better pattern is to track fixtures, oracles, scorecards, summaries, and scripts; keep raw run outputs ignored unless they are deliberately curated as fixtures.
 
+### Cue leakage puts a fixture at ceiling before you even run it
+
+Iteration 8's statistical-oracle fixtures (E38/E39) named the `brute_force_topk`
+helper right in the prompt. Both with-section and without-section runs then
+produced recall-vs-brute-force tests — the prompt did the teaching, not the
+skill. The ablation measured nothing about the section. The fix for next time:
+the prompt must describe the *situation* ("an approximate index, no single
+correct answer") without naming the technique's machinery. A fixture that
+mentions the oracle is testing the model's reading comprehension, not the skill.
+
+### Adversarial probes earn their keep, and oracles need their own scrutiny
+
+The E41 restraint probe (trivial pure function) immediately caught the
+shadow-model guidance inducing a redundant `_reference_slugify` reimplementation
+— a real over-application we then fixed in the guidance. But grading also
+exposed two bugs in the probe oracles themselves: a false negative (a recall
+threshold held in a named constant slipped past a literal-only regex) and a
+false positive (`def \w*slug` matched the test function names). An oracle that
+hasn't been adversarially checked against realistic-but-different outputs will
+both miss real failures and punish good work. Self-tests (good/pass + bad/fail)
+catch the crude cases; realistic agent output catches the rest.
+
+### Cue-free fixtures answer what cue-leaked ones can't
+
+Iteration 9 rebuilt the statistical-oracle fixtures with prompts that name only
+the documented metric — no "brute force", "recall", "oracle", or "threshold".
+The result reversed iteration 8's non-finding: with the section, agents derived
+the reference-ranking-plus-recall-threshold design themselves; without it, they
+pinned exact set equality against their own reference — the exact failure mode
+the section exists to prevent. Same section, same model; the only change was
+removing the teaching from the prompt. A fixture that names the technique's
+machinery measures reading comprehension, not the skill.
+
+### Specify the degree of nondeterminism, or agents will model exactly what you said
+
+The Go cue-free prompt said results "may differ on near-ties." The
+without-section agent took that literally and built a tie-only-tolerant exact
+oracle — defensible given the wording, but not the taught shape, which made the
+FAIL ambiguous evidence. Fixture prompts for approximate systems must state the
+*kind and degree* of allowed variation ("may return slightly less similar
+items"), or the ablation conflates guidance effects with prompt interpretation.
+
+### Keyword oracles false-negative good work; read every FAIL before believing it
+
+Iteration 9's grading hit four oracle calibration bugs — all false negatives on
+high-quality outputs that used different identifiers than the oracle expected:
+`.sort(key=...)` for `sorted(`, `random.Random(seed)` via variable for a
+literal seed, a hand-rolled `canonicalDump` for `DeepEqual`, and a public
+`flush()` seam for `flush_now`. One of them initially flipped a verdict from
+"ceiling" to "discriminates"; manually reading the artifact caught it. Oracles
+should encode behavioral shapes, not identifier spellings — and an ablation
+verdict is not real until each FAIL has been verified against the artifact.
+
+### A strong adjacent reference can absorb a new section's contribution
+
+Design-for-testability did not discriminate because the ablation baseline
+included `deterministic-time.md` — and that, plus priors, already produced
+seam-in-the-SUT behavior in both languages. That is the right way to fail: a
+win against an empty baseline would have been claimable but meaningless. Test
+new sections against the strongest adjacent guidance, and when the baseline
+absorbs the contribution, say "unproven marginal value," not "validated".
+
+### Frontier priors keep moving the ceiling — re-test inherited "best practices" before shipping them
+
+Two consecutive iterations took canonical, literature-backed testability ideas (design-for-testability seams; Voas's fault-masking detection) through the pipeline, and both came back at ceiling: the without-arms produced the taught behavior from priors alone. The lesson isn't that the ideas are wrong — they're correct and have decades of pedigree — it's that a capable base model has already absorbed them, so *teaching* them changes nothing measurable. What survives ablation is the residue priors *don't* reliably produce: explanatory framing that sharpens judgment (the PIE vocabulary; why mutants survive), a non-obvious tactic (assert the pre-mask value, not the clamped output), and restraint guards. Ship the residue, not the textbook. Before adding any well-known practice, ablate it against bare priors — the ceiling has risen.
+
+### Pre-register the decision rule, and unproven sections become cheap to remove
+
+design-for-testability.md survived iteration 9 as "shipped but unproven." Iteration 10 committed a decision rule *before* any runs: discriminate on non-time fixtures (where the strong baseline is irrelevant) → keep; both arms pass → fold into deterministic-time.md. Both arms passed — the without-arms built genuine Event/WaitGroup seams from priors alone — and the fold executed without debate, keeping only the guardrails the E46 probe had validated. Without the pre-registered rule, the temptation is to keep re-testing until some fixture flatters the section; with it, deletion is just the rule firing. Sections should be cheap to remove, and the way to make them cheap is to decide the removal criterion before the evidence arrives.
+
+### Oracles must grade code, not prose about code
+
+Iteration 10's first grading pass failed three of four runs for "real sleep still present" — every flagged sleep was in a comment or docstring *describing the old flaky test*. Agents narrate their fixes; an oracle that greps raw text will punish exactly the outputs that explain themselves best. Strip comments and docstrings before pattern checks. (Oracle bug #5; all five across three iterations were false negatives on good work.)
+
+### Ship-but-flag is an honest state for an unproven section
+
+The statistical-oracle section is plausibly useful and passes every gate, but
+the ablation did not prove it changes behavior. Rather than delete it or
+overclaim, we shipped it and marked its fixtures `saturated_public` with a
+rebuttal noting the cue leak. "Validated" (shadow-model) and "shipped but
+unproven" (statistical-oracle) are different claims, and the eval metadata
+should say which one each section has earned.
+
 ### Schema and audit gates must evolve with eval design
 
 After adding `validity`, `eval_health`, hidden probes, and mini-repos, the JSON schema still validated only the older prompt fields. The best-practices audit caught that mismatch. Every new eval concept needs a gate, or it becomes convention instead of infrastructure.
@@ -166,6 +253,10 @@ The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~
 | 5 | + 3 types-vs-tests fixtures | Python, TS, Go | 16/16 with §10 v2 (13/16 without) | Jane Street research; §10 "Types vs tests"; `deterministic-time.md`; snapshot-tests in `golden-file-testing.md` |
 | 6 | 32 eval definitions + 10 fixture oracles + 3 mini-repos | Python, TS, Go, Rust | artifact rubric 100/100; static 0 P0/0 P1; public oracles 10/10 saturated; mini-repo mutants 3/3 | Eval validity metadata, hidden hard probes, generated-artifact hygiene, best-practices audit |
 | 7 | 35 eval definitions + 12 fixture oracles; +2 shared-benchmark tune cases | Python, TS, Go, Rust | paired A/B: error-path principle D 2→3 after scope clause; concurrency oracle discriminates baseline (FAIL) vs full-SKILL.md (PASS); gates 100/100 | Dan Luu research; error-path + concurrency-contract principles; E33/E34/E35; prompt-eval runner with pluggable sub-agent/judge backends |
+| 8 | 41 eval definitions + 18 fixture oracles | + shadow-model, statistical-oracle, restraint probes | shadow-model discriminates + generalizes; statistical-oracle at ceiling (cue leak); over-application found+fixed; audit 110/110 | antirez insights: shadow-oracle + statistical-oracle sections, new-section adversarial-probe gate |
+| 9 | 49 eval definitions + 26 fixture oracles | + cue-free statistical, testability, digest roundtrip | statistical-oracle validated cue-free (Python discriminates, Go weak); digest validated in Go holdback; testability at ceiling vs deterministic-time baseline; both restraint probes hold; 4 oracle false negatives found by reading artifacts | design-for-testability reference + whole-state digest section; cue-free fixture discipline; strongest-adjacent-baseline ablation |
+| 10 | 51 eval definitions + 28 fixture oracles | + non-time testability isolation (E50 py dev, E51 go holdback) | both arms PASS both fixtures (priors build Event/WaitGroup seams); pre-registered rule fired: design-for-testability folded into deterministic-time.md, guardrails kept (E46-validated); oracle bug #5 (comment sleeps) fixed | fold decision; ≈ −700 on-demand tokens; comment-stripping oracles |
+| 11 | 54 eval definitions + 31 fixture oracles | + Voas fault-masking detection (E52 py dev, E53 go holdback, E54 restraint) | detection at ceiling (priors + antipattern #2 catch it in both arms); restraint held both arms; #14 trimmed ~50% to PIE framing + pre-mask fix; mutation-testing PIE paragraph kept; oracle bug #6 (would-pass-even-if) fixed | Voas PIE delta from the literature review; re-test-inherited-practices lesson |
 
 The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages). Iteration 5's signal was the +18.75pp aggregate from §10 v2 — only visible because we built new fixtures that weren't already at ceiling.
 

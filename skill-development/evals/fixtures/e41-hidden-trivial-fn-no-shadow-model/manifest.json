@@ -1,0 +1,11 @@
+{
+  "eval_id": "E41-hidden-trivial-fn-no-shadow-model",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "tests a trivial pure function with direct examples/properties",
+    "does NOT build a parallel shadow-model reimplementation (over-application guard)"
+  ]
+}

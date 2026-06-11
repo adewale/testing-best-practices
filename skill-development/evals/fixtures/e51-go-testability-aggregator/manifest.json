@@ -1,0 +1,12 @@
+{
+  "eval_id": "E51-go-testability-aggregator",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "adds a forced-drain seam for channel-fed (NOT time-triggered) background merging",
+    "asserts totals after deterministic drain",
+    "rejects real sleeps; a fake clock cannot solve this fixture"
+  ]
+}

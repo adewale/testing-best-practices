@@ -1,0 +1,11 @@
+{
+  "eval_id": "E49-hidden-digest-canonicalization",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "compares roundtripped graph state structurally or after canonicalizing (sorting) unordered parts",
+    "does NOT hash/compare a nondeterministic textual dump (over-application guard: false-failure trap)"
+  ]
+}

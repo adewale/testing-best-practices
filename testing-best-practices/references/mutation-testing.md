@@ -10,6 +10,20 @@ small faults ("mutants") and checks whether tests detect them.
 - Financial calculations where off-by-one = real money
 - After a quality audit reveals low assertion density
 
+## Why it works: the fault model
+
+Mutation testing is the empirical form of Voas & Miller's testability model. For
+a seeded fault (mutant) to be caught, three things must happen: it must be
+**Executed**, it must **Infect** the data state, and the infection must
+**Propagate** to an observable output the test asserts on. A *surviving* mutant
+means one of those links broke — most often propagation: the code masks the
+infected state before it reaches the assertion (see "Asserting through
+fault-masking code" in `references/antipatterns.md`). So surviving mutants in
+clamping / swallow-to-default / high domain-to-range code aren't just test gaps;
+they pinpoint *where the code is hiding faults from any possible output-only
+test*. That's the signal to assert on internal/pre-mask state, not to add more
+end-to-end cases.
+
 ## How it works
 
 1. Tool modifies source: `>=` becomes `>`, `True` becomes `False`, etc.

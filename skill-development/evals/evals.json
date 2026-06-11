@@ -2488,6 +2488,1246 @@
         ],
         "last_reviewed": "2026-06-09"
       }
+    },
+    {
+      "id": "E36-python-shadow-model-lru",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "shadow-model",
+          "property-based"
+        ],
+        "risk_classes": [
+          "data-structure-correctness"
+        ],
+        "failure_modes": [
+          "weak-assertion",
+          "example-only-tests"
+        ]
+      },
+      "prompt": "Add pytest tests for a custom LruCache(capacity) with put/get/items/__len__ where no reference implementation exists.",
+      "fixture": "Python project with an LruCache class and no canonical reference to diff against.",
+      "expected_behavior": [
+        "Build a trivial parallel shadow model (dict + recency list) that is obviously correct.",
+        "Drive both the cache and the model with the same seeded random operation sequence.",
+        "Assert agreement on multiple observables: each lookup and the full contents/length."
+      ],
+      "red_flags": [
+        "Only a couple of hand-picked example tests.",
+        "Unseeded randomness.",
+        "Single observable checked (no contents comparison)."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e36-python-shadow-model-lru/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Shadow-model fuzz disagreement surfaces an injected eviction bug."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm a seeded model-based comparison, not example-only tests."
+        ]
+      },
+      "validity": {
+        "claim": "The skill induces model-based (shadow-oracle) testing for stateful structures that have no reference implementation.",
+        "warrant": "Passing supports the claim because the oracle requires a seeded op sequence compared against an independent model on multiple observables.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may write a fuzz test unprompted.",
+          "Static oracle detects shape, not full correctness of the model."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "iter8: with-section PASS vs without-section FAIL"
+        ],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E37-go-shadow-model-ringbuffer",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "differential",
+          "shadow-model"
+        ],
+        "risk_classes": [
+          "data-structure-correctness"
+        ],
+        "failure_modes": [
+          "example-only-tests",
+          "single-observable"
+        ]
+      },
+      "prompt": "Add Go tests for a fixed-capacity RingBuffer (Push/Pop/Len) where no reference implementation exists.",
+      "fixture": "Go package with a RingBuffer and no canonical reference; isomorphic holdback for the shadow-model insight.",
+      "expected_behavior": [
+        "Build a slice-backed shadow model and drive both with a seeded random op sequence.",
+        "Assert contents agreement via reflect.DeepEqual plus length, not just absence of panics."
+      ],
+      "red_flags": [
+        "Single Push/Pop example test.",
+        "Unseeded math/rand.",
+        "No contents comparison."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e37-go-shadow-model-ringbuffer/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the shadow-model behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm seeded model-based comparison in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The shadow-model behavior generalizes to Go and is not overfit to the Python dev fixture.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go idiom differences may require separate mechanism anchors.",
+          "Static oracle detects shape, not full correctness."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "iter8: with-section PASS vs without-section FAIL"
+        ],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E38-python-ann-recall-oracle",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "statistical-oracle",
+          "property-based"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "flaky-nondeterminism"
+        ]
+      },
+      "prompt": "Add pytest tests for AnnIndex.query(q, k), an approximate nearest-neighbor search with no single correct answer set.",
+      "fixture": "Python project with an approximate ANN index and an available exact (brute-force) computation.",
+      "expected_behavior": [
+        "Build a brute-force/linear oracle and compute recall against the approximate result.",
+        "Assert a recall threshold with stated margin, and exact scores on the overlapping items.",
+        "Seed all randomness so the approximate test is reproducible, not flaky."
+      ],
+      "red_flags": [
+        "Exact-equality assertion against an approximate algorithm.",
+        "Length-only / not-empty assertion.",
+        "Vacuous threshold (e.g. recall >= 0.01)."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e38-python-ann-recall-oracle/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Recall threshold catches a degraded index build; exact-overlap check catches score drift."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm brute-force oracle + calibrated threshold, not exact equality."
+        ]
+      },
+      "validity": {
+        "claim": "The skill induces statistical-oracle testing (recall vs brute force) for approximate/probabilistic outputs.",
+        "warrant": "Passing supports the claim because the oracle requires a brute-force reference, a recall metric, and a margin threshold.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A loose threshold can pass while being near-vacuous; rubric must check margin.",
+          "Static oracle detects shape, not threshold calibration quality.",
+          "iter7 ablation did not discriminate: the prompt names the brute-force helper, cueing the behavior even without the section; needs a cue-free fixture."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E39-go-approx-recall-oracle",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "flaky-nondeterminism"
+        ]
+      },
+      "prompt": "Add Go tests for Index.Query(q, k), an approximate top-k retriever with no single correct answer set.",
+      "fixture": "Go package with an approximate retriever and an available exact computation; isomorphic holdback for the statistical-oracle insight.",
+      "expected_behavior": [
+        "Build a brute-force/linear oracle and compute recall against the approximate result.",
+        "Assert a recall threshold with margin and seed the RNG."
+      ],
+      "red_flags": [
+        "Length-only assertion.",
+        "Exact-equality against approximate output.",
+        "Unseeded randomness."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e39-go-approx-recall-oracle/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms statistical-oracle behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm brute-force oracle + margin threshold in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The statistical-oracle behavior generalizes to Go and is not overfit to the Python dev fixture.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go idiom (if recall < t) differs from Python; oracle must accept both.",
+          "Static oracle detects shape, not calibration.",
+          "iter7 ablation did not discriminate: the prompt names the brute-force helper, cueing the behavior even without the section; needs a cue-free fixture."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E40-hidden-exact-output-no-threshold",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "over-application",
+          "bug-masking"
+        ],
+        "failure_modes": [
+          "statistical-oracle-on-exact-output"
+        ]
+      },
+      "prompt": "Add pytest tests for quicksort(xs), a deterministic in-memory sort.",
+      "fixture": "Adversarial restraint probe: a deterministic, exact output that must NOT receive a statistical/closeness oracle.",
+      "expected_behavior": [
+        "Assert exact equality against the known-correct sorted output.",
+        "Do NOT introduce a recall/closeness threshold; that would hide real regressions."
+      ],
+      "red_flags": [
+        "Uses recall/tolerance/assertAlmostEqual on a deterministic sort.",
+        "Replaces exact equality with a >= 0.x threshold."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e40-hidden-exact-output-no-threshold/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Over-applied statistical oracle would pass a broken sort; restraint avoids that."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires exact equality and no statistical-oracle over-application."
+        ]
+      },
+      "validity": {
+        "claim": "The statistical-oracle guidance does not cause over-application to deterministic, exact outputs.",
+        "warrant": "Passing supports the claim because restraint (exact equality, no threshold) is the only way to satisfy the oracle.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A model might add a redundant exact-vs-builtin diff that is harmless; oracle tolerates that."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E41-hidden-trivial-fn-no-shadow-model",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "shadow-model",
+          "property-based"
+        ],
+        "risk_classes": [
+          "over-application",
+          "redundant-reimplementation"
+        ],
+        "failure_modes": [
+          "shadow-model-for-trivial-pure-fn"
+        ]
+      },
+      "prompt": "Add pytest tests for slugify(s), a trivial pure function that lowercases text and hyphenates whitespace runs.",
+      "fixture": "Adversarial restraint probe: a trivial pure function that must NOT receive a parallel shadow-model reimplementation.",
+      "expected_behavior": [
+        "Use direct example assertions and a light property (idempotence).",
+        "Do NOT reimplement slugify as a shadow model and fuzz against it; a model that can carry its own bugs is worse here."
+      ],
+      "red_flags": [
+        "Defines a second slugify-like function in the test.",
+        "Uses 'shadow'/'reference' reimplementation plus a random fuzz loop on a trivial pure function."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e41-hidden-trivial-fn-no-shadow-model/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A reimplemented shadow model adds risk without added coverage for a trivial pure fn."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires direct/property tests and no redundant shadow model."
+        ]
+      },
+      "validity": {
+        "claim": "The shadow-model guidance does not cause over-application to trivial pure functions.",
+        "warrant": "Passing supports the claim because restraint (examples/properties, no parallel model) is required to satisfy the oracle.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Some pure functions still benefit from PBT; this probe targets redundant reimplementation specifically."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-09"
+      }
+    },
+    {
+      "id": "E42-python-fuzzy-search-cuefree",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "cue-dependent-behavior"
+        ]
+      },
+      "prompt": "Add pytest tests for FuzzyIndex.search(q, k), an approximate similar-strings search; the prompt names only the documented similarity metric, never the testing technique.",
+      "fixture": "Cue-free replacement for E38: no brute-force helper, no 'recall'/'oracle'/'threshold' vocabulary in the prompt; the agent must derive the reference-ranking-plus-overlap-threshold design itself.",
+      "expected_behavior": [
+        "Derive an exact reference ranking from the documented similarity metric without being told to.",
+        "Assert a partial-overlap threshold rather than pinning exact result lists.",
+        "Seed any randomness used."
+      ],
+      "red_flags": [
+        "Pins an exact result list for an approximate search.",
+        "Length-only assertions.",
+        "Unseeded randomness."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e42-python-fuzzy-search-cuefree/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Cue-free prompt: discriminating signal is valid because the technique is never named."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm the reference ranking and threshold were derived, not copied from the prompt."
+        ]
+      },
+      "validity": {
+        "claim": "The statistical-oracle section induces threshold-against-reference testing even when the prompt does not cue the technique.",
+        "warrant": "Passing supports the claim because the prompt names only the metric; deriving the reference ranking and overlap threshold must come from guidance or priors, which the ablation separates.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A strong base model may still derive the design from priors; the without-section arm measures that.",
+          "Static oracle detects shape, not threshold calibration quality."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "iter9: with-section PASS vs without-section FAIL (cue-free prompt; without-arm pinned gap-gated exact set equality)"
+        ],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E43-go-suggest-cuefree",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "differential",
+          "statistical-oracle"
+        ],
+        "risk_classes": [
+          "approximate-algorithm-correctness"
+        ],
+        "failure_modes": [
+          "wrong-oracle-exact-equality",
+          "cue-dependent-behavior"
+        ]
+      },
+      "prompt": "Add Go tests for Index.Suggest(q, k), an approximate similar-words retriever; only the exported Similarity metric is named.",
+      "fixture": "Cue-free Go holdback isomorphic to E42; not consulted while authoring the statistical-oracle section.",
+      "expected_behavior": [
+        "Derive an exact reference ranking via Similarity and sort, unprompted.",
+        "Assert a fractional overlap threshold; do not DeepEqual-pin approximate results."
+      ],
+      "red_flags": [
+        "DeepEqual on approximate output.",
+        "Length-only assertions."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e43-go-suggest-cuefree/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language plus cue-free prompt isolates generalization of the section."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm reference ranking + threshold in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The cue-free statistical-oracle behavior generalizes to Go.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section and carries no technique cues.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Base-model priors may produce the design without the section; the ablation arm measures that.",
+          "The prompt's 'near-ties may differ' wording under-specifies the approximation degree; a tie-only-tolerant exact oracle is a defensible alternative, so this FAIL is shape disagreement, not clear inferiority."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "iter8 (weak): with PASS vs without FAIL on shape, but without-arm's tie-only tolerance is a defensible reading of the 'near-ties' prompt wording"
+        ],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E44-python-testability-flush",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "design-for-testability",
+          "deterministic-time"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A WriteBuffer flushes via a background thread every 5s; the test sleeps 6s and is flaky. Modify the buffer to make it testable and write deterministic tests.",
+      "fixture": "Python class with background flush thread; the agent may modify the system under test.",
+      "expected_behavior": [
+        "Add a guarded forced-transition seam (auto_flush=False + flush_now()) running the same code as the background loop.",
+        "Assert on observable persisted/pending state.",
+        "Remove the long real sleep entirely."
+      ],
+      "red_flags": [
+        "Keeps or shortens the sleep.",
+        "Adds a separate test-only flush path that diverges from the background loop."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e44-python-testability-flush/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Forced-transition seam makes the previously flaky test deterministic."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm a seam in the SUT, not a faster sleep."
+        ]
+      },
+      "validity": {
+        "claim": "The design-for-testability reference induces seam-in-the-SUT fixes instead of sleep-based tests for background work.",
+        "warrant": "Passing supports the claim because the oracle requires a forced-transition seam and rejects long sleeps; the ablation arm separates guidance from priors.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "deterministic-time.md alone may induce clock injection that also passes; the WITHOUT arm includes it to keep the comparison honest.",
+          "Static oracle detects shape, not whether the seam runs the same code path.",
+          "iter8 ablation at ceiling: the deterministic-time baseline alone induced a public flush() seam with no sleeps; the section's marginal contribution is not visible on this fixture."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E45-go-testability-reaper",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "design-for-testability",
+          "deterministic-time"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A connection pool reaps idle connections via a background goroutine every minute; the test sleeps 65s. Modify the pool to make it testable and write deterministic tests.",
+      "fixture": "Go package with background reaper goroutine; isomorphic holdback for the design-for-testability insight.",
+      "expected_behavior": [
+        "Add a ReapNow()/disabled-reaper seam plus injectable now func.",
+        "Assert on observable idle counts; no multi-second sleeps."
+      ],
+      "red_flags": [
+        "time.Sleep with seconds/minutes remains.",
+        "No state introspection."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e45-go-testability-reaper/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the seam behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm forced-transition seam in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The design-for-testability behavior generalizes to Go.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the reference.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go test culture already favors injected clocks; the WITHOUT arm measures that prior.",
+          "iter8 ablation at ceiling: Go idiom plus the deterministic-time baseline produced clock injection and ticker control without the new reference."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E46-hidden-testability-no-bypass",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "design-for-testability"
+        ],
+        "risk_classes": [
+          "security",
+          "over-application"
+        ],
+        "failure_modes": [
+          "test-mode-security-bypass"
+        ]
+      },
+      "prompt": "A RateLimiter blocks logins after 5 failures per hour; tests are slow. Make it testable.",
+      "fixture": "Adversarial restraint probe: the tempting seam is an env-var/test-mode bypass of the rate limit, which is a vulnerability; the correct seam is clock injection that leaves the rule intact.",
+      "expected_behavior": [
+        "Inject the clock so tests control what the rule observes; the rule itself stays intact.",
+        "Do NOT add an environment-variable or test-mode bypass of the limit."
+      ],
+      "red_flags": [
+        "os.environ/test_mode/bypass/disable switches in the limiter.",
+        "Seam changes outcomes rather than scheduling/observation."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e46-hidden-testability-no-bypass/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A prod-settable bypass is a vulnerability; restraint is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires clock injection and no rule bypass."
+        ]
+      },
+      "validity": {
+        "claim": "The design-for-testability guidance does not cause security-weakening test seams.",
+        "warrant": "Passing supports the claim because the guardrails section explicitly forbids bypass seams and the oracle rejects them.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Keyword-based bypass detection can false-positive on comments; sample tuning mitigates."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E47-python-digest-roundtrip",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "golden-snapshot",
+          "characterization",
+          "roundtrip-digest"
+        ],
+        "risk_classes": [
+          "persistence-correctness"
+        ],
+        "failure_modes": [
+          "single-record-roundtrip",
+          "non-canonical-compare"
+        ]
+      },
+      "prompt": "Add pytest tests for KvStore save/load across 'json' and 'binary' formats, with str/list/set values and optional TTLs.",
+      "fixture": "Python KV store persistence layer; items() order unspecified; the awkward types (sets, TTLs) are where real persistence bugs live.",
+      "expected_behavior": [
+        "Generate rich seeded state covering all value types including sets, TTLs, and empties.",
+        "Canonicalize (sort unordered parts) and assert whole-state identity after save/load.",
+        "Parameterize one identity assertion across both formats."
+      ],
+      "red_flags": [
+        "Single-key single-field roundtrip.",
+        "Compares nondeterministic ordering without canonicalizing.",
+        "Only one format exercised."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e47-python-digest-roundtrip/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Whole-state identity over rich seeded state catches type/TTL persistence bugs single-record tests miss."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm canonical whole-state comparison parameterized across formats."
+        ]
+      },
+      "validity": {
+        "claim": "The whole-state roundtrip-digest section moves agents from single-record assertions to canonical whole-state identity checks.",
+        "warrant": "Passing supports the claim because the oracle requires seeded breadth, canonicalization, items()-level comparison, and both formats.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Baseline agents may already parameterize formats since the API names them; the discriminator is breadth + canonical whole-state identity.",
+          "iter8 ablation at ceiling: the golden/snapshot guidance's stable-serialization advice already induced sorted canonical snapshots in Python."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E48-go-digest-roundtrip",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "golden-snapshot",
+          "characterization",
+          "roundtrip-digest"
+        ],
+        "risk_classes": [
+          "persistence-correctness"
+        ],
+        "failure_modes": [
+          "single-record-roundtrip"
+        ]
+      },
+      "prompt": "Add Go tests for Store Save/Load across FormatJSON and FormatGob with string/[]string/set values and TTLs.",
+      "fixture": "Go store persistence layer with Snapshot(); isomorphic holdback for the roundtrip-digest insight.",
+      "expected_behavior": [
+        "Generate rich seeded state; assert DeepEqual on the full Snapshot() after Save/Load.",
+        "Cover both formats and TTLs."
+      ],
+      "red_flags": [
+        "Single-key roundtrip.",
+        "Only one format.",
+        "No full-snapshot comparison."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e48-go-digest-roundtrip/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the digest-roundtrip behavior generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm full-snapshot DeepEqual across both formats."
+        ]
+      },
+      "validity": {
+        "claim": "The roundtrip-digest behavior generalizes to Go.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not used while authoring the section.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "DeepEqual-on-snapshot is more idiomatic in Go than canonical digests; the oracle accepts the idiomatic form."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "iter9: with-section PASS vs without-section FAIL (without-arm wrote handpicked single-key roundtrips plus golden-bytes comparison, no whole-state load identity, no seeded breadth)"
+        ],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E49-hidden-digest-canonicalization",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "golden-snapshot",
+          "roundtrip-digest"
+        ],
+        "risk_classes": [
+          "over-application",
+          "false-failures"
+        ],
+        "failure_modes": [
+          "non-canonical-digest"
+        ]
+      },
+      "prompt": "Add pytest roundtrip tests for a Graph whose neighbors() returns sets with unspecified iteration order.",
+      "fixture": "Adversarial probe: the tempting move is hashing/comparing a textual dump of unordered sets, which produces flaky false failures; the correct move is structural set equality or sorting before comparing.",
+      "expected_behavior": [
+        "Compare neighbor sets structurally (set equality) or canonicalize (sort) before any digest.",
+        "Do NOT hash or string-compare a dump whose order varies between runs."
+      ],
+      "red_flags": [
+        "sha256/repr over unordered sets without sorting.",
+        "Asserting neighbor list order."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e49-hidden-digest-canonicalization/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A non-canonical digest fails randomly on correct code; restraint/canonicalization is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires order-free comparison."
+        ]
+      },
+      "validity": {
+        "claim": "The roundtrip-digest guidance does not cause non-canonical digests that produce false failures on unordered state.",
+        "warrant": "Passing supports the claim because the section's canonicalize-first rule is exactly what the oracle enforces.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Structural set equality needs no sorting; the oracle accepts that as the preferred form."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-10"
+      }
+    },
+    {
+      "id": "E50-python-testability-compactor",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "design-for-testability"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A LogStore compacts segments via a background worker woken by write volume (no timers); the test sleeps 0.5s. Modify the store to make it testable and write deterministic tests.",
+      "fixture": "Non-time isolation fixture: compaction is condition-variable/volume-triggered, so clock injection cannot solve it; isolates design-for-testability's forced-transition teaching from deterministic-time.md.",
+      "expected_behavior": [
+        "Add a forced-transition seam (start_worker=False + compact_now()) running the same code as the worker.",
+        "Assert on observable pending/segment state and persisted contents; no real sleeps."
+      ],
+      "red_flags": [
+        "Keeps or shortens the sleep.",
+        "Reaches for clock injection, which cannot force volume-triggered work."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e50-python-testability-compactor/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A fake clock cannot trigger volume-driven compaction; only a seam makes the test deterministic."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm a forced-transition seam, not sleep/poll."
+        ]
+      },
+      "validity": {
+        "claim": "design-for-testability's forced-transition teaching adds value beyond deterministic-time.md on background work that no clock controls.",
+        "warrant": "Passing supports the claim because the fixture removes the time seam entirely; the without-arm has only deterministic-time.md plus priors.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Strong priors may produce the seam without any guidance; the ablation arm measures exactly that, and a both-pass outcome triggers the pre-registered fold decision.",
+          "iter10 isolation: both arms passed even with the time seam removed (without-arm built Event/WaitGroup synchronization seams from priors alone); per the pre-registered rule the standalone reference was folded into deterministic-time.md, keeping only the validated guardrails."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
+    },
+    {
+      "id": "E51-go-testability-aggregator",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "design-for-testability"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A metrics Aggregator merges channel-fed records via a background goroutine (no timers); the test sleeps 100ms. Modify it to make it testable and write deterministic tests.",
+      "fixture": "Non-time Go holdback isomorphic to E50; channel-drain work that clock injection cannot force.",
+      "expected_behavior": [
+        "Add a forced-drain seam (StartWorker:false + Drain()) running the same merge code as the goroutine.",
+        "Assert totals and pending counts deterministically; no time.Sleep."
+      ],
+      "red_flags": [
+        "time.Sleep remains.",
+        "Clock/ticker injection that cannot drain a channel-fed queue."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e51-go-testability-aggregator/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language for the non-time isolation; same decision rule as E50."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm forced-drain seam in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The non-time forced-transition behavior generalizes to Go beyond deterministic-time.md.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not consulted while authoring the reference and has no time seam.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go's sync idioms make drain methods common; priors may suffice \u2014 measured by the without-arm.",
+          "iter10 isolation: both arms passed even with the time seam removed (without-arm built Event/WaitGroup synchronization seams from priors alone); per the pre-registered rule the standalone reference was folded into deterministic-time.md, keeping only the validated guardrails."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
+    },
+    {
+      "id": "E52-python-fault-masking-detect",
+      "critical": true,
+      "mode": "assess",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "mutation",
+          "fault-masking-detection"
+        ],
+        "risk_classes": [
+          "fault-hiding",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "assert-through-mask",
+          "weak-oracle"
+        ]
+      },
+      "prompt": "Assess a Python test whose output-only assertion sits behind a clamp and a blanket except-to-default, so a broken computation still passes.",
+      "fixture": "compute_score clamps to [0,100] and swallows exceptions to 0; the test only asserts the result is in range. Voas fault-masking: the fault executes but cannot propagate to the asserted output.",
+      "expected_behavior": [
+        "Identify the fault-masking constructs (clamp + blanket except-to-default).",
+        "Explain the in-range assertion passes even if heavy_calc is wholly broken (infection cannot propagate).",
+        "Recommend asserting exact/pre-mask state, testing heavy_calc directly, surfacing the error, or mutation testing."
+      ],
+      "red_flags": [
+        "Calls the test good / suggests only more cases or a docstring.",
+        "Misses that the clamp makes the range assertion vacuous."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e52-python-fault-masking-detect/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A correct assessment shows the suite is green regardless of computation correctness; the oracle checks mask+weakness+fix are all named."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm the assessment names the mask, the false confidence, and a propagation-restoring fix."
+        ]
+      },
+      "validity": {
+        "claim": "The fault-masking antipattern makes agents recognize that a passing test behind clamp/swallow code is weak evidence and recommend surfacing the infection.",
+        "warrant": "Passing supports the claim because the oracle requires identifying the mask, the broken-still-passes consequence, and a pre-mask/exact/surface fix together.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A strong model may flag the blanket except from general code-review priors; the without-arm measures that.",
+          "Prose oracle checks concept presence, not assessment quality.",
+          "iter11 ablation at ceiling: the without-arm (antipatterns minus #14) caught the fault-masking from priors via the existing not-empty/tautological-assertion knowledge ('this test would pass even if compute_score crashed silently... the clamp structurally enforces the only invariant'). #14's detection is redundant with #2; the additive residue is the explicit PIE framing + the assert-pre-mask-state fix, which the with-arm produced but is unproven at n=1."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
+    },
+    {
+      "id": "E53-go-fault-masking-detect",
+      "critical": false,
+      "mode": "assess",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "mutation",
+          "fault-masking-detection"
+        ],
+        "risk_classes": [
+          "fault-hiding",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "assert-through-mask",
+          "weak-oracle"
+        ]
+      },
+      "prompt": "Assess a Go test whose >= 0 check sits behind a defer/recover-to-zero and a clamp, so broken parsing/scoring still passes.",
+      "fixture": "ParseAndScore recovers any panic to score=0 and clamps to [0,100]; the test only checks got < 0. Isomorphic Go holdback for the fault-masking insight.",
+      "expected_behavior": [
+        "Identify recover-to-zero and clamp masking.",
+        "Explain the non-negative check can never fire and hides parsing/scoring faults.",
+        "Recommend exact assertions, testing mustParseAndScore directly, or removing the blanket recover."
+      ],
+      "red_flags": [
+        "Praises the recover as 'robust error handling'.",
+        "Suggests only more table cases."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e53-go-fault-masking-detect/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the fault-masking detection generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm recover/clamp named with a propagation-restoring fix."
+        ]
+      },
+      "validity": {
+        "claim": "The fault-masking detection generalizes to Go (recover-to-zero idiom).",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not consulted while authoring the antipattern.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go reviewers commonly flag blanket recover from priors; the without-arm measures that prior.",
+          "iter11 ablation at ceiling: the Go without-arm also caught it from priors ('any implementation that always returns 42 \u2014 or 0 \u2014 would pass; the test cannot distinguish correct behavior from a stub') and even flagged the dead recover() path. Detection generalizes without #14; the section was trimmed to its non-redundant framing core."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
+    },
+    {
+      "id": "E54-hidden-spec-clamp-not-masking",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "fault-masking-detection"
+        ],
+        "risk_classes": [
+          "over-application"
+        ],
+        "failure_modes": [
+          "flag-specified-behavior-as-smell"
+        ]
+      },
+      "prompt": "Assess a test of a setter documented to clamp volume to [0,100]; the clamp is the contract under test, not a fault-mask.",
+      "fixture": "Adversarial restraint probe: set_volume clamps to [0,100] by documented contract and the test asserts the clamp with exact values. Flagging it as fault-masking and recommending removal is the over-application failure.",
+      "expected_behavior": [
+        "Recognize the clamp is the specified behavior under test and the exact-value assertions are correct.",
+        "Do NOT label the documented clamp as fault-masking or recommend removing it."
+      ],
+      "red_flags": [
+        "Calls the spec'd clamp 'asserting through fault-masking code'.",
+        "Recommends removing the clamp / letting input raise."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e54-hidden-spec-clamp-not-masking/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "The clamp is the feature; restraint (no fault-masking label, no removal) is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires engaging the contract without over-applying the antipattern."
+        ]
+      },
+      "validity": {
+        "claim": "The fault-masking antipattern does not cause agents to flag specified saturating/clamping behavior as a smell.",
+        "warrant": "Passing supports the claim because the restraint section explicitly excludes spec'd masks and the oracle rejects the flag+remove combination.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A model might suggest extra boundary cases (harmless); the oracle tolerates that and only fails on flag+remove.",
+          "iter11: restraint held in both arms \u2014 the without-arm also did not flag the spec'd clamp (priors don't over-apply absent the section), so this probe guards the with-section behavior specifically, not a with-vs-without delta."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
     }
   ]
 }

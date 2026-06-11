@@ -1,0 +1,12 @@
+{
+  "eval_id": "E44-python-testability-flush",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "adds a guarded forced-transition seam (flush_now / auto_flush=False) instead of sleeping",
+    "asserts on observable persisted/pending state",
+    "rejects long real sleeps"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "eval_id": "E45-go-testability-reaper",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "adds a forced-transition seam (ReapNow / disabled reaper) instead of sleeping",
+    "asserts on observable pool state",
+    "rejects multi-second real sleeps"
+  ]
+}

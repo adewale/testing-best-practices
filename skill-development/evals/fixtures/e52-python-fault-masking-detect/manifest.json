@@ -1,0 +1,13 @@
+{
+  "eval_id": "E52-python-fault-masking-detect",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "identifies the fault-masking constructs (clamp + blanket except-to-default)",
+    "explains the output-only test passes even if the computation is broken (infection cannot propagate)",
+    "recommends asserting pre-mask/internal state or exact values, or surfacing the error",
+    "rejects a 'looks fine, add more cases' assessment"
+  ]
+}

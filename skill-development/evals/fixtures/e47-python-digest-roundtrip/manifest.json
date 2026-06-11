@@ -1,0 +1,13 @@
+{
+  "eval_id": "E47-python-digest-roundtrip",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "generates rich seeded state covering all value types incl. sets and TTLs",
+    "asserts whole-state canonical identity after save/load",
+    "parameterizes across both formats",
+    "rejects single-key single-field roundtrips"
+  ]
+}

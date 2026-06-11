@@ -14,6 +14,7 @@
 | Testing the mock | Asserted value identical to mock's configured return | P3 |
 | Stale snapshots | Snapshot updates with no code changes | P3 |
 | Logical defense-in-depth | Same invariant checked & tested at 3+ internal layers; "this should never happen" tests | P2 |
+| Asserting through fault-masking code | Output-only assertion behind a `clamp`/`max(min())`/blanket `except`→default/`recover()`→zero; test passes even if the computation is wholly broken | P1 |
 
 ## Anti-Pattern Details
 
@@ -166,3 +167,32 @@ not this antipattern.
 See `references/correctness-by-construction.md` for language-specific
 patterns and the canonical lineage (Hoare → Dijkstra → Meyer →
 Praxis/SPARK → seL4 → Minsky → King → LangSec).
+
+### 14. Asserting through fault-masking code
+
+A specialization of #2 worth naming: when the code under test silently absorbs
+anomalies before they reach the output — `max(0, min(100, score))`, `except
+Exception: return 0`, a Go `recover()`→zero, `value or DEFAULT`, or any
+high-domain/range coercion — even a *specific* assertion on the final output
+can't catch a fault. Voas & Miller's model: a fault must be **Executed**,
+**Infect** the data state, and **Propagate** to output to be caught; a mask
+breaks propagation, so the computation can be wholly broken and the test still
+passes. (In #2 the *assertion* is weak; here the *SUT* destroys the signal.)
+
+**Fix — surface the infection so it can propagate:**
+1. The move other reviews miss: assert on the **pre-mask / internal value**, not
+   the masked output — test the inner function directly, or assert the value
+   *before* it is clamped/defaulted (Voas's "assertions in their place").
+   Asserting the clamped output still can't see an infection that clamps to a
+   valid value.
+2. If a mask hides a genuine defect, surface it (raise/return an error) rather
+   than testing around the silent recovery.
+3. Run mutation testing on masked modules — surviving mutants are exactly the
+   faults the mask hides (see `references/mutation-testing.md`).
+
+**Restraint — when the mask is the specified behavior, don't flag it**: if
+clamping volume to `[0,100]`, graceful degradation, a documented fallback, or
+saturating arithmetic *is the contract*, that is correct code — test the
+specified behavior directly (`set_volume(150) == 100`) and do **not** call it
+fault-masking or recommend removing it. The smell is a mask hiding the
+*unrelated* computation behind it, not a mask that is itself the feature.

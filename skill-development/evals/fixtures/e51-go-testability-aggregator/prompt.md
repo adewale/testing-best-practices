@@ -1,0 +1,3 @@
+# E51 Go metrics-aggregator testability (non-time)
+
+Package `metrics`: `NewAggregator()` with `Record(name string, v float64)`; records are enqueued on a channel and a background goroutine merges them into per-name totals, readable via `Total(name string) float64`. There are NO timers — merging happens as the goroutine drains the queue. The current test Records 1000 values, calls `time.Sleep(100 * time.Millisecond)`, then checks Total; it is flaky under -race on loaded CI. You MAY modify Aggregator. Produce ONE Go file (package metrics) containing (a) a sketch of the modified Aggregator and (b) deterministic tests using the standard `testing` package.

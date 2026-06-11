@@ -51,9 +51,9 @@ Language/framework references:
 
 Topical references by trigger:
 - Legacy/refactor safety → `references/characterization-testing.md`
-- Reimplementation, port, multi-language SDK → `references/differential-testing.md`
-- Complex outputs, snapshots, transformation pipelines → `references/golden-file-testing.md`
-- Time, timers, schedules, sleeps, flaky time tests → `references/deterministic-time.md`
+- Reimplementation, port, multi-language SDK, custom data structure with no reference, or approximate/probabilistic/ANN/ranking output → `references/differential-testing.md`
+- Complex outputs, snapshots, transformation pipelines, save/load or migration roundtrips → `references/golden-file-testing.md`
+- Time, timers, schedules, sleeps, flaky time tests, background threads/async work tests can only reach by sleeping → `references/deterministic-time.md`
 - External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
 - CLI/plugin/docs registry sync → `references/doc-sync-testing.md`
 - High coverage but escaping bugs → `references/mutation-testing.md`
