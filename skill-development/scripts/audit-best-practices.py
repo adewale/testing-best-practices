@@ -66,7 +66,7 @@ def main() -> int:
     section_probes = {
         ("references/differential-testing.md", "build a trivial shadow model"): "E41-hidden-trivial-fn-no-shadow-model",
         ("references/differential-testing.md", "Approximate, probabilistic"): "E40-hidden-exact-output-no-threshold",
-        ("references/design-for-testability.md", "Guardrails"): "E46-hidden-testability-no-bypass",
+        ("references/deterministic-time.md", "guardrails are non-negotiable"): "E46-hidden-testability-no-bypass",
         ("references/golden-file-testing.md", "Whole-state roundtrip digests"): "E49-hidden-digest-canonicalization",
     }
     by_id = {e["id"]: e for e in evals}

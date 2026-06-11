@@ -3460,12 +3460,13 @@
           ]
         },
         "rebuttals": [
-          "Strong priors may produce the seam without any guidance; the ablation arm measures exactly that, and a both-pass outcome triggers the pre-registered fold decision."
+          "Strong priors may produce the seam without any guidance; the ablation arm measures exactly that, and a both-pass outcome triggers the pre-registered fold decision.",
+          "iter10 isolation: both arms passed even with the time seam removed (without-arm built Event/WaitGroup synchronization seams from priors alone); per the pre-registered rule the standalone reference was folded into deterministic-time.md, keeping only the validated guardrails."
         ]
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-11"
       }
@@ -3522,12 +3523,13 @@
           ]
         },
         "rebuttals": [
-          "Go's sync idioms make drain methods common; priors may suffice \u2014 measured by the without-arm."
+          "Go's sync idioms make drain methods common; priors may suffice \u2014 measured by the without-arm.",
+          "iter10 isolation: both arms passed even with the time seam removed (without-arm built Event/WaitGroup synchronization seams from priors alone); per the pre-registered rule the standalone reference was folded into deterministic-time.md, keeping only the validated guardrails."
         ]
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-11"
       }

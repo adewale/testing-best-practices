@@ -207,6 +207,14 @@ win against an empty baseline would have been claimable but meaningless. Test
 new sections against the strongest adjacent guidance, and when the baseline
 absorbs the contribution, say "unproven marginal value," not "validated".
 
+### Pre-register the decision rule, and unproven sections become cheap to remove
+
+design-for-testability.md survived iteration 9 as "shipped but unproven." Iteration 10 committed a decision rule *before* any runs: discriminate on non-time fixtures (where the strong baseline is irrelevant) → keep; both arms pass → fold into deterministic-time.md. Both arms passed — the without-arms built genuine Event/WaitGroup seams from priors alone — and the fold executed without debate, keeping only the guardrails the E46 probe had validated. Without the pre-registered rule, the temptation is to keep re-testing until some fixture flatters the section; with it, deletion is just the rule firing. Sections should be cheap to remove, and the way to make them cheap is to decide the removal criterion before the evidence arrives.
+
+### Oracles must grade code, not prose about code
+
+Iteration 10's first grading pass failed three of four runs for "real sleep still present" — every flagged sleep was in a comment or docstring *describing the old flaky test*. Agents narrate their fixes; an oracle that greps raw text will punish exactly the outputs that explain themselves best. Strip comments and docstrings before pattern checks. (Oracle bug #5; all five across three iterations were false negatives on good work.)
+
 ### Ship-but-flag is an honest state for an unproven section
 
 The statistical-oracle section is plausibly useful and passes every gate, but
@@ -239,6 +247,7 @@ The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~
 | 7 | 35 eval definitions + 12 fixture oracles; +2 shared-benchmark tune cases | Python, TS, Go, Rust | paired A/B: error-path principle D 2→3 after scope clause; concurrency oracle discriminates baseline (FAIL) vs full-SKILL.md (PASS); gates 100/100 | Dan Luu research; error-path + concurrency-contract principles; E33/E34/E35; prompt-eval runner with pluggable sub-agent/judge backends |
 | 8 | 41 eval definitions + 18 fixture oracles | + shadow-model, statistical-oracle, restraint probes | shadow-model discriminates + generalizes; statistical-oracle at ceiling (cue leak); over-application found+fixed; audit 110/110 | antirez insights: shadow-oracle + statistical-oracle sections, new-section adversarial-probe gate |
 | 9 | 49 eval definitions + 26 fixture oracles | + cue-free statistical, testability, digest roundtrip | statistical-oracle validated cue-free (Python discriminates, Go weak); digest validated in Go holdback; testability at ceiling vs deterministic-time baseline; both restraint probes hold; 4 oracle false negatives found by reading artifacts | design-for-testability reference + whole-state digest section; cue-free fixture discipline; strongest-adjacent-baseline ablation |
+| 10 | 51 eval definitions + 28 fixture oracles | + non-time testability isolation (E50 py dev, E51 go holdback) | both arms PASS both fixtures (priors build Event/WaitGroup seams); pre-registered rule fired: design-for-testability folded into deterministic-time.md, guardrails kept (E46-validated); oracle bug #5 (comment sleeps) fixed | fold decision; ≈ −700 on-demand tokens; comment-stripping oracles |
 
 The biggest quality jump was iteration 1→2 (+4%, fixed assertion density). The biggest coverage jump was iteration 2→3 (3→7 evals, 2→4 languages). Iteration 5's signal was the +18.75pp aggregate from §10 v2 — only visible because we built new fixtures that weren't already at ceiling.
 

@@ -19,12 +19,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - **`audit-best-practices.py` gate**: every new technique section must ship with a registered hidden adversarial probe (audit now 110/110).
 
 ### Added (iteration 9)
-- **`references/design-for-testability.md`** — forced-transition seams, read-only state introspection, poll-as-last-resort, and guardrails forbidding security-weakening seams (from antirez's Redis `DEBUG` surface). Wired into the SKILL.md reference matrix.
+- **Seam guardrails in `references/deterministic-time.md`** — "When the seam isn't time: forced transitions, and guardrails": force background transitions or await completion signals instead of sleeping, keep introspection read-only, and never bypass security/business rules with test modes (from antirez's Redis `DEBUG` surface). Originally shipped as a standalone `design-for-testability.md`; folded after iteration-10's non-time isolation showed both ablation arms produce genuine seams from priors alone — only the guardrails (validated by the E46 restraint probe) are unique content.
 - **Whole-state roundtrip digest section** in `references/golden-file-testing.md` — seeded rich state, canonicalize-then-compare, save→load identity parameterized across formats (from antirez's `DEBUG RELOAD` + dataset digest). Golden-file trigger now covers save/load and migration roundtrips.
 - **8 more eval fixtures** (E42–E49): cue-free statistical pair (prompts name only the metric, never the technique), testability dev/holdback plus a no-security-bypass restraint probe, digest dev/holdback plus a canonicalization restraint probe. Audit gate maps both new sections to their hidden adversarial probes.
 
 ### Changed
 - **Strengthened the Differential Testing "When NOT to use it" guidance** after an adversarial probe (E41) showed the section could induce a redundant reference reimplementation for a trivial pure function.
+
+### Eval Results (iteration 10, non-time isolation; sonnet, n=1 per cell)
+- **Fold decision executed per a pre-registered rule.** E50 (Python volume-triggered compactor) and E51 (Go channel-fed aggregator) removed the time seam entirely; both arms passed both fixtures (without-arms built Event/WaitGroup synchronization seams from priors). `design-for-testability.md` deleted; guardrails folded into `deterministic-time.md` (net ≈ −700 on-demand tokens); audit gate's probe mapping follows the guardrails to their new home.
+- Oracle calibration bug #5: sleeps in comments/docstrings describing the old flaky test false-negatived 3 of 4 runs; oracles now strip comments first. All 28 self-tests green.
 
 ### Eval Results (iteration 9, cue-free ablation; sonnet, n=1 per cell)
 - **Statistical-oracle section validated**, resolving iteration 7's open question: cue-free E42 discriminates cleanly (with: brute-force reference + recall ≥ 0.80 with headroom + exact-on-overlap; without: gap-gated exact set equality — the warned-against failure mode). E43 (Go holdback) discriminates weakly; its without-arm's tie-only tolerance is a defensible reading of underspecified prompt wording.

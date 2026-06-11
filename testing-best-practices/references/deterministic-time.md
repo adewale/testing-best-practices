@@ -192,6 +192,33 @@ This is the gold standard but takes a decade-long architectural commitment.
 For most projects: virtualization for existing code, injection at the few
 new architectural boundaries that need independent clocks.
 
+## When the seam isn't time: forced transitions, and guardrails
+
+Background work that no clock drives — flush threads woken by write volume,
+channel-fed merge goroutines, eviction sweeps — needs the same treatment as
+time: a seam in the system under test, never a sleep. Either force the
+transition synchronously (`auto_flush=False` + a `flush_now()` that runs the
+*same code* the worker runs) or expose a completion signal tests can await
+deterministically (an `Event` set after each pass, a `Flush()` that blocks on
+a `WaitGroup`). Expose read-only introspection (`pending_count()`) so tests
+assert state instead of inferring it from timing.
+
+Whatever the seam, these guardrails are non-negotiable:
+
+- **Never bypass security or business rules.** A "test mode" that disables
+  auth, rate limiting, or validation — especially via an environment variable
+  a production deploy can set — is a vulnerability, not a seam. Make the
+  clock or scheduler injectable instead, so the rule stays intact and the
+  test controls what the rule observes.
+- **Seams control scheduling and observation, not outcomes.** `flush_now()`
+  forces *when* work happens; it must not change *what* the work does, and a
+  separate test-only code path tests nothing.
+- **Gate the surface.** Constructor parameters with safe production defaults,
+  test-only build tags, or a namespaced debug surface that hardened builds
+  disable.
+- **Keep introspection read-only**, as a public documented contract — not
+  `obj._internal` reaches that couple tests to implementation details.
+
 ## Anti-patterns
 
 | Anti-pattern | Fix |
