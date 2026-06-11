@@ -3533,6 +3533,198 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-11"
       }
+    },
+    {
+      "id": "E52-python-fault-masking-detect",
+      "critical": true,
+      "mode": "assess",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "mutation",
+          "fault-masking-detection"
+        ],
+        "risk_classes": [
+          "fault-hiding",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "assert-through-mask",
+          "weak-oracle"
+        ]
+      },
+      "prompt": "Assess a Python test whose output-only assertion sits behind a clamp and a blanket except-to-default, so a broken computation still passes.",
+      "fixture": "compute_score clamps to [0,100] and swallows exceptions to 0; the test only asserts the result is in range. Voas fault-masking: the fault executes but cannot propagate to the asserted output.",
+      "expected_behavior": [
+        "Identify the fault-masking constructs (clamp + blanket except-to-default).",
+        "Explain the in-range assertion passes even if heavy_calc is wholly broken (infection cannot propagate).",
+        "Recommend asserting exact/pre-mask state, testing heavy_calc directly, surfacing the error, or mutation testing."
+      ],
+      "red_flags": [
+        "Calls the test good / suggests only more cases or a docstring.",
+        "Misses that the clamp makes the range assertion vacuous."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e52-python-fault-masking-detect/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A correct assessment shows the suite is green regardless of computation correctness; the oracle checks mask+weakness+fix are all named."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm the assessment names the mask, the false confidence, and a propagation-restoring fix."
+        ]
+      },
+      "validity": {
+        "claim": "The fault-masking antipattern makes agents recognize that a passing test behind clamp/swallow code is weak evidence and recommend surfacing the infection.",
+        "warrant": "Passing supports the claim because the oracle requires identifying the mask, the broken-still-passes consequence, and a pre-mask/exact/surface fix together.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A strong model may flag the blanket except from general code-review priors; the without-arm measures that.",
+          "Prose oracle checks concept presence, not assessment quality."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
+    },
+    {
+      "id": "E53-go-fault-masking-detect",
+      "critical": false,
+      "mode": "assess",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "mutation",
+          "fault-masking-detection"
+        ],
+        "risk_classes": [
+          "fault-hiding",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "assert-through-mask",
+          "weak-oracle"
+        ]
+      },
+      "prompt": "Assess a Go test whose >= 0 check sits behind a defer/recover-to-zero and a clamp, so broken parsing/scoring still passes.",
+      "fixture": "ParseAndScore recovers any panic to score=0 and clamps to [0,100]; the test only checks got < 0. Isomorphic Go holdback for the fault-masking insight.",
+      "expected_behavior": [
+        "Identify recover-to-zero and clamp masking.",
+        "Explain the non-negative check can never fire and hides parsing/scoring faults.",
+        "Recommend exact assertions, testing mustParseAndScore directly, or removing the blanket recover."
+      ],
+      "red_flags": [
+        "Praises the recover as 'robust error handling'.",
+        "Suggests only more table cases."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e53-go-fault-masking-detect/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language: confirms the fault-masking detection generalizes from the Python dev fixture."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm recover/clamp named with a propagation-restoring fix."
+        ]
+      },
+      "validity": {
+        "claim": "The fault-masking detection generalizes to Go (recover-to-zero idiom).",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not consulted while authoring the antipattern.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go reviewers commonly flag blanket recover from priors; the without-arm measures that prior."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
+    },
+    {
+      "id": "E54-hidden-spec-clamp-not-masking",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "fault-masking-detection"
+        ],
+        "risk_classes": [
+          "over-application"
+        ],
+        "failure_modes": [
+          "flag-specified-behavior-as-smell"
+        ]
+      },
+      "prompt": "Assess a test of a setter documented to clamp volume to [0,100]; the clamp is the contract under test, not a fault-mask.",
+      "fixture": "Adversarial restraint probe: set_volume clamps to [0,100] by documented contract and the test asserts the clamp with exact values. Flagging it as fault-masking and recommending removal is the over-application failure.",
+      "expected_behavior": [
+        "Recognize the clamp is the specified behavior under test and the exact-value assertions are correct.",
+        "Do NOT label the documented clamp as fault-masking or recommend removing it."
+      ],
+      "red_flags": [
+        "Calls the spec'd clamp 'asserting through fault-masking code'.",
+        "Recommends removing the clamp / letting input raise."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e54-hidden-spec-clamp-not-masking/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "The clamp is the feature; restraint (no fault-masking label, no removal) is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires engaging the contract without over-applying the antipattern."
+        ]
+      },
+      "validity": {
+        "claim": "The fault-masking antipattern does not cause agents to flag specified saturating/clamping behavior as a smell.",
+        "warrant": "Passing supports the claim because the restraint section explicitly excludes spec'd masks and the oracle rejects the flag+remove combination.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A model might suggest extra boundary cases (harmless); the oracle tolerates that and only fails on flag+remove."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
     }
   ]
 }

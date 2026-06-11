@@ -1,0 +1,13 @@
+{
+  "eval_id": "E53-go-fault-masking-detect",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "identifies recover-to-zero and clamp masking",
+    "explains the >= 0 assertion passes even if parsing/scoring is broken",
+    "recommends exact assertions / testing the inner function / removing the blanket recover",
+    "rejects a shallow 'fine, add cases' assessment"
+  ]
+}

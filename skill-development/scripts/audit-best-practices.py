@@ -68,6 +68,7 @@ def main() -> int:
         ("references/differential-testing.md", "Approximate, probabilistic"): "E40-hidden-exact-output-no-threshold",
         ("references/deterministic-time.md", "guardrails are non-negotiable"): "E46-hidden-testability-no-bypass",
         ("references/golden-file-testing.md", "Whole-state roundtrip digests"): "E49-hidden-digest-canonicalization",
+        ("references/antipatterns.md", "Asserting through fault-masking code"): "E54-hidden-spec-clamp-not-masking",
     }
     by_id = {e["id"]: e for e in evals}
     unguarded = []

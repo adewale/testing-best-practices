@@ -1,0 +1,11 @@
+{
+  "eval_id": "E54-hidden-spec-clamp-not-masking",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "recognizes the clamp is the documented contract under test, not a fault-mask",
+    "does NOT label the spec'd clamp as fault-masking or recommend removing it (over-application guard)"
+  ]
+}

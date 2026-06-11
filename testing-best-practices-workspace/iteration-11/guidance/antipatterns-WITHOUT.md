@@ -14,7 +14,6 @@
 | Testing the mock | Asserted value identical to mock's configured return | P3 |
 | Stale snapshots | Snapshot updates with no code changes | P3 |
 | Logical defense-in-depth | Same invariant checked & tested at 3+ internal layers; "this should never happen" tests | P2 |
-| Asserting through fault-masking code | Output-only assertion behind a `clamp`/`max(min())`/blanket `except`→default/`recover()`→zero; test passes even if the computation is wholly broken | P1 |
 
 ## Anti-Pattern Details
 
@@ -167,48 +166,3 @@ not this antipattern.
 See `references/correctness-by-construction.md` for language-specific
 patterns and the canonical lineage (Hoare → Dijkstra → Meyer →
 Praxis/SPARK → seL4 → Minsky → King → LangSec).
-
-### 14. Asserting through fault-masking code
-
-**What**: The code under test silently absorbs anomalies before they reach the
-output you assert on, so a passing test is weak evidence. A fault can be
-*executed* without ever *infecting* the observable output — Voas & Miller's
-testability model (a fault must be Executed, Infect the data state, and
-Propagate to output to be caught). Output-only assertions behind a mask can't
-see the infection.
-
-Common masks (the computation can be entirely broken and the test still passes):
-- **Clamping**: `return max(0, min(100, score))` — assert "result in 0..100" and
-  a broken `score` still passes.
-- **Swallow-to-default**: `try: return calc(x)` / `except Exception: return 0` —
-  assert "result >= 0" and every exception is invisible.
-- **Recover-to-zero** (Go): `defer func(){ recover() }()` then return the zero
-  value; **coercion**: `int(maybe_nan)`, `value or DEFAULT`, rounding/saturation.
-- **High domain/range ratio**: many-to-one operations (`x % small`, bucketing,
-  hashing-then-comparing-buckets) destroy the information a fault would carry.
-
-**Why it's not the same as #2 (weak assertion)**: there the *assertion* is weak;
-here the *system under test* destroys the signal, so even a specific assertion on
-the final output can't catch the fault. It's the testability-side dual of #11
-(missing sad path) and the error-path principle: those say *exercise* the failure;
-this says *don't assert through code that hides it*.
-
-**Fix** (tester's move — surface the infection so it can propagate):
-1. Assert on the **pre-mask / internal value**, not the masked output: test
-   `calc(x)` directly, or add an assertion on the value before it is clamped /
-   defaulted (Voas's "assertions in their place" — observe the infected state
-   where it occurs).
-2. Choose oracles a broken computation **would** change: exact expected values,
-   not range/non-empty/sign checks, for the path behind the mask.
-3. If the mask hides a genuine defect, surface it — let the anomaly fail loudly
-   (raise/return an error) rather than testing around the silent recovery.
-4. Run mutation testing on masked modules: surviving mutants are exactly the
-   faults the mask hides (see `references/mutation-testing.md`).
-
-**Restraint — when the mask is the specified behavior, don't flag it**: if
-clamping volume to `[0,100]`, graceful degradation, a documented fallback, or
-saturating arithmetic *is the contract*, that is correct code — test the
-specified behavior directly (`set_volume(150) == 100`, the fallback path is
-taken on dependency failure) and do **not** call it fault-masking or recommend
-removing it. The smell is a mask that hides the *unrelated* computation behind
-it from its own tests, not a mask that is itself the feature under test.
