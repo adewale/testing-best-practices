@@ -12,8 +12,9 @@ def main() -> int:
     errors = []
     if not re.search(r"clamp|max\(|min\(|except|swallow|mask|default", low):
         errors.append("does not identify the fault-masking constructs")
-    if not re.search(r"still pass|passes (even|regardless)|can.?t catch|cannot catch|won.?t catch|hides? (the )?fault|"
-                     r"(not |never )?propagat|broken.{0,40}(pass|undetect)|weak evidence|even if .* broken|infect", low):
+    if not re.search(r"(still|would|will) pass|passes (even|regardless)|can.?t catch|cannot catch|won.?t catch|hides? (the )?fault|"
+                     r"(not |never )?propagat|broken.{0,40}(pass|undetect)|weak evidence|even if .* (broken|crash)|infect|"
+                     r"tautolog|structurally (enforce|guarant)|cannot distinguish|always (return|satisf)|illusion", low):
         errors.append("does not explain the test passes even when the computation is broken")
     if not re.search(r"assert.{0,40}(specific|exact|expected|internal|pre.?clamp|before)|test.{0,20}(directly|heavy_calc|calc\()|"
                      r"let it (raise|fail|propagate)|remove the.{0,20}except|surface|mutation", low):

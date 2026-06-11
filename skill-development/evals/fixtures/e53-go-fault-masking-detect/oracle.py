@@ -12,8 +12,9 @@ def main() -> int:
     errors = []
     if not re.search(r"recover|clamp|mask|swallow|zero value|defer|>\s*100|<\s*0", low):
         errors.append("does not identify the recover-to-zero / clamp masking")
-    if not re.search(r"still pass|passes (even|regardless)|can.?t catch|cannot catch|won.?t catch|hides? (the )?fault|"
-                     r"(not |never )?propagat|broken.{0,40}(pass|undetect)|weak|even if .* broken|infect|panic.{0,20}(hidden|swallow|mask)", low):
+    if not re.search(r"(still|would|will) pass|passes (even|regardless)|can.?t catch|cannot catch|won.?t catch|hides? (the )?fault|"
+                     r"(not |never )?propagat|broken.{0,40}(pass|undetect)|weak|even if .* (broken|crash)|infect|panic.{0,20}(hidden|swallow|mask)|"
+                     r"tautolog|cannot distinguish|always (return|satisf)|stub", low):
         errors.append("does not explain the assertion passes even when scoring is broken")
     if not re.search(r"assert.{0,40}(specific|exact|expected|internal)|test.{0,20}(directly|mustparse|inner)|"
                      r"remove the.{0,20}recover|let it (panic|fail|propagate)|exact|mutation", low):

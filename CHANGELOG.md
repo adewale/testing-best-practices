@@ -26,6 +26,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 ### Changed
 - **Strengthened the Differential Testing "When NOT to use it" guidance** after an adversarial probe (E41) showed the section could induce a redundant reference reimplementation for a trivial pure function.
 
+### Added (iteration 11)
+- **Antipattern #14 "Asserting through fault-masking code"** in `references/antipatterns.md` (from Voas & Miller's PIE/fault-hiding theory, via the design-for-testability literature review) — output-only assertions behind a clamp / swallow-to-default / recover-to-zero / high domain-to-range coercion can't catch faults, because the mask blocks propagation; fix is to assert the pre-mask/internal value. Ships with a restraint clause excluding spec'd clamps/graceful degradation.
+- **PIE "Why it works" paragraph** in `references/mutation-testing.md` — grounds mutation testing in execution/infection/propagation; surviving mutants in masking code mark where the code hides faults from any output-only test.
+- **Evals E52 (Python assess dev), E53 (Go assess holdback), E54 (hidden adversarial: a documented clamp must not be flagged as fault-masking)**; audit gate maps the new antipattern to E54.
+
+### Eval Results (iteration 11, assess-mode ablation; sonnet, n=1 per cell)
+- **Fault-masking detection is at ceiling**: with and without antipattern #14, both the Python and Go arms caught the masking from priors via the existing not-empty/tautological-assertion knowledge ("this test would pass even if compute_score crashed silently... the clamp structurally enforces the only invariant"). The restraint guard held in both arms (neither flagged the documented clamp).
+- **Decision (consistent with the iter-10 fold)**: trimmed #14 ~50% to its non-redundant residue — the PIE framing, the assert-pre-mask-state fix (the one move the without-arm missed), and the restraint clause — and kept the cleanly-additive mutation-testing PIE paragraph. E52/E53 marked `saturated_public`.
+- Oracle calibration bug #6 (false negative): the E52-without oracle wanted "passes even" but the prose said "would pass even if"; fixed by accepting the concept's phrasings. Six of six oracle bugs across four iterations have been false negatives on good work.
+
 ### Eval Results (iteration 10, non-time isolation; sonnet, n=1 per cell)
 - **Fold decision executed per a pre-registered rule.** E50 (Python volume-triggered compactor) and E51 (Go channel-fed aggregator) removed the time seam entirely; both arms passed both fixtures (without-arms built Event/WaitGroup synchronization seams from priors). `design-for-testability.md` deleted; guardrails folded into `deterministic-time.md` (net ≈ −700 on-demand tokens); audit gate's probe mapping follows the guardrails to their new home.
 - Oracle calibration bug #5: sleeps in comments/docstrings describing the old flaky test false-negatived 3 of 4 runs; oracles now strip comments first. All 28 self-tests green.

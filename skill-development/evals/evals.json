@@ -3590,12 +3590,13 @@
         },
         "rebuttals": [
           "A strong model may flag the blanket except from general code-review priors; the without-arm measures that.",
-          "Prose oracle checks concept presence, not assessment quality."
+          "Prose oracle checks concept presence, not assessment quality.",
+          "iter11 ablation at ceiling: the without-arm (antipatterns minus #14) caught the fault-masking from priors via the existing not-empty/tautological-assertion knowledge ('this test would pass even if compute_score crashed silently... the clamp structurally enforces the only invariant'). #14's detection is redundant with #2; the additive residue is the explicit PIE framing + the assert-pre-mask-state fix, which the with-arm produced but is unproven at n=1."
         ]
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-11"
       }
@@ -3655,12 +3656,13 @@
           ]
         },
         "rebuttals": [
-          "Go reviewers commonly flag blanket recover from priors; the without-arm measures that prior."
+          "Go reviewers commonly flag blanket recover from priors; the without-arm measures that prior.",
+          "iter11 ablation at ceiling: the Go without-arm also caught it from priors ('any implementation that always returns 42 \u2014 or 0 \u2014 would pass; the test cannot distinguish correct behavior from a stub') and even flagged the dead recover() path. Detection generalizes without #14; the section was trimmed to its non-redundant framing core."
         ]
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-11"
       }
@@ -3716,7 +3718,8 @@
           ]
         },
         "rebuttals": [
-          "A model might suggest extra boundary cases (harmless); the oracle tolerates that and only fails on flag+remove."
+          "A model might suggest extra boundary cases (harmless); the oracle tolerates that and only fails on flag+remove.",
+          "iter11: restraint held in both arms \u2014 the without-arm also did not flag the spec'd clamp (priors don't over-apply absent the section), so this probe guards the with-section behavior specifically, not a with-vs-without delta."
         ]
       },
       "eval_health": {
