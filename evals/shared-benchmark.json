@@ -4,7 +4,7 @@
   "harness": {
     "name": "skill-eval-harness",
     "url": "https://github.com/adewale/skill-eval-harness",
-    "version": ">=0.2.0"
+    "version": ">=0.3.0"
   },
   "skill_paths": [
     "testing-best-practices/SKILL.md"
@@ -911,18 +911,17 @@
           ]
         },
         {
-          "name": "coverage-not-enough",
-          "type": "contains_any",
-          "values": [
-            "coverage is not proof",
-            "coverage",
-            "false confidence",
-            "quality beats coverage",
-            "observable behavior",
-            "not truthiness",
-            "quality"
+          "name": "fixture-script-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/fixture_oracle.py",
+            "{output_dir}",
+            "round3-fixture-url-parser-tests"
           ],
-          "description": "Must prioritize behavior/test quality over shallow coverage/truthiness signals."
+          "pass_exit_code": 0,
+          "timeout_s": 10,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
         },
         {
           "name": "round-3-qualitative-review",
