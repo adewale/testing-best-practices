@@ -139,6 +139,7 @@ Built from analysis of testing patterns across 15 GitHub accounts and one organi
 - [antirez](https://github.com/antirez) (Redis creator) -- differential fuzzing vs. a reference oracle, digest roundtrips, `DEBUG` as a testability surface, recall testing for approximate algorithms, agent-as-QA
 - [janestreet](https://github.com/janestreet) -- expect tests, library-level simulation, `Time_source`, Bonsai testing
 - [danluu](https://github.com/danluu) -- random/coverage-guided generation thesis, "world's dumbest fuzzer" (Fuzz.jl: seed/try-catch-log/denylist harness mechanics), differential testing (csv), fault injection (fs-errors), solver-backed generation (kodkod-clj, secvisor-formal-verification)
+- [WardCunningham](https://github.com/WardCunningham) (wiki/Fit/CRC inventor) -- Fit customer-readable example tables, CHECKS validation patterns, domain DSLs in test suites (wiki-client), characterization harnesses (sudokuku), test-investment-tracks-lifetime, "preserve and protect [the test suite] as if it were code" (EPISODES)
 
 Individual research documents are in `research/` (one per practitioner/account).
 
@@ -182,6 +183,7 @@ research/                           # Source material (does not ship)
   LESSONS_FROM_ANTIREZ.md
   LESSONS_FROM_JANE_STREET.md
   LESSONS_FROM_DANLUU.md
+  LESSONS_FROM_WARDCUNNINGHAM.md
   ANTIPATTERNS.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
