@@ -3407,6 +3407,130 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-10"
       }
+    },
+    {
+      "id": "E50-python-testability-compactor",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "design-for-testability"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A LogStore compacts segments via a background worker woken by write volume (no timers); the test sleeps 0.5s. Modify the store to make it testable and write deterministic tests.",
+      "fixture": "Non-time isolation fixture: compaction is condition-variable/volume-triggered, so clock injection cannot solve it; isolates design-for-testability's forced-transition teaching from deterministic-time.md.",
+      "expected_behavior": [
+        "Add a forced-transition seam (start_worker=False + compact_now()) running the same code as the worker.",
+        "Assert on observable pending/segment state and persisted contents; no real sleeps."
+      ],
+      "red_flags": [
+        "Keeps or shortens the sleep.",
+        "Reaches for clock injection, which cannot force volume-triggered work."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e50-python-testability-compactor/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A fake clock cannot trigger volume-driven compaction; only a seam makes the test deterministic."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm a forced-transition seam, not sleep/poll."
+        ]
+      },
+      "validity": {
+        "claim": "design-for-testability's forced-transition teaching adds value beyond deterministic-time.md on background work that no clock controls.",
+        "warrant": "Passing supports the claim because the fixture removes the time seam entirely; the without-arm has only deterministic-time.md plus priors.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Strong priors may produce the seam without any guidance; the ablation arm measures exactly that, and a both-pass outcome triggers the pre-registered fold decision."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
+    },
+    {
+      "id": "E51-go-testability-aggregator",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "design-for-testability"
+        ],
+        "risk_classes": [
+          "flaky-async-tests"
+        ],
+        "failure_modes": [
+          "wall-clock-sleep",
+          "no-seam"
+        ]
+      },
+      "prompt": "A metrics Aggregator merges channel-fed records via a background goroutine (no timers); the test sleeps 100ms. Modify it to make it testable and write deterministic tests.",
+      "fixture": "Non-time Go holdback isomorphic to E50; channel-drain work that clock injection cannot force.",
+      "expected_behavior": [
+        "Add a forced-drain seam (StartWorker:false + Drain()) running the same merge code as the goroutine.",
+        "Assert totals and pending counts deterministically; no time.Sleep."
+      ],
+      "red_flags": [
+        "time.Sleep remains.",
+        "Clock/ticker injection that cannot drain a channel-fed queue."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e51-go-testability-aggregator/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Held-back language for the non-time isolation; same decision rule as E50."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; confirm forced-drain seam in Go idiom."
+        ]
+      },
+      "validity": {
+        "claim": "The non-time forced-transition behavior generalizes to Go beyond deterministic-time.md.",
+        "warrant": "Passing supports the claim because this isomorphic holdback was not consulted while authoring the reference and has no time seam.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Go's sync idioms make drain methods common; priors may suffice \u2014 measured by the without-arm."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-06-11"
+      }
     }
   ]
 }

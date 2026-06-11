@@ -1,0 +1,12 @@
+{
+  "eval_id": "E50-python-testability-compactor",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "adds a forced-transition seam for volume-triggered (NOT time-triggered) background work",
+    "asserts on observable pending/segment state",
+    "rejects real sleeps; a fake clock cannot solve this fixture"
+  ]
+}

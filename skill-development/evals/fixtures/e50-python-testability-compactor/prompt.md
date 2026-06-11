@@ -1,0 +1,3 @@
+# E50 Python log-compactor testability (non-time)
+
+`LogStore(path)` appends records via `append(record)`. Records accumulate in an in-memory segment; when a segment reaches 64 records, a background worker thread (woken by a condition variable) compacts closed segments into the main log file. There are NO timers — compaction is triggered purely by write volume. The current test appends 200 records, calls `time.sleep(0.5)`, then reads the file; it is flaky on slow CI. You MAY modify LogStore. Produce ONE Python file containing (a) a sketch of the modified LogStore and (b) deterministic pytest tests.
