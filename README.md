@@ -173,6 +173,7 @@ research/                           # Source material (does not ship)
   ANTIPATTERNS.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
+  DESIGN_FOR_TESTABILITY_LITERATURE.md
 
 evals/                              # Test cases for the skill itself
   evals.json                        # 10 eval cases across 4 languages
