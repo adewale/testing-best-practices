@@ -73,7 +73,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "pos-api-contract-vcr",
@@ -112,7 +117,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "pos-cli-doc-sync",
@@ -151,7 +161,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "pos-mutation-escaping-bug",
@@ -190,7 +205,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "pos-finite-enum-exhaustive",
@@ -229,7 +249,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "pos-mock-reality-drift",
@@ -268,7 +293,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "pos-golden-transform",
@@ -307,7 +337,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "pos-parser-property",
@@ -347,7 +382,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "neg-no-pbt-finite",
@@ -376,7 +416,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "neg-no-mock-module-under-test",
@@ -404,7 +449,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "neg-do-not-delete-boundary-security",
@@ -433,7 +483,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "neg-no-mutation-tiny",
@@ -461,7 +516,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "neg-no-red-claim",
@@ -536,6 +596,11 @@
         "validation-honesty",
         "over-application",
         "smoke-hardening"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
       ]
     },
     {
@@ -565,7 +630,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "neg-no-assertion-count-blind",
@@ -594,7 +664,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "trig-write-tests",
@@ -614,7 +689,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "implicit"
     },
     {
       "id": "trig-flaky",
@@ -634,7 +715,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "implicit"
     },
     {
       "id": "trig-mocks",
@@ -654,7 +741,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "implicit"
     },
     {
       "id": "trig-invariants",
@@ -674,7 +767,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "implicit"
     },
     {
       "id": "trig-ab-copy",
@@ -694,7 +793,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "negative-near-miss"
     },
     {
       "id": "trig-cricket",
@@ -714,7 +819,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "negative-near-miss"
     },
     {
       "id": "trig-product-idea",
@@ -734,7 +845,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "negative-near-miss"
     },
     {
       "id": "trig-qa-plan",
@@ -754,7 +871,13 @@
       ],
       "tags": [
         "trigger"
-      ]
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "trigger"
+      ],
+      "trigger_type": "negative-near-miss"
     },
     {
       "id": "holdout-unseen-python-parser-01",
@@ -775,7 +898,12 @@
           ]
         }
       ],
-      "tags": []
+      "tags": [],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     },
     {
       "id": "holdback-real-weak-test-go-01",
@@ -798,6 +926,11 @@
       ],
       "tags": [
         "holdback-private"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
       ]
     },
     {
@@ -864,6 +997,11 @@
         "round-2",
         "anthropic-gap",
         "property-testing"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
       ]
     },
     {
@@ -937,6 +1075,11 @@
         "round-3",
         "fixture-backed",
         "audit-manifest"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
       ]
     },
     {
@@ -986,6 +1129,11 @@
       "tags": [
         "fault-injection",
         "error-paths"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
       ]
     },
     {
@@ -1031,6 +1179,11 @@
       "tags": [
         "concurrency",
         "contract-pinning"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
       ]
     }
   ],
