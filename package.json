@@ -1,0 +1,35 @@
+{
+  "name": "testing-best-practices",
+  "version": "0.3.1",
+  "private": true,
+  "license": "MIT",
+  "description": "Agent Skill for TDD, property-based testing, assertion quality, and test-quality review.",
+  "keywords": [
+    "agent-skills",
+    "codex",
+    "opencode",
+    "pi",
+    "gemini",
+    "claude-code"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adewale/testing-best-practices.git"
+  },
+  "homepage": "https://github.com/adewale/testing-best-practices#readme",
+  "skill": {
+    "entry": "testing-best-practices/SKILL.md",
+    "harnesses": [
+      "codex",
+      "opencode",
+      "pi",
+      "gemini",
+      "claude-code"
+    ]
+  },
+  "pi": {
+    "skills": [
+      "./testing-best-practices"
+    ]
+  }
+}

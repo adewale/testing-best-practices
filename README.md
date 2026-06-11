@@ -24,6 +24,18 @@ npx skills add adewale/testing-best-practices
 
 Skills appear on skills.sh automatically after users install the repo with the skills CLI. Install counts and leaderboard rankings come from anonymous CLI telemetry; opt out with `DISABLE_TELEMETRY=1`. The repo page customization in `skills.sh.json` is picked up after the repository is seen by telemetry and the cache refreshes.
 
+## Agent compatibility
+
+The installable skill directory is `testing-best-practices`. It uses the Agent Skills `SKILL.md` format and is configured for Codex, OpenCode, Pi, Gemini CLI, and Claude Code.
+
+| Agent/client | Install or use |
+|---|---|
+| Codex | `cp -R testing-best-practices ~/.codex/skills/testing-best-practices` |
+| OpenCode | `cp -R testing-best-practices ~/.config/opencode/skills/testing-best-practices` or use `.opencode/skills/testing-best-practices` in a project |
+| Pi | `pi install https://github.com/adewale/testing-best-practices` or `pi --skill testing-best-practices` |
+| Gemini CLI | `gemini skills install https://github.com/adewale/testing-best-practices --path testing-best-practices` or copy to `.gemini/skills/testing-best-practices` |
+| Claude Code | `npx skills add adewale/testing-best-practices` or copy to `.claude/skills/testing-best-practices` |
+
 ## How it works
 
 The skill operates in four modes:

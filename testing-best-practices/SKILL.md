@@ -9,10 +9,10 @@ description: >
   fixing flaky tests, improving coverage quality, or when the user mentions
   TDD, testing, coverage, mocks, invariants, types vs tests, defense in depth,
   or test quality.
-compatibility: Works with any language. Language-specific guidance in references/.
+compatibility: Agent Skills clients including Codex, OpenCode, Pi, Gemini CLI, and Claude Code.
 metadata:
   author: adewale
-  version: "0.2"
+  version: "0.3.1"
 ---
 
 # Testing Best Practices
