@@ -32,8 +32,9 @@ Before writing or changing tests:
 2. **Read nearby tests** for naming, fixtures, builders, assertion style, and runner commands.
 3. **Find the nearest validation command** before broad full-suite commands.
 4. **Identify the risk boundary**: pure logic, internal component boundary, external API, UI/user journey, security boundary, or type/schema invariant.
-5. **Choose the smallest useful test tier** from `references/test-types.md`.
-6. **Load only relevant references** from the matrix below.
+5. **Classify the change and asset**: behavior change vs. structure/tidying, reusable library vs. throwaway probe, customer-facing rule vs. internal helper.
+6. **Choose the smallest useful test tier** from `references/test-types.md`.
+7. **Load only relevant references** from the matrix below.
 
 If the language is unsupported by a dedicated reference, follow project conventions plus the generic principles here.
 
@@ -68,6 +69,16 @@ Topical references by trigger:
 
 Good tests describe observable behavior: outputs, state transitions, side effects, rendered UI, persisted data, API contracts, or invariants. Avoid tests that break under behavior-preserving refactors: private methods, incidental call order, exact SQL strings, or broad mock choreography.
 
+When a user brings examples, tables, bug reports, spreadsheet rows, or support cases, treat them as communication artifacts first and assertions second. Preserve the business language, then run the examples against the narrowest honest seam: usually the domain/service/API contract, not a full UI path for every business-rule row. UI/E2E tests should prove the wiring and golden path; rule tables should exercise the domain layer directly.
+
+### Calibrate test investment to lifetime and change kind
+
+Do not give every artifact the same test plan. Reusable libraries, parsers, payment/auth/security boundaries, migrations, and code that will be refactored deserve stronger regression/property/contract coverage. Throwaway probes, one-off research scripts, or generated exploration may need only a smoke check or no tests if the user accepts that lifecycle.
+
+Separate **behavior changes** from **structure changes**. Behavior changes need tests that can fail for the new/changed behavior. Pure tidying/refactoring should ride an existing green suite; if no such suite exists, add characterization tests for the behavior you need to preserve before refactoring.
+
+For a new service with no pipeline, start with a walking skeleton: the thinnest build/deploy/test slice. Track unfinished acceptance tests as visible in-progress items tied to a story/issue, not silent skips. Keep unit tests green; do not commit failing unit tests as proof.
+
 ### Use red-green-refactor when feasible
 
 For bug fixes and new behavior, default to:
@@ -77,6 +88,8 @@ For bug fixes and new behavior, default to:
 3. **Refactor** — clean up while tests stay green.
 
 The evidence matters. Separate **red evidence** (exact command and failing output before the fix) from **green evidence** (passing command/result after the fix). Only claim completed TDD/red-green-refactor when both were observed in order. If only a passing/green run is available, say tests were added and now pass, but the red phase was not observed/unverified; do not backfill a TDD claim from a green-only log. For exploratory prototypes, generated code, or user-scoped “tests only” tasks, stay within scope and state the deviation.
+
+When practicing TDD, keep a visible **test list**. Park new edge-case ideas there instead of chasing them mid-cycle. If stuck, downshift: write the assertion first, extract a smaller child test, use a learning test for third-party APIs, or use a crash-test-dummy fake to trigger hard error paths. Choose Fake It, Triangulate, or Obvious Implementation according to uncertainty; never leave fake constants as the final behavior.
 
 ### Quality beats coverage
 
@@ -95,7 +108,7 @@ Prefer, in order:
 3. Deterministic stubs for controlled edge cases.
 4. Framework mocks as a last resort.
 
-When tests depend on hand-written mocks for external systems, add mock-fidelity, contract, schema, or recorded-fixture tests so real API shape drift is caught.
+Prefer visible state over call choreography: assert the saved row, emitted event, response body, file on disk, or a small logging fake's recorded effects. Do not mock values; construct them. Mock roles you own, not third-party libraries directly; wrap provider SDKs behind an owned interface and add a contract/VCR check for the real provider shape. For interaction tests, allow queries and expect commands: getters can be called freely, side-effecting commands are where expectations earn their keep.
 
 ### Use properties for broad input spaces
 
@@ -149,10 +162,11 @@ Assert the invariant the API actually promises — no lost updates, a monotonic/
 1. Read adjacent tests/config and load the relevant language reference.
 2. Choose test tier from `references/test-types.md`.
 3. For bugs/new behavior, add the failing regression test first when feasible.
-4. Use builders/factories where setup noise hides intent.
-5. Prefer user-facing/public interfaces over internals.
-6. Pin nondeterminism: time, randomness, network, filesystem, order.
-7. Run nearest tests, then broader checks when practical.
+4. Convert user/customer examples into readable test cases without forcing every example through the UI.
+5. Use builders/factories/helpers where setup noise hides intent; test custom helpers when they become a mini-DSL.
+6. Prefer user-facing/public interfaces over internals.
+7. Pin nondeterminism: time, randomness, network, filesystem, order.
+8. Run nearest tests, then broader checks when practical.
 
 For transformations or complex generated output, use golden files with explicit review discipline; see `references/golden-file-testing.md`. For external APIs, prefer recorded real fixtures/cassettes or contract checks over live CI calls; see `references/vcr-cassettes.md`.
 
@@ -167,6 +181,8 @@ Report evidence by severity and include positive observations. Check:
 5. **Determinism**: sleeps, wall-clock time, unseeded random, order dependence, global state leaks.
 6. **Coverage quality**: branch coverage, mutation/gap analysis for high-coverage suites with escaping bugs.
 7. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
+8. **Lifecycle fit**: throwaway probes over-tested, reusable assets under-tested, or structure-only changes getting behavior-test theater.
+9. **Example quality**: business examples buried in UI scripts, unreadable fixtures, or helpers that form a DSL but have no tests of their own.
 
 ### Upgrade mode
 

@@ -538,7 +538,7 @@
         {
           "name": "red-evidence-honesty",
           "type": "regex",
-          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['’]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
+          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['\u2019]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
           "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence."
         },
         {
@@ -1184,6 +1184,367 @@
       "difficulty": "core",
       "success_goals": [
         "outcome"
+      ]
+    },
+    {
+      "id": "pos-customer-examples-domain-seam",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "A product manager gave us spreadsheet rows of inputs and expected pricing outcomes for a billing rule. The team wants one browser automation test per row because users see the rule through the checkout page. Advise on the test design.",
+      "expected_behavior": [
+        "Treat concrete business examples as communication artifacts.",
+        "Exercise the rule table at the domain/service/API seam rather than driving every row through the UI.",
+        "Keep a small UI/E2E smoke path for wiring and user flow proof.",
+        "Preserve the product language in table-driven tests or fixtures."
+      ],
+      "assertions": [
+        {
+          "name": "domain-seam-not-ui-table",
+          "type": "regex",
+          "pattern": "(?is)(domain|service|api|business[- ]rule).{0,120}(table|row|fixture|example)|((table|row|fixture|example).{0,120}(domain|service|api|business[- ]rule))"
+        },
+        {
+          "name": "ui-as-wiring-smoke",
+          "type": "regex",
+          "pattern": "(?is)(ui|browser|e2e|end[- ]to[- ]end).{0,120}(smoke|wiring|golden path|thin|one|few)"
+        },
+        {
+          "name": "communication-examples",
+          "type": "contains_any",
+          "values": [
+            "business language",
+            "business-rule examples",
+            "PM/customer language",
+            "customer language",
+            "product language",
+            "domain language"
+          ]
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Uses examples as communication",
+            "Separates rule-table seam from UI wiring",
+            "Avoids over-testing through browser automation"
+          ]
+        }
+      ],
+      "tags": [
+        "ward-cunningham",
+        "acceptance-tests",
+        "examples"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome",
+        "style"
+      ]
+    },
+    {
+      "id": "pos-test-investment-lifetime-fit",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Review two codebases: a weekend throwaway spike that may be deleted next week, and a parser library that other teams will depend on. The current proposal gives both the same unit/property/E2E/mutation checklist. What should change?",
+      "expected_behavior": [
+        "Calibrate test investment to expected lifetime and reuse risk.",
+        "Avoid test theater for throwaway probes when the lifecycle is accepted.",
+        "Require stronger regression/property/contract or mutation checks for the reusable parser.",
+        "State the lifecycle and risk tradeoff explicitly."
+      ],
+      "assertions": [
+        {
+          "name": "lifetime-calibration",
+          "type": "regex",
+          "pattern": "(?is)(lifetime|reuse risk|short[- ]lived|one[- ]off|throwaway|test theater|expected use)"
+        },
+        {
+          "name": "parser-stronger-evidence",
+          "type": "regex",
+          "pattern": "(?is)(parser|library|reusable|depended on).{0,120}(property|fuzz|contract|boundary|regression|mutation)|(property|fuzz|contract|boundary|regression|mutation).{0,120}(parser|library|reusable|depended on)"
+        },
+        {
+          "name": "different-plans",
+          "type": "regex",
+          "pattern": "(?is)(not|don.?t|shouldn.?t|avoid).{0,80}(same|identical|one-size|checklist)|different\\s+(test\\s+)?plans"
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Calibrates by asset lifetime",
+            "Avoids equal checklist theater",
+            "Names stronger evidence for reusable parser"
+          ]
+        }
+      ],
+      "tags": [
+        "ward-cunningham",
+        "test-strategy",
+        "lifecycle"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome",
+        "style"
+      ]
+    },
+    {
+      "id": "pos-visible-state-logging-fake",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "A service publishes audit events after handling a request. Existing tests use a mocking framework to expect two method calls in a specific order, but refactors keep breaking them. Recommend a better test shape.",
+      "expected_behavior": [
+        "Prefer real collaborators when cheap, otherwise a purpose-built fake that records observable effects.",
+        "Assert the emitted event or persisted state instead of incidental call choreography.",
+        "Keep the fake small and interface-compatible.",
+        "Avoid mocking value objects."
+      ],
+      "assertions": [
+        {
+          "name": "recording-fake-or-real-collaborator",
+          "type": "contains_any",
+          "values": [
+            "recording fake",
+            "logging fake",
+            "recorded events",
+            "real collaborator",
+            "purpose-built fake"
+          ]
+        },
+        {
+          "name": "visible-state-not-choreography",
+          "type": "regex",
+          "pattern": "(?is)((assert|check|verify).{0,120}(event|state|saved|persisted|emitted|recorded effects|observable side effect))|((avoid|not|instead|rather than|replace).{0,120}(call order|choreography|method calls|ordered expectations))"
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Prefers visible state/effects",
+            "Uses real collaborator or small fake",
+            "Avoids brittle call-order coupling"
+          ]
+        }
+      ],
+      "tags": [
+        "ward-cunningham",
+        "mocks",
+        "fakes"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome",
+        "style"
+      ]
+    },
+    {
+      "id": "pos-go-test-seam-no-security-bypass",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "A Go crawler has a production constructor that enforces private-IP blocking. A teammate proposes NewForTesting that flips an internal boolean so requests to 169.254.169.254 are allowed in tests. Review the testability approach and propose a safer seam.",
+      "expected_behavior": [
+        "Reject test constructors that disable security/business rules.",
+        "Recommend injectable resolver/client/allowlist while preserving the same SSRF/private-IP rule.",
+        "Explain that seams control inputs or scheduling, not outcomes."
+      ],
+      "assertions": [
+        {
+          "name": "reject-security-bypass",
+          "type": "regex",
+          "pattern": "(?is)((unsafe|reject|avoid|do\\s+not|don.?t|shouldn.?t|bug|vulnerability).{0,140}(disable|bypass|turn\\s+off|skip).{0,140}(SSRF|security|private[- ]IP|rule|validation))|((disable|bypass).{0,80}(security|SSRF).{0,80}(unsafe|vulnerability|false confidence))"
+        },
+        {
+          "name": "safe-seam",
+          "type": "regex",
+          "pattern": "(?is)(inject|fake|stub).{0,120}(resolver|client|transport|allowlist|dependency)|(resolver|client|transport|allowlist).{0,120}(inject|fake|stub)"
+        },
+        {
+          "name": "same-rule-preserved",
+          "type": "regex",
+          "pattern": "(?is)((same|preserve|still|keep|actual|production).{0,140}(SSRF|security|private[- ]IP|rule|validation|enforcement|protection|policy))|((do\\s+not|don.?t).{0,80}inject.{0,80}security\\s+off)|(tests?\\s+should\\s+exercise\\s+the\\s+same\\s+enforcement\\s+path)"
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Rejects security bypass test mode",
+            "Proposes safe injectable seam",
+            "Preserves production rule semantics"
+          ]
+        }
+      ],
+      "tags": [
+        "go",
+        "testability",
+        "security",
+        "design-for-testability"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome",
+        "style"
+      ]
+    },
+    {
+      "id": "pos-tdd-microtactics-test-list",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "We're adding slug deduplication test-first. Halfway through, we think of Unicode normalization, reserved words, and database conflict cases. The first test is too broad and hard to make pass. Recommend how to proceed without losing TDD discipline.",
+      "expected_behavior": [
+        "Use a test list to park new cases.",
+        "Write/assert the focused failing behavior first.",
+        "Use a child test or smaller step when the first test is too broad.",
+        "Keep red/green evidence honest."
+      ],
+      "assertions": [
+        {
+          "name": "test-list-parking",
+          "type": "regex",
+          "pattern": "(?is)(test\\s+list|todo\\s+list|park|write\\s+down|queue).{0,120}(Unicode|reserved|database|case|idea|edge)"
+        },
+        {
+          "name": "child-or-smaller-test",
+          "type": "regex",
+          "pattern": "(?is)(child\\s+test|smaller\\s+(failing\\s+)?test|narrower\\s+test|split\\s+the\\s+test|reduce\\s+the\\s+step)"
+        },
+        {
+          "name": "red-green-honesty",
+          "type": "regex",
+          "pattern": "(?is)(red|failing).{0,120}(green|passing)|claim.{0,80}(only|after).{0,80}(observed|run|evidence)"
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Uses TDD micro-tactics",
+            "Parks new ideas instead of chasing them",
+            "Preserves red/green evidence honesty"
+          ]
+        }
+      ],
+      "tags": [
+        "tdd",
+        "kent-beck",
+        "test-list"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome",
+        "style"
+      ]
+    },
+    {
+      "id": "pos-walking-skeleton-inprogress-acceptance",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "A new service has no deployment pipeline yet. The first story is still being built, but the team wants to skip the end-to-end acceptance test until the feature is done. Advise on the first testing slice and how to track the unfinished acceptance test.",
+      "expected_behavior": [
+        "Recommend a walking skeleton / thinnest build-deploy-test slice.",
+        "Track unfinished acceptance tests as in-progress with issue/story context rather than unconditional skip.",
+        "Keep unit tests green and do not commit failing unit tests."
+      ],
+      "assertions": [
+        {
+          "name": "walking-skeleton",
+          "type": "contains_any",
+          "values": [
+            "walking skeleton",
+            "thin slice",
+            "thinnest slice",
+            "build-deploy-test",
+            "build/deploy/test"
+          ]
+        },
+        {
+          "name": "inprogress-not-skip",
+          "type": "regex",
+          "pattern": "(?is)(in[- ]progress|issue|story|ticket|tracked).{0,120}(acceptance|end[- ]to[- ]end|e2e)|(avoid|do\\s+not|don.?t).{0,80}(unconditional\\s+)?skip"
+        },
+        {
+          "name": "unit-green-rule",
+          "type": "regex",
+          "pattern": "(?is)(unit|component).{0,100}(green|pass|passing)|((do\\s+not|don.?t).{0,80}commit.{0,80}failing\\s+unit)|(failing\\s+unit\\s+tests?.{0,80}(not\\s+commit|do\\s+not|don.?t))"
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Uses walking skeleton",
+            "Tracks unfinished acceptance tests honestly",
+            "Keeps unit-test green rule"
+          ]
+        }
+      ],
+      "tags": [
+        "goos",
+        "acceptance-tests",
+        "walking-skeleton"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome",
+        "style"
+      ]
+    },
+    {
+      "id": "pos-fuzz-harness-reproducible",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Design a lightweight fuzz harness for a binary parser. The current draft just loops over random bytes until something crashes and prints the exception. What should be added before this is useful in CI or nightly runs?",
+      "expected_behavior": [
+        "Require reproducible seeds and saved failing inputs.",
+        "Catch/log failures with replay path, not just print and lose them.",
+        "Use timeouts/quarantine for hangs and mix boundary/production-shaped inputs.",
+        "Keep long fuzzing out of the default fast suite."
+      ],
+      "assertions": [
+        {
+          "name": "seed-and-replay",
+          "type": "regex",
+          "pattern": "(?is)(seed).{0,120}(replay|save|log|print|failing\\s+input|corpus)|(replay|corpus|failing\\s+input).{0,120}(seed)"
+        },
+        {
+          "name": "timeout-quarantine",
+          "type": "contains_any",
+          "values": [
+            "timeout",
+            "quarantine",
+            "denylist",
+            "hang"
+          ]
+        },
+        {
+          "name": "nightly-not-fast-suite",
+          "type": "regex",
+          "pattern": "(?is)(nightly|separate|opt[- ]in|not\\s+default|outside\\s+the\\s+fast\\s+suite|CI\\s+budget)"
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Makes fuzz failures reproducible",
+            "Controls hangs/noisy cases",
+            "Separates long fuzzing from fast validation"
+          ]
+        }
+      ],
+      "tags": [
+        "fuzzing",
+        "dan-luu",
+        "parser"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome",
+        "style"
       ]
     }
   ],
