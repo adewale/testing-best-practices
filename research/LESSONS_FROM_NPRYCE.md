@@ -91,13 +91,49 @@ public void new_feature_under_development() {
 
 **Lesson**: Acceptance tests written before the feature exists should be tracked as "in progress," not skipped. When the issue closes, the test automatically becomes a regression test.
 
-## Testing Asynchronous Systems (GOOS code examples)
+## The GOOS Book Itself (2009)
+
+The libraries above are artifacts of the book's argument; the argument is bigger than any of them. (Quotes verified against the print text; page numbers are the print edition's.)
+
+### The walking skeleton (ch. 4, 10)
+
+> "A 'walking skeleton' is an implementation of the thinnest possible slice of real functionality that we can automatically build, deploy, and test end-to-end." (p. 32, crediting Cockburn)
+
+It resolves the first-feature paradox — "it's hard to build both the tooling and the feature it's testing at the same time" — and "end-to-end" includes the *process*: "We want our test to start from scratch, build a deployable system, deploy it into a production-like environment, and then run the tests through the deployed system." Building it "takes a surprising amount of effort … [and] will flush out all sorts of technical and organizational questions" (ch. 10) — which is the point: expose uncertainty early.
+
+### The double feedback loop (ch. 1, fig. 1.2)
+
+Every feature starts with a failing acceptance test (outer loop) wrapping the unit-test cycle (inner loop). "The outer test loop is a measure of demonstrable progress, and the growing suite of tests protects us against regression failures." "The inner loop supports the developers… Failing unit tests should never be committed to the source repository." In-progress acceptance tests stay out of the build; finished ones must always pass. The loops nest outward into pairing, daily meetings, iterations: "if a discrepancy slips through an inner loop, there is a good chance an outer loop will catch it."
+
+### "Listen to your tests" — test smells are design feedback (ch. 20)
+
+> "The qualities that make an object easy to test also make our code responsive to change." — "When we find a feature that's difficult to test, we don't just ask ourselves how to test it, but also why is it difficult to test."
+
+Where Meszaros catalogs smells in the *test*, GOOS ch. 20 catalogs tests that indict the *target code*: **I Need to Mock an Object I Can't Replace** (hidden singleton/global dependencies), **Logging Is a Feature** (support logging vs. diagnostic logging are "two separate features that happen to share an implementation"), **Mocking Concrete Classes**, **Don't Mock Values** ("Just create an instance and use it"), **Bloated Constructor** (look for the missing abstraction among the arguments), **Confused Object** (too many responsibilities), **Too Many Dependencies**, **Too Many Expectations** ("it's hard to see what's important and what's really under test").
+
+### The mocking discipline (OOPSLA 2004 + ch. 8, 24)
+
+The 2004 paper "Mock Roles, not Objects" (Freeman, Pryce, Mackinnon, **Joe Walnes** — also in this corpus) opens: "Mock Objects is misnamed. It is really a technique for identifying types in a system based on the roles that objects play" — and adds, "It turns out to be less interesting as a technique for isolating tests from third-party libraries than is widely thought." Mocking is interface discovery, a design activity. The rules that keep it honest:
+
+- **Only mock types you own** — "Mock Objects is a design technique so programmers should only write mocks for types that they can change" (§4.1); wrap third-party APIs in your own role interfaces and mock those.
+- **Allow queries; expect commands** (ch. 24) — "Commands are calls that are likely to have side effects… Queries don't change the world, so they can be called any number of times, including none." Command–query separation applied to test doubles.
+- **Never mock values** — construct them; they should be immutable anyway.
+
+Practiced this way, TDD "push[es] the structure of an application towards something like Cockburn's 'ports and adapters' architecture" (ch. 7), with context-independent objects and a clean values/objects split. This is the canonical "London school" text (vs. the Detroit/classicist school of Beck's *TDD: By Example*); the standard critique — interaction tests couple tests to collaborator protocols and resist refactoring — is largely a critique of mocking that *violates* the book's own rules.
+
+### The Auction Sniper example — honest end-to-end (part III)
+
+The worked example drives a Swing bid-sniper against an XMPP auction protocol. The end-to-end tests use a **real** message broker (Openfire) but a `FakeAuctionServer` for the auction house — and the book is candid: "this first test is not really end-to-end. It doesn't include the real auction service," recorded "as a known risk in the project plan" with time scheduled to test against the real server early. Fidelity gaps are allowed, but only when named, tracked, and scheduled for closure.
+
+## Testing Asynchronous Systems (GOOS ch. 26–27)
 
 Two patterns:
 
 **Polling**: `assertEventually(timeout(5, SECONDS), () -> queue.size() > 0)`
 
 **Notifications**: `notificationReceiver.waitForNotification(5, SECONDS)`
+
+The book's boxed rule (ch. 27, "Testing Asynchronous Code"): **"Wait for Success — An asynchronous test must wait for success and use timeouts to detect failure."** Observe "by sampling its observable state or by listening for events that it sends out"; replace hidden timers with injectable event sources ("Externalize Event Sources"); and treat flickering tests as an emergency — "Flickering tests can mask real defects." Ch. 26 separates functionality from concurrency policy so most logic can be tested single-threaded.
 
 **Lesson**: Async tests need explicit timeouts and either polling or notification-based synchronization. Never use `Thread.sleep()`.
 
@@ -113,3 +149,9 @@ Shows TDD can work with *only* property tests, no example tests. The entire diam
 4. **Test lifecycle should track development lifecycle**: worktorule ties test state to issue tracker state
 5. **The property-driven diamond kata** shows TDD can work with only property tests
 6. **Assertions should read like sentences** (Hamcrest)
+7. **Start with a walking skeleton**: the thinnest build-deploy-test slice, end-to-end including the deployment process — it flushes out the project's real risks while there's time to fix them
+8. **Run two feedback loops**: a failing acceptance test (progress) wrapping unit tests (design); never commit failing unit tests
+9. **Listen to your tests**: a hard-to-write test is design feedback — "the qualities that make an object easy to test also make our code responsive to change"
+10. **Mocks are for discovering roles, not for isolating libraries**: mock roles not objects, only mock types you own, never mock values, allow queries / expect commands
+11. **Async tests wait for success with timeouts** (sampling or listening), and flickering tests are treated as defects because they mask real ones
+12. **Name your fidelity gaps**: GOOS's own first "end-to-end" test fakes the auction service — but says so, logs it as a project risk, and schedules the real-server test

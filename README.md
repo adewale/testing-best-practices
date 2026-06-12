@@ -123,8 +123,8 @@ Full eval data is in `testing-best-practices-workspace/`.
 
 Built from analysis of testing patterns across 15 GitHub accounts and one organization:
 
-- [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython
-- [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule
+- [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython; books: TDD: By Example (red/green/refactor, test list, green-bar strategies, testing patterns), XP Explained (test-what-might-break, 100% rule, ten-minute build), Tidy First? (behavior vs. structure changes)
+- [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule; GOOS book: walking skeleton, double feedback loop, listen-to-your-tests, mock roles not objects, allow queries / expect commands
 - [graydon](https://github.com/graydon) (Rust creator) -- exhaustigen-rs, proptest-arbitrary-interop
 - [karpathy](https://github.com/karpathy) -- differential testing against PyTorch/tiktoken
 - [kepano](https://github.com/kepano) -- fixture-based golden file testing (defuddle)
