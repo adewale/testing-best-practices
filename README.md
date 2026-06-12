@@ -121,7 +121,7 @@ Full eval data is in `testing-best-practices-workspace/`.
 
 ## Research corpus
 
-Built from analysis of testing patterns across 15 GitHub accounts and one organization:
+Built from analysis of testing patterns across 16 GitHub accounts and one organization:
 
 - [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython; books: TDD: By Example (red/green/refactor, test list, green-bar strategies, testing patterns), XP Explained (test-what-might-break, 100% rule, ten-minute build), Tidy First? (behavior vs. structure changes)
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule; GOOS book: walking skeleton, double feedback loop, listen-to-your-tests, mock roles not objects, allow queries / expect commands
@@ -147,7 +147,7 @@ Individual research documents are in `research/` (one per practitioner/account).
 
 ```
 testing-best-practices/             # The skill (ships to agents)
-  SKILL.md                          # Core instructions (~310 lines)
+  SKILL.md                          # Core instructions (~175 lines)
   references/                       # Loaded on demand
     python.md                       # Language: Python
     typescript.md                   # Language: TypeScript
@@ -191,7 +191,8 @@ research/                           # Source material (does not ship)
   DESIGN_FOR_TESTABILITY_LITERATURE.md
 
 evals/                              # Test cases for the skill itself
-  evals.json                        # 10 eval cases across 4 languages
+  shared-benchmark.json             # Shared harness manifest with 36 cases
+  evals.json                        # Legacy eval set across 4 languages
   files/                            # Fixture code for eval prompts
 
 testing-best-practices-workspace/   # Eval results by iteration

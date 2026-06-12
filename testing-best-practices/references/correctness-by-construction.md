@@ -12,6 +12,8 @@ is unrepresentable**. Then the only test that needs to exist is the parser
 test at the boundary, plus tests that *prove the invariant* and tests that
 *reveal invalid states the model still permits*.
 
+Ward Cunningham's CHECKS pattern language is the pragmatic version of this rule: use Whole Values for domain quantities, defer validation until a specific action needs it, echo back the system's interpretation, and make summarized values auditable back to their source. For tests, this means concentrating validation tests at boundary parsers and action-specific choke points instead of repeating identical rejection tests throughout the typed interior.
+
 ---
 
 ## The two slogans, one idea

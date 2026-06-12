@@ -94,19 +94,38 @@ func TestFetchWithConditionalRequest(t *testing.T) {
 }
 ```
 
-### Testing constructors for testability
+### Testing constructors for safe seams
+
+Test-only constructors may inject clocks, resolvers, stores, schedulers, or clients. They must not disable security or business rules.
 
 ```go
-// Production constructor with security checks
-func New(opts Options) *Crawler { ... }
+type Crawler struct {
+    resolver Resolver
+    allow    Allowlist
+}
 
-// Test constructor that disables SSRF checks
+// Production constructor: real resolver, production allowlist.
+func New(opts Options) *Crawler {
+    return &Crawler{resolver: netResolver{}, allow: opts.Allowlist}
+}
+
+// Test constructor: fake resolver, same allowlist/SSRF rule.
+func NewForTesting(resolver Resolver, allow Allowlist) *Crawler {
+    return &Crawler{resolver: resolver, allow: allow}
+}
+```
+
+Avoid this shape:
+
+```go
 func NewForTesting(opts Options) *Crawler {
     c := New(opts)
-    c.disableSSRF = true
+    c.disableSSRF = true // BUG: a seam changed the security outcome.
     return c
 }
 ```
+
+Seams should control inputs, scheduling, or observation; they should not change whether auth, SSRF, validation, rate limits, or business rules apply.
 
 ## Build Tags for Conditional Tests
 

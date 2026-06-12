@@ -27,6 +27,8 @@ file, IPC, external API, user input) the wire format is untyped, so parser
 tests, contract tests, and VCR cassettes still earn their keep — they are
 correctness-by-construction re-erected at the boundary.
 
+Ward Cunningham's CHECKS adds one calibration: validation intensity should match the action's consequence. Saving a draft, publishing, charging a card, and deleting data do not need the same checks. Test the boundary parser and the action-specific validation choke point; do not smear identical validation tests through every downstream method.
+
 ### After Step Zero: the two invariant tests
 
 Once the invariant lives in the type, write *both* tests below. Most
@@ -79,6 +81,40 @@ excludes what we claim it excludes."
   re-test invariants the types already enforce.
 - **At the outbound boundary**: contract tests, VCR cassettes, E2E.
 
+## Examples as communication
+
+When users, domain experts, bug reporters, support teams, or PMs provide concrete examples, keep their language visible. Tests are executable examples before they are coverage artifacts.
+
+- Convert business-rule rows into table-driven tests or fixture files at the domain/service seam.
+- Do not drive every rule row through the UI. Use one or a few UI/E2E tests to prove wiring, then test the rule table below the UI.
+- Prefer customer-sourced examples over expecting customers to maintain executable tests.
+- If examples require a custom helper or mini-DSL, keep it small and test the helper itself.
+- Add prose or test names that explain why the example matters, not only the expected value.
+
+## Calibrate by lifetime and change kind
+
+| Situation | Test posture |
+|---|---|
+| Throwaway spike or research probe | No test or one smoke/characterization check if the result will be reused. State the lifecycle instead of adding test theater. |
+| Reusable library, parser, SDK, or data structure | Regression, property/exhaustive, contract, and mutation/differential checks where triggered. |
+| Behavior change | Add or update a test that can fail for the behavior. Prefer red-green evidence when feasible. |
+| Pure structure/tidying | Use the existing green suite. If no suite protects the behavior, add characterization tests first. |
+| Technical debt repayment/refactor | Characterize current behavior, then refactor under a green suite; debt without tests is harder to repay safely. |
+
+## TDD micro-tactics
+
+Use these when the user asks for TDD or when a bug fix/new behavior can be developed test-first:
+
+- **Test List**: write the next known tests down. When a new idea appears mid-cycle, add it to the list instead of breaking the red/green focus.
+- **Assert First**: write the final assertion, then work backward to setup.
+- **Evident Data**: make expected values readable as expressions or named examples, not unexplained constants.
+- **Child Test**: if a test is too large to make pass, extract a smaller failing test and return to the larger one later.
+- **Learning Test**: pin third-party API behavior before depending on it.
+- **Crash Test Dummy**: use a fake that raises/returns failure to exercise hard error paths.
+- **Fake It / Triangulate / Obvious Implementation**: pick the green strategy based on uncertainty; replace fake constants once the second example forces generalization.
+
+Team rule: do not commit failing unit tests. For solo work, a broken test can be a re-entry marker only if it is not pushed as green proof.
+
 ## Tier 1: Always Required
 
 ### Unit Tests
@@ -109,13 +145,14 @@ excludes what we claim it excludes."
 
 **Cost**: Medium. Requires thinking in invariants, slower to run.
 
-### E2E Tests
+### E2E / Acceptance Tests
 **Trigger**: ANY of these apply:
 - [ ] Project has HTTP endpoints or a CLI with multi-step workflows
 - [ ] Project runs on a specific platform (Workers, Pyodide, etc.)
 - [ ] Previous bugs were missed by unit tests
+- [ ] Domain experts supplied concrete examples that define a story or rule
 
-**Rules**: Golden path first, gate behind env vars, limit to 5-15 tests.
+**Rules**: Golden path first, gate behind env vars, limit to 5-15 tests. For business-rule examples, prefer acceptance tests at the domain/API seam and only enough UI/E2E coverage to prove wiring. For a new service or first feature, build a **walking skeleton**: the thinnest build/deploy/test slice that exercises real packaging, configuration, and one path through the system. Track not-yet-implemented acceptance tests as in-progress with an issue/story link; do not hide them as unconditional skips. Record known fidelity gaps when a fake replaces a real service, and schedule a real-service check when that risk matters.
 **Cost**: High setup, slow, can be flaky.
 
 ### Documentation-Code Sync Tests
@@ -208,9 +245,19 @@ See `references/differential-testing.md`.
 - **Mitigations**: Compare against baseline, separate from test suite
 
 ### Fuzz Testing
-- **When helpful**: Security-sensitive code processing untrusted input
+- **When helpful**: Security-sensitive code processing untrusted input, parsers, data structures, encoders/decoders, or brittle crash-prone code
 - **Costs**: Requires infrastructure, hard to reproduce failures
-- **Mitigations**: Start with "never crashes" property tests (structured fuzzing)
+- **Mitigations**: Start with "never crashes" property tests (structured fuzzing); keep long fuzz runs out of the default fast suite
+
+Minimum useful fuzzer harness:
+- Pin and print/log the seed for every failure.
+- Catch exceptions/crashes, save the failing input, and keep running when possible.
+- Provide a replay command or committed corpus path.
+- Add timeouts and a quarantine/denylist for known hangs so the harness remains useful.
+- Mix random data with production-shaped examples and boundary-heavy generators.
+- Use sanitizers/race detectors/Valgrind where the language/runtime supports them.
+
+Do not use statistical thresholds for deterministic exact outputs; fuzzing supplies inputs, not a weaker oracle.
 
 ## Minimum Viable Test Suite
 

@@ -1,6 +1,6 @@
 # Test Data Builders, Fixtures, and Helpers
 
-Tests should express *what matters*, not *how to construct data*.
+Tests should express *what matters*, not *how to construct data*. When examples come from users or domain experts, preserve their business vocabulary in fixtures, builders, table rows, or small test DSLs.
 
 ## Pattern: Factory with defaults (Python)
 
@@ -60,6 +60,26 @@ export function assertPost(post: unknown): void {
 }
 ```
 
+## Pattern: Small domain DSLs for dense examples
+
+When a domain has compact operations, a tiny helper can make test cases readable:
+
+```typescript
+// journal action DSL for page history tests
+expect(action("m1321")).toEqual({
+  type: "move",
+  id: "10",
+  order: ["30", "20", "10"],
+});
+```
+
+Rules:
+- Use the DSL only when it makes many examples easier to read.
+- Keep it in test code unless production also needs the notation.
+- Test the helper/DSL before relying on it in behavior tests.
+- Prefer domain terms (`paidOrder`, `movedBefore`, `interestRow`) over structural terms (`object1`, `data2`).
+- Do not hide the expected behavior behind clever encodings; a reader should still see the business rule.
+
 ## Pattern: Pin non-deterministic inputs
 
 ```javascript
@@ -70,6 +90,27 @@ afterEach(() => { Date.prototype.toString = originalDateToString; });
 ```
 
 Pin the non-deterministic part rather than mocking the whole subsystem.
+
+## Pattern: Logging fakes for visible side effects
+
+A purpose-built fake can be better than a mock when the useful assertion is the visible effect:
+
+```python
+class RecordingBus:
+    def __init__(self):
+        self.events = []
+
+    def publish(self, event):
+        self.events.append(event)
+
+
+def test_checkout_publishes_receipt_event():
+    bus = RecordingBus()
+    checkout(order, bus=bus)
+    assert bus.events == [ReceiptIssued(order_id=order.id)]
+```
+
+This checks the observable contract without verifying incidental call choreography. If the real collaborator is cheap and local, prefer the real collaborator first.
 
 ## Pattern: Shared fixture with context manager (Python)
 
