@@ -123,8 +123,8 @@ Full eval data is in `testing-best-practices-workspace/`.
 
 Built from analysis of testing patterns across 15 GitHub accounts and one organization:
 
-- [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython
-- [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule
+- [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython; books: TDD: By Example (red/green/refactor, test list, green-bar strategies, testing patterns), XP Explained (test-what-might-break, 100% rule, ten-minute build), Tidy First? (behavior vs. structure changes)
+- [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule; GOOS book: walking skeleton, double feedback loop, listen-to-your-tests, mock roles not objects, allow queries / expect commands
 - [graydon](https://github.com/graydon) (Rust creator) -- exhaustigen-rs, proptest-arbitrary-interop
 - [karpathy](https://github.com/karpathy) -- differential testing against PyTorch/tiktoken
 - [kepano](https://github.com/kepano) -- fixture-based golden file testing (defuddle)
@@ -139,8 +139,9 @@ Built from analysis of testing patterns across 15 GitHub accounts and one organi
 - [antirez](https://github.com/antirez) (Redis creator) -- differential fuzzing vs. a reference oracle, digest roundtrips, `DEBUG` as a testability surface, recall testing for approximate algorithms, agent-as-QA
 - [janestreet](https://github.com/janestreet) -- expect tests, library-level simulation, `Time_source`, Bonsai testing
 - [danluu](https://github.com/danluu) -- random/coverage-guided generation thesis, "world's dumbest fuzzer" (Fuzz.jl: seed/try-catch-log/denylist harness mechanics), differential testing (csv), fault injection (fs-errors), solver-backed generation (kodkod-clj, secvisor-formal-verification)
+- [WardCunningham](https://github.com/WardCunningham) (wiki/Fit/CRC inventor) -- Fit customer-readable example tables, CHECKS validation patterns, domain DSLs in test suites (wiki-client), characterization harnesses (sudokuku), test-investment-tracks-lifetime, "preserve and protect [the test suite] as if it were code" (EPISODES)
 
-Individual research documents are in `research/` (one per practitioner/account).
+Individual research documents are in `research/` (one per practitioner/account). The research process itself is captured in `research/METHODOLOGY.md` — a minimum checklist (GitHub history including actual test files and commit authorship, books, long-form writing, talks/interviews, pre-GitHub tools, post-mortems and criticism), explicitly framed as a floor rather than a ceiling.
 
 ## Project structure
 
@@ -166,6 +167,7 @@ testing-best-practices/             # The skill (ships to agents)
     test-data-builders.md          # Topic: factories and fixtures
 
 research/                           # Source material (does not ship)
+  METHODOLOGY.md                    # How we research a practitioner (a floor, not a ceiling)
   LESSONS_FROM_KENTBECK.md
   LESSONS_FROM_NPRYCE.md
   LESSONS_FROM_GRAYDON.md
@@ -182,6 +184,7 @@ research/                           # Source material (does not ship)
   LESSONS_FROM_ANTIREZ.md
   LESSONS_FROM_JANE_STREET.md
   LESSONS_FROM_DANLUU.md
+  LESSONS_FROM_WARDCUNNINGHAM.md
   ANTIPATTERNS.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
