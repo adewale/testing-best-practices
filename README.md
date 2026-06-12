@@ -141,7 +141,7 @@ Built from analysis of testing patterns across 15 GitHub accounts and one organi
 - [danluu](https://github.com/danluu) -- random/coverage-guided generation thesis, "world's dumbest fuzzer" (Fuzz.jl: seed/try-catch-log/denylist harness mechanics), differential testing (csv), fault injection (fs-errors), solver-backed generation (kodkod-clj, secvisor-formal-verification)
 - [WardCunningham](https://github.com/WardCunningham) (wiki/Fit/CRC inventor) -- Fit customer-readable example tables, CHECKS validation patterns, domain DSLs in test suites (wiki-client), characterization harnesses (sudokuku), test-investment-tracks-lifetime, "preserve and protect [the test suite] as if it were code" (EPISODES)
 
-Individual research documents are in `research/` (one per practitioner/account).
+Individual research documents are in `research/` (one per practitioner/account). The research process itself is captured in `research/METHODOLOGY.md` — a minimum checklist (GitHub history including actual test files and commit authorship, books, long-form writing, talks/interviews, pre-GitHub tools, post-mortems and criticism), explicitly framed as a floor rather than a ceiling.
 
 ## Project structure
 
@@ -167,6 +167,7 @@ testing-best-practices/             # The skill (ships to agents)
     test-data-builders.md          # Topic: factories and fixtures
 
 research/                           # Source material (does not ship)
+  METHODOLOGY.md                    # How we research a practitioner (a floor, not a ceiling)
   LESSONS_FROM_KENTBECK.md
   LESSONS_FROM_NPRYCE.md
   LESSONS_FROM_GRAYDON.md
