@@ -35,6 +35,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 ### Changed
 - **Strengthened the Differential Testing "When NOT to use it" guidance** after an adversarial probe (E41) showed the section could induce a redundant reference reimplementation for a trivial pure function.
 
+### Fixed
+- **Repository coherence audit cleanup** — refreshed README counts/structure and corrected E36–E49 fixture prompt headings to match their manifest eval IDs after the v0.3 oracle and iteration 8–9 eval work.
+
 ### Added (iteration 11)
 - **Antipattern #14 "Asserting through fault-masking code"** in `references/antipatterns.md` (from Voas & Miller's PIE/fault-hiding theory, via the design-for-testability literature review) — output-only assertions behind a clamp / swallow-to-default / recover-to-zero / high domain-to-range coercion can't catch faults, because the mask blocks propagation; fix is to assert the pre-mask/internal value. Ships with a restraint clause excluding spec'd clamps/graceful degradation.
 - **PIE "Why it works" paragraph** in `references/mutation-testing.md` — grounds mutation testing in execution/infection/propagation; surviving mutants in masking code mark where the code hides faults from any output-only test.
