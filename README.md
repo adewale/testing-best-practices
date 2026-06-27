@@ -2,7 +2,7 @@
 
 [![skills.sh](https://skills.sh/b/adewale/testing-best-practices)](https://skills.sh/adewale/testing-best-practices)
 
-An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from analysis of real-world testing patterns across 16 GitHub accounts and two engineering organizations, and grounded in practitioner work from Kent Beck (TDD) to TigerBeetle (deterministic simulation), Jane Street (expect tests), Ward Cunningham (Fit/customer examples), and Salvatore Sanfilippo / antirez (Redis-style differential fuzzing and testability seams).
+An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from 24 research documents covering real-world testing patterns across 16 GitHub accounts, two engineering organizations, books, and long-form testing literature; grounded in practitioner work from Kent Beck (TDD) to TigerBeetle (deterministic simulation), Jane Street (expect tests), Ward Cunningham (Fit/customer examples), and Salvatore Sanfilippo / antirez (Redis-style differential fuzzing and testability seams).
 
 ![A typographic ledger of the sixteen testing techniques this skill teaches, organised into three tiers — Always (Unit, Smoke, Regression); When triggered (Property-based, End-to-end, Doc/Code sync, Contract, VCR cassette, Characterization, Differential, Golden file, Pirate/Conformance); With caution (Visual/Screenshot, Mutation, Performance, Fuzz). A top strip frames the red-green-refactor rhythm: a test that fails first, the smallest code that passes, clean up while green.](research/diagrams/skill-ledger.png)
 
@@ -138,7 +138,7 @@ Eval definitions, rubrics, schema, scorecards, and health tracking live under `s
 
 ## Research corpus
 
-Built from analysis of testing patterns across 16 GitHub accounts and two engineering organizations:
+Built from analysis of testing patterns across 16 GitHub accounts and two engineering organizations, backed by 24 Markdown research files:
 
 - [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython; books: TDD: By Example (red/green/refactor, test list, green-bar strategies, testing patterns), XP Explained (test-what-might-break, 100% rule, ten-minute build), Tidy First? (behavior vs. structure changes)
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule; GOOS book: walking skeleton, double feedback loop, listen-to-your-tests, mock roles not objects, allow queries / expect commands
@@ -159,7 +159,7 @@ Built from analysis of testing patterns across 16 GitHub accounts and two engine
 - [tigerbeetle](https://github.com/tigerbeetle) -- deterministic simulation, state-machine invariants, fault injection, testability by design
 - [janestreet](https://github.com/janestreet) -- expect tests, library-level simulation, `Time_source`, Bonsai testing
 
-Individual research documents are in `research/` (one per practitioner/account/org). The research process itself is captured in `research/METHODOLOGY.md` — a minimum checklist (GitHub history including actual test files and commit authorship, books, long-form writing, talks/interviews, pre-GitHub tools, post-mortems and criticism), explicitly framed as a floor rather than a ceiling.
+Research documents are in `research/`: practitioner/account/org lesson notes plus methodology and cross-cutting literature, antipattern, decision-tree, novel-testing, and correctness-by-construction notes. The research process itself is captured in `research/METHODOLOGY.md` — a minimum checklist (GitHub history including actual test files and commit authorship, books, long-form writing, talks/interviews, pre-GitHub tools, post-mortems and criticism), explicitly framed as a floor rather than a ceiling.
 
 ## Project structure
 
@@ -190,6 +190,7 @@ research/                           # Source material (does not ship)
   LESSONS_FROM_*.md                 # One file per practitioner/account/org
   DESIGN_FOR_TESTABILITY_LITERATURE.md
   ANTIPATTERNS.md
+  CORRECTNESS_BY_CONSTRUCTION.md
   DECISION_TREE.md
   NOVEL_TESTING_TYPES.md
 
