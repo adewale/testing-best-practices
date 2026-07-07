@@ -50,9 +50,9 @@
           "type": "contains_any",
           "values": [
             "clock",
-            "fake timers",
-            "sleep"
-          ]
+            "fake timers"
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "validation",
@@ -91,12 +91,9 @@
       "assertions": [
         {
           "name": "detect-api-contract-vcr",
-          "type": "contains_any",
-          "values": [
-            "VCR",
-            "cassette",
-            "contract"
-          ]
+          "type": "regex",
+          "pattern": "(?is)(recorded real response|replay fixture|provider shape|schema contract|contract fixture|no live network|sanitize secrets)",
+          "description": "Requires a recorded/contract-backed API test strategy rather than echoing VCR."
         },
         {
           "name": "validation",
@@ -135,12 +132,9 @@
       "assertions": [
         {
           "name": "detect-cli-doc-sync",
-          "type": "contains_any",
-          "values": [
-            "docs",
-            "CLI",
-            "sync"
-          ]
+          "type": "regex",
+          "pattern": "(?is)(--help|help output|golden help|command registry|compare README commands|documented command.{0,80}implemented|docs.{0,80}current command output)",
+          "description": "Requires a concrete docs-code synchronization oracle for commands."
         },
         {
           "name": "validation",
@@ -181,10 +175,10 @@
           "name": "detect-mutation-escaping-bug",
           "type": "contains_any",
           "values": [
-            "mutation",
             "escaping",
             "oracle"
-          ]
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "validation",
@@ -225,10 +219,9 @@
           "name": "detect-finite-enum-exhaustive",
           "type": "contains_any",
           "values": [
-            "exhaustive",
-            "finite",
-            "enum"
-          ]
+            "finite"
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "validation",
@@ -267,12 +260,9 @@
       "assertions": [
         {
           "name": "detect-mock-reality-drift",
-          "type": "contains_any",
-          "values": [
-            "mock",
-            "drift",
-            "schema"
-          ]
+          "type": "regex",
+          "pattern": "(?is)(contract test|recorded real response|cassette|provider shape|schema contract|drift sentinel)",
+          "description": "Requires a contract/recorded-response remedy for mock reality drift."
         },
         {
           "name": "validation",
@@ -313,10 +303,9 @@
           "name": "detect-golden-transform",
           "type": "contains_any",
           "values": [
-            "golden",
-            "promote",
-            "review"
-          ]
+            "promote"
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "validation",
@@ -357,11 +346,11 @@
           "name": "detect-parser-property",
           "type": "contains_any",
           "values": [
-            "property",
             "Hypothesis",
             "fast-check",
             "never crashes"
-          ]
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "validation",
@@ -402,10 +391,9 @@
           "name": "avoid-no-pbt-finite",
           "type": "contains_any",
           "values": [
-            "exhaustive",
-            "not property",
-            "finite"
-          ]
+            "not property"
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "qualitative-review",
@@ -436,9 +424,9 @@
           "name": "avoid-no-mock-module-under-test",
           "type": "contains_any",
           "values": [
-            "do not mock",
             "public behavior"
-          ]
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "qualitative-review",
@@ -469,10 +457,9 @@
           "name": "avoid-do-not-delete-boundary-security",
           "type": "contains_any",
           "values": [
-            "boundary",
-            "security",
             "keep"
-          ]
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "qualitative-review",
@@ -538,33 +525,29 @@
         {
           "name": "red-evidence-honesty",
           "type": "regex",
-          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['\u2019]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
+          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['’]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
           "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence."
         },
         {
           "name": "green-evidence-reported",
           "type": "contains_any",
           "values": [
-            "npm test -- sanitizer.test.ts",
             "green evidence",
             "passing command",
-            "observed pass",
-            "PASS"
+            "observed pass"
           ],
-          "description": "Must cite the observed passing/green command evidence rather than treating it as proof of TDD."
+          "description": "Must cite the observed passing/green command evidence rather than treating it as proof of TDD. Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "next-red-verification-step",
           "type": "contains_any",
           "values": [
-            "pre-fix",
             "before the fix",
             "revert the fix",
             "run the test against the old code",
-            "failing output",
-            "failure log"
+            "failing output"
           ],
-          "description": "Must name a concrete next step to verify the missing failing-test phase."
+          "description": "Must name a concrete next step to verify the missing failing-test phase. Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "no-unqualified-tdd-success-claim",
@@ -648,12 +631,9 @@
       "assertions": [
         {
           "name": "avoid-no-assertion-count-blind",
-          "type": "contains_any",
-          "values": [
-            "strong oracle",
-            "not count",
-            "property"
-          ]
+          "type": "regex",
+          "pattern": "(?is)(one excellent oracle|assertion count.{0,80}heuristic|quality over quantity|meaningful oracle|single strong property)",
+          "description": "Rejects assertion-count theater when one oracle is strong."
         },
         {
           "name": "qualitative-review",
@@ -978,10 +958,9 @@
           "name": "weak-assertion-flagged",
           "type": "contains_any",
           "values": [
-            "toBeTruthy",
-            "weak assertion",
-            "truthy"
-          ]
+            "weak assertion"
+          ],
+          "description": "Prompt-echoed values removed by leakage cleanup."
         },
         {
           "name": "round-2-qualitative-review",
@@ -1553,72 +1532,208 @@
       "id": "no-reference-matrix",
       "removed_component": "reference matrix",
       "expected_regressions": [
-        "Loads wrong/no language-specific guidance."
+        {
+          "summary": "Technique routing to language/problem references regresses.",
+          "cases": [
+            "pos-api-contract-vcr",
+            "pos-cli-doc-sync",
+            "pos-parser-property"
+          ],
+          "assertions": [
+            "detect-api-contract-vcr",
+            "detect-cli-doc-sync",
+            "detect-parser-property"
+          ]
+        }
       ],
-      "applies_to_cases": []
+      "applies_to_cases": [],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "## Reference matrix"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     },
     {
       "id": "no-red-evidence",
       "removed_component": "TDD red-phase evidence",
       "expected_regressions": [
-        "Claims TDD without observed failure."
+        {
+          "summary": "TDD claims are made without observed red evidence.",
+          "cases": [
+            "neg-no-red-claim",
+            "pos-tdd-microtactics-test-list"
+          ],
+          "assertions": [
+            "red-evidence-honesty",
+            "next-red-verification-step",
+            "red-green-honesty"
+          ]
+        }
       ],
       "applies_to_cases": [
         "neg-no-red-claim"
-      ]
+      ],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "### Use red-green-refactor when feasible"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     },
     {
       "id": "no-antipatterns",
       "removed_component": "anti-pattern detection",
       "expected_regressions": [
-        "Misses skips/logging/weak assertions/sleeps."
+        {
+          "summary": "Weak/skipped/truthy/logging anti-patterns are missed.",
+          "cases": [
+            "round3-fixture-url-parser-tests",
+            "pos-parser-property-test-not-coverage-only"
+          ],
+          "assertions": [
+            "flags-weak-truthy",
+            "weak-assertion-flagged",
+            "fixture-script-oracle"
+          ]
+        }
       ],
-      "applies_to_cases": []
+      "applies_to_cases": [],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "### Detect mode"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     },
     {
       "id": "no-types-vs-tests",
       "removed_component": "types-vs-tests guidance",
       "expected_regressions": [
-        "Deletes boundary tests or over-tests internal invariants."
+        {
+          "summary": "Boundary/security tests are deleted or over-testing is recommended.",
+          "cases": [
+            "neg-do-not-delete-boundary-security",
+            "pos-test-investment-lifetime-fit"
+          ],
+          "assertions": [
+            "avoid-do-not-delete-boundary-security",
+            "lifetime-calibration"
+          ]
+        }
       ],
-      "applies_to_cases": []
+      "applies_to_cases": [],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "### Push internal invariants into types/schemas/contracts"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     },
     {
       "id": "no-real-objects",
       "removed_component": "real-objects-over-mocks hierarchy",
       "expected_regressions": [
-        "Over-mocks and tests mock behavior."
+        {
+          "summary": "Mock-heavy tests are preferred over visible behavior/fakes.",
+          "cases": [
+            "neg-no-mock-module-under-test",
+            "pos-visible-state-logging-fake"
+          ],
+          "assertions": [
+            "avoid-no-mock-module-under-test",
+            "recording-fake-or-real-collaborator",
+            "visible-state-not-choreography"
+          ]
+        }
       ],
-      "applies_to_cases": []
+      "applies_to_cases": [],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "### Prefer real behavior over mocks"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     },
     {
       "id": "no-final-report",
       "removed_component": "validation report contract",
       "expected_regressions": [
-        "Reports success without commands/evidence."
+        {
+          "summary": "Final report stops separating tests changed and TDD evidence.",
+          "cases": [
+            "neg-no-red-claim"
+          ],
+          "assertions": [
+            "final-report-contract"
+          ]
+        }
       ],
-      "applies_to_cases": []
+      "applies_to_cases": [],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "## Final report contract"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     },
     {
       "id": "no-error-path-principle",
       "removed_component": "test error-handling paths principle",
       "expected_regressions": [
-        "Happy-path plus input-validation only; never injects a dependency failure.",
-        "Or invents a retry/error-wrapping contract the spec never promised."
+        {
+          "summary": "Dependency failure/error-path tests are missed.",
+          "cases": [
+            "pos-fault-injection-error-paths"
+          ],
+          "assertions": [
+            "injects-dependency-failure",
+            "failure-path-asserted"
+          ]
+        }
       ],
       "applies_to_cases": [
         "pos-fault-injection-error-paths"
-      ]
+      ],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "### Test error-handling paths, not just invalid input"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     },
     {
       "id": "no-concurrency-contract",
       "removed_component": "concurrency-contract principle",
       "expected_regressions": [
-        "Detects the race but only logs the compute count instead of asserting compute-at-most-once."
+        {
+          "summary": "Concurrent tests log races instead of pinning compute-at-most-once.",
+          "cases": [
+            "pos-concurrency-contract-pinning"
+          ],
+          "assertions": [
+            "race-detector",
+            "surfaces-double-compute"
+          ]
+        }
       ],
       "applies_to_cases": [
         "pos-concurrency-contract-pinning"
-      ]
+      ],
+      "mechanism": "section",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "heading": "### Test concurrent code under a race detector, and pin the concurrency contract"
+      },
+      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
     }
   ]
 }
