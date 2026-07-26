@@ -11,9 +11,8 @@ labels rather than buried in a text legend.
   View B — horizontal taxonomy tree (root -> family -> technique, with
             relationship cross-links)
 """
-from html import escape
-import math
 import pathlib
+from html import escape
 
 # --- restrained palette -------------------------------------------------------
 PAPER   = "#fbfaf7"
@@ -192,7 +191,6 @@ def view_cluster_map():
     # --- pack clusters into balanced columns ---------------------------------
     col_y = [grid_top] * COLS
     placed = {}   # key -> (x, y, h)
-    chip_pos = {}  # technique name -> (x, y) of its anchor
 
     for key, head, sub, items in FAMILIES:
         c = col_y.index(min(col_y))
@@ -243,7 +241,7 @@ def view_tree():
     ROOT_X    = MARGIN_L + 8
     FAMILY_X  = MARGIN_L + 220
     TECH_X    = MARGIN_L + 540
-    NOTE_X    = MARGIN_L + 920
+    MARGIN_L + 920
     LINE_H    = 22
     FAM_GAP   = 18  # extra gap between families
 
@@ -276,7 +274,7 @@ def view_tree():
         p.append(t(FAMILY_X, y + 30, sub,
                    size=10.5, fill=MUTED, italic=True))
         # connector from root to family — only once, at the family's vertical centre
-        fam_centre = y + 14
+        y + 14
         # technique nodes
         ty = y + 14
         for it in items:

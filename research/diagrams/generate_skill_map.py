@@ -201,8 +201,8 @@ def build():
         # body line measure (chars/line) — Hanken ~7.5px per char at 15px
         meas = int((card_w - 36) / 7.5)
 
-        def card_height(name, trigger, has_note):
-            tlines = wrap(trigger, meas)
+        def card_height(name, trigger, has_note, measure=meas):
+            tlines = wrap(trigger, measure)
             HDR_PAD_TOP = 22
             BODY_TOP    = 22
             LINE_H      = 22
@@ -222,7 +222,7 @@ def build():
                 x = M + c * (card_w + GUT)
 
                 # Card — white surface, soft elevation, no border.
-                body.append(f'<g filter="url(#soft)">'
+                body.append('<g filter="url(#soft)">'
                             + rrect(x, y, card_w, row_h, 10, "#ffffff")
                             + '</g>')
                 # Tier accent: a small coloured dot at top-left, with the

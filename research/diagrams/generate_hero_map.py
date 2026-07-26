@@ -16,9 +16,9 @@ This is the synthesis view. It treats the session's lessons as design rules:
   * PRESERVE THE ORIGINAL PURPOSE. Every technique, grouped by family, with the
     cross-family relationships shown.
 """
-from html import escape
 import colorsys
 import pathlib
+from html import escape
 
 # --- neutral tokens -----------------------------------------------------------
 # Background: a clean cool near-white. Not warm cream — that's the slop list's
@@ -217,7 +217,7 @@ def build():
         col = family_colors(i)
         # Card body with soft elevation only — no border (slop rule: commit
         # to a defined edge OR a soft elevation, never both).
-        body.append(f'<g filter="url(#soft)">'
+        body.append('<g filter="url(#soft)">'
                     + rrect(x, y, COL_W, h, 10, col["tint"]) + '</g>')
         # Header (Bricolage Grotesque SemiBold + Hanken italic subhead)
         body.append(header_path(x, y, COL_W, HDR_H, 10, col["header"]))

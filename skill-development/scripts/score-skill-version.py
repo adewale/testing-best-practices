@@ -10,7 +10,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -100,13 +99,11 @@ def check(root: Path, c: Check) -> tuple[bool, str]:
     target_text = all_text(root) if c.kind == "contains_any" else read(root, c.path or "")
     if c.kind == "exists":
         ok = exists(root, c.path or "")
-    elif c.kind == "contains":
-        ok = bool(re.search(c.pattern or "", target_text, re.I | re.S))
-    elif c.kind == "contains_any":
-        ok = bool(re.search(c.pattern or "", target_text, re.I | re.S))
+    elif c.kind == "contains" or c.kind == "contains_any":
+        ok = bool(re.search(c.pattern or "", target_text, re.IGNORECASE | re.DOTALL))
     elif c.kind == "not_contains":
         # Missing files do not get credit for absence; they are usually breadth gaps.
-        ok = exists(root, c.path or "") and not bool(re.search(c.pattern or "", target_text, re.I | re.S))
+        ok = exists(root, c.path or "") and not bool(re.search(c.pattern or "", target_text, re.IGNORECASE | re.DOTALL))
     elif c.kind == "line_max":
         if not exists(root, c.path or ""):
             ok = False

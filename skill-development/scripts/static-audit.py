@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import re
-import sys
 from pathlib import Path
 
 DEV_ROOT = Path(__file__).resolve().parents[1]
@@ -55,7 +54,7 @@ def check_patterns(patterns: list[tuple[str, str, str]], severity: str) -> list[
             findings.append(f"{severity} {rel}: missing file for check: {message}")
             continue
         text = read_rel(rel)
-        m = re.search(pattern, text, flags=re.S)
+        m = re.search(pattern, text, flags=re.DOTALL)
         if m:
             findings.append(f"{severity} {rel}:{line_for(text, m.start())}: {message}")
     return findings
