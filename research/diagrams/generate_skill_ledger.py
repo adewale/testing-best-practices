@@ -180,7 +180,6 @@ def build():
     for tier_no, tier_name, gloss, items in LEDGER:
         tcol = TIER_INK[tier_no]
 
-        block_top = y
 
         # ---- left rail: big numeral + tier name + gloss ------------------
         p.append(t(M, y + 50, str(tier_no), size=SZ_NUM, weight="700",

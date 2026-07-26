@@ -12,8 +12,8 @@ Design rules applied (from the tufte skill — principles.md / kill-list.md):
   - each ordinal column on its own labeled low->high scale (honest)
   - erase redundant data-ink: position encodes level; the word is dropped
 """
-from html import escape
 import pathlib
+from html import escape
 
 # --- Tufte tokens -------------------------------------------------------------
 INK = "#1a1a1a"
@@ -168,7 +168,6 @@ def view_table():
 def view_small_multiples():
     W, H = 1320, 720
     name_x = 40
-    names_w = 196
     panel0 = 250
     panel_w = 210
     strip_w = 150

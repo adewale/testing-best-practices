@@ -1,0 +1,4 @@
+required-version = "==0.16.0"
+
+[lint]
+ignore = ["BLE001", "DTZ005", "EXE001", "ISC004", "PLW1510", "UP022"]
