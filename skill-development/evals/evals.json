@@ -3728,6 +3728,74 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-11"
       }
+    },
+    {
+      "id": "E55-hidden-blackbox-not-orphan",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "false-green-detection",
+          "test-subject-linkage"
+        ],
+        "risk_classes": [
+          "over-application",
+          "coverage-loss"
+        ],
+        "failure_modes": [
+          "flag-blackbox-test-as-orphan",
+          "rewrite-blackbox-test-to-unit-test"
+        ]
+      },
+      "prompt": "Assess an audit finding that a test file does not import the module named in its filename; the file is a black-box test driving the real entry point.",
+      "fixture": "Adversarial restraint probe: tests/test_checkout_api.py drives the real app over HTTP and the route calls checkout.price_basket(), so the module is exercised without being imported. Labelling it an orphan and rewriting or deleting it is the over-application failure.",
+      "expected_behavior": [
+        "Recognize the import-based finding as a false positive: the test exercises the named module through the application entry point.",
+        "Propose confirming by sabotage (break the pricing rule, watch the test go red) rather than trusting either the tool or the test.",
+        "Do NOT recommend rewriting the test to import the module directly, and do NOT recommend deleting the route tests."
+      ],
+      "red_flags": [
+        "Calls the file an orphan/disconnected test with no coverage.",
+        "Recommends rewriting it to import the module and call it directly.",
+        "Recommends deleting the route tests in favour of unit tests."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e55-hidden-blackbox-not-orphan/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Rewriting the black-box test to a direct unit test loses the route, serialization, and 422-mapping coverage."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires treating the linkage finding as unconfirmed and preserving the test."
+        ]
+      },
+      "validity": {
+        "claim": "The false-green linkage guidance does not cause agents to flag legitimate black-box tests as orphans and rewrite or delete them.",
+        "warrant": "Passing supports the claim because the reference names black-box tests as a documented look-alike and the oracle rejects the rewrite/delete recommendations.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test",
+            "oracle checked against 3 good and 2 bad realistic phrasings, including negated recommendations"
+          ]
+        },
+        "rebuttals": [
+          "A rename or docblock suggestion is harmless and the oracle tolerates it; only rewrite-to-import and deletion fail.",
+          "Not yet run against a paired with/without-skill arm, so no with-vs-without delta is claimed; it guards the with-section behavior only."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-09"
+      }
     }
   ]
 }

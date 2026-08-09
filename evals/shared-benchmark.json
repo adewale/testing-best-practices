@@ -525,7 +525,7 @@
         {
           "name": "red-evidence-honesty",
           "type": "regex",
-          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['’]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
+          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['\u2019]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
           "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence."
         },
         {
@@ -1524,6 +1524,75 @@
       "success_goals": [
         "outcome",
         "style"
+      ]
+    },
+    {
+      "id": "neg-no-orphan-label-blackbox",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "A repo audit flags tests/test_checkout_api.py under \"test files that do not import the module named in their filename\". That file starts the real application, sends HTTP requests to it, and asserts on exact totals in the JSON responses; the pricing rules live in the module the filename names. Say what should be done about the finding.",
+      "expected_behavior": [
+        "Treat the import-based finding as unconfirmed rather than as a defect.",
+        "Explain that the named module is exercised through the running application even though it is never imported.",
+        "Name a concrete confirmation step: break the pricing rule and check that this test goes red.",
+        "Preserve the test; at most suggest a rename, docblock, or tool allowlist entry."
+      ],
+      "assertions": [
+        {
+          "name": "recognises-indirect-coverage",
+          "type": "contains_any",
+          "values": [
+            "false positive",
+            "black-box",
+            "blackbox",
+            "end-to-end",
+            "entry point"
+          ],
+          "description": "A good answer names the indirect-coverage shape; none of these terms appear in the prompt."
+        },
+        {
+          "name": "confirmation-step",
+          "type": "contains_any",
+          "values": [
+            "sabotage",
+            "goes red",
+            "watch it fail",
+            "temporarily change",
+            "break the"
+          ],
+          "description": "Must name a concrete way to confirm the linkage instead of trusting the tool or the test."
+        },
+        {
+          "name": "no-rewrite-to-unit-test",
+          "type": "not_regex",
+          "pattern": "(?mi)(?:^[ \\t]*(?:[-*\\d.)]+[ \\t]*)?|(?<=[.!?]\\s))(?:rewrite|replace|convert|refactor)\\b[^.]{0,80}\\b(?:import|unit test)\\b",
+          "description": "Must not recommend rewriting the black-box test into a direct unit test. Anchored to line/sentence start so negated advice (\"do not rewrite ...\") is not punished."
+        },
+        {
+          "name": "no-delete-recommendation",
+          "type": "not_regex",
+          "pattern": "(?mi)(?:(?:^[ \\t]*(?:[-*\\d.)]+[ \\t]*)?|(?<=[.!?]\\s))(?:delete|remove|drop)\\b[^.]{0,60}\\btests?\\b|\\btests?\\b(?:(?!\\bnot\\b)[^.]){0,50}\\bbe\\s+(?:deleted|removed|dropped)\\b)",
+          "description": "Must not recommend deleting the tests that carry the coverage. Anchored to line/sentence start, plus a passive form guarded against negation."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Evidence before action",
+            "Coverage preservation"
+          ]
+        }
+      ],
+      "tags": [
+        "false-green",
+        "over-application",
+        "evidence-honesty"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
       ]
     }
   ],

@@ -57,6 +57,7 @@ Topical references by trigger:
 - Time, timers, schedules, sleeps, flaky time tests, background threads/async work tests can only reach by sleeping → `references/deterministic-time.md`
 - External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
 - CLI/plugin/docs registry sync → `references/doc-sync-testing.md`
+- Suite that never fails, auditing tests you did not write, suspiciously green lanes, tests that may not run at all, or before deleting a test → `references/false-green.md`
 - High coverage but escaping bugs → `references/mutation-testing.md`
 - Small finite state spaces → `references/exhaustive-testing.md`
 - Arithmetic/domain operators/laws → `references/mathematical-properties.md`
@@ -98,6 +99,12 @@ Coverage shows what ran; it does not prove bugs would be caught. Prefer branch c
 Assertion count is a heuristic, not a law. Example-based behavior tests often need multiple meaningful assertions to verify structure, state, and negative cases. But a property test, table row, or exception test may have one excellent oracle. Flag weak sole assertions such as “not empty,” `toBeDefined()`, `toBeTruthy()`, `Assert.IsNotNull(result)`, or logging without assertions.
 
 For sanitizers, validators, filters, auth/security checks, and transformations, verify both directions where applicable: dangerous/invalid content is rejected or removed, and safe/valid content is preserved.
+
+### A green test is a claim; sabotage is the evidence
+
+Coverage, test names, and grep show a test *ran*, not that it *can fail*. Tests that cannot fail, that never touch the code they name, or that no runner collects are invisible to coverage and test counts alike (signals under Detect mode). Before citing a test as coverage, break the code it names and confirm that specific test goes red.
+
+Hold your own findings to the same standard. These detectors over-report badly: in one 250-file audit, linkage checks went 34 findings → 17 real, and a text scan 17 → 5 because 13 matches were the audit's own prose describing the antipattern. Report the sabotage that confirmed a finding, or mark it **unconfirmed**. A grep is evidence of neither coverage nor its absence. `references/false-green.md` has the catalog, and the look-alikes to leave alone.
 
 ### Prefer real behavior over mocks
 
@@ -174,15 +181,18 @@ For transformations or complex generated output, use golden files with explicit 
 
 Report evidence by severity and include positive observations. Check:
 
-1. **Sabotage / false confidence**: skipped/focused tests, no assertions, logging-not-asserting, commented-out assertions, always-true assertions.
-2. **Oracle strength**: weak sole assertions, missing negative/error/state/structural assertions, tautologies.
-3. **Mock-reality drift**: hardcoded mocks that would not notice real API/schema changes.
-4. **Tier integrity**: unit tests hitting live network, integration tests mocking every boundary they claim to exercise, E2E tests that mock the system under test.
-5. **Determinism**: sleeps, wall-clock time, unseeded random, order dependence, global state leaks.
-6. **Coverage quality**: branch coverage, mutation/gap analysis for high-coverage suites with escaping bugs.
-7. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
-8. **Lifecycle fit**: throwaway probes over-tested, reusable assets under-tested, or structure-only changes getting behavior-test theater.
-9. **Example quality**: business examples buried in UI scripts, unreadable fixtures, or helpers that form a DSL but have no tests of their own.
+1. **Sabotage / false confidence**: skipped/focused tests, no assertions, logging-not-asserting, commented-out assertions, always-true assertions, self-comparisons, assertions swallowed by their own `catch`, and suites whose case list can be empty.
+2. **Linkage and scheduling**: tests that never import the module they name or re-implement it, and test files no runner collects or that sit in a `continue-on-error` lane. See `references/false-green.md`.
+3. **Oracle strength**: weak sole assertions, missing negative/error/state/structural assertions, tautologies.
+4. **Mock-reality drift**: hardcoded mocks that would not notice real API/schema changes.
+5. **Tier integrity**: unit tests hitting live network, integration tests mocking every boundary they claim to exercise, E2E tests that mock the system under test.
+6. **Determinism**: sleeps, wall-clock time, unseeded random, order dependence, global state leaks.
+7. **Coverage quality**: branch coverage, mutation/gap analysis for high-coverage suites with escaping bugs.
+8. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
+9. **Lifecycle fit**: throwaway probes over-tested, reusable assets under-tested, or structure-only changes getting behavior-test theater.
+10. **Example quality**: business examples buried in UI scripts, unreadable fixtures, or helpers that form a DSL but have no tests of their own.
+
+Confirm findings by sabotage before reporting them as defects, and say which ones remain unconfirmed.
 
 ### Upgrade mode
 
@@ -212,6 +222,11 @@ Use concrete search signals from `references/antipatterns.md`:
 - Mock return values identical to assertions.
 - Global state/env/registry mutations without cleanup.
 - Snapshot/golden updates without diff review.
+- Self-comparisons (`assertEqual(x, x)`), `expect(true).toBe(true)`, assertions inside `try` with a `catch` that accepts any error, `.catch(() => {})`, `skip(true, ...)`, guards false on every run.
+- Case lists read from a directory/glob with no floor assertion on the count.
+- Test files no runner collects, `continue-on-error` CI jobs, and tests that never import the module their name claims (or define their own copy of it).
+
+Strip comments and docstrings before matching — prose describing an antipattern matches it — then confirm each hit by sabotage before calling it a defect.
 
 ## Validation loop
 
@@ -220,9 +235,10 @@ After writing or changing tests:
 1. Run the nearest relevant test command.
 2. If bug-fix TDD was intended, report red evidence separately from green evidence; if the pre-fix failing run was not observed, call the red phase unverified instead of claiming completed TDD.
 3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling.
-4. For security/transformation tests, verify both rejection/removal and preservation.
-5. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
-6. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.
+4. Confirm each new test can fail: verify the runner actually collected it (counts went up), and that it goes red when the behavior it names is broken. A test that passes before the fix is not a regression test.
+5. For security/transformation tests, verify both rejection/removal and preservation.
+6. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
+7. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.
 
 ## Final report contract
 

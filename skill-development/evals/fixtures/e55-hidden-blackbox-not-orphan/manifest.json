@@ -1,0 +1,11 @@
+{
+  "eval_id": "E55-hidden-blackbox-not-orphan",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "recognizes a test that drives the real entry point as black-box coverage, not an orphan",
+    "does NOT recommend rewriting it to import the named module or deleting it (over-application guard)"
+  ]
+}

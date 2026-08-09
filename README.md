@@ -107,6 +107,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 | `references/deterministic-time.md` | Code depends on time, timers, scheduling, flaky time tests, or background work reachable only by sleeps |
 | `references/vcr-cassettes.md` | Code calling external APIs |
 | `references/doc-sync-testing.md` | CLI commands or plugin hooks in docs |
+| `references/false-green.md` | A suite that never fails, auditing tests you did not write, suspiciously green lanes, tests that may not run at all, or before deleting a test |
 | `references/mutation-testing.md` | Verifying test suite catches real bugs |
 | `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |
 | `references/mathematical-properties.md` | Domain objects with arithmetic |
