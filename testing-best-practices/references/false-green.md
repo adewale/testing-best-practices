@@ -48,6 +48,27 @@ catch (e) { expect(e).toBeDefined(); }
   rather than narrowing the generator.
 - Assert the subprocess/connection *succeeded* before asserting on its output.
 
+### Assert the precondition actually held
+
+A postcondition proves nothing if the setup silently did nothing. A test
+asserted that the last cell in a strip was reachable — it scrolled with
+`scrollIntoViewIfNeeded`, then checked the cell cleared a sticky column. But
+that API stops as soon as the element is inside the scrollport, which for a
+sticky overlay is not the same as being clear of it; and if the strip already
+fits, no scrolling happens at all and the reachability claim is vacuous. The
+fix was to scroll to the container's maximum **and assert the scroll position
+moved**.
+
+Generalize: whenever setup can no-op, assert it took effect.
+
+| Setup | Assert it happened |
+|---|---|
+| Scroll / resize / navigate | the position or viewport actually changed |
+| Seed a database or cache | rows inserted > 0; the cache was cold before |
+| Toggle a flag or feature | it was in the other state beforehand |
+| Expire a TTL, advance a clock | the clock moved past the boundary |
+| Apply a mutation to a fixture | the state differs from before (see "Fixture at default") |
+
 ## B. Disconnected — the test does not exercise what it names
 
 | Kind | What |

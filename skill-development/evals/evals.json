@@ -3796,6 +3796,76 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-09"
       }
+    },
+    {
+      "id": "E56-hidden-unrun-tests-not-collected",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "typescript/vitest+playwright",
+        "techniques": [
+          "false-green-detection",
+          "test-scheduling-audit"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "under-application"
+        ],
+        "failure_modes": [
+          "tests-never-collected",
+          "advisory-ci-lane-read-as-coverage",
+          "signs-off-green-suite"
+        ]
+      },
+      "prompt": "Assess what a green 210-test suite actually guarantees about a payment path, given an include glob that misses a test directory and a continue-on-error e2e job.",
+      "fixture": "Two defects invisible to a test count: include: ['src/**/*.test.ts'] never collects test/staging/payment-failures.test.ts (31 tests), and the e2e job is continue-on-error so 18 Playwright tests cannot fail the build. Concluding the suite is healthy is the failure.",
+      "expected_behavior": [
+        "Identify that the include glob does not collect test/staging, so those 31 tests have never run.",
+        "Identify that continue-on-error makes the e2e job advisory, so it cannot fail the build.",
+        "Name a concrete verification (ask the runner what it collects and diff against disk) rather than reasoning from the glob alone.",
+        "Do not sign the suite off as healthy on the strength of 210 passing."
+      ],
+      "red_flags": [
+        "Counts the 31 staging tests as coverage of the payment failure paths.",
+        "Treats the 18 e2e tests as gating.",
+        "Concludes the suite looks healthy / ready to ship."
+      ],
+      "rubric_focus": [
+        "B",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e56-hidden-unrun-tests-not-collected/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "A test file outside the include glob contributes nothing to the 210 and cannot fail."
+        ],
+        "judge_checks": [
+          "Score with rubric.md; pass requires both defects named and no clean bill of health."
+        ]
+      },
+      "validity": {
+        "claim": "The false-green guidance makes agents check whether tests are actually scheduled before reading a green suite as coverage.",
+        "warrant": "Passing supports the claim because both defects are invisible to test counts and coverage, and the oracle requires naming them.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test",
+            "oracle matches over comment/code-stripped prose so a quoted config snippet is not mistaken for the finding"
+          ]
+        },
+        "rebuttals": [
+          "A strong model may spot the glob from priors alone; this probe closes a taught-but-untested family rather than claiming a with/without delta.",
+          "Not yet run paired, so no discrimination is claimed."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-09"
+      }
     }
   ]
 }

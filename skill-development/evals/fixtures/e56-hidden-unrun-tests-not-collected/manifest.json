@@ -1,0 +1,12 @@
+{
+  "eval_id": "E56-hidden-unrun-tests-not-collected",
+  "language": "typescript",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "notices that the include glob does not collect test/staging, so 31 tests have never run",
+    "notices the e2e job is continue-on-error and cannot fail the build",
+    "does NOT sign the green suite off as healthy"
+  ]
+}

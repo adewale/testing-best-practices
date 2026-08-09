@@ -34,7 +34,7 @@
     ],
     "analyst_pass": "After benchmark, review saturated, flaky, non-discriminating, and with-skill-failed cases before editing the skill."
   },
-  "notes": "Baseline smoke 2026-06-08 flagged neg-no-red-claim as saturated/non-discriminating: both variants passed because the objective accepted the leaked keyword \"red\". That case now avoids prompt keyword leakage, requires explicit red-vs-green evidence separation, and checks against unqualified TDD success claims.",
+  "notes": "Baseline smoke 2026-06-08 flagged neg-no-red-claim as saturated/non-discriminating: both variants passed because the objective accepted the leaked keyword \"red\". 2026-08-09: the remaining six neg-* cases had the same defect in a sharper form - each prompt stated the verdict it was testing for (\"do not add sampled property tests...\"), so both arms passed by echoing a single keyword. All six were rewritten to situation-only prompts with answer-produced assertion values, plus not_regex guards anchored to line/sentence start so negated advice is not false-negatived. No objective was loosened.",
   "cases": [
     {
       "id": "pos-deterministic-time",
@@ -382,29 +382,46 @@
       "id": "neg-no-pbt-finite",
       "split": "tune",
       "kind": "adversarial",
-      "prompt": "Do not add sampled property tests when exhaustive finite cases are better.",
+      "prompt": "Write tests for `describe_state(s)` in our Python billing module. It maps a `Status` enum with a small closed set of members - Draft, Active, Suspended, Closed - to a human-readable label. The project already depends on Hypothesis and uses it for the invoice parser.",
       "expected_behavior": [
-        "Avoid over-application and preserve necessary boundary tests."
+        "Cover every member of the closed set directly, e.g. a table/parametrize over all of them.",
+        "Do not reach for a sampled property-based harness on a domain this small.",
+        "May note that a sampled generator would cover the same space less reliably."
       ],
       "assertions": [
         {
-          "name": "avoid-no-pbt-finite",
+          "name": "covers-whole-domain",
           "type": "contains_any",
           "values": [
-            "not property"
+            "all four",
+            "each of the four",
+            "every member",
+            "exhaustive",
+            "parametrize",
+            "table"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "A good answer names covering the whole closed set; the prompt never says how many members there are or names the technique."
+        },
+        {
+          "name": "no-sampled-harness-for-finite-domain",
+          "type": "not_regex",
+          "pattern": "(?mi)(?:^[ \\t]*(?:[-*\\d.)]+[ \\t]*)?|(?<=[.!?]\\s))(?:use|add|reach for|write|apply)\\b[^.]{0,60}\\b(?:@given|hypothesis|property[- ]based|st\\.sampled_from)\\b",
+          "description": "Must not affirmatively prescribe a sampled property harness for a four-member enum. Anchored so 'Hypothesis is not needed here' is safe."
         },
         {
           "name": "qualitative-review",
           "type": "judge",
           "rubric": [
             "Proportionality",
-            "Type-vs-test safety"
+            "Domain coverage",
+            "Technique selection"
           ]
         }
       ],
-      "tags": [],
+      "tags": [
+        "over-application",
+        "exhaustive-vs-sampled"
+      ],
       "domain": "testing-quality",
       "difficulty": "extended",
       "success_goals": [
@@ -415,29 +432,48 @@
       "id": "neg-no-mock-module-under-test",
       "split": "tune",
       "kind": "adversarial",
-      "prompt": "Do not mock the module under test just to assert calls.",
+      "prompt": "I want to unit-test `slugify()` in `src/slugify.ts`. It is awkward to predict its output for accented characters, so my plan is to use `vi.mock('./slugify')` and set a return value, then assert on that. Does that work? Write the test.",
       "expected_behavior": [
-        "Avoid over-application and preserve necessary boundary tests."
+        "Decline the proposed approach: replacing the module under test makes the assertion tautological.",
+        "Call the real function and assert its actual output, including the accented-character cases the user found awkward.",
+        "Do not emit a test that mocks the module under test."
       ],
       "assertions": [
         {
-          "name": "avoid-no-mock-module-under-test",
+          "name": "names-the-tautology",
           "type": "contains_any",
           "values": [
-            "public behavior"
+            "tautolog",
+            "testing the mock",
+            "tests the mock",
+            "asserting the mock",
+            "would pass",
+            "no matter what",
+            "circular"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "A good answer explains why the plan proves nothing; none of these terms are in the prompt."
+        },
+        {
+          "name": "no-mock-of-subject",
+          "type": "not_regex",
+          "pattern": "(?m)^\\s*(?:vi|jest)\\.mock\\(\\s*['\\\"]\\.{0,2}/?slugify",
+          "description": "Must not actually emit the mock of the module under test in the delivered test."
         },
         {
           "name": "qualitative-review",
           "type": "judge",
           "rubric": [
             "Proportionality",
-            "Type-vs-test safety"
+            "Oracle strength",
+            "Declining a bad premise"
           ]
         }
       ],
-      "tags": [],
+      "tags": [
+        "over-application",
+        "tautological-test",
+        "mock-discipline"
+      ],
       "domain": "testing-quality",
       "difficulty": "extended",
       "success_goals": [
@@ -448,29 +484,59 @@
       "id": "neg-do-not-delete-boundary-security",
       "split": "tune",
       "kind": "adversarial",
-      "prompt": "Types exist internally; do not delete boundary/security tests.",
+      "prompt": "We introduced a branded `Email` type with a smart constructor at our HTTP boundary, so internal functions now only ever receive an already-validated value. Please clean up the tests this makes redundant. The suite currently has:\n(a) test_service_rejects_malformed_email\n(b) test_repo_rejects_malformed_email\n(c) test_api_rejects_malformed_email_from_request_body\n(d) test_login_rejects_email_containing_sql_metacharacters",
       "expected_behavior": [
-        "Avoid over-application and preserve necessary boundary tests."
+        "Remove (a) and (b): internal layers downstream of the constructor re-check the same invariant.",
+        "Retain (c): it is the boundary parser's own test, against hostile input.",
+        "Retain (d): it defends a different failure mode (injection), not the same one.",
+        "State the safety checks that justify each deletion rather than deleting by pattern."
       ],
       "assertions": [
         {
-          "name": "avoid-do-not-delete-boundary-security",
+          "name": "retains-boundary-and-security",
           "type": "contains_any",
           "values": [
-            "keep"
+            "keep",
+            "retain",
+            "preserve",
+            "do not delete",
+            "leave"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "The prompt asks only to 'clean up'; a good answer introduces the idea of keeping some. Prompt-echoed values removed."
+        },
+        {
+          "name": "different-failure-mode-reasoning",
+          "type": "contains_any",
+          "values": [
+            "different failure mode",
+            "trust boundary",
+            "hostile",
+            "injection",
+            "adversar"
+          ],
+          "description": "Must justify retention by failure mode, not by taste."
+        },
+        {
+          "name": "no-boundary-test-deletion",
+          "type": "not_regex",
+          "pattern": "(?mi)(?:^[ \\t]*(?:[-*\\d.)]+[ \\t]*)?|(?<=[.!?]\\s))(?:delete|remove|drop)\\b[^.]{0,70}\\b(?:\\(c\\)|\\(d\\)|test_api_rejects|test_login_rejects)",
+          "description": "Must not recommend deleting the boundary or security tests. Anchored so 'do not delete (c)' is safe."
         },
         {
           "name": "qualitative-review",
           "type": "judge",
           "rubric": [
+            "Type-vs-test safety",
             "Proportionality",
-            "Type-vs-test safety"
+            "Deletion safety checklist"
           ]
         }
       ],
-      "tags": [],
+      "tags": [
+        "over-application",
+        "cbc-deletion-safety",
+        "security"
+      ],
       "domain": "testing-quality",
       "difficulty": "extended",
       "success_goals": [
@@ -481,29 +547,54 @@
       "id": "neg-no-mutation-tiny",
       "split": "tune",
       "kind": "adversarial",
-      "prompt": "Tiny throwaway script; do not demand mutation testing.",
+      "prompt": "I wrote a 30-line Python script that scrapes one page and prints a CSV to stdout. I will run it about twice this week and then delete it. What testing does it need before I run it?",
       "expected_behavior": [
-        "Avoid over-application and preserve necessary boundary tests."
+        "Scale the answer to the asset's lifetime: a smoke run, or nothing beyond eyeballing the output.",
+        "Do not prescribe mutation testing, a coverage gate, or a property-based suite for a two-run throwaway.",
+        "May name the one thing worth a check if the script has a genuinely risky step."
       ],
       "assertions": [
         {
-          "name": "avoid-no-mutation-tiny",
+          "name": "proportionate-to-lifetime",
           "type": "contains_any",
           "values": [
+            "throwaway",
             "proportionate",
-            "not mutation"
-          ]
+            "smoke",
+            "lifetime",
+            "not worth",
+            "minimal",
+            "no tests",
+            "almost nothing",
+            "nothing beyond",
+            "overkill",
+            "cheapest",
+            "run it once",
+            "eyeball",
+            "more than the script",
+            "not much"
+          ],
+          "description": "A good answer scales the work to the asset's lifetime. Values cover the shapes real answers use ('almost nothing', 'overkill', 'run it once') rather than one spelling; the prompt states the facts without naming the concept."
+        },
+        {
+          "name": "no-heavyweight-prescription",
+          "type": "not_regex",
+          "pattern": "(?mi)(?:^[ \\t]*(?:[-*\\d.)]+[ \\t]*)?|(?<=[.!?]\\s))(?:use|add|run|apply|set up|introduce|write)\\b[^.]{0,60}\\b(?:mutation testing|mutmut|cosmic-ray|cargo-mutants|coverage (?:gate|threshold)|property[- ]based)\\b",
+          "description": "Must not affirmatively prescribe heavyweight technique for a two-run throwaway. Anchored so 'mutation testing would be overkill' is safe."
         },
         {
           "name": "qualitative-review",
           "type": "judge",
           "rubric": [
             "Proportionality",
-            "Type-vs-test safety"
+            "Lifecycle fit"
           ]
         }
       ],
-      "tags": [],
+      "tags": [
+        "over-application",
+        "lifecycle-fit"
+      ],
       "domain": "testing-quality",
       "difficulty": "extended",
       "success_goals": [
@@ -590,30 +681,60 @@
       "id": "neg-no-live-api-ci",
       "split": "tune",
       "kind": "adversarial",
-      "prompt": "Tests currently hit live API in CI; fix without live network.",
+      "prompt": "Our CI suite calls the real Stripe sandbox over the network. It goes red whenever their sandbox is slow, and it fails outright for contributors who have no credentials. How should we fix these tests?",
       "expected_behavior": [
-        "Avoid over-application and preserve necessary boundary tests."
+        "Replace the network dependency with recorded real responses or committed fixtures.",
+        "Keep a single real-API contract check outside the default lane rather than deleting real coverage entirely.",
+        "Do not treat retries or longer timeouts as the fix."
       ],
       "assertions": [
         {
-          "name": "avoid-no-live-api-ci",
+          "name": "recorded-response-approach",
           "type": "contains_any",
           "values": [
-            "no live",
             "cassette",
-            "fixture"
-          ]
+            "recorded",
+            "record",
+            "replay",
+            "committed fixture",
+            "vcr"
+          ],
+          "description": "Good answers name the recording approach; the prompt says only that the tests call the network."
+        },
+        {
+          "name": "keeps-a-real-contract-check",
+          "type": "contains_any",
+          "values": [
+            "contract",
+            "nightly",
+            "scheduled",
+            "out of band",
+            "separate lane",
+            "drift"
+          ],
+          "description": "Must preserve some real-API signal rather than mocking the provider away entirely."
+        },
+        {
+          "name": "no-retry-bandaid",
+          "type": "not_regex",
+          "pattern": "(?mi)(?:^[ \\t]*(?:[-*\\d.)]+[ \\t]*)?|(?<=[.!?]\\s))(?:add|use|increase|bump|introduce)\\b[^.]{0,50}\\b(?:retries|retry|timeout|flaky[- ]retry|rerun)\\b",
+          "description": "Must not prescribe retries or longer timeouts as the fix. Anchored so 'retries would only hide it' is safe."
         },
         {
           "name": "qualitative-review",
           "type": "judge",
           "rubric": [
-            "Proportionality",
-            "Type-vs-test safety"
+            "Technique selection",
+            "Mock-reality drift",
+            "Proportionality"
           ]
         }
       ],
-      "tags": [],
+      "tags": [
+        "over-application",
+        "mock-reality-drift",
+        "flaky"
+      ],
       "domain": "testing-quality",
       "difficulty": "extended",
       "success_goals": [
@@ -624,27 +745,39 @@
       "id": "neg-no-assertion-count-blind",
       "split": "tune",
       "kind": "adversarial",
-      "prompt": "A property test has one strong oracle; do not count assertions blindly.",
+      "prompt": "A review comment on our PR says the test file is weak because it averages 1.2 assertions per test and our team guideline is 3. The file is mostly Hypothesis tests, and each one's body is a single line: `assert decode(encode(x)) == x`. Is the review comment right? What should we do?",
       "expected_behavior": [
-        "Avoid over-application and preserve necessary boundary tests."
+        "Disagree with the mechanical reading: a single strong oracle can be worth more than three weak ones.",
+        "Name what actually measures oracle strength here, e.g. what a mutation would kill.",
+        "Do not pad the tests with extra assertions to satisfy the density guideline."
       ],
       "assertions": [
         {
-          "name": "avoid-no-assertion-count-blind",
+          "name": "rejects-blind-counting",
           "type": "regex",
-          "pattern": "(?is)(one excellent oracle|assertion count.{0,80}heuristic|quality over quantity|meaningful oracle|single strong property)",
-          "description": "Rejects assertion-count theater when one oracle is strong."
+          "pattern": "(?is)(one excellent oracle|assertion count.{0,80}heuristic|quality over quantity|meaningful oracle|single strong (?:property|oracle)|roundtrip|round-trip|not a law|heuristic, not)",
+          "description": "Rejects assertion-count theater when one oracle is strong. 'roundtrip' is answer-produced; the prompt only shows the expression."
+        },
+        {
+          "name": "no-padding",
+          "type": "not_regex",
+          "pattern": "(?mi)(?:^[ \\t]*(?:[-*\\d.)]+[ \\t]*)?|(?<=[.!?]\\s))(?:add|pad|split|introduce)\\b[^.]{0,60}\\b(?:to (?:reach|meet|hit)|assertions? per test|density (?:target|guideline))",
+          "description": "Must not recommend padding assertions to hit the guideline. Anchored so 'do not add assertions just to hit 3' is safe."
         },
         {
           "name": "qualitative-review",
           "type": "judge",
           "rubric": [
             "Proportionality",
-            "Type-vs-test safety"
+            "Oracle strength",
+            "Pushing back on a bad metric"
           ]
         }
       ],
-      "tags": [],
+      "tags": [
+        "over-application",
+        "assertion-quality"
+      ],
       "domain": "testing-quality",
       "difficulty": "extended",
       "success_goals": [

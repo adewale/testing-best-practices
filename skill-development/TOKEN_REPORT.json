@@ -27,15 +27,16 @@
   },
   "local-working-tree": {
     "skill_md": {
-      "chars": 18683,
-      "words": 2590,
-      "approx_tokens_chars_div_4": 4671
+      "chars": 18761,
+      "words": 2602,
+      "approx_tokens_chars_div_4": 4690
     },
     "installable_total": {
-      "chars": 129182,
-      "words": 17918,
-      "approx_tokens_chars_div_4": 32296
+      "chars": 133765,
+      "words": 18698,
+      "approx_tokens_chars_div_4": 33441
     },
     "file_count": 19
   }
 }
+

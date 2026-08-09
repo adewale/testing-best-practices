@@ -260,6 +260,36 @@ Two failure modes to defend against:
 - **A digest over nondeterministic ordering gives false failures** — hashing
   `str(a_set)` fails randomly. Canonicalize first, always.
 
+## Visual baselines encode their renderer
+
+A committed screenshot baseline is not a fact about your UI; it is a fact about
+your UI *rendered by one browser build, one font stack, one DPI*. Three failure
+modes follow, and all three read as product regressions when they are not:
+
+- **Captured on the wrong machine.** A baseline generated in a dev container
+  whose Chromium reports 1194px will not match a CI runner at 1200px. Regenerate
+  baselines **on the runner image**, via a dedicated workflow — never from a
+  local container or a laptop.
+- **Platform font rendering.** The same DOM antialiases differently on Linux and
+  macOS. Pin visual specs to one platform lane (`chromium-linux` baselines, or
+  macOS-only), and keep that lane separate from the functional one so a font
+  diff cannot block a behavior fix.
+- **The test changed the layout it is capturing.** One suite hid a sibling with
+  `display:none` before capturing; because the container was flex-sized, removing
+  that line narrowed the captured element by exactly the sibling's 43px. The
+  baseline diff was real and the product was untouched. When you change what is
+  visible during capture, the baseline **must** be regenerated — that is a test
+  change, not a regression.
+
+Two habits that prevent most of it:
+
+- **Screenshot the subject, not its overlay.** Capture the element under test,
+  not a container whose sticky or floating siblings sit on top of it.
+- **Prefer an assertion to a picture** where one exists. "The cell hit-tests as
+  itself at the scrolled position" is a specific, platform-independent claim;
+  a full-strip screenshot asserting the same thing also fails on every font
+  update. Keep pixels for what only pixels can express.
+
 ## Multi-environment testing
 
 ```typescript
