@@ -219,6 +219,42 @@ Two consecutive iterations took canonical, literature-backed testability ideas (
 
 design-for-testability.md survived iteration 9 as "shipped but unproven." Iteration 10 committed a decision rule *before* any runs: discriminate on non-time fixtures (where the strong baseline is irrelevant) → keep; both arms pass → fold into deterministic-time.md. Both arms passed — the without-arms built genuine Event/WaitGroup seams from priors alone — and the fold executed without debate, keeping only the guardrails the E46 probe had validated. Without the pre-registered rule, the temptation is to keep re-testing until some fixture flatters the section; with it, deletion is just the rule firing. Sections should be cheap to remove, and the way to make them cheap is to decide the removal criterion before the evidence arrives.
 
+### A restraint probe can grade the right verdict for the wrong reason
+
+Oracle bug #7, found by reading the artifact rather than the score. `neg-no-red-claim`'s
+`green-evidence-reported` check was `contains_any: ["green evidence", ...]`, meant to
+verify the answer cites the *observed* passing run. The with-skill answer passed it — on
+the phrase "real red+green evidence" inside a forward-looking *next step* sentence, not on
+its actual (correct) report of the post-fix PASS. The same check false-negatived the
+without-skill answer, which said "I only have the post-fix PASS" — a correct citation in
+different words. One assertion, both error directions, same root cause: it matched a
+vocabulary instead of a behavioral shape. Rewritten as a regex over the shape
+(`post-fix … PASS`, `observed … green`, `Green evidence:` as a label).
+
+The general rule this sharpens: a passing score is not evidence the oracle measured what
+you think. For any assertion that decides a release, read the matched span, not just the
+boolean — `re.search(...).group(0)` is the cheapest audit in this repo. All seven oracle
+bugs so far were invisible to the score and obvious in the artifact.
+
+### Restraint probes saturate against frontier priors faster than teaching probes
+
+The 2026-08-09 paired run put all eight adversarial (`neg-*`) shared-benchmark cases
+through Sonnet with and without the skill. Seven passed in **both** arms. The unaided
+answers were not lucky: asked about a test file that imports nothing, the without-skill
+arm called the finding a false positive, identified it as black-box coverage through the
+HTTP entry point, proposed mutating the discount to confirm the linkage, and explicitly
+declined to rewrite or delete it — the taught behavior, produced from priors. Only
+`neg-no-red-claim` separated the arms, on `red-evidence-honesty`: the with-skill answer
+named the red phase unverified, the without-skill answer did not.
+
+This is the "ship the residue" lesson arriving for restraint guidance specifically. Where
+a *technique* section can still teach a non-obvious tactic, a *restraint* section is
+competing with judgement the base model already has. Two consequences: budget restraint
+sections as regression guards rather than expecting a with/without delta, and treat
+"both arms pass" on a well-formed adversarial case as a finding about the model, not a
+failure of the probe — provided the case has been shown to fail a realistic bad answer,
+which these have.
+
 ### Oracles must grade code, not prose about code
 
 Iteration 10's first grading pass failed three of four runs for "real sleep still present" — every flagged sleep was in a comment or docstring *describing the old flaky test*. Agents narrate their fixes; an oracle that greps raw text will punish exactly the outputs that explain themselves best. Strip comments and docstrings before pattern checks. (Oracle bug #5; all five across three iterations were false negatives on good work.)

@@ -621,13 +621,9 @@
         },
         {
           "name": "green-evidence-reported",
-          "type": "contains_any",
-          "values": [
-            "green evidence",
-            "passing command",
-            "observed pass"
-          ],
-          "description": "Must cite the observed passing/green command evidence rather than treating it as proof of TDD. Prompt-echoed values removed by leakage cleanup."
+          "type": "regex",
+          "description": "Must cite the OBSERVED passing run, not merely use the words 'green evidence' somewhere. Fixed 2026-08-09: the contains_any form matched 'red+green evidence' in a forward-looking next-step sentence, so it graded the right verdict for the wrong reason and false-negatived an answer that said 'I only have the post-fix PASS'.",
+          "pattern": "(?i)(?:post[- ]?fix|after the fix|only observed)[^.\\n]{0,60}(?:pass|green)|green evidence\\s*[:\\-]|observed[^.\\n]{0,30}(?:pass|green)|(?:=>|->|\u2192)\\s*PASS"
         },
         {
           "name": "next-red-verification-step",
