@@ -1,0 +1,11 @@
+{
+  "eval_id": "E55-python-no-logic-in-tests",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "states expected URLs as literal values instead of recomputing them from BASE_URL with the SUT's own concatenation",
+    "the literal expectations use the correct single-slash form, so the upgraded tests fail against the double-slash bug"
+  ]
+}

@@ -3728,6 +3728,263 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-06-11"
       }
+    },
+    {
+      "id": "E55-python-no-logic-in-tests",
+      "critical": false,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "literal-expectations",
+          "logic-in-tests-detection"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "shared-bug-with-sut"
+        ],
+        "failure_modes": [
+          "computed-expected-value",
+          "expectation-mirrors-implementation"
+        ]
+      },
+      "prompt": "Upgrade a green URL-builder test suite that misses a user-reported double-slash bug because every expected value is recomputed from BASE_URL with the implementation's own concatenation.",
+      "fixture": "evals/fixtures/e55-python-no-logic-in-tests: urls.py concatenates base + \"/users/\" + user (double slash when base ends with /); tests derive expectations the same way, so they share the bug and stay green. Cue-free: the prompt reports the symptom, never the technique.",
+      "expected_behavior": [
+        "Restate expected URLs as literal single-slash values so the upgraded tests fail against the current bug (and report that red evidence).",
+        "Remove expectations computed from BASE_URL/base concatenation; expected values must not reuse the SUT's own construction logic."
+      ],
+      "red_flags": [
+        "Keeps or adds assertions whose expected side is BASE_URL + ... or an f-string over BASE_URL.",
+        "\"Fixes\" the suite by asserting the buggy double-slash output as the expected value."
+      ],
+      "rubric_focus": [
+        "C",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e55-python-no-logic-in-tests/oracle.py over the candidate test file (literal single-slash expectation present; no BASE_URL-derived expected values; no enshrined double slash)"
+        ],
+        "runtime_checks": [
+          "Upgraded tests, run against the fixture's urls.py, fail on the double-slash bug (red evidence reportable)."
+        ],
+        "judge_checks": [
+          "Score with rubric.md C/H: does the answer name the computed-expectation problem and report honest red/green status?"
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes agents replace expectation logic that mirrors the SUT with literal expected values (Google Testing Blog: Don't Put Logic in Tests, 2014).",
+        "warrant": "Passing requires a literal correct-form expectation and the absence of BASE_URL-derived expected values; a candidate that keeps computed expectations cannot pass the oracle.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
+          ],
+          "baseline_probes": "2026-08-28, sonnet sub-agent, n=1/arm: no-guidance arm PASSED the oracle (wrote literal single-slash expectations, ran pytest itself, reported 6 failed/2 passed red evidence); guided arm PASSED. Baseline ceiling under this symptom-reporting prompt -> regression guard, not a version discriminator. The no-guidance candidate quoted the old computed assertion in its module docstring, which exposed a text-oracle false positive; oracle rewritten to judge AST assert/expected segments only and re-validated against both real candidates."
+        },
+        "rebuttals": [
+          "A candidate could compute expectations from an independent literal ('https://example.com' + path) which is semantically safer than reusing BASE_URL; the oracle only forbids BASE_URL/base-derived expectations, so this passes \u2014 acceptable, the shared-bug channel is what matters.",
+          "A candidate might fix urls.py instead of the tests; the deliverable wording pins the test file, and the oracle only reads the tests."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E56-go-distinct-test-values",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "deliberate-test-values",
+          "mutation"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "default-value-blindness"
+        ],
+        "failure_modes": [
+          "zero-value-test-data",
+          "key-equals-value-test-data"
+        ]
+      },
+      "prompt": "Write Go unit tests for an in-memory key-value store (Put/Get/Delete). Cue-free: nothing in the prompt mentions value choice; the oracle's seeded mutants decide.",
+      "fixture": "evals/fixtures/e56-go-distinct-test-values: kvstore.go plus a runtime oracle that runs the candidate tests against the correct implementation (must pass) and two seeded Put mutants (must fail): drop_value stores \"\" (survives zero-value test data), swap_args stores key under value (survives key==value test data).",
+      "expected_behavior": [
+        "Tests pass against the correct implementation and use distinct, non-default values per parameter.",
+        "Both seeded mutants are killed: some assertion compares a stored non-empty value, with key != value."
+      ],
+      "red_flags": [
+        "Tests only assert presence (ok bool) without comparing stored values.",
+        "Test data uses empty-string values or identical key/value strings throughout."
+      ],
+      "rubric_focus": [
+        "C",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [
+          "evals/fixtures/e56-go-distinct-test-values/oracle.py: go test passes on real impl AND fails on each of the two Put mutants"
+        ],
+        "judge_checks": [
+          "Score with rubric.md C/G: idiomatic Go table/subtest style plus value-choice judgment."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes agents choose distinct, non-default test values so default-passing and swapped-argument faults propagate to assertions (Google Testing Blog: Choosing Values for Robust Tests, 2026).",
+        "warrant": "The mutants are exactly the faults that default/duplicated values mask; killing both is only possible with deliberate value choice, so oracle outcome tracks the behavior under test.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28); mutants verified distinct from real impl"
+          ],
+          "baseline_probes": "2026-08-28, sonnet sub-agent, n=1/arm: both no-guidance and guided arms PASSED the oracle (distinct non-default values like \"alpha\"/\"first\" from habit; both mutants killed). Baseline ceiling -> regression guard. Hardening option if a discriminator is wanted: numeric-ID variant where 0 is the tempting value, or a prompt that supplies default-valued example rows to copy."
+        },
+        "rebuttals": [
+          "A capable baseline may already use distinct values from habit; if probes show ceiling, this eval guards regressions rather than discriminating versions (recorded in eval_health).",
+          "A candidate using an external test package (package kvstore_test) fails the build; the prompt pins package kvstore, so this is instruction-following, not oracle noise."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E57-python-damp-shared-fixture",
+      "critical": false,
+      "mode": "assess",
+      "taxonomy": {
+        "language_framework": "python/unittest",
+        "techniques": [
+          "damp-test-readability",
+          "logic-in-tests-detection",
+          "test-data-builder"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "over-abstraction-of-tests"
+        ],
+        "failure_modes": [
+          "shared-mutable-fixture",
+          "loop-and-branch-in-test",
+          "dry-harder-recommendation"
+        ]
+      },
+      "prompt": "Assess a billing test file whose single test loops over a module-level ACCOUNTS list (mutated in setUpClass) and computes the gold-tier expectation with the documented formula (balance * 0.1).",
+      "fixture": "evals/fixtures/e57-python-damp-shared-fixture: shared mutable module fixture + loop/branch/computed expectation in one test. Cue-free: the prompt never names DRY/DAMP or logic-in-tests.",
+      "expected_behavior": [
+        "Flags the loop/branch and the computed expectation that re-derives the rule under test (can share a bug with the implementation).",
+        "Flags the shared mutable module state mutated in setUpClass far from the assertion (cause-effect distance, cross-test coupling).",
+        "Recommends per-behavior tests with local, literal data \u2014 explicit even at the cost of duplication."
+      ],
+      "red_flags": [
+        "Recommends consolidating even more setup into shared fixtures/helpers or centralizing the discount formula in a test helper.",
+        "Praises the loop as efficient coverage."
+      ],
+      "rubric_focus": [
+        "B",
+        "C"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e57-python-damp-shared-fixture/oracle.py over the candidate assessment (flags logic-in-test AND shared-fixture distance; recommends splitting; does not recommend DRY-ing harder)"
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score with rubric.md B/C: severity-ordered findings grounded in the fixture's actual lines."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes agents assess test code by DAMP/readability criteria \u2014 logic-free tests, adjacent cause and effect \u2014 instead of applying production-code DRY instincts (Google Testing Blog: DAMP 2019, Don't Put Logic in Tests 2014, Keep Cause and Effect Clear 2017).",
+        "warrant": "The oracle's failure shapes are exactly the two miss modes: not seeing the computed expectation/shared fixture, or 'fixing' by DRY-ing harder; passing requires the DAMP-direction recommendation.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
+          ]
+        },
+        "rebuttals": [
+          "The logic-flag regex matches the bare word 'loop', so an assessment that only praises the loop could partially credit check 1; the split and over-DRY checks still gate it (the bad sample passes check 1 and still fails).",
+          "An assessment could recommend pytest.mark.parametrize with named literal rows \u2014 that is a legitimate DAMP-compatible fix; the oracle accepts it because parametrize language matches the split/explicit-data patterns."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E58-hidden-narrow-not-roundtrip",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "narrow-assertions",
+          "golden-snapshot",
+          "whole-state-roundtrip"
+        ],
+        "risk_classes": [
+          "over-application"
+        ],
+        "failure_modes": [
+          "narrowing-a-roundtrip-identity-assertion"
+        ]
+      },
+      "prompt": "A reviewer says a save/load roundtrip test comparing canonical_dump(reloaded) == before is 'too broad' and should be narrowed to the quota fields the PR touches. Assess whether the reviewer is right.",
+      "fixture": "evals/fixtures/e58-hidden-narrow-not-roundtrip: adversarial restraint probe for the incoming 'prefer narrow assertions' guidance. The whole-state canonical comparison is the roundtrip contract; narrowing it creates false confidence (golden-file-testing.md: a digest that ignores fields gives false confidence).",
+      "expected_behavior": [
+        "Defends keeping the whole-state canonical roundtrip comparison; explains that narrowing would let save/load silently drop non-quota state.",
+        "May additionally suggest a separate narrow behavior test for the quota change \u2014 the correct home for narrow assertions."
+      ],
+      "red_flags": [
+        "Agrees with the reviewer and narrows/replaces the canonical-dump comparison with quota-only assertions.",
+        "Calls the whole-state comparison brittle without distinguishing roundtrip identity from behavior tests."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e58-hidden-narrow-not-roundtrip/oracle.py over candidate output (defends whole-state comparison; rejects narrowing the roundtrip)"
+        ],
+        "runtime_checks": [
+          "The whole-state identity is the contract; restraint (no narrowing) is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md B/D; pass requires distinguishing roundtrip-identity tests from narrow behavior tests without over-applying either."
+        ]
+      },
+      "validity": {
+        "claim": "If 'prefer narrow assertions' guidance is added to the skill, it will not cause agents to narrow whole-state roundtrip/golden comparisons whose breadth is the contract.",
+        "warrant": "Passing requires an explicit defense of the whole-state comparison, and the oracle rejects the agree-and-narrow shape, so the probe guards the boundary between the new lesson and existing digest-roundtrip guidance.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
+          ]
+        },
+        "rebuttals": [
+          "A candidate could both defend the roundtrip and separately recommend narrowing it (contradictory); the oracle's defense check would pass it \u2014 accepted as unlikely and reviewable by the judge layer.",
+          "Register this probe in audit-best-practices.py section_probes when a narrow-assertions section lands in the skill, mirroring E40/E41/E46/E49/E54."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
     }
   ]
 }

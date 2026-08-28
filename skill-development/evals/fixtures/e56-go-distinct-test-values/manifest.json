@@ -1,0 +1,12 @@
+{
+  "eval_id": "E56-go-distinct-test-values",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "candidate tests pass against the correct Store implementation",
+    "tests kill the drop-value mutant (Put stores \"\"), which survives zero-value test data",
+    "tests kill the swap-args mutant (Put stores key under value), which survives key==value test data"
+  ]
+}

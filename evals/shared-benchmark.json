@@ -525,7 +525,7 @@
         {
           "name": "red-evidence-honesty",
           "type": "regex",
-          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['’]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
+          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['\u2019]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
           "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence."
         },
         {
@@ -1524,6 +1524,126 @@
       "success_goals": [
         "outcome",
         "style"
+      ]
+    },
+    {
+      "id": "pos-literal-expectations",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Upgrade a green test suite whose expected URLs are rebuilt with the code's own string concatenation; users report double-slash links the tests never catch.",
+      "expected_behavior": [
+        "State expected values independently of the implementation's construction logic and surface the masked bug."
+      ],
+      "assertions": [
+        {
+          "name": "no-logic-in-tests-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e55-python-no-logic-in-tests"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 30,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Oracle strength",
+            "Honest red/green evidence"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-damp-assess-shared-fixture",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Assess a billing test file: one looped test over a module-level accounts list mutated in setUpClass, with the gold-tier expectation computed as balance * 0.1.",
+      "expected_behavior": [
+        "Identify what makes this test hard to trust and hard to read, and recommend a restructuring that keeps the behavior visible."
+      ],
+      "assertions": [
+        {
+          "name": "damp-assess-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e57-python-damp-shared-fixture"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 30,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Finding quality",
+            "No over-abstraction of tests"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "neg-keep-roundtrip-whole",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "A reviewer wants a save/load roundtrip assertion, which compares a canonical dump of the full store, narrowed to only the fields this PR touches. Assess the suggestion.",
+      "expected_behavior": [
+        "Distinguish roundtrip-identity tests from behavior tests and protect the one whose breadth is the contract."
+      ],
+      "assertions": [
+        {
+          "name": "roundtrip-restraint-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e58-hidden-narrow-not-roundtrip"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 30,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Over-application restraint"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
       ]
     }
   ],
