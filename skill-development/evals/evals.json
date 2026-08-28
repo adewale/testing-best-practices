@@ -3985,6 +3985,316 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
+    },
+    {
+      "id": "E59-python-narrow-assertions-upgrade",
+      "critical": false,
+      "mode": "upgrade",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "narrow-assertions",
+          "literal-expectations"
+        ],
+        "risk_classes": [
+          "brittleness",
+          "change-detector-treadmill"
+        ],
+        "failure_modes": [
+          "whole-object-equality-on-behavior-test",
+          "enumerating-unrelated-fields"
+        ]
+      },
+      "prompt": "Repair a deposit test that asserts full asdict() equality and breaks whenever an unrelated Account field is added; the deposit behavior is unchanged.",
+      "fixture": "evals/fixtures/e59-python-narrow-assertions-upgrade: apply_deposit changes balance and appends a transaction; the failing test compares the whole dataclass dict. The treadmill fix (add schema_version to the literal) is the trap.",
+      "expected_behavior": [
+        "Replace whole-object equality with narrow assertions on the behavior's fields: balance == 150 and the recorded transaction.",
+        "Do not enumerate the unrelated schema_version field; note that whole-state checks belong in deliberate roundtrip/golden tests."
+      ],
+      "red_flags": [
+        "Adds schema_version to the expected literal and calls it fixed.",
+        "Keeps asdict()-vs-literal equality in the behavior test."
+      ],
+      "rubric_focus": [
+        "C",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e59-python-narrow-assertions-upgrade/oracle.py (AST-scoped: no asdict()/schema_version in assertions; balance and transaction asserted narrowly)"
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score with rubric.md C/D: narrow fields chosen deliberately, no treadmill, whole-state boundary acknowledged."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes agents repair brittle full-object assertions by narrowing to the behavior's fields instead of updating the literal per field addition (Google Testing Blog: Prefer Narrow Assertions, 2024).",
+        "warrant": "The oracle rejects both failing shapes (kept asdict equality; enumerated unrelated field) and requires the two behavior assertions, so passing tracks the lesson.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
+          ]
+        },
+        "rebuttals": [
+          "A candidate could compare a filtered subset dict ({'balance':...,'transactions':...}) \u2014 semantically narrow; the oracle accepts it because neither asdict nor schema_version appears and balance/transactions asserts are present.",
+          "A candidate might pin all defaults via a helper and keep broad equality without asdict(); the schema_version check still catches the treadmill variant, and the balance-literal requirement keeps the assertion behavioral."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E60-python-fake-contract-weld",
+      "critical": false,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "contract",
+          "fake-implementation",
+          "vcr-recorded-fixture"
+        ],
+        "risk_classes": [
+          "mock-reality-drift"
+        ],
+        "failure_modes": [
+          "fake-tested-only-against-itself",
+          "no-contract-suite"
+        ]
+      },
+      "prompt": "After a fake drifted from the real store and shipped a bug, add tests that keep FakeStore honest with respect to RealStore (both provided, real works offline).",
+      "fixture": "evals/fixtures/e60-python-fake-contract-weld: RealStore (sqlite, KeyError on missing) + FakeStore. Runtime oracle runs candidate pytest three ways: pristine must pass; a drifted fake (get->None) must fail; a drifted real (get->None) must fail \u2014 only a shared contract suite run against BOTH implementations passes all three.",
+      "expected_behavior": [
+        "Write one contract suite parameterized over FakeStore and RealStore asserting the shared contract (set/get roundtrip, missing key raises KeyError, overwrite, delete).",
+        "The same expectations execute against the real implementation, not only the fake."
+      ],
+      "red_flags": [
+        "Tests exercise only the fake (drifted real survives).",
+        "No missing-key contract assertion (both drifts survive)."
+      ],
+      "rubric_focus": [
+        "C",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [
+          "evals/fixtures/e60-python-fake-contract-weld/oracle.py: pytest passes pristine AND fails under drifted-fake AND fails under drifted-real"
+        ],
+        "judge_checks": [
+          "Score with rubric.md C/F: contract framing, deterministic offline setup, no live dependencies."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes agents weld fakes to reality with one contract suite run against both implementations (Google Testing Blog: Fake Your Way to Better Tests 2013; Exercise Service Call Contracts 2018).",
+        "warrant": "The two drift mutants are exactly the failure the pattern prevents; killing both is only possible when the same expectations run against fake and real.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28); both drift substitutions verified distinct"
+          ]
+        },
+        "rebuttals": [
+          "sqlite TEXT affinity can surprise a candidate that stores non-str values; the prompt pins keys/values to str, so pristine-run failures from typed values are instruction-following misses, not oracle noise.",
+          "A candidate could duplicate the suite (one copy per impl) instead of parameterizing \u2014 semantically equivalent welding; the runtime oracle accepts it, and the judge layer handles style."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E61-suite-shape-assess",
+      "critical": false,
+      "mode": "assess",
+      "taxonomy": {
+        "language_framework": "python/selenium-inventory",
+        "techniques": [
+          "suite-shape-diagnostics",
+          "test-tier-selection"
+        ],
+        "risk_classes": [
+          "inverted-pyramid",
+          "flaky-release-blocking"
+        ],
+        "failure_modes": [
+          "doubling-down-on-e2e",
+          "retry-masking"
+        ]
+      },
+      "prompt": "Assess a suite inventory: 38 Selenium E2E specs (12% flake, 3 retries, 2h40m per PR) asserting business rules through the browser, 4 unit files, no integration directory.",
+      "fixture": "evals/fixtures/e61-suite-shape-assess: cue-free inventory text; the shape (ice-cream cone + missing middle) is the finding, and business rules (VAT/coupon/rounding) driven through checkout are the push-down candidates.",
+      "expected_behavior": [
+        "Diagnose the suite's shape (inverted pyramid / ice-cream cone; missing integration middle), not only per-test flakiness.",
+        "Recommend moving business-rule coverage below the browser while keeping a small golden-path/critical-journey E2E core."
+      ],
+      "red_flags": [
+        "Recommends more retries, longer timeouts, or additional E2E specs as the fix.",
+        "Treats 38 E2E specs as strong coverage to preserve wholesale."
+      ],
+      "rubric_focus": [
+        "C",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e61-suite-shape-assess/oracle.py (shape named; integration middle; push-down recommendation; small E2E core kept; no retry/timeout/more-E2E doubling-down)"
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Score with rubric.md C/F: prioritized, shape-first plan grounded in the inventory's numbers."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes agents assess suite shape (tier balance) as a first-class finding (Google Testing Blog: Just Say No to More End-to-End Tests 2015; Fixing a Test Hourglass 2020; SMURF 2024).",
+        "warrant": "The oracle's five checks map one-to-one to the shape diagnosis, the push-down move, the kept E2E core, and the doubling-down failure; a per-test-only assessment cannot pass.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
+          ]
+        },
+        "rebuttals": [
+          "The push-down check's verb regex can be satisfied by coverage-praise phrasing in rare cases; the shape/integration/core/doubling-down checks still gate (the bad sample passes that one check and fails four others).",
+          "An assessment recommending deleting most E2E without naming replacements would pass the shape checks but fail the push-down requirement, which demands a destination tier."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E62-hidden-go-numeric-default-values",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "deliberate-test-values",
+          "mutation"
+        ],
+        "risk_classes": [
+          "default-value-blindness"
+        ],
+        "failure_modes": [
+          "copying-zero-value-doc-examples"
+        ]
+      },
+      "prompt": "Write Go unit tests for a per-account integer Ledger (Add/Balance) whose package doc example deliberately uses account 0 and amount 0.",
+      "fixture": "evals/fixtures/e62-hidden-go-numeric-default-values: hardened variant of E56 per its recorded rebuttal \u2014 the doc comment seeds zero values to copy. Runtime oracle: pass real impl, kill ignore-id (credits account 0) and ignore-amount (credits nothing) mutants.",
+      "expected_behavior": [
+        "Use distinct non-zero account IDs and amounts despite the zero-valued doc example, and assert isolation between accounts.",
+        "Tests pass the correct implementation and kill both seeded mutants."
+      ],
+      "red_flags": [
+        "Copies the doc example's Add(0, 0) as the primary test data.",
+        "Never compares a balance against a non-zero expected value."
+      ],
+      "rubric_focus": [
+        "C",
+        "G"
+      ],
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [
+          "evals/fixtures/e62-hidden-go-numeric-default-values/oracle.py: go test passes real impl AND fails on ignore-id AND ignore-amount mutants"
+        ],
+        "judge_checks": [
+          "Score with rubric.md C/G: value choice under seeded temptation, idiomatic Go tests."
+        ]
+      },
+      "validity": {
+        "claim": "Deliberate-value choice holds even when the fixture's own documentation tempts with zero values (hardening recorded in E56's rebuttals after its baseline probe hit ceiling).",
+        "warrant": "The two mutants are precisely the faults zero-copied values mask; the doc example is the cue-free temptation, so killing both demonstrates the behavior rather than habit alignment.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28); mutants verified distinct from real impl"
+          ]
+        },
+        "rebuttals": [
+          "A candidate may test zero values IN ADDITION to distinct ones (good practice); the oracle only requires both mutants die, which extra zero-value cases do not prevent.",
+          "External test package (package ledger_test) fails the build; the prompt pins package ledger."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E63-hidden-damp-keeps-builders",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "damp-test-readability",
+          "test-data-builder"
+        ],
+        "risk_classes": [
+          "over-application"
+        ],
+        "failure_modes": [
+          "inlining-value-builders-for-damp"
+        ]
+      },
+      "prompt": "A teammate cites DAMP guidance to demand deleting an ArticleFactory value builder and inlining full article dicts into all eleven tests. Assess whether they are right.",
+      "fixture": "evals/fixtures/e63-hidden-damp-keeps-builders: adversarial restraint probe for the DAMP/logic-in-tests guidance. The factory sets asserted-upon fields explicitly per test \u2014 the sanctioned DRY; inlining everything is the over-application.",
+      "expected_behavior": [
+        "Defend keeping the value-construction factory: DAMP targets hidden behavior (logic, computed expectations, distant fixtures), not value-object helpers with explicit asserted-upon fields.",
+        "May suggest tightening (e.g. set the asserted id explicitly) without deleting the builder."
+      ],
+      "red_flags": [
+        "Agrees to delete the factory and inline full literals into every test.",
+        "Frames all test helpers as DAMP violations."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e63-hidden-damp-keeps-builders/oracle.py (defends the builder; rejects the inline-everything shape)"
+        ],
+        "runtime_checks": [
+          "The factory with explicit asserted-upon fields is the correct pattern; restraint is the only passing shape."
+        ],
+        "judge_checks": [
+          "Score with rubric.md B/D: distinguishes value-construction DRY from behavior-hiding DRY without over-applying either."
+        ]
+      },
+      "validity": {
+        "claim": "If DAMP/logic-in-tests guidance is added to the skill, it will not cause agents to dismantle value-construction builders whose asserted-upon fields are explicit.",
+        "warrant": "Passing requires an explicit defense of the builder and the oracle rejects the agree-and-inline shape, so the probe guards the boundary between the new DAMP text and references/test-data-builders.md.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
+          ]
+        },
+        "rebuttals": [
+          "A candidate could defend the builder and separately recommend inlining (contradictory); the defense check passes it \u2014 accepted as unlikely and judge-reviewable.",
+          "Register this probe in audit-best-practices.py section_probes when the DAMP/logic-in-tests section lands, mirroring E58's registration for narrow assertions."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-28"
+      }
     }
   ]
 }

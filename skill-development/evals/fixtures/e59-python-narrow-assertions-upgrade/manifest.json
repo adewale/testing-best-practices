@@ -1,0 +1,11 @@
+{
+  "eval_id": "E59-python-narrow-assertions-upgrade",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "replaces whole-object asdict() equality with narrow assertions on the fields the deposit behavior is about (balance, recorded transaction)",
+    "does not join the change-detector treadmill by enumerating the unrelated schema_version field in the expectation"
+  ]
+}

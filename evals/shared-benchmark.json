@@ -675,7 +675,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-flaky",
@@ -701,7 +702,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-mocks",
@@ -727,7 +729,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-invariants",
@@ -753,7 +756,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-ab-copy",
@@ -779,7 +783,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "trig-cricket",
@@ -805,7 +810,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "trig-product-idea",
@@ -831,7 +837,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "trig-qa-plan",
@@ -857,7 +864,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "holdout-unseen-python-parser-01",
@@ -875,7 +883,8 @@
           "rubric": [
             "Property quality",
             "Validation honesty"
-          ]
+          ],
+          "gate": true
         }
       ],
       "tags": [],
@@ -901,7 +910,8 @@
           "type": "judge",
           "rubric": [
             "Use the private answer key; do not rely on public manifest wording."
-          ]
+          ],
+          "gate": true
         }
       ],
       "tags": [

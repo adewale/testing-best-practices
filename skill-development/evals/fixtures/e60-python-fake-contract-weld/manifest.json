@@ -1,0 +1,12 @@
+{
+  "eval_id": "E60-python-fake-contract-weld",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "candidate tests pass against the pristine FakeStore and RealStore",
+    "a drifted fake (get returns None on missing keys) makes the suite fail — the fake's contract is actually asserted",
+    "a drifted real store makes the suite fail — the same expectations run against the real implementation, welding fake to real"
+  ]
+}
