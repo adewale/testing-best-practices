@@ -4,10 +4,12 @@
 > posts, 2007–2026) should change in the skill, how each change is verified
 > with the Skill Eval Harness, and where the research conflicts with the
 > skill or with the rest of the research corpus.
-> Date: 2026-08-28. Status: research + evals landed; skill-text changes
-> identified but deliberately **not** applied — each needs a with/without A/B
-> first (see §5), per `LESSONS_LEARNED.md` ("Probe with a capable baseline
-> before writing skill text").
+> Date: 2026-08-28. Status: **complete** — research, evals, the 44-run
+> ablation matrix (§5), and the C1–C9 skill text are all landed. The matrix
+> showed the draft text safe (no over-application on either restraint probe,
+> either model) and 2026 frontier models at baseline ceiling on these
+> fixtures, so the sections shipped as research-grounded regression guards
+> with their boundaries probe-enforced, not as measured-lift claims.
 
 ---
 
@@ -310,40 +312,59 @@ pick a slogan.
   the additions (static audit, eval shape, 35 oracle self-tests, mini-repos,
   eval health, best-practices audit 110/110, version score 100/100).
 
-## 5. Baseline probes run (sub-agents as the eval backend)
+## 5. The ablation study (44 runs, sonnet + opus)
 
-Per `LESSONS_LEARNED.md`, oracles were validated against *real model output*
-and fixtures were checked for ceiling before recommending skill text.
-Protocol: one sonnet sub-agent per arm, given only the fixture `prompt.md`
-(no skill), vs. a second arm given a one-paragraph draft of the proposed
-guidance; oracle scored both.
+Two rounds of harness use, both with sub-agents as the eval backend and
+deterministic fixture oracles as the metric.
 
-| Probe | No-guidance arm | Guided arm | Reading |
-|---|---|---|---|
-| E55 literal expectations | **pass** (wrote literals, self-ran pytest, reported 6F/2P red evidence) | pass | Baseline ceiling under a symptom-reporting prompt → regression guard. Bonus: the candidate quoted the old computed assertion in its docstring and exposed a text-oracle false positive; the oracle was rewritten to judge AST assert/expected segments and re-validated on both candidates. |
-| E56 distinct values | **pass** (distinct "alpha"/"first" values by habit; both mutants killed) | pass | Baseline ceiling → regression guard. Hardening options recorded in the eval's rebuttals. |
+**Round 1 — pre-text probes** (one sonnet sub-agent per arm, fixture prompt
+only vs. prompt + one-paragraph guidance draft): E55 and E56 both passed in
+both arms — baseline ceiling under symptom-reporting prompts; the E55 run
+also exposed a docstring false positive that forced the oracle onto AST
+segments.
 
-Consequences applied to the ranking above: write-mode behaviors that capable
-models produce under symptom prompts (C3, parts of C1's write side) get
-checklist-line treatment, not sections; the discrimination bets move to
-assess-mode judgment (E57), boundary restraint (E58), and the not-yet-landed
-C4/C5 evals. E57/E58 were not baseline-probed in this pass — run the same
-two-arm protocol on them (and on E59/E60/E61 fixtures when built) before
-writing their skill text, and record results in each eval's
-`validity.backing`.
+**Round 2 — the full matrix** (after building E59–E63): evals E55, E57,
+E59, E60, E61, E62 × arms {base, current-skill, skill+draft-text} × models
+{sonnet, opus}, plus restraint probes E58 and E63 × {current, new} × both
+models = **44 candidate runs**, every one scored by its fixture oracle.
+Result table and the oracle-fix log live in `evals/scorecard.md`; summary:
 
-## 6. Verification workflow for applying §2 (when the skill edits are made)
+- **44/44 cells pass** after oracle hardening. The three raw fails
+  (e55/current-opus, e57/current-sonnet, e61/base-opus) were all oracle
+  artifacts — parametrize-carried literals, parametrize-as-split phrasing,
+  and negated "what not to do" phrasing — confirmed by reading the
+  candidates, then fixed with sample self-tests kept green.
+- **The draft text is safe**: 16/16 new-arm cells pass, including E58
+  (didn't narrow the whole-state roundtrip) and E63 (didn't inline the
+  value builder) on both models. This was the landing gate for C1/C2.
+- **No with/without delta at n=1/cell on frontier models** — the new evals
+  are regression guards; `known_discriminates_versions` stays empty, public
+  cases are marked `saturated_public`, and the discrimination claim the
+  suite *can* make is about oracles and future drift, not current models.
 
-1. Draft the reference/SKILL text for one change (start with C1+C2 —
-   one section, both boundaries stated).
-2. A/B it: `run-prompt-evals.py --eval E55|E57|E58 --candidate-dir …` with
-   sub-agent candidates for with-skill vs. without-skill arms (and
-   `--judge-cmd` for rubric dims); require the with-arm to pass oracles the
-   without-arm fails, or the change earns only its regression-guard value.
-3. Register E58 in `audit-best-practices.py` `section_probes` next to the
-   new section marker so the audit gate enforces the boundary permanently.
-4. Re-run `check-all.py`; record scores in `evals/scorecard.md`; update
-   `eval_health.known_discriminates_versions` on any eval that separated the
-   arms.
-5. Mirror any newly-discriminating dev eval into the shared benchmark
-   (`tune` split), keeping prompts leakage-free.
+## 6. What was executed (the §2 changes are now landed)
+
+1. C1–C9 text landed across `SKILL.md`, `antipatterns.md` (antipattern #15
+   with its sanctioned-DRY restraint), `test-data-builders.md`,
+   `test-types.md` (tier resource contract, SMURF axes, composed-workflow
+   E2E trigger), `vcr-cassettes.md` (fake-weld contract suite),
+   `mutation-testing.md` (noise economics), `deterministic-time.md`
+   (size-first flake triage), and all four language references
+   (deliberate values + order-insensitive matchers).
+2. `audit-best-practices.py` `section_probes` now maps the narrow-assertions
+   marker (SKILL.md) → E58 and the logic-in-tests antipattern → E63, so
+   neither section can ship unguarded.
+3. `check-all.py` green end-to-end after landing (static audit, eval shape,
+   40 oracle self-tests, mini-repos, health, audit 110/110, version score
+   100/100); scorecard and eval metadata updated as above.
+4. Shared benchmark: manifest validates under the installed
+   `skill-benchmark` CLI (0.6.0) and all 10 ablations materialize. Six
+   mirror cases are wired to the fixture oracles via
+   `evals/oracles/gtb_output_adapter.py`; two new ablations
+   (`no-gtb-damp-and-value-choice`, `no-gtb-suite-shape-checklist`) remove
+   the landed SKILL.md checklist items via the `list_item` mechanism.
+   Reference-file *sections* (antipatterns #15, the vcr-cassettes weld) are
+   not harness-ablatable — every content mechanism edits the root's main
+   file — so those are guarded repo-side instead: hidden probes E63/E58
+   registered in `audit-best-practices.py` `section_probes`, plus the dev
+   fixture oracles.

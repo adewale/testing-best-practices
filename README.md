@@ -120,10 +120,11 @@ The project now uses layered evals rather than a single public prompt table:
 | Layer | Current state |
 |------|---------------|
 | Public prompt evals | 12 cases in `evals/evals.json` across Python, TypeScript, Go, and Rust |
-| Development eval suite | 58 cases in `skill-development/evals/evals.json`: 32 write, 12 upgrade, 12 assess, 2 detect |
-| Hidden probes | 12 hard/adversarial probes tracked by eval-health metadata |
-| Shared benchmark | 39 cases in `evals/shared-benchmark.json` |
-| Fixture oracles | 35 fixture oracles; each good sample passes and bad sample fails |
+| Development eval suite | 63 cases in `skill-development/evals/evals.json`: 34 write, 13 upgrade, 14 assess, 2 detect |
+| Hidden probes | 14 hard/adversarial probes tracked by eval-health metadata |
+| Shared benchmark | 42 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
+| Fixture oracles | 40 fixture oracles; each good sample passes and bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round |
+| Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | 110/110, including adversarial-probe coverage for new technique sections |
 | Local gate | `python3 skill-development/scripts/check-all.py` passes; `score-skill-version.py` reports 100/100 |

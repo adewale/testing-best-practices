@@ -3780,7 +3780,8 @@
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
           ],
-          "baseline_probes": "2026-08-28, sonnet sub-agent, n=1/arm: no-guidance arm PASSED the oracle (wrote literal single-slash expectations, ran pytest itself, reported 6 failed/2 passed red evidence); guided arm PASSED. Baseline ceiling under this symptom-reporting prompt -> regression guard, not a version discriminator. The no-guidance candidate quoted the old computed assertion in its module docstring, which exposed a text-oracle false positive; oracle rewritten to judge AST assert/expected segments only and re-validated against both real candidates."
+          "baseline_probes": "2026-08-28, sonnet sub-agent, n=1/arm: no-guidance arm PASSED the oracle (wrote literal single-slash expectations, ran pytest itself, reported 6 failed/2 passed red evidence); guided arm PASSED. Baseline ceiling under this symptom-reporting prompt -> regression guard, not a version discriminator. The no-guidance candidate quoted the old computed assertion in its module docstring, which exposed a text-oracle false positive; oracle rewritten to judge AST assert/expected segments only and re-validated against both real candidates.",
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened twice against real candidates: docstring-quoted old assertions (AST scoping) and literals carried in plain parametrize tuples (parametrize-call capture, with the rejects-malformed parametrize excluded from the enshrined-bug check)."
         },
         "rebuttals": [
           "A candidate could compute expectations from an independent literal ('https://example.com' + path) which is semantically safer than reusing BASE_URL; the oracle only forbids BASE_URL/base-derived expectations, so this passes \u2014 acceptable, the shared-bug channel is what matters.",
@@ -3789,7 +3790,7 @@
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
@@ -3843,7 +3844,8 @@
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28); mutants verified distinct from real impl"
           ],
-          "baseline_probes": "2026-08-28, sonnet sub-agent, n=1/arm: both no-guidance and guided arms PASSED the oracle (distinct non-default values like \"alpha\"/\"first\" from habit; both mutants killed). Baseline ceiling -> regression guard. Hardening option if a discriminator is wanted: numeric-ID variant where 0 is the tempting value, or a prompt that supplies default-valued example rows to copy."
+          "baseline_probes": "2026-08-28, sonnet sub-agent, n=1/arm: both no-guidance and guided arms PASSED the oracle (distinct non-default values like \"alpha\"/\"first\" from habit; both mutants killed). Baseline ceiling -> regression guard. Hardening option if a discriminator is wanted: numeric-ID variant where 0 is the tempting value, or a prompt that supplies default-valued example rows to copy.",
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. (E56 itself probed earlier at ceiling; E62 is its hardened hidden variant \u2014 also at ceiling.)"
         },
         "rebuttals": [
           "A capable baseline may already use distinct values from habit; if probes show ceiling, this eval guards regressions rather than discriminating versions (recorded in eval_health).",
@@ -3852,7 +3854,7 @@
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
@@ -3908,7 +3910,8 @@
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
-          ]
+          ],
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real candidate that recommended parametrize-with-named-rows (a legitimate DAMP-compatible fix) \u2014 parametr/subtest now count as the split recommendation; the over-DRY guard still fails the bad sample."
         },
         "rebuttals": [
           "The logic-flag regex matches the bare word 'loop', so an assessment that only praises the loop could partially credit check 1; the split and over-DRY checks still gate it (the bad sample passes check 1 and still fails).",
@@ -3917,7 +3920,7 @@
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
@@ -3972,7 +3975,8 @@
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
-          ]
+          ],
+          "ablation_matrix": "2026-08-28 restraint check: current and new arms x sonnet/opus all defended the whole-state roundtrip after reading the landed narrow-assertions text \u2014 the boundary holds; probe guards the with-section behavior, not a with-vs-without delta."
         },
         "rebuttals": [
           "A candidate could both defend the roundtrip and separately recommend narrowing it (contradictory); the oracle's defense check would pass it \u2014 accepted as unlikely and reviewable by the judge layer.",
@@ -4034,7 +4038,8 @@
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
-          ]
+          ],
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md."
         },
         "rebuttals": [
           "A candidate could compare a filtered subset dict ({'balance':...,'transactions':...}) \u2014 semantically narrow; the oracle accepts it because neither asdict nor schema_version appears and balance/transactions asserts are present.",
@@ -4043,7 +4048,7 @@
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
@@ -4096,7 +4101,8 @@
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28); both drift substitutions verified distinct"
-          ]
+          ],
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md."
         },
         "rebuttals": [
           "sqlite TEXT affinity can surprise a candidate that stores non-str values; the prompt pins keys/values to str, so pristine-run failures from typed values are instruction-following misses, not oracle noise.",
@@ -4105,7 +4111,7 @@
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
@@ -4158,7 +4164,8 @@
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
-          ]
+          ],
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real base-opus candidate: 'critical-path journeys' phrasing now counts as keeping the E2E core, and doubling-down matches followed by negation language ('...is the wrong one') no longer count as recommendations."
         },
         "rebuttals": [
           "The push-down check's verb regex can be satisfied by coverage-praise phrasing in rare cases; the shape/integration/core/doubling-down checks still gate (the bad sample passes that one check and fails four others).",
@@ -4167,7 +4174,7 @@
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "active",
+        "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
@@ -4219,7 +4226,8 @@
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28); mutants verified distinct from real impl"
-          ]
+          ],
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md."
         },
         "rebuttals": [
           "A candidate may test zero values IN ADDITION to distinct ones (good practice); the oracle only requires both mutants die, which extra zero-value cases do not prevent.",
@@ -4282,7 +4290,8 @@
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
-          ]
+          ],
+          "ablation_matrix": "2026-08-28 restraint check: current and new arms x sonnet/opus all kept the builder after reading the landed DAMP text \u2014 the sanctioned-DRY boundary holds."
         },
         "rebuttals": [
           "A candidate could defend the builder and separately recommend inlining (contradictory); the defense check passes it \u2014 accepted as unlikely and judge-reviewable.",

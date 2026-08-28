@@ -59,18 +59,33 @@ def main() -> int:
     if not re.search(
         r"(keep|retain|reduce to|small (set|number|core)|handful|golden path"
         r"|critical (user )?journe|a few) [^.\n]{0,60}(e2e|end[- ]to[- ]end|selenium)"
-        r"|(e2e|end[- ]to[- ]end)[^.\n]{0,60}(golden path|critical (user )?journe|handful|small (set|core|number))",
+        r"|(e2e|end[- ]to[- ]end)[^.\n]{0,60}(golden path|critical (user )?journe|handful|small (set|core|number))"
+        r"|critical[- ](user[- ]|path[- ]?)?journe"
+        r"|(small (set|number|core)|handful|a few)[^.\n]{0,60}journe",
         low,
     ):
         errors.append("does not keep a small E2E core (golden path / critical journeys)")
 
-    if re.search(
-        r"(add|write|increase|more)[^.\n]{0,30}(retr(y|ies))"
+    # Doubling-down recommendations fail — but an assessment may *name* these
+    # moves in order to reject them ("adding more e2e ... is the wrong one"),
+    # so a match followed closely by negation language does not count
+    # (validated against a real model candidate with a what-not-to-do list).
+    doubling = re.compile(
+        r"(add\w*|write|increase|more)[^.\n]{0,30}(retr(y|ies))"
         r"|(raise|increase|bump|longer)[^.\n]{0,25}timeout"
-        r"|(add|write)[^.\n]{0,30}more (e2e|end[- ]to[- ]end|selenium)",
-        low,
-    ):
-        errors.append("recommends more retries/timeouts/E2E — doubling down on the ice-cream cone")
+        r"|(add\w*|write)[^.\n]{0,30}more (e2e|end[- ]to[- ]end|selenium)"
+    )
+    negated = re.compile(
+        r"wrong|avoid|don'?t|do not|trap|mistake|anti[- ]?pattern|worse"
+        r"|not the (answer|fix|move)|resist|instead of|rather than|stop"
+    )
+    for m in doubling.finditer(low):
+        window = low[max(0, m.start() - 120): m.end() + 160]
+        if not negated.search(window):
+            errors.append(
+                "recommends more retries/timeouts/E2E — doubling down on the ice-cream cone"
+            )
+            break
 
     for e in errors:
         print(e, file=sys.stderr)

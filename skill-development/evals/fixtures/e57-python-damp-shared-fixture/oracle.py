@@ -58,7 +58,8 @@ def main() -> int:
     recommends_split = re.search(
         r"split|separate tests?|one test per|per[- ]behavior|individual tests?"
         r"|inline (the )?(setup|data)|local(ly)? (defined|constructed)? ?(setup|data)"
-        r"|literal (value|expected|data)|explicit (data|setup|values)",
+        r"|literal (value|expected|data)|explicit (data|setup|values)"
+        r"|parametr\w+|subtest",
         low,
     )
     if not recommends_split:

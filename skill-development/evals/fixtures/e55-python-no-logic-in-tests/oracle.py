@@ -11,7 +11,11 @@ from BASE_URL/base.
 Judged over actual assert statements and expected-value assignments via the
 AST — docstrings and comments quoting the old bad test do not count
 (validated against a real model candidate that quoted the old assertion in
-its module docstring).
+its module docstring). parametrize(...) call segments count toward the
+literal-presence and computed-expectation checks, but NOT toward the
+enshrined-double-slash check: a candidate may legitimately parametrize a
+"rejects malformed URLs" test over double-slash examples (validated against
+a real model candidate that did exactly that).
 """
 from __future__ import annotations
 
@@ -28,32 +32,34 @@ COMPUTED = re.compile(
 )
 
 
-def judged_segments(src: str) -> list[str] | None:
-    """Source segments of assert statements and expected*/want* assignments."""
+def judged_segments(src: str) -> tuple[list[str], list[str]] | None:
+    """(strict, parametrize) source segments.
+
+    strict: assert statements, expected*/want* assignments, and
+    param/assertEqual calls. parametrize: whole parametrize(...) calls,
+    whose plain tuples carry expected literals."""
     try:
         tree = ast.parse(src)
     except SyntaxError:
         return None
-    segments: list[str] = []
+    strict: list[str] = []
+    params: list[str] = []
     for node in ast.walk(tree):
-        seg = None
         if isinstance(node, ast.Assert):
-            seg = ast.get_source_segment(src, node)
+            strict.append(ast.get_source_segment(src, node) or "")
         elif isinstance(node, (ast.Assign, ast.AnnAssign)):
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]
             names = [t.id for t in targets if isinstance(t, ast.Name)]
             if any(n.lower().startswith(("expected", "want")) for n in names):
-                seg = ast.get_source_segment(src, node)
+                strict.append(ast.get_source_segment(src, node) or "")
         elif isinstance(node, ast.Call):
-            # pytest.param(...) rows and assertEqual-style calls carry
-            # expected values too.
             fn = node.func
             name = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", "")
             if name in {"param", "assertEqual", "assertNotEqual"}:
-                seg = ast.get_source_segment(src, node)
-        if seg:
-            segments.append(seg)
-    return segments
+                strict.append(ast.get_source_segment(src, node) or "")
+            elif name == "parametrize":
+                params.append(ast.get_source_segment(src, node) or "")
+    return strict, params
 
 
 def main() -> int:
@@ -64,27 +70,34 @@ def main() -> int:
         return 1
 
     errors: list[str] = []
-    all_segments: list[str] = []
+    strict_segments: list[str] = []
+    param_segments: list[str] = []
     for f in files:
         segs = judged_segments(f.read_text(errors="ignore"))
         if segs is None:
             errors.append(f"{f.name}: not parseable as python")
         else:
-            all_segments.extend(segs)
-    joined = "\n".join(all_segments)
+            strict_segments.extend(segs[0])
+            param_segments.extend(segs[1])
+    strict_joined = "\n".join(strict_segments)
+    broad_joined = "\n".join(strict_segments + param_segments)
 
-    if not all_segments and not errors:
+    if not strict_segments and not errors:
         errors.append("no assert statements found in candidate files")
 
-    if not LITERAL_OK.search(joined):
+    if not LITERAL_OK.search(broad_joined):
         errors.append(
             "no assertion against a literal single-slash URL "
             "(expected e.g. \"https://example.com/users/bob\")"
         )
-    if LITERAL_BUGGY.search(joined):
+    if LITERAL_BUGGY.search(strict_joined):
         errors.append("literal expectation enshrines the double-slash bug")
 
-    computed = [s.splitlines()[0].strip() for s in all_segments if COMPUTED.search(s)]
+    computed = [
+        s.splitlines()[0].strip()
+        for s in strict_segments + param_segments
+        if COMPUTED.search(s)
+    ]
     if computed:
         errors.append(f"expected values still computed from BASE_URL/base: {computed[:2]}")
 

@@ -55,6 +55,51 @@ python3 scripts/run-fixture-oracles.py
 
 `3*` = executable fixture oracle passed for one generated candidate. It is evidence for the focused failure mode, not a complete 0–4 human/rubric release score.
 
+## 2026-08-28 Google-Testing-Blog ablation round
+
+44 candidate runs: sonnet + opus sub-agents, one per cell; arms are
+**base** (no skill), **current** (v0.3.1 skill files), **new** (skill +
+`DRAFT_ADDITIONS` bundle of the C1–C9 Google-research text, since landed).
+Restraint probes (E58, E63) ran current/new arms only. Every cell was scored
+by its eval's deterministic fixture oracle; rubric dimensions remain
+provisional (no judge pass — oracle discrimination was the round's metric).
+
+| Eval | base-S | base-O | curr-S | curr-O | new-S | new-O |
+|---|---|---|---|---|---|---|
+| E55 literal expectations | pass | pass | pass | pass | pass | pass |
+| E57 DAMP shared fixture | pass | pass | pass | pass | pass | pass |
+| E58 narrow-vs-roundtrip (restraint) | — | — | pass | pass | pass | pass |
+| E59 narrow assertions upgrade | pass | pass | pass | pass | pass | pass |
+| E60 fake-contract weld | pass | pass | pass | pass | pass | pass |
+| E61 suite shape | pass | pass* | pass | pass | pass | pass |
+| E62 numeric defaults (hidden) | pass | pass | pass | pass | pass | pass |
+| E63 DAMP keeps builders (restraint) | — | — | pass | pass | pass | pass |
+
+`*` after oracle hardening — the three raw "fails" in the run (e55/curr-O,
+e57/curr-S, e61/base-O) were all **oracle artifacts**, confirmed by reading
+the candidates, and fixed: E55 now captures literals in plain `parametrize`
+tuples (while excluding rejects-malformed parametrize blocks from the
+enshrined-bug check); E57 counts parametrize/subTest as the split
+recommendation; E61 accepts "critical-path journeys" phrasing and ignores
+doubling-down phrases followed by negation ("…is the wrong one"). All good/
+bad sample self-tests still pass after each fix.
+
+**Conclusions**
+1. **No regressions from the landed text**: all 16 new-arm cells pass,
+   including both restraint probes on both models — the C1/C2 boundary
+   language (whole-state roundtrips, sanctioned-DRY builders) holds.
+2. **Baseline ceiling**: 2026 frontier models pass these fixtures without
+   the skill at n=1/cell, so E55–E63 are **regression guards** (weaker
+   models, future skill drift), not version discriminators —
+   `known_discriminates_versions` stays empty and public cases are marked
+   `saturated_public`.
+3. The round's measurable yield: 44 real-model transcripts hardened 3 of 8
+   oracles — the "validate oracles against real model output" practice from
+   LESSONS_LEARNED, at scale.
+
+Run artifacts: session scratchpad `matrix/` (gitignored; not release
+evidence beyond this record).
+
 ## Release gates
 - [ ] Static P0 count is 0.
 - [ ] Static P1 count is 0 or explicitly deferred.
