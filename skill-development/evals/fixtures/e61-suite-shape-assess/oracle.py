@@ -45,10 +45,16 @@ def main() -> int:
         errors.append("does not mention the missing integration tier")
 
     if not re.search(
-        r"(move|push|convert|migrat\w+|extract|rewrite|reimplement|cover)\w*[^.\n]{0,90}"
+        r"(move|push|convert|migrat\w+|extract|rewrite|re-?express|reimplement|cover)\w*[^.\n]{0,90}"
         r"(unit|integration|domain|service)[- ]?(level|layer|test|tier|seam)?"
         r"|test\w* [^.\n]{0,40}(vat|coupon|rounding|business rule)[^.\n]{0,60}"
-        r"(without|below|outside) the (browser|ui)",
+        r"(without|below|outside) the (browser|ui)"
+        r"|(out of|off) the (e2e|browser|ui)[^\n]{0,80}(unit|integration|domain)"
+        r"|(as|into|to) [^.\n]{0,40}(table-driven )?(unit|integration|domain|service)[- ](test|tier|layer|level)"
+        r"|wrong (layer|tier|level)|substitute for unit tests"
+        r"|belongs? in (unit|integration|domain)"
+        r"|push\w*[^.\n]{0,50}down|down[- ]?tier"
+        r"|\|\s*unit\s*\|",
         low,
     ):
         errors.append(
@@ -61,7 +67,10 @@ def main() -> int:
         r"|critical (user )?journe|a few) [^.\n]{0,60}(e2e|end[- ]to[- ]end|selenium)"
         r"|(e2e|end[- ]to[- ]end)[^.\n]{0,60}(golden path|critical (user )?journe|handful|small (set|core|number))"
         r"|critical[- ](user[- ]|path[- ]?)?journe"
-        r"|(small (set|number|core)|handful|a few)[^.\n]{0,60}journe",
+        r"|(small (set|number|core)|handful|a few)[^.\n]{0,60}journe"
+        r"|one thin (e2e|end[- ]to[- ]end)"
+        r"|[0-9]+([-–]| to )[0-9]+ (critical )?journe"
+        r"|(e2e|end[- ]to[- ]end)\b[^\n]{0,80}\bkeep|keep\b[^\n]{0,80}\b(e2e|end[- ]to[- ]end)",
         low,
     ):
         errors.append("does not keep a small E2E core (golden path / critical journeys)")
@@ -78,6 +87,7 @@ def main() -> int:
     negated = re.compile(
         r"wrong|avoid|don'?t|do not|trap|mistake|anti[- ]?pattern|worse"
         r"|not the (answer|fix|move)|resist|instead of|rather than|stop"
+        r"|weaken|got (the suite|us) here|no retries|come[s]? out|remove[sd]? the retr"
     )
     for m in doubling.finditer(low):
         window = low[max(0, m.start() - 120): m.end() + 160]

@@ -337,10 +337,17 @@ Result table and the oracle-fix log live in `evals/scorecard.md`; summary:
 - **The draft text is safe**: 16/16 new-arm cells pass, including E58
   (didn't narrow the whole-state roundtrip) and E63 (didn't inline the
   value builder) on both models. This was the landing gate for C1/C2.
-- **No with/without delta at n=1/cell on frontier models** — the new evals
+- **No with/without oracle delta on frontier models** — the new evals
   are regression guards; `known_discriminates_versions` stays empty, public
   cases are marked `saturated_public`, and the discrimination claim the
   suite *can* make is about oracles and future drift, not current models.
+  Two follow-up rounds firmed this up (both in `evals/scorecard.md`):
+  n=5 variance repeats on the ten riskiest cells came back 50/50 with all
+  raw failures traced to prose-oracle phrasing, and a blind rubric judge
+  pass over all 44 cells found zero critical failures while recovering a
+  soft base→current→new quality gradient (3.67→3.83→3.92 like-for-like)
+  invisible to the binary oracles — suggestive of marginal skill value,
+  not oracle-level proof.
 
 ## 6. What was executed (the §2 changes are now landed)
 

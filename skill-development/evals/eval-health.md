@@ -17,6 +17,10 @@ This file applies the lesson from Lun Wang, “Your Evals Will Break and You Won
 - Escaped real-world failures: map each to an existing eval or create a new one.
 - Framework freshness date for Python, Go, TypeScript, and Rust references.
 - Judge disagreement rate if multiple reviewers score prompt outputs.
+  First measured 2026-08-29 (blind double-judging, two judge models, 16
+  cells): 97% exact per-dimension agreement, no eval-score disagreement
+  >1, 16/16 critical-failure agreement — see the judge-pass section of
+  `scorecard.md`. Re-measure when the judge model or rubric changes.
 
 ## Living-eval policy
 - Keep a **stable core** for regression comparison.
