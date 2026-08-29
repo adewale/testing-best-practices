@@ -99,6 +99,8 @@ Assertion count is a heuristic, not a law. Example-based behavior tests often ne
 
 For sanitizers, validators, filters, auth/security checks, and transformations, verify both directions where applicable: dangerous/invalid content is rejected or removed, and safe/valid content is preserved.
 
+Assert the fields the behavior under test is about. Full-object/whole-structure equality implicitly asserts every unrelated field, so the test breaks on unrelated changes and joins a change-detector treadmill (update the literal each time a field is added). Reserve whole-state comparison for tests where breadth is the contract — golden files and save/load roundtrips (`references/golden-file-testing.md`). Prefer assertion forms whose failure message alone can start the debugging (matchers/fluent asserts that print expected vs. actual, not bare booleans); when many tests keep breaking for innocent reasons like iteration order, fix the assertion vocabulary (order-insensitive/structural matchers), not each test. For coverage, gate new/changed code rather than one repo-wide number, and read what is *not* covered as the review signal.
+
 ### Prefer real behavior over mocks
 
 Prefer, in order:
@@ -166,7 +168,8 @@ Assert the invariant the API actually promises — no lost updates, a monotonic/
 5. Use builders/factories/helpers where setup noise hides intent; test custom helpers when they become a mini-DSL.
 6. Prefer user-facing/public interfaces over internals.
 7. Pin nondeterminism: time, randomness, network, filesystem, order.
-8. Run nearest tests, then broader checks when practical.
+8. Choose test values deliberately: distinct, non-default values per parameter (never only zero/empty values, never key == value), so a dropped, defaulted, or swapped argument changes an assertion's outcome. State expected values as literals — an expectation computed with the code under test's own logic or constants can share its bug and stay green.
+9. Run nearest tests, then broader checks when practical.
 
 For transformations or complex generated output, use golden files with explicit review discipline; see `references/golden-file-testing.md`. For external APIs, prefer recorded real fixtures/cassettes or contract checks over live CI calls; see `references/vcr-cassettes.md`.
 
@@ -183,6 +186,8 @@ Report evidence by severity and include positive observations. Check:
 7. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
 8. **Lifecycle fit**: throwaway probes over-tested, reusable assets under-tested, or structure-only changes getting behavior-test theater.
 9. **Example quality**: business examples buried in UI scripts, unreadable fixtures, or helpers that form a DSL but have no tests of their own.
+10. **Test-code readability (DAMP)**: logic in test bodies (loops/branches/computed expectations), expectations derived from the SUT's own constants, shared fixtures mutated far from the assertions that depend on them. See `references/antipatterns.md`.
+11. **Suite shape**: count tests per tier; name the inverted pyramid/ice-cream cone (mostly E2E over a thin unit base) and the hourglass (unit + E2E with an empty integration middle). Recommend the smallest-tier home for each E2E case that has one — business rules move below the UI — while keeping a small golden-path/critical-journey E2E core.
 
 ### Upgrade mode
 
@@ -190,7 +195,7 @@ Prioritize by risk:
 
 1. **P0**: security/auth/injection/sanitizer tests with weak or missing assertions.
 2. **P1**: tests that only assert not-null/not-empty/truthy.
-3. **P2**: flaky tests: sleeps, live network, wall-clock, order coupling.
+3. **P2**: flaky tests: sleeps, live network, wall-clock, order coupling. Before patching waits, ask whether a smaller SUT can host the test — size (dependencies, processes, RAM footprint) predicts flakiness better than tool choice — and treat auto-retry/quarantine as masking debt, not a fix.
 4. **P3**: mock-heavy “integration” tests and implementation-coupled mocks.
 5. **P4**: fixture noise, duplication, unclear names, missing builders.
 
@@ -219,7 +224,7 @@ After writing or changing tests:
 
 1. Run the nearest relevant test command.
 2. If bug-fix TDD was intended, report red evidence separately from green evidence; if the pre-fix failing run was not observed, call the red phase unverified instead of claiming completed TDD.
-3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling.
+3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling. Also check: expected values are literals (not computed with the SUT's own logic), test data uses distinct non-default values, and assertions are narrow to the behavior's fields.
 4. For security/transformation tests, verify both rejection/removal and preservation.
 5. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
 6. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.

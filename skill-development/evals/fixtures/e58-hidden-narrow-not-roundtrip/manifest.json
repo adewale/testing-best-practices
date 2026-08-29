@@ -1,0 +1,11 @@
+{
+  "eval_id": "E58-hidden-narrow-not-roundtrip",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "defends the whole-state canonical comparison as the roundtrip contract (narrowing it would let save/load silently drop fields)",
+    "does not narrow or replace the roundtrip assertion with quota-only field assertions; an additional narrow behavior test is acceptable"
+  ]
+}

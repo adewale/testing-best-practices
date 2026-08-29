@@ -64,6 +64,11 @@ assert_eq!(result.unwrap(), expected);        // Unwrap + compare
 assert!(matches!(value, Pattern::Variant));   // Pattern match
 ```
 
+When order is not part of the contract, sort both sides before `assert_eq!`
+or compare as `HashSet`s instead of pinning incidental iteration order. Use
+distinct, non-default test values per parameter (never `0`/`""` only, never
+the same value for two arguments) so dropped or swapped arguments fail.
+
 ## CLI Binary Integration Tests
 
 Test the compiled binary as a subprocess:

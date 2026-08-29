@@ -1,0 +1,12 @@
+{
+  "eval_id": "E61-suite-shape-assess",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "diagnoses the inverted-pyramid/ice-cream-cone shape (38 E2E vs 4 unit) and the missing integration tier",
+    "recommends moving business-rule coverage (VAT/coupon/rounding) below the browser while keeping a small golden-path E2E core",
+    "does not recommend more retries, longer timeouts, or more E2E"
+  ]
+}

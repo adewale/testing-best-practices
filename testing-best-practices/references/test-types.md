@@ -3,6 +3,13 @@
 Read this file when deciding which types of tests to write for a feature or
 project. Tests are organized into three tiers by priority.
 
+A test tier is a resource contract: what the test may touch (network,
+database, filesystem, threads, sleeps, wall-clock budget). Treat a violation
+as misclassification and enforce mechanically where the runner allows. When
+tier ratios stop settling arguments, argue the five axes explicitly — Speed,
+Maintainability, Utilization (resource cost), Reliability (flakiness),
+Fidelity — improving one is only free when it does not cost the others.
+
 ## Step Zero: can the type replace the test?
 
 Before reaching the tier system, ask: *could this test exist only because the
@@ -151,6 +158,7 @@ Team rule: do not commit failing unit tests. For solo work, a broken test can be
 - [ ] Project runs on a specific platform (Workers, Pyodide, etc.)
 - [ ] Previous bugs were missed by unit tests
 - [ ] Domain experts supplied concrete examples that define a story or rule
+- [ ] A new feature changes the meaning of an existing action (redirects it, overrides it, alters its default) — test the composed workflow, not each feature alone; two individually well-tested features can still destroy data at their seam
 
 **Rules**: Golden path first, gate behind env vars, limit to 5-15 tests. For business-rule examples, prefer acceptance tests at the domain/API seam and only enough UI/E2E coverage to prove wiring. For a new service or first feature, build a **walking skeleton**: the thinnest build/deploy/test slice that exercises real packaging, configuration, and one path through the system. Track not-yet-implemented acceptance tests as in-progress with an issue/story link; do not hide them as unconditional skips. Record known fidelity gaps when a fake replaces a real service, and schedule a real-service check when that risk matters.
 **Cost**: High setup, slow, can be flaky.

@@ -56,6 +56,31 @@ If no recorder exists in the project, treat this as recorded-fixture replay:
 refresh the fixture from a real provider response in an explicit, reviewed
 workflow, filter secrets, and keep normal CI offline.
 
+## Welding a fake to the real implementation
+
+When a fake stands in for a real dependency, write one contract suite
+against the shared interface and run it against *both* implementations —
+parameterize over `[fake, real]`, gating the real arm (env var) only when it
+needs credentials, network, or long runtimes; run it in the default suite
+when the real implementation is cheap and local (in-memory database, local
+binary). A fake verified only against itself drifts silently; the shared
+suite makes it provably equivalent on the behaviors callers rely on. Build
+the fake at the lowest level possible (the datastore, not every class that
+talks to it), and prefer the team that owns the real implementation to own
+the fake.
+
+```python
+@pytest.fixture(params=["fake", "real"])
+def store(request):
+    if request.param == "fake":
+        return FakeStore()
+    return RealStore(":memory:")  # or gate: pytest.importorskip / env var
+
+def test_get_missing_key_raises(store):
+    with pytest.raises(KeyError):
+        store.get("absent")
+```
+
 ## When to use
 
 - Any test calling a third-party API (LLM providers, payment, auth)

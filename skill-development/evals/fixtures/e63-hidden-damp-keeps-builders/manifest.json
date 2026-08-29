@@ -1,0 +1,11 @@
+{
+  "eval_id": "E63-hidden-damp-keeps-builders",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "defends keeping the value-construction factory: asserted-upon fields (status) are already explicit per test, which is the sanctioned DRY in test code",
+    "does not agree to delete the factory and inline full article literals into every test (the DAMP over-application)"
+  ]
+}
