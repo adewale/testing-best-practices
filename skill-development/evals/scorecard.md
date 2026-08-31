@@ -177,6 +177,30 @@ skill value at the frontier ceiling, not proof. The two layers divide
 labor: deterministic oracles guard hard behaviors (regression gate), the
 judge layer grades the quality margin above the oracle floor.
 
+## 2026-08-31 PBT/fuzz execution round
+
+E64–E70 were added from the portfolio audit. Every fixture's curated good
+sample passes and bad sample fails. That self-test proves the oracle plumbing;
+it does **not** prove the skill changes agent behavior.
+
+Exploratory cue-free candidate review was used while developing E66–E70. It
+exposed missing accepted phrasings in four prose oracles and an ambiguity in
+the fast-check replay adapter. The candidate outputs, model identity, and exact
+run receipts were not retained as an immutable bundle, so those observations
+are **not release evidence** and no paired-performance or measured-lift claim
+is made here.
+
+The release evidence for this round is deterministic: every fixture's curated
+good sample passes and bad sample fails, and the complete fixture-oracle gate
+runs in `check-all.py`. Future paired runs must retain the candidate outputs,
+model/version, exact skill revisions, commands, and oracle results before their
+scores are promoted into this scorecard.
+
+No shared-benchmark mirror was added in this round. These are multi-artifact
+repository assessments whose conjunction oracles depend on the complete raw
+snapshot; copying a shortened version into the shared set would either cue the
+answer or measure a different claim.
+
 ## Release gates
 - [ ] Static P0 count is 0.
 - [ ] Static P1 count is 0 or explicitly deferred.

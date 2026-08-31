@@ -1,0 +1,13 @@
+{
+  "eval_id": "E67-python-structured-valid-png",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "diagnoses that header-filtered arbitrary bytes mostly exercise malformed-input rejection rather than semantic PNG paths",
+    "builds structurally valid PNGs with coherent chunks, lengths, CRCs, IHDR fields, IDAT data, and IEND",
+    "keeps malformed-byte totality and valid-image semantic properties as separate tests with an independent validity/oracle check",
+    "does not swallow unexpected exceptions or claim that more arbitrary examples create semantic reach"
+  ]
+}

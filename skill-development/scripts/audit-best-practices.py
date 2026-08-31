@@ -70,6 +70,8 @@ def main() -> int:
         ("references/antipatterns.md", "Asserting through fault-masking code"): "E54-hidden-spec-clamp-not-masking",
         ("SKILL.md", "Reserve whole-state comparison for tests where breadth is the contract"): "E58-hidden-narrow-not-roundtrip",
         ("references/antipatterns.md", "Logic in tests / over-DRY test code"): "E63-hidden-damp-keeps-builders",
+        ("references/property-based-testing.md", "narrow only for a reason"): "E64-hidden-contract-bounded-generator",
+        ("references/fuzzing.md", "Restraint."): "E65-hidden-trusted-input-no-fuzz",
     }
     by_id = {e["id"]: e for e in evals}
     unguarded = []

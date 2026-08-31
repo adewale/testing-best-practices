@@ -1,0 +1,14 @@
+{
+  "eval_id": "E70-hidden-go-fuzz-cadence-restraint",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "distinguishes default seed-corpus replay from the explicit active-fuzz matrix",
+    "verifies that both discovered fuzz targets run one per invocation in PR smoke and scheduled campaigns",
+    "endorses the bounded PR plus longer scheduled cadence instead of demanding long discovery on every PR",
+    "preserves failure artifacts and promotes minimized failures into the committed regression corpus",
+    "does not remove seed replay or misdescribe go test ./... as active fuzzing"
+  ]
+}

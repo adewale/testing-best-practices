@@ -2,7 +2,7 @@
 <rect width="1520" height="798" fill="#fbfaf7"/>
 <text x="30.0" y="56.0" font-size="28" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">A map of testing techniques</text>
 <text x="30.0" y="84.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#6b665d" text-anchor="start">Every technique the skill knows about, grouped by its oracle (how you know the right answer).</text>
-<text x="30.0" y="102.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">Notes in red read “is a kind of”;  notes in blue read “audits the suites above”.</text>
+<text x="30.0" y="102.0" font-size="12" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">Red notes mark variants, complements, or boundaries;  blue notes mark suite audits.</text>
 <line x1="30.0" y1="124.0" x2="1490.0" y2="124.0" stroke="#d8d4cc" stroke-width="0.75" stroke-linecap="round"/>
 <text x="273.3" y="118.0" font-size="10.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#6b665d" text-anchor="middle" letter-spacing="0.08em">INBOUND  ·  parse, don’t validate</text>
 <line x1="516.7" y1="116.0" x2="516.7" y2="132.0" stroke="#d8d4cc" stroke-width="0.75" stroke-linecap="round"/>
@@ -39,14 +39,11 @@
 <text x="789.0" y="260.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Property-based</text>
 <text x="777.0" y="282.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="789.0" y="282.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Metamorphic</text>
-<text x="795.0" y="296.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">↳ relational variant of Property-based</text>
+<text x="795.0" y="296.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">-&gt; relational variant of Property-based</text>
 <text x="777.0" y="318.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="789.0" y="318.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Combinatorial / Pairwise</text>
 <text x="777.0" y="340.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="789.0" y="340.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Bounded-exhaustive</text>
-<text x="777.0" y="362.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
-<text x="789.0" y="362.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Fuzz</text>
-<text x="795.0" y="376.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">↳ structured = Property-based; security sibling of Red-team</text>
 <text x="1144.5" y="218.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">Reference oracle</text>
 <text x="1144.5" y="234.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">compare to another impl</text>
 <line x1="1144.5" y1="240.0" x2="1490.0" y2="240.0" stroke="#d8d4cc" stroke-width="0.75" stroke-linecap="round"/>
@@ -54,7 +51,7 @@
 <text x="1160.5" y="260.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Differential</text>
 <text x="1148.5" y="282.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="1160.5" y="282.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Pirate / Conformance</text>
-<text x="1166.5" y="296.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">↳ symmetric variant of Differential</text>
+<text x="1166.5" y="296.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">-&gt; symmetric variant of Differential</text>
 <text x="1148.5" y="318.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="1160.5" y="318.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Compatibility</text>
 <text x="30.0" y="368.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">Recorded oracle</text>
@@ -64,10 +61,10 @@
 <text x="46.0" y="410.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Golden / Snapshot / Approval</text>
 <text x="34.0" y="432.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="46.0" y="432.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Characterization</text>
-<text x="52.0" y="446.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">↳ Golden applied to legacy where correct is unknown</text>
+<text x="52.0" y="446.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">-&gt; Golden applied to legacy where correct is unknown</text>
 <text x="34.0" y="468.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="46.0" y="468.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">VCR cassette</text>
-<text x="52.0" y="482.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">↳ guards the HTTP boundary</text>
+<text x="52.0" y="482.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">-&gt; guards the HTTP boundary</text>
 <text x="34.0" y="504.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="46.0" y="504.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Visual / Screenshot</text>
 <text x="401.5" y="368.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">Contract / model / spec oracle</text>
@@ -75,10 +72,10 @@
 <line x1="401.5" y1="390.0" x2="747.0" y2="390.0" stroke="#d8d4cc" stroke-width="0.75" stroke-linecap="round"/>
 <text x="405.5" y="410.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="417.5" y="410.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Contract (Pact)</text>
-<text x="423.5" y="424.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">↳ guards a consumer-producer boundary</text>
+<text x="423.5" y="424.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">-&gt; guards a consumer-producer boundary</text>
 <text x="405.5" y="446.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
-<text x="417.5" y="446.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Doc ↔ Code sync</text>
-<text x="423.5" y="460.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">↳ guards the docs-vs-code boundary</text>
+<text x="417.5" y="446.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Doc &lt;-&gt; Code sync</text>
+<text x="423.5" y="460.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">-&gt; guards the docs-vs-code boundary</text>
 <text x="405.5" y="482.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="417.5" y="482.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Model-based / Stateful</text>
 <text x="405.5" y="504.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
@@ -98,11 +95,14 @@
 <text x="1160.5" y="490.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Performance / Benchmark</text>
 <text x="1148.5" y="512.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="1160.5" y="512.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Chaos</text>
-<text x="773.0" y="440.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">Security oracle</text>
-<text x="773.0" y="456.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">find what shouldn&#x27;t happen</text>
-<line x1="773.0" y1="462.0" x2="1118.5" y2="462.0" stroke="#d8d4cc" stroke-width="0.75" stroke-linecap="round"/>
-<text x="777.0" y="482.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
-<text x="789.0" y="482.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Penetration / Security scan</text>
+<text x="773.0" y="404.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">Security oracle</text>
+<text x="773.0" y="420.0" font-size="11" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start" font-style="italic">find what shouldn&#x27;t happen</text>
+<line x1="773.0" y1="426.0" x2="1118.5" y2="426.0" stroke="#d8d4cc" stroke-width="0.75" stroke-linecap="round"/>
+<text x="777.0" y="446.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
+<text x="789.0" y="446.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Penetration / Security scan</text>
+<text x="777.0" y="468.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
+<text x="789.0" y="468.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Coverage-guided fuzzing</text>
+<text x="795.0" y="482.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#b3261e" text-anchor="start" font-style="italic">-&gt; input discovery; complements Property-based tests</text>
 <text x="777.0" y="504.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="789.0" y="504.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Adversarial / Red-team</text>
 <text x="30.0" y="568.0" font-size="13.5" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#1a1a1a" text-anchor="start">AI-system oracle</text>
@@ -141,11 +141,11 @@
 <line x1="401.5" y1="612.0" x2="747.0" y2="612.0" stroke="#d8d4cc" stroke-width="0.75" stroke-linecap="round"/>
 <text x="405.5" y="632.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="417.5" y="632.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Mutation</text>
-<text x="423.5" y="646.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#3a6ea5" text-anchor="start" font-style="italic">↳ audits any suite above</text>
+<text x="423.5" y="646.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#3a6ea5" text-anchor="start" font-style="italic">-&gt; audits any suite above</text>
 <text x="405.5" y="668.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="417.5" y="668.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Coverage</text>
-<text x="423.5" y="682.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#3a6ea5" text-anchor="start" font-style="italic">↳ audits any suite above</text>
+<text x="423.5" y="682.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#3a6ea5" text-anchor="start" font-style="italic">-&gt; audits any suite above</text>
 <text x="405.5" y="704.0" font-size="14" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#8a857c" text-anchor="start">·</text>
 <text x="417.5" y="704.0" font-size="12.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="400" fill="#1a1a1a" text-anchor="start">Assertion quality</text>
-<text x="423.5" y="718.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#3a6ea5" text-anchor="start" font-style="italic">↳ audits any suite above</text>
+<text x="423.5" y="718.0" font-size="10.5" font-family="Georgia, 'Times New Roman', serif" font-weight="400" fill="#3a6ea5" text-anchor="start" font-style="italic">-&gt; audits any suite above</text>
 </svg>

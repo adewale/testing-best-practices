@@ -22,6 +22,26 @@ Telling the agent to self-check its work before reporting done (scan for weak as
 
 Early versions of the language references explained what pytest is, what Vitest is, basic `describe`/`it` syntax. The agent knows this. Keep only the non-obvious parts: boundary-first Hypothesis strategies, `@cloudflare/vitest-pool-workers`, `t.Helper()` in Go.
 
+### Engine semantics need thin adapters, not full language playbooks
+
+The portfolio audit found the same generic failure in different clothes: a test or fuzz target existed, but the configured engine did not execute it the way reviewers assumed. The useful language-specific residue is small and mechanical — pytest collection, Go seed replay versus active `-fuzz`, and fast-check command/replay semantics. Keep selection, oracle, generator, and campaign policy generic; add only the engine facts that change whether evidence is real. A long per-language tutorial duplicates the core and becomes stale faster. Building E68 sharpened this further: naming `replayPath` was not enough; the adapter had to say that `seed`/`path` go to `fc.assert` while `replayPath` goes to `fc.commands`.
+
+### Test reachability is part of correctness
+
+Decorator counts, filenames, and `FuzzXxx` functions are inventory, not execution evidence. A property can be invisible to the configured runner; a Go fuzz target can replay seeds without doing discovery; a test can exhaust a copied helper while production calls different code. Assess collection, active-discovery commands, target-inventory drift, and production-symbol reachability before grading the assertions. “The test exists” and “the test can catch this production defect” are separate claims.
+
+### “Generated valid input” is an oracle claim
+
+A builder that prefixes arbitrary bytes with a magic signature may look structured while violating mandatory chunks, lengths, checksums, or terminators. If a semantic property depends on valid input, validate the builder independently; otherwise every case can die in the parser's first guard and leave the claimed behavior unreachable. Keep corrupt-input totality and structured-valid semantics as separate properties because they provide different evidence.
+
+### Durable-workflow evals should gate guarantees, not a favorite architecture
+
+The first queue oracle required a lease token and owner fencing even though Redis Streams consumer groups could satisfy the supplied eventual-processing/no-double-charge contract with different mechanics. That repeated the scope creep the skill warns against. Gate the observable failure windows—lost publication, destructive early acknowledgement, unrecoverable pending work, ambiguous external effects—and require lease/fence/outbox details only when the chosen design exposes them. A strong oracle may be strict about guarantees while accepting multiple correct protocols.
+
+### Exploratory candidate review is not scorecard evidence
+
+An unretained model run can expose an ambiguous instruction or a brittle prose oracle, but it cannot support a release-level lift claim. Before publishing paired results, retain both candidates, model/version, exact skill revisions, isolated-workspace manifests, commands, and oracle outputs. Without that bundle, use the observation to improve the fixture and report only the deterministic good/pass and bad/fail regression evidence.
+
 ### Abstract framings can sit beside detailed references without being redundant
 
 §10 "Types vs tests" (17 lines, abstract — the mental model) sits next to §11 "Correctness by construction" (45+ lines, detailed — the techniques). Both load by default. The short principle gives the question each tool answers; the deep reference gives the tactics. Without §10, agents reach §11 but use only its tactical machinery; with §10, they frame their work around *which question this test answers* before reaching for tactics.

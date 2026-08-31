@@ -96,7 +96,15 @@ it('results sorted by descending score', () => {
 
 **Key arbitraries**: `fc.string()`, `fc.integer()`, `fc.float()`,
 `fc.array()`, `fc.record()`, `fc.uuid()`, `fc.webUrl()`,
-`fc.constantFrom(...)`, `fc.option()`.
+`fc.constantFrom(...)`, `fc.option()`. Compose specification-valid domain arbitraries with `fc.record()` and `fc.letrec()`; keep hostile arbitrary input in a separate totality property.
+
+### Collection, Replay, and Command Models
+
+List what CI will collect with the same Vitest config, project, and name filters used by CI; where supported by the pinned version, use `vitest list` or `vitest list --json` and assert the expected test names. `--filesOnly` proves only file-level reachability. An explicit one-file run does not prove suite reachability.
+
+On failure, preserve fast-check's `seed` and `path` and pass them back to `fc.assert`. `fc.commands` failures also report a `replayPath`; pass it back to `fc.commands`, not to `fc.assert`. Explicitly propagate all replay values through every Vitest project, setup file, and Workers/browser sandbox that runs the property. A fixed PR seed plus a rotating finder job is one useful policy, not a universal requirement.
+
+For model-based tests, put target-specific applicability in `Command.check` and make it resolve the same entity that `run` uses. `fc.commands` generates candidate commands without consulting that precondition; `modelRun`/`asyncModelRun` evaluates it against the current model and skips rejected commands. A guard or silent no-op hidden in `run` conceals missed operations. If a rejected operation is intentional, assert its no-op/error contract. `maxCommands` is only a cap on the generated sequence, so measure accepted/executed operations for the gate's seed instead of multiplying it by `numRuns`.
 
 ## E2E Testing: Playwright
 

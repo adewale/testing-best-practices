@@ -57,6 +57,17 @@ func TestValidateURL(t *testing.T) {
 }
 ```
 
+## Property Tests Versus Native Fuzzing
+
+Use Rapid for shrinkable structured values and state-machine traces; use native `testing.F` for byte/string/scalar trust boundaries and coverage-guided mutation. `rapid.MakeFuzz` can expose a Rapid property as a native target when the same oracle fits both.
+
+Native `FuzzXxx` targets have two execution modes:
+
+- `go test` replays `f.Add` and `testdata/fuzz` seeds; it does not perform active coverage-guided discovery.
+- `go test <package> -run='^$' -fuzz='^FuzzXxx$' -fuzztime=30s` performs bounded discovery. `-fuzz` must select exactly one target in exactly one package.
+
+Inventory with `go test -list '^Fuzz' ./...`, then make CI enumerate every target and fail when source and the discovery matrix drift. Commit minimized native failures under `testdata/fuzz/FuzzXxx/`; retain Rapid's persisted failures when they are required regressions. See `references/property-based-testing.md` and `references/fuzzing.md` for generator/oracle and campaign rules.
+
 ## Test Isolation
 
 ### Use t.TempDir() for filesystem tests
