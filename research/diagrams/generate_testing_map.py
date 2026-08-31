@@ -53,7 +53,7 @@ CLUSTERS = [
     ]),
     ("property", "Property / invariant oracle", "assert relations, not values", [
         "Property-based (PBT)", "Metamorphic", "Combinatorial / Pairwise",
-        "Bounded-exhaustive", "Fuzz  · also Security",
+        "Bounded-exhaustive",
     ]),
     ("reference", "Reference oracle", "compare to another impl", [
         "Differential", "Pirate / Conformance", "Compatibility (matrix)",
@@ -63,7 +63,7 @@ CLUSTERS = [
         "VCR cassette (HTTP)", "Visual / Screenshot",
     ]),
     ("contract", "Contract / model / spec oracle", "derive from a spec", [
-        "Contract (Pact)", "Doc ↔ Code sync", "Model-based / Stateful",
+        "Contract (Pact)", "Doc <-> Code sync", "Model-based / Stateful",
         "Spec-based / Formal", "Concolic / Symbolic exec",
     ]),
     ("resilience", "Resilience / non-functional", "stress the system, not logic", [
@@ -72,7 +72,7 @@ CLUSTERS = [
     ]),
     ("security", "Security oracle", "find what shouldn't happen", [
         "Penetration / Security scan", "Adversarial / Red-team",
-        "Fuzz  · also Property",
+        "Coverage-guided fuzzing",
     ]),
     ("human", "Release-stage & human-driven", "process, not code", [
         "Sanity (vs Smoke)", "Canary / Progressive rollout",
@@ -126,9 +126,9 @@ def render():
     strip_h = 30
     seg_w = (W - 2 * MARGIN) / 3
     segs = [
-        ("INBOUND boundary  →  parse, don’t validate", "#0e7490", "#cffafe"),
-        ("TYPED INTERIOR  →  behavior on public API", "#4338ca", "#e0e7ff"),
-        ("OUTBOUND boundary  →  contract / VCR / E2E", "#7c3aed", "#ede9fe"),
+        ("INBOUND boundary  ->  parse, don’t validate", "#0e7490", "#cffafe"),
+        ("TYPED INTERIOR  ->  behavior on public API", "#4338ca", "#e0e7ff"),
+        ("OUTBOUND boundary  ->  contract / VCR / E2E", "#7c3aed", "#ede9fe"),
     ]
     for i, (label, fg, bg) in enumerate(segs):
         x = MARGIN + i * seg_w
@@ -191,11 +191,12 @@ def render():
         "•  Pirate = a symmetric Differential test (the data IS the spec; no impl is privileged).",
         "•  Metamorphic = a relational Property test; Combinatorial/Bounded-exhaustive = input-space coverage strategies for it.",
         "•  Characterization = a Golden/Snapshot test on legacy code where “correct” is unknown — it records what IS, not what SHOULD be.",
-        "•  Fuzz straddles Property (“never crashes”) and Security (untrusted input); Adversarial/Red-team is its AI-era sibling.",
+        "•  Coverage-guided fuzzing explores execution feedback; Property-based testing generates from declared strategies. They complement each other.",
         "•  Contract / VCR / Doc-sync all guard a boundary against drift between two sides that must agree.",
         "•  Meta layer (Mutation / Coverage / Assertion-quality) doesn’t test the code — it tests whether the suite above would catch a bug.",
-        "•  Tiering: solid Tier 1 always; Tier 2 (PBT, E2E, contract, VCR, characterization, differential, golden, pirate, doc-sync) when triggered;",
-        "    Tier 3 with caution (visual, mutation, performance, fuzz). Non-functional & release-stage families sit outside the functional tiers.",
+        "•  Tiering: solid Tier 1 always; Tier 2 (PBT, small risk-triggered fuzz targets, E2E, contract, VCR, characterization,",
+        "    differential, golden, pirate, doc-sync) when triggered; Tier 3 with caution (visual, mutation, performance, long fuzz campaigns).",
+        "    Non-functional & release-stage families sit outside the functional tiers.",
     ]
     rel_h = 16 + len(rel_lines) * 18 + 10
     parts.append(rrect(MARGIN, rel_y, W - 2 * MARGIN, rel_h, 10, "#f8fafc",
@@ -223,6 +224,16 @@ def render():
 
 if __name__ == "__main__":
     import pathlib
+
+    import cairosvg
+
     out = pathlib.Path(__file__).with_name("testing-techniques-map.svg")
-    out.write_text(render(), encoding="utf-8")
-    print(f"wrote {out} ({out.stat().st_size} bytes)")
+    svg = render()
+    out.write_text(svg, encoding="utf-8")
+    cairosvg.svg2png(
+        bytestring=svg.encode(),
+        write_to=str(out.with_suffix(".png")),
+        output_width=W * 2,
+        background_color="#ffffff",
+    )
+    print(f"wrote {out.name} / .png ({out.stat().st_size} SVG bytes)")

@@ -75,6 +75,7 @@ TECHNIQUES = {
     ],
     "t2": [
         ("Property-based",       "Parsers, serializers, transforms, rankings — anything generative."),
+        ("Fuzz target",           "Hostile-input boundary with amplifying risk and a coverage-guided engine."),
         ("End-to-end",           "HTTP endpoints, CLI workflows, or a platform-specific runtime."),
         ("Doc / Code sync",      "CLI commands, plugin hooks, or config described in docs."),
         ("Contract",             "Anywhere unit tests rely on mocks for external services."),
@@ -88,7 +89,7 @@ TECHNIQUES = {
         ("Visual / Screenshot",  "UI-heavy projects where pixel layout matters."),
         ("Mutation",             "Critical modules; or when coverage is high but bugs still escape."),
         ("Performance",          "When a 2× slowdown would be a user-visible bug."),
-        ("Fuzz",                 "Security-sensitive code processing untrusted input."),
+        ("Long fuzz campaigns",  "When sustained coverage growth earns scheduled compute and triage."),
     ],
 }
 
@@ -100,7 +101,8 @@ NOTE_FOR = {
     "VCR cassette":         "guards the HTTP boundary",
     "Contract":             "guards a consumer / producer boundary",
     "Mutation":             "audits the suites above",
-    "Fuzz":                 "structured = Property-based on untrusted input",
+    "Fuzz target":          "coverage-guided discovery complements Property-based tests",
+    "Long fuzz campaigns":  "the same target at a larger discovery budget",
 }
 
 
@@ -155,13 +157,13 @@ def build():
                   size=SZ_DISPLAY, weight="700", family=DISPLAY, fill=INK,
                   ls_em=-0.018))
     body.append(t(M, 92,
-                  "Sixteen techniques in three tiers — always, when "
+                  "Seventeen practices in three tiers — always, when "
                   "triggered, with caution.",
                   size=SZ_BODY, fill=SECOND))
     body.append(t(M, 120,
                   "Before any test, encode the invariant in the type when "
                   "you can; otherwise tests live somewhere along  inbound  "
-                  "→  typed interior  →  outbound.",
+                  "->  typed interior  ->  outbound.",
                   size=SZ_BODY, fill=INK, family=BODYF, italic=True))
 
     # ----- defs (soft shadow only — no border) ------------------------------
@@ -246,7 +248,7 @@ def build():
 
                 # Inline relationship note
                 if name in NOTE_FOR:
-                    body.append(t(x + 22, ty + 6, "→  " + NOTE_FOR[name],
+                    body.append(t(x + 22, ty + 6, "->  " + NOTE_FOR[name],
                                   size=SZ_CAPTION, fill=REL, italic=True,
                                   family=BODYF))
 

@@ -277,6 +277,25 @@ test('text measurement returns positive height', async ({ page }) => {
 
 ---
 
+### Coverage-Guided Fuzz Targets
+
+**When helpful**: A hostile-input boundary has amplifying risk: public exposure, custom length/offset/chunk parsing, native or unsafe decoding, prior crashes, or a security filter whose crash becomes a bypass. Use an appropriate coverage-guided engine and connect the target to the production entry point.
+
+**Cost**: Split the target from the campaign. A small, bounded target is ordinary Tier 2 test work. Minute/hour campaigns, sanitizer builds, artifact storage, and triage are Tier 3 operating costs. Modern engines minimize and retain replayable failures; irreproducibility is not an inherent property of fuzzing.
+
+**Mitigations**:
+- Keep the target fast, deterministic, bounded, and reachable through the exact CI runner
+- Seed it with production-shaped and malformed examples, then let coverage-guided mutation discover new paths
+- Catch only documented rejection errors and let unexpected failures escape
+- Preserve the engine's minimized failure artifact and exact replay command
+- Pair crash detection with the strongest available semantic oracle; generated inputs do not justify a weaker assertion
+
+Property-based testing and fuzzing are complementary, not synonyms. Hypothesis and fast-check generate values from declared strategies and shrink property failures. Coverage-guided fuzzers mutate inputs in response to execution feedback. Either can test totality, but neither should be mislabeled as the other.
+
+**Decision**: Does a hostile-input boundary have amplifying risk, and can the project support an appropriate engine? → Add a small Tier 2 fuzz target. Does continuing coverage growth justify dedicated compute and triage? → Add a Tier 3 scheduled or continuous campaign.
+
+---
+
 ## Tier 3: Sometimes Helpful (Use With Caution)
 
 These tests provide value in specific situations but have significant costs. Use them deliberately, not by default.
@@ -333,21 +352,6 @@ These tests provide value in specific situations but have significant costs. Use
 
 ---
 
-### Fuzz Testing
-
-**When helpful**: Security-sensitive code that processes untrusted input (parsers, deserializers, network protocols).
-
-**Cost**: High. Requires infrastructure for continuous fuzzing. Hard to reproduce failures.
-
-**Mitigations**:
-- Use structured fuzzing (Hypothesis/fast-check) over raw fuzzing
-- Start with the "never crashes" property test — it's fuzzing with better ergonomics
-- Focus on code that processes untrusted input
-
-**Decision**: Does the code process untrusted input where a crash = vulnerability? → Consider fuzzing.
-
----
-
 ## Decision Flowchart
 
 ```
@@ -361,7 +365,8 @@ START: New feature or bug fix
 │  └─ YES → Write regression test (Tier 1) ──→ then continue below
 │
 ├─ Is this code at a TRUST BOUNDARY (HTTP, file, IPC, external API, user input)?
-│  └─ YES → Write a parser test at the boundary (Tier 1, often PBT)
+│  └─ YES → Write parser examples at the boundary (Tier 1); add PBT when
+│           its broad-input-space trigger applies (Tier 2)
 │     ├─ External API? → Add contract test + VCR cassette (Tier 2)
 │     ├─ User-facing endpoint? → Add smoke test (Tier 1) + E2E (Tier 2)
 │     └─ Continue
@@ -381,8 +386,14 @@ START: New feature or bug fix
 ├─ Is it documented?
 │  └─ YES → Add doc-sync test (Tier 2)
 │
+├─ Does a hostile-input boundary have amplifying risk, and is an
+│  appropriate coverage-guided engine available?
+│  └─ YES → Add a small bounded fuzz target (Tier 2).
+│           Schedule long discovery campaigns only when their continuing
+│           coverage payoff clears the compute and triage cost (Tier 3).
+│
 ├─ Is it security-critical?
-│  └─ YES → Consider mutation testing + fuzzing (Tier 3)
+│  └─ YES → Consider mutation testing (Tier 3).
 │           Security defense-in-depth is virtuous; keep all layers.
 │
 ├─ Is pixel layout critical?
@@ -415,7 +426,8 @@ system, not a large suite that re-enacts the type system at runtime.
 | Visual regression | High | High | Slow | Medium | High |
 | Mutation testing | High | Low | Very Slow | Very High | Very Low |
 | Performance tests | Medium | Medium | Slow | Low | High |
-| Fuzz testing | High | Low | Very Slow | High (security) | Low |
+| Small fuzz target | Medium | Low | Medium | High (security) | Low |
+| Long fuzz campaign | High | Medium | Very Slow | High (security) | Low |
 
 ---
 
@@ -426,6 +438,7 @@ For any project, start with these and add more based on the decision tree:
 1. **One smoke test** — the app starts and responds
 2. **Unit tests for business logic** — 3+ assertions each, happy + sad path
 3. **Regression test for every bug fix** — written before the fix
-4. **Property test for every parser/serializer** — "never crashes" at minimum
+4. **Property test for a parser/serializer with a broad admitted input space** — arbitrary-input totality plus specification-valid semantic behavior where applicable
+5. **Small fuzz target when the risk/engine trigger applies** — campaign budget is a separate Tier 3 decision
 
 This gives you the highest bug-finding-power-per-hour-invested. Add Tier 2 and Tier 3 tests as the project matures and the trigger conditions apply.

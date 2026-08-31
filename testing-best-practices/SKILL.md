@@ -8,7 +8,7 @@ description: >
   sabotaged/skipped/weak tests. Use when writing tests, reviewing test quality,
   fixing flaky tests, improving coverage quality, or when the user mentions
   TDD, testing, coverage, mocks, invariants, types vs tests, defense in depth,
-  or test quality.
+  fuzzing, generative testing, or test quality.
 compatibility: Agent Skills clients including Codex, OpenCode, Pi, Gemini CLI, and Claude Code.
 metadata:
   author: adewale
@@ -31,7 +31,7 @@ Before writing or changing tests:
 1. **Detect language/framework** from repo files and adjacent tests.
 2. **Read nearby tests** for naming, fixtures, builders, assertion style, and runner commands.
 3. **Find the nearest validation command** before broad full-suite commands.
-4. **Identify the risk boundary**: pure logic, internal component boundary, external API, UI/user journey, security boundary, or type/schema invariant.
+4. **Identify the risk boundary**: pure logic, internal component boundary, external API, UI/user journey, security boundary, or type/schema invariant. If the code turns bytes or text it did not produce into structured data — feeds, uploads, protocol frames, binary metadata, log files — test the hostile-input boundary explicitly. Consider coverage-guided fuzzing when exposure, parser complexity, native/unsafe code, crash history, or the security impact justifies an engine and campaign.
 5. **Classify the change and asset**: behavior change vs. structure/tidying, reusable library vs. throwaway probe, customer-facing rule vs. internal helper.
 6. **Choose the smallest useful test tier** from `references/test-types.md`.
 7. **Load only relevant references** from the matrix below.
@@ -47,10 +47,14 @@ Always consider:
 Language/framework references:
 - Python / pytest / Hypothesis → `references/python.md`
 - TypeScript/JavaScript / Vitest/Jest/fast-check/Playwright → `references/typescript.md`
-- Go → `references/go.md`
+- Go / testing / testing.F / Rapid → `references/go.md`
 - Rust → `references/rust.md`
 
+Whenever property-based testing or engine-supported coverage-guided fuzzing is in scope, load the matching language reference: collection, discovery, and replay behavior differs by engine. If that reference does not document the selected fuzz engine, follow the project's engine documentation rather than transferring another engine's commands or corpus rules.
+
 Topical references by trigger:
+- Writing/reviewing property tests, choosing a property, generator design, stateful/model-based testing, seeds and replay → `references/property-based-testing.md`
+- Coverage-guided targets or campaigns for exposed/custom parsers, native or unsafe decoders, crash-prone boundaries, or security tooling whose crash disables a check → `references/fuzzing.md`
 - Legacy/refactor safety → `references/characterization-testing.md`
 - Reimplementation, port, multi-language SDK, custom data structure with no reference, or approximate/probabilistic/ANN/ranking output → `references/differential-testing.md`
 - Complex outputs, snapshots, transformation pipelines, save/load or migration roundtrips → `references/golden-file-testing.md`
@@ -114,19 +118,24 @@ Prefer visible state over call choreography: assert the saved row, emitted event
 
 ### Use properties for broad input spaces
 
-Use property-based testing when functions process arbitrary strings, numbers, binary data, parser inputs, encodings, orderings, or transformations. Common properties:
+Use property-based testing when functions process arbitrary strings, numbers, binary data, parser inputs, encodings, orderings, transformations, or stateful operation sequences. Common properties:
 
 | Pattern | Example |
 |---|---|
-| Never crashes | parser handles arbitrary bytes/strings without throwing unexpectedly |
-| Valid-or-error | result is a valid value or a structured error, never malformed |
-| Roundtrip | `decode(encode(x)) == x` |
+| Model/stateful | generated operations on a store/session match a small shadow model after each accepted step |
 | Idempotent | `normalize(normalize(x)) == normalize(x)` |
-| Conservation | filtered output contains only allowed input-derived data |
-| Monotonic | adding input cannot decrease count/score where domain requires |
+| Roundtrip | `decode(encode(x)) == x` |
+| Metamorphic | permuting input preserves grouping; adding input cannot reduce a monotonic count |
+| Conservation | output contains only allowed input-derived data and keeps everything required |
 | Algebraic laws | associativity, commutativity, distributivity where operations claim them |
+| Valid-or-error | result is a valid value or a structured error, never malformed |
+| Never crashes | parser handles arbitrary bytes/strings without throwing unexpectedly |
 
-For small finite spaces, prefer exhaustive generation over sampling; see `references/exhaustive-testing.md`.
+Choose generators by the code you need to reach. Arbitrary bytes or text are useful for totality and error-shape checks; independently validated, specification-valid builders are needed for semantic branches; mutations of a valid corpus are where coverage-guided fuzzing starts to pay off. Avoid filters or guards that collapse most cases into one easy path, and use an oracle independent of the implementation: a law, model, differential implementation, or exact domain invariant. Property-based testing provides structured generation and shrinking; coverage-guided fuzzing mutates inputs toward new control flow. Do not use the terms or tools interchangeably.
+
+For small finite spaces, prefer exhaustive generation over sampling; see `references/exhaustive-testing.md`. For mutable workflows, generate operations as well as data and compare the real system with a small model after each accepted operation. Include time, failure, cancellation, cleanup, duplicate/reordered delivery, and concurrency actions when the contract exposes them. A maximum trace length is only a cap; measure accepted transitions so skipped preconditions cannot create an impressive-looking but shallow campaign. See `references/property-based-testing.md` for the audit checklist.
+
+For durable workers and queues, derive properties from the delivery contract: no lost work, defined duplicate/redelivery and terminal-state behavior, recovery after interruption, and only the idempotency or delivery guarantee the system actually promises. If the implementation uses leases, test expiry/renewal and stale-owner behavior. If a durable write is followed by a separate publication, test that failure window and the outbox, reconciliation, or replay mechanism the design actually provides. Generate crash, time, duplicate/reorder, and ambiguous-commit traces; do not infer exactly-once effects or invent a lease/outbox contract.
 
 ### Test error-handling paths, not just invalid input
 
@@ -178,7 +187,7 @@ For transformations or complex generated output, use golden files with explicit 
 Report evidence by severity and include positive observations. Check:
 
 1. **Sabotage / false confidence**: skipped/focused tests, no assertions, logging-not-asserting, commented-out assertions, always-true assertions.
-2. **Oracle strength**: weak sole assertions, missing negative/error/state/structural assertions, tautologies.
+2. **Oracle strength**: weak sole assertions, missing negative/error/state/structural assertions, tautologies. For property tests, also check the property chosen: a bare never-crashes where a roundtrip, idempotence, or model comparison was available is a weak oracle. A generator is over-constrained only when it excludes values or boundaries the real contract admits; a documented finite, typed, or protocol-bounded domain should stay narrow.
 3. **Mock-reality drift**: hardcoded mocks that would not notice real API/schema changes.
 4. **Tier integrity**: unit tests hitting live network, integration tests mocking every boundary they claim to exercise, E2E tests that mock the system under test.
 5. **Determinism**: sleeps, wall-clock time, unseeded random, order dependence, global state leaks.
@@ -186,8 +195,11 @@ Report evidence by severity and include positive observations. Check:
 7. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
 8. **Lifecycle fit**: throwaway probes over-tested, reusable assets under-tested, or structure-only changes getting behavior-test theater.
 9. **Example quality**: business examples buried in UI scripts, unreadable fixtures, or helpers that form a DSL but have no tests of their own.
-10. **Test-code readability (DAMP)**: logic in test bodies (loops/branches/computed expectations), expectations derived from the SUT's own constants, shared fixtures mutated far from the assertions that depend on them. See `references/antipatterns.md`.
-11. **Suite shape**: count tests per tier; name the inverted pyramid/ice-cream cone (mostly E2E over a thin unit base) and the hourglass (unit + E2E with an empty integration middle). Recommend the smallest-tier home for each E2E case that has one — business rules move below the UI — while keeping a small golden-path/critical-journey E2E core.
+10. **Execution reachability**: decorated tests not collected by the configured runner, fuzz targets omitted from every active-discovery campaign (or seed replay mislabeled as discovery), CI target lists drifting from source, or tests exercising copied/dead helpers instead of production paths.
+11. **Generator and oracle fidelity**: “valid” builders that violate the format, arbitrary inputs that never pass the parser's first guard, conditional/vacuous assertions, over-sanitized generators, or a model that merely reimplements the system.
+12. **Stateful lifecycle fidelity**: actions or data never vary, target-specific preconditions hidden as silent no-ops, accepted-transition volume unknown, or interruption/recovery states promised or exposed by a durable workflow absent from its model.
+13. **Test-code readability (DAMP)**: logic in test bodies (loops/branches/computed expectations), expectations derived from the SUT's own constants, shared fixtures mutated far from the assertions that depend on them. See `references/antipatterns.md`.
+14. **Suite shape**: count tests per tier; name the inverted pyramid/ice-cream cone (mostly E2E over a thin unit base) and the hourglass (unit + E2E with an empty integration middle). Recommend the smallest-tier home for each E2E case that has one — business rules move below the UI — while keeping a small golden-path/critical-journey E2E core.
 
 ### Upgrade mode
 
@@ -212,6 +224,7 @@ Use concrete search signals from `references/antipatterns.md`:
 - `@skip`, `skip`, `skipif` without real condition, `test.only`, `fit`, `xit`, `xdescribe`.
 - `print`, `console.log`, `t.Log`, `Debug.WriteLine` used instead of assertions.
 - Assertion-free tests or only truthy/not-empty/not-null checks.
+- Property tests that prove nothing: a file importing a PBT library it never calls (grep for `fc.assert`, `@given`, `rapid.Check`, `proptest!`, not the import), two property tests with identical bodies and different names, an assertion computed from the test's own slice/expression rather than an independent oracle, preconditions that reject nearly every generated input, or a finite domain sampled randomly instead of enumerated.
 - `sleep`, `waitForTimeout`, `Thread.Sleep`, `Task.Delay` for synchronization.
 - Try/catch swallowing exceptions.
 - Mock return values identical to assertions.
@@ -227,7 +240,8 @@ After writing or changing tests:
 3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling. Also check: expected values are literals (not computed with the SUT's own logic), test data uses distinct non-default values, and assertions are narrow to the behavior's fields.
 4. For security/transformation tests, verify both rejection/removal and preservation.
 5. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
-6. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.
+6. For property/fuzz tests, confirm the configured runner collects the test or target, the generator reaches the claimed domain, the oracle is independent, and the engine's failure artifact/replay mechanism is preserved. Distinguish seed/corpus replay from active coverage-guided discovery.
+7. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.
 
 ## Final report contract
 

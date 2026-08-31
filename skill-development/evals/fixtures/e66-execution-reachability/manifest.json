@@ -1,0 +1,13 @@
+{
+  "eval_id": "E66-execution-reachability",
+  "language": "mixed",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "finds that unittest discovery does not collect the module-level pytest/Hypothesis property and either switches to pytest with an exact collection guard or moves it into a TestCase with an exact unittest discovery guard",
+    "distinguishes Go seed-corpus replay from active -fuzz discovery and inventories both fuzz targets",
+    "finds that the TypeScript property exercises a test-local copy rather than the production function and routes it through production",
+    "does not claim that file presence or a green default test command proves generative execution"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": "E65-hidden-trusted-input-no-fuzz",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "recognizes the input is internally constructed and typed, so table-driven examples are the right tier",
+    "does NOT demand a fuzz target or untrusted-input harness for a trusted internal helper (over-application guard)"
+  ]
+}
