@@ -47,13 +47,13 @@ python3 scripts/run-fixture-oracles.py
 | E20-go-zero-value-invariant | yes | TBD | 3* | `evals/fixtures/e20-go-zero-value` | Candidate passed oracle. |
 | E21-implementation-detail-mock-call-count | no | TBD | TBD | TBD |  |
 | E22-contract-schema-drift | no | TBD | TBD | TBD |  |
-| E23-python-hypothesis-parser-contract | yes | TBD | 3* | `evals/fixtures/e23-python-hypothesis-parser` | Candidate passed oracle. |
+| E23-python-hypothesis-parser-contract | yes | TBD | 3* | `evals/fixtures/e23-python-hypothesis-parser` | Candidate passed the structural oracle; the fixture does not execute the candidate tests. |
 | E24-python-recorded-api-fixture | no | TBD | 3* | `evals/fixtures/e24-python-recorded-api-fixture` | Candidate passed oracle. |
 | E25-go-tempdir-and-fake-dependency | yes | TBD | 3* | `evals/fixtures/e25-go-tempdir-fake` | Candidate passed oracle. |
 | E26-rust-result-proptest-and-no-unwrap | yes | TBD | 3* | `evals/fixtures/e26-rust-result-proptest` | Candidate passed oracle. |
 | E27-typescript-playwright-flake-locators | yes | TBD | 3* | `evals/fixtures/e27-typescript-playwright-flake` | Candidate passed oracle. |
 
-`3*` = executable fixture oracle passed for one generated candidate. It is evidence for the focused failure mode, not a complete 0–4 human/rubric release score.
+`3*` = the fixture oracle command passed for one generated candidate. It is evidence for the focused failure mode, not proof that candidate tests executed and not a complete 0–4 human/rubric release score.
 
 ## 2026-08-28 Google-Testing-Blog ablation round
 

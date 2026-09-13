@@ -16,7 +16,7 @@
 - [ ] Add pairwise blind judging over first/current/local outputs for hard evals.
 - [ ] Add prompt metamorphic variants for each public fixture oracle.
 - [ ] Add Rust mutation-backed mini-repo so mutation checks cover all four core languages.
-- [ ] Add a small CI workflow that runs `cd skill-development && python3 scripts/check-all.py`.
+- [x] Add a small CI workflow that runs the deterministic `skill-development/scripts/check-all.py` gates.
 - [ ] Add a release script that updates token report, runs gates, creates tag, and drafts release notes.
 
 ## Next skill improvements

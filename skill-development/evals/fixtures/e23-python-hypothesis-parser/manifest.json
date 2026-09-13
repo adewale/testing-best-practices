@@ -3,11 +3,15 @@
   "language": "python",
   "oracle": "oracle.py",
   "good_sample": "samples/good",
-  "bad_sample": "samples/bad",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-noop"
+  ],
   "checks": [
     "uses Hypothesis/@given",
     "asserts Config or ParseError invariants",
     "rejects weak not-None-only tests",
-    "rejects swallowed exceptions"
+    "rejects swallowed exceptions",
+    "rejects keyword-stuffed no-op tests"
   ]
 }
