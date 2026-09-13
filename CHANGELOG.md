@@ -37,6 +37,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Fixed
 - **Repository coherence audit cleanup** — refreshed README counts/structure and corrected E36–E49 fixture prompt headings to match their manifest eval IDs after the v0.3 oracle and iteration 8–9 eval work.
+- **Prompt-eval fail-closed behavior** — assessment Markdown now reaches the judge, candidate content uses a collision-safe fence, malformed/out-of-range judge scores and failed generation cannot produce a passing result, and completed judge-only runs without a judge now fail.
+- **E23 adversarial oracle hardening** — replaced keyword matching with syntax-tree checks tied to the Hypothesis property and added a keyword-stuffed no-op regression sample.
+- **Eval integrity CI** — the existing deterministic `check-all.py` suite now runs on pull requests and pushes to `main` with Python, Go, and Node configured explicitly.
 
 ### Added (iteration 11)
 - **Antipattern #14 "Asserting through fault-masking code"** in `references/antipatterns.md` (from Voas & Miller's PIE/fault-hiding theory, via the design-for-testability literature review) — output-only assertions behind a clamp / swallow-to-default / recover-to-zero / high domain-to-range coercion can't catch faults, because the mask blocks propagation; fix is to assert the pre-mask/internal value. Ships with a restraint clause excluding spec'd clamps/graceful degradation.
