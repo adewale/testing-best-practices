@@ -1,0 +1,15 @@
+{
+  "eval_id": "E69-durable-queue-protocol",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "finds both the database-to-Redis dual-write gap and the destructive LPOP-before-work loss window",
+    "specifies durable claim/ack/redelivery semantics with pending-work recovery; if it chooses leases, it addresses expiry and stale owners",
+    "transactionally persists publication intent and provides a recoverable publisher without prescribing an outbox as the only architecture",
+    "uses an idempotency key/deduplication for ambiguous external effects",
+    "adds crash-point and expiry/concurrency fault tests rather than relying on happy-path mocks or retry alone",
+    "does not promise exactly-once effects across independent systems"
+  ]
+}

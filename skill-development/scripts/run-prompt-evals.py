@@ -17,6 +17,8 @@ Generation backends
   then run with ``--candidate-dir DIR``.
 - ``--agent-cmd "CMD"``    Generate by shelling out. The prompt is passed on
   stdin and ``{dir}`` / ``{prompt_file}`` are substituted; cwd = candidate dir.
+  If the command creates no candidate files, its successful stdout is saved as
+  ``assessment.md``; commands that create files keep those files authoritative.
   Example: ``--agent-cmd 'claude -p --permission-mode acceptEdits'``
 - (neither)                Stage the run dir + prompt and print the manual /
   sub-agent instructions, then stop before scoring.
@@ -53,7 +55,7 @@ FIXTURES = ROOT / "evals" / "fixtures"
 RUBRIC = ROOT / "evals" / "rubric.md"
 RUNS = ROOT / "eval-runs"  # gitignored
 
-CODE_GLOBS = ("*.py", "*.ts", "*.tsx", "*.js", "*.go", "*.rs")
+CODE_GLOBS = ("*.py", "*.ts", "*.tsx", "*.js", "*.go", "*.rs", "*.md")
 
 
 def load_evals() -> list[dict]:
@@ -81,7 +83,20 @@ def run_oracle(fixture: Path, candidate_dir: Path) -> tuple[bool, str]:
 def generate(agent_cmd: str, prompt: str, prompt_file: Path, candidate_dir: Path) -> int:
     cmd = agent_cmd.replace("{dir}", str(candidate_dir)).replace("{prompt_file}", str(prompt_file))
     print(f"  $ {cmd}  (cwd={candidate_dir}, prompt on stdin)")
-    return subprocess.run(cmd, shell=True, cwd=candidate_dir, input=prompt, text=True).returncode
+    proc = subprocess.run(
+        cmd,
+        shell=True,
+        cwd=candidate_dir,
+        input=prompt,
+        text=True,
+        stdout=subprocess.PIPE,
+    )
+    if proc.stdout:
+        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
+    produced_files = any(path.is_file() for path in candidate_dir.rglob("*"))
+    if proc.returncode == 0 and proc.stdout.strip() and not produced_files:
+        (candidate_dir / "assessment.md").write_text(proc.stdout)
+    return proc.returncode
 
 
 def read_candidate(candidate_dir: Path) -> str:
@@ -92,8 +107,15 @@ def read_candidate(candidate_dir: Path) -> str:
     return "\n\n".join(parts)
 
 
+def markdown_fence(text: str) -> str:
+    """Return a backtick fence that cannot be closed by *text*."""
+    longest = max((len(match.group(0)) for match in re.finditer(r"`+", text)), default=0)
+    return "`" * max(3, longest + 1)
+
+
 def build_judge_prompt(ev: dict, prompt: str, candidate_text: str) -> str:
     focus = ev.get("rubric_focus", [])
+    candidate_fence = markdown_fence(candidate_text)
     return (
         f"{RUBRIC.read_text()}\n\n"
         "---\nYou are grading one prompt eval. Score ONLY these rubric dimensions: "
@@ -101,7 +123,8 @@ def build_judge_prompt(ev: dict, prompt: str, candidate_text: str) -> str:
         f"## Eval task prompt\n{prompt}\n\n"
         f"## Expected behavior\n{json.dumps(ev.get('expected_behavior', []), indent=2)}\n\n"
         f"## Red flags\n{json.dumps(ev.get('red_flags', []), indent=2)}\n\n"
-        f"## Candidate answer (files produced)\n```\n{candidate_text}\n```\n\n"
+        f"## Candidate answer (files produced)\n{candidate_fence}\n"
+        f"{candidate_text}\n{candidate_fence}\n\n"
         "Respond with ONLY a JSON object, no prose, of the form:\n"
         '{"dimensions": {' + ", ".join(f'"{d}": <0-4>' for d in focus) + '}, '
         '"critical_failure": <true|false>, "rationale": "<= 2 sentences"}'

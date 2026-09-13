@@ -152,6 +152,12 @@ Team rule: do not commit failing unit tests. For solo work, a broken test can be
 
 **Cost**: Medium. Requires thinking in invariants, slower to run.
 
+### Fuzz Targets
+
+**Trigger**: A hostile-input boundary has an amplifying risk such as public exposure, custom length/offset/chunk parsing, native or unsafe decoding, prior crashes, or a security scanner/filter that can be bypassed by crashing it—and the project has or is willing to support an appropriate coverage-guided engine.
+
+Writing and maintaining a small target is ordinary triggered test work, not an expensive campaign. Keep it fast, deterministic, bounded, and connected to the production entry point. Seed it with production-shaped and malformed examples, catch only documented rejection errors, let unexpected failures escape, and assert the strongest available semantic oracle. For lower-risk or trusted inputs, examples, exhaustive cases, or ordinary properties may be enough. See `references/fuzzing.md` and the language reference or selected engine documentation.
+
 ### E2E / Acceptance Tests
 **Trigger**: ANY of these apply:
 - [ ] Project has HTTP endpoints or a CLI with multi-step workflows
@@ -252,20 +258,13 @@ See `references/differential-testing.md`.
 - **Costs**: Results vary between machines
 - **Mitigations**: Compare against baseline, separate from test suite
 
-### Fuzz Testing
-- **When helpful**: Security-sensitive code processing untrusted input, parsers, data structures, encoders/decoders, or brittle crash-prone code
-- **Costs**: Requires infrastructure, hard to reproduce failures
-- **Mitigations**: Start with "never crashes" property tests (structured fuzzing); keep long fuzz runs out of the default fast suite
+### Long Fuzz Campaigns
 
-Minimum useful fuzzer harness:
-- Pin and print/log the seed for every failure.
-- Catch exceptions/crashes, save the failing input, and keep running when possible.
-- Provide a replay command or committed corpus path.
-- Add timeouts and a quarantine/denylist for known hangs so the harness remains useful.
-- Mix random data with production-shaped examples and boundary-heavy generators.
-- Use sanitizers/race detectors/Valgrind where the language/runtime supports them.
+- **When helpful**: Exposed parsers, reusable parser/decoder/protocol libraries, security-sensitive boundaries, crash-prone code, or a corpus that benefits from continued coverage growth
+- **Costs**: CPU, artifact storage, sanitizer builds, and triage—not inherent irreproducibility
+- **Mitigations**: Replay seeds/regressions on every change; run bounded active discovery where practical; move minute/hour campaigns to scheduled CI or continuous fuzzing
 
-Do not use statistical thresholds for deterministic exact outputs; fuzzing supplies inputs, not a weaker oracle.
+Use the engine's minimized failure and replay mechanism rather than a universal seed rule. Inventory every source target against the active-discovery matrix: ordinary seed replay is valuable regression coverage, but it is not a fuzz campaign. Do not use statistical thresholds for deterministic exact outputs; fuzzing supplies inputs, not a weaker oracle.
 
 ## Minimum Viable Test Suite
 
@@ -276,8 +275,8 @@ For any project, start with:
 2. Unit tests for business logic (3+ assertions, happy + sad path) — exercise
    *behavior* on the precise types, not validation the types already enforce
 3. Regression test for every bug fix (written before the fix)
-4. Property test for every parser at a trust boundary
-   (`valid-or-absent` invariant at minimum)
+4. A property test for a trust-boundary parser when its admitted input space is broader than a small table: arbitrary-input totality plus specification-valid semantic behavior where applicable
+5. A small fuzz target when the Tier 2 amplifying-risk and engine-support trigger applies; campaign budget is a separate decision
 
 Add Tier 2 and 3 tests as trigger conditions apply.
 

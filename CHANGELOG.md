@@ -5,6 +5,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (PBT/fuzzing execution audit)
+- **Reachability-first assessment guidance** — distinguish a decorated test from one the configured runner collects, a fuzz target from active discovery, and a test-only helper from the production path it claims to cover.
+- **Focused PBT and fuzzing references** — separate arbitrary-totality inputs, specification-valid generators, corpus mutation, independent semantic oracles, stateful accepted-transition depth, engine-managed replay, and target cost from campaign cost.
+- **Minimal engine adapters** — Go seed replay versus per-target `-fuzz` discovery, Python collection and structured-valid strategies, and fast-check command preconditions/replay/accepted-transition accounting.
+- **Durable-workflow model guidance** — derive no-loss, redelivery, recovery, and terminal-state properties from the contract; test lease/fencing, idempotency, or outbox repair only when the design exposes those mechanisms.
+- **Executable eval regressions E64–E70** — three hidden restraint probes plus cue-free audits for collection/discovery/production reachability, valid-generator integrity, fast-check command models, durable queue protocols, and appropriate fuzz-campaign cadence.
+- **Cue-free executable fixtures** — E64–E70 pair raw repository artifacts with conjunction oracles and curated good/pass plus bad/fail samples. Candidate review hardened the prose oracles and clarified the fast-check `replayPath` adapter; because those exploratory candidate outputs were not retained with reproducible run provenance, this release makes no measured-lift claim from them.
+
+### Fixed (PBT/fuzzing execution audit)
+- Corrected the generic fuzz harness advice: property-based testing is not “structured fuzzing,” unexpected failures must escape for minimization, replay is engine-specific, ordinary Go tests replay seeds but do not discover, and long campaigns—not small targets—are the expensive tier.
+- Made Markdown assessment artifacts visible to the prompt-eval judge instead of silently omitting `assessment.md` candidates, and frame fenced Markdown with a dynamically longer delimiter so candidate code blocks cannot escape their section.
+
 ### Added
 - **Variance measurement for the ablation matrix** (`scorecard.md`): n=5 repeats on the ten variance-riskiest cells (prose-sensitive base-arm evals E57/E60/E61 and both new-arm restraint probes E58/E63, each on two models) — 50/50 pass, Wilson 95% CI [0.93, 1.00], zero observed model variance; every raw failure was an E61 prose-oracle phrasing artifact, fixed across three hardening passes with fixture self-tests kept green. Caveats recorded: repeat-arm provenance (draft bundle vs. landed text) and one shared-workspace contamination incident.
 - **Blind judge pass over all 44 matrix cells** (`scorecard.md`): cells re-scored on the rubric by six judges behind opaque hash codes (arm/model hidden), min-of-`rubric_focus`-dims scoring with the critical-failure override; two further judges on a second model double-judged the 16 new-arm cells. Zero critical failures, minimum cell score 3; judges recover a soft base→current→new quality gradient (3.67→3.83→3.92 like-for-like) that the binary oracles compress to all-pass. First measurement of `eval-health.md`'s judge-disagreement meta-signal: 97% exact per-dimension agreement, no eval-score disagreement >1, 16/16 critical-failure agreement (noted in `eval-health.md`).

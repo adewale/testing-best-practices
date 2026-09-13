@@ -22,6 +22,26 @@ Telling the agent to self-check its work before reporting done (scan for weak as
 
 Early versions of the language references explained what pytest is, what Vitest is, basic `describe`/`it` syntax. The agent knows this. Keep only the non-obvious parts: boundary-first Hypothesis strategies, `@cloudflare/vitest-pool-workers`, `t.Helper()` in Go.
 
+### Engine semantics need thin adapters, not full language playbooks
+
+The portfolio audit found the same generic failure in different clothes: a test or fuzz target existed, but the configured engine did not execute it the way reviewers assumed. The useful language-specific residue is small and mechanical — pytest collection, Go seed replay versus active `-fuzz`, and fast-check command/replay semantics. Keep selection, oracle, generator, and campaign policy generic; add only the engine facts that change whether evidence is real. A long per-language tutorial duplicates the core and becomes stale faster. Building E68 sharpened this further: naming `replayPath` was not enough; the adapter had to say that `seed`/`path` go to `fc.assert` while `replayPath` goes to `fc.commands`.
+
+### Test reachability is part of correctness
+
+Decorator counts, filenames, and `FuzzXxx` functions are inventory, not execution evidence. A property can be invisible to the configured runner; a Go fuzz target can replay seeds without doing discovery; a test can exhaust a copied helper while production calls different code. Assess collection, active-discovery commands, target-inventory drift, and production-symbol reachability before grading the assertions. “The test exists” and “the test can catch this production defect” are separate claims.
+
+### “Generated valid input” is an oracle claim
+
+A builder that prefixes arbitrary bytes with a magic signature may look structured while violating mandatory chunks, lengths, checksums, or terminators. If a semantic property depends on valid input, validate the builder independently; otherwise every case can die in the parser's first guard and leave the claimed behavior unreachable. Keep corrupt-input totality and structured-valid semantics as separate properties because they provide different evidence.
+
+### Durable-workflow evals should gate guarantees, not a favorite architecture
+
+The first queue oracle required a lease token and owner fencing even though Redis Streams consumer groups could satisfy the supplied eventual-processing/no-double-charge contract with different mechanics. That repeated the scope creep the skill warns against. Gate the observable failure windows—lost publication, destructive early acknowledgement, unrecoverable pending work, ambiguous external effects—and require lease/fence/outbox details only when the chosen design exposes them. A strong oracle may be strict about guarantees while accepting multiple correct protocols.
+
+### Exploratory candidate review is not scorecard evidence
+
+An unretained model run can expose an ambiguous instruction or a brittle prose oracle, but it cannot support a release-level lift claim. Before publishing paired results, retain both candidates, model/version, exact skill revisions, isolated-workspace manifests, commands, and oracle outputs. Without that bundle, use the observation to improve the fixture and report only the deterministic good/pass and bad/fail regression evidence.
+
 ### Abstract framings can sit beside detailed references without being redundant
 
 §10 "Types vs tests" (17 lines, abstract — the mental model) sits next to §11 "Correctness by construction" (45+ lines, detailed — the techniques). Both load by default. The short principle gives the question each tool answers; the deep reference gives the tactics. Without §10, agents reach §11 but use only its tactical machinery; with §10, they frame their work around *which question this test answers* before reaching for tactics.
@@ -275,6 +295,48 @@ regex over prose asymptotes to a judge. Reserve deterministic oracles
 for code-shaped claims (AST checks, runnable mutants) and route
 free-prose judgments to the rubric/judge layer, where E61-style verdicts
 were uncontroversial.
+
+PR24 made the boundary quantitative. On 168 Luna/Terra head-vs-base runs,
+the E64–E70 regex oracles scored the head at 2/42 versus 1/42 on Luna and
+7/42 versus 0/42 on Terra. A treatment-blind Astra review found that E64
+alone had 22/24 semantically acceptable answers: phrasing such as
+"`min_size=1` matches the precondition" preserved the contract but missed
+the oracle's required `keep|preserve` verbs. The binary result even crossed
+the significance threshold on Terra while the semantic result did not. A
+hand-built good/bad self-test does not make a prose regex a strong oracle;
+label it heuristic, read every failure, and use blinded semantic judgment
+for causal claims until the behavior is backed by executable artifacts.
+
+### The task's artifact contract must match the runner
+
+E64–E70 told the model to write `assessment.md`, while the Codex eval runner
+mounted a read-only workspace and grades the final response. Most runs
+recovered by returning the assessment inline, but five returned only the
+write-denied message; those otherwise successful invocations became random
+arm noise. Prompts for answer-only runners must explicitly request the
+artifact contents in the final response and forbid file writes. Validate that
+contract with a smoke run before launching the matrix.
+
+### Multi-model evidence is stratified evidence
+
+The same PR24 comparison moved Luna and Terra differently: the blinded
+semantic deltas were +9.4 points (6 improved, 3 regressed; p=.5078) and
++14.3 points (5 improved, 0 regressed; p=.0625) on decisive pairs. Pooling
+them produces a more attractive number but changes the estimand and can hide
+a model-specific regression. Predeclare model as a stratum, report each model
+first, and call any pooled analysis secondary.
+
+### Resume only terminal successes, and keep shard attestations
+
+Long ChatGPT-authenticated matrices need interruption-safe sharding. The
+PR24 runner was checkpointed after 63/168 calls by excluding only rows with
+both an output and metadata proving return code 0 and no timeout. Every
+resume shard received a separate runs directory and answer-design digest;
+consolidation rejected missing, unsuccessful, unexpected, or conflicting
+run identities and retained the source digest for each run. Do not silently
+replace those shard attestations with a synthetic full-matrix digest after
+generation—the combined score can be a derived view without pretending it
+was the design each call actually executed.
 
 ### Blind judges recover the gradient binary oracles compress — and agreement makes one judge enough
 

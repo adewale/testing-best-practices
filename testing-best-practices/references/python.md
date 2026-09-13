@@ -76,6 +76,19 @@ def test_idempotent(text):
 `st.floats(allow_nan=False)`, `st.lists()`, `st.from_regex()`,
 `st.builds()` for custom types.
 
+### Collection, Input Domains, and Stateful Triggers
+
+A `@given` test generates and shrinks cases only when the exact configured CI runner executes it; decoration alone is not evidence. If CI runs pytest, use `pytest --collect-only -q` with the same configuration and verify the expected node IDs. If CI runs unittest, inspect `python -m unittest discover -v` and keep Hypothesis tests as `TestCase` methods—or deliberately switch the canonical runner to pytest. Standalone pytest test functions are invisible to unittest discovery.
+
+Keep two parser domains explicit:
+
+- raw bytes/text for totality and documented-error properties;
+- independently constructed, specification-valid values for semantic properties (`st.builds`, `@st.composite`, or `st.recursive`).
+
+Validate a “valid” generator independently; otherwise malformed data can make deep behavior unreachable. Use `RuleBasedStateMachine` when correctness depends on chained CRUD, cache, retry/journal, filesystem/database, queue, or session operations; keep a small shadow model and check invariants after every rule.
+
+Treat Hypothesis's example database as a cache, not the only permanent regression record. For `@given` tests, promote important minimized inputs with `@example`; for state machines, turn an important minimized program into a deterministic regression test. Use `--hypothesis-seed` for short-lived reproduction when needed. See `references/property-based-testing.md` for generator and model-quality checks.
+
 ## Fixtures and Test Data
 
 ### conftest.py patterns

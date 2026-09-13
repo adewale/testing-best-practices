@@ -3,7 +3,7 @@
 Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is measurable instead of anecdotal.
 
 ## Required taxonomy fields
-- `language_framework`: one primary target, e.g. `generic`, `python/pytest`, `typescript/vitest`, `typescript/fast-check`, `typescript`, `go`, `rust`, `unsupported/kotlin`.
+- `language_framework`: one primary target, e.g. `generic`, `generic/multilanguage`, `generic/durable-workflow`, `python/pytest`, `python/pytest-hypothesis`, `typescript/vitest`, `typescript/fast-check`, `typescript`, `go/testing`, `rust`, `unsupported/kotlin`.
 - `techniques`: one or more testing techniques exercised by the eval.
 - `risk_classes`: one or more risk areas the skill must handle.
 - `failure_modes`: one or more failure shapes the eval is designed to catch.
@@ -13,6 +13,14 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `regression`
 - `table-driven`
 - `property-based`
+- `structured-generation`
+- `state-machine`
+- `fuzz`
+- `ci-reachability`
+- `ci-cadence`
+- `test-tier-selection`
+- `fault-injection`
+- `durable-workflow`
 - `integration`
 - `e2e`
 - `contract`
@@ -50,6 +58,12 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `porting`
 - `oracle-quality`
 - `maintainability`
+- `stateful-correctness`
+- `data-loss`
+- `duplicate-effects`
+- `recovery`
+- `over-application`
+- `ci-cost`
 
 ## Failure-mode tags
 - `weak-assertion`
@@ -81,6 +95,25 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `global-state-leak`
 - `zero-value-invalid-state`
 - `over-mocking`
+- `uncollected-test`
+- `seed-replay-as-discovery`
+- `orphaned-fuzz-target`
+- `dead-test-helper`
+- `invalid-valid-generator`
+- `weak-semantic-oracle`
+- `coarse-precondition`
+- `run-noop`
+- `transition-count-overclaim`
+- `replay-artifact-loss`
+- `early-ack`
+- `ambiguous-external-effect`
+- `stale-owner-write`
+- `lost-publication`
+- `exactly-once-overclaim`
+- `campaign-overapplication`
+- `seed-replay-dismissal`
+- `widen-generator-past-contract`
+- `fuzz-trusted-internal-input`
 
 ## Minimum release coverage
 Before calling the skill improvement complete, the eval matrix should cover:

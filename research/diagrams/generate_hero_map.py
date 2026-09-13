@@ -74,7 +74,7 @@ FAMILIES = [
         ["Table-driven", "Integration", "End-to-end"]),
     ("Property / invariant", "assert relations",
         ["Property-based", "Metamorphic", "Combinatorial / Pairwise",
-         "Bounded-exhaustive", "Fuzz"]),
+         "Bounded-exhaustive"]),
     ("Reference oracle", "compare to another impl",
         ["Differential", "Pirate / Conformance", "Compatibility"]),
     ("Recorded oracle", "capture & replay",
@@ -87,7 +87,7 @@ FAMILIES = [
         ["Load", "Stress", "Soak / Endurance", "Performance / Benchmark",
          "Chaos"]),
     ("Security oracle", "find what shouldn't happen",
-        ["Penetration / Scan", "Adversarial / Red-team"]),
+        ["Penetration / Scan", "Coverage-guided fuzzing", "Adversarial / Red-team"]),
     ("AI-system oracle", "non-deterministic outputs",
         ["LLM eval-driven", "Prompt regression", "Vibes / Semantic",
          "Guardrail", "AI-code verification"]),
@@ -104,7 +104,7 @@ FAMILIES = [
 NOTE_FOR = {
     "Pirate / Conformance": "symmetric variant of Differential",
     "Metamorphic":          "relational variant of Property-based",
-    "Fuzz":                 "structured = Property-based; sibling of Red-team",
+    "Coverage-guided fuzzing": "input discovery; complements Property-based tests",
     "Characterization":     "Golden applied to legacy code",
     "Mutation":             "audits any suite above",
     "Coverage":             "audits any suite above",
@@ -180,8 +180,8 @@ def build():
     # (Bricolage has no italic master).
     body.append(t(M, 122,
                   "Before any test, encode the invariant in the type when "
-                  "you can; otherwise tests live somewhere along  inbound  →  "
-                  "typed interior  →  outbound.",
+                  "you can; otherwise tests live somewhere along  inbound  ->  "
+                  "typed interior  ->  outbound.",
                   size=SZ_BODY, fill=INK, family=BODYF, italic=True))
 
     # ---- defs: gradient + soft elevation -----------------------------------
@@ -234,7 +234,7 @@ def build():
                           family=BODYF, weight="500"))
             cy += LINE_H
             if it in NOTE_FOR:
-                body.append(t(x + 30, cy - LINE_H + NOTE_H, "→  " + NOTE_FOR[it],
+                body.append(t(x + 30, cy - LINE_H + NOTE_H, "->  " + NOTE_FOR[it],
                               size=SZ_CAPTION, fill=REL, italic=True,
                               family=BODYF))
                 cy += NOTE_H
@@ -247,8 +247,8 @@ def build():
     fy += 26
     body.append(t(M, fy,
                   "Each colour is one oracle family.   "
-                  "→ italic notes name a technique’s closest relative outside "
-                  "its family (“is a kind of”, or “audits” for the meta layer).",
+                  "-> italic notes name a nearby variant, complement, boundary, "
+                  "or audit relationship.",
                   size=SZ_CAPTION, fill=SECOND, italic=True))
     fy += 26
 

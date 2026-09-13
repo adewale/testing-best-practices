@@ -4,13 +4,14 @@
 
 An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from 25 research documents covering real-world testing patterns across 16 GitHub accounts, three engineering organizations, books, and long-form testing literature; grounded in practitioner work from Kent Beck (TDD) to TigerBeetle (deterministic simulation), Jane Street (expect tests), Ward Cunningham (Fit/customer examples), Salvatore Sanfilippo / antirez (Redis-style differential fuzzing and testability seams), and the complete 404-post Google Testing Blog archive (test sizes, flake data, mutation testing at scale, the test-double canon).
 
-![A typographic ledger of the sixteen testing techniques this skill teaches, organised into three tiers — Always (Unit, Smoke, Regression); When triggered (Property-based, End-to-end, Doc/Code sync, Contract, VCR cassette, Characterization, Differential, Golden file, Pirate/Conformance); With caution (Visual/Screenshot, Mutation, Performance, Fuzz). A top strip frames the red-green-refactor rhythm: a test that fails first, the smallest code that passes, clean up while green.](research/diagrams/skill-ledger.png)
+![A typographic ledger of seventeen testing practices in three tiers — Always (Unit, Smoke, Regression); When triggered (Property-based, small coverage-guided fuzz targets, End-to-end, Doc/Code sync, Contract, VCR cassette, Characterization, Differential, Golden file, Pirate/Conformance); With caution (Visual/Screenshot, Mutation, Performance, long fuzz campaigns). A top strip frames the red-green-refactor rhythm: a test that fails first, the smallest code that passes, clean up while green.](research/diagrams/skill-ledger.png)
 
 ## What it does
 
 When an agent uses this skill, it produces higher-quality tests than it would on its own. Specifically:
 
-- **Property-based tests appear** (Hypothesis, fast-check, proptest) where broad input spaces need more than examples
+- **Property-based tests reach meaningful behavior** with separate arbitrary-totality, specification-valid, and stateful/model strategies backed by independent semantic oracles
+- **Fuzz targets are execution-aware**: seed replay, bounded active discovery, scheduled campaigns, engine-native failure artifacts, and CI target inventory are treated as different evidence
 - **Assertions get stronger**: meaningful behavior/state/error checks replace `toBeDefined()`, truthy/not-empty checks, and logs
 - **Error-handling paths are exercised** with injected downstream failures instead of only invalid-input tests
 - **Concurrency contracts are pinned** with contention-driving tests and race-detector guidance rather than observational `t.Log` output
@@ -55,8 +56,8 @@ The skill operates in four modes:
 
 | Mode | When | What it does |
 |------|------|-------------|
-| **Write** | Writing new tests | Red-Green-Refactor TDD, property-based tests, boundary values, error-path coverage, concurrency contracts, validation loop |
-| **Assess** | Reviewing existing tests | 7-step quality audit: sabotage detection, oracle strength, mock drift, tier integrity, determinism, coverage quality, invariant placement |
+| **Write** | Writing new tests | Red-Green-Refactor TDD, property-based tests, risk-justified coverage-guided fuzz targets, boundary values, error-path coverage, concurrency contracts, validation loop |
+| **Assess** | Reviewing existing tests | 14-part quality audit, including collection/discovery reachability, generator/oracle fidelity, stateful lifecycle depth, DAMP, and suite shape |
 | **Upgrade** | Improving weak tests | Prioritized fixes for flaky, weak, or sabotaged tests |
 | **Detect** | Finding hidden problems | Unconditional skips, print-not-assert, ordering dependencies, tests that fake coverage |
 
@@ -64,12 +65,13 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 ## What's covered
 
-### Core principles (always loaded, ~4,100 estimated tokens)
+### Core principles (always loaded)
 
 - Red-Green-Refactor TDD, with honest red-vs-green evidence reporting
 - Test quality over quantity (Kent Beck's Test Desiderata, assertion strength, coverage as a map rather than proof)
 - Real behavior over mocks, with a preference hierarchy from real local objects to fakes, stubs, and only then framework mocks
-- Property-based testing for broad input spaces and invariants
+- Property-based testing with reachable generators, independently validated structured builders, semantic oracles, and accepted-transition accounting
+- Coverage-guided fuzzing for exposed or custom parsers with amplifying risk, with targets separated from campaigns and seed replay separated from active discovery
 - Error-handling path testing via injected downstream failures, timeouts, partial responses, and I/O errors
 - Concurrency contract testing under contention and race detectors/thread sanitizers
 - E2E, integration, contract, documentation-code sync, and external-boundary testing at the smallest useful tier
@@ -85,22 +87,24 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 | File | Content |
 |------|---------|
-| `references/python.md` | pytest, Hypothesis, VCR cassettes, async testing, CLI testing |
-| `references/typescript.md` | Vitest, fast-check, Playwright, mock contract tests, API clients |
-| `references/go.md` | Table-driven tests, `t.TempDir()`, `httptest`, build tags, `testdata/`, `t.Helper()` |
+| `references/python.md` | pytest, Hypothesis collection/input domains/stateful triggers, VCR cassettes, async testing, CLI testing |
+| `references/typescript.md` | Vitest, fast-check collection/replay/command semantics, Playwright, mock contract tests, API clients |
+| `references/go.md` | Table-driven tests, Rapid versus native fuzzing, seed replay versus `-fuzz`, `t.TempDir()`, `httptest`, build tags, `testdata/`, `t.Helper()` |
 | `references/rust.md` | `#[test]`, proptest, exhaustigen, cargo-mutants, CLI binary tests |
 
 **Always available**:
 
 | File | Content |
 |------|---------|
-| `references/antipatterns.md` | 14 anti-patterns with detection signals, severity levels, and fixes |
+| `references/antipatterns.md` | 15 anti-patterns with detection signals, severity levels, and fixes |
 | `references/test-types.md` | Decision guide with Step Zero (types-vs-tests), trust-boundary lens, and 3-tier hierarchy |
 
 **Topic-specific** (loaded only when the trigger matches):
 
 | File | Trigger |
 |------|---------|
+| `references/property-based-testing.md` | Writing/reviewing property tests: input-layer reachability, valid builders, independent oracles, stateful accepted-transition depth, replay |
+| `references/fuzzing.md` | Risk-justified coverage-guided targets: target design, engine artifacts, corpus discipline, and campaign tiers |
 | `references/characterization-testing.md` | Refactoring legacy code |
 | `references/differential-testing.md` | Reimplementing algorithms, multi-language SDKs, shadow models, approximate/probabilistic outputs |
 | `references/golden-file-testing.md` | Transformation pipelines, snapshot tests, promote workflow, save/load or migration roundtrips |
@@ -120,10 +124,10 @@ The project now uses layered evals rather than a single public prompt table:
 | Layer | Current state |
 |------|---------------|
 | Public prompt evals | 12 cases in `evals/evals.json` across Python, TypeScript, Go, and Rust |
-| Development eval suite | 63 cases in `skill-development/evals/evals.json`: 34 write, 13 upgrade, 14 assess, 2 detect |
-| Hidden probes | 14 hard/adversarial probes tracked by eval-health metadata |
+| Development eval suite | 70 cases in `skill-development/evals/evals.json`: 34 write, 13 upgrade, 21 assess, 2 detect |
+| Hidden probes | 17 hard/adversarial probes tracked by eval-health metadata |
 | Shared benchmark | 42 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
-| Fixture oracles | 40 fixture oracles; each good sample passes and bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round |
+| Fixture oracles | 47 fixture oracles; each curated good sample passes and bad sample fails; E64–E70 cover PBT/fuzz restraint, reachability, generator integrity, stateful depth, durable recovery, and campaign cadence |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | 110/110, including adversarial-probe coverage for new technique sections |
@@ -167,7 +171,7 @@ Research documents are in `research/`: practitioner/account/org lesson notes plu
 
 ```
 testing-best-practices/             # The installable skill (ships to agents)
-  SKILL.md                          # Core instructions (~240 lines)
+  SKILL.md                          # Compact core router and assessment rules
   references/                       # Loaded on demand
     python.md                       # Language: Python / pytest / Hypothesis
     typescript.md                   # Language: TypeScript/JavaScript / Vitest/Jest/fast-check/Playwright
@@ -181,9 +185,11 @@ testing-best-practices/             # The installable skill (ships to agents)
     differential-testing.md         # Topic: reference implementations, ports, SDKs, shadow/statistical oracles
     doc-sync-testing.md             # Topic: documentation drift
     exhaustive-testing.md           # Topic: small state spaces
+    fuzzing.md                      # Topic: coverage-guided targets, corpus discipline, CI tiering
     golden-file-testing.md          # Topic: transformation pipelines, snapshot tests, digest roundtrips
     mathematical-properties.md      # Topic: algebraic laws
     mutation-testing.md             # Topic: test quality verification and PIE/fault propagation
+    property-based-testing.md       # Topic: property choice, generators, stateful testing, seeds/replay
     test-data-builders.md           # Topic: factories, fixtures, and customer-readable examples
     vcr-cassettes.md                # Topic: external APIs and recorded fixtures
 
@@ -198,14 +204,14 @@ research/                           # Source material (does not ship)
 
 evals/                              # Public/shared prompt eval assets
   evals.json                        # 12 public prompt evals across 4 languages
-  shared-benchmark.json             # 36 shared benchmark cases
+  shared-benchmark.json             # 42 shared benchmark cases
   shared-harness.md                 # Shared harness contract
   files/                            # Fixture code for public eval prompts
   fixtures/                         # Runnable prompt fixtures
   oracles/                          # Shared fixture oracle helpers
 
 skill-development/                  # Development-only evals and quality gates
-  evals/                            # 54 rubric evals, schema, scorecard, health plan, fixture oracles
+  evals/                            # 70 rubric evals, schema, scorecard, health plan, fixture oracles
   scripts/check-all.py              # Runs all local non-LLM gates
   scripts/                          # Static audit, oracle runners, mini-repos, prompt-eval runner, scoring tools
 
@@ -222,7 +228,7 @@ Run all local checks before proposing skill changes:
 python3 skill-development/scripts/check-all.py
 ```
 
-That command runs the static audit, eval-shape checks, fixture oracle self-tests, mutation-backed mini-repos, eval-health report, best-practices audit, and skill version scoring. Generated prompt runs and caches should stay out of the installable skill directory.
+That command runs the static audit, eval-shape checks, fixture oracle self-tests, prompt-eval framing regression, mutation-backed mini-repos, eval-health report, best-practices audit, and skill version scoring. Generated prompt runs and caches should stay out of the installable skill directory.
 
 ## Scope and limitations
 

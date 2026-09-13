@@ -52,8 +52,8 @@ SZ_TITLE   = 40
 
 # --- content: (name, trigger, bug_power 1-5, relation note|None) -------------
 # bug_power from references/test-types.md cost-benefit summary
-# (VH=5, H=4, M=3, L=2). Fuzz/Performance not in that table: Fuzz=4 (its whole
-# job is finding crashes on untrusted input), Performance=2 (niche power).
+# (VH=5, H=4, M=3, L=2). Fuzz/Performance not in that table: a fuzz target=4
+# (it explores risky hostile-input paths), Performance=2 (niche power).
 LEDGER = [
     (1, "Always", "Required on every project, no trigger needed.", [
         ("Unit",       "Any function with non-trivial logic: branches, loops, arithmetic.", 3, None),
@@ -62,6 +62,7 @@ LEDGER = [
     ]),
     (2, "When triggered", "Add when a specific condition below appears.", [
         ("Property-based",       "Parsers, serializers, transforms, or anything that ranks or scores.", 5, None),
+        ("Fuzz target",           "Hostile-input boundary with amplifying risk and a supported coverage-guided engine.", 4, "coverage-guided discovery complements Property-based tests"),
         ("Differential",         "Reimplementing a known algorithm against a trusted reference.", 5, None),
         ("Pirate / Conformance", "One specification, several language implementations.", 4, "a symmetric Differential test"),
         ("Contract",             "Unit tests use mocks for an external service.", 4, "guards a consumer / producer seam"),
@@ -73,7 +74,7 @@ LEDGER = [
     ]),
     (3, "With caution", "Slow, costly, or flaky. Reach only when the payoff clears the cost.", [
         ("Mutation",            "Critical modules; or coverage is high yet bugs still escape.", 5, "audits the suites above"),
-        ("Fuzz",                "Security-sensitive code processing untrusted input.", 4, "structured = Property-based"),
+        ("Long fuzz campaigns", "When sustained coverage growth earns scheduled compute and triage.", 4, "the same target at a larger discovery budget"),
         ("Visual / Screenshot", "UI work where exact pixel layout is the contract.", 3, None),
         ("Performance",         "When a 2× slowdown would itself be a user-visible bug.", 2, None),
     ]),
@@ -137,12 +138,12 @@ def build():
               family=DISPLAY, fill=MUTED, ls_em=-0.02)
 
     p.append(t(M, 102,
-               "Sixteen techniques, ordered by how much they ask of you. "
+               "Seventeen practices, ordered by how much they ask of you. "
                "Read top to bottom: obligation falls, cost rises.",
                size=SZ_DECK, fill=BODY, family=TEXT))
     p.append(t(M, 128,
                "Before any of them, encode the invariant in the type when you "
-               "can. Otherwise a test along inbound → interior → outbound "
+               "can. Otherwise a test along inbound -> interior -> outbound "
                "earns its keep.",
                size=SZ_DECK - 2, fill=MUTED, family=TEXT, italic=True))
 
@@ -171,7 +172,7 @@ def build():
     # neutral step arrows between phases (no return loop)
     for i in (0, 1):
         ax = (pxs[i] + pxs[i + 1]) / 2 + 26
-        p.append(t(ax, ly, "→", size=SZ_NAME + 2, fill=MUTED, family=TEXT,
+        p.append(t(ax, ly, "->", size=SZ_NAME + 2, fill=MUTED, family=TEXT,
                    anchor="middle"))
 
     p.append(line(M, ly + 36, W - M, ly + 36, HAIR, 1))

@@ -11,6 +11,8 @@ COMMANDS = [
     [sys.executable, "scripts/static-audit.py"],
     [sys.executable, "scripts/score-evals.py", "--evals", "evals/evals.json"],
     [sys.executable, "scripts/run-fixture-oracles.py"],
+    [sys.executable, "scripts/test-run-prompt-evals.py"],
+    [sys.executable, "scripts/test-pbt-fuzz-oracles.py"],
     [sys.executable, "scripts/run-mini-repos.py"],
     [sys.executable, "scripts/eval-health-report.py"],
     [sys.executable, "scripts/audit-best-practices.py"],

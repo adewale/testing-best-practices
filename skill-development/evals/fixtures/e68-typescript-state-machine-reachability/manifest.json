@@ -1,0 +1,14 @@
+{
+  "eval_id": "E68-typescript-state-machine-reachability",
+  "language": "typescript",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "explains fast-check command generation and check/asyncModelRun skip semantics",
+    "moves target-specific admissibility out of run early-returns and into exact command check preconditions",
+    "measures accepted/effective transitions per command rather than multiplying numRuns by maxCommands",
+    "adds seed, path, and commands replayPath replay with explicit propagation through Vitest projects/workers",
+    "does not treat higher command caps or Date.now seeds as evidence of state-space exploration"
+  ]
+}

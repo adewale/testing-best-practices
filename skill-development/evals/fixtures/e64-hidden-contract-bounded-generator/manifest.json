@@ -1,0 +1,12 @@
+{
+  "eval_id": "E64-hidden-contract-bounded-generator",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "recognizes min_size/allow_nan/allow_infinity track the documented contract, not author timidity",
+    "does not demand widening the generator past that contract, including when phrased with natural negation",
+    "improves the test at a real gap such as the specified empty-list error path or the weak median oracle"
+  ]
+}

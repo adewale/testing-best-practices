@@ -4304,6 +4304,482 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
       }
+    },
+    {
+      "id": "E64-hidden-contract-bounded-generator",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "python/pytest-hypothesis",
+        "techniques": [
+          "property-based"
+        ],
+        "risk_classes": [
+          "over-application"
+        ],
+        "failure_modes": [
+          "widen-generator-past-contract"
+        ]
+      },
+      "prompt": "Assess a Hypothesis property test for median_of whose generator bounds are exactly the documented contract.",
+      "fixture": "evals/fixtures/e64-hidden-contract-bounded-generator: the contract requires a non-empty list of finite floats and leaves NaN/infinity undefined; widening past the contract is the over-application failure.",
+      "expected_behavior": [
+        "Recognize the generator bounds track the documented contract and should stay.",
+        "Push on oracle strength and the untested ValueError path instead of widening the input space."
+      ],
+      "red_flags": [
+        "Calls the contract-derived bounds over-constrained.",
+        "Recommends removing min_size or enabling NaN/infinity merely to claim more breadth."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e64-hidden-contract-bounded-generator/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Fixture oracle good/pass + bad/fail self-test"
+        ],
+        "judge_checks": [
+          "Pass requires respecting the documented domain while finding a real oracle/error-path improvement."
+        ]
+      },
+      "validity": {
+        "claim": "This hidden eval checks whether an assessment preserves contract-bounded generators rather than widening them past their documented domain.",
+        "warrant": "The hidden fixture makes every bound contract-derived and rejects the label-plus-widen response.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A model may correctly suggest a separate empty-list error test; the oracle permits that.",
+          "This is a restraint regression guard, not evidence that broader generators are usually wrong."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-31"
+      }
+    },
+    {
+      "id": "E65-hidden-trusted-input-no-fuzz",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "fuzz",
+          "test-tier-selection"
+        ],
+        "risk_classes": [
+          "over-application"
+        ],
+        "failure_modes": [
+          "fuzz-trusted-internal-input"
+        ]
+      },
+      "prompt": "Assess table-driven coverage of an unexported Go helper that formats an AuditRecord the package constructs itself from typed database columns.",
+      "fixture": "evals/fixtures/e65-hidden-trusted-input-no-fuzz: the input never crosses a trust boundary and is already typed, so demanding a fuzz target is the over-application failure.",
+      "expected_behavior": [
+        "Recognize the internally constructed typed input does not require fuzzing.",
+        "Improve the examples with relevant boundaries instead of adding a generative harness."
+      ],
+      "red_flags": [
+        "Demands a FuzzFormatAuditLine target or active fuzz campaign.",
+        "Treats string processing alone as a fuzz trigger without an untrusted boundary."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e65-hidden-trusted-input-no-fuzz/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Fixture oracle good/pass + bad/fail self-test"
+        ],
+        "judge_checks": [
+          "Pass requires an explicit trust-boundary and test-tier judgment."
+        ]
+      },
+      "validity": {
+        "claim": "This hidden eval checks whether an assessment avoids disproportionate fuzz-target recommendations for trusted internal typed inputs.",
+        "warrant": "The hidden fixture has no external input boundary and rejects an unqualified fuzz recommendation.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A model may mention fuzzing only to rule it out; the oracle allows that.",
+          "This probe guards scope restraint and does not weaken the trigger for hostile parsers."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-31"
+      }
+    },
+    {
+      "id": "E66-execution-reachability",
+      "critical": true,
+      "mode": "assess",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "generic/multilanguage",
+        "techniques": [
+          "property-based",
+          "fuzz",
+          "ci-reachability"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "maintenance-drift"
+        ],
+        "failure_modes": [
+          "uncollected-test",
+          "seed-replay-as-discovery",
+          "orphaned-fuzz-target",
+          "dead-test-helper"
+        ]
+      },
+      "prompt": "Assess a mixed Python, Go, and TypeScript repository whose generative tests appear present but differ in collection, active discovery, and production reach.",
+      "fixture": "evals/fixtures/e66-execution-reachability: cue-free repository artifacts expose a unittest/pytest mismatch, two Go fuzz targets under seed replay only, and a fast-check property over a copied helper.",
+      "expected_behavior": [
+        "Prove whether the configured runner collects the standalone Hypothesis property and add an exact-runner collection guard.",
+        "Distinguish Go corpus replay from active -fuzz discovery, enumerate both targets, and run one target per bounded invocation.",
+        "Route the TypeScript property through the production normalizeSlug implementation rather than the test-local copy."
+      ],
+      "red_flags": [
+        "Treats decorated/file-present tests as executed evidence without checking the configured runner.",
+        "Claims go test ./... performs active coverage-guided discovery.",
+        "Accepts a copied helper as production coverage."
+      ],
+      "rubric_focus": [
+        "B",
+        "C"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e66-execution-reachability/oracle.py over assessment.md"
+        ],
+        "runtime_checks": [
+          "Fixture oracle good/pass + bad/fail self-test"
+        ],
+        "judge_checks": [
+          "Score with rubric.md B/C: evidence must name the configured runners, exact targets, and production symbol."
+        ]
+      },
+      "validity": {
+        "claim": "This eval checks whether an assessment distinguishes source artifacts from collected, actively discovered, production-reaching tests.",
+        "warrant": "The oracle gates four independent findings and rejects the three false-confidence claims observed in the audited portfolio.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-31)"
+          ],
+          "ablation_matrix": "No retained paired-run evidence. Release evidence is the deterministic fixture oracle's curated good/pass and bad/fail self-test; exploratory candidate review was used only to harden the fixture."
+        },
+        "rebuttals": [
+          "The fixture's chosen Python remedy is switching the canonical runner to pytest; other repositories may instead keep Hypothesis inside unittest TestCase methods.",
+          "A green oracle self-test proves fixture discrimination, not marginal model improvement."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-31"
+      }
+    },
+    {
+      "id": "E67-python-structured-valid-png",
+      "critical": true,
+      "mode": "assess",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "python/pytest-hypothesis",
+        "techniques": [
+          "property-based",
+          "structured-generation"
+        ],
+        "risk_classes": [
+          "parser",
+          "false-confidence",
+          "oracle-quality"
+        ],
+        "failure_modes": [
+          "invalid-valid-generator",
+          "weak-semantic-oracle"
+        ]
+      },
+      "prompt": "Assess a Hypothesis PNG test whose header-filtered arbitrary bytes produce high outer-parser coverage but never reach IHDR, IDAT, scanline, or pixel semantics.",
+      "fixture": "evals/fixtures/e67-python-structured-valid-png: raw test and coverage evidence require separate malformed-totality and independently validated structured-valid PNG properties.",
+      "expected_behavior": [
+        "Diagnose structural unreachability instead of recommending more arbitrary examples.",
+        "Specify coherent PNG chunks, lengths, CRCs, IHDR fields, compressed scanlines, and IEND for a valid generator.",
+        "Keep malformed-input totality separate, let unexpected exceptions escape, and use an independent semantic/validity oracle."
+      ],
+      "red_flags": [
+        "Calls arbitrary header-prefixed bytes a valid PNG generator.",
+        "Swallows all exceptions or treats no-crash as the only useful oracle.",
+        "Claims a larger max_examples budget fixes semantic reachability."
+      ],
+      "rubric_focus": [
+        "B",
+        "C"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e67-python-structured-valid-png/oracle.py over assessment.md"
+        ],
+        "runtime_checks": [
+          "Fixture oracle good/pass + bad/fail self-test"
+        ],
+        "judge_checks": [
+          "Score with rubric.md B/C: the strategy and oracle must reach and independently verify PNG semantics."
+        ]
+      },
+      "validity": {
+        "claim": "This eval checks whether an assessment separates broad rejection-path input from format-valid semantic reach.",
+        "warrant": "Passing requires PNG structural constraints, a separate hostile-input property, an independent oracle, and unexpected-exception propagation.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-31)"
+          ],
+          "ablation_matrix": "No retained paired-run evidence. Release evidence is the deterministic fixture oracle's curated good/pass and bad/fail self-test; exploratory candidate review was used only to harden the fixture."
+        },
+        "rebuttals": [
+          "The assessment need not provide a complete PNG implementation; it must identify the constraints an honest builder derives.",
+          "Pillow or pngcheck are examples rather than mandatory dependencies; another independent conformance check is accepted."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-31"
+      }
+    },
+    {
+      "id": "E68-typescript-state-machine-reachability",
+      "critical": true,
+      "mode": "assess",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "typescript/fast-check",
+        "techniques": [
+          "property-based",
+          "state-machine"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "stateful-correctness"
+        ],
+        "failure_modes": [
+          "coarse-precondition",
+          "run-noop",
+          "transition-count-overclaim",
+          "replay-artifact-loss"
+        ]
+      },
+      "prompt": "Assess a fast-check command model whose coarse checks, target-specific early returns, command cap multiplication, and missing replay artifacts overstate lifecycle coverage.",
+      "fixture": "evals/fixtures/e68-typescript-state-machine-reachability: raw command code plus observed counters require exact preconditions, accepted-transition evidence, and full command replay state.",
+      "expected_behavior": [
+        "Explain that asyncModelRun evaluates Command.check and skips rejected commands; generation does not guarantee applicable targets.",
+        "Move exact target admissibility into check and eliminate or explicitly assert run-time no-op semantics.",
+        "Measure accepted/effective operations and preserve seed, path, and commands replayPath through every Vitest project or sandbox."
+      ],
+      "red_flags": [
+        "Multiplies numRuns by maxCommands and calls the result executed transitions.",
+        "Keeps hidden early returns as the precondition mechanism.",
+        "Treats Date.now or a higher command cap as sufficient coverage/replay evidence."
+      ],
+      "rubric_focus": [
+        "B",
+        "C"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e68-typescript-state-machine-reachability/oracle.py over assessment.md"
+        ],
+        "runtime_checks": [
+          "Fixture oracle good/pass + bad/fail self-test"
+        ],
+        "judge_checks": [
+          "Score with rubric.md B/C: command semantics, meaningful transition volume, and all replay artifacts must be correct."
+        ]
+      },
+      "validity": {
+        "claim": "This eval checks whether an assessment detects command caps and silent no-ops masquerading as state-space coverage.",
+        "warrant": "The oracle independently gates fast-check semantics, exact target checks, observed transitions, and seed/path/replayPath propagation without prescribing a universal discovery cadence.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-31)"
+          ],
+          "ablation_matrix": "No retained paired-run evidence. Release evidence is the deterministic fixture oracle's curated good/pass and bad/fail self-test; exploratory candidate review was used only to harden the fixture."
+        },
+        "rebuttals": [
+          "Intentionally rejected operations may remain commands if their no-op/error contract is explicitly asserted.",
+          "A transition threshold is evidence for the chosen gate seed, not a universal lower bound for every random run."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-31"
+      }
+    },
+    {
+      "id": "E69-durable-queue-protocol",
+      "critical": true,
+      "mode": "assess",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "generic/durable-workflow",
+        "techniques": [
+          "state-machine",
+          "fault-injection",
+          "durable-workflow"
+        ],
+        "risk_classes": [
+          "data-loss",
+          "duplicate-effects",
+          "recovery"
+        ],
+        "failure_modes": [
+          "early-ack",
+          "ambiguous-external-effect",
+          "stale-owner-write",
+          "lost-publication",
+          "exactly-once-overclaim"
+        ]
+      },
+      "prompt": "Assess an accepted-order worker with a database/Redis dual write, destructive pre-work pop, non-idempotent payment, concurrent workers, and arbitrary interruption.",
+      "fixture": "evals/fixtures/e69-durable-queue-protocol: the stated eventual-processing and no-double-charge contract makes transactionally durable publication, recoverable claim/ack semantics, payment idempotency, and crash-window testing concrete rather than universal architecture advice.",
+      "expected_behavior": [
+        "Find both lost-publication and destructive early-ack windows.",
+        "Specify transactionally persisted publication intent plus durable claim/ack/redelivery semantics; address expiry and stale owners if choosing a lease design.",
+        "Use a stable payment idempotency key and crash/time/concurrency tests without promising exactly-once across independent systems."
+      ],
+      "red_flags": [
+        "Treats catch-and-requeue as sufficient after destructive LPOP.",
+        "Claims Redis and the SQL database can share one atomic transaction.",
+        "Promises exactly-once payment without an idempotency/deduplication contract."
+      ],
+      "rubric_focus": [
+        "B",
+        "C"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e69-durable-queue-protocol/oracle.py over assessment.md"
+        ],
+        "runtime_checks": [
+          "Fixture oracle good/pass + bad/fail self-test"
+        ],
+        "judge_checks": [
+          "Score with rubric.md B/C: every stated crash window must map to a concrete protocol and fault test."
+        ]
+      },
+      "validity": {
+        "claim": "This eval checks whether an assessment derives recovery properties from the supplied durable-workflow contract without claiming fictional exactly-once semantics.",
+        "warrant": "This fixture explicitly supplies delivery and payment requirements; the oracle therefore requires transactionally durable publication intent, recoverable claim/ack semantics, idempotency, and fault traces while accepting an outbox, a database-backed job, polling/reconciliation, Redis Streams, or lease-based implementations.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-31)"
+          ],
+          "ablation_matrix": "No retained paired-run evidence. Release evidence is the deterministic fixture oracle's curated good/pass and bad/fail self-test; this ceiling case is treated as a regression guard, not measured lift."
+        },
+        "rebuttals": [
+          "Other brokers or transaction models may satisfy the observables without this lease/outbox shape; the generic skill text remains contract-derived.",
+          "Email deduplication is useful secondary analysis, but the oracle prioritizes accepted-order processing and payment uniqueness."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-31"
+      }
+    },
+    {
+      "id": "E70-hidden-go-fuzz-cadence-restraint",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "go/testing",
+        "techniques": [
+          "fuzz",
+          "ci-cadence"
+        ],
+        "risk_classes": [
+          "over-application",
+          "ci-cost"
+        ],
+        "failure_modes": [
+          "campaign-overapplication",
+          "seed-replay-dismissal"
+        ]
+      },
+      "prompt": "Assess a Go repository with committed corpora, ordinary seed replay, complete per-target bounded PR discovery, and longer scheduled campaigns.",
+      "fixture": "evals/fixtures/e70-hidden-go-fuzz-cadence-restraint: a complete proportional setup tests whether stronger fuzz guidance causes unnecessary long PR campaigns or dismissal of seed replay.",
+      "expected_behavior": [
+        "Distinguish ordinary corpus replay from active per-target discovery.",
+        "Recognize that both source targets are covered by bounded PR and scheduled matrices, one target per invocation.",
+        "Keep the proportional cadence and promote minimized failures into committed regression corpora."
+      ],
+      "red_flags": [
+        "Demands minute- or hour-long discovery on every pull request.",
+        "Claims go test ./... actively fuzzes targets or dismisses corpus replay.",
+        "Removes the scheduled campaign or combines both native targets in one invocation."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e70-hidden-go-fuzz-cadence-restraint/oracle.py over assessment.md"
+        ],
+        "runtime_checks": [
+          "Fixture oracle good/pass + bad/fail self-test"
+        ],
+        "judge_checks": [
+          "Score with rubric.md B/D: preserve the fully inventoried cost split while maintaining replay discipline."
+        ]
+      },
+      "validity": {
+        "claim": "This hidden eval checks whether an assessment preserves proportional PR replay/discovery and scheduled-campaign cadence.",
+        "warrant": "The hidden fixture already has complete bounded and scheduled discovery; the oracle rejects cadence over-application and engine-semantic errors.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test (2026-08-31)"
+          ],
+          "ablation_matrix": "No retained paired-run evidence. Release evidence is the deterministic fixture oracle's curated good/pass and bad/fail self-test; this hidden case is a restraint regression guard, not measured lift."
+        },
+        "rebuttals": [
+          "The agent may recommend an automated inventory drift guard or better artifact retention without changing the campaign duration.",
+          "This restraint probe does not argue that every project needs a scheduled campaign."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-08-31"
+      }
     }
   ]
 }

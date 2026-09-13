@@ -21,7 +21,7 @@ RULE    = "#d8d4cc"
 GRID    = "#ece9e0"
 MUTED   = "#8a857c"
 SECOND  = "#6b665d"
-ACCENT  = "#b3261e"  # variants / "is a kind of"
+ACCENT  = "#b3261e"  # variants, complements, and boundary relationships
 LINK    = "#3a6ea5"  # audits / spans (secondary relationship)
 
 SERIF = "Georgia, 'Times New Roman', serif"
@@ -38,8 +38,7 @@ FAMILIES = [
         ["Property-based",
          "Metamorphic",
          "Combinatorial / Pairwise",
-         "Bounded-exhaustive",
-         "Fuzz"]),
+         "Bounded-exhaustive"]),
     ("reference",  "Reference oracle", "compare to another impl",
         ["Differential", "Pirate / Conformance", "Compatibility"]),
     ("recorded",   "Recorded oracle", "capture & replay",
@@ -49,7 +48,7 @@ FAMILIES = [
          "Visual / Screenshot"]),
     ("contract",   "Contract / model / spec oracle", "derive from a spec",
         ["Contract (Pact)",
-         "Doc ↔ Code sync",
+         "Doc <-> Code sync",
          "Model-based / Stateful",
          "Spec-based / Formal",
          "Concolic / Symbolic"]),
@@ -57,7 +56,8 @@ FAMILIES = [
         ["Load", "Stress", "Soak / Endurance",
          "Performance / Benchmark", "Chaos"]),
     ("security",   "Security oracle", "find what shouldn't happen",
-        ["Penetration / Security scan", "Adversarial / Red-team"]),
+        ["Penetration / Security scan", "Coverage-guided fuzzing",
+         "Adversarial / Red-team"]),
     ("ai",         "AI-system oracle", "non-deterministic outputs",
         ["LLM eval-driven", "Prompt regression",
          "Vibes / Semantic", "Guardrail", "AI-code verification"]),
@@ -76,12 +76,12 @@ FAMILIES = [
 LINKS = [
     ("Pirate / Conformance",            "symmetric variant of Differential",     "variant"),
     ("Metamorphic",                     "relational variant of Property-based",  "variant"),
-    ("Fuzz",                            "structured = Property-based; security sibling of Red-team", "variant"),
+    ("Coverage-guided fuzzing",         "input discovery; complements Property-based tests", "variant"),
     ("Characterization",                "Golden applied to legacy where correct is unknown", "variant"),
     ("Mutation",                        "audits any suite above",                "audit"),
     ("Coverage",                        "audits any suite above",                "audit"),
     ("Assertion quality",               "audits any suite above",                "audit"),
-    ("Doc ↔ Code sync",                 "guards the docs-vs-code boundary",      "variant"),
+    ("Doc <-> Code sync",               "guards the docs-vs-code boundary",      "variant"),
     ("VCR cassette",                    "guards the HTTP boundary",              "variant"),
     ("Contract (Pact)",                 "guards a consumer-producer boundary",   "variant"),
 ]
@@ -150,8 +150,8 @@ def view_cluster_map():
                "(how you know the right answer).",
                size=13.5, fill=SECOND))
     p.append(t(MARGIN, 102,
-               "Notes in red read “is a kind of”;  notes in blue read "
-               "“audits the suites above”.",
+               "Red notes mark variants, complements, or boundaries;  blue "
+               "notes mark suite audits.",
                size=12, fill=MUTED, italic=True))
 
     # trust-boundary strip (thin, one row, no colored fills)
@@ -215,7 +215,7 @@ def view_cluster_map():
                 note, kind = NOTE_FOR[item]
                 colour = ACCENT if kind == "variant" else LINK
                 p.append(t(x + 22, cy - LINE_H + NOTE_H,
-                           "↳ " + note,
+                           "-> " + note,
                            size=10.5, fill=colour, italic=True, family=SERIF))
                 cy += NOTE_H
 
@@ -249,7 +249,7 @@ def view_tree():
     p.append(t(MARGIN_L, 56, "Testing techniques · taxonomy by oracle",
                size=26, weight="700"))
     p.append(t(MARGIN_L, 82,
-               "Read left → right: root, then family of oracle, then the "
+               "Read left -> right: root, then family of oracle, then the "
                "techniques in that family. The right column notes the closest "
                "relatives outside the family.",
                size=13, fill=SECOND))
@@ -311,7 +311,7 @@ def view_tree():
             continue
         sy = tech_y_positions[tech] - 4
         stroke = ACCENT if kind == "variant" else LINK
-        p.append(t(TECH_X + 380, sy + 3, "↳ " + note,
+        p.append(t(TECH_X + 380, sy + 3, "-> " + note,
                    size=11, fill=stroke, italic=True))
 
     # legend
@@ -319,7 +319,7 @@ def view_tree():
     p.append(line(MARGIN_L, leg_y, W - MARGIN_R, leg_y, RULE, 0.75))
     leg_y += 22
     p.append(t(MARGIN_L, leg_y,
-               "Notes in red read “is a kind of”;  notes in blue read “audits the suites above”.",
+               "Red notes mark variants, complements, or boundaries; blue notes mark suite audits.",
                size=11.5, fill=SECOND, italic=True))
     leg_y += 26
     H = leg_y + 14

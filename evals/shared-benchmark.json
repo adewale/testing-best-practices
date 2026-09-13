@@ -24,6 +24,15 @@
   },
   "run_protocol": {
     "paired": "Run with_skill and without_skill in the same round; optionally run old_skill from a pinned artifact/branch.",
+    "codex_model_panel": {
+      "access": "ChatGPT-authenticated Codex CLI; no API access",
+      "models": [
+        "gpt-5.6-luna",
+        "gpt-5.6-terra"
+      ],
+      "reasoning_effort": "low",
+      "analysis": "Treat model as a prespecified stratum and report each model separately before any pooled secondary result."
+    },
     "outputs": "Save outputs as runs/<case_id>/<variant>/output.md and metadata as runs/<case_id>/<variant>/metadata.json.",
     "metadata": [
       "elapsed_ms",

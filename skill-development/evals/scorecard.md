@@ -177,6 +177,77 @@ skill value at the frontier ceiling, not proof. The two layers divide
 labor: deterministic oracles guard hard behaviors (regression gate), the
 judge layer grades the quality margin above the oracle floor.
 
+## 2026-08-31 PBT/fuzz execution round
+
+E64–E70 were added from the portfolio audit. Every fixture's curated good
+sample passes and bad sample fails. That self-test proves the oracle plumbing;
+it does **not** prove the skill changes agent behavior.
+
+Exploratory cue-free candidate review was used while developing E66–E70. It
+exposed missing accepted phrasings in four prose oracles and an ambiguity in
+the fast-check replay adapter. The candidate outputs, model identity, and exact
+run receipts were not retained as an immutable bundle, so those observations
+are **not release evidence** and no paired-performance or measured-lift claim
+is made here.
+
+The release evidence for this round is deterministic: every fixture's curated
+good sample passes and bad sample fails, and the complete fixture-oracle gate
+runs in `check-all.py`. Future paired runs must retain the candidate outputs,
+model/version, exact skill revisions, commands, and oracle results before their
+scores are promoted into this scorecard.
+
+No shared-benchmark mirror was added in this round. These are multi-artifact
+repository assessments whose conjunction oracles depend on the complete raw
+snapshot; copying a shortened version into the shared set would either cue the
+answer or measure a different claim.
+
+## 2026-09-13 PR24 causal run (Luna + Terra)
+
+168 ChatGPT-authenticated Codex calls; no API access. The prespecified matrix
+was E64–E70 × exact PR head/PR base × six paired repetitions × two models at
+low reasoning. Exact revisions: base `c5d017d0df03120e44f0a6722a359cb676f3a8bf`,
+head `62a7d9be986c132a834ceaf33b37e5d99e501816`. All 168 invocations completed
+with return code 0 and no timeout; model, arm, repetition, skill-tree hash,
+trace, and token telemetry were retained per run. Each generation shard kept
+its per-run answer-design digest. One initial shard's design file was
+overwritten by a concurrent writer; its canonical payload was reconstructed
+from the preserved prepared tasks and verified to match the digest on its 22
+completed runs. Consolidation was a checked scoring view, not a rewritten
+generation claim. The committed [receipt](receipts/pr24-luna-terra-2026-09-13.json)
+contains all 168 output hashes and blinded judgments, all nine design digests,
+the recovered design payload, artifact hashes, and the scoring analysis.
+
+The deterministic prose oracles are not valid causal judges here. They scored
+Luna head/base 2/42 vs 1/42 (paired p=1.0) and Terra 7/42 vs 0/42
+(p=.0156), but treatment-blind review found pervasive false negatives. E64,
+for example, had 22/24 semantically acceptable answers even though wording
+such as "matches the precondition" missed the regex's required
+`keep|preserve` verbs.
+
+Three Astra reviewers then scored all randomized packets without model, arm,
+run, skill version, script score, or mapping. Ambiguous answers remained
+`uncertain` rather than being forced toward either arm:
+
+| Model | Decisive pairs | head | base | Delta | Improved / regressed | Exact paired p | Uncertainty range |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Luna | 32/42 | 23 | 20 | +9.4pp | 6 / 3 | .5078 | −14.3pp to +26.2pp |
+| Terra | 35/42 | 30 | 25 | +14.3pp | 5 / 0 | .0625 | 0.0pp to +28.6pp |
+
+**Decision:** no general per-model causal uplift is verified at α=.05. The
+direction is favorable on both models, and one behavior has a strong,
+cross-model signal: execution reachability scored 12/12 at head versus 3/12
+at base (nine improved, zero regressed; pooled secondary paired p=.0039;
+Luna 6/6 vs 2/6, Terra 6/6 vs 1/6). Durable-queue reasoning was saturated;
+state-machine replay wiring remained at the floor; and 23/24 PNG responses
+were too underspecified for a decisive verdict. Those are the next eval and
+guidance targets—not evidence to widen the current claim.
+
+The run also exposed a task/runner mismatch: prompts requested a written
+`assessment.md` inside a read-only answer workspace. Five successful model
+invocations returned only the write-denied message. E64–E70 now explicitly
+request the assessment contents in the final response and prohibit file
+writes; this post-run fix is not retroactively counted in the result above.
+
 ## Release gates
 - [ ] Static P0 count is 0.
 - [ ] Static P1 count is 0 or explicitly deferred.
