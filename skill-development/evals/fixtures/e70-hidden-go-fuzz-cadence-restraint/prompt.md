@@ -1,6 +1,7 @@
 # Audit this Go test setup
 
-Write an `assessment.md` for the following repository evidence. Recommend any
+Return the contents of `assessment.md` as your final response; do not attempt
+to write files because the eval workspace may be read-only. Recommend any
 changes that materially improve defect detection or reproducibility.
 
 Fuzz-target inventory produced by `rg '^func Fuzz'`:

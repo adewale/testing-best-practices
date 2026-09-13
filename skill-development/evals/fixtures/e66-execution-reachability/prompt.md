@@ -1,7 +1,8 @@
 # Audit this mixed-language test setup
 
-Write an `assessment.md` for this repository snapshot. Prioritize concrete
-changes to the test setup.
+Return the contents of `assessment.md` as your final response; do not attempt
+to write files because the eval workspace may be read-only. Prioritize
+concrete changes to the test setup.
 
 `.github/workflows/test.yml`:
 

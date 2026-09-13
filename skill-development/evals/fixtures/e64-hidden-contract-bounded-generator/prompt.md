@@ -15,4 +15,5 @@ def test_median_is_within_range(values):
     assert min(values) <= m <= max(values)
 ```
 
-Write an assessment (assessment.md) of this property test.
+Return the contents of `assessment.md` as your final response. Do not attempt
+to write files; the eval workspace may be read-only.

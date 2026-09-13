@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.util
 import tempfile
 from pathlib import Path
+from types import SimpleNamespace
 
 SCRIPT = Path(__file__).with_name("run-prompt-evals.py")
 SPEC = importlib.util.spec_from_file_location("run_prompt_evals", SCRIPT)
@@ -38,6 +39,35 @@ The literal ```` token must remain inside the candidate.
     framed = f"## Candidate answer (files produced)\n{fence}\n{candidate}\n{fence}\n\n"
     assert framed in judge_prompt
     assert "\n```python\n" in judge_prompt
+
+    original_run = MODULE.subprocess.run
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            candidate_dir = Path(tmp)
+            MODULE.subprocess.run = lambda *args, **kwargs: SimpleNamespace(
+                returncode=0, stdout="# Inline assessment\n\nUseful evidence.\n"
+            )
+            rc = MODULE.generate("agent", "prompt", Path("prompt.md"), candidate_dir)
+            assert rc == 0
+            assert (candidate_dir / "assessment.md").read_text() == (
+                "# Inline assessment\n\nUseful evidence.\n"
+            )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            candidate_dir = Path(tmp)
+
+            def writes_artifact(*args, **kwargs):
+                (candidate_dir / "answer.md").write_text("authoritative file\n")
+                return SimpleNamespace(returncode=0, stdout="backend status output\n")
+
+            MODULE.subprocess.run = writes_artifact
+            rc = MODULE.generate("agent", "prompt", Path("prompt.md"), candidate_dir)
+            assert rc == 0
+            assert not (candidate_dir / "assessment.md").exists()
+            assert (candidate_dir / "answer.md").read_text() == "authoritative file\n"
+    finally:
+        MODULE.subprocess.run = original_run
+
     print("OK: Markdown candidates are collected and safely fenced")
     return 0
 

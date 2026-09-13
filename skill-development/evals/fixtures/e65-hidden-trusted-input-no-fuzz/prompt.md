@@ -36,4 +36,5 @@ func TestFormatAuditLine(t *testing.T) {
 }
 ```
 
-Write an assessment (assessment.md) of this test coverage.
+Return the contents of `assessment.md` as your final response. Do not attempt
+to write files; the eval workspace may be read-only.

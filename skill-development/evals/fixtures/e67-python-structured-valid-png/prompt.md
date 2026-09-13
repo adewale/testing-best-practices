@@ -1,6 +1,7 @@
 # Audit this parser test
 
-Write an `assessment.md` for the following test and CI evidence. Recommend the
+Return the contents of `assessment.md` as your final response; do not attempt
+to write files because the eval workspace may be read-only. Recommend the
 highest-value changes.
 
 `tests/test_png_properties.py`:

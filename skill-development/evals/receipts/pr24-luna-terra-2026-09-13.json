@@ -1,0 +1,3512 @@
+{
+  "candidates": [
+    {
+      "answer_sha256": "sha256:a76aed9583790dfb9316a4d2c1a383175a6f4b171776f21cdb1f3dcac258e8c3",
+      "candidate_id": "008cbd8e1e52",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves the non-empty finite domain, identifies endpoint-returning implementations as false positives, and recommends an independent sorted-copy median oracle.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:9c96006ec8915c8aa631cdd64921771cc5241f25032a737a84696085f06f2b0f",
+      "candidate_id": "03496fb6a5cc",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly retains the valid generator and supplementary range invariant while recommending a semantics-matched independent median reference.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:b77f0bee3bc6033ec7fc8300e1f9f67f4a6765a5bd4d92d154d4d5a2d96df84d",
+      "candidate_id": "040fb78f7eb3",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves the valid finite domain, explains the range oracle's weakness, and recommends sorted-position semantics after clarifying the even-length rule.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:1a4cebbd9d737036561fbb67cb77b5d75f990fe5ce9f75f259d24a79a1ce19ba",
+      "candidate_id": "0446d1397575",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "medium",
+        "label": "pass",
+        "rationale": "It treats committed corpora, PR regressions, bounded PR smoke, and longer scheduled fuzzing as a sound baseline, although its extra explicit replay step is redundant.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:2a4855de2b1f70e74d02e71b00f0c29ad13827a1482cedf48c0da4bea57b1af6",
+      "candidate_id": "07680582ca53",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Identifies the uncollected Python function, inactive Go fuzz discovery, and copied TypeScript helper, with concrete runner, fuzz-command, corpus, and production-import repairs.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:f8dbb399f7748c2c5a2c938a8f8c21a391ee9da9b674890e1116db149dd2f3ed",
+      "candidate_id": "0783c284e876",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It treats range membership as supplementary, preserves the documented generator restrictions, and recommends an independent sorted-value oracle.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:81dcb8720fcf539906fb55a7df7b282d066977cf36e9b352639af521e8365a3b",
+      "candidate_id": "079e971599aa",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses no-ops and inflated counts and proposes reachable IDs, but only preserves seed/path/replay artifacts without mapping them to the two fast-check APIs.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:a5fd19fdfc6c188bcea6b2697511cc4326005149813a9a7accfc6c4e79f25412",
+      "candidate_id": "0aff9627e7b4",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Finds both publication and destructive-dequeue loss plus ambiguous payment duplication, then ties durable outbox/lease/idempotency recovery to failpoint, restart, and concurrent-worker invariants.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:d5b04d498a4d4e9bde084ab730f11cad8140a27ef3a846834cefa8d0ec7b9a74",
+      "candidate_id": "0c417238edde",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Covers dual-write and post-dequeue loss, provider-success ambiguity, claim/reclaim and idempotent finalization, with fault-injected recovery tests asserting durable completion and one provider charge.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:362a29a7f59b1fda8c5fa909f515cb5305b483ac9f19f18b1c3c5419dab09ced",
+      "candidate_id": "0e98dd4a7b35",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw totality from independent valid-image semantic tests, but leaves chunk CRC scope and coherent zlib scanline construction unspecified.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:9c88f23b947656e6326d29876a2b39f197236f75dbed3f08f1fe5d1dba7652fb",
+      "candidate_id": "123614143796",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It accepts the existing proportionate exact-output tests and rules out hostile-input and property testing for the trusted internal helper.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:4430f3b28706142d9dd14d16246f0e2cda40d11e3ed28d5dd73fee35687838a7",
+      "candidate_id": "13f601db9ec3",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "Repairs production imports and active Go discovery but never identifies that unittest omits the standalone Hypothesis test.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:52cf0dd26b9fd9912919041fcf9864c2897e5c50c6fd91ffdf0112378c68921c",
+      "candidate_id": "14e47eb4155e",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw robustness from valid-image checks but provides only a high-level compressed-IDAT generator and optional independent oracle without scanline construction details.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:00ca872d33cad09aa165977f5aa7d3e07bbc95c72c6f2a683f0e9d3e9128fcdf",
+      "candidate_id": "175abe889e1e",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly rejects unnecessary fuzzing and recommends only optional examples justified by the actual internal contract.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:0324f7fa6d4ff621c6327411eb3a72508419aedc127c947908c4e147e5549bfa",
+      "candidate_id": "1886b8de6ff5",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It reports the file-writing restriction without providing a substantive assessment of proportional coverage or the trusted boundary.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:7bdfd0020aa9d1d6473ec544c9552328b7e31fd78527ef19bdf928b1c834aac3",
+      "candidate_id": "19377447242c",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly recognizes ordinary seed replay, bounded active PR discovery, and longer scheduled discovery while retaining the existing proportional budgets.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:dd1b499ffccfd3fa614110c1ee4646bd23c436c18c635192ccb73cb4a1c4d297",
+      "candidate_id": "197895ebbdf3",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw robustness from valid-image tests with independent pixel expectations, but never specifies coherent chunk lengths/CRCs or zlib-compressed scanline construction.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:5cbb4e1a34e98cfd1ff7266a1d254ebd5ed5c79efcf46d5704bf128dd73b9f8d",
+      "candidate_id": "1aea65d457fe",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Diagnoses all three execution gaps and supplies pytest collection, per-target Go discovery, corpus preservation, and production-import changes.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:15977dd69270eb7fded792a814f8b85d55f6b5df7e25a3164143006131188c4a",
+      "candidate_id": "1af281755dd9",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It correctly scopes the generator and recommends an independent odd/even median definition to replace the weak range condition as the primary oracle.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:c86c3e709ebc726d2427a1eb782ba2ad6f42174182ede946943f7ef2c0ffed0c",
+      "candidate_id": "1bb54008f1e4",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "medium",
+        "label": "pass",
+        "rationale": "It preserves committed corpora and existing PR regressions while treating PR fuzzing as smoke and scheduled fuzzing as the longer campaign.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:3f0542141f4d21d2d02a52821b3083d52a4022832d470fa0ee3799d23229d2c7",
+      "candidate_id": "1d36b21bc340",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It accepts current coverage, rejects arbitrary-string fuzzing, and limits optional new examples to reachable contract-defined values.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:c1a858a7ca70cd9b75ea5bf4a6a8d8e1278436c62d1023db94040b5e09e96e3a",
+      "candidate_id": "1ebf34e2eb8e",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It calls the current tests proportionate and identifies no material gaps or justification for fuzzing under the stated trusted boundary.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2b01032b2e165ff3b0df551e9f835c1da620f5032e8465291b2746af385ea6a5",
+      "candidate_id": "1f480f5b92d9",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves non-empty finite inputs and supplies a stronger sorted-definition comparison alongside the supplementary range invariant.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2c673156f03545757745cfb9bfa222d37df8974a413d40f22cce7b48caaef67e",
+      "candidate_id": "1ff37acb6541",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "Although it fixes production imports and Go discovery, it incorrectly says unittest discover can run the standalone Hypothesis function.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:10c311bb3da1b0970a29a7dafb4157f433f3e51b6f6eeea8808cf50e6a269ef2",
+      "candidate_id": "229f09110af4",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Identifies publication loss, destructive LPOP, ambiguous charge and concurrency windows, and proposes durable delivery, provider idempotency, and deterministic restart/fault tests over business invariants.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:22de6072758d03dcb273486f24a2c93ef200006762e8bb0fe1527984939a15dd",
+      "candidate_id": "2583b14ed617",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Identifies publication and charge gaps with idempotency and crash tests, but does not make post-dequeue acknowledgement/redelivery or abandoned-claim recovery explicit.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:367b0f2cd2e40b729aebfef423b3f28ad198b639a122c708cfc8a4156aa5c691",
+      "candidate_id": "264500ff37a4",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Proposes independent valid-image encoding and exact pixel checks alongside malformed testing, but the actual scanline and zlib framing path remains unspecified.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:15169e2b69beaf49548e19f173701351e080c75275e52f35a00e7dbe5974040c",
+      "candidate_id": "2948bfcd930c",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It supplies only a file-writing failure message and no substantive inline assessment that satisfies the restraint rubric.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:3dbebd8902fd7567fb95d8bad022c2d281f164a2d552b4b05e126b82e31d0c0a",
+      "candidate_id": "2b685058f714",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Uses separate raw totality and independent specification-based valid-image tests with filter bytes, but does not specify CRC coverage or zlib framing sufficiently to verify the builder.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:b83a1771121d9e457cd0b99b11c54b445e686518d648e964546d076c83c3f951",
+      "candidate_id": "2c3805abe386",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "It fixes no-op reachability and counting and routes replayPath to fc.commands, but references the property assertion path only indirectly without explicitly passing seed/path to fc.assert.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:bc71d5386e6b17cb69b8ce3d5ad4a942dd013d95c41af758f2011da4244dab2b",
+      "candidate_id": "2d636d8eaee1",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "The concise assessment identifies the Python collection mismatch, copied TypeScript helper, and Go seed-versus-discovery gap and proposes concrete repairs for each.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:f2c91d18a8afdc3b907ccd477b2125b2442f78b9f39d92308b40978f3e50cf12",
+      "candidate_id": "2f84892874aa",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It proposes production imports and separate bounded fuzzing but only asks for the intended Python runner without diagnosing the actual collection gap.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:ee6e5993305c7a74a4da238fea6bdbd24a8044bac927e9c19ba8eb8472b45121",
+      "candidate_id": "3091d27e3ed3",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates arbitrary robustness from generated semantic images and lists PNG chunks and compressed scanlines, but omits CRC scope and the required zlib wrapper.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:74e5ef78cc3f7fc17f83d84dbc5e1fc87d47e05510b57403819dd2ddb79217b2",
+      "candidate_id": "30f6f87308b7",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw totality from independent image-model checks and names zlib IDAT, but leaves CRC computation and dimension-consistent scanline construction implicit.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:b264a68db9c6e9d29c10c8b16e610fdb42c89f5d0ebeceb77bf29dda22f3cc53",
+      "candidate_id": "31dc1d01bd42",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Finds publication and pre/post-charge loss, specifies recoverable claim/ack and stable provider idempotency, and proposes stateful failure/restart/concurrency tests asserting eventual processing and one effective charge.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2f3eee1848cd507dddf119ce91070f76744c5f030ba5efbeb566a2b39855537a",
+      "candidate_id": "3294bdebe939",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It endorses focused existing coverage, rejects hostile-input speculation, and recommends only a proportionate caller-level complement if useful.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:2155fc233a7eed19982e397b087ed0a44da2026a2de4e49c4aa97e7420f9b30d",
+      "candidate_id": "359c5a5a5d74",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Explains all three material defects and provides pytest collection checks, production imports, and per-target active Go fuzz commands with regression corpus handling.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:b96244e36663cb1aa94406274b7b25ad9f0fa16e68f6001232bfd3afdd156890",
+      "candidate_id": "37de4e55a9ec",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recognizes the contract-valid bounds, identifies the minimum-returning counterexample, and proposes an independently written sorted-value oracle.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:acad9d6928fdeec68eeb8a19482804cd5ccde538f4629d080d1c19f1303ce04e",
+      "candidate_id": "3a32b6d3efa8",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Links publication loss and ambiguous charging to durable replay, claim/payment state, late acknowledgement, provider idempotency, and stateful crash/retry/concurrency tests over terminal-state and charge invariants.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:8a5500817703535119587bf107551ff3d06ca8dc95e10cdcf5206e8e057d67f8",
+      "candidate_id": "3b9dad088910",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses reachability and counting and routes command replay paths to fc.commands, but generic seed/path retention and environment support do not wire them to fc.assert.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:8005c07f9166d54e0f2412a99be566adc164b9874d93d36f122d9c4bad4d4a16",
+      "candidate_id": "3ba4eb1b9201",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses the copied helper and missing active Go fuzzing but never identifies the standalone Python test's incompatibility with unittest collection.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:c1ea3d48fa8ebb4fcb0300a99d6d849ec10ff021be2a09100faebdb564eb4542",
+      "candidate_id": "3e5ce4328930",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Correctly diagnoses and repairs Python collection, TypeScript production reach, and Go seed replay versus active discovery.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:a77f707bfd6502d0d5342b9182495c74f9dea87bf7bdb3ef2b14a5be9af4e1fa",
+      "candidate_id": "3eabf401437f",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "medium",
+        "label": "pass",
+        "rationale": "It preserves the valid bounds, identifies the necessary-but-insufficient range condition, and supplies stronger literal odd/even expected-result examples rather than a general reference property.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:becedb59e158dd3d6ab2f7e3ebba77e025a78c7871e5898140e39897c3c8e7df",
+      "candidate_id": "3edb134f6b32",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Identifies the Python runner mismatch, TypeScript copy, and inactive Go discovery and supplies concrete CI and import changes.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:c35be088eab1de4e332083ccc410011b89fa939335d81887f7214d9ab20a85c9",
+      "candidate_id": "3edf7a07f03b",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Clearly separates strict arbitrary-input testing from independent valid-PNG pixel checks, but does not specify valid chunk framing, CRC computation, or IDAT compression.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:a7a1ddd760cb1b2a9dccf8080ae88c8c7e716685a85fe6b708239d46f24f887b",
+      "candidate_id": "3f6ad847c38f",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It supplies sound no-op, counting, and state-aware generation repairs but does not preserve or route the command replayPath to fc.commands.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:4a1f05ac950082573ef9ab93587985119ba11c876bd9221ffa426310288050e3",
+      "candidate_id": "428a560e04e4",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It respects the trusted internal contract, explicitly rules out fuzzing, and retains focused examples with only conditional caller-level coverage.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:b4d21ba06fc3b10f39393b7b8cc00432b4068dad4851569ae306275ea5514619",
+      "candidate_id": "429dced29377",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Provides distinct raw and independently checked valid-image tests with lengths and CRCs, but leaves compressed scanline construction and zlib framing unspecified.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:1d33991ab8f2bfdfea1e1034e682757948f1edad759a4df208a661ab0d4fbff2",
+      "candidate_id": "42bb0f88f669",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It identifies the Python free-function collection risk and its repair, the copied production helper, and the seed-only Go workflow with bounded discovery and regression preservation.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:e9b0235485f28fa191b9b6e408ed07e05789616cf4b3560303e2607f4923f015",
+      "candidate_id": "441acae519d2",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Explicitly covers dual-write and destructive-dequeue loss, payment ambiguity and stale claims, with alternative durable delivery designs and stateful failpoint tests preserving recoverability and one effective payment.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:e4073f8dd23655e5e7a68aecbaa8a4a7a3c6e794d1e1fdc0e678b339bbab780e",
+      "candidate_id": "476ff7a79570",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It identifies the current examples as proportionate and explicitly rejects fuzzing while suggesting only small optional timestamp examples.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:678996ec65ae8994ccc588c103d9d3277f88960c6184e6ea2ecc1bbd9648ebd1",
+      "candidate_id": "4a1aaee0906c",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves both bounded campaign tiers and recognizes deterministic corpus regression execution alongside the existing ordinary Go test command.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:38cb34a92885e98b7cdcccfe386461102821826cc0000bbeb74a098ed0c53bab",
+      "candidate_id": "4cbf8ce21945",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It identifies hidden no-ops and inflated counting and recommends model-aware IDs, but its generic seed/path and command-sequence retention omits the required replay API mapping.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:3bfb5beccbacca6162cca76728da17d9ca18b685e6ff515668b412a16a9743e5",
+      "candidate_id": "4ce51d081bd5",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Recommends independent supported-image generation and exact pixels alongside raw robustness, but omits the scanline/filter construction and zlib framing that make IDAT valid.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:bc8a5f7b5f3a7a58b3aa58e8a79673c7f9758951a7cd57b90cb7e1d53adec4c6",
+      "candidate_id": "4d0a43ebff50",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It accepts the deterministic example coverage and rules out property testing for the schema-constrained internal helper.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:f48b16f6d8877bf58b044cbbebc8b55c95b28af513c3d1a6630ed30c85a57e60",
+      "candidate_id": "4d51dd7ebba3",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recommends keeping the existing tests and explicitly finds no justification for property-based or fuzz testing within the stated boundary.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:ec6e16645a69911c55e8539344fbe2b015ec339212dc57c0bb0560b0696c2135",
+      "candidate_id": "4e9667bae1be",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses applicability and counting and proposes executable lifecycle sequences, but preserving a seed and command replay path does not specify either required replay destination.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:7f8e41e6f1663ad03642b680afa27186c755039cebcc2513f1dc9f7c8e7de15f",
+      "candidate_id": "50611d96fdbf",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It rejects fuzz and property testing and recommends exact-output examples at a suitable package seam while preserving the trusted-input assumptions.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:e71e310973e15d64293c894bfc65f8ac60c327779790e640c308594ff93b4d22",
+      "candidate_id": "52607284b129",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves the finite non-empty generator and recommends independent sorted-reference and order-statistic checks beyond the weak range invariant.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:c480633abef4036ae39e92b3bbe78a6b0d43545aac09d63c3a12a2981d87fdd9",
+      "candidate_id": "53aafcfd8e7a",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It fixes Python collection and TypeScript production reach but discusses Go assertion strength without identifying the inactive-discovery or campaign gap.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:3c909bcc19e04431926337bf2c39a254ae845d656720637926d660caf86bb84d",
+      "candidate_id": "589dc4cca9d9",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses no-ops and misleading counts and recommends state-aware generation, but supplies only generic seed/path preservation without command or assertion replay wiring.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:dea60179d32a8068c07102c83c43355be4d9e436f49604cf222dbb5d81ad34dc",
+      "candidate_id": "58f834f2f10b",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Covers publication, dequeue, payment-persistence and notification windows, then validates durable claims, lease recovery and provider idempotency through deterministic crash/concurrency tests.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:7dcb07bea73994f0b7ecd790490b4d49cf1e86703b850ea55dbcb5701113e999",
+      "candidate_id": "5a4ee7b72eb4",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It accepts the valid domain, explains in-range false positives, and recommends a contract-matched independent statistics.median reference.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:127f7cebc2b169910367e87baa42761b3aacaf098c446c45d15014c3e06cf261",
+      "candidate_id": "5acd3a848f90",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "The concise response identifies all three defects and recommends the correct Python runner, production import, and bounded plus scheduled active fuzzing.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:793ec67acafc049b599ac11cc4d3b4a71a429fdfd9dbacf2a8048954108cf15c",
+      "candidate_id": "5e271f67fb20",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It recommends pytest alongside coverage but never diagnoses the existing unittest collection gap, despite correctly addressing production imports and active fuzzing.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:b40d9ce7ad7a21c5e42847993838d37b0383ffbe8b3cf02a36b98bff3320f660",
+      "candidate_id": "6839d5812a54",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Diagnoses all three gaps and gives executable pytest and per-target Go commands plus a direct production-import repair.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2f3b9939507a74f367a05cc764befb09148f2c6b98a61f5a1bc370d0e000b475",
+      "candidate_id": "69b9d57d5910",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Covers Python collection, copied TypeScript code, and seed-only Go execution with concrete collection, import, discovery, inventory, and corpus repairs.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:6e8c9968544ce56f02e5f4638648e96af01f26850e77ef341a6ac9370bad1590",
+      "candidate_id": "6cda909fd84d",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly distinguishes committed-seed regression replay from bounded PR and longer scheduled active discovery and recommends retaining the durations.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:32cdc6cace7a23bfdc61e7653d00e7e2b8e0c729a6d96707ae6cd5b23175ac49",
+      "candidate_id": "6ef64f7274b3",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw-byte totality and independent semantic expectations while naming compressed scanlines and CRCs, but does not establish CRC scope or zlib framing.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:24f37d3ce93eacea4a34f129cb6dd8e73cd28305ffbac57ad2366b583e20eeba",
+      "candidate_id": "6fcdb37786fe",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves the documented generator and recommends an independently calculated sorted median after identifying the range condition as insufficient.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:3f56f61ddfa0014f93db179c293e6ac512f131ad5aa7f006512f8311fdb10a43",
+      "candidate_id": "71094860ab24",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It finds current focused coverage sufficient and rejects hostile-input and fuzz testing for this internal formatter.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:aa7d201d25ae68b8db156de028dad2769b9a0b095c5af5bf551bc3a520e6b421",
+      "candidate_id": "71e9f2cd4d80",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves valid-domain generation, demotes the weak range check to a supplementary invariant, and recommends an independent sorted-list reference.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:2aea5fd49302472fe609336049019f55ee06a02b81a6e177b750dc474e94e7c8",
+      "candidate_id": "7284169f49a7",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw robustness and valid-image semantics, but valid chunks, compressed IDAT, filters, and expected pixels remain high-level without a verifiable independent builder path.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:44e885af64d950366796c41594ced2bdbc0faab9d37a8d8c123835c6249a8c62",
+      "candidate_id": "737b7531ccf1",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It endorses sufficient example coverage and makes any delimiter case conditional on the real schema and formatting contract without proposing fuzzing.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:3c4196538a3548a372efd40a33ba8aa848895efdadbc4983eb812fa27706f9c6",
+      "candidate_id": "73859777dcc6",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Uses independent source pixels and separate malformed testing with compressed scanlines, but omits concrete chunk CRC construction and zlib framing.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:30b3101b9b06bbad5c4c82f07339b5256fd331e2811b9fd96cc3196e36dd8333",
+      "candidate_id": "73b1926ca883",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recognizes committed seed replay as PR coverage and preserves the short-PR, longer-scheduled budget split.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:3933026285dda84fdb245445255d5708442f9f78badd58a7521fd67896244ce2",
+      "candidate_id": "766ede32e068",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It provides concrete target and counting repairs, but logging seed, path, and command replay path with unspecified replay inputs does not wire the two replay layers.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:d9ce9d6ebb7fb82ca796ed134750071ad61f37261fd899b4ea3315b0adacc741",
+      "candidate_id": "781840b4f318",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw robustness from source-model pixel checks and correctly filtered valid images, but does not specify CRC scope or zlib stream framing.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:3c2fc84b35c40eea6491b6895ab0c35feaec7d3f8748c91ee78ea20eaaa009d9",
+      "candidate_id": "7895ed6dc098",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "medium",
+        "label": "pass",
+        "rationale": "It preserves reviewed corpora and the existing ordinary-test, short-PR, and scheduled baseline without expanding PR campaigns, though its added corpus check is unnecessary.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:40013935a8fb7b76d4462560dec91f06edbe0a854bb39d4a22616df548cdea07",
+      "candidate_id": "79fd495174d7",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Finds dual-write and post-LPOP loss plus ambiguous charge duplication, defines durable outbox/reconciliation and acknowledgement recovery, and tests retry/concurrency against one-charge and eventual-processing invariants.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:25efe88b4f9c14ee4fd7df5b1fcf7a8db0224048d74b61cfea37d29750ad1e14",
+      "candidate_id": "7a589bc317b3",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Proposes independent valid images with correctly sized scanlines and semantic assertions, but leaves filter-byte construction, CRC coverage, and zlib framing unspecified.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:3428980931ab107ad1dd0501e1f1041980d7031135622f50b1b1be3c9ceae799",
+      "candidate_id": "7a9e3dcb9b6d",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It incorrectly treats the standalone Hypothesis test as unittest-compatible and its proposed Go fuzz selector matches both targets instead of selecting one.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:7be5aeb1578176c45faa1e061be20f6d80e94f64918b8ab7ff6888ce1a8f348c",
+      "candidate_id": "7b575949f490",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recommends keeping the current test and limits additional examples to genuine contract changes while rejecting hostile-input fuzzing.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2b08de335f108f7b8e2386fb5d5f0f271b8566c5045b3701aa1f065bd3ab26a9",
+      "candidate_id": "7cc864df949a",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It reports the read-only restriction but supplies no substantive assessment of seed replay or fuzzing cadence.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:c9b67ec6f1c63409c418cd4f39cfc1d11ab42ba5e790066f78197495d84d8ec9",
+      "candidate_id": "7cfe20cd53a5",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates arbitrary-input totality from independent model/encoder checks and meaningful filters, but gives no concrete valid chunk CRC or IDAT framing recipe.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:a85baee97649b1e3300b93b6ba50d7c5e413bf7ccea9d3a38f252044e5d254b9",
+      "candidate_id": "7d994cfd4c59",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Identifies each material execution defect and provides runner, production-import, per-target fuzzing, and regression-corpus fixes.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:bf694f5c45f5267d997c3090090f4d80ff5814e1c1c2c1d04d660ddc4ee190db",
+      "candidate_id": "804278e1134e",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly identifies existing ordinary-test seed replay and recommends retaining bounded PR discovery with longer scheduled campaigns.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:a750cc4913b53a0c01c96998e4aa6cc287bf6b8f10f87588c10bb47e1de03d51",
+      "candidate_id": "8048d4e13689",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It correctly identifies no-ops, inflated counts, and state-aware generation needs, but recording seeds and minimized commands omits fast-check command and assertion replay configuration.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:df768cfbf2ab74602fb9158b443952ea9dcd67a11ddbbafe4c050b78135cbbfb",
+      "candidate_id": "81eebf056b97",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It fixes applicability and reachable IDs and corrects transition claims, but merely captures seed/path/replayPath without routing them to fc.assert and fc.commands.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:fefc694385bcf3085ff4e7b938db171c5b90b6514cec3e328d26980d36dd93d2",
+      "candidate_id": "85ef56bc2657",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "medium",
+        "label": "pass",
+        "rationale": "Identifies publication and payment crash windows and missing acknowledgement/recovery, then proposes reclaimable claims, durable publication, provider idempotency and model-based restart/concurrency tests.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:f08b1f0873f2e93915bd3404002ebe7d8bd1269ee4d16151f72651e518057e04",
+      "candidate_id": "85f08c8137c0",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly credits committed-corpus replay through go test and preserves the PR-smoke and scheduled-campaign structure.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:dbe00f6a513190d6c2d9c99eabd2339101c70d568401f9bed6d5c0b0b1703777",
+      "candidate_id": "860de3cb9969",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recommends only proportionate timestamp or schema-valid examples and explicitly considers property testing unnecessary under the current contract.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:1128b5c5f75ee5d03cad4764fe80f9354b379e7c3c4b88618bb8f87f7cce491f",
+      "candidate_id": "861e61b09077",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Explains dual-write, destructive-dequeue and post-charge crash windows, supplies durable publication/claim recovery and stable idempotency, and tests failure/retry/concurrency invariants with controlled faults.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:0ccfa212e01586c41304fe17e9bcd2072a725efdb799d5f72ebebb91bbe7e482",
+      "candidate_id": "878f61ebe154",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It reports the file-writing restriction but provides no substantive assessment of the generator, range oracle, or stronger semantic checks.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:82c99b2084038fa3f35c5baa2d4f56a47b0e6c86f54d2ba8cbe6902dcc463c09",
+      "candidate_id": "87ff39e07991",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Diagnoses the wrong Python collector, copied TypeScript helper, and seed-only Go workflow and proposes specific runner, import, and scheduled discovery repairs.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:cbcecf56671b71d34a860ff30319327ce85739ed5d302dbd6fe9d810e9617fad",
+      "candidate_id": "8903a0a80301",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It accepts strong existing examples and explicitly rules out fuzzing and invented deserialization or hostile-input paths.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:e75d74add1935f283074b75c2fe441c4f430874771c81ce181f7a42a3a4de87f",
+      "candidate_id": "8d8fd6f05d46",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Identifies uncollected Python tests, the copied TypeScript implementation, and Go seed-only execution and proposes concrete pytest, import, and bounded fuzzing changes.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:3e7829d582f8fa1416ab711fe1db1d335bdbd059e6b351864c46e97223496578",
+      "candidate_id": "8e60c8f5c66f",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It identifies the correct finite non-empty scope and weak range oracle, then recommends an independent sorted-reference median oracle.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:1fd8d04bc4c813a84ba8c59e6cc54f07ac8cc93644dd457ee901e6d02666c106",
+      "candidate_id": "8ea4143ffe0f",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly maps min_size and finite exclusions to the contract and recommends an independent exact median oracle beyond the supplementary range check.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:3a56897b81632294a629f948465f14bbb1a69a37b322d3ebe32224fc66e46995",
+      "candidate_id": "9019bdfd6389",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It calls the existing property valid but weak, keeps undefined non-finite inputs excluded, and recommends an independent sorted-list definition property.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:c1adc71529ff05596495e1d70067efae9c1519c73e9f1c3ad8acec1129acb912",
+      "candidate_id": "95e8bac46c36",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Specifies durable acceptance/publication, reclaimable late-ack delivery and provider-enforced stable idempotency, with stateful failure traces asserting recoverability, one physical charge and a durable receipt.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:0cf84d4f3e20995735ff7c8ab7081733fb1ef31bfea9cb34e9a9f48de89f624a",
+      "candidate_id": "96e89d33b9fe",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It keeps the current tests, identifies fuzzing as unnecessary, and permits only optional examples relevant to the real format contract.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:c13f0c3af066aad2c68887aee8a4f766a60d0944f068ebe9d51ccfe0e3e51991",
+      "candidate_id": "995d75d01700",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses ineffective UUID commands and inflated counts and recommends state-aware IDs, but its seed/path and shrunk-sequence artifact list omits the required replay API wiring.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:cac8da40ac90f2f8f9fcd27b9be4455b89402a45e9e383cb68b4703e3036aa52",
+      "candidate_id": "9be4a0b02045",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Identifies valid zlib streams, exact scanline lengths, and separate semantic checks, but does not retain a clear unrestricted-byte totality property or establish independent CRC-valid construction.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:271c741e31f07d2e7d2cc9b053920be8ddc5efe9264faf50fba380428c14b28f",
+      "candidate_id": "9cbbf0221805",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "Provides only a list of purported assessment topics, without explaining crash windows, durable invariants, recovery protocol or substantive validation.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:c8cdaf2e2ba21e4e3e0b1cf0710dc82fcccd73dc85835408b021d2e627f538fc",
+      "candidate_id": "9de72e0713e7",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It reports a blocked file write without providing substantive assessment content that can satisfy any semantic criterion.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:121052a00855b9875421b06b7ec8776e6bc0548b61978fa6f135b6f9383d4499",
+      "candidate_id": "9f118a78feb7",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It accepts the documented generator scope, explains the weak range oracle, and recommends specification-based checks of odd/even sorted positions.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:5bdca1177d2511c5889d0e7c4b8fe319613d8c189976e0b6689d7efeb8d47d9a",
+      "candidate_id": "a08b6f295603",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It supplies concrete no-op, generation, and counting repairs and routes replayPath through fc.commands, but never routes seed and property path to fc.assert.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:159bc368f45b4cb0fb162dcbc288e2e414c0159ec4fa39a2d0f2bd3c1a0ced28",
+      "candidate_id": "a0c83b500b13",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Calls for independent valid-PNG semantics and separate robustness, but the recommended raw test remains signature-prefixed and the CRC/scanline/zlib construction is underspecified.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:f45bbdd72f953137e804c273cd40af670d571c160f624d852bf25abb354ad1db",
+      "candidate_id": "a30334d8c9c9",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Finds publication and destructive-dequeue loss plus post-charge duplication, proposes equivalent durable delivery and idempotency mechanisms, and validates restart/concurrency behavior at side-effect boundaries.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:b9fd5f0389de5061dfba7ca60eee867e28ff47ed32b00b56c01d1ffab50883de",
+      "candidate_id": "a43b85229ca3",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It recommends executable state-dependent commands and honest transition metrics, but preserving a seed and shrunk trace does not implement either required replay mapping.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:8161896005bb8e52a1121fffa2ede49a93247941f9fdc7010fba52a48a2f960b",
+      "candidate_id": "aa4654153ae6",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It correctly distinguishes deterministic seed replay from active PR and scheduled discovery and endorses the existing cost split.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:fd0bf6d9735c831ba9ab2b45c2e9c5d2383bdfee17e16730e272cf27ed9c390f",
+      "candidate_id": "abfa915182b2",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly preserves ordinary seed replay and the proportionate short-PR versus longer-scheduled discovery split.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:3ee088434f035a352f1e1481552ef1ffc8d0351871b8feadd8ebb4eb6e7bc653",
+      "candidate_id": "ac0ce833f70e",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves contract-valid generation and proposes an exact sorted-copy oracle after identifying the range test as merely necessary.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:cfd840b5de640843c69f406e6bae211821221c9033bd1fcaaf369c28cb754b6d",
+      "candidate_id": "ad5548d774dc",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recognizes valid non-empty finite inputs, explains endpoint false positives, and recommends an independent sorted-copy oracle.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:872cebff3f99eead9505a1a70c2a47fb12ac2f886aef7090fd255aa54c07f1e6",
+      "candidate_id": "af56d94477a3",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates raw totality and independently validated generated-image semantics, but the proposed builder does not specify coherent CRC, scanline encoding, or zlib-framed IDAT construction.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:9e5dad0cabaa6ea5aad20379ce68e024d58608d37b6d803e503befa3c0d97331",
+      "candidate_id": "af7120f9077a",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Provides separate totality and independent semantic validation, but mixes invalid dimensions into its stated valid-generator coverage and leaves chunk/compression construction implicit.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:6154b1996d4622fe53b1b239ff09074f99192810a63992a3d0e65db341097a1f",
+      "candidate_id": "afb4635008d0",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It credits the PR regression job with replaying committed inputs and recommends keeping both current fuzzing durations.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:443c1171b809250a99cb92cd8f1aafdddf5a829cb4e155506a08761c847a4f6e",
+      "candidate_id": "b118a9512efb",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "It preserves committed seeds and short-PR versus longer-scheduled fuzzing but does not establish that it recognizes committed seed replay as existing PR regression coverage.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:e13bd5e176ce5655b1b5b060fbb2974eb1f56d2b53ce53d23090dd6876243cfc",
+      "candidate_id": "b3755761e9a6",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "medium",
+        "label": "pass",
+        "rationale": "Covers acceptance-publication and charge-persistence gaps with durable claim/lease recovery and stable payment idempotency, plus stateful failure traces and eventual-processing assertions.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2ac518c0532fe145276e48109c69f54212cf91546bd2e30debcbd9fe3936da29",
+      "candidate_id": "b517e950c4c5",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly identifies committed corpus replay on PRs and retains short smoke campaigns while relying on scheduled discovery for depth.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:3aa7ab76dca87aeb539f688d1b7379160ad61a4a1018423ee3cf50eb699afdff",
+      "candidate_id": "b5361e842bf8",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly distinguishes probabilistic PR discovery from the deterministic committed-corpus regression gate without demanding larger PR campaigns.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:7466ebd5fac171504e9d2aa142a02b9aa6ff81e9be6c92b27ab2aac43c600925",
+      "candidate_id": "b87a131b5be0",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It fully diagnoses no-op applicability and transition inflation and recommends dependent IDs, but replay guidance stops at artifact retention without command or assertion API mapping.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:b22b520c57e9717ba98df4b4d446ff6d4117f49ab28a843360b5193e40c922b5",
+      "candidate_id": "c380ef8d8fb0",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Recommends independent source-pixel expectations and valid images but gives no concrete CRC or zlib/scanline builder and retains ambiguity about signature filtering.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:959d6d4c3d53aa1bbb1352f6cafe9a4dddc31edd5fe5d2490b9a187cd788fdf9",
+      "candidate_id": "c3f1973183ac",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves the successful-call domain and recommends definition-based sorted-position checks while retaining range membership only as a necessary invariant.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:6fbd8be08318d46a8c62fd33a92778776d9df95ed65f47ba9644726d3d629703",
+      "candidate_id": "c51bf4a3f0cd",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "It retains bounded PR smoke and longer scheduled campaigns but does not connect the reviewed committed seeds to existing PR regression replay.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:ddd0c11a4e2a8b49d98aa426390abad24f3011e8cd5de129deb41e90adbcc5d9",
+      "candidate_id": "c7ecdf73dd70",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "medium",
+        "label": "pass",
+        "rationale": "Identifies publication and payment-response loss, supplies durable outbox and claim/lease recovery with enforced idempotency, and asserts eventual processing and one provider charge under injected crashes and concurrency.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:6801c8ea1c23d6897f79a3c531684acd6f50dfd7b6c0697b1bf5d57ca901040c",
+      "candidate_id": "c951b2122728",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses hidden returns, misleading counts, and unreachable IDs and proposes model-derived targets, but its replay checklist omits both required fast-check destinations.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:fe39dbc0e5cd932d23d8071b67d4366b5374bb9154bf3d507cbe82e7c6425d18",
+      "candidate_id": "c9e8c83c8684",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It identifies Python collection and the copied TypeScript helper but omits the Go active-discovery or campaign gap.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:06119b63cdfe4a12a3edc5f2913307a7255a7a1fcfd57f87d66599f6ef6c9423",
+      "candidate_id": "cea8cac00e6e",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It correctly scopes valid inputs and recommends an independent sorted-reference oracle to address the range condition's false positives.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2a55e52631acd59f62e028ab4c4d808f9addd8c9468a5a43d16597a5bddfdcc0",
+      "candidate_id": "cee9ab397acb",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses no-op and counting defects and recommends model-aware commands, but the seed-only replay command and generic shrunk-path retention omit command replayPath and assertion path wiring.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:299bc960b793da85de5cdc664b5e8a70b11439a513492c9d20734c8f328b79c3",
+      "candidate_id": "cf074555d3a3",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It supplies concrete state-dependent generation and counting remedies, but recording fc.assert failure details and a generic path does not route command replayPath to fc.commands.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:71b5d1bbe6b837704d40c21bdf030753e9da77d6eedcbfa009674b2bc4924def",
+      "candidate_id": "cf49789fb71b",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Separates broad robustness from independent image-oracle testing, but the valid-file generator lacks explicit chunk CRC and compressed scanline construction.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:f1a0afdde72c97bb2723bc6128d57b0c687b75e9a47b16a5610f87cc4b547b98",
+      "candidate_id": "d0a067ea090d",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses no-ops and false transition counts and recommends model-derived IDs, but generic seed/path/replay artifact preservation does not specify the required replay configuration.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:f705ea4217d6359f6c7821c6ee12e8955bc3e36e0f446283c5b1c1a9668cfcd3",
+      "candidate_id": "d1bb947322ef",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It rejects disproportionate arbitrary-string fuzzing and recommends retaining the current examples with additions only for explicit requirements.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:d60564df7d1033b8e7f5b6195ecb9d2303e43b73d9c7280918de294be0a25b7d",
+      "candidate_id": "d3f5025c12b5",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recognizes ordinary committed-seed replay and keeps PR fuzzing short while directing any measured expansion to scheduled campaigns.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:da9b25270dcd259c8d4448bfb5c94e814682ceebe8388624b49d5b3a6ba11f3e",
+      "candidate_id": "d431ec190e9d",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly preserves both generator bounds and adds an independent exact reference property after identifying the weak range condition.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:0f16d00f9bd9e10afa93e0dd2a857b64081800da867bf8831f0815de90e36d51",
+      "candidate_id": "d4d33a4b6eda",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It retains the focused test and considers broader property testing unnecessary while keeping optional cases tied to schema-valid inputs.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:13cdd1e878aed818433b7b94aae3b86b962a9a25f2f9d97f03fdda4efae69816",
+      "candidate_id": "d5bc8d8a990a",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It finds no additional helper-level testing necessary and avoids inventing an external boundary or arbitrary-input testing requirement.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:4be19a43f9230fb8aa8e703e8e6ff465ac665fa5ca2db2c96e7e6d242c968cd1",
+      "candidate_id": "d614e36dd350",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "medium",
+        "label": "fail",
+        "rationale": "It treats already-active committed-corpus replay as a missing step instead of recognizing that ordinary PR tests already provide this regression layer.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:09f038a707ed2f475543d98154b6bc912f1386c3eeb94ef30fa39518e7d2f092",
+      "candidate_id": "d687989e649f",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Covers all main loss and duplicate-effect windows, gives durable outbox plus late acknowledgement/expired-claim recovery and provider-enforced idempotency, and verifies the observable invariants through deterministic fault tests.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:ad51a1600e1227b709ed045a5c31ef18fa0eb32a51ed1ff2610191d12aea723a",
+      "candidate_id": "dd074d34b263",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It identifies hidden no-ops and inflated transition counts and calls for reachable commands, but publishing seed and shrunk-command paths does not wire deterministic replay.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:948d9a86c4979b709288e83125e300914e0b8044db3ba4af5d241bd315fdc42b",
+      "candidate_id": "df4133b544fb",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Finds publication and post-charge ambiguity and specifies stateful fault tests, but leaves the actual acknowledgement, redelivery and abandoned-work recovery protocol to future definition.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2884022ad58be0429a3aedca02b29151314ceae6869d49776feef8b998997a2c",
+      "candidate_id": "e13ad7bdac68",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It gives concrete state-dependent command and counting repairs, but preserving a seed and generic fast-check path omits command replayPath and the required API mapping.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:cf052add40048c0b04f1797289323fa37df90051c2c98c1fb03f231ab87dce86",
+      "candidate_id": "e27bfe7eff5f",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly recognizes PR seed replay and short active discovery with a longer scheduled campaign, with proposed timeout changes confined to scheduled work.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:cb50cab9e5d9cb206a83b736e8ba308978e5e1c7c7e5e05850aa6e6235142a07",
+      "candidate_id": "e56908cd3765",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses hidden applicability and counting defects and recommends state-aware generation, but saying replay values should be passed back appropriately never identifies their distinct API destinations.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:62dd1761001f0095d978f4fb190aed9f0f31999a9120976618378fd6cb1d67ad",
+      "candidate_id": "e76395ea314f",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly rejects fuzzing and property testing and recommends only a conditional empty-action example plus existing caller coverage.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:084b47cf51703e0146769856617249b41a7534083b1ecc88e1e3f4f80baeae4d",
+      "candidate_id": "e7b9fe27e313",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Connects dual-write and destructive-dequeue loss to transactional publication, pending-work recovery and provider idempotency, then exercises every crash boundary and concurrency against explicit durable business invariants.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:f908ead048d6a2a671fd787d0d9c990cc10852feb43fee2f9a5808eccc180cd3",
+      "candidate_id": "ec19c478ebbd",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "Adds a named valid-image property but never establishes an independent valid-PNG builder or correct compressed scanline and CRC construction.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 4,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:9d6ccce056f315ad69be873b38d8fcd0fbd97a07a18718444c64103c1d1009fb",
+      "candidate_id": "ec6c23b05a3a",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses no-op applicability and inflated counts and recommends model-derived IDs, but preserving all replay values and propagating configuration to projects does not wire either replay API.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 4,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:4f8ae0ed2602d89a158c7de30070c0d9f90b25f200fb55c5de799e890c563149",
+      "candidate_id": "edee68e184ef",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recognizes committed seeds as ordinary regressions and endorses PR smoke plus longer scheduled exploration.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:fe8899b8df3e22178a4f3189a19e1df4c3f6b4954066a9c0d191eb208a0f53e2",
+      "candidate_id": "eea739bc012d",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It correctly diagnoses ineffective UUID commands and misleading counts and recommends reachable IDs, but its generic seed/path/trace retention omits both replay mappings.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:a43d2dafc2e61e19eabebd6000e75e83e5ff5109421bd57ec54af209c50fcaf5",
+      "candidate_id": "ef24cc26eca8",
+      "case_id": "pr24-structured-valid-png",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Clearly separates raw totality and independent model-based semantics with correct lengths/CRCs, but leaves valid scanline encoding and zlib framing unspecified.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:431dc678393c7999780f43db4ebbdb0c988333555f9681f34cf188244edd563c",
+      "candidate_id": "efb4ac7d7a69",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Explains publication, pre-charge dequeue and ambiguous post-charge windows, gives durable claim/ack and payment-idempotency recovery, and validates pending/terminal invariants with fault injection and provider contracts.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:d9bc56389c74d3df2edc12adc2fe9b58281bcc630001f2fa44b1424928681cdb",
+      "candidate_id": "efdfd5233ce1",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It finds existing coverage sufficient and identifies fuzzing and property testing as disproportionate for the trusted helper.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 1,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:a14c454fdb993d5b47e08a0c6fffe4f3adbe5ba063cdf4bbfddb896bdd662478",
+      "candidate_id": "f0f601c44ad0",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly identifies ordinary-test corpus replay and preserves bounded PR smoke with deeper scheduled campaigns.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:89881049c456c92b8ef4e665da7090f2dcf457cc42a7012a7fddd5602ef6c18d",
+      "candidate_id": "f3599714ce0c",
+      "case_id": "pr24-trusted-input-no-fuzz",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It keeps the focused unit test, rejects broad fuzzing and unnecessary property testing, and ties any additions to actual contract needs.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:cdb6e3612777789dda09529357f94a0039217204c3eae5bf7cacb82e3d7f3b7b",
+      "candidate_id": "f537a7331dd0",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It repairs Python collection and TypeScript production reach but addresses only Go oracle strength and never identifies the absence of active fuzz discovery.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:69cc859b2423881a12d30c4821a10cca8cfe36de9c7134648f835a9c3294978d",
+      "candidate_id": "f63d6b298c95",
+      "case_id": "pr24-state-machine-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "fail",
+        "rationale": "It diagnoses hidden no-ops and transition inflation and proposes model-derived IDs, but a replayable seed policy and emitted seed/path artifacts do not configure command replayPath or assertion path.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:bfdfbf7014476474203718c4ca4da1305e4fac6945ff763fac1f1d06ecd3d828",
+      "candidate_id": "f7551fa824ae",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It recognizes committed-corpus regression execution and keeps PR fuzzing short while considering deeper scheduled work only selectively.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 5,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:52eac83e021bd9e6c04a9846e74660f0c408a1159d31d699598cbd2a549e9723",
+      "candidate_id": "f87f8a68f64c",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Finds publication, pre-charge loss and ambiguous payment windows, requires provider idempotency and durable lease recovery, and proposes stateful faults asserting eventual terminal processing and at most one economic charge.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 2,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:255c7b5774829f58d188b39ad960375ab6072abf423c99237b859d3a24ea06d2",
+      "candidate_id": "f95913155bab",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Provides durable outbox replay, late-ack/reclaim delivery and provider-enforced stable payment keys, with stateful crash/retry/concurrency tests for eventual recovery and one charge.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 1,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:f860cdc864c6f0f3b58fe8d9d2313bcd666aeef895b1fb429d71efed8b4e1eb7",
+      "candidate_id": "fb072d8c3418",
+      "case_id": "pr24-go-fuzz-cadence-restraint",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It explicitly credits ordinary PR seed replay and endorses the unchanged short-PR and longer-scheduled campaign durations.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:035707166908436376747d67fdad1f1236e7aa9b339ecf1b930dbb6438573029",
+      "candidate_id": "fb09083b8485",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Covers dual-write and destructive-dequeue loss, post-charge ambiguity and duplicate delivery, offers equivalent durable delivery patterns, and validates recoverability and payment uniqueness through stateful fault injection.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:20369e7a9a3863740ec4fb6dbbca5b774d689564951f518b955f78995faecf09",
+      "candidate_id": "fb3d3eec6f5f",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Identifies all three material defects and provides pytest collection, production imports, per-target active fuzzing, and corpus repairs.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 3,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:2c798258117260a20f90877aa69f5eb6b11e7a056fb62f0da7a84f982c739536",
+      "candidate_id": "fbb2675a2010",
+      "case_id": "pr24-execution-reachability",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "Explains and repairs Python collection, TypeScript production reach, and Go discovery with correct per-target commands and regression-corpus handling.",
+        "reviewer_group": "reachability"
+      },
+      "model": "gpt-5.6-terra",
+      "run_number": 5,
+      "variant": "with_skill"
+    },
+    {
+      "answer_sha256": "sha256:8b74542c374e568c58ff048d9028335bd2200ead94e12b4e9d3751a3956450f6",
+      "candidate_id": "fd7fefb5fd60",
+      "case_id": "pr24-durable-queue-protocol",
+      "judgment": {
+        "confidence": "medium",
+        "label": "uncertain",
+        "rationale": "Identifies the main loss and duplicate-charge windows with appropriate design directions, but only lists missing tests and does not specify durable recovery/replay assertions or a complete validation protocol.",
+        "reviewer_group": "structure-protocol"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "old_skill"
+    },
+    {
+      "answer_sha256": "sha256:e77779c4295355ac53ac8a31ee2a3eada158ca49ffd96227042d34aa9c485bdc",
+      "candidate_id": "fea41716fec3",
+      "case_id": "pr24-contract-bounded-generator",
+      "judgment": {
+        "confidence": "high",
+        "label": "pass",
+        "rationale": "It preserves the documented non-empty finite restrictions and recommends an independent expected-value oracle beyond supplementary range coverage.",
+        "reviewer_group": "restraint"
+      },
+      "model": "gpt-5.6-luna",
+      "run_number": 6,
+      "variant": "old_skill"
+    }
+  ],
+  "experiment": {
+    "access": "ChatGPT-authenticated Codex CLI; no API access",
+    "base_revision": "c5d017d0df03120e44f0a6722a359cb676f3a8bf",
+    "candidate_answer_key_visible": false,
+    "cases": [
+      "E64",
+      "E65",
+      "E66",
+      "E67",
+      "E68",
+      "E69",
+      "E70"
+    ],
+    "comparison": "exact PR head versus exact PR base",
+    "date": "2026-09-13",
+    "head_revision": "62a7d9be986c132a834ceaf33b37e5d99e501816",
+    "models": [
+      "gpt-5.6-luna",
+      "gpt-5.6-terra"
+    ],
+    "pooled_analysis": "secondary only",
+    "primary_analysis": "paired and stratified by model",
+    "reasoning_effort": "low",
+    "runs_per_case_arm_model": 6
+  },
+  "generation": {
+    "answer_design_note": "All nine canonical design payloads were reconstructed from preserved task shards and digest-verified against per-run metadata. The c645541f... source document was overwritten during the initial shared-directory race; its reconstructed canonical payload matches the digest retained by 22 completed runs.",
+    "answer_designs": [
+      {
+        "design_sha256": "sha256:ddab61c82c247ee9443b63e5c5950e1d1eec4ba6e6c51e7499ad47dbc919ba99",
+        "identity_count": 18,
+        "payload_sha256": "sha256:50ec062e309dd09e28173c03cedf7884719d4928b7fd5ea2ed7dfd0eb4f40784",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-remaining-0.jsonl"
+      },
+      {
+        "design_sha256": "sha256:89864f28b9a5b0a287fe6b115d06e44030b2ec12cfb8dee93ed9e6e08491bca0",
+        "identity_count": 18,
+        "payload_sha256": "sha256:2d1cea138c0467fb3a81e6fd011f09e8b7d747ea00c31494c8fe0ad79a5fd1d3",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-remaining-1.jsonl"
+      },
+      {
+        "design_sha256": "sha256:b765c6a181cb74a95c769b7e9831a36f39a46943489438455a5c8e2b7859b2e5",
+        "identity_count": 18,
+        "payload_sha256": "sha256:9085cdba92f74da70fc471eb2aafe38c684581043c7c7c99bbb27fcbbaf80ef2",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-remaining-2.jsonl"
+      },
+      {
+        "design_sha256": "sha256:8799e578787047390f778ab65b5ba49dd408f378f9088d263e23eb0641763058",
+        "identity_count": 17,
+        "payload_sha256": "sha256:051f8ccc006a4c870e0e9a9e278914701bde6b3475081e843f8b6f96c8a74838",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-remaining-3.jsonl"
+      },
+      {
+        "design_sha256": "sha256:5d2a8ed5a2757d945405e8cff5205d267d20331b79e8d06ada854c5dd2358147",
+        "identity_count": 17,
+        "payload_sha256": "sha256:3047b4b44d58fe93dcbf80f9fbb62709829a9cf2486ad541aa4b783bb086aa15",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-remaining-4.jsonl"
+      },
+      {
+        "design_sha256": "sha256:fce639a044165b615667a633b6318d2510049c1481fbf9130fabbe40b2c6b048",
+        "identity_count": 17,
+        "payload_sha256": "sha256:f08d4439303ba6854bfa22356882a24010e5b90082d6276a0f874c910f9f6cc7",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-remaining-5.jsonl"
+      },
+      {
+        "design_sha256": "sha256:e06218ce1d1f1584a7d6ebf217c42d9312b379a5516bc63e4bfa3fe1669bd7fa",
+        "identity_count": 56,
+        "payload_sha256": "sha256:2343d4579b300bdb126173cf4f9db63a5c408b792d0e3329e2e44f2329a5706b",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-shard-0.jsonl"
+      },
+      {
+        "design_sha256": "sha256:c645541fa489c65479dae729bc23148bdeb153f436ffa85d198916bdba3d1058",
+        "document": {
+          "design_sha256": "sha256:c645541fa489c65479dae729bc23148bdeb153f436ffa85d198916bdba3d1058",
+          "eval_contract_sha256": "sha256:5e2cf44fdcaa74ed7404d44385d67d9a023c5235069a0eff3367a95a57d2da47",
+          "identities": [
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-luna/old_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:b2dded6ce6c4277f6bca65e3c3d2361fbb32079a0beb136ed6e1309f935e47af",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-luna/old_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:b2dded6ce6c4277f6bca65e3c3d2361fbb32079a0beb136ed6e1309f935e47af",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-luna/with_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:84bbc184a006b9c7ab3f404c038ca2695e94e6aad85f6e808c2d4ee1a416f497",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-luna/with_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:84bbc184a006b9c7ab3f404c038ca2695e94e6aad85f6e808c2d4ee1a416f497",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-terra/old_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:6113b8d6a1db674a831915bbf92e389cf4b7d3f9b0fc50b31ed3990211a3f190",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-terra/old_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:6113b8d6a1db674a831915bbf92e389cf4b7d3f9b0fc50b31ed3990211a3f190",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-terra/with_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:e7d4071e178576100c3c3b10588f349d13fd3d23826cea9ad23238caccfb634d",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-contract-bounded-generator",
+              "case_input_sha256": "sha256:9f123227f721d2fa8b884047d18ea37e4b7c74fbe5ef78ed7f0f5040807f3f67",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-contract-bounded-generator/gpt-5.6-terra/with_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:e7d4071e178576100c3c3b10588f349d13fd3d23826cea9ad23238caccfb634d",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-luna/old_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:60898953aa8e712d890ce2cd50579d7eb259a042d548852973bd97e84ff17caa",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-luna/old_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:60898953aa8e712d890ce2cd50579d7eb259a042d548852973bd97e84ff17caa",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-luna/with_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:d87001691c9c8bbcb154d2d934c595116f89420033b73e9d87805dc5b9868f65",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-luna/with_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:d87001691c9c8bbcb154d2d934c595116f89420033b73e9d87805dc5b9868f65",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-terra/old_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:3807aec45268095670d322f9e9c2f18970101c88140be26996a2a1f1b9bd472b",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-terra/old_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:3807aec45268095670d322f9e9c2f18970101c88140be26996a2a1f1b9bd472b",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-terra/with_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:70b52fbda73d7e0fa8f984e813af4b3e225dea1ef0bccd5d7ce1415952f2871f",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-durable-queue-protocol",
+              "case_input_sha256": "sha256:cdb613c07292d01683630970d4804efd06d0fa6e6403706c2fd4ee1ae8dc0d33",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-durable-queue-protocol/gpt-5.6-terra/with_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:70b52fbda73d7e0fa8f984e813af4b3e225dea1ef0bccd5d7ce1415952f2871f",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-luna/old_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:5f028333cb4dc40c1783574f6268a117ca83fe022fab65340ceaefe6212b315f",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-luna/old_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:5f028333cb4dc40c1783574f6268a117ca83fe022fab65340ceaefe6212b315f",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-luna/with_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:57d48cd6f4fe30e082b4060ecf1aff5f9e438cd1ef90bc8c5d35577d74350b76",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-luna/with_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:57d48cd6f4fe30e082b4060ecf1aff5f9e438cd1ef90bc8c5d35577d74350b76",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-terra/old_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:1c34d526f4379193798059d86ae85e3cb4ebbdc5ec2327c8375c010db3544ba5",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-terra/old_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:1c34d526f4379193798059d86ae85e3cb4ebbdc5ec2327c8375c010db3544ba5",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-terra/with_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:8943d32fd9b65aad632fcc85d749311396502d8c509a66e8559154f4e064db2a",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-execution-reachability",
+              "case_input_sha256": "sha256:bb93b56a92c952914fb16100ec09b68aa597297c505d5e63956a01c33d4133c7",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-execution-reachability/gpt-5.6-terra/with_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:8943d32fd9b65aad632fcc85d749311396502d8c509a66e8559154f4e064db2a",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-luna/old_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:59559086f703d2644ed4688090c9e7aab2ddf49dc5ed8cdf90bdd769414b2296",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-luna/old_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:59559086f703d2644ed4688090c9e7aab2ddf49dc5ed8cdf90bdd769414b2296",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-luna/with_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:1684bb8d475fc36f9eef94f37bb54622aa616a56c076b40c9f75533584742059",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-luna/with_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:1684bb8d475fc36f9eef94f37bb54622aa616a56c076b40c9f75533584742059",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-terra/old_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:784d9ac3931b8bb6f05fc370c3cb2337fa2d85dc0bf85147318d9cff58f726f2",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-terra/old_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:784d9ac3931b8bb6f05fc370c3cb2337fa2d85dc0bf85147318d9cff58f726f2",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-terra/with_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:8d12fc800e9f75761c201aa45a4b2b88aa3982e274653b362086fa00af918a92",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-go-fuzz-cadence-restraint",
+              "case_input_sha256": "sha256:9fe8d56f9fd1d8d317e0a3b4e745f6ec049cdc0e2681f144f99d5ff1dcffbb76",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-go-fuzz-cadence-restraint/gpt-5.6-terra/with_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:8d12fc800e9f75761c201aa45a4b2b88aa3982e274653b362086fa00af918a92",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-luna/old_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:bb971094693eb80a156181f17fe718d7bcd73fbd5bbdb843dda02af3389d482e",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-luna/old_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:bb971094693eb80a156181f17fe718d7bcd73fbd5bbdb843dda02af3389d482e",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-luna/with_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:f8373607d9d874433d218edee4c0b8ef1d2b77d4ed98e8c7f0ed090c99fe270b",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-luna/with_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:f8373607d9d874433d218edee4c0b8ef1d2b77d4ed98e8c7f0ed090c99fe270b",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-terra/old_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:4886517c560a8783ad475c46186b5a93014a2e6fb1942361bc8baa836e3fdc75",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-terra/old_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:4886517c560a8783ad475c46186b5a93014a2e6fb1942361bc8baa836e3fdc75",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-terra/with_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:62a7ce5a642fd513880ba7eea99546cda5f16aec2bf0624905a7619e24196697",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-state-machine-reachability",
+              "case_input_sha256": "sha256:23c55d626567183447709387460b6cae652412d37f6faf888943533a454b174b",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-state-machine-reachability/gpt-5.6-terra/with_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:62a7ce5a642fd513880ba7eea99546cda5f16aec2bf0624905a7619e24196697",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-luna/old_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:22952baefb25f08e264e96e2faa8ae04698ea208a433bc1703ee57a37fa04b3d",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-luna/old_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:22952baefb25f08e264e96e2faa8ae04698ea208a433bc1703ee57a37fa04b3d",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-luna/with_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:59ef23b407823126836241f50a156a40d695eed2f2220b60d6e7943d92423b6e",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-luna/with_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:59ef23b407823126836241f50a156a40d695eed2f2220b60d6e7943d92423b6e",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-terra/old_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:1940d78035208931c12b5a7aa076416cfab99636dc88e3dee1915650e5915731",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-terra/old_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:1940d78035208931c12b5a7aa076416cfab99636dc88e3dee1915650e5915731",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-terra/with_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:006577c62a22c59cf1ef16c0a26e3dac35c5375e92181d974db9c895035b734b",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-structured-valid-png",
+              "case_input_sha256": "sha256:7fc53d97de4ffa00ab252a22c3f82b95661a0b5ecec6f56ef1297b5f45901334",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-structured-valid-png/gpt-5.6-terra/with_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:006577c62a22c59cf1ef16c0a26e3dac35c5375e92181d974db9c895035b734b",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-luna/old_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:352fd01d479d84c83e60c548aa1219c165e13fdb2f5ce77256a39cd3087ae901",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-luna/old_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:352fd01d479d84c83e60c548aa1219c165e13fdb2f5ce77256a39cd3087ae901",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-luna/with_skill/run-3",
+              "run_number": 3,
+              "task_sha256": "sha256:3fa0b10feb5b02afda18035bb1ea4b9b817dbd6522abb8cfdecd3c4834707224",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-luna",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-luna/with_skill/run-6",
+              "run_number": 6,
+              "task_sha256": "sha256:3fa0b10feb5b02afda18035bb1ea4b9b817dbd6522abb8cfdecd3c4834707224",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-terra/old_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:43a6529b005af37b933161dcb67c3a29116b31a36a3946aa2ff393ed91bfc05b",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:e56e8c8d9cfa518712febd56ffd52046a3118ae17e3c1b6da6e58597d66eb7d4",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "e631ec78d0f7a7aabedd4e92de7918229b1b45ac4c83f89a95a2cca0c6074498",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-terra/old_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:43a6529b005af37b933161dcb67c3a29116b31a36a3946aa2ff393ed91bfc05b",
+              "variant": "old_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-terra/with_skill/run-1",
+              "run_number": 1,
+              "task_sha256": "sha256:ca9072cf3844695cc32c151f712884c5cd3883feaccf77a5b383c497c00e373c",
+              "variant": "with_skill"
+            },
+            {
+              "case_id": "pr24-trusted-input-no-fuzz",
+              "case_input_sha256": "sha256:64de24dfbed0a83ad7a4f43ca6fb128657bfd7629df34d3291ff3dac21368145",
+              "fixture_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "instruction_sha256": "sha256:b03a0269062f024d1818813e67122e4c3d321e34f83caec9268400f143645843",
+              "model": "gpt-5.6-terra",
+              "planned_skill_tree_hash": "5d92ecebf7998c772253870d64b8d6369e4b6a4f6f1f6de87dd40f35c7581fd0",
+              "run_dir": "pr24-trusted-input-no-fuzz/gpt-5.6-terra/with_skill/run-4",
+              "run_number": 4,
+              "task_sha256": "sha256:ca9072cf3844695cc32c151f712884c5cd3883feaccf77a5b383c497c00e373c",
+              "variant": "with_skill"
+            }
+          ],
+          "population": "answer",
+          "schema_version": 2
+        },
+        "identity_count": 56,
+        "payload_sha256": "sha256:d9c7d112834c2c2c273ed5ac3b824db7ada0e895ff70c5864cd7753a0db65f89",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-shard-1.jsonl"
+      },
+      {
+        "design_sha256": "sha256:3fc1a5a0c8e58a03648cfa70f57c409e57d8b0ee7a7b6ab19ae645f3cbdf9993",
+        "identity_count": 56,
+        "payload_sha256": "sha256:aac116960eae3ca9cd75dd4b12ed04d03b8fd4473e7685567cb533a84aa0a098",
+        "reconstruction": "canonical harness reconstruction from the preserved prepared task shard",
+        "source_task_file": "tasks-luna-terra-shard-2.jsonl"
+      }
+    ],
+    "completed_runs": 168,
+    "consolidation_index_sha256": "sha256:5382c570bb6abc7789e787f49e3450a0dc8f1973a6dcecc1523e01c8a8fb3cb1",
+    "expected_runs": 168,
+    "models": {
+      "gpt-5.6-luna": 84,
+      "gpt-5.6-terra": 84
+    },
+    "prepared_tasks_sha256": "sha256:c3ee05b7648253017cc12cff93b1bd14b942a4b4e717161c7dc26a05968da549",
+    "return_codes": {
+      "0": 168
+    },
+    "timeouts": 0,
+    "variants": {
+      "old_skill": 84,
+      "with_skill": 84
+    }
+  },
+  "grading": {
+    "deterministic": {
+      "base_report_sha256": "sha256:823c6ce9415df9a7e629f7f3a8339428cef538d5545c9d4e3940b270aa51ea5d",
+      "head_report_sha256": "sha256:608eb02276bb8143803c182d2aae74a607a2ab130e3a3cad6c790ce7624f07f0",
+      "result": {
+        "gpt-5.6-luna": {
+          "base_passes": 1,
+          "exact_two_sided_p": 1.0,
+          "head_passes": 2,
+          "pairs": 42
+        },
+        "gpt-5.6-terra": {
+          "base_passes": 0,
+          "exact_two_sided_p": 0.015625,
+          "head_passes": 7,
+          "pairs": 42
+        }
+      },
+      "validity": "heuristic only; treatment-blind review found pervasive false negatives"
+    },
+    "semantic": {
+      "analysis": {
+        "judgment_count": 168,
+        "schema_version": 1,
+        "summaries": [
+          {
+            "absolute_delta": 0.09375,
+            "base_pass_rate": 0.625,
+            "base_passes": 20,
+            "base_uncertain": 10,
+            "best_case_delta": 0.2619047619047619,
+            "discordant_pairs": 9,
+            "exact_two_sided_sign_p": 0.5078125,
+            "group": "gpt-5.6-luna",
+            "head_pass_rate": 0.71875,
+            "head_passes": 23,
+            "head_uncertain": 7,
+            "improved_pairs": 6,
+            "pairs_decisive": 32,
+            "pairs_total": 42,
+            "regressed_pairs": 3,
+            "tied_pairs": 23,
+            "worst_case_delta": -0.14285714285714285
+          },
+          {
+            "absolute_delta": 0.3333333333333333,
+            "base_pass_rate": 0.6666666666666666,
+            "base_passes": 4,
+            "base_uncertain": 0,
+            "best_case_delta": 0.3333333333333333,
+            "discordant_pairs": 2,
+            "exact_two_sided_sign_p": 0.5,
+            "group": "gpt-5.6-luna/pr24-contract-bounded-generator",
+            "head_pass_rate": 1.0,
+            "head_passes": 6,
+            "head_uncertain": 0,
+            "improved_pairs": 2,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 4,
+            "worst_case_delta": 0.3333333333333333
+          },
+          {
+            "absolute_delta": 0.0,
+            "base_pass_rate": 1.0,
+            "base_passes": 4,
+            "base_uncertain": 2,
+            "best_case_delta": 0.16666666666666666,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-luna/pr24-durable-queue-protocol",
+            "head_pass_rate": 1.0,
+            "head_passes": 4,
+            "head_uncertain": 1,
+            "improved_pairs": 0,
+            "pairs_decisive": 4,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 4,
+            "worst_case_delta": -0.3333333333333333
+          },
+          {
+            "absolute_delta": 0.6666666666666666,
+            "base_pass_rate": 0.3333333333333333,
+            "base_passes": 2,
+            "base_uncertain": 0,
+            "best_case_delta": 0.6666666666666666,
+            "discordant_pairs": 4,
+            "exact_two_sided_sign_p": 0.125,
+            "group": "gpt-5.6-luna/pr24-execution-reachability",
+            "head_pass_rate": 1.0,
+            "head_passes": 6,
+            "head_uncertain": 0,
+            "improved_pairs": 4,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 2,
+            "worst_case_delta": 0.6666666666666666
+          },
+          {
+            "absolute_delta": -0.25,
+            "base_pass_rate": 1.0,
+            "base_passes": 4,
+            "base_uncertain": 2,
+            "best_case_delta": 0.0,
+            "discordant_pairs": 1,
+            "exact_two_sided_sign_p": 1.0,
+            "group": "gpt-5.6-luna/pr24-go-fuzz-cadence-restraint",
+            "head_pass_rate": 0.75,
+            "head_passes": 3,
+            "head_uncertain": 0,
+            "improved_pairs": 0,
+            "pairs_decisive": 4,
+            "pairs_total": 6,
+            "regressed_pairs": 1,
+            "tied_pairs": 3,
+            "worst_case_delta": -0.3333333333333333
+          },
+          {
+            "absolute_delta": 0.0,
+            "base_pass_rate": 0.0,
+            "base_passes": 0,
+            "base_uncertain": 0,
+            "best_case_delta": 0.0,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-luna/pr24-state-machine-reachability",
+            "head_pass_rate": 0.0,
+            "head_passes": 0,
+            "head_uncertain": 0,
+            "improved_pairs": 0,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 6,
+            "worst_case_delta": 0.0
+          },
+          {
+            "absolute_delta": null,
+            "base_pass_rate": null,
+            "base_passes": 0,
+            "base_uncertain": 6,
+            "best_case_delta": 1.0,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-luna/pr24-structured-valid-png",
+            "head_pass_rate": null,
+            "head_passes": 0,
+            "head_uncertain": 6,
+            "improved_pairs": 0,
+            "pairs_decisive": 0,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 0,
+            "worst_case_delta": -1.0
+          },
+          {
+            "absolute_delta": -0.3333333333333333,
+            "base_pass_rate": 1.0,
+            "base_passes": 6,
+            "base_uncertain": 0,
+            "best_case_delta": -0.3333333333333333,
+            "discordant_pairs": 2,
+            "exact_two_sided_sign_p": 0.5,
+            "group": "gpt-5.6-luna/pr24-trusted-input-no-fuzz",
+            "head_pass_rate": 0.6666666666666666,
+            "head_passes": 4,
+            "head_uncertain": 0,
+            "improved_pairs": 0,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 2,
+            "tied_pairs": 4,
+            "worst_case_delta": -0.3333333333333333
+          },
+          {
+            "absolute_delta": 0.14285714285714285,
+            "base_pass_rate": 0.7142857142857143,
+            "base_passes": 25,
+            "base_uncertain": 5,
+            "best_case_delta": 0.2857142857142857,
+            "discordant_pairs": 5,
+            "exact_two_sided_sign_p": 0.0625,
+            "group": "gpt-5.6-terra",
+            "head_pass_rate": 0.8571428571428571,
+            "head_passes": 30,
+            "head_uncertain": 7,
+            "improved_pairs": 5,
+            "pairs_decisive": 35,
+            "pairs_total": 42,
+            "regressed_pairs": 0,
+            "tied_pairs": 30,
+            "worst_case_delta": 0.0
+          },
+          {
+            "absolute_delta": 0.0,
+            "base_pass_rate": 1.0,
+            "base_passes": 6,
+            "base_uncertain": 0,
+            "best_case_delta": 0.0,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-terra/pr24-contract-bounded-generator",
+            "head_pass_rate": 1.0,
+            "head_passes": 6,
+            "head_uncertain": 0,
+            "improved_pairs": 0,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 6,
+            "worst_case_delta": 0.0
+          },
+          {
+            "absolute_delta": 0.0,
+            "base_pass_rate": 1.0,
+            "base_passes": 6,
+            "base_uncertain": 0,
+            "best_case_delta": 0.0,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-terra/pr24-durable-queue-protocol",
+            "head_pass_rate": 1.0,
+            "head_passes": 6,
+            "head_uncertain": 0,
+            "improved_pairs": 0,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 6,
+            "worst_case_delta": 0.0
+          },
+          {
+            "absolute_delta": 0.8333333333333334,
+            "base_pass_rate": 0.16666666666666666,
+            "base_passes": 1,
+            "base_uncertain": 0,
+            "best_case_delta": 0.8333333333333334,
+            "discordant_pairs": 5,
+            "exact_two_sided_sign_p": 0.0625,
+            "group": "gpt-5.6-terra/pr24-execution-reachability",
+            "head_pass_rate": 1.0,
+            "head_passes": 6,
+            "head_uncertain": 0,
+            "improved_pairs": 5,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 1,
+            "worst_case_delta": 0.8333333333333334
+          },
+          {
+            "absolute_delta": 0.0,
+            "base_pass_rate": 1.0,
+            "base_passes": 6,
+            "base_uncertain": 0,
+            "best_case_delta": 0.0,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-terra/pr24-go-fuzz-cadence-restraint",
+            "head_pass_rate": 1.0,
+            "head_passes": 6,
+            "head_uncertain": 0,
+            "improved_pairs": 0,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 6,
+            "worst_case_delta": 0.0
+          },
+          {
+            "absolute_delta": 0.0,
+            "base_pass_rate": 0.0,
+            "base_passes": 0,
+            "base_uncertain": 0,
+            "best_case_delta": 0.16666666666666666,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-terra/pr24-state-machine-reachability",
+            "head_pass_rate": 0.0,
+            "head_passes": 0,
+            "head_uncertain": 1,
+            "improved_pairs": 0,
+            "pairs_decisive": 5,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 5,
+            "worst_case_delta": 0.0
+          },
+          {
+            "absolute_delta": null,
+            "base_pass_rate": null,
+            "base_passes": 0,
+            "base_uncertain": 5,
+            "best_case_delta": 1.0,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-terra/pr24-structured-valid-png",
+            "head_pass_rate": null,
+            "head_passes": 0,
+            "head_uncertain": 6,
+            "improved_pairs": 0,
+            "pairs_decisive": 0,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 0,
+            "worst_case_delta": -0.8333333333333334
+          },
+          {
+            "absolute_delta": 0.0,
+            "base_pass_rate": 1.0,
+            "base_passes": 6,
+            "base_uncertain": 0,
+            "best_case_delta": 0.0,
+            "discordant_pairs": 0,
+            "exact_two_sided_sign_p": null,
+            "group": "gpt-5.6-terra/pr24-trusted-input-no-fuzz",
+            "head_pass_rate": 1.0,
+            "head_passes": 6,
+            "head_uncertain": 0,
+            "improved_pairs": 0,
+            "pairs_decisive": 6,
+            "pairs_total": 6,
+            "regressed_pairs": 0,
+            "tied_pairs": 6,
+            "worst_case_delta": 0.0
+          },
+          {
+            "absolute_delta": 0.11940298507462686,
+            "base_pass_rate": 0.6716417910447762,
+            "base_passes": 45,
+            "base_uncertain": 15,
+            "best_case_delta": 0.27380952380952384,
+            "discordant_pairs": 14,
+            "exact_two_sided_sign_p": 0.057373046875,
+            "group": "pooled-secondary",
+            "head_pass_rate": 0.7910447761194029,
+            "head_passes": 53,
+            "head_uncertain": 14,
+            "improved_pairs": 11,
+            "pairs_decisive": 67,
+            "pairs_total": 84,
+            "regressed_pairs": 3,
+            "tied_pairs": 53,
+            "worst_case_delta": -0.07142857142857142
+          }
+        ]
+      },
+      "analysis_file_sha256": "sha256:0ec5aacd4607a04e006d05a3654d7da3971362007f2f4231003c0d0f5260dd0e",
+      "judgment_file_sha256": {
+        "judgments-reachability.json": "sha256:1370fa8959b1437ab6a10378f4cc15da769305234690f2eb4e55b0f34c97544c",
+        "judgments-restraint.json": "sha256:6f77733c4f362b8b53863eee1339b2d76f19a91f4cfc7b4aaa1dc2ef7104a9c1",
+        "judgments-structure-protocol.json": "sha256:1822788ee4933be4a7d71a40e7ff523f5e09f52f5100d51807de8d754e4d6963"
+      },
+      "method": "three disjoint Astra reviewers; randomized packets hid model, arm, repetition, skill version, script score, and mapping"
+    }
+  },
+  "limitations": [
+    "The seven cases are a focused tune set, not a hidden general-purpose suite.",
+    "One reviewer scored each disjoint case family; this is blinded adjudication, not inter-rater agreement.",
+    "Twenty-nine candidate labels are uncertain, including 23/24 PNG responses.",
+    "Five answer-only runs returned no substantive assessment after a read-only write failure; the prompt contract was fixed only after this run.",
+    "Raw traces and candidate text remain outside version control; answer hashes bind this receipt to the retained run bundle."
+  ],
+  "schema_version": 1
+}

@@ -17,6 +17,8 @@ Generation backends
   then run with ``--candidate-dir DIR``.
 - ``--agent-cmd "CMD"``    Generate by shelling out. The prompt is passed on
   stdin and ``{dir}`` / ``{prompt_file}`` are substituted; cwd = candidate dir.
+  If the command creates no candidate files, its successful stdout is saved as
+  ``assessment.md``; commands that create files keep those files authoritative.
   Example: ``--agent-cmd 'claude -p --permission-mode acceptEdits'``
 - (neither)                Stage the run dir + prompt and print the manual /
   sub-agent instructions, then stop before scoring.
@@ -81,7 +83,20 @@ def run_oracle(fixture: Path, candidate_dir: Path) -> tuple[bool, str]:
 def generate(agent_cmd: str, prompt: str, prompt_file: Path, candidate_dir: Path) -> int:
     cmd = agent_cmd.replace("{dir}", str(candidate_dir)).replace("{prompt_file}", str(prompt_file))
     print(f"  $ {cmd}  (cwd={candidate_dir}, prompt on stdin)")
-    return subprocess.run(cmd, shell=True, cwd=candidate_dir, input=prompt, text=True).returncode
+    proc = subprocess.run(
+        cmd,
+        shell=True,
+        cwd=candidate_dir,
+        input=prompt,
+        text=True,
+        stdout=subprocess.PIPE,
+    )
+    if proc.stdout:
+        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
+    produced_files = any(path.is_file() for path in candidate_dir.rglob("*"))
+    if proc.returncode == 0 and proc.stdout.strip() and not produced_files:
+        (candidate_dir / "assessment.md").write_text(proc.stdout)
+    return proc.returncode
 
 
 def read_candidate(candidate_dir: Path) -> str:

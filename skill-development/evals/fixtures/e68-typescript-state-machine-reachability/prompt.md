@@ -1,7 +1,8 @@
 # Audit this state-machine test
 
-Write an `assessment.md` for these repository artifacts. Focus on whether the
-test supports its stated confidence claim and on concrete changes.
+Return the contents of `assessment.md` as your final response; do not attempt
+to write files because the eval workspace may be read-only. Focus on whether
+the test supports its stated confidence claim and on concrete changes.
 
 `test/users.model.test.ts` (abridged):
 

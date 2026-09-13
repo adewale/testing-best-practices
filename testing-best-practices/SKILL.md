@@ -224,7 +224,7 @@ Use concrete search signals from `references/antipatterns.md`:
 - `@skip`, `skip`, `skipif` without real condition, `test.only`, `fit`, `xit`, `xdescribe`.
 - `print`, `console.log`, `t.Log`, `Debug.WriteLine` used instead of assertions.
 - Assertion-free tests or only truthy/not-empty/not-null checks.
-- Property tests that prove nothing: a file importing a PBT library it never calls (grep for `fc.assert`, `@given`, `rapid.Check`, `proptest!`, not the import), two property tests with identical bodies and different names, an assertion computed from the test's own slice/expression rather than an independent oracle, preconditions that reject nearly every generated input, or a finite domain sampled randomly instead of enumerated.
+- Property tests that prove nothing: a file importing a PBT library it never calls (grep for `fc.assert`, `@given`, `rapid.Check`, `proptest!`, not the import), two property tests with identical bodies and different names, an assertion computed from the test's own slice/expression rather than an independent oracle, preconditions that reject nearly every generated input, or a small finite domain sampled randomly even though it can be cheaply enumerated.
 - `sleep`, `waitForTimeout`, `Thread.Sleep`, `Task.Delay` for synchronization.
 - Try/catch swallowing exceptions.
 - Mock return values identical to assertions.

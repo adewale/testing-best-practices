@@ -296,6 +296,48 @@ for code-shaped claims (AST checks, runnable mutants) and route
 free-prose judgments to the rubric/judge layer, where E61-style verdicts
 were uncontroversial.
 
+PR24 made the boundary quantitative. On 168 Luna/Terra head-vs-base runs,
+the E64–E70 regex oracles scored the head at 2/42 versus 1/42 on Luna and
+7/42 versus 0/42 on Terra. A treatment-blind Astra review found that E64
+alone had 22/24 semantically acceptable answers: phrasing such as
+"`min_size=1` matches the precondition" preserved the contract but missed
+the oracle's required `keep|preserve` verbs. The binary result even crossed
+the significance threshold on Terra while the semantic result did not. A
+hand-built good/bad self-test does not make a prose regex a strong oracle;
+label it heuristic, read every failure, and use blinded semantic judgment
+for causal claims until the behavior is backed by executable artifacts.
+
+### The task's artifact contract must match the runner
+
+E64–E70 told the model to write `assessment.md`, while the Codex eval runner
+mounted a read-only workspace and grades the final response. Most runs
+recovered by returning the assessment inline, but five returned only the
+write-denied message; those otherwise successful invocations became random
+arm noise. Prompts for answer-only runners must explicitly request the
+artifact contents in the final response and forbid file writes. Validate that
+contract with a smoke run before launching the matrix.
+
+### Multi-model evidence is stratified evidence
+
+The same PR24 comparison moved Luna and Terra differently: the blinded
+semantic deltas were +9.4 points (6 improved, 3 regressed; p=.5078) and
++14.3 points (5 improved, 0 regressed; p=.0625) on decisive pairs. Pooling
+them produces a more attractive number but changes the estimand and can hide
+a model-specific regression. Predeclare model as a stratum, report each model
+first, and call any pooled analysis secondary.
+
+### Resume only terminal successes, and keep shard attestations
+
+Long ChatGPT-authenticated matrices need interruption-safe sharding. The
+PR24 runner was checkpointed after 63/168 calls by excluding only rows with
+both an output and metadata proving return code 0 and no timeout. Every
+resume shard received a separate runs directory and answer-design digest;
+consolidation rejected missing, unsuccessful, unexpected, or conflicting
+run identities and retained the source digest for each run. Do not silently
+replace those shard attestations with a synthetic full-matrix digest after
+generation—the combined score can be a derived view without pretending it
+was the design each call actually executed.
+
 ### Blind judges recover the gradient binary oracles compress — and agreement makes one judge enough
 
 The 44 all-pass matrix cells, re-scored by rubric judges blinded to

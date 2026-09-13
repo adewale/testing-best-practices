@@ -1,6 +1,7 @@
 # Audit this queue worker
 
-Write an `assessment.md` for this implementation and its tests. The service
+Return the contents of `assessment.md` as your final response; do not attempt
+to write files because the eval workspace may be read-only. The service
 requirement is: an accepted order must eventually be processed, and a retry
 must not charge the customer twice.
 
