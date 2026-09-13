@@ -1608,12 +1608,10 @@
       ],
       "measurement": {
         "static_checks": [
-          "Property contains meaningful Config/Error invariant assertions, not only not-None."
+          "AST confirms that an imported Hypothesis @given property calls the parser, distinguishes Config and ParseError, asserts fields from both outcomes, and does not swallow broad exceptions.",
+          "The oracle rejects a keyword-stuffed no-op candidate as a separate adversarial sample."
         ],
-        "runtime_checks": [
-          "Seeded malformed input does not crash and malformed ParseError shape is asserted.",
-          "Use `evals/fixtures/e23-python-hypothesis-parser/oracle.py` to validate candidate output when fixture is materialized."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Score Python idiom, oracle strength, and validation honesty.",
           "Fixture oracle available: `evals/fixtures/e23-python-hypothesis-parser`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
@@ -1624,12 +1622,10 @@
         "warrant": "Passing supports the claim because expected behavior and red flags target the eval-specific testing failure mode.",
         "backing": {
           "static_checks": [
-            "Property contains meaningful Config/Error invariant assertions, not only not-None."
+            "AST confirms that an imported Hypothesis @given property calls the parser, distinguishes Config and ParseError, asserts fields from both outcomes, and does not swallow broad exceptions.",
+            "The oracle rejects a keyword-stuffed no-op candidate as a separate adversarial sample."
           ],
-          "runtime_checks": [
-            "Seeded malformed input does not crash and malformed ParseError shape is asserted.",
-            "Use `evals/fixtures/e23-python-hypothesis-parser/oracle.py` to validate candidate output when fixture is materialized."
-          ],
+          "runtime_checks": [],
           "judge_checks": [
             "Score Python idiom, oracle strength, and validation honesty.",
             "Fixture oracle available: `evals/fixtures/e23-python-hypothesis-parser`; run `python3 scripts/run-fixture-oracles.py` for good/pass and bad/fail self-tests."
@@ -1637,7 +1633,7 @@
         },
         "rebuttals": [
           "A strong base model may pass from general knowledge without using the skill.",
-          "A textual/static oracle may miss compile/runtime failures until a full mini-repo fixture exists.",
+          "The structural oracle does not execute the candidate tests and may miss compile/runtime failures until a full project fixture is materialized.",
           "Public prompts can become saturated and should gain hidden variants."
         ]
       },
@@ -1645,7 +1641,7 @@
         "difficulty": "medium",
         "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-05-21"
+        "last_reviewed": "2026-09-13"
       }
     },
     {

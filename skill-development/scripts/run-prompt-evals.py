@@ -53,7 +53,7 @@ FIXTURES = ROOT / "evals" / "fixtures"
 RUBRIC = ROOT / "evals" / "rubric.md"
 RUNS = ROOT / "eval-runs"  # gitignored
 
-CODE_GLOBS = ("*.py", "*.ts", "*.tsx", "*.js", "*.go", "*.rs")
+CANDIDATE_GLOBS = ("*.py", "*.ts", "*.tsx", "*.js", "*.go", "*.rs", "*.md")
 
 
 def load_evals() -> list[dict]:
@@ -86,14 +86,21 @@ def generate(agent_cmd: str, prompt: str, prompt_file: Path, candidate_dir: Path
 
 def read_candidate(candidate_dir: Path) -> str:
     parts = []
-    for pattern in CODE_GLOBS:
+    for pattern in CANDIDATE_GLOBS:
         for p in sorted(candidate_dir.rglob(pattern)):
             parts.append(f"# ---- {p.relative_to(candidate_dir)} ----\n{p.read_text(errors='ignore')}")
     return "\n\n".join(parts)
 
 
+def markdown_fence(text: str) -> str:
+    """Return a backtick fence that cannot be closed by candidate text."""
+    longest = max((len(match.group(0)) for match in re.finditer(r"`+", text)), default=0)
+    return "`" * max(3, longest + 1)
+
+
 def build_judge_prompt(ev: dict, prompt: str, candidate_text: str) -> str:
     focus = ev.get("rubric_focus", [])
+    candidate_fence = markdown_fence(candidate_text)
     return (
         f"{RUBRIC.read_text()}\n\n"
         "---\nYou are grading one prompt eval. Score ONLY these rubric dimensions: "
@@ -101,7 +108,8 @@ def build_judge_prompt(ev: dict, prompt: str, candidate_text: str) -> str:
         f"## Eval task prompt\n{prompt}\n\n"
         f"## Expected behavior\n{json.dumps(ev.get('expected_behavior', []), indent=2)}\n\n"
         f"## Red flags\n{json.dumps(ev.get('red_flags', []), indent=2)}\n\n"
-        f"## Candidate answer (files produced)\n```\n{candidate_text}\n```\n\n"
+        f"## Candidate answer (files produced)\n{candidate_fence}\n"
+        f"{candidate_text}\n{candidate_fence}\n\n"
         "Respond with ONLY a JSON object, no prose, of the form:\n"
         '{"dimensions": {' + ", ".join(f'"{d}": <0-4>' for d in focus) + '}, '
         '"critical_failure": <true|false>, "rationale": "<= 2 sentences"}'
@@ -139,12 +147,36 @@ def parse_judge(stdout: str) -> dict | None:
 def judge_score(ev: dict, parsed: dict) -> tuple[float | None, bool]:
     focus = ev.get("rubric_focus", [])
     dims = parsed.get("dimensions", {})
-    vals = [dims[d] for d in focus if isinstance(dims.get(d), (int, float))]
-    if len(vals) != len(focus):
-        return None, False  # judge omitted a dimension; treat as unscored
-    if parsed.get("critical_failure"):
+    critical_failure = parsed.get("critical_failure")
+    if not isinstance(dims, dict) or not isinstance(critical_failure, bool):
+        return None, False
+    vals = []
+    for dim in focus:
+        value = dims.get(dim)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not 0 <= value <= 4:
+            return None, False
+        vals.append(value)
+    if critical_failure:
         return 0.0, True
     return float(min(vals)), False
+
+
+def result_exit_code(res: dict, judge_requested: bool) -> int:
+    """Fail closed once a candidate has been produced and scoring has begun."""
+    if res.get("status") == "awaiting-candidate":
+        return 0
+    if res.get("status") == "generation-failed":
+        return 1
+    if res.get("oracle_pass") is False:
+        return 1
+    if judge_requested and res.get("score") is None:
+        return 1
+    if res.get("oracle_pass") is None and res.get("score") is None:
+        return 1
+    score = res.get("score")
+    if isinstance(score, (int, float)) and score < 3:
+        return 1
+    return 0
 
 
 def score_one(ev: dict, fixture: Path | None, run_dir: Path, agent_cmd: str | None,
@@ -162,6 +194,12 @@ def score_one(ev: dict, fixture: Path | None, run_dir: Path, agent_cmd: str | No
             rc = generate(agent_cmd, prompt, prompt_file, candidate_dir)
             if rc != 0:
                 print(f"  ! agent-cmd exited {rc}", file=sys.stderr)
+                return {
+                    "id": ev["id"],
+                    "status": "generation-failed",
+                    "generation_exit_code": rc,
+                    "candidate_dir": str(candidate_dir),
+                }
         else:
             print("\n  [manual / sub-agent backend]")
             print(f"  Have a sub-agent answer the prompt and write file(s) into:\n    {candidate_dir}")
@@ -187,26 +225,36 @@ def score_one(ev: dict, fixture: Path | None, run_dir: Path, agent_cmd: str | No
 
     if judge_cmd:
         candidate_text = read_candidate(candidate_dir)
-        jp = build_judge_prompt(ev, prompt, candidate_text)
-        (run_dir / "judge-prompt.txt").write_text(jp)
-        out = run_judge(judge_cmd, jp)
-        (run_dir / "judge-output.txt").write_text(out)
-        parsed = parse_judge(out)
-        if parsed is None:
-            res["judge_error"] = "could not parse judge JSON (see judge-output.txt)"
+        if not candidate_text.strip():
+            res["judge_error"] = "no supported candidate files found"
         else:
-            score, critical = judge_score(ev, parsed)
-            res["rubric_scores"] = parsed.get("dimensions", res["rubric_scores"])
-            res["judge_rationale"] = parsed.get("rationale")
-            res["judge_critical_failure"] = critical
-            res["score"] = score
-            # Backed by a saved transcript (+ oracle when present) -> not provisional.
-            res["provisional"] = score is None
+            jp = build_judge_prompt(ev, prompt, candidate_text)
+            (run_dir / "judge-prompt.txt").write_text(jp)
+            out = run_judge(judge_cmd, jp)
+            (run_dir / "judge-output.txt").write_text(out)
+            parsed = parse_judge(out)
+            if parsed is None:
+                res["judge_error"] = "could not parse judge JSON (see judge-output.txt)"
+            else:
+                score, critical = judge_score(ev, parsed)
+                res["rubric_scores"] = parsed.get("dimensions", res["rubric_scores"])
+                res["judge_rationale"] = parsed.get("rationale")
+                res["judge_critical_failure"] = critical
+                res["score"] = score
+                if score is None:
+                    res["judge_error"] = "judge response has missing, invalid, or out-of-range scores"
+                # Backed by a saved transcript (+ oracle when present) -> not provisional.
+                res["provisional"] = score is None
     return res
 
 
 def print_result(res: dict) -> None:
     if res.get("status") == "awaiting-candidate":
+        return
+    if res.get("status") == "generation-failed":
+        print(f"\n=== {res['id']} ===")
+        print(f"  candidate generation: FAILED (exit {res['generation_exit_code']})")
+        print(f"  candidate: {res['candidate_dir']}")
         return
     print(f"\n=== {res['id']} ===")
     if res["oracle_pass"] is not None:
@@ -270,13 +318,7 @@ def main() -> int:
     print_result(res)
     (run_dir / "result.json").write_text(json.dumps(res, indent=2))
     print(f"\nresult: {run_dir / 'result.json'}")
-    if res.get("status") == "awaiting-candidate":
-        return 0
-    if res["oracle_pass"] is False:
-        return 1
-    if res["score"] is not None and res["score"] < 3:
-        return 1
-    return 0
+    return result_exit_code(res, judge_requested=bool(args.judge_cmd))
 
 
 if __name__ == "__main__":
