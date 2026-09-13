@@ -67,6 +67,16 @@ Most of Dan Luu's testing thesis was already in the skill (property-based testin
 
 After iteration 10 folded design-for-testability on ablation evidence, a literature review found the canon had already reached the same hierarchy (substitutable dependencies over test hooks; Meszaros's "Test Logic in Production"; Feathers's enabling points outside production text), and the flaky-test literature's recommended fix (condition-based synchronization, Luo et al. FSE 2014) is exactly the seam shape our baseline arms built from priors — explaining *why* the teaching didn't discriminate: it's already in the models. The same pass surfaced precisely one concept the corpus lacked (Voas's fault-hiding/PIE theory of testability) and quantified honesty backing (Sharma et al. 2023: developer-plausible testability smells don't survive measurement). The pattern: make the decision on your own evidence, then check it against the literature — agreement converts a local result into a corroborated one, and the residue is a focused list of what you actually don't know.
 
+### Enumerate a corpus from the platform's structured feed, not by link-following
+
+The Google Testing Blog crawl got all 404 posts because Blogger exposes a
+paginated JSON feed (`/feeds/posts/default?alt=json&max-results=100`) that
+enumerates the archive deterministically — no sitemap guessing, no missed
+posts behind "older posts" links, and a verifiable total to reconcile
+against. Ten word-balanced analyst batches then covered 216K words with no
+overlap or gaps. For any platform-hosted corpus, find the machine-readable
+enumeration first; crawling rendered pages is the fallback, not the plan.
+
 ### Infrastructure-specific patterns can still generalize if you extract the underlying invariant
 
 Jane Street's library-level simulation testing — `Time_source` parameterization, the compiler-enforced `Require_explicit_time_source` — is uniquely OCaml. But the underlying idea ("make every source of non-determinism an explicit parameter") generalizes. The skill captures the pattern in `deterministic-time.md` (clock injection vs virtualization) without requiring OCaml. The cross-language lesson is "what would this look like in Java, Go, Python, TS" applied to every practitioner's contribution.
@@ -239,6 +249,72 @@ After adding `validity`, `eval_health`, hidden probes, and mini-repos, the JSON 
 ### Optimize the always-loaded router first
 
 The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~2,745 estimated tokens. That matters more operationally because the router is always loaded while references are conditional. Progressive disclosure pays off most when the entrypoint is short and the triggers are sharp.
+
+### At the frontier ceiling, oracle artifacts dwarf model variance
+
+The Google-blog round produced 84 scored transcripts (44-cell ablation
+matrix + 40 variance repeats at n=5/cell), and after verification the
+score was 84/84 — every raw FAIL across both rounds was an oracle
+phrasing artifact, zero were model failures, and repeated runs showed
+zero variance (Wilson 95% CI [0.93, 1.00] on the repeats). The practical
+inversion: at this ceiling, "measure the model" quietly becomes "debug
+the oracle," and the round's real yield was ~13 oracle fixes across 8
+fixtures. Budget accordingly — reading every FAIL against its artifact
+is not a spot-check step, it is most of the work.
+
+### Prose oracles need negation-awareness, or the judgment belongs to the judge layer
+
+E61's assess-mode oracle regex-matched recommendations in free prose and
+kept false-negating good work in new ways: candidates *named* the wrong
+move in order to reject it ("adding more E2E … is the wrong one"), put
+the down-tier recommendation in a migration table (`| unit |`) with no
+verb the regex knew, or phrased it as "push the rules down." Three
+hardening passes (negation windows around forbid-matches, phrasing
+branches, table-cell patterns) got it stable — but the trajectory says
+regex over prose asymptotes to a judge. Reserve deterministic oracles
+for code-shaped claims (AST checks, runnable mutants) and route
+free-prose judgments to the rubric/judge layer, where E61-style verdicts
+were uncontroversial.
+
+### Blind judges recover the gradient binary oracles compress — and agreement makes one judge enough
+
+The 44 all-pass matrix cells, re-scored by rubric judges blinded to
+arm/model, showed a consistent quality gradient (base 3.67 → current
+3.83 → new 3.92 like-for-like, with score-3 cells falling 4 → 2 → 1)
+that pass/fail oracles cannot see — suggestive, within overlapping
+stddevs, but the only instrument in the stack that registered the skill
+at all at the frontier ceiling. Double-judging 16 cells with a second
+model measured the eval-health "judge disagreement rate" meta-signal:
+97% exact per-dimension agreement, no eval-score disagreement >1, 16/16
+on critical-failure calls — which licenses single-judge passes on these
+fixtures. The layers divide labor: oracles gate hard behaviors,
+judges grade the margin above the floor.
+
+### Drain the sub-agent queue by completions, not by batch
+
+The runtime caps concurrent sub-agents (20 here), and launching the full
+matrix at once bounced two runs off the limit. The pattern that worked:
+fill to the cap, then launch exactly one replacement per completion
+notification — never retry a rejected launch immediately, never sleep-
+poll. Throughput stays at the cap and nothing is lost. Corollary for
+repeat runs: give each run an isolated workspace — one variance repeat
+found a sibling run's finished solution in the shared scratchpad, which
+can only inflate pass rates (the affected cells were already 5/5 from
+clean runs, but the protocol hole is real).
+
+### Validate against the real harness, not your mental model of it
+
+Wiring the shared benchmark to the actual `skill-benchmark` CLI caught
+three things a hand-check missed: trigger cases require explicit
+`should_trigger`, judge-only assertions default to soft (need
+`gate: true` to fail a run), and reference-file section ablations are
+structurally impossible (all ablation mechanisms edit the root's main
+file; overlapping skill roots are rejected by the materializer) — which
+forced the honest redesign of two ablations as SKILL.md `list_item`
+removals with repo-side hidden probes guarding the reference files. A
+thin adapter (extract fenced code from `output.md`, delegate to the repo
+fixture's oracle) let shared-benchmark mirror cases reuse the
+deterministic oracles instead of duplicating them as prose assertions.
 
 ## Evolution
 

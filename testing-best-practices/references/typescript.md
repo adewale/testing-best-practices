@@ -219,3 +219,14 @@ export async function setup() {
   return async () => { server.kill('SIGTERM'); };
 }
 ```
+
+## Choosing values and matchers
+
+- Use distinct, non-default test values per parameter (never only `0`/`''`,
+  never the same value for two arguments) so dropped, defaulted, or swapped
+  arguments fail an assertion.
+- When order is not part of the contract, use
+  `expect(arr).toEqual(expect.arrayContaining([...]))` plus a length check,
+  or sort both sides, instead of pinning incidental order.
+- State expected values as literals; an expectation computed with the SUT's
+  own logic or constants can share its bug and stay green.

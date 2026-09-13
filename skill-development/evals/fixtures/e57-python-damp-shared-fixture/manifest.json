@@ -1,0 +1,12 @@
+{
+  "eval_id": "E57-python-damp-shared-fixture",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "flags the loop/branch and the computed expectation (balance * 0.1) inside the test body",
+    "flags the shared mutable module fixture mutated in setUpClass, far from the assertions",
+    "recommends splitting into per-behavior tests with local literal data, not consolidating into more shared fixtures"
+  ]
+}

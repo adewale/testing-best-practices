@@ -15,6 +15,7 @@
 | Stale snapshots | Snapshot updates with no code changes | P3 |
 | Logical defense-in-depth | Same invariant checked & tested at 3+ internal layers; "this should never happen" tests | P2 |
 | Asserting through fault-masking code | Output-only assertion behind a `clamp`/`max(min())`/blanket `except`→default/`recover()`→zero; test passes even if the computation is wholly broken | P1 |
+| Logic in tests / over-DRY test code | Expected values built by concatenation/arithmetic or from the SUT's own constants; `for`/`if` in test bodies; fixtures mutated in `setUp*` far from the assertion | P1 |
 
 ## Anti-Pattern Details
 
@@ -89,6 +90,8 @@ not internal mechanics.
 | Network | VCR cassettes or committed fixtures |
 | Race conditions | Proper synchronization |
 | Test ordering | `autouse` fixtures for cleanup |
+| Oversized SUT | Shrink the tier/SUT first — size (deps, processes, RAM) predicts flakiness better than tool choice |
+| Retry/quarantine reliance | Root-cause instead; retries mask real races and erode trust in red |
 
 ### 9. Test pollution
 
@@ -196,3 +199,30 @@ saturating arithmetic *is the contract*, that is correct code — test the
 specified behavior directly (`set_volume(150) == 100`) and do **not** call it
 fault-masking or recommend removing it. The smell is a mask hiding the
 *unrelated* computation behind it, not a mask that is itself the feature.
+
+### 15. Logic in tests / over-DRY test code
+
+**What**: Test code optimized like production code. Signals: expected values
+built by concatenation/arithmetic or from the SUT's own constants (`assert
+url == BASE + "/users/" + name` — the expectation can share the SUT's bug
+and stay green); `for`/`if` in a test body deciding which assertion runs; a
+shared fixture mutated in `setUp*`/module scope far from the assertion that
+depends on it; helpers that hide which inputs a test's outcome depends on.
+
+**Why it matters**: Tests have no tests of their own. An abstraction that
+breaks (or shares the SUT's bug) inside test code has nothing to catch it,
+and a reader cannot verify an expectation without chasing helper
+definitions. Cause and effect should sit together, even at the cost of
+duplicated setup — test code leans DAMP (descriptive and meaningful
+phrases), not DRY.
+
+**Fix**: One behavior per test; setup local and explicit next to its
+assertion, duplicated when necessary; expected values as literals; loops
+replaced by named parameterized rows with no branching in the row body.
+
+**Restraint — the sanctioned DRY**: value-construction builders/factories
+with reasonable defaults are correct *when every field an assertion depends
+on is set explicitly in the test* (see `references/test-data-builders.md`).
+DAMP targets hidden behavior, not value helpers; do not inline a builder's
+boilerplate into every test. Named-row table tests (e.g. Go's
+`t.Run(tt.name, ...)`) are fine.

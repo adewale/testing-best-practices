@@ -525,7 +525,7 @@
         {
           "name": "red-evidence-honesty",
           "type": "regex",
-          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['’]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
+          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['\u2019]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
           "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence."
         },
         {
@@ -675,7 +675,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-flaky",
@@ -701,7 +702,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-mocks",
@@ -727,7 +729,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-invariants",
@@ -753,7 +756,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "implicit"
+      "trigger_type": "implicit",
+      "should_trigger": true
     },
     {
       "id": "trig-ab-copy",
@@ -779,7 +783,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "trig-cricket",
@@ -805,7 +810,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "trig-product-idea",
@@ -831,7 +837,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "trig-qa-plan",
@@ -857,7 +864,8 @@
       "success_goals": [
         "trigger"
       ],
-      "trigger_type": "negative-near-miss"
+      "trigger_type": "negative-near-miss",
+      "should_trigger": false
     },
     {
       "id": "holdout-unseen-python-parser-01",
@@ -875,7 +883,8 @@
           "rubric": [
             "Property quality",
             "Validation honesty"
-          ]
+          ],
+          "gate": true
         }
       ],
       "tags": [],
@@ -901,7 +910,8 @@
           "type": "judge",
           "rubric": [
             "Use the private answer key; do not rely on public manifest wording."
-          ]
+          ],
+          "gate": true
         }
       ],
       "tags": [
@@ -1525,6 +1535,246 @@
         "outcome",
         "style"
       ]
+    },
+    {
+      "id": "pos-literal-expectations",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Upgrade a green test suite whose expected URLs are rebuilt with the code's own string concatenation; users report double-slash links the tests never catch.",
+      "expected_behavior": [
+        "State expected values independently of the implementation's construction logic and surface the masked bug."
+      ],
+      "assertions": [
+        {
+          "name": "no-logic-in-tests-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e55-python-no-logic-in-tests"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 30,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Oracle strength",
+            "Honest red/green evidence"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-damp-assess-shared-fixture",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Assess a billing test file: one looped test over a module-level accounts list mutated in setUpClass, with the gold-tier expectation computed as balance * 0.1.",
+      "expected_behavior": [
+        "Identify what makes this test hard to trust and hard to read, and recommend a restructuring that keeps the behavior visible."
+      ],
+      "assertions": [
+        {
+          "name": "damp-assess-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e57-python-damp-shared-fixture"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 30,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Finding quality",
+            "No over-abstraction of tests"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "neg-keep-roundtrip-whole",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt": "A reviewer wants a save/load roundtrip assertion, which compares a canonical dump of the full store, narrowed to only the fields this PR touches. Assess the suggestion.",
+      "expected_behavior": [
+        "Distinguish roundtrip-identity tests from behavior tests and protect the one whose breadth is the contract."
+      ],
+      "assertions": [
+        {
+          "name": "roundtrip-restraint-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e58-hidden-narrow-not-roundtrip"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 30,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Proportionality",
+            "Over-application restraint"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-narrow-assertions-upgrade",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Repair a deposit test that compares the whole account object to a big literal and broke when an unrelated field was added; the deposit behavior is unchanged.",
+      "expected_behavior": [
+        "Verify the behavior's own fields without re-enumerating unrelated ones."
+      ],
+      "assertions": [
+        {
+          "name": "narrow-assertions-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e59-python-narrow-assertions-upgrade"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 60,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Assertion scope",
+            "No treadmill fix"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "core",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-fake-weld-contract",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "A fake store drifted from the real store and shipped a bug; both implementations are provided and the real one is cheap and offline. Add tests that keep the fake honest.",
+      "expected_behavior": [
+        "The same behavioral expectations execute against both implementations."
+      ],
+      "assertions": [
+        {
+          "name": "fake-weld-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e60-python-fake-contract-weld"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 300,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Contract framing",
+            "Determinism"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-suite-shape-hourglass",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Assess a test inventory: 38 Selenium specs asserting business rules through the browser (12% flake, 3 retries, 2h40m per PR), 4 unit files, no integration directory. What would you change first?",
+      "expected_behavior": [
+        "Diagnose the structure of the suite, not just individual tests, and rebalance it."
+      ],
+      "assertions": [
+        {
+          "name": "suite-shape-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/gtb_output_adapter.py",
+            "{output_dir}",
+            "e61-suite-shape-assess"
+          ],
+          "pass_exit_code": 0,
+          "timeout_s": 60,
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+        },
+        {
+          "name": "qualitative-review",
+          "type": "judge",
+          "rubric": [
+            "Shape-first diagnosis",
+            "No doubling down"
+          ]
+        }
+      ],
+      "tags": [
+        "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     }
   ],
   "ablations": [
@@ -1734,6 +1984,75 @@
         "heading": "### Test concurrent code under a race detector, and pin the concurrency contract"
       },
       "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+    },
+    {
+      "id": "no-gtb-damp-and-value-choice",
+      "removed_component": "DAMP test-readability assess check + deliberate-test-values write step",
+      "expected_regressions": [
+        {
+          "summary": "Computed expectations / over-DRY fixtures go unflagged in assess mode, and write mode reverts to default/duplicated test values.",
+          "cases": [
+            "pos-literal-expectations",
+            "pos-damp-assess-shared-fixture"
+          ],
+          "assertions": [
+            "no-logic-in-tests-oracle",
+            "damp-assess-oracle"
+          ]
+        }
+      ],
+      "applies_to_cases": [],
+      "components": [
+        {
+          "mechanism": "list_item",
+          "class": "instructions",
+          "target": {
+            "skill_root": "testing-best-practices/SKILL.md",
+            "section": "### Assess mode",
+            "contains": [
+              "Test-code readability (DAMP)"
+            ]
+          }
+        },
+        {
+          "mechanism": "list_item",
+          "class": "instructions",
+          "target": {
+            "skill_root": "testing-best-practices/SKILL.md",
+            "section": "### Write mode",
+            "contains": [
+              "Choose test values deliberately"
+            ]
+          }
+        }
+      ],
+      "notes": "The fuller antipatterns.md section (#15) is not harness-ablatable (content mechanisms edit the root's main file only); it is guarded repo-side by hidden probe E63 via audit-best-practices.py section_probes."
+    },
+    {
+      "id": "no-gtb-suite-shape-checklist",
+      "removed_component": "suite-shape (ice-cream cone / hourglass) assess check",
+      "expected_regressions": [
+        {
+          "summary": "Assessments audit individual tests but miss the suite's tier distribution.",
+          "cases": [
+            "pos-suite-shape-hourglass"
+          ],
+          "assertions": [
+            "suite-shape-oracle"
+          ]
+        }
+      ],
+      "applies_to_cases": [],
+      "mechanism": "list_item",
+      "class": "instructions",
+      "target": {
+        "skill_root": "testing-best-practices/SKILL.md",
+        "section": "### Assess mode",
+        "contains": [
+          "Suite shape"
+        ]
+      },
+      "notes": "2026-08-28 matrix: base arms passed (frontier ceiling); guards weaker models and drift. The E61 fixture oracle is negation-aware after real-output validation."
     }
   ]
 }

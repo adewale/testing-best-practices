@@ -18,6 +18,11 @@ The universal rule, before any strategy: **never call real `sleep()` /
 `Thread.sleep()` / `setTimeout` with real time in tests**. If you can't
 remove it, your code has a time seam in the wrong place.
 
+Triage order for a flaky test: first ask whether a smaller SUT can host it —
+test size (dependencies, processes, RAM footprint) predicts flakiness better
+than tool choice — then fix the specific cause (time, shared state, network,
+races, ordering). Auto-retry and quarantine are masking debt, not fixes.
+
 ## Strategy 1: Process-level virtualization
 
 Intercept the system clock without changing production code. Best when

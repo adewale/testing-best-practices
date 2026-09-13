@@ -30,7 +30,7 @@ go tool cover -func=cover.out         # Per-function summary
 
 ## Table-Driven Tests
 
-The standard Go pattern for covering multiple input/output cases. Use this when a behavior has several examples or boundaries:
+The standard Go pattern for covering multiple input/output cases. Use this when a behavior has several examples or boundaries. Name every row and keep the loop body to call + assert — branching inside the loop or computing expected values re-creates the logic-in-tests antipattern. Choose row values deliberately: distinct, non-zero values per field so a dropped, defaulted, or swapped argument fails a row.
 
 ```go
 func TestValidateURL(t *testing.T) {
@@ -143,7 +143,9 @@ Run with: `go test -tags=network ./pkg/crawler`
 ## Assertion Patterns
 
 Go has no assertion library in stdlib. Use `t.Errorf` (continue) or
-`t.Fatalf` (stop):
+`t.Fatalf` (stop). When order is not part of the contract, compare
+order-insensitively (`cmpopts.SortSlices` with `cmp.Diff`) instead of pinning
+incidental iteration order:
 
 ```go
 // WRONG: t.Log never fails the test
