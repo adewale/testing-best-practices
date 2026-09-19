@@ -101,6 +101,12 @@ bad sample self-tests still pass after each fix.
 Run artifacts: session scratchpad `matrix/` (gitignored; not release
 evidence beyond this record).
 
+**Provenance limitation recorded 2026-09-19:** the historical notes retain
+only the `sonnet` / `opus` aliases. Exact model versions and raw generation
+artifacts were not committed, so this round cannot establish coverage of
+today's usual model panel. Treat it as historical methodology evidence, not a
+reproducible current-model result.
+
 ## 2026-08-29 Variance measurement (repeated runs)
 
 n=5 per cell (r1 = the original matrix run, r2–r5 fresh repeats) on the ten
@@ -176,6 +182,30 @@ overlapping standard deviations at n=12, so it is *suggestive* of marginal
 skill value at the frontier ceiling, not proof. The two layers divide
 labor: deterministic oracles guard hard behaviors (regression gate), the
 judge layer grades the quality margin above the oracle floor.
+
+## 2026-09-19 PR 25 current-model verification
+
+The six Google-derived shared cases were run as paired `with_skill` /
+`without_skill` cells on exact `gpt-5.6-luna` and `gpt-5.6-terra` model IDs,
+with `model_reasoning_effort=low` explicitly present in the saved runner
+command. The fixture-backed script oracle graded every cell; no LLM judge was
+used. Full provenance and token totals are in
+`receipts/pr25-luna-terra-2026-09-19.md`.
+
+| Model | Without skill | With skill | Observed delta |
+|---|---:|---:|---:|
+| `gpt-5.6-luna` | 5/6 | 6/6 | +1 |
+| `gpt-5.6-terra` | 6/6 | 6/6 | 0 |
+| **Total** | **11/12** | **12/12** | **+1** |
+
+The sole difference was E60: Luna's baseline emitted invalid Python (`def
+test_delete_missing_key_is harmless`), while its with-skill output passed the
+pristine implementation and killed both fake-drift and real-drift variants.
+That is not enough to claim general quality lift. The defensible conclusion is
+no observed skill regression on this focused panel, one noisy positive cell,
+and continued frontier saturation. Skill-file reads were observed in 11/12
+with-skill cells; Terra E59 passed without reading the mounted skill, so it is
+not evidence of treatment uptake.
 
 ## Release gates
 - [ ] Static P0 count is 0.
