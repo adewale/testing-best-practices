@@ -2,7 +2,11 @@
   "eval_id": "E61-suite-shape-assess",
   "language": "python",
   "oracle": "oracle.py",
-  "good_sample": "samples/good",
+  "good_samples": [
+    "samples/good",
+    "samples/good-model-inversion",
+    "samples/good-model-relocate"
+  ],
   "bad_samples": ["samples/bad", "samples/adversarial-negated"],
   "checks": [
     "diagnoses the inverted-pyramid/ice-cream-cone shape (38 E2E vs 4 unit) and the missing integration tier",

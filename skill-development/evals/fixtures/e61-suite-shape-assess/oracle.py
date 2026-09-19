@@ -61,6 +61,8 @@ def main() -> int:
         r"(without|below|outside) the (browser|ui)"
         r"|(out of|off) the (e2e|browser|ui)[^\n]{0,80}(unit|integration|domain)"
         r"|(as|into|to) [^.\n]{0,40}(table-driven )?(unit|integration|domain|service)[- ](test|tier|layer|level)"
+        r"|move\w*[^.\n]{0,60}business[- ]rule[^.\n]{0,60}out of (selenium|the browser|e2e)"
+        r"|relocat\w*[^.\n]{0,60}business[- ]rule[^.\n]{0,60}below the browser"
         r"|wrong (layer|tier|level)|substitute for unit tests"
         r"|belongs? in (unit|integration|domain)"
         r"|push\w*[^.\n]{0,50}down|down[- ]?tier"
@@ -98,6 +100,7 @@ def main() -> int:
         r"wrong|avoid|don'?t|do not|trap|mistake|anti[- ]?pattern|worse"
         r"|not the (answer|fix|move)|resist|instead of|rather than|stop"
         r"|weaken|got (the suite|us) here|no retries|come[s]? out|remove[sd]? the retr"
+        r"|not add\w*|without add\w*|before add\w*"
     )
     for m in doubling.finditer(low):
         window = low[max(0, m.start() - 120): m.end() + 160]
