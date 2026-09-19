@@ -30,6 +30,19 @@ FENCE = re.compile(r"```(python|py|go)\s*\n(.*?)```", re.DOTALL | re.IGNORECASE)
 EXT = {"python": ".py", "py": ".py", "go": ".go"}
 
 
+def extract_fenced_files(root: Path) -> list[Path]:
+    """Extract candidate code using filenames compatible with fixture oracles."""
+    extracted: list[Path] = []
+    for md in root.rglob("*.md"):
+        for i, match in enumerate(FENCE.finditer(md.read_text(errors="ignore"))):
+            lang, body = match.group(1).lower(), match.group(2)
+            prefix = "test_extracted" if EXT[lang] == ".py" else "extracted"
+            out = root / f"{prefix}_{md.stem}_{i}{EXT[lang]}"
+            out.write_text(body)
+            extracted.append(out)
+    return extracted
+
+
 def main() -> int:
     if len(sys.argv) != 3:
         print("usage: gtb_output_adapter.py OUTPUT_DIR FIXTURE_DIR_NAME", file=sys.stderr)
@@ -51,11 +64,7 @@ def main() -> int:
                 dst = judged / src.relative_to(output_dir)
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy(src, dst)
-        for md in judged.rglob("*.md"):
-            for i, match in enumerate(FENCE.finditer(md.read_text(errors="ignore"))):
-                lang, body = match.group(1).lower(), match.group(2)
-                out = judged / f"extracted_{md.stem}_{i}{EXT[lang]}"
-                out.write_text(body)
+        extract_fenced_files(judged)
         proc = subprocess.run(
             [sys.executable, str(oracle), str(judged)],
             cwd=fixture, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,

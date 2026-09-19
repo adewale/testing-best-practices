@@ -42,6 +42,9 @@ def main() -> int:
         r"(keep|keeps|keeping|retain\w*|preserve|leave)[^.\n]{0,60}"
         r"(whole|full|entire|canonical|roundtrip|round-trip|identity|as[- ]is)"
         r"|(compare|assert)\w*[^.\n]{0,60}(whole|full|entire|canonical)"
+        r"|(whole|full|entire|canonical)[- ]?(state )?(comparison|assertion|check)"
+        r"[^.\n]{0,60}(appropriate|right|valid|valuable|contract)"
+        r"|keep (this|the) (test|assertion|comparison|check)"
         r"|reviewer('s suggestion)? is (wrong|mistaken|incorrect|not (right|correct))"
         r"|disagree with the reviewer|do(es)? not apply here|does not apply to this test",
         low,

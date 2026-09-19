@@ -61,6 +61,7 @@ class FakeStore:
         self._data.pop(key, None)
 ```
 
-Task: add tests that keep `FakeStore` honest with respect to `RealStore`, so
+Task: write tests that keep `FakeStore` honest with respect to `RealStore`, so
 a drift like the `None`-vs-`KeyError` incident cannot ship silently again.
-Deliverable: `tests/test_store_contract.py` (pytest).
+Return the complete contents of `tests/test_store_contract.py` in a fenced
+Python block; do not attempt to edit the evaluation workspace.
