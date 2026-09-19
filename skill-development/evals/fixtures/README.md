@@ -9,7 +9,8 @@ Each fixture contains:
 - `oracle.py` — validator for a candidate answer/patch directory. Most use only
   the standard library; runtime oracles use dependencies pinned in
   `../requirements.txt`.
-- `samples/good/` — minimal candidate that should pass the oracle.
+- `samples/good/` — minimal candidate that should pass the oracle. A manifest
+  may instead use `good_samples` to register multiple accepted phrasings.
 - `samples/bad/` — minimal candidate that should fail the oracle. A manifest may instead use `bad_samples` to register multiple independent adversarial examples.
 
 Run all oracle self-tests:

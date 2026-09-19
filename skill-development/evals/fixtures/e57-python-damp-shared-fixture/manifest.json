@@ -2,7 +2,7 @@
   "eval_id": "E57-python-damp-shared-fixture",
   "language": "python",
   "oracle": "oracle.py",
-  "good_sample": "samples/good",
+  "good_samples": ["samples/good", "samples/good-model-phrasing"],
   "bad_samples": ["samples/bad", "samples/adversarial-negated"],
   "checks": [
     "flags the loop/branch and the computed expectation (balance * 0.1) inside the test body",

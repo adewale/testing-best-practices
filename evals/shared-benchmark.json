@@ -1540,7 +1540,7 @@
       "id": "pos-literal-expectations",
       "split": "tune",
       "kind": "testing",
-      "prompt": "Upgrade a green test suite whose expected URLs are rebuilt with the code's own string concatenation; users report double-slash links the tests never catch.",
+      "prompt_ref": "../skill-development/evals/fixtures/e55-python-no-logic-in-tests/prompt.md",
       "expected_behavior": [
         "State expected values independently of the implementation's construction logic and surface the masked bug."
       ],
@@ -1580,7 +1580,7 @@
       "id": "pos-damp-assess-shared-fixture",
       "split": "tune",
       "kind": "testing",
-      "prompt": "Assess a billing test file: one looped test over a module-level accounts list mutated in setUpClass, with the gold-tier expectation computed as balance * 0.1.",
+      "prompt_ref": "../skill-development/evals/fixtures/e57-python-damp-shared-fixture/prompt.md",
       "expected_behavior": [
         "Identify what makes this test hard to trust and hard to read, and recommend a restructuring that keeps the behavior visible."
       ],
@@ -1620,7 +1620,7 @@
       "id": "neg-keep-roundtrip-whole",
       "split": "tune",
       "kind": "adversarial",
-      "prompt": "A reviewer wants a save/load roundtrip assertion, which compares a canonical dump of the full store, narrowed to only the fields this PR touches. Assess the suggestion.",
+      "prompt_ref": "../skill-development/evals/fixtures/e58-hidden-narrow-not-roundtrip/prompt.md",
       "expected_behavior": [
         "Distinguish roundtrip-identity tests from behavior tests and protect the one whose breadth is the contract."
       ],
@@ -1660,7 +1660,7 @@
       "id": "pos-narrow-assertions-upgrade",
       "split": "tune",
       "kind": "testing",
-      "prompt": "Repair a deposit test that compares the whole account object to a big literal and broke when an unrelated field was added; the deposit behavior is unchanged.",
+      "prompt_ref": "../skill-development/evals/fixtures/e59-python-narrow-assertions-upgrade/prompt.md",
       "expected_behavior": [
         "Verify the behavior's own fields without re-enumerating unrelated ones."
       ],
@@ -1700,7 +1700,7 @@
       "id": "pos-fake-weld-contract",
       "split": "tune",
       "kind": "testing",
-      "prompt": "A fake store drifted from the real store and shipped a bug; both implementations are provided and the real one is cheap and offline. Add tests that keep the fake honest.",
+      "prompt_ref": "../skill-development/evals/fixtures/e60-python-fake-contract-weld/prompt.md",
       "expected_behavior": [
         "The same behavioral expectations execute against both implementations."
       ],
@@ -1740,7 +1740,7 @@
       "id": "pos-suite-shape-hourglass",
       "split": "tune",
       "kind": "testing",
-      "prompt": "Assess a test inventory: 38 Selenium specs asserting business rules through the browser (12% flake, 3 retries, 2h40m per PR), 4 unit files, no integration directory. What would you change first?",
+      "prompt_ref": "../skill-development/evals/fixtures/e61-suite-shape-assess/prompt.md",
       "expected_behavior": [
         "Diagnose the structure of the suite, not just individual tests, and rebalance it."
       ],

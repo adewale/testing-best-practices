@@ -32,14 +32,19 @@ def main() -> int:
         fixture_dir = manifest_path.parent
         manifest = json.loads(manifest_path.read_text())
         oracle = fixture_dir / manifest["oracle"]
-        good = fixture_dir / manifest["good_sample"]
+        good_samples = manifest.get("good_samples")
+        if good_samples is None:
+            good_samples = [manifest["good_sample"]]
         bad_samples = manifest.get("bad_samples")
         if bad_samples is None:
             bad_samples = [manifest["bad_sample"]]
         lang = manifest.get("language", "")
         if lang in CORE_LANGS:
             seen_langs.add(lang)
-        cases = [(good, "good", True)]
+        cases = [
+            (fixture_dir / sample, f"good[{index}]", True)
+            for index, sample in enumerate(good_samples, start=1)
+        ]
         cases.extend(
             (fixture_dir / sample, f"bad[{index}]", False)
             for index, sample in enumerate(bad_samples, start=1)
@@ -55,7 +60,10 @@ def main() -> int:
                     f"{fixture_dir.name}: {label} sample expected {'pass' if should_pass else 'fail'} "
                     f"but got rc={proc.returncode}; stdout={proc.stdout!r}; stderr={proc.stderr!r}"
                 )
-        print(f"{fixture_dir.name}: good/pass + {len(bad_samples)} bad/fail oracle self-test(s) checked")
+        print(
+            f"{fixture_dir.name}: {len(good_samples)} good/pass + "
+            f"{len(bad_samples)} bad/fail oracle self-test(s) checked"
+        )
 
     missing = CORE_LANGS - seen_langs
     if missing:
