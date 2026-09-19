@@ -33,6 +33,15 @@ def main() -> int:
         print("no markdown assessment found", file=sys.stderr)
         return 1
 
+    contradictions = [
+        r"\bdo not (flag|report|identify|call out|mention)[^.\n]{0,60}"
+        r"(logic|loop|branch|computed expectation)",
+        r"\b(there is|there's|this has) no shared mutable (state|fixture|data)",
+        r"\bdo not (split|separate)[^.\n]{0,60}(test|case)",
+    ]
+    if any(re.search(pattern, low) for pattern in contradictions):
+        errors.append("explicitly denies a required test-logic, shared-state, or split finding")
+
     flags_logic = re.search(
         r"logic in (the )?tests?|loop|conditional|if/else|branch(es|ing)? in (the )?test"
         r"|computed expect|derives? the expect|re-?deriv|mirrors? the (implementation|rule)"

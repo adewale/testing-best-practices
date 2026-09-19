@@ -8,8 +8,8 @@ The passing shape: at least one assertion against a literal single-slash URL,
 and no assertion (or expected-value assignment) that rebuilds the expectation
 from BASE_URL/base.
 
-Judged over actual assert statements and expected-value assignments via the
-AST — docstrings and comments quoting the old bad test do not count
+Judged over test functions and actual assert statements via the AST —
+assignment-only candidates, docstrings, and comments do not count
 (validated against a real model candidate that quoted the old assertion in
 its module docstring). parametrize(...) call segments count toward the
 literal-presence and computed-expectation checks, but NOT toward the
@@ -33,33 +33,37 @@ COMPUTED = re.compile(
 
 
 def judged_segments(src: str) -> tuple[list[str], list[str]] | None:
-    """(strict, parametrize) source segments.
-
-    strict: assert statements, expected*/want* assignments, and
-    param/assertEqual calls. parametrize: whole parametrize(...) calls,
-    whose plain tuples carry expected literals."""
+    """Return (assertions, supporting expectations) from test functions."""
     try:
         tree = ast.parse(src)
     except SyntaxError:
         return None
-    strict: list[str] = []
-    params: list[str] = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Assert):
-            strict.append(ast.get_source_segment(src, node) or "")
-        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
-            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-            names = [t.id for t in targets if isinstance(t, ast.Name)]
-            if any(n.lower().startswith(("expected", "want")) for n in names):
-                strict.append(ast.get_source_segment(src, node) or "")
-        elif isinstance(node, ast.Call):
-            fn = node.func
-            name = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", "")
-            if name in {"param", "assertEqual", "assertNotEqual"}:
-                strict.append(ast.get_source_segment(src, node) or "")
-            elif name == "parametrize":
-                params.append(ast.get_source_segment(src, node) or "")
-    return strict, params
+    assertions: list[str] = []
+    support: list[str] = []
+    tests = [
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+        and node.name.startswith("test")
+    ]
+    for test in tests:
+        for node in ast.walk(test):
+            segment = ast.get_source_segment(src, node) or ""
+            if isinstance(node, ast.Assert):
+                assertions.append(segment)
+            elif isinstance(node, (ast.Assign, ast.AnnAssign)):
+                targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+                names = [target.id for target in targets if isinstance(target, ast.Name)]
+                if any(name.lower().startswith(("expected", "want")) for name in names):
+                    support.append(segment)
+            elif isinstance(node, ast.Call):
+                fn = node.func
+                name = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", "")
+                if name in {"assertEqual", "assertNotEqual"}:
+                    assertions.append(segment)
+                elif name in {"param", "parametrize"}:
+                    support.append(segment)
+    return assertions, support
 
 
 def main() -> int:
@@ -70,32 +74,38 @@ def main() -> int:
         return 1
 
     errors: list[str] = []
-    strict_segments: list[str] = []
-    param_segments: list[str] = []
+    assertion_segments: list[str] = []
+    support_segments: list[str] = []
     for f in files:
         segs = judged_segments(f.read_text(errors="ignore"))
         if segs is None:
             errors.append(f"{f.name}: not parseable as python")
         else:
-            strict_segments.extend(segs[0])
-            param_segments.extend(segs[1])
-    strict_joined = "\n".join(strict_segments)
-    broad_joined = "\n".join(strict_segments + param_segments)
+            assertion_segments.extend(segs[0])
+            support_segments.extend(segs[1])
+    assertion_joined = "\n".join(assertion_segments)
+    broad_joined = "\n".join(assertion_segments + support_segments)
 
-    if not strict_segments and not errors:
+    if not assertion_segments and not errors:
         errors.append("no assert statements found in candidate files")
+    elif not any(
+        re.search(r"\b(profile_url|avatar_url)\s*\(", segment)
+        and re.search(r"==|!=|\bnot in\b", segment)
+        for segment in assertion_segments
+    ):
+        errors.append("no behavioral assertion compares a generated URL")
 
     if not LITERAL_OK.search(broad_joined):
         errors.append(
             "no assertion against a literal single-slash URL "
             "(expected e.g. \"https://example.com/users/bob\")"
         )
-    if LITERAL_BUGGY.search(strict_joined):
+    if LITERAL_BUGGY.search(assertion_joined):
         errors.append("literal expectation enshrines the double-slash bug")
 
     computed = [
         s.splitlines()[0].strip()
-        for s in strict_segments + param_segments
+        for s in assertion_segments + support_segments
         if COMPUTED.search(s)
     ]
     if computed:

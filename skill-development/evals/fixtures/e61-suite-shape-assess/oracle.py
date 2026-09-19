@@ -33,6 +33,16 @@ def main() -> int:
         print("no markdown assessment found", file=sys.stderr)
         return 1
 
+    contradictions = [
+        r"\bnot an inverted pyramid\b",
+        r"\bintegration tests? (are|is) (unnecessary|not needed)\b",
+        r"\bdo not (push|move)[^.\n]{0,70}(down|unit|integration|domain)",
+        r"\bdo not keep[^.\n]{0,60}(e2e|end[- ]to[- ]end)",
+        r"(?:^|[.;]\s*)add more (e2e|end[- ]to[- ]end|selenium)",
+    ]
+    if any(re.search(pattern, low, re.MULTILINE) for pattern in contradictions):
+        errors.append("explicitly contradicts the required suite-shape recommendation")
+
     if not re.search(
         r"pyramid|ice[- ]?cream|inverted|top[- ]?heavy|upside[- ]?down"
         r"|(shape|distribution|balance|ratio) of (the )?(suite|tests)"

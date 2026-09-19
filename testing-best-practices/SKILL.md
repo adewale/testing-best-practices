@@ -168,7 +168,7 @@ Assert the invariant the API actually promises — no lost updates, a monotonic/
 5. Use builders/factories/helpers where setup noise hides intent; test custom helpers when they become a mini-DSL.
 6. Prefer user-facing/public interfaces over internals.
 7. Pin nondeterminism: time, randomness, network, filesystem, order.
-8. Choose test values deliberately: distinct, non-default values per parameter (never only zero/empty values, never key == value), so a dropped, defaulted, or swapped argument changes an assertion's outcome. State expected values as literals — an expectation computed with the code under test's own logic or constants can share its bug and stay green.
+8. Choose test values deliberately: include distinct, non-default values so at least one case would expose a dropped, defaulted, or swapped argument. Still cover zero, empty, and equal-value cases when they are boundaries or part of the contract. Derive expected results independently of the SUT: literals are clearest for simple examples, while properties or a genuinely independent reference model fit broader cases. Do not recompute the expectation with the SUT's own logic or constants, because the test can share its bug and stay green.
 9. Run nearest tests, then broader checks when practical.
 
 For transformations or complex generated output, use golden files with explicit review discipline; see `references/golden-file-testing.md`. For external APIs, prefer recorded real fixtures/cassettes or contract checks over live CI calls; see `references/vcr-cassettes.md`.
@@ -224,7 +224,7 @@ After writing or changing tests:
 
 1. Run the nearest relevant test command.
 2. If bug-fix TDD was intended, report red evidence separately from green evidence; if the pre-fix failing run was not observed, call the red phase unverified instead of claiming completed TDD.
-3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling. Also check: expected values are literals (not computed with the SUT's own logic), test data uses distinct non-default values, and assertions are narrow to the behavior's fields.
+3. Scan the changed tests for weak sole assertions, skips/focus markers, logging-not-asserting, sleeps, live network, and implementation-detail coupling. Also check: expected results come from an oracle independent of the SUT, at least one test value would expose dropped/defaulted/swapped inputs, relevant boundary values are still covered, and assertions are narrow to the behavior's fields.
 4. For security/transformation tests, verify both rejection/removal and preservation.
 5. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
 6. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.

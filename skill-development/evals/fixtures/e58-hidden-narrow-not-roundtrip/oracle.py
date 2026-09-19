@@ -28,6 +28,13 @@ def main() -> int:
         print("no markdown assessment found", file=sys.stderr)
         return 1
 
+    if re.search(
+        r"roundtrip (identity )?is (irrelevant|unnecessary|not (the )?contract)"
+        r"|do not (keep|retain|preserve)[^.\n]{0,60}(full|whole|canonical)",
+        low,
+    ):
+        errors.append("explicitly rejects the whole-state roundtrip contract")
+
     if not re.search(r"roundtrip|round-trip|identity|whole[- ]state|entire state|canonical", low):
         errors.append("does not engage with the roundtrip/whole-state identity purpose of the test")
 

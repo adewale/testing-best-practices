@@ -32,6 +32,14 @@ def main() -> int:
         print("no markdown assessment found", file=sys.stderr)
         return 1
 
+    if re.search(
+        r"\bdo not (keep|retain|preserve)[^.\n]{0,50}(factory|builder|helper)"
+        r"|(?:^|[.;]\s*)inline every test",
+        low,
+        re.MULTILINE,
+    ):
+        errors.append("explicitly recommends removing the value-construction factory")
+
     if not re.search(r"factory|builder|helper|damp|relevant|explicit", low):
         errors.append("does not engage with the factory/DAMP question at all")
 

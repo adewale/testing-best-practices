@@ -217,8 +217,9 @@ duplicated setup — test code leans DAMP (descriptive and meaningful
 phrases), not DRY.
 
 **Fix**: One behavior per test; setup local and explicit next to its
-assertion, duplicated when necessary; expected values as literals; loops
-replaced by named parameterized rows with no branching in the row body.
+assertion, duplicated when necessary; expected results derived independently
+of the SUT (often literals for simple examples); loops replaced by named
+parameterized rows with no branching in the row body.
 
 **Restraint — the sanctioned DRY**: value-construction builders/factories
 with reasonable defaults are correct *when every field an assertion depends

@@ -3,7 +3,7 @@
   "language": "python",
   "oracle": "oracle.py",
   "good_sample": "samples/good",
-  "bad_sample": "samples/bad",
+  "bad_samples": ["samples/bad", "samples/adversarial-negated"],
   "checks": [
     "diagnoses the inverted-pyramid/ice-cream-cone shape (38 E2E vs 4 unit) and the missing integration tier",
     "recommends moving business-rule coverage (VAT/coupon/rounding) below the browser while keeping a small golden-path E2E core",

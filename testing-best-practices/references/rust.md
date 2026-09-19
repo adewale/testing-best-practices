@@ -66,8 +66,9 @@ assert!(matches!(value, Pattern::Variant));   // Pattern match
 
 When order is not part of the contract, sort both sides before `assert_eq!`
 or compare as `HashSet`s instead of pinning incidental iteration order. Use
-distinct, non-default test values per parameter (never `0`/`""` only, never
-the same value for two arguments) so dropped or swapped arguments fail.
+distinct, non-default test values so at least one case exposes a dropped,
+defaulted, or swapped argument. Still cover zero, empty, and equal-value cases
+when they are boundaries or part of the contract.
 
 ## CLI Binary Integration Tests
 

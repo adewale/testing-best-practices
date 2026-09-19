@@ -3,7 +3,7 @@
   "language": "python",
   "oracle": "oracle.py",
   "good_sample": "samples/good",
-  "bad_sample": "samples/bad",
+  "bad_samples": ["samples/bad", "samples/adversarial-negated"],
   "checks": [
     "flags the loop/branch and the computed expectation (balance * 0.1) inside the test body",
     "flags the shared mutable module fixture mutated in setUpClass, far from the assertions",

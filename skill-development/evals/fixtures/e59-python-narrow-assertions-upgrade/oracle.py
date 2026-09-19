@@ -7,8 +7,8 @@ Failing shapes:
     equality and just adding the new schema_version key to the literal;
   - dropping behavior coverage (no balance or no transaction assertion).
 
-Judged over actual assert statements and expected-value assignments via the
-AST, as in E55, so comments/docstrings quoting the old test do not count.
+Judged over actual assertions inside test functions via the AST, as in E55,
+so assignment-only candidates, comments, and docstrings do not count.
 """
 from __future__ import annotations
 
@@ -24,29 +24,31 @@ BALANCE_OK = re.compile(
 )
 
 
-def judged_segments(src: str) -> list[str] | None:
+def judged_tests(src: str) -> list[tuple[str, list[str]]] | None:
     try:
         tree = ast.parse(src)
     except SyntaxError:
         return None
-    segments: list[str] = []
-    for node in ast.walk(tree):
-        seg = None
-        if isinstance(node, ast.Assert):
-            seg = ast.get_source_segment(src, node)
-        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
-            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-            names = [t.id for t in targets if isinstance(t, ast.Name)]
-            if any(n.lower().startswith(("expected", "want")) for n in names):
-                seg = ast.get_source_segment(src, node)
-        elif isinstance(node, ast.Call):
-            fn = node.func
-            name = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", "")
-            if name in {"param", "assertEqual", "assertNotEqual", "assertDictEqual"}:
-                seg = ast.get_source_segment(src, node)
-        if seg:
-            segments.append(seg)
-    return segments
+    tests: list[tuple[str, list[str]]] = []
+    for test in ast.walk(tree):
+        if not isinstance(test, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        if not test.name.startswith("test"):
+            continue
+        assertions: list[str] = []
+        for node in ast.walk(test):
+            segment = None
+            if isinstance(node, ast.Assert):
+                segment = ast.get_source_segment(src, node)
+            elif isinstance(node, ast.Call):
+                fn = node.func
+                name = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", "")
+                if name in {"assertEqual", "assertNotEqual", "assertDictEqual"}:
+                    segment = ast.get_source_segment(src, node)
+            if segment:
+                assertions.append(segment)
+        tests.append((ast.get_source_segment(src, test) or "", assertions))
+    return tests
 
 
 def main() -> int:
@@ -57,13 +59,14 @@ def main() -> int:
         return 1
 
     errors: list[str] = []
-    segments: list[str] = []
+    tests: list[tuple[str, list[str]]] = []
     for f in files:
-        segs = judged_segments(f.read_text(errors="ignore"))
-        if segs is None:
+        judged = judged_tests(f.read_text(errors="ignore"))
+        if judged is None:
             errors.append(f"{f.name}: not parseable as python")
         else:
-            segments.extend(segs)
+            tests.extend(judged)
+    segments = [segment for _, assertions in tests for segment in assertions]
     joined = "\n".join(segments)
 
     if not segments and not errors:
@@ -79,9 +82,16 @@ def main() -> int:
             "expectation enumerates the unrelated schema_version field "
             "(the change-detector treadmill: updating the literal per field addition)"
         )
-    if not BALANCE_OK.search(joined):
+    if not any(
+        "apply_deposit" in body and BALANCE_OK.search("\n".join(assertions))
+        for body, assertions in tests
+    ):
         errors.append("no narrow assertion that the balance is 150 after the deposit")
-    if "transactions" not in joined:
+    if not any(
+        "apply_deposit" in body
+        and any("transactions" in assertion for assertion in assertions)
+        for body, assertions in tests
+    ):
         errors.append("no assertion on the recorded transaction")
 
     for e in errors:
