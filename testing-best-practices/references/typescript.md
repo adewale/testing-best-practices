@@ -219,3 +219,15 @@ export async function setup() {
   return async () => { server.kill('SIGTERM'); };
 }
 ```
+
+## Choosing values and matchers
+
+- Include distinct, non-default test values so at least one case exposes a
+  dropped, defaulted, or swapped argument. Still cover `0`, `''`, and
+  equal-value cases when they are boundaries or part of the contract.
+- When order is not part of the contract, use
+  `expect(arr).toEqual(expect.arrayContaining([...]))` plus a length check,
+  or sort both sides, instead of pinning incidental order.
+- Derive expected results independently of the SUT. Literals are clearest for
+  simple examples; properties and independent reference models are valid for
+  broader cases. Do not reuse the SUT's logic or constants in the oracle.

@@ -2,6 +2,8 @@
 
 Tests should express *what matters*, not *how to construct data*. When examples come from users or domain experts, preserve their business vocabulary in fixtures, builders, table rows, or small test DSLs.
 
+Never rely on a builder/factory default for a field an assertion depends on — set it explicitly in the test. Helpers construct values; they must not compute expected values or hide behavior-relevant setup (see the logic-in-tests antipattern in `references/antipatterns.md`).
+
 ## Pattern: Factory with defaults (Python)
 
 ```python

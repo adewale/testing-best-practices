@@ -48,3 +48,10 @@ end-to-end cases.
 - Focus on critical modules, not the whole codebase.
 - Surviving mutants in security code are P0 issues.
 - 80% mutation score with 70% coverage > 95% coverage with 50% mutation score.
+- Expect most raw mutants to be noise: suppress arid/unproductive mutants
+  (mutations in logging, or in code whose checks the tests mock away), cap at
+  roughly one mutant per line, and surface findings on the diff under review
+  rather than as a global score. Google's fleet data: real bugs couple with
+  mutants in ~70% of cases, and noise suppression took developer-reported
+  "not useful" findings from ~80% to ~15% — the adoption ceiling is the
+  false-positive rate, not recall.

@@ -2,6 +2,8 @@
 
 What we discovered while building this skill. These are meta-lessons about building testing skills for agents, not about testing itself.
 
+Latest capture: 2026-09-19, covering `c5d017d..3eb3bdc` — PR 26's eval-integrity work and PR 25's guidance, oracle, harness, and current-model verification changes.
+
 ---
 
 ## Skill Design
@@ -29,6 +31,18 @@ Early versions of the language references explained what pytest is, what Vitest 
 ### Naming concrete mechanisms in an abstract section is what moves behavior across languages
 
 §10 v1 said "delete the now-redundant tests in the same commit" — abstract and language-neutral. It moved TS and Go agents but left Python tied. §10 v2 added "(with `xfail`, `@deprecated`, or an inline comment)" — naming the mechanism. Naming mechanisms moved every language: Python agents reached for `xfail` and `TODO[CBC]`, TS for `should be DELETED`, Go for `deletable`. The conceptual instruction alone is not enough; each language needs a concrete anchor to translate the principle into its idiom.
+
+### Teach the failure mode without banning valid techniques
+
+PR 25's blanket rules for literal expectations and non-default, distinct
+values were stronger than the research justified. The real requirements are an
+oracle independent of the SUT and at least one case that exposes dropped,
+defaulted, or swapped inputs. Properties and independent reference models
+are valid oracles; zero, empty, and equal values can be essential boundaries.
+Express the invariant and its scope in the router, validation loop, and each
+language reference together — otherwise an absolute rule survives in the
+file the agent actually loads. A memorable slogan is useful only while it
+preserves the counterexamples that make the advice correct.
 
 ## Research
 
@@ -66,6 +80,40 @@ Most of Dan Luu's testing thesis was already in the skill (property-based testin
 ### A literature pass after an engineering decision is cheap corroboration — and a gap detector
 
 After iteration 10 folded design-for-testability on ablation evidence, a literature review found the canon had already reached the same hierarchy (substitutable dependencies over test hooks; Meszaros's "Test Logic in Production"; Feathers's enabling points outside production text), and the flaky-test literature's recommended fix (condition-based synchronization, Luo et al. FSE 2014) is exactly the seam shape our baseline arms built from priors — explaining *why* the teaching didn't discriminate: it's already in the models. The same pass surfaced precisely one concept the corpus lacked (Voas's fault-hiding/PIE theory of testability) and quantified honesty backing (Sharma et al. 2023: developer-plausible testability smells don't survive measurement). The pattern: make the decision on your own evidence, then check it against the literature — agreement converts a local result into a corroborated one, and the residue is a focused list of what you actually don't know.
+
+### Enumerate a corpus from the platform's structured feed, not by link-following
+
+The Google Testing Blog analysis used Blogger's
+paginated JSON feed (`/feeds/posts/default?alt=json&max-results=100`) that
+enumerates the archive deterministically, with a reported total of 404 posts
+to reconcile against — no sitemap guessing or reliance on "older posts"
+links. The historical analysis reports ten analyst batches over 216K words;
+the retained metadata supports the archive count, but the raw batches were
+not retained. For any platform-hosted corpus, find the machine-readable
+enumeration first, then retain evidence of the coverage actually achieved.
+
+### A receipt proves only the evidence it preserves
+
+The [Google corpus receipt](research/GOOGLE_TESTING_BLOG_CORPUS_RECEIPT.md)
+records the feed URL, verification date, count, date range, and latest-entry
+metadata. It does not recreate the missing plain-text download, ten analyst
+outputs, or per-post assessments, so it cannot substantiate the 216K-word
+count or full-reading claim independently. Keep enumeration, retrieval, and
+analysis coverage as separate claims. Preserve a source manifest and curated
+analysis evidence while the work is happening; a later metadata check can
+corroborate the archive but cannot recover the analysis. Apply the same rule
+to eval receipts: an output digest identifies an artifact if it is available,
+but is not a substitute for the artifact or a reproducible stochastic run.
+
+### Keep a quantitative claim attached to its original scope
+
+The Google research summary turned Hevery's two-week, single-project log
+into "testability costs ~10%, not 2x." The corrected note retains the useful
+counterexample to "tests always double development time" while naming its
+duration, project scope, and what was measured: time spent writing tests.
+Carry those qualifiers into both the research synthesis and the short
+takeaways. A precise number becomes less reliable, not more, when its
+denominator and setting disappear during compression.
 
 ### Infrastructure-specific patterns can still generalize if you extract the underlying invariant
 
@@ -239,6 +287,211 @@ After adding `validity`, `eval_health`, hidden probes, and mini-repos, the JSON 
 ### Optimize the always-loaded router first
 
 The installable package shrank only ~9%, but `SKILL.md` dropped from ~5,572 to ~2,745 estimated tokens. That matters more operationally because the router is always loaded while references are conditional. Progressive disclosure pays off most when the entrypoint is short and the triggers are sharp.
+
+### At the frontier ceiling, oracle artifacts dwarf model variance
+
+The Google-blog round produced 84 scored transcripts (44-cell ablation
+matrix + 40 variance repeats at n=5/cell), and after verification the
+score was 84/84 — every raw FAIL across both rounds was an oracle
+phrasing artifact, zero were model failures, and repeated runs showed
+zero variance (Wilson 95% CI [0.93, 1.00] on the repeats). The practical
+inversion: at this ceiling, "measure the model" quietly becomes "debug
+the oracle," and the round's real yield was ~13 oracle fixes across 8
+fixtures. Budget accordingly — reading every FAIL against its artifact
+is not a spot-check step, it is most of the work.
+
+### Prose oracles need negation-awareness, or the judgment belongs to the judge layer
+
+E61's assess-mode oracle regex-matched recommendations in free prose and
+kept false-negating good work in new ways: candidates *named* the wrong
+move in order to reject it ("adding more E2E … is the wrong one"), put
+the down-tier recommendation in a migration table (`| unit |`) with no
+verb the regex knew, or phrased it as "push the rules down." Three
+hardening passes (negation windows around forbid-matches, phrasing
+branches, table-cell patterns) got it stable — but the trajectory says
+regex over prose asymptotes to a judge. Reserve deterministic oracles
+for code-shaped claims (AST checks, runnable mutants) and route
+free-prose judgments to the rubric/judge layer, where E61-style verdicts
+were uncontroversial.
+
+### Blind judges recover the gradient binary oracles compress — and agreement makes one judge enough
+
+The 44 all-pass matrix cells, re-scored by rubric judges blinded to
+arm/model, showed a consistent quality gradient (base 3.67 → current
+3.83 → new 3.92 like-for-like, with score-3 cells falling 4 → 2 → 1)
+that pass/fail oracles cannot see — suggestive, within overlapping
+stddevs, but the only instrument in the stack that registered the skill
+at all at the frontier ceiling. Double-judging 16 cells with a second
+model measured the eval-health "judge disagreement rate" meta-signal:
+97% exact per-dimension agreement, no eval-score disagreement >1, 16/16
+on critical-failure calls — which licenses single-judge passes on these
+fixtures. The layers divide labor: oracles gate hard behaviors,
+judges grade the margin above the floor.
+
+### Drain the sub-agent queue by completions, not by batch
+
+The runtime caps concurrent sub-agents (20 here), and launching the full
+matrix at once bounced two runs off the limit. The pattern that worked:
+fill to the cap, then launch exactly one replacement per completion
+notification — never retry a rejected launch immediately, never sleep-
+poll. Throughput stays at the cap and nothing is lost. Corollary for
+repeat runs: give each run an isolated workspace — one variance repeat
+found a sibling run's finished solution in the shared scratchpad, which
+can only inflate pass rates (the affected cells were already 5/5 from
+clean runs, but the protocol hole is real).
+
+### Validate against the real harness, not your mental model of it
+
+Wiring the shared benchmark to the actual `skill-benchmark` CLI caught
+three things a hand-check missed: trigger cases require explicit
+`should_trigger`, judge-only assertions default to soft (need
+`gate: true` to fail a run), and reference-file section ablations are
+structurally impossible (all ablation mechanisms edit the root's main
+file; overlapping skill roots are rejected by the materializer) — which
+forced the honest redesign of two ablations as SKILL.md `list_item`
+removals with repo-side hidden probes guarding the reference files. A
+thin adapter (extract fenced code from `output.md`, delegate to the repo
+fixture's oracle) let shared-benchmark mirror cases reuse the
+deterministic oracles instead of duplicating them as prose assertions.
+
+### Make vacuous candidates fail before trusting a green oracle
+
+The September audit found the opposite of the earlier false-negative trend:
+E23 accepted an `assert True` test with the required vocabulary in a
+docstring; E55 accepted a literal URL assigned to `expected_url` with no
+assertion; E59 accepted assignments mentioning balance and transactions
+without checking a deposit. A candidate can contain every expected token and
+test nothing. The fixes tied E23's checks to the Hypothesis property and
+E55/E59's checks to assertions in test functions exercising the relevant
+operation. Add explicit no-op and assignment-only bad samples, and ask what
+failure could change each assertion's outcome. Structural checks improve
+that connection but still do not prove execution or semantic correctness.
+
+### Oracle calibration needs a growing corpus of both valid and invalid answers
+
+Negated recommendations passed E57/E58/E61/E63 because they contained the
+right words while rejecting the required behavior. Conversely, good answers
+such as "self-contained tests," "a canonical comparison is appropriate," and
+"relocate business-rule coverage below the browser" failed narrow phrasing
+checks. The manifests now support multiple `good_samples` and `bad_samples`,
+retaining each discovered case instead of replacing the original exemplar.
+Check both directions after every oracle change. Keep the behavioral rubric
+fixed, save the rejected or falsely accepted artifact, and regrade existing
+candidates under the corrected oracle before interpreting a model delta.
+
+### Candidate transport is part of the measurement
+
+The prompt-eval runner originally omitted assessment Markdown, so a judge
+could miss the actual answer. A fixed triple-backtick wrapper also allowed
+fenced code inside the answer to close the candidate's framing early. PR 26
+added Markdown ingestion, a fence longer than any backtick run in the
+candidate, and regression checks that supported answer files reach the judge
+intact.
+Verify the judge's input as well as its output: an excellent rubric cannot
+grade evidence that was dropped or ambiguously framed in transit.
+
+### Missing evidence must not become a passing result
+
+PR 26 made failed generation, empty judge inputs, missing required judges, and
+malformed judge results fail closed. Required rubric dimensions must be
+present, scores must be numeric and within 0–4 (a JSON boolean is not a
+score), and `critical_failure` must be an explicit boolean. Distinguish a
+staged run awaiting a candidate from a completed evaluation; the former may
+exit successfully as a preparation step without having passed anything. A
+fixture-only pass is valid when no judge was requested, but cannot stand in
+for a missing requested judge. Test these state transitions independently
+of any model so an infrastructure failure cannot inflate the scorecard.
+
+### Running an oracle is not the same as running the candidate tests
+
+E23 launches an executable Python oracle, but that oracle inspects the
+candidate's AST; it does not execute the Hypothesis suite. Its metadata and
+scorecard previously suggested runtime coverage they did not provide. E60,
+by contrast, runs pytest against pristine implementations and separately
+drifted fake and real stores. Label text, structural, runtime, and mutation
+evidence explicitly in measurement metadata and reports. A green validator
+supports its stated checks, not an implied claim that candidate tests ran
+or caught a real defect.
+
+### Prompts, output format, and test discovery form one contract
+
+The six shared Google cases initially used one-line summaries while their
+oracles assumed the full fixture source and behavior. Reusing the complete
+fixture through `prompt_ref` closed that gap. E60 also needed an explicit
+request for a complete fenced Python answer, and the adapter had to name the
+extracted file `test_extracted_*.py` so pytest would discover it. Validate the
+whole path from task context through returned artifact to oracle input.
+Prompt reuse prevents two copies drifting; a correct oracle alone does not
+make a shared case executable.
+
+### Smoke-test the complete eval path before paying for the model matrix
+
+The PR 25 follow-up repaired missing prompt context, output extraction,
+pytest discovery, runtime dependencies, and accepted prose variants around
+the same evaluation path. These are instrument failures, not questions that
+need a large generation batch. First send known good and adversarial outputs
+through the actual shared adapter and grader, including a runtime case that
+passes pristine code and rejects the intended mutants; then run a small
+generation pilot before expanding. The final 24-cell panel recorded 959,831
+provider-trace tokens, making this preflight consequential. When only the
+grader changes, regrade retained outputs and record both revisions instead
+of paying for fresh candidates that confound the comparison.
+
+### A clean-checkout gate must install the oracle's real dependencies
+
+The fixture documentation called the oracles stdlib-only even though E60
+invoked pytest. A developer environment could hide that dependency; a fresh
+CI worker could not. The fix pinned pytest in
+`skill-development/evals/requirements.txt`, installed it in the documented
+local command and CI, and configured Python, Go, and Node for the common
+deterministic gate. Keep runner regressions, adapter checks, and oracle
+self-tests in that gate. Reproducibility starts with declared prerequisites
+and a checked-in entrypoint, not the fact that it passed on the author's
+machine.
+
+### Capture exact model, reasoning, and artifact revisions at launch
+
+The August matrix retained only `sonnet` / `opus` aliases and no committed
+generation artifacts, so it cannot establish coverage of today's model
+panel. The [September receipt](skill-development/evals/receipts/pr25-luna-terra-2026-09-19.md)
+records exact `gpt-5.6-luna` / `gpt-5.6-terra` IDs, explicitly pinned low
+reasoning, runner version, generation and final-grading commits, skill-tree
+identity, and output digest. Pin the configuration before the run and capture
+the resulting artifact identities as they are produced; an unrecorded
+reasoning default or changing alias cannot be reconstructed confidently
+later. Keep generation and grading revisions distinct when oracle
+calibration continues after the outputs are collected, and state when raw
+artifacts remain untracked.
+
+### Assignment to the with-skill arm does not prove treatment uptake
+
+The September traces showed skill-file reads in 11 of 12 with-skill cells.
+Terra E59 passed without a recorded read of the mounted skill. Its result
+belongs in the assigned-arm totals, but cannot demonstrate that the skill
+was used. Record exposure separately from success: mounting a file, reading
+it, and changing behavior because of it are different claims. A read is
+useful uptake evidence, not by itself proof that the skill caused a better
+answer.
+
+### Classify the cause of a delta before attributing lift
+
+The current-model panel passed 12/12 with skill and 11/12 without. The sole
+difference was a Luna E60 baseline with an invalid Python function name,
+not a missing fake/real contract-testing strategy. With one run per cell and
+Terra already at 6/6 in both arms, the honest result is no observed
+regression on these six cases, one noisy positive cell, and continued
+frontier saturation. It is not demonstrated general quality lift. Read the
+losing artifact, report the failure class, and keep non-regression, treatment
+uptake, and causal improvement separate even when the aggregate looks good.
+
+### Token accounting and prompt size answer different questions
+
+The September receipt's input totals include repeated and cached context
+across tool turns. They are a usage ledger, not the length of a prompt or
+the number of unique skill tokens read. Report input/output totals and
+elapsed time by model and arm, with the accounting basis, alongside the
+observed benefit. Source-token reduction, run cost, and quality lift need
+their own measurements; one number cannot stand in for all three.
 
 ## Evolution
 

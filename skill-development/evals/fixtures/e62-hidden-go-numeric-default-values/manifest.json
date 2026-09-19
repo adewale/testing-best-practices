@@ -1,0 +1,12 @@
+{
+  "eval_id": "E62-hidden-go-numeric-default-values",
+  "language": "go",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "candidate tests pass against the correct Ledger implementation",
+    "tests kill the ignore-id mutant (Add credits account 0), which survives account-0-only test data copied from the doc example",
+    "tests kill the ignore-amount mutant (Add credits nothing), which survives zero-amount test data"
+  ]
+}

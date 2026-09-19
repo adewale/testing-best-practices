@@ -6,13 +6,17 @@ Each fixture contains:
 
 - `manifest.json` — eval id, language, oracle command, and sample paths.
 - `prompt.md` — the task prompt/fixture description for the eval runner.
-- `oracle.py` — stdlib-only validator for a candidate answer/patch directory.
-- `samples/good/` — minimal candidate that should pass the oracle.
+- `oracle.py` — validator for a candidate answer/patch directory. Most use only
+  the standard library; runtime oracles use dependencies pinned in
+  `../requirements.txt`.
+- `samples/good/` — minimal candidate that should pass the oracle. A manifest
+  may instead use `good_samples` to register multiple accepted phrasings.
 - `samples/bad/` — minimal candidate that should fail the oracle. A manifest may instead use `bad_samples` to register multiple independent adversarial examples.
 
 Run all oracle self-tests:
 
 ```bash
+python3 -m pip install -r skill-development/evals/requirements.txt
 python3 scripts/run-fixture-oracles.py
 ```
 
