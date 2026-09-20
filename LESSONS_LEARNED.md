@@ -2,7 +2,7 @@
 
 What we discovered while building this skill. These are meta-lessons about building testing skills for agents, not about testing itself.
 
-Latest capture: 2026-09-19, covering `c5d017d..3eb3bdc` — PR 26's eval-integrity work and PR 25's guidance, oracle, harness, and current-model verification changes.
+Latest capture: 2026-09-20, covering PR 24's compact PBT/fuzzing guidance plus PR 26's eval-integrity work and PR 25's guidance, oracle, harness, and current-model verification changes.
 
 ---
 
@@ -23,6 +23,18 @@ Telling the agent to self-check its work before reporting done (scan for weak as
 ### Don't explain what the agent already knows
 
 Early versions of the language references explained what pytest is, what Vitest is, basic `describe`/`it` syntax. The agent knows this. Keep only the non-obvious parts: boundary-first Hypothesis strategies, `@cloudflare/vitest-pool-workers`, `t.Helper()` in Go.
+
+### Engine semantics need thin adapters, not full language playbooks
+
+Property generation, coverage-guided discovery, collection, and replay differ by engine, but most selection and oracle guidance is shared. Keep the reusable decision rule in the core, then document only the language-specific facts that change whether evidence is real: for example, pytest collection, Go seed replay versus active `-fuzz`, and fast-check's replay bindings. Long per-language tutorials duplicate the core and become stale faster.
+
+### Test existence is not execution evidence
+
+A decorated property can be invisible to the configured runner, an ordinary Go test can replay fuzz seeds without performing discovery, and a test can exercise a copied helper instead of production code. Check collection, discovery commands, and production-path reachability when the repository configuration makes them uncertain. Do not turn that into universal CI ceremony: permanent drift guards earn their place only when duplicated configuration creates a recurring risk.
+
+### Development evals must not write the final skill
+
+A failing development fixture can reveal an ambiguous instruction, but copying its exact parser, workflow token, or preferred implementation into a reusable skill overfits the benchmark. Use adaptive cases for diagnosis and regression, then remove fixture-shaped prescriptions. Treat causal claims as a separate exercise requiring a frozen treatment and untouched tasks; deterministic self-tests of an edited fixture establish oracle behavior, not uplift.
 
 ### Abstract framings can sit beside detailed references without being redundant
 

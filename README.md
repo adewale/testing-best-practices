@@ -10,7 +10,8 @@ An agent skill that enforces testing best practices when writing, reviewing, or 
 
 When an agent uses this skill, it produces higher-quality tests than it would on its own. Specifically:
 
-- **Property-based tests appear** (Hypothesis, fast-check, proptest) where broad input spaces need more than examples
+- **Property-based tests reach meaningful behavior** with input domains and independent semantic oracles matched to the claim
+- **Fuzzing is used proportionally**: targets, seed replay, active discovery, and long campaigns are treated as different evidence and cost decisions
 - **Assertions get stronger**: meaningful behavior/state/error checks replace `toBeDefined()`, truthy/not-empty checks, and logs
 - **Error-handling paths are exercised** with injected downstream failures instead of only invalid-input tests
 - **Concurrency contracts are pinned** with contention-driving tests and race-detector guidance rather than observational `t.Log` output
@@ -56,7 +57,7 @@ The skill operates in four modes:
 | Mode | When | What it does |
 |------|------|-------------|
 | **Write** | Writing new tests | Red-Green-Refactor TDD, property-based tests, boundary values, error-path coverage, concurrency contracts, validation loop |
-| **Assess** | Reviewing existing tests | 7-step quality audit: sabotage detection, oracle strength, mock drift, tier integrity, determinism, coverage quality, invariant placement |
+| **Assess** | Reviewing existing tests | Structured quality audit including execution reachability, generator/oracle fidelity, lifecycle depth, and suite shape |
 | **Upgrade** | Improving weak tests | Prioritized fixes for flaky, weak, or sabotaged tests |
 | **Detect** | Finding hidden problems | Unconditional skips, print-not-assert, ordering dependencies, tests that fake coverage |
 
@@ -69,7 +70,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 - Red-Green-Refactor TDD, with honest red-vs-green evidence reporting
 - Test quality over quantity (Kent Beck's Test Desiderata, assertion strength, coverage as a map rather than proof)
 - Real behavior over mocks, with a preference hierarchy from real local objects to fakes, stubs, and only then framework mocks
-- Property-based testing for broad input spaces and invariants
+- Property-based testing with deliberate input layers, independent oracles, and replayable failures
+- Coverage-guided fuzzing for risk-justified hostile-input boundaries, with targets separated from campaigns and seed replay separated from active discovery
 - Error-handling path testing via injected downstream failures, timeouts, partial responses, and I/O errors
 - Concurrency contract testing under contention and race detectors/thread sanitizers
 - E2E, integration, contract, documentation-code sync, and external-boundary testing at the smallest useful tier
@@ -85,9 +87,9 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 | File | Content |
 |------|---------|
-| `references/python.md` | pytest, Hypothesis, VCR cassettes, async testing, CLI testing |
-| `references/typescript.md` | Vitest, fast-check, Playwright, mock contract tests, API clients |
-| `references/go.md` | Table-driven tests, `t.TempDir()`, `httptest`, build tags, `testdata/`, `t.Helper()` |
+| `references/python.md` | pytest, Hypothesis collection/input domains/replay, VCR cassettes, async testing, CLI testing |
+| `references/typescript.md` | Vitest, fast-check collection/replay/command semantics, Playwright, mock contract tests, API clients |
+| `references/go.md` | Table-driven tests, Rapid versus native fuzzing, seed replay versus active discovery, `t.TempDir()`, `httptest`, build tags, `testdata/`, `t.Helper()` |
 | `references/rust.md` | `#[test]`, proptest, exhaustigen, cargo-mutants, CLI binary tests |
 
 **Always available**:
@@ -101,6 +103,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 | File | Trigger |
 |------|---------|
+| `references/property-based-testing.md` | Writing or reviewing properties, generators, stateful models, or replay behavior |
+| `references/fuzzing.md` | Designing or operating a risk-justified coverage-guided target or campaign |
 | `references/characterization-testing.md` | Refactoring legacy code |
 | `references/differential-testing.md` | Reimplementing algorithms, multi-language SDKs, shadow models, approximate/probabilistic outputs |
 | `references/golden-file-testing.md` | Transformation pipelines, snapshot tests, promote workflow, save/load or migration roundtrips |
@@ -182,9 +186,11 @@ testing-best-practices/             # The installable skill (ships to agents)
     differential-testing.md         # Topic: reference implementations, ports, SDKs, shadow/statistical oracles
     doc-sync-testing.md             # Topic: documentation drift
     exhaustive-testing.md           # Topic: small state spaces
+    fuzzing.md                      # Topic: coverage-guided targets, corpora, replay, campaign tiers
     golden-file-testing.md          # Topic: transformation pipelines, snapshot tests, digest roundtrips
     mathematical-properties.md      # Topic: algebraic laws
     mutation-testing.md             # Topic: test quality verification and PIE/fault propagation
+    property-based-testing.md       # Topic: generators, independent oracles, collection, replay
     test-data-builders.md           # Topic: factories, fixtures, and customer-readable examples
     vcr-cassettes.md                # Topic: external APIs and recorded fixtures
 
