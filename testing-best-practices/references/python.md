@@ -51,30 +51,24 @@ tests/
 
 ## Property-Based Testing: Hypothesis
 
-```python
-from hypothesis import given, settings
-from hypothesis import strategies as st
-
-@given(text=st.text())
-@settings(max_examples=200)
-def test_never_crashes(text):
-    result = parse(text)
-    assert isinstance(result, str)
-
-@given(data=st.binary())
-def test_roundtrip(data):
-    assert decode(encode(data)) == data
-
-@given(text=st.text())
-def test_idempotent(text):
-    assert normalize(normalize(text)) == normalize(text)
-```
-
-**Dependencies**: Add `hypothesis` to test dependencies.
+**Dependency**: Add `hypothesis` to test dependencies.
 
 **Key strategies**: `st.text()`, `st.integers()`, `st.binary()`,
 `st.floats(allow_nan=False)`, `st.lists()`, `st.from_regex()`,
-`st.builds()` for custom types.
+`st.builds()` and `@st.composite` for structured values, and `st.recursive()` for recursive formats.
+
+### Collection, Input Domains, and Replay
+
+A `@given` test generates and shrinks cases only when the configured runner executes it. Standalone pytest functions are invisible to `unittest` discovery; keep them as `TestCase` methods or deliberately use pytest. When projects, filters, or mixed runners make reachability uncertain, inspect the exact CI runner's collection output.
+
+Keep two parser domains explicit:
+
+- raw bytes/text for totality and documented-error properties;
+- independently constructed, specification-valid values for semantic properties (`st.builds`, `@st.composite`, or `st.recursive`).
+
+Validate a “valid” generator independently; otherwise malformed data can make deep behavior unreachable.
+
+Treat Hypothesis's example database as a cache, not the only permanent regression record. Promote important minimized inputs with `@example` or a deterministic regression; use `--hypothesis-seed` for short-lived reproduction. See `references/property-based-testing.md` for shared generator and oracle guidance.
 
 ## Fixtures and Test Data
 

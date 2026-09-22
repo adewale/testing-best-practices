@@ -81,22 +81,34 @@ it('roundtrip: decode(encode(x)) === x', () => {
   );
 });
 
-it('results sorted by descending score', () => {
-  fc.assert(
-    fc.property(fc.integer({ min: 1, max: 10 }), (n) => {
-      const results = rankResults(generateItems(n));
-      for (let i = 1; i < results.length; i++) {
-        expect(results[i - 1].score).toBeGreaterThanOrEqual(results[i].score);
-      }
-    }),
-    { numRuns: 100 }
-  );
-});
 ```
 
 **Key arbitraries**: `fc.string()`, `fc.integer()`, `fc.float()`,
 `fc.array()`, `fc.record()`, `fc.uuid()`, `fc.webUrl()`,
-`fc.constantFrom(...)`, `fc.option()`.
+`fc.constantFrom(...)`, `fc.option()`. Use `fc.record()` and `fc.letrec()` for specification-valid structures; keep hostile arbitrary input in a separate totality property.
+
+### Collection, Replay, and Command Models
+
+When Vitest projects, filters, or workspaces make reachability uncertain, inspect collection with the same CI configuration. `--filesOnly` proves file-level discovery, not collection of a particular test; add a persistent guard only where that configuration has a real drift risk.
+
+Preserve fast-check's `seed` and `path` for `fc.assert`. Model-based failures also report a `replayPath`; pass it to `fc.commands`, not `fc.assert`. Ensure the configuration that runs the property receives those values; logging them is not replay.
+
+```typescript
+// Values parsed from a saved model-based failure. Omit them for normal discovery.
+const { seed, path, replayPath } = savedFailure;
+const commands = fc.commands(commandArbs, { maxCommands, replayPath });
+
+await fc.assert(
+  fc.asyncProperty(commands, async (cmds) => {
+    await fc.asyncModelRun(setup, cmds);
+  }),
+  { numRuns, seed, path },
+);
+```
+
+For model-based tests, make `Command.check` target-specific and resolve the same logical handle that `run` uses. `fc.commands` generates candidates before preconditions are applied, so a command cap is not evidence of useful depth; observe accepted transitions when that matters. Do not hide an inapplicable target as a silent no-op in `run`.
+
+If a function receives `fc` or a narrowed adapter, use that binding and the installed API rather than importing a second engine or guessing a convenience constructor.
 
 ## E2E Testing: Playwright
 

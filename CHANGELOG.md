@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (property-based testing and fuzzing)
+- **Focused PBT and fuzzing references** — choose the generated input layer deliberately, use an independent oracle, preserve engine-native replay, and distinguish property generation from coverage-guided corpus mutation.
+- **Thin engine adapters** — document the collection and replay facts that materially differ across Hypothesis, fast-check, Go's native fuzzer, and Rapid.
+
+### Changed (property-based testing and fuzzing)
+- **Risk-based fuzz guidance** — reserve targets for hostile-input boundaries with amplifying risk, and treat the target, seed replay, bounded discovery, and long-running campaigns as separate decisions.
+- **Conditional reachability checks** — verify collection or target selection with the exact CI configuration when runners, projects, filters, or duplicated target lists make drift plausible; add permanent policy guards only for recurring risk.
+
 ### Added
 - **Current-model PR 25 eval receipt** (`skill-development/evals/receipts/pr25-luna-terra-2026-09-19.md`): 24 paired generations across the six Google-derived shared cases, exact `gpt-5.6-luna` / `gpt-5.6-terra` model IDs at explicitly pinned low reasoning, with deterministic executable grading. With-skill passed 12/12; without-skill passed 11/12, with the sole difference caused by invalid Python syntax in one Luna baseline rather than a substantive testing-strategy miss. This is evidence of no observed regression and a frontier ceiling, not broad quality lift.
 - **Variance measurement for the ablation matrix** (`scorecard.md`): n=5 repeats on the ten variance-riskiest cells (prose-sensitive base-arm evals E57/E60/E61 and both new-arm restraint probes E58/E63, each on two models) — 50/50 pass, Wilson 95% CI [0.93, 1.00], zero observed model variance; every raw failure was an E61 prose-oracle phrasing artifact, fixed across three hardening passes with fixture self-tests kept green. Caveats recorded: repeat-arm provenance (draft bundle vs. landed text) and one shared-workspace contamination incident.
