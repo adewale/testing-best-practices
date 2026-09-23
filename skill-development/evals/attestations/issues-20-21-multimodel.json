@@ -1,0 +1,1165 @@
+{
+  "schema_version": 1,
+  "date": "2026-07-22",
+  "source_revision": "e50479920006aa010850a2c37f9bee1e02b5badf",
+  "source_worktree_dirty": true,
+  "tooling": {
+    "skill_eval_harness": {
+      "version": "0.4.0",
+      "commit": "5a8144c272ce7ca9e5bc66268d3ad7c7ffbaeb01"
+    },
+    "codex_cli": "0.145.0",
+    "judge": "requested openai-codex/gpt-5.4, medium, two runs per candidate"
+  },
+  "identity_limit": "Model names are requested identifiers recorded by the runner, not provider-attested identities.",
+  "generation": {
+    "requested_models": [
+      "gpt-5.3-codex-spark",
+      "gpt-5.4",
+      "gpt-5.4-mini",
+      "gpt-5.5",
+      "gpt-5.6-luna",
+      "gpt-5.6-sol",
+      "gpt-5.6-terra"
+    ],
+    "reasoning": "medium",
+    "sandbox": "Codex read-only generation in evaluator-isolated workspaces",
+    "runs_per_arm_model": 3,
+    "cases": [
+      "pos-mutation-recurring-lane-contract",
+      "pos-mutation-survivor-triage-cuefree",
+      "pos-combinatorial-cost-aware-portfolio"
+    ],
+    "prepared_tasks_sha256": "3395f043f88a3148b98576c1231a649bebd18dd444d58844442b4ed51189562c",
+    "skill_tree_sha256": "c936993c33d8847b046878a8054cfd6af298007e92a82f18c7893c497eff9625",
+    "run_tree_digests": {
+      "gpt-5.3-codex-spark": {
+        "sha256": "96064775bc3c5fea8bad2db579952a6aa3e55b42172e7f07100d31d0e210feff",
+        "files": 54
+      },
+      "gpt-5.4": {
+        "sha256": "ea64b69de68847556c32899c1727798ecdd0dccb460be4eff9c7771baaffb25d",
+        "files": 54
+      },
+      "gpt-5.4-mini": {
+        "sha256": "9a97ac5aef961d631745e18ca3fc97b2eb58c7f2d25e6ae933be4be9db458625",
+        "files": 54
+      },
+      "gpt-5.5": {
+        "sha256": "746ff8fd4961fc6232b7784b6fe860d53ab49db20134aa2e803c61eb4a6a445d",
+        "files": 54
+      },
+      "gpt-5.6-luna": {
+        "sha256": "727281dd05d40cacde4f157897abc9b4257bb27bc8c70881ab9be2b4462a8515",
+        "files": 54
+      },
+      "gpt-5.6-sol": {
+        "sha256": "b963f38e5e3de5838b2fefd3c01e3b4e5e4bcd7c7454368f986e688a31890739",
+        "files": 54
+      },
+      "gpt-5.6-terra": {
+        "sha256": "267a0e4c6dee4ddfc512ae8589841a0d1ed9eaac5ecc43eb1dfc598f3b9df3e7",
+        "files": 54
+      }
+    }
+  },
+  "scoring": {
+    "manifest_sha256_at_attestation": "693ec8438284796d502bb53693965ab6e98ae4cac07b36b9cce4f138b847c0e8",
+    "oracle_tree_sha256_at_attestation": "fd11b7cd1ce0a658629fa8974dc377847e621730278667053dc095a81362905d",
+    "objective": {
+      "gpt-5.3-codex-spark": {
+        "pos-mutation-recurring-lane-contract": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        },
+        "pos-mutation-survivor-triage-cuefree": {
+          "with_skill": {
+            "passed": 1,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 1,
+            "runs": 3
+          }
+        },
+        "pos-combinatorial-cost-aware-portfolio": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        }
+      },
+      "gpt-5.4": {
+        "pos-mutation-recurring-lane-contract": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        },
+        "pos-mutation-survivor-triage-cuefree": {
+          "with_skill": {
+            "passed": 2,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 1,
+            "runs": 3
+          }
+        },
+        "pos-combinatorial-cost-aware-portfolio": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        }
+      },
+      "gpt-5.4-mini": {
+        "pos-mutation-recurring-lane-contract": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        },
+        "pos-mutation-survivor-triage-cuefree": {
+          "with_skill": {
+            "passed": 2,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 2,
+            "runs": 3
+          }
+        },
+        "pos-combinatorial-cost-aware-portfolio": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        }
+      },
+      "gpt-5.5": {
+        "pos-mutation-recurring-lane-contract": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        },
+        "pos-mutation-survivor-triage-cuefree": {
+          "with_skill": {
+            "passed": 3,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 1,
+            "runs": 3
+          }
+        },
+        "pos-combinatorial-cost-aware-portfolio": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        }
+      },
+      "gpt-5.6-luna": {
+        "pos-mutation-recurring-lane-contract": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        },
+        "pos-mutation-survivor-triage-cuefree": {
+          "with_skill": {
+            "passed": 1,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 2,
+            "runs": 3
+          }
+        },
+        "pos-combinatorial-cost-aware-portfolio": {
+          "with_skill": {
+            "passed": 3,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        }
+      },
+      "gpt-5.6-sol": {
+        "pos-mutation-recurring-lane-contract": {
+          "with_skill": {
+            "passed": 3,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        },
+        "pos-mutation-survivor-triage-cuefree": {
+          "with_skill": {
+            "passed": 3,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 1,
+            "runs": 3
+          }
+        },
+        "pos-combinatorial-cost-aware-portfolio": {
+          "with_skill": {
+            "passed": 3,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        }
+      },
+      "gpt-5.6-terra": {
+        "pos-mutation-recurring-lane-contract": {
+          "with_skill": {
+            "passed": 0,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        },
+        "pos-mutation-survivor-triage-cuefree": {
+          "with_skill": {
+            "passed": 2,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 1,
+            "runs": 3
+          }
+        },
+        "pos-combinatorial-cost-aware-portfolio": {
+          "with_skill": {
+            "passed": 1,
+            "runs": 3
+          },
+          "without_skill": {
+            "passed": 0,
+            "runs": 3
+          }
+        }
+      }
+    },
+    "totals": {
+      "with_skill": 24,
+      "without_skill": 9,
+      "runs_per_arm": 63
+    }
+  },
+  "old_skill": {
+    "verified_source_commit": "6e8cd8b7bad570126277e08ad445c5bd21cb92d9",
+    "tree_sha256": "619d910604a2371a762327207160dcf2cb9fadc689fbf041634817e3d4f3031b",
+    "requested_model": "gpt-5.6-sol",
+    "results": {
+      "pos-mutation-recurring-lane-contract": {
+        "passed": 0,
+        "runs": 3
+      },
+      "pos-mutation-survivor-triage-cuefree": {
+        "passed": 2,
+        "runs": 3
+      },
+      "pos-combinatorial-cost-aware-portfolio": {
+        "passed": 0,
+        "runs": 3
+      }
+    }
+  },
+  "qualitative_judge": {
+    "aggregation": "candidate consensus from two judge runs; tied/split raw decisions do not count as unanimous",
+    "results": {
+      "pos-mutation-recurring-lane-contract::with_skill::run-1": {
+        "consensus_pass": true,
+        "median_score": 0.98,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-recurring-lane-contract::with_skill::run-2": {
+        "consensus_pass": true,
+        "median_score": 0.975,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-recurring-lane-contract::with_skill::run-3": {
+        "consensus_pass": true,
+        "median_score": 0.99,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-recurring-lane-contract::without_skill::run-1": {
+        "consensus_pass": false,
+        "median_score": 0.7949999999999999,
+        "raw_passes": [
+          true,
+          false
+        ]
+      },
+      "pos-mutation-recurring-lane-contract::without_skill::run-2": {
+        "consensus_pass": false,
+        "median_score": 0.37,
+        "raw_passes": [
+          false,
+          false
+        ]
+      },
+      "pos-mutation-recurring-lane-contract::without_skill::run-3": {
+        "consensus_pass": false,
+        "median_score": 0.365,
+        "raw_passes": [
+          false,
+          false
+        ]
+      },
+      "pos-mutation-survivor-triage-cuefree::with_skill::run-1": {
+        "consensus_pass": true,
+        "median_score": 0.975,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-survivor-triage-cuefree::with_skill::run-2": {
+        "consensus_pass": true,
+        "median_score": 0.98,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-survivor-triage-cuefree::with_skill::run-3": {
+        "consensus_pass": true,
+        "median_score": 0.98,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-survivor-triage-cuefree::without_skill::run-1": {
+        "consensus_pass": true,
+        "median_score": 0.98,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-survivor-triage-cuefree::without_skill::run-2": {
+        "consensus_pass": true,
+        "median_score": 0.985,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-mutation-survivor-triage-cuefree::without_skill::run-3": {
+        "consensus_pass": true,
+        "median_score": 0.985,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-combinatorial-cost-aware-portfolio::with_skill::run-1": {
+        "consensus_pass": true,
+        "median_score": 0.985,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-combinatorial-cost-aware-portfolio::with_skill::run-2": {
+        "consensus_pass": true,
+        "median_score": 0.975,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-combinatorial-cost-aware-portfolio::with_skill::run-3": {
+        "consensus_pass": true,
+        "median_score": 0.98,
+        "raw_passes": [
+          true,
+          true
+        ]
+      },
+      "pos-combinatorial-cost-aware-portfolio::without_skill::run-1": {
+        "consensus_pass": false,
+        "median_score": 0.825,
+        "raw_passes": [
+          false,
+          false
+        ]
+      },
+      "pos-combinatorial-cost-aware-portfolio::without_skill::run-2": {
+        "consensus_pass": false,
+        "median_score": 0.75,
+        "raw_passes": [
+          false,
+          false
+        ]
+      },
+      "pos-combinatorial-cost-aware-portfolio::without_skill::run-3": {
+        "consensus_pass": false,
+        "median_score": 0.8049999999999999,
+        "raw_passes": [
+          false,
+          false
+        ]
+      }
+    }
+  },
+  "blind_comparison": {
+    "judge_requested": "openai-codex/gpt-5.4",
+    "summary": {
+      "primary": 8,
+      "baseline": 1,
+      "tie": 0,
+      "unknown": 0
+    },
+    "details": [
+      {
+        "comparison_task_id": "pos-mutation-recurring-lane-contract::run-1::blind-with_skill-vs-without_skill",
+        "winner": "A",
+        "winning_role": "primary",
+        "reasoning": "A correctly blocks scheduling until a completed CI baseline exists, rejects blindly enforcing the 60 floor, narrows to a pilot with demonstrated fault-class value, reconciles the 165/90 mismatch, and requires ownership plus safeguards against repeated operational failure."
+      },
+      {
+        "comparison_task_id": "pos-mutation-recurring-lane-contract::run-2::blind-with_skill-vs-without_skill",
+        "winner": "B",
+        "winning_role": "primary",
+        "reasoning": "B directly rejects enforcing the copied 60 floor before a completed target-CI baseline, requires demonstrated fault-class value, narrows scope while reconciling the 165/90 capacity mismatch, and blocks scheduling until explicit ownership and operational controls exist."
+      },
+      {
+        "comparison_task_id": "pos-mutation-recurring-lane-contract::run-3::blind-with_skill-vs-without_skill",
+        "winner": "A",
+        "winning_role": "primary",
+        "reasoning": "A best matches the criteria by refusing to schedule before a completed baseline, rejecting the uncalibrated copied 60 floor, requiring demonstrated mutation value on a narrower scope, reconciling runtime with timeout, and insisting on ownership plus operational-failure controls before expansion."
+      },
+      {
+        "comparison_task_id": "pos-mutation-survivor-triage-cuefree::run-1::blind-with_skill-vs-without_skill",
+        "winner": "B",
+        "winning_role": "primary",
+        "reasoning": "B more clearly rejects restoring the old 73% as an acceptance goal while still cleanly separating status categories and triaging survivors into actionable test/code decisions."
+      },
+      {
+        "comparison_task_id": "pos-mutation-survivor-triage-cuefree::run-2::blind-with_skill-vs-without_skill",
+        "winner": "B",
+        "winning_role": "primary",
+        "reasoning": "B best matches all criteria by rejecting the raw 70% restoration goal, explicitly separating survivor/no-coverage/timeout/compile/infrastructure statuses, and classifying completed survivors into actionable behavior, equivalent/redundant, dead-code, or domain-invalid code decisions."
+      },
+      {
+        "comparison_task_id": "pos-mutation-survivor-triage-cuefree::run-3::blind-with_skill-vs-without_skill",
+        "winner": "A",
+        "winning_role": "baseline",
+        "reasoning": "A best meets all three criteria by explicitly rejecting the raw score goal, separating incomplete-status categories in reporting and acceptance, and giving a concrete survivor triage and acceptance plan without overrelying on the percentage."
+      },
+      {
+        "comparison_task_id": "pos-combinatorial-cost-aware-portfolio::run-1::blind-with_skill-vs-without_skill",
+        "winner": "B",
+        "winning_role": "primary",
+        "reasoning": "B satisfies all three criteria explicitly, especially the required shadow-plus-sabotage evidence before deleting/replacing coverage, which A omits."
+      },
+      {
+        "comparison_task_id": "pos-combinatorial-cost-aware-portfolio::run-2::blind-with_skill-vs-without_skill",
+        "winner": "A",
+        "winning_role": "primary",
+        "reasoning": "A better satisfies all criteria by preserving exact registry enrollment and the known regression, mixing exhaustive cheap slices with constrained pairwise plus explicit variable-strength groups, and explicitly requiring shadow and mutation/sabotage evidence before deleting existing tests."
+      },
+      {
+        "comparison_task_id": "pos-combinatorial-cost-aware-portfolio::run-3::blind-with_skill-vs-without_skill",
+        "winner": "B",
+        "winning_role": "primary",
+        "reasoning": "B best satisfies all criteria by preserving exact enrollment and the fixed 4-factor regression, adding explicit variable-strength groups atop exhaustive and constrained pairwise coverage, and requiring shadow plus mutation/sabotage evidence before retiring prior tests."
+      }
+    ]
+  },
+  "trigger_evaluation": {
+    "gpt-5.3-codex-spark": {
+      "summary": {
+        "total": 8,
+        "passed": 7,
+        "failed": 1,
+        "pass_rate": 0.875
+      },
+      "results": [
+        {
+          "query": "A/B testing copy",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "are these mocks drifting from reality?",
+          "should_trigger": true,
+          "triggered": false,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "fix flaky tests",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test cricket score rules",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test invariants for this type",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "testing a product idea",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write QA project-management plan with no code",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write tests for this parser",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ]
+    },
+    "gpt-5.4": {
+      "summary": {
+        "total": 8,
+        "passed": 7,
+        "failed": 1,
+        "pass_rate": 0.875
+      },
+      "results": [
+        {
+          "query": "A/B testing copy",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "are these mocks drifting from reality?",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "fix flaky tests",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test cricket score rules",
+          "should_trigger": false,
+          "triggered": true,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test invariants for this type",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "testing a product idea",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write QA project-management plan with no code",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write tests for this parser",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ]
+    },
+    "gpt-5.4-mini": {
+      "summary": {
+        "total": 8,
+        "passed": 4,
+        "failed": 4,
+        "pass_rate": 0.5
+      },
+      "results": [
+        {
+          "query": "A/B testing copy",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "are these mocks drifting from reality?",
+          "should_trigger": true,
+          "triggered": false,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "fix flaky tests",
+          "should_trigger": true,
+          "triggered": false,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test cricket score rules",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test invariants for this type",
+          "should_trigger": true,
+          "triggered": false,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "testing a product idea",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write QA project-management plan with no code",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write tests for this parser",
+          "should_trigger": true,
+          "triggered": false,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ]
+    },
+    "gpt-5.5": {
+      "summary": {
+        "total": 8,
+        "passed": 8,
+        "failed": 0,
+        "pass_rate": 1.0
+      },
+      "results": [
+        {
+          "query": "A/B testing copy",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "are these mocks drifting from reality?",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "fix flaky tests",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test cricket score rules",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test invariants for this type",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "testing a product idea",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write QA project-management plan with no code",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write tests for this parser",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ]
+    },
+    "gpt-5.6-luna": {
+      "summary": {
+        "total": 8,
+        "passed": 7,
+        "failed": 1,
+        "pass_rate": 0.875
+      },
+      "results": [
+        {
+          "query": "A/B testing copy",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "are these mocks drifting from reality?",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "fix flaky tests",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test cricket score rules",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test invariants for this type",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "testing a product idea",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write QA project-management plan with no code",
+          "should_trigger": false,
+          "triggered": true,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write tests for this parser",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ]
+    },
+    "gpt-5.6-sol": {
+      "summary": {
+        "total": 8,
+        "passed": 7,
+        "failed": 1,
+        "pass_rate": 0.875
+      },
+      "results": [
+        {
+          "query": "A/B testing copy",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "are these mocks drifting from reality?",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "fix flaky tests",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test cricket score rules",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test invariants for this type",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "testing a product idea",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write QA project-management plan with no code",
+          "should_trigger": false,
+          "triggered": true,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write tests for this parser",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ]
+    },
+    "gpt-5.6-terra": {
+      "summary": {
+        "total": 8,
+        "passed": 7,
+        "failed": 1,
+        "pass_rate": 0.875
+      },
+      "results": [
+        {
+          "query": "A/B testing copy",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "are these mocks drifting from reality?",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "fix flaky tests",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test cricket score rules",
+          "should_trigger": false,
+          "triggered": true,
+          "pass": false,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "test invariants for this type",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "testing a product idea",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write QA project-management plan with no code",
+          "should_trigger": false,
+          "triggered": false,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        },
+        {
+          "query": "write tests for this parser",
+          "should_trigger": true,
+          "triggered": true,
+          "pass": true,
+          "returncode": 0,
+          "timed_out": false
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "All issue prompts are committed public tune cases, not private holdout/holdback.",
+    "Generation manifest hash was not captured before execution; prepared-task hash and evaluated skill-tree hash are retained.",
+    "Bulky candidates/traces remain ignored and are authenticated only by run-tree digests while present.",
+    "E58-E60 one-shot results are excluded from effect-size claims."
+  ],
+  "evidence_state": "Historical v0.4.0 generation/scoring attestation. Hashes below identify pre-v0.6 inputs and must not be rewritten as if v0.6 generated the candidates.",
+  "current_harness_compatibility": {
+    "version": "0.6.0",
+    "manifest_schema_version": 2,
+    "manifest_sha256": "e5b0460e42869e39bfa3754ae55433a51e211f87545ed039a18750a2bbe2c888",
+    "telemetry_migration": {
+      "mode": "copied run tree; historical artifacts unchanged",
+      "run_dirs_seen": 126,
+      "changed_to_schema_v3": 126
+    },
+    "rebenchmark": {
+      "with_skill_passed": 24,
+      "without_skill_passed": 9,
+      "runs_per_arm": 63,
+      "matrix_changed": false
+    },
+    "remaining_limits": [
+      "No general case selector.",
+      "Ablation preparation still fans across irrelevant answer cases.",
+      "answer_ref is not consumed by judge preparation.",
+      "Script assertions are trusted host execution, not a sandbox.",
+      "Configured model label is not provider-attested identity."
+    ],
+    "release_commit": "abd8d7d57aae788658bc293abac1dab80dfb24ac",
+    "targeted_ablation_prepare": {
+      "input_cases": 3,
+      "emitted_with_skill_rows": 3,
+      "emitted_ablation_rows": 3,
+      "ablation_variants": [
+        "ablation:no-reference-matrix"
+      ],
+      "mode": "materialized"
+    },
+    "offline_trigger_matrix_smoke": {
+      "agent": "stub",
+      "runs_per_query": 3,
+      "observations": 24,
+      "passed": 21,
+      "incomplete_observations": 0,
+      "trace_artifacts": true,
+      "interpretation": "Harness reporting smoke; not model-quality evidence."
+    },
+    "current_reproduction_script_sha256": {
+      "skill-development/scripts/prepare-issue20-21-harness.py": "452ab4675ef05ea616e86091c13c00d1ddf5134a0f74f9b4d5bf31f54677bd2e",
+      "skill-development/scripts/run-blind-comparison.py": "47b3c536094c29b9033533de1a004ad153c6f5fb5c72dc9287522b68d8623785",
+      "evals/oracles/development_fixture_oracle.py": "3260f892c505b2d3f4bad3b1a4d62dfb274a6d62ab49b1368eb738416addcd45"
+    },
+    "manifest_cases": 48,
+    "manifest_ablations": 10,
+    "renumbering": {
+      "before_rebase": "E55-E60",
+      "current": "E64-E69",
+      "reason": "origin/main PR #25 added E55-E63 before this branch was rebased; shared case IDs and candidate artifacts are unchanged."
+    },
+    "pre_rebase_native_codex_smoke": {
+      "requested_model": "gpt-5.6-sol",
+      "case_id": "pos-mutation-recurring-lane-contract",
+      "runs_per_arm": 1,
+      "with_skill_output_chars": 3691,
+      "without_skill_output_chars": 4131,
+      "with_skill_skill_invoked": true,
+      "without_skill_skill_invoked": false,
+      "telemetry_schema_version": 3,
+      "objective_passes": {
+        "with_skill": 0,
+        "without_skill": 0
+      },
+      "interpretation": "Runner compatibility/isolation smoke on the issue branch before rebasing over PRs #24/#25; not a lift estimate or final-tree evaluation.",
+      "run_tree_digest": {
+        "sha256": "2978b0e480f7d55f4d09a7b6a6b28aa303e96c637c94e50863530d66e2cbeb35",
+        "files": 12
+      }
+    }
+  },
+  "historical_reproduction_script_hashes_at_attestation": {
+    "skill-development/scripts/prepare-issue20-21-harness.py": "7613f402819fc376c3f2cf90f5c99848e8c54d89e0190e2714157ca72b5f91cd",
+    "skill-development/scripts/run-blind-comparison.py": "47b3c536094c29b9033533de1a004ad153c6f5fb5c72dc9287522b68d8623785",
+    "evals/oracles/development_fixture_oracle.py": "9d9539ebdcc32794946ec4ee6fd66a09e0b7503e18288e41a4f7525a5e583c7f",
+    "evals/oracles/repair_codex_runs.py": "3ec5f3feeb5943553e540c51366a5871d3b9556d49e6b2bf901a9d7300c4c92c"
+  },
+  "hash_verification": {
+    "verifier": "skill-development/scripts/verify-issues20-21-attestation.py",
+    "tree_framing": "SHA-256 over sorted files: relative UTF-8 path, NUL, raw contents, NUL; __pycache__ excluded.",
+    "run_tree_framing": "SHA-256 over sorted files: relative UTF-8 path, NUL, binary SHA-256 of contents. Historical run digests include output.md, metadata.json, and trace.jsonl only.",
+    "historical_manifest": {
+      "status": "authentication_only",
+      "reason": "The exact pre-rebase v0.4 manifest was not retained after the v0.6/schema-v2 migration."
+    },
+    "historical_oracle_tree": {
+      "status": "authentication_only",
+      "reason": "The exact pre-rebase oracle tree was not retained; current fixtures include upstream E55-E63 and renumbered issue fixtures E64-E69."
+    },
+    "prepared_tasks": {
+      "status": "authentication_only",
+      "reason": "The exact ignored prepared JSONL was not retained; its absolute workspace paths prevent honest reconstruction."
+    },
+    "historical_skill_tree": {
+      "status": "authentication_only",
+      "reason": "The exact evaluated pre-rebase installable tree was not retained; current skill includes upstream PR #24/#25 changes."
+    },
+    "historical_reproduction_scripts": {
+      "status": "authentication_only",
+      "reason": "The scripts evolved during the v0.6 migration; the legacy v0.4 Codex repair utility was removed after native --output-last-message validation."
+    }
+  }
+}

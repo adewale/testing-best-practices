@@ -183,15 +183,15 @@ breaks propagation, so the computation can be wholly broken and the test still
 passes. (In #2 the *assertion* is weak; here the *SUT* destroys the signal.)
 
 **Fix — surface the infection so it can propagate:**
-1. The move other reviews miss: assert on the **pre-mask / internal value**, not
-   the masked output — test the inner function directly, or assert the value
-   *before* it is clamped/defaulted (Voas's "assertions in their place").
-   Asserting the clamped output still can't see an infection that clamps to a
-   valid value.
+1. Prefer a smaller public seam or explicit observable diagnostic before
+   reaching into private state. If the pre-mask value is a stable, approved
+   testability seam, assert it directly; asserting only the clamped/defaulted
+   output still cannot see an unrelated infection that the mask absorbs.
 2. If a mask hides a genuine defect, surface it (raise/return an error) rather
    than testing around the silent recovery.
-3. Run mutation testing on masked modules — surviving mutants are exactly the
-   faults the mask hides (see `references/mutation-testing.md`).
+3. Run focused mutation testing on masked modules. A survivor is a triage
+   question—it may expose a hidden fault, but may also be equivalent, irrelevant,
+   or specified masking (see `references/mutation-testing.md`).
 
 **Restraint — when the mask is the specified behavior, don't flag it**: if
 clamping volume to `[0,100]`, graceful degradation, a documented fallback, or

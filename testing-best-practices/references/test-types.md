@@ -237,6 +237,20 @@ harness that loads the data and runs assertions. No implementation is privileged
 See `references/differential-testing.md`.
 **Cost**: Medium (harness per language), but amortized across all implementations.
 
+### Combinatorial / Covering-Array Tests
+**Trigger**: ANY of these apply:
+- [ ] Five or more discrete configuration, feature, plugin, format, browser, or runtime factors interact
+- [ ] The Cartesian product is too large but exact interaction obligations can be stated
+- [ ] New registry members must enter a shared conformance matrix automatically
+
+**How**: Keep mandatory regressions and exact one-way registry enrollment; exhaust
+cheap finite slices; use constraints plus a pairwise base; raise strength only
+for named high-risk groups; move expensive boundary rows to measured slower
+lanes. Validate replacement portfolios in shadow before deleting tests. See
+`references/combinatorial-testing.md`.
+**Cost**: Medium design/modeling cost; execution ranges from low to high depending
+on selected boundaries.
+
 ## Tier 3: Use With Caution
 
 ### Visual Regression / Screenshot Tests
@@ -246,12 +260,15 @@ See `references/differential-testing.md`.
   mask timestamps and dynamic content
 
 ### Mutation Testing
-- **When helpful**: After quality audit reveals low assertion density; for
-  security-critical code; when coverage is 80%+ but bug escapes persist
-- **Costs**: 10-100x test runtime. Requires interpretation.
-- **Mitigations**: Run on specific critical modules, nightly not per-commit
+- **When helpful**: After a quality audit reveals weak assertions; for
+  high-consequence code; when bugs escape despite high execution coverage
+- **Costs**: Often far slower than one test run and always requires survivor
+  interpretation; measure on the target project/tool.
+- **Mitigations**: Prefer changed code or focused critical modules. Schedule only
+  under the baseline/owner/budget/stop contract in
+  `references/mutation-testing.md`.
 - **Tools**: mutmut (Python), Stryker (JS/TS), PIT (Java), gremlins (Go),
-  cargo-mutants (Rust). See `references/mutation-testing.md`.
+  cargo-mutants (Rust).
 
 ### Performance / Benchmark Tests
 - **When helpful**: A 2x slowdown would be a user-visible bug
@@ -301,7 +318,8 @@ suite that re-enacts the type system at runtime.
 | Differential | Low | Low | Fast | Very High | Very Low |
 | Golden file | Low | Low | Fast | Medium | Very Low |
 | Pirate | Medium | Low | Medium | High | Very Low |
+| Combinatorial | Medium | Medium | Varies | Model-dependent | Varies |
 | Screenshot | High | High | Slow | Medium | High |
-| Mutation | High | Low | Very Slow | Very High | Very Low |
+| Mutation | High | Low | Very Slow | Diagnostic | Medium |
 
 *Low power but catches embarrassing/critical issues

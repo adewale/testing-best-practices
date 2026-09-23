@@ -24,6 +24,8 @@ P0_PATTERNS = [
     ("SKILL.md", r"Every test should verify what SHOULD be present", "positive+negative assertion rule is universal instead of scoped"),
     ("SKILL.md", r"delete the downstream checks \*\*and their tests\*\*", "downstream check deletion wording needs explicit safety preconditions"),
     ("references/correctness-by-construction.md", r"Email\{\} outside the package compiles", "Go unexported-field example should use zero value, not external Email{} literal"),
+    ("references/mutation-testing.md", r'mutant "survived" \(test gap found\)', "a surviving mutant must be triaged, not automatically labeled a test gap"),
+    ("references/mutation-testing.md", r"80% mutation score with 70% coverage", "arbitrary mutation-score ranking encourages score-as-target policy"),
 ]
 
 P1_PATTERNS = [
@@ -32,6 +34,8 @@ P1_PATTERNS = [
     ("references/test-types.md", r"3\+ assertions per test, happy \+ sad path, no network/filesystem", "unit rules need temp-dir/in-memory and assertion-count calibration"),
     ("references/go.md", r"Every test should use this", "Go table-driven guidance is over-universal"),
     ("references/test-types.md", r"See the matching reference file", "generic cross-link should point to concrete local reference"),
+    ("references/mutation-testing.md", r"Run nightly or weekly", "cadence-first mutation guidance needs the recurring-lane operating contract"),
+    ("references/test-types.md", r"nightly not per-commit", "mutation mitigation should prefer focused/changed-code use and route scheduling to its operating contract"),
 ]
 
 LOCAL_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
