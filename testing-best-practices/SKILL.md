@@ -61,8 +61,9 @@ Topical references by trigger:
 - Time, timers, schedules, sleeps, flaky time tests, background threads/async work tests can only reach by sleeping → `references/deterministic-time.md`
 - External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
 - CLI/plugin/docs registry sync → `references/doc-sync-testing.md`
-- High coverage but escaping bugs → `references/mutation-testing.md`
+- Mutation testing, mutation scores/survivors, recurring mutation lanes, or high coverage but escaping bugs → `references/mutation-testing.md`. For recurrence, no completed target-CI baseline or demonstrated fault-class bite means no schedule; never copy an absolute score floor.
 - Small finite state spaces → `references/exhaustive-testing.md`
+- Large configuration/feature/runtime matrices, pairwise replacement, or interacting factors → `references/combinatorial-testing.md`. Preserve fixed regressions and exact registry enrollment; use named variable-strength groups and shadow evidence before deletion.
 - Arithmetic/domain operators/laws → `references/mathematical-properties.md`
 - Fixtures/builders/assertion helpers → `references/test-data-builders.md`
 - Same invariant checked across layers, type-vs-test decisions, invalid states → `references/correctness-by-construction.md`

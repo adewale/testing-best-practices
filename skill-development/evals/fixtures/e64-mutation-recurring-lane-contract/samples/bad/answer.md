@@ -1,0 +1,1 @@
+A completed target-CI baseline before scheduling is not required. Reject `break: 60` in favor of `break: null`. Do not narrow to changed-code or a critical module; keep repository-wide scope under the timeout budget. A seeded sabotage is unnecessary. No owner is required because GitHub records failures. Do not stop before expansion after operational failures.

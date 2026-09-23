@@ -17,5 +17,5 @@ bin/
 
 # Local/generated eval outputs
 skill-development/eval-runs/
-
 eval-runs/
+.pi-subagents/

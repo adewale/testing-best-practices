@@ -7,33 +7,33 @@
 ## 1. Mutation Testing
 
 ### What It Is
-Mutation testing evaluates the quality of your test suite by introducing small, deliberate faults ("mutants") into the source code and checking whether existing tests detect them. If a test fails when a mutant is introduced, the mutant is "killed." If all tests still pass, the mutant "survived," indicating a gap in test coverage.
+Mutation testing evaluates the quality of your test suite by introducing small, deliberate faults ("mutants") into the source code and checking whether existing tests detect them. If a test fails when a mutant is introduced, the mutant is "killed." If all tests still pass, the mutant "survived" and requires triage; it may expose a behavior/oracle gap, equivalence, redundancy, dead code, specified masking, or an irrelevant operator.
 
 ### How It Works
 1. The mutation tool parses the source code and generates mutants by applying **mutation operators**: replacing `+` with `-`, `>` with `>=`, `True` with `False`, deleting statements, changing return values, etc.
-2. For each mutant, the full test suite (or a relevant subset) is run.
-3. A **mutation score** is calculated: `killed mutants / total mutants * 100%`.
-4. Surviving mutants are reported with their location and the specific change made, letting developers write targeted tests.
+2. For each mutant, the tool runs relevant tests (selection behavior varies by tool/configuration).
+3. The tool reports statuses and a mutation score using its own denominator rules; compare only like-for-like configurations.
+4. Separate actual survivors (completed with tests passing) from no-coverage, timeout, compile/static, and infrastructure statuses; then triage survivors as actionable gaps, equivalent/redundant changes, dead code, specified masking, or irrelevant operators.
 
 ### When to Use It
 - When code coverage is high (e.g., 90%+) but you suspect tests are weak (they execute code without truly asserting behavior).
 - For critical business logic, security-sensitive code, or financial calculations.
-- As a periodic quality check, not necessarily on every CI run (due to cost).
+- As a focused on-demand or changed-code diagnostic; schedule only with a measured baseline, owner, budget, and decision path.
 
 ### Benefits
 - Measures test suite *effectiveness*, not just coverage.
 - Finds tests that execute code but don't actually verify outcomes.
-- Identifies dead code and equivalent mutants.
-- Directly produces actionable feedback: "write a test that catches this specific change."
+- Can reveal dead code and suspected equivalent/redundant mutants, although equivalence cannot be classified perfectly in general.
+- Produces concrete changes to inspect; some justify a test, while others justify code removal, exclusion, or no action.
 
 ### Disadvantages/Costs
-- **Extremely slow**: each mutant requires a test suite run. A project with 1,000 mutants and a 30-second test suite takes ~8 hours.
+- **Potentially very slow**: naive execution can approach one relevant test run per mutant, although modern tools use selection, reuse, parallelism, and incremental history. Measure the target configuration.
 - **Equivalent mutants**: some mutations produce functionally identical code (e.g., `x * 1` to `x * -1` when x is always 0), creating false positives.
 - **Noisy output**: large projects generate thousands of mutants; triaging results requires effort.
 - Requires good test suite speed to be practical.
 
 ### Tools
-- **Stryker** (JavaScript/TypeScript, C#, Scala) - the most mature and widely-used mutation testing framework. Supports incremental mutation testing.
+- **Stryker** (JavaScript/TypeScript, C#, Scala) - supports incremental mutation testing.
 - **mutmut** (Python) - pragmatic Python mutation tester with good defaults. Caches results between runs.
 - **PIT / pitest** (Java/JVM) - fast JVM mutation tester with IDE integration. Used in production at many companies.
 - **gremlins** (Go) - mutation testing for Go programs.
@@ -547,11 +547,11 @@ fn test_sort_exhaustive() {
 ## 10. Combinatorial Testing / Pairwise Testing
 
 ### What It Is
-Combinatorial testing systematically tests interactions between input parameters. **Pairwise testing** (2-way) ensures every combination of any two parameter values appears in at least one test case. **N-wise testing** generalizes this to N parameters. Based on the empirical observation that most bugs are triggered by interactions of 2-3 parameters (not all parameters simultaneously).
+Combinatorial testing systematically tests interactions between modeled input parameters. **Pairwise testing** (2-way) ensures every feasible combination of any two parameter values appears in at least one test case. **N-wise testing** generalizes this to N parameters. Historical fault corpora found many observed failures involved relatively few factors, but distributions varied by system and do not establish a universal detection probability. See `research/COMBINATORIAL_TEST_PORTFOLIOS.md` for the primary-source qualification.
 
 ### How It Works
 1. Identify the input parameters and their possible values.
-2. Use a combinatorial algorithm (covering arrays) to generate a minimal set of test cases that covers all N-way interactions.
+2. Use a combinatorial algorithm (covering arrays) to generate a smaller set of test cases that covers the required feasible N-way interactions; practical heuristic generators do not necessarily prove global minimality.
 3. For pairwise (2-way): if you have 4 parameters with 3 values each, exhaustive testing needs 3^4 = 81 tests; pairwise needs ~9-12 tests.
 4. Run the generated test cases.
 5. Analyze results. If needed, increase to 3-way or higher for more rigor.
@@ -564,9 +564,9 @@ Combinatorial testing systematically tests interactions between input parameters
 - API testing with many optional parameters.
 
 ### Benefits
-- Dramatically reduces test count while maintaining strong interaction coverage.
-- Empirically proven: NIST research shows 2-way testing catches 60-90% of bugs; 3-way catches 90-99%.
-- Systematic, not random -- guarantees coverage of specified interactions.
+- Can dramatically reduce test count while preserving declared interaction obligations.
+- NIST's historical studies motivate low-order interaction coverage, but their system-specific interaction-degree observations are not promises that pairwise/3-way suites catch fixed percentages of bugs.
+- Systematic, not random -- guarantees coverage of specified feasible modeled interactions.
 - Well-understood mathematical foundation (covering arrays).
 
 ### Disadvantages/Costs
@@ -1547,7 +1547,7 @@ def test_llm_response():
 
 | Testing Type | Best For | Cost | Automation Level |
 |---|---|---|---|
-| Mutation Testing | Verifying test quality | High (compute) | Fully automated |
+| Mutation Testing | Verifying test quality | High (compute + triage) | Generation/execution automated; interpretation required |
 | Metamorphic Testing | Oracle-free systems, ML | Medium | Automated |
 | Chaos Engineering | Distributed system resilience | High (risk) | Semi-automated |
 | Concolic Testing | Security, deep path coverage | High (compute) | Fully automated |
@@ -1582,7 +1582,7 @@ The following testing types are **most relevant** for a coding agent's testing s
 3. **Contract Testing** -- agents building microservices should recommend Pact or similar.
 4. **Characterization Testing** -- agents working with legacy code should write characterization tests before refactoring.
 5. **Property-Based Testing** (via metamorphic/exhaustive) -- agents should augment example-based tests with property-based tests for algorithmic code.
-6. **Combinatorial Testing** -- agents should use pairwise testing when dealing with many configuration parameters.
+6. **Combinatorial Testing** -- agents should preserve mandatory regressions and exact enrollment, then use constrained pairwise and risk-selected variable strength when configuration products are too large.
 7. **Smoke vs Sanity** -- agents should understand and correctly categorize these.
 8. **Accessibility Testing** -- agents building web UIs should include axe-core checks.
 9. **Data Quality Testing** -- agents working on data pipelines should include data validation.
