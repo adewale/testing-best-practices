@@ -111,7 +111,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 | `references/deterministic-time.md` | Code depends on time, timers, scheduling, flaky time tests, or background work reachable only by sleeps |
 | `references/vcr-cassettes.md` | Code calling external APIs |
 | `references/doc-sync-testing.md` | CLI commands or plugin hooks in docs |
-| `references/mutation-testing.md` | Verifying test suite catches real bugs |
+| `references/mutation-testing.md` | Focused mutation diagnostics, survivor triage, and recurring-lane safety |
+| `references/combinatorial-testing.md` | Large interacting-factor matrices and cost-aware covering portfolios |
 | `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |
 | `references/mathematical-properties.md` | Domain objects with arithmetic |
 | `references/test-data-builders.md` | Need factories, fixtures, assertion helpers, or customer-readable examples |
@@ -124,10 +125,10 @@ The project now uses layered evals rather than a single public prompt table:
 | Layer | Current state |
 |------|---------------|
 | Public prompt evals | 12 cases in `evals/evals.json` across Python, TypeScript, Go, and Rust |
-| Development eval suite | 63 cases in `skill-development/evals/evals.json`: 34 write, 13 upgrade, 14 assess, 2 detect |
-| Hidden probes | 14 hard/adversarial probes tracked by eval-health metadata |
-| Shared benchmark | 42 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
-| Fixture oracles | 40 fixture oracles; each good sample passes and bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round |
+| Development eval suite | 69 cases in `skill-development/evals/evals.json`: 38 write, 13 upgrade, 16 assess, 2 detect |
+| Hidden probes | 17 hard/adversarial probes tracked by eval-health metadata |
+| Shared benchmark | 48 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
+| Fixture oracles | 46 fixture oracles; each good sample passes and bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | 110/110, including adversarial-probe coverage for new technique sections |
@@ -144,7 +145,7 @@ Eval definitions, rubrics, schema, scorecards, and health tracking live under `s
 
 ## Research corpus
 
-Built from analysis of testing patterns across 16 GitHub accounts and three engineering organizations, backed by 25 Markdown research files:
+Built from analysis of testing patterns across 16 GitHub accounts and three engineering organizations, backed by 27 Markdown research files:
 
 - [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython; books: TDD: By Example (red/green/refactor, test list, green-bar strategies, testing patterns), XP Explained (test-what-might-break, 100% rule, ten-minute build), Tidy First? (behavior vs. structure changes)
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule; GOOS book: walking skeleton, double feedback loop, listen-to-your-tests, mock roles not objects, allow queries / expect commands
@@ -189,7 +190,8 @@ testing-best-practices/             # The installable skill (ships to agents)
     fuzzing.md                      # Topic: coverage-guided targets, corpora, replay, campaign tiers
     golden-file-testing.md          # Topic: transformation pipelines, snapshot tests, digest roundtrips
     mathematical-properties.md      # Topic: algebraic laws
-    mutation-testing.md             # Topic: test quality verification and PIE/fault propagation
+    mutation-testing.md             # Topic: focused mutation diagnostics and recurring-lane safety
+    combinatorial-testing.md        # Topic: cost-aware covering portfolios and registry enrollment
     property-based-testing.md       # Topic: generators, independent oracles, collection, replay
     test-data-builders.md           # Topic: factories, fixtures, and customer-readable examples
     vcr-cassettes.md                # Topic: external APIs and recorded fixtures
@@ -198,6 +200,7 @@ research/                           # Source material (does not ship)
   METHODOLOGY.md                    # How we research a practitioner (a floor, not a ceiling)
   LESSONS_FROM_*.md                 # One file per practitioner/account/org (incl. LESSONS_FROM_GOOGLE_TESTING_BLOG.md)
   DESIGN_FOR_TESTABILITY_LITERATURE.md
+  COMBINATORIAL_TEST_PORTFOLIOS.md
   ANTIPATTERNS.md
   CORRECTNESS_BY_CONSTRUCTION.md
   DECISION_TREE.md
@@ -205,14 +208,14 @@ research/                           # Source material (does not ship)
 
 evals/                              # Public/shared prompt eval assets
   evals.json                        # 12 public prompt evals across 4 languages
-  shared-benchmark.json             # 42 shared benchmark cases
+  shared-benchmark.json             # 48 shared benchmark cases
   shared-harness.md                 # Shared harness contract
   files/                            # Fixture code for public eval prompts
   fixtures/                         # Runnable prompt fixtures
   oracles/                          # Shared fixture oracle helpers
 
 skill-development/                  # Development-only evals and quality gates
-  evals/                            # 63 rubric evals, schema, scorecard, health plan, fixture oracles
+  evals/                            # 69 rubric evals, schema, scorecard, health plan, fixture oracles
   scripts/check-all.py              # Runs all local non-LLM gates
   scripts/                          # Static audit, oracle runners, mini-repos, prompt-eval runner, scoring tools
 
@@ -229,7 +232,7 @@ Run all local checks before proposing skill changes:
 python3 skill-development/scripts/check-all.py
 ```
 
-That command runs the static audit, eval-shape checks, fixture oracle self-tests, mutation-backed mini-repos, eval-health report, best-practices audit, and skill version scoring. Generated prompt runs and caches should stay out of the installable skill directory.
+That command runs the static audit, eval-shape checks, pinned Skill Eval Harness manifest/ablation validation, fixture oracle self-tests, mutation-backed mini-repos, eval-health report, best-practices audit, and skill version scoring. Generated prompt runs and caches should stay out of the installable skill directory.
 
 ## Scope and limitations
 

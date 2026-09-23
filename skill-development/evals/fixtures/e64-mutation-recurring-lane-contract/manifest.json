@@ -1,0 +1,14 @@
+{
+  "eval_id": "E64-mutation-recurring-lane-contract",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "requires a completed target-CI baseline before scheduling",
+    "narrows scope, requires demonstrated fault-class bite, and checks runtime against timeout/compute budget",
+    "names an owner and notification-or-blocking path",
+    "rejects an unmeasured copied score floor",
+    "stops or narrows repeated operational/untriaged failures before scope growth"
+  ]
+}

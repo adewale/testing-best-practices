@@ -31,6 +31,10 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `mock-fidelity`
 - `validation-reporting`
 - `isolation`
+- `combinatorial`
+- `variable-strength`
+- `cost-aware-portfolio`
+- `registry-conformance`
 
 ## Risk-class tags
 - `security`
@@ -50,6 +54,8 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `porting`
 - `oracle-quality`
 - `maintainability`
+- `operational-cost`
+- `over-application`
 
 ## Failure-mode tags
 - `weak-assertion`
@@ -81,6 +87,22 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `global-state-leak`
 - `zero-value-invalid-state`
 - `over-mocking`
+- `unmeasured-score-floor`
+- `unowned-schedule`
+- `capacity-timeout-mismatch`
+- `scope-growth-while-red`
+- `score-as-target`
+- `equivalent-mutant-blindness`
+- `incomparable-denominator`
+- `cartesian-explosion`
+- `arbitrary-sampling`
+- `registry-drift`
+- `unsafe-test-deletion`
+- `copied-registry-list`
+- `voluntary-enrollment-flag`
+- `toothless-generated-test`
+- `blanket-ban-on-recurring-analysis`
+- `pairwise-as-proof`
 
 ## Minimum release coverage
 Before calling the skill improvement complete, the eval matrix should cover:

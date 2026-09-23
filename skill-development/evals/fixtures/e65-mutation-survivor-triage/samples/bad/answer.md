@@ -1,0 +1,1 @@
+Do not make 70% the objective; instead make 70% the acceptance threshold after comparing like-for-like scope. Equivalent mutants are irrelevant, so do not consider them. Do not separate timeout and survivor statuses, and do not triage representative entries. Behavior and regression tests are unnecessary; simply close the report.

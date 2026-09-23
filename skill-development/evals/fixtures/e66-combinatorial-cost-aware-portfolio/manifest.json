@@ -1,0 +1,14 @@
+{
+  "eval_id": "E66-combinatorial-cost-aware-portfolio",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "preserves mandatory regressions and exact canonical-registry enrollment",
+    "combines exhaustive cheap slices with constrained pairwise coverage",
+    "uses variable strength only for named high-risk groups",
+    "separates expensive boundaries by measured cost/cadence",
+    "requires shadow replay plus mutation/sabotage evidence before deletion"
+  ]
+}

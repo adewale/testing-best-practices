@@ -1,9 +1,18 @@
 # Progress
 
 ## Status
-Plan execution complete to the current repository's automatable boundary: static gates pass, eval shape/core-language gates pass, leading-skills comparison is documented, 10 fixture oracles self-test good/bad samples, and one fixture-backed prompt run passed all 10 executable oracles.
+Issues #20/#21 implementation is complete to the repository's automatable boundary: 69 development evals validate, 17 hidden probes are registered, 46 fixture oracles self-test good/bad samples, all three mutation mini-repos kill their seeded fault, the best-practices audit is 110/110, and the installable boundary is clean. E64–E69 are also registered in the shared Skill Eval Harness manifest. A seven-requested-model OpenAI run plus three-repeat public-tune E64–E66 evaluation found an aggregate objective arm difference of 24/63 with skill versus 9/63 without, concentrated in `gpt-5.6-sol`; E67–E69 remain regression/restraint probes rather than stable effect-size evidence.
 
-## Completed
+## Issues #20/#21 completed
+- Reframed mutation testing as focused survivor triage; separated survivor/tool statuses; removed arbitrary score ranking and blanket nightly/P0 language.
+- Added the conservative recurring-lane contract: demonstrated fault-class bite, target-CI baseline, focused scope, capacity, owner/action path, no uncalibrated floor, expiry, and operational-failure stop rule.
+- Added primary-source combinatorial portfolio research and shipped constrained pairwise, variable-strength, registry enrollment, cost-vector, telemetry, and shadow-validation guidance.
+- Corrected the unsupported universal 2-way/3-way percentages and practical-generator minimality claim.
+- Added E64–E69 plus six executable fixtures and hardened their semantic/polarity checks after independent review.
+- Updated README/changelog/taxonomy/token reports and recorded ablation results in `evals/scorecard.md`.
+- Generated the historical E64–E69 multi-model evidence with Skill Eval Harness v0.4.0, then upgraded the installed tool and manifest to v0.6.0/schema v2. A migrated copy of all 126 candidates preserved the 24/63 versus 9/63 objective matrix; a native v0.6 Codex smoke confirmed lossless answers, schema-v3 telemetry, workspace isolation, and skill-invocation normalization.
+
+## Historical v0.3 foundation
 - Verified public skill sources via GitHub raw files and recorded exact URLs/SHAs in `research.md`.
 - Searched <https://www.skills.sh/?q=tdd> and <https://www.skills.sh/?q=testing>, plus skills.sh sitemaps, and documented leading skills in `LEADING_SKILLS_COMPARISON.md`.
 - Rewrote `SKILL.md` as a compact operational router with first-90-seconds checklist, reference matrix, calibrated TDD/assertion guidance, scope-control rule, validation loop, and final report contract.
@@ -46,22 +55,22 @@ python3 scripts/static-audit.py
 # OK: P0 findings: 0, P1 findings: 0
 
 python3 scripts/score-evals.py --evals evals/evals.json
-# OK: 27 evals, required taxonomy and core language coverage present.
+# OK: 69 evals, required taxonomy and core language coverage present.
 
 python3 scripts/run-fixture-oracles.py
-# OK: 10 fixture oracles passed self-tests.
+# OK: 46 fixture oracles passed self-tests.
 
 python3 scripts/check-all.py
 # OK: all local gates passed
 ```
 
-## Fixture-backed prompt run
+## Historical fixture-backed prompt run
 - Historical runner: `delegate` subagents with fresh context, instructed to load the updated skill and read each fixture prompt only.
 - Oracle result: 10 passed, 0 failed.
 - Scorecard updated with `3*` for the 10 oracle-backed evals (`*` = executable oracle pass, not full human/rubric release score).
 - Raw generated `eval-runs/` directories are intentionally ignored; tracked artifacts are fixtures, oracles, summaries, and scorecards.
 
 ## Remaining non-automated work
-- Human/rubric-score the saved candidates if a full 0–4 release score is needed.
-- Add a prompt runner if this repo will execute model comparisons automatically.
-- Add hidden/rotating variants after collecting more transcript data.
+- Add genuinely private issue-specific holdout/holdback prompts and answer-key plumbing; the answer-key path is now explicitly namespaced under `x_local_evaluator` because v0.6.0 does not consume `answer_ref` for judges.
+- Repeat E67–E69 before using their cross-model rates as anything beyond regression/restraint evidence.
+- Keep local oracle self-tests, mutation mini-repos, semantic oracles, and release audits. Use v0.6 native materialized ablations, with local filtering until the harness can scope ablations to relevant cases.

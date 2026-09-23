@@ -1,0 +1,15 @@
+{
+  "eval_id": "E67-combinatorial-registry-sabotage",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "one_way_cases(registry) derives cases from the supplied canonical registry",
+    "tests assert exact registry/case ID equality",
+    "an injected fake member is enrolled without editing a copied list",
+    "the fake's deliberately broken behavior fails contract_passes",
+    "the candidate's unittest suite passes"
+  ],
+  "execution_policy": "Candidate grading is AST-only. Dynamic import/unittest execution is allowed only for checked-in samples under TBP_TRUSTED_FIXTURE_SELF_TEST=1."
+}

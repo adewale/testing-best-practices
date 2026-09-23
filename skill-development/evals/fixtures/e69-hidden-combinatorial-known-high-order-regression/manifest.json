@@ -1,0 +1,13 @@
+{
+  "eval_id": "E69-hidden-combinatorial-known-high-order-regression",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "retains a known four-way regression as a fixed mandatory test",
+    "states pairwise tuple coverage is not a correctness or deletion proof",
+    "may still use pairwise for the remaining broad matrix",
+    "rejects portfolio minimization that deletes repaired-fault evidence"
+  ]
+}

@@ -207,6 +207,30 @@ and continued frontier saturation. Skill-file reads were observed in 11/12
 with-skill cells; Terra E59 passed without reading the mounted skill, so it is
 not evidence of treatment uptake.
 
+## Issue #20/#21 initial Pi ablation (2026-07-22)
+
+_Current IDs E64–E69; the original run used E55–E60 before rebasing over PRs #24/#25. These results evaluate the issue guidance before those upstream skill changes, not the final combined tree._
+Model: `gpt-5.6-sol`, final `n=1` per arm. The with-arm preloaded the local working-tree `SKILL.md` plus the relevant new reference; the without-arm used model priors without project skills. Results are semantic fixture-oracle outcomes, not full rubric scores. Generated candidates remain ignored/runtime artifacts rather than tracked source.
+
+| Eval | With local guidance | Without guidance | Interpretation |
+|---|---:|---:|---|
+| E64 mutation recurring-lane contract | PASS | FAIL | Discriminates after review hardening: with-guidance rejected bootstrap `break: 60`, chose a focused pilot, required demonstrated fault-class bite/baseline/owner/capacity, and distinguished operational/untriaged failures from acted-on findings. |
+| E65 cue-free mutation survivor triage | PASS | FAIL | Public tune probe discriminates in this initial Pi run: with-guidance rejected the round target, separated actual survivors from incomplete/tool statuses, independently raised equivalence, and proposed like-for-like triage. |
+| E66 combinatorial cost-aware portfolio | PASS | FAIL | Discriminates: with-guidance kept exact enrollment and the four-way regression, exhausted cheap slices, used constrained pairwise plus a named 3-way group, compared multiple cost classes, and required shadow + mutation/sabotage evidence before deletion. |
+| E67 registry sabotage | PASS | PASS | Public API/task cues the executable behavior; retain as a regression oracle, not marginal-value evidence. Hardened inspection now requires the candidate's own isolated fake injection, exact ID assertion, and failing contract assertion. |
+| E68 valid recurring lane keep-probe | PASS | PASS | Restraint held with all conservative prerequisites present, including demonstrated fault-class bite and expiry/removal policy. |
+| E69 known high-order regression keep-probe | PASS | PASS | Restraint held: both arms explicitly retained repaired-fault evidence alongside pairwise rows. |
+
+Independent review invalidated the first E64 attestation and exposed polarity/keyword false positives in E64/E65/E66/E67/E68/E69. Before the final run, the oracles were hardened with explicit positive/negative decisions, separate conjunctive obligations, dynamic fake injection, and near-miss bad samples. Fixture-validity fixes also added demonstrated fault-class bite and expiry to E68, and separated survivor statuses in E65. The table records only the post-fix rerun/rescore.
+
+## Skill Eval Harness multi-model follow-up (2026-07-22)
+
+Skill Eval Harness v0.4.0 generated the historical E64–E69 seven-model run. The public-tune E64–E66 set ran three times per model and arm: 126 candidates, with isolated workspaces and deterministic script oracles. Aggregate objective results were **24/63 with skill versus 9/63 without**. By eval: E64 3/21 vs 0/21, E65 14/21 vs 9/21, and E66 7/21 vs 0/21. The effect is model-dependent: `gpt-5.6-sol` scored 9/9 with versus 1/9 without, while several smaller/older models still omitted required obligations after reading the guidance. The installed harness and manifest are now v0.6.0/schema v2; migrating a copy of all 126 runs to telemetry schema v3 preserved the objective matrix exactly.
+
+For requested model `gpt-5.6-sol`, a two-judge-run consensus scored E64 and E66 3/3 with versus 0/3 without; E65 passed 3/3 in both arms. E64 without had one split candidate (raw decisions 1 pass / 5 fail), so consensus outcomes are not unanimous judgments. A separately blinded comparison preferred with-skill outputs in 8/9 pairs. The pinned pre-issues skill scored 0/3 on E64, 2/3 on E65, and 0/3 on E66, versus 3/3 each for the current skill. Trigger evaluation ranged from 4/8 on `gpt-5.4-mini` to 8/8 on `gpt-5.5`; most models scored 7/8.
+
+Full model matrix, harness commands, integration defects, and retained local-only features: `HARNESS_COMPARISON.md`. Bounded provenance and decoded trigger/blind/judge evidence are tracked in `attestations/issues-20-21-multimodel.json`; bulky candidates and judge transcripts remain ignored runtime artifacts.
+
 ## Release gates
 - [ ] Static P0 count is 0.
 - [ ] Static P1 count is 0 or explicitly deferred.

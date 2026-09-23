@@ -2227,7 +2227,7 @@
           "mock-reality-drift"
         ]
       },
-      "prompt": "Our TypeScript tests use MSW handlers with hand-written JSON and call them \u201cVCR cassettes.\u201d The provider changed `status` to `statusCode`. What should we change?",
+      "prompt": "Our TypeScript tests use MSW handlers with hand-written JSON and call them “VCR cassettes.” The provider changed `status` to `statusCode`. What should we change?",
       "fixture": "MSW hand-written mocks drifting from provider schema.",
       "expected_behavior": [
         "Explain hand-written MSW handlers are deterministic mocks, not recorded cassettes.",
@@ -3519,7 +3519,7 @@
           ]
         },
         "rebuttals": [
-          "Go's sync idioms make drain methods common; priors may suffice \u2014 measured by the without-arm.",
+          "Go's sync idioms make drain methods common; priors may suffice — measured by the without-arm.",
           "iter10 isolation: both arms passed even with the time seam removed (without-arm built Event/WaitGroup synchronization seams from priors alone); per the pre-registered rule the standalone reference was folded into deterministic-time.md, keeping only the validated guardrails."
         ]
       },
@@ -3653,7 +3653,7 @@
         },
         "rebuttals": [
           "Go reviewers commonly flag blanket recover from priors; the without-arm measures that prior.",
-          "iter11 ablation at ceiling: the Go without-arm also caught it from priors ('any implementation that always returns 42 \u2014 or 0 \u2014 would pass; the test cannot distinguish correct behavior from a stub') and even flagged the dead recover() path. Detection generalizes without #14; the section was trimmed to its non-redundant framing core."
+          "iter11 ablation at ceiling: the Go without-arm also caught it from priors ('any implementation that always returns 42 — or 0 — would pass; the test cannot distinguish correct behavior from a stub') and even flagged the dead recover() path. Detection generalizes without #14; the section was trimmed to its non-redundant framing core."
         ]
       },
       "eval_health": {
@@ -3715,7 +3715,7 @@
         },
         "rebuttals": [
           "A model might suggest extra boundary cases (harmless); the oracle tolerates that and only fails on flag+remove.",
-          "iter11: restraint held in both arms \u2014 the without-arm also did not flag the spec'd clamp (priors don't over-apply absent the section), so this probe guards the with-section behavior specifically, not a with-vs-without delta."
+          "iter11: restraint held in both arms — the without-arm also did not flag the spec'd clamp (priors don't over-apply absent the section), so this probe guards the with-section behavior specifically, not a with-vs-without delta."
         ]
       },
       "eval_health": {
@@ -3780,7 +3780,7 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened twice against real candidates: docstring-quoted old assertions (AST scoping) and literals carried in plain parametrize tuples (parametrize-call capture, with the rejects-malformed parametrize excluded from the enshrined-bug check)."
         },
         "rebuttals": [
-          "A candidate could compute expectations from an independent literal ('https://example.com' + path) which is semantically safer than reusing BASE_URL; the oracle only forbids BASE_URL/base-derived expectations, so this passes \u2014 acceptable, the shared-bug channel is what matters.",
+          "A candidate could compute expectations from an independent literal ('https://example.com' + path) which is semantically safer than reusing BASE_URL; the oracle only forbids BASE_URL/base-derived expectations, so this passes — acceptable, the shared-bug channel is what matters.",
           "A candidate might fix urls.py instead of the tests; the deliverable wording pins the test file, and the oracle only reads the tests."
         ]
       },
@@ -3841,7 +3841,7 @@
             "fixture oracle good/pass + bad/fail self-test (2026-08-28); mutants verified distinct from real impl"
           ],
           "baseline_probes": "2026-08-28, sonnet sub-agent, n=1/arm: both no-guidance and guided arms PASSED the oracle (distinct non-default values like \"alpha\"/\"first\" from habit; both mutants killed). Baseline ceiling -> regression guard. Hardening option if a discriminator is wanted: numeric-ID variant where 0 is the tempting value, or a prompt that supplies default-valued example rows to copy.",
-          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. (E56 itself probed earlier at ceiling; E62 is its hardened hidden variant \u2014 also at ceiling.)"
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. (E56 itself probed earlier at ceiling; E62 is its hardened hidden variant — also at ceiling.)"
         },
         "rebuttals": [
           "A capable baseline may already use distinct values from habit; if probes show ceiling, this eval guards regressions rather than discriminating versions (recorded in eval_health).",
@@ -3881,7 +3881,7 @@
       "expected_behavior": [
         "Flags the loop/branch and the computed expectation that re-derives the rule under test (can share a bug with the implementation).",
         "Flags the shared mutable module state mutated in setUpClass far from the assertion (cause-effect distance, cross-test coupling).",
-        "Recommends per-behavior tests with local, literal data \u2014 explicit even at the cost of duplication."
+        "Recommends per-behavior tests with local, literal data — explicit even at the cost of duplication."
       ],
       "red_flags": [
         "Recommends consolidating even more setup into shared fixtures/helpers or centralizing the discount formula in a test helper.",
@@ -3901,17 +3901,17 @@
         ]
       },
       "validity": {
-        "claim": "The skill makes agents assess test code by DAMP/readability criteria \u2014 logic-free tests, adjacent cause and effect \u2014 instead of applying production-code DRY instincts (Google Testing Blog: DAMP 2019, Don't Put Logic in Tests 2014, Keep Cause and Effect Clear 2017).",
+        "claim": "The skill makes agents assess test code by DAMP/readability criteria — logic-free tests, adjacent cause and effect — instead of applying production-code DRY instincts (Google Testing Blog: DAMP 2019, Don't Put Logic in Tests 2014, Keep Cause and Effect Clear 2017).",
         "warrant": "The oracle's failure shapes are exactly the two miss modes: not seeing the computed expectation/shared fixture, or 'fixing' by DRY-ing harder; passing requires the DAMP-direction recommendation.",
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
           ],
-          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real candidate that recommended parametrize-with-named-rows (a legitimate DAMP-compatible fix) \u2014 parametr/subtest now count as the split recommendation; the over-DRY guard still fails the bad sample."
+          "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real candidate that recommended parametrize-with-named-rows (a legitimate DAMP-compatible fix) — parametr/subtest now count as the split recommendation; the over-DRY guard still fails the bad sample."
         },
         "rebuttals": [
           "The logic-flag regex matches the bare word 'loop', so an assessment that only praises the loop could partially credit check 1; the split and over-DRY checks still gate it (the bad sample passes check 1 and still fails).",
-          "An assessment could recommend pytest.mark.parametrize with named literal rows \u2014 that is a legitimate DAMP-compatible fix; the oracle accepts it because parametrize language matches the split/explicit-data patterns."
+          "An assessment could recommend pytest.mark.parametrize with named literal rows — that is a legitimate DAMP-compatible fix; the oracle accepts it because parametrize language matches the split/explicit-data patterns."
         ]
       },
       "eval_health": {
@@ -3944,7 +3944,7 @@
       "fixture": "evals/fixtures/e58-hidden-narrow-not-roundtrip: adversarial restraint probe for the incoming 'prefer narrow assertions' guidance. The whole-state canonical comparison is the roundtrip contract; narrowing it creates false confidence (golden-file-testing.md: a digest that ignores fields gives false confidence).",
       "expected_behavior": [
         "Defends keeping the whole-state canonical roundtrip comparison; explains that narrowing would let save/load silently drop non-quota state.",
-        "May additionally suggest a separate narrow behavior test for the quota change \u2014 the correct home for narrow assertions."
+        "May additionally suggest a separate narrow behavior test for the quota change — the correct home for narrow assertions."
       ],
       "red_flags": [
         "Agrees with the reviewer and narrows/replaces the canonical-dump comparison with quota-only assertions.",
@@ -3972,10 +3972,10 @@
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
           ],
-          "ablation_matrix": "2026-08-28 restraint check: current and new arms x sonnet/opus all defended the whole-state roundtrip after reading the landed narrow-assertions text \u2014 the boundary holds; probe guards the with-section behavior, not a with-vs-without delta."
+          "ablation_matrix": "2026-08-28 restraint check: current and new arms x sonnet/opus all defended the whole-state roundtrip after reading the landed narrow-assertions text — the boundary holds; probe guards the with-section behavior, not a with-vs-without delta."
         },
         "rebuttals": [
-          "A candidate could both defend the roundtrip and separately recommend narrowing it (contradictory); the oracle's defense check would pass it \u2014 accepted as unlikely and reviewable by the judge layer.",
+          "A candidate could both defend the roundtrip and separately recommend narrowing it (contradictory); the oracle's defense check would pass it — accepted as unlikely and reviewable by the judge layer.",
           "Register this probe in audit-best-practices.py section_probes when a narrow-assertions section lands in the skill, mirroring E40/E41/E46/E49/E54."
         ]
       },
@@ -4038,7 +4038,7 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md."
         },
         "rebuttals": [
-          "A candidate could compare a filtered subset dict ({'balance':...,'transactions':...}) \u2014 semantically narrow; the oracle accepts it because neither asdict nor schema_version appears and balance/transactions asserts are present.",
+          "A candidate could compare a filtered subset dict ({'balance':...,'transactions':...}) — semantically narrow; the oracle accepts it because neither asdict nor schema_version appears and balance/transactions asserts are present.",
           "A candidate might pin all defaults via a helper and keep broad equality without asdict(); the schema_version check still catches the treadmill variant, and the balance-literal requirement keeps the assertion behavioral."
         ]
       },
@@ -4069,7 +4069,7 @@
         ]
       },
       "prompt": "After a fake drifted from the real store and shipped a bug, add tests that keep FakeStore honest with respect to RealStore (both provided, real works offline).",
-      "fixture": "evals/fixtures/e60-python-fake-contract-weld: RealStore (sqlite, KeyError on missing) + FakeStore. Runtime oracle runs candidate pytest three ways: pristine must pass; a drifted fake (get->None) must fail; a drifted real (get->None) must fail \u2014 only a shared contract suite run against BOTH implementations passes all three.",
+      "fixture": "evals/fixtures/e60-python-fake-contract-weld: RealStore (sqlite, KeyError on missing) + FakeStore. Runtime oracle runs candidate pytest three ways: pristine must pass; a drifted fake (get->None) must fail; a drifted real (get->None) must fail — only a shared contract suite run against BOTH implementations passes all three.",
       "expected_behavior": [
         "Write one contract suite parameterized over FakeStore and RealStore asserting the shared contract (set/get roundtrip, missing key raises KeyError, overwrite, delete).",
         "The same expectations execute against the real implementation, not only the fake."
@@ -4102,7 +4102,7 @@
         },
         "rebuttals": [
           "sqlite TEXT affinity can surprise a candidate that stores non-str values; the prompt pins keys/values to str, so pristine-run failures from typed values are instruction-following misses, not oracle noise.",
-          "A candidate could duplicate the suite (one copy per impl) instead of parameterizing \u2014 semantically equivalent welding; the runtime oracle accepts it, and the judge layer handles style."
+          "A candidate could duplicate the suite (one copy per impl) instead of parameterizing — semantically equivalent welding; the runtime oracle accepts it, and the judge layer handles style."
         ]
       },
       "eval_health": {
@@ -4194,7 +4194,7 @@
         ]
       },
       "prompt": "Write Go unit tests for a per-account integer Ledger (Add/Balance) whose package doc example deliberately uses account 0 and amount 0.",
-      "fixture": "evals/fixtures/e62-hidden-go-numeric-default-values: hardened variant of E56 per its recorded rebuttal \u2014 the doc comment seeds zero values to copy. Runtime oracle: pass real impl, kill ignore-id (credits account 0) and ignore-amount (credits nothing) mutants.",
+      "fixture": "evals/fixtures/e62-hidden-go-numeric-default-values: hardened variant of E56 per its recorded rebuttal — the doc comment seeds zero values to copy. Runtime oracle: pass real impl, kill ignore-id (credits account 0) and ignore-amount (credits nothing) mutants.",
       "expected_behavior": [
         "Use distinct non-zero account IDs and amounts despite the zero-valued doc example, and assert isolation between accounts.",
         "Tests pass the correct implementation and kill both seeded mutants."
@@ -4256,7 +4256,7 @@
         ]
       },
       "prompt": "A teammate cites DAMP guidance to demand deleting an ArticleFactory value builder and inlining full article dicts into all eleven tests. Assess whether they are right.",
-      "fixture": "evals/fixtures/e63-hidden-damp-keeps-builders: adversarial restraint probe for the DAMP/logic-in-tests guidance. The factory sets asserted-upon fields explicitly per test \u2014 the sanctioned DRY; inlining everything is the over-application.",
+      "fixture": "evals/fixtures/e63-hidden-damp-keeps-builders: adversarial restraint probe for the DAMP/logic-in-tests guidance. The factory sets asserted-upon fields explicitly per test — the sanctioned DRY; inlining everything is the over-application.",
       "expected_behavior": [
         "Defend keeping the value-construction factory: DAMP targets hidden behavior (logic, computed expectations, distant fixtures), not value-object helpers with explicit asserted-upon fields.",
         "May suggest tightening (e.g. set the asserted id explicitly) without deleting the builder."
@@ -4287,10 +4287,10 @@
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
           ],
-          "ablation_matrix": "2026-08-28 restraint check: current and new arms x sonnet/opus all kept the builder after reading the landed DAMP text \u2014 the sanctioned-DRY boundary holds."
+          "ablation_matrix": "2026-08-28 restraint check: current and new arms x sonnet/opus all kept the builder after reading the landed DAMP text — the sanctioned-DRY boundary holds."
         },
         "rebuttals": [
-          "A candidate could defend the builder and separately recommend inlining (contradictory); the defense check passes it \u2014 accepted as unlikely and judge-reviewable.",
+          "A candidate could defend the builder and separately recommend inlining (contradictory); the defense check passes it — accepted as unlikely and judge-reviewable.",
           "Register this probe in audit-best-practices.py section_probes when the DAMP/logic-in-tests section lands, mirroring E58's registration for narrow assertions."
         ]
       },
@@ -4299,6 +4299,436 @@
         "saturation_status": "hidden_probe",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-08-28"
+      }
+    },
+    {
+      "id": "E64-mutation-recurring-lane-contract",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "mutation",
+          "cost-aware-portfolio"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "calibration",
+          "operational-cost"
+        ],
+        "failure_modes": [
+          "unmeasured-score-floor",
+          "unowned-schedule",
+          "capacity-timeout-mismatch",
+          "scope-growth-while-red"
+        ]
+      },
+      "prompt": "Set up repository-wide nightly Stryker mutation testing with thresholds.break: 60 everywhere. The broad lane is estimated at 165 runner-minutes under a 90-minute timeout, has no completed CI baseline, and has no notification owner.",
+      "fixture": "Unsafe mutation-program request combining an impossible timeout, copied floor, universal scope, no baseline, and no result owner.",
+      "expected_behavior": [
+        "Reject scheduling until the exact target-CI configuration completes and is retained as a baseline.",
+        "Narrow to changed code or a critical module whose measured runtime fits timeout and compute budgets.",
+        "Require evidence that the focused lane bites on a named fault class before recurring execution.",
+        "Require an owner and notification-or-blocking decision path.",
+        "Keep results informational and reject an unmeasured copied floor.",
+        "Stop, fix, narrow, or disable repeated operational failures or untriaged red results before expanding scope; correctly acted-on product findings are not operational failures."
+      ],
+      "red_flags": [
+        "Emits a cron workflow with break: 60.",
+        "Treats the timeout as a cost cap even though the work cannot complete.",
+        "Expands universal enrollment before one successful run."
+      ],
+      "rubric_focus": [
+        "D",
+        "F",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e64-mutation-recurring-lane-contract/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Fixture oracle self-test requires baseline, focused scope, capacity, owner/action path, calibrated floor, and stop-before-expansion behavior."
+        ],
+        "judge_checks": [
+          "Score whether the response prevents the documented operational failure rather than merely making the workflow more elaborate."
+        ]
+      },
+      "validity": {
+        "claim": "The skill prevents an agent from institutionalizing an unmeasured, unowned, capacity-impossible mutation program.",
+        "warrant": "The prompt combines the motivating incident's load-bearing defects, and passing requires changing the operating decision rather than polishing the requested cron.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A public prose oracle can be keyword-gamed; E68 provides the opposite hidden keep-probe and prompt ablation is still required.",
+          "The three-failure stop count is repository policy, not an experimentally derived universal constant."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "local-working-tree-vs-no-skill-2026-07-22"
+        ],
+        "last_reviewed": "2026-07-22"
+      }
+    },
+    {
+      "id": "E65-mutation-survivor-triage",
+      "critical": true,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "mutation",
+          "assertion-quality"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "calibration"
+        ],
+        "failure_modes": [
+          "score-as-target",
+          "equivalent-mutant-blindness",
+          "incomparable-denominator"
+        ]
+      },
+      "prompt": "Our mutation dashboard fell from 73% to 51% after the module tripled in size. The report now contains hundreds of entries, and several analysis jobs did not complete. Management wants an acceptance plan whose goal is back above 70%. Assess that request and propose the plan.",
+      "fixture": "Cue-free score-restoration holdback with changed scope, many report entries, and incomplete jobs but no mention of equivalence or status semantics.",
+      "expected_behavior": [
+        "Explicitly reject restoration of the aggregate score as the objective.",
+        "Require like-for-like scope, operators, and denominator before trend comparison.",
+        "Separate actual survivors from no-coverage, timeout, compile/static, and infrastructure statuses.",
+        "Independently classify representative survivors including equivalent, redundant, dead-code, specified-masking, invalid-operator, and actionable cases.",
+        "Use reviewed behavior/code decisions rather than a round score as acceptance."
+      ],
+      "red_flags": [
+        "Adds break: 70 or kills mutants until the dashboard reaches 70%.",
+        "Treats every survivor as a missing test.",
+        "Compares scores across materially different scopes without qualification."
+      ],
+      "rubric_focus": [
+        "C",
+        "D",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e65-mutation-survivor-triage/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Fixture oracle requires explicit score-framing rejection, spontaneous equivalence classification, survivor/status separation, comparable denominator, triage, and actionable decisions."
+        ],
+        "judge_checks": [
+          "Confirm mutation remains useful as guidance without being promoted to a correctness target."
+        ]
+      },
+      "validity": {
+        "claim": "The skill makes agents interpret mutation survivors and scores as scoped diagnostic evidence rather than a quality target.",
+        "warrant": "Passing requires rejecting the user-supplied target while still producing a concrete survivor-triage and test-improvement plan.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A capable base model may independently challenge the score target; with/without ablation must measure marginal value.",
+          "Equivalent-mutant rates from one Java study must not be generalized as a fixed denominator correction.",
+          "Text-oracle polarity is guarded by explicit rejection patterns and a negated-challenge bad sample, but judge review remains necessary."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [
+          "local-working-tree-vs-no-skill-2026-07-22"
+        ],
+        "last_reviewed": "2026-07-22"
+      }
+    },
+    {
+      "id": "E66-combinatorial-cost-aware-portfolio",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "combinatorial",
+          "variable-strength",
+          "cost-aware-portfolio",
+          "mutation"
+        ],
+        "risk_classes": [
+          "operational-cost",
+          "maintenance-drift",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "cartesian-explosion",
+          "arbitrary-sampling",
+          "registry-drift",
+          "unsafe-test-deletion"
+        ]
+      },
+      "prompt": "Design a ten-minute blocking test portfolio for 15 renderer families, 16 Looks, 21 Palettes, four outputs, five boundaries, and four runtimes. Some combinations are invalid; pure registry/schema slices are cheap enough to enumerate fully; browser/hosted rows are expensive; registries grow automatically; and a known four-factor regression exists.",
+      "fixture": "Heterogeneous renderer matrix requiring exact enrollment, constraints, pairwise base, variable strength, mandatory regression retention, cost separation, and shadow validation.",
+      "expected_behavior": [
+        "Derive exact one-way enrollment from canonical registries and preserve the known high-order regression.",
+        "Exhaust cheap finite slices and generate a constrained pairwise base.",
+        "Elevate only named high-risk groups to 3-way or higher coverage.",
+        "Separate expensive boundaries using runtime, setup, flake/rerun, maintenance, review, and triage costs.",
+        "Require shadow replay plus repaired-fault and mutation/sabotage evidence before deletion."
+      ],
+      "red_flags": [
+        "Runs the full Cartesian product.",
+        "Samples an arbitrary handful with no interaction obligations.",
+        "Claims pairwise catches a universal percentage or deletes the four-way regression.",
+        "Uses the latest wall-clock duration as an automatic gate."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e66-combinatorial-cost-aware-portfolio/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Fixture oracle checks the full decision ladder and validation-before-deletion behavior."
+        ],
+        "judge_checks": [
+          "Reject both exhaustive-everything and sample-a-few extremes; score explicit obligations, costs, and residual risks."
+        ]
+      },
+      "validity": {
+        "claim": "The skill can design a risk- and cost-aware portfolio between Cartesian explosion and arbitrary sampling.",
+        "warrant": "The fixture forces heterogeneous costs, invalid combinations, registry growth, and a known high-order fault that no single pairwise slogan can handle.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "A prose plan can name every technique without producing a valid array; E67 checks executable enrollment and sabotage behavior.",
+          "No generated row-count optimum is asserted because real constraints and a chosen generator are absent."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "active",
+        "known_discriminates_versions": [
+          "local-working-tree-vs-no-skill-2026-07-22"
+        ],
+        "last_reviewed": "2026-07-22"
+      }
+    },
+    {
+      "id": "E67-combinatorial-registry-sabotage",
+      "critical": true,
+      "mode": "write",
+      "taxonomy": {
+        "language_framework": "python/unittest",
+        "techniques": [
+          "combinatorial",
+          "registry-conformance",
+          "mutation"
+        ],
+        "risk_classes": [
+          "maintenance-drift",
+          "oracle-quality",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "copied-registry-list",
+          "voluntary-enrollment-flag",
+          "toothless-generated-test"
+        ]
+      },
+      "prompt": "Write a stdlib Python conformance harness whose one_way_cases(registry) derives one case per canonical REGISTRY member and contract_passes(case) checks behavior. Add exact-set tests plus an isolated deliberately broken fake proving automatic enrollment and oracle failure.",
+      "fixture": "Untrusted Python registry-harness response graded with AST-only shape/data-flow checks; the checked-in reference samples separately exercise dynamic fake injection and unittest discovery.",
+      "expected_behavior": [
+        "Derive cases from the supplied registry rather than a copied expected list.",
+        "Assert exact equality between registry IDs and generated one-way case IDs.",
+        "Inject a fake member in isolated test state and prove it is enrolled automatically.",
+        "Prove the fake's generated contract returns false for the intended behavior."
+      ],
+      "red_flags": [
+        "Maintains a second hard-coded member list.",
+        "Uses covered: true or another voluntary opt-in flag.",
+        "Only asserts the fake case exists without proving its bad behavior is rejected."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e67-combinatorial-registry-sabotage/oracle.py performs AST-only portfolio/test shape and connected data-flow checks for model candidates"
+        ],
+        "runtime_checks": [
+          "Trusted fixture self-tests set TBP_TRUSTED_FIXTURE_SELF_TEST=1, import only checked-in samples, inject an unseen broken member, require exact generated IDs and contract_passes=false, and run unittest discovery."
+        ],
+        "judge_checks": [
+          "Confirm the candidate tests the generator/oracle rather than merely executing every registry member."
+        ]
+      },
+      "validity": {
+        "claim": "The skill produces a structurally connected registry-enrollment and sabotage test design; the trusted reference fixture demonstrates the intended runtime protocol.",
+        "warrant": "AST analysis requires the candidate test to copy the canonical registry, inject a named fake, derive cases, assert exact IDs, select the generated fake, and assert contract failure. This does not prove candidate runtime semantics.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test",
+            "trusted checked-in sample only: dynamic fake-member injection and unittest execution"
+          ]
+        },
+        "rebuttals": [
+          "The fixed public function shape narrows implementation freedom but makes the static obligation auditable; dynamic model-generated code is not executed on the grading host.",
+          "One seeded contract failure proves only that contract, not all registry behavior."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "hard",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-07-22"
+      }
+    },
+    {
+      "id": "E68-hidden-mutation-valid-recurring-lane",
+      "critical": false,
+      "mode": "write",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "mutation",
+          "cost-aware-portfolio"
+        ],
+        "risk_classes": [
+          "over-application",
+          "calibration"
+        ],
+        "failure_modes": [
+          "blanket-ban-on-recurring-analysis"
+        ]
+      },
+      "prompt": "A changed-code authorization mutation lane killed a seeded auth-bypass sabotage and pinned the repaired fault as a regression. It completed six retained CI baselines in 45-65 seconds under a five-minute timeout. It has a security-team owner, actionable review annotations, infrastructure-failure paging, no aggregate score floor, quarterly review, and automatic disablement after 90 days without an actionable result. Should it run on protected-branch updates?",
+      "fixture": "Adversarial keep-probe where demonstrated fault-class/oracle bite and every recurring-lane operating precondition are satisfied; conditional refusal is the failure.",
+      "expected_behavior": [
+        "Clearly approve the focused recurring lane.",
+        "Recognize its demonstrated fault-class bite, retained baselines, capacity, ownership, notification path, changed-code scope, and actionable policy.",
+        "Keep periodic review/stop criteria without turning them into a prohibition."
+      ],
+      "red_flags": [
+        "Says mutation testing should never be scheduled.",
+        "Demands disabling a lane whose evidence satisfies the operating contract.",
+        "Invents an aggregate score target."
+      ],
+      "rubric_focus": [
+        "D",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e68-hidden-mutation-valid-recurring-lane/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Keep-probe oracle requires approval plus recognition of baseline, capacity, owner/action path, and focused scope."
+        ],
+        "judge_checks": [
+          "Pass only if the agent applies the checklist as a contract rather than a blanket ban."
+        ]
+      },
+      "validity": {
+        "claim": "The mutation operating contract prevents unsafe schedules without suppressing a justified focused recurring lane.",
+        "warrant": "All stated preconditions are intentionally satisfied, making refusal evidence of over-application.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "Protected-branch cadence may still be project-specific; the eval asks for a reasoned approval, not one exact trigger mechanism."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-07-22"
+      }
+    },
+    {
+      "id": "E69-hidden-combinatorial-known-high-order-regression",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "combinatorial",
+          "regression"
+        ],
+        "risk_classes": [
+          "over-application",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "unsafe-test-deletion",
+          "pairwise-as-proof"
+        ]
+      },
+      "prompt": "A fixed regression covers Safari x PNG x custom font x transparent background. A new pairwise matrix lacks that exact four-way row. Delete the regression so the suite contains only generated pairwise cases.",
+      "fixture": "Adversarial restraint probe: repaired high-order evidence must survive portfolio minimization even when the broad generated base is pairwise.",
+      "expected_behavior": [
+        "Reject deletion and retain the four-way regression as a mandatory fixed test.",
+        "Explain that pairwise tuple coverage is not correctness proof and does not cover this repaired fault.",
+        "Allow pairwise coverage for the remaining broad matrix alongside the regression."
+      ],
+      "red_flags": [
+        "Deletes the regression for suite uniformity or minimum row count.",
+        "Claims pairwise coverage subsumes known higher-order faults."
+      ],
+      "rubric_focus": [
+        "B",
+        "D",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e69-hidden-combinatorial-known-high-order-regression/oracle.py over candidate output"
+        ],
+        "runtime_checks": [
+          "Keep-probe oracle requires explicit retention and a pairwise limitation explanation."
+        ],
+        "judge_checks": [
+          "Confirm optimization never outranks direct repaired-fault evidence."
+        ]
+      },
+      "validity": {
+        "claim": "The combinatorial guidance does not cause agents to delete known high-order regressions in favor of a generated low-order matrix.",
+        "warrant": "The prompt makes the missing four-way row explicit, so deletion is an unambiguous over-application failure.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-test"
+          ]
+        },
+        "rebuttals": [
+          "The probe is intentionally narrow; separate evals are needed for subtler redundancy among tests covering the same repaired fault."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-07-22"
       }
     }
   ]

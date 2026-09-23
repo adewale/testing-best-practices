@@ -1,15 +1,17 @@
 {
-  "version": 1,
+  "version": 2,
   "skill_name": "testing-best-practices",
   "harness": {
     "name": "skill-eval-harness",
     "url": "https://github.com/adewale/skill-eval-harness",
-    "version": ">=0.4.0"
+    "version": "==0.6.0"
   },
   "skill_paths": [
     "testing-best-practices/SKILL.md"
   ],
-  "old_skill_paths": [],
+  "old_skill_paths": [
+    "skill-development/github-skill-origin-main/testing-best-practices/SKILL.md"
+  ],
   "variants": [
     "with_skill",
     "without_skill"
@@ -52,7 +54,9 @@
             "clock",
             "fake timers"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -61,7 +65,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -70,7 +76,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -93,7 +101,9 @@
           "name": "detect-api-contract-vcr",
           "type": "regex",
           "pattern": "(?is)(recorded real response|replay fixture|provider shape|schema contract|contract fixture|no live network|sanitize secrets)",
-          "description": "Requires a recorded/contract-backed API test strategy rather than echoing VCR."
+          "description": "Requires a recorded/contract-backed API test strategy rather than echoing VCR.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -102,7 +112,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -111,7 +123,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -134,7 +148,9 @@
           "name": "detect-cli-doc-sync",
           "type": "regex",
           "pattern": "(?is)(--help|help output|golden help|command registry|compare README commands|documented command.{0,80}implemented|docs.{0,80}current command output)",
-          "description": "Requires a concrete docs-code synchronization oracle for commands."
+          "description": "Requires a concrete docs-code synchronization oracle for commands.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -143,7 +159,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -152,7 +170,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -178,7 +198,9 @@
             "escaping",
             "oracle"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -187,7 +209,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -196,7 +220,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -221,7 +247,9 @@
           "values": [
             "finite"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -230,7 +258,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -239,7 +269,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -262,7 +294,9 @@
           "name": "detect-mock-reality-drift",
           "type": "regex",
           "pattern": "(?is)(contract test|recorded real response|cassette|provider shape|schema contract|drift sentinel)",
-          "description": "Requires a contract/recorded-response remedy for mock reality drift."
+          "description": "Requires a contract/recorded-response remedy for mock reality drift.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -271,7 +305,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -280,7 +316,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -305,7 +343,9 @@
           "values": [
             "promote"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -314,7 +354,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -323,7 +365,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -350,7 +394,9 @@
             "fast-check",
             "never crashes"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "validation",
@@ -359,7 +405,9 @@
             "run",
             "validation",
             "assert"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -368,7 +416,9 @@
             "Technique selection",
             "Evidence",
             "No mock drift"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -393,7 +443,9 @@
           "values": [
             "not property"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -401,7 +453,9 @@
           "rubric": [
             "Proportionality",
             "Type-vs-test safety"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -426,7 +480,9 @@
           "values": [
             "public behavior"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -434,7 +490,9 @@
           "rubric": [
             "Proportionality",
             "Type-vs-test safety"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -459,7 +517,9 @@
           "values": [
             "keep"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -467,7 +527,9 @@
           "rubric": [
             "Proportionality",
             "Type-vs-test safety"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -492,7 +554,9 @@
           "values": [
             "proportionate",
             "not mutation"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -500,7 +564,9 @@
           "rubric": [
             "Proportionality",
             "Type-vs-test safety"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -525,8 +591,10 @@
         {
           "name": "red-evidence-honesty",
           "type": "regex",
-          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['\u2019]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
-          "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence."
+          "pattern": "(?:cannot|can't|won't|do\\s+not|don't|shouldn't|Do\\s+\\*\\*not\\*\\*)\\s+(?:honestly\\s+)?claim(?:\\s+full|\\s+fully\\s+verified|\\s+completed)?\\s+(?:TDD|red[- ]green|red/green)|red\\s+phase\\s+(?:isn['’]?t|is\\s+not|is)\\s+(?:documented|verified|observed|unverified)|no\\s+(?:observed\\s+)?(?:pre[- ]fix\\s+)?(?:failing[- ]test|failure|red[- ]phase)",
+          "description": "Must explicitly avoid claiming completed TDD without observed pre-fix failure evidence.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "green-evidence-reported",
@@ -536,7 +604,9 @@
             "passing command",
             "observed pass"
           ],
-          "description": "Must cite the observed passing/green command evidence rather than treating it as proof of TDD. Prompt-echoed values removed by leakage cleanup."
+          "description": "Must cite the observed passing/green command evidence rather than treating it as proof of TDD. Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "next-red-verification-step",
@@ -547,13 +617,17 @@
             "run the test against the old code",
             "failing output"
           ],
-          "description": "Must name a concrete next step to verify the missing failing-test phase. Prompt-echoed values removed by leakage cleanup."
+          "description": "Must name a concrete next step to verify the missing failing-test phase. Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "no-unqualified-tdd-success-claim",
           "type": "not_regex",
           "pattern": "(?m)^\\s*(?:(?:yes[,;:\\- ]+)?(?:we|i|this)\\s+(?:did|completed|used|followed)\\s+(?:strict\\s+)?(?:TDD|red[- ]green[- ]refactor)\\b|(?:TDD|red[- ]green[- ]refactor)\\s+(?:was\\s+)?(?:completed|done|used)\\b)",
-          "description": "Must not make an unqualified completed-TDD claim."
+          "description": "Must not make an unqualified completed-TDD claim.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -562,7 +636,9 @@
             "TDD evidence honesty",
             "Validation reporting",
             "Over-application restraint"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         },
         {
           "name": "final-report-contract",
@@ -571,7 +647,9 @@
             "Tests changed/assessed",
             "TDD evidence"
           ],
-          "description": "Skill final report should distinguish changed tests and TDD evidence."
+          "description": "Skill final report should distinguish changed tests and TDD evidence.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -602,7 +680,9 @@
             "no live",
             "cassette",
             "fixture"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -610,7 +690,9 @@
           "rubric": [
             "Proportionality",
             "Type-vs-test safety"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -633,7 +715,9 @@
           "name": "avoid-no-assertion-count-blind",
           "type": "regex",
           "pattern": "(?is)(one excellent oracle|assertion count.{0,80}heuristic|quality over quantity|meaningful oracle|single strong property)",
-          "description": "Rejects assertion-count theater when one oracle is strong."
+          "description": "Rejects assertion-count theater when one oracle is strong.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -641,7 +725,9 @@
           "rubric": [
             "Proportionality",
             "Type-vs-test safety"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -664,7 +750,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -691,7 +779,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -718,7 +808,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -745,7 +837,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -772,7 +866,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*NO_TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -799,7 +895,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*NO_TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -826,7 +924,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*NO_TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -853,7 +953,9 @@
           "name": "expected-trigger-label",
           "type": "regex",
           "pattern": "(?m)^\\s*NO_TRIGGER\\b",
-          "description": "First line must be the exact trigger decision label."
+          "description": "First line must be the exact trigger decision label.",
+          "severity": "gate",
+          "oracle": "strong"
         }
       ],
       "tags": [
@@ -884,7 +986,8 @@
             "Property quality",
             "Validation honesty"
           ],
-          "gate": true
+          "gate": true,
+          "oracle": "live"
         }
       ],
       "tags": [],
@@ -900,7 +1003,6 @@
       "kind": "testing",
       "scenario": "Private holdback case. Exact scenario and answer key live outside committed docs/eval descriptions.",
       "prompt_ref": "holdback/real-weak-test-go-01.txt",
-      "answer_ref": "holdback/answers/real-weak-test-go-01.json",
       "expected_behavior": [
         "Private holdback scoring: load prompt and answer key only for the scored run, then reveal after scoring if desired."
       ],
@@ -911,7 +1013,8 @@
           "rubric": [
             "Use the private answer key; do not rely on public manifest wording."
           ],
-          "gate": true
+          "gate": true,
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -921,7 +1024,11 @@
       "difficulty": "extended",
       "success_goals": [
         "outcome"
-      ]
+      ],
+      "x_local_evaluator": {
+        "answer_ref": "holdback/answers/real-weak-test-go-01.json",
+        "note": "Evaluator-only extension; Skill Eval Harness v0.6 does not consume answer_ref."
+      }
     },
     {
       "id": "pos-parser-property-test-not-coverage-only",
@@ -941,7 +1048,9 @@
             "coverage shows what ran",
             "not sufficient",
             "false confidence"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "property-testing",
@@ -951,7 +1060,9 @@
             "fast-check",
             "Hypothesis",
             "fuzz"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "strong-oracle",
@@ -962,7 +1073,9 @@
             "never crashes",
             "structured error",
             "oracle"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "weak-assertion-flagged",
@@ -970,7 +1083,9 @@
           "values": [
             "weak assertion"
           ],
-          "description": "Prompt-echoed values removed by leakage cleanup."
+          "description": "Prompt-echoed values removed by leakage cleanup.",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "round-2-qualitative-review",
@@ -979,7 +1094,9 @@
             "Technique selection",
             "Assertion quality",
             "Evidence-oriented validation"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1015,7 +1132,9 @@
             "toBeTruthy",
             "weak assertion",
             "truthy"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "property-or-fuzz",
@@ -1025,7 +1144,9 @@
             "fast-check",
             "fuzz",
             "arbitrary strings"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "strong-oracles",
@@ -1035,7 +1156,9 @@
             "roundtrip",
             "never crashes",
             "structured error"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "fixture-script-oracle",
@@ -1048,7 +1171,9 @@
           ],
           "pass_exit_code": 0,
           "timeout_s": 10,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "severity": "gate",
+          "oracle": "demo"
         },
         {
           "name": "round-3-qualitative-review",
@@ -1057,7 +1182,9 @@
             "Assertion quality",
             "Technique selection",
             "Fixture-specific recommendations"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1093,7 +1220,9 @@
             "store that raises",
             "fault injection",
             "dependency failure"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "failure-path-asserted",
@@ -1103,7 +1232,9 @@
             "propagat",
             "exception is raised",
             "surfaces the error"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1112,7 +1243,9 @@
             "Probes error-handling paths via injected failure, not only input validation",
             "Does not invent an unspecified retry/error-wrapping contract",
             "Validation honesty"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1141,7 +1274,9 @@
           "values": [
             "-race",
             "race detector"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "surfaces-double-compute",
@@ -1153,7 +1288,9 @@
             "TOCTOU",
             "check-then-act",
             "violates the documented"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1162,7 +1299,9 @@
             "Pins compute-at-most-once with a failing assertion in the concurrent test, not a t.Logf of the observed count",
             "Start-barrier/high-contention design",
             "Surfaces the defect rather than tolerating it"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1190,12 +1329,16 @@
         {
           "name": "domain-seam-not-ui-table",
           "type": "regex",
-          "pattern": "(?is)(domain|service|api|business[- ]rule).{0,120}(table|row|fixture|example)|((table|row|fixture|example).{0,120}(domain|service|api|business[- ]rule))"
+          "pattern": "(?is)(domain|service|api|business[- ]rule).{0,120}(table|row|fixture|example)|((table|row|fixture|example).{0,120}(domain|service|api|business[- ]rule))",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "ui-as-wiring-smoke",
           "type": "regex",
-          "pattern": "(?is)(ui|browser|e2e|end[- ]to[- ]end).{0,120}(smoke|wiring|golden path|thin|one|few)"
+          "pattern": "(?is)(ui|browser|e2e|end[- ]to[- ]end).{0,120}(smoke|wiring|golden path|thin|one|few)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "communication-examples",
@@ -1207,7 +1350,9 @@
             "customer language",
             "product language",
             "domain language"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1216,7 +1361,9 @@
             "Uses examples as communication",
             "Separates rule-table seam from UI wiring",
             "Avoids over-testing through browser automation"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1246,17 +1393,23 @@
         {
           "name": "lifetime-calibration",
           "type": "regex",
-          "pattern": "(?is)(lifetime|reuse risk|short[- ]lived|one[- ]off|throwaway|test theater|expected use)"
+          "pattern": "(?is)(lifetime|reuse risk|short[- ]lived|one[- ]off|throwaway|test theater|expected use)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "parser-stronger-evidence",
           "type": "regex",
-          "pattern": "(?is)(parser|library|reusable|depended on).{0,120}(property|fuzz|contract|boundary|regression|mutation)|(property|fuzz|contract|boundary|regression|mutation).{0,120}(parser|library|reusable|depended on)"
+          "pattern": "(?is)(parser|library|reusable|depended on).{0,120}(property|fuzz|contract|boundary|regression|mutation)|(property|fuzz|contract|boundary|regression|mutation).{0,120}(parser|library|reusable|depended on)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "different-plans",
           "type": "regex",
-          "pattern": "(?is)(not|don.?t|shouldn.?t|avoid).{0,80}(same|identical|one-size|checklist)|different\\s+(test\\s+)?plans"
+          "pattern": "(?is)(not|don.?t|shouldn.?t|avoid).{0,80}(same|identical|one-size|checklist)|different\\s+(test\\s+)?plans",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1265,7 +1418,9 @@
             "Calibrates by asset lifetime",
             "Avoids equal checklist theater",
             "Names stronger evidence for reusable parser"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1301,12 +1456,16 @@
             "recorded events",
             "real collaborator",
             "purpose-built fake"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "visible-state-not-choreography",
           "type": "regex",
-          "pattern": "(?is)((assert|check|verify).{0,120}(event|state|saved|persisted|emitted|recorded effects|observable side effect))|((avoid|not|instead|rather than|replace).{0,120}(call order|choreography|method calls|ordered expectations))"
+          "pattern": "(?is)((assert|check|verify).{0,120}(event|state|saved|persisted|emitted|recorded effects|observable side effect))|((avoid|not|instead|rather than|replace).{0,120}(call order|choreography|method calls|ordered expectations))",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1315,7 +1474,9 @@
             "Prefers visible state/effects",
             "Uses real collaborator or small fake",
             "Avoids brittle call-order coupling"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1344,17 +1505,23 @@
         {
           "name": "reject-security-bypass",
           "type": "regex",
-          "pattern": "(?is)((unsafe|reject|avoid|do\\s+not|don.?t|shouldn.?t|bug|vulnerability).{0,140}(disable|bypass|turn\\s+off|skip).{0,140}(SSRF|security|private[- ]IP|rule|validation))|((disable|bypass).{0,80}(security|SSRF).{0,80}(unsafe|vulnerability|false confidence))"
+          "pattern": "(?is)((unsafe|reject|avoid|do\\s+not|don.?t|shouldn.?t|bug|vulnerability).{0,140}(disable|bypass|turn\\s+off|skip).{0,140}(SSRF|security|private[- ]IP|rule|validation))|((disable|bypass).{0,80}(security|SSRF).{0,80}(unsafe|vulnerability|false confidence))",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "safe-seam",
           "type": "regex",
-          "pattern": "(?is)(inject|fake|stub).{0,120}(resolver|client|transport|allowlist|dependency)|(resolver|client|transport|allowlist).{0,120}(inject|fake|stub)"
+          "pattern": "(?is)(inject|fake|stub).{0,120}(resolver|client|transport|allowlist|dependency)|(resolver|client|transport|allowlist).{0,120}(inject|fake|stub)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "same-rule-preserved",
           "type": "regex",
-          "pattern": "(?is)((same|preserve|still|keep|actual|production).{0,140}(SSRF|security|private[- ]IP|rule|validation|enforcement|protection|policy))|((do\\s+not|don.?t).{0,80}inject.{0,80}security\\s+off)|(tests?\\s+should\\s+exercise\\s+the\\s+same\\s+enforcement\\s+path)"
+          "pattern": "(?is)((same|preserve|still|keep|actual|production).{0,140}(SSRF|security|private[- ]IP|rule|validation|enforcement|protection|policy))|((do\\s+not|don.?t).{0,80}inject.{0,80}security\\s+off)|(tests?\\s+should\\s+exercise\\s+the\\s+same\\s+enforcement\\s+path)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1363,7 +1530,9 @@
             "Rejects security bypass test mode",
             "Proposes safe injectable seam",
             "Preserves production rule semantics"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1394,17 +1563,23 @@
         {
           "name": "test-list-parking",
           "type": "regex",
-          "pattern": "(?is)(test\\s+list|todo\\s+list|park|write\\s+down|queue).{0,120}(Unicode|reserved|database|case|idea|edge)"
+          "pattern": "(?is)(test\\s+list|todo\\s+list|park|write\\s+down|queue).{0,120}(Unicode|reserved|database|case|idea|edge)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "child-or-smaller-test",
           "type": "regex",
-          "pattern": "(?is)(child\\s+test|smaller\\s+(failing\\s+)?test|narrower\\s+test|split\\s+the\\s+test|reduce\\s+the\\s+step)"
+          "pattern": "(?is)(child\\s+test|smaller\\s+(failing\\s+)?test|narrower\\s+test|split\\s+the\\s+test|reduce\\s+the\\s+step)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "red-green-honesty",
           "type": "regex",
-          "pattern": "(?is)(red|failing).{0,120}(green|passing)|claim.{0,80}(only|after).{0,80}(observed|run|evidence)"
+          "pattern": "(?is)(red|failing).{0,120}(green|passing)|claim.{0,80}(only|after).{0,80}(observed|run|evidence)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1413,7 +1588,9 @@
             "Uses TDD micro-tactics",
             "Parks new ideas instead of chasing them",
             "Preserves red/green evidence honesty"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1448,17 +1625,23 @@
             "thinnest slice",
             "build-deploy-test",
             "build/deploy/test"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "inprogress-not-skip",
           "type": "regex",
-          "pattern": "(?is)(in[- ]progress|issue|story|ticket|tracked).{0,120}(acceptance|end[- ]to[- ]end|e2e)|(avoid|do\\s+not|don.?t).{0,80}(unconditional\\s+)?skip"
+          "pattern": "(?is)(in[- ]progress|issue|story|ticket|tracked).{0,120}(acceptance|end[- ]to[- ]end|e2e)|(avoid|do\\s+not|don.?t).{0,80}(unconditional\\s+)?skip",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "unit-green-rule",
           "type": "regex",
-          "pattern": "(?is)(unit|component).{0,100}(green|pass|passing)|((do\\s+not|don.?t).{0,80}commit.{0,80}failing\\s+unit)|(failing\\s+unit\\s+tests?.{0,80}(not\\s+commit|do\\s+not|don.?t))"
+          "pattern": "(?is)(unit|component).{0,100}(green|pass|passing)|((do\\s+not|don.?t).{0,80}commit.{0,80}failing\\s+unit)|(failing\\s+unit\\s+tests?.{0,80}(not\\s+commit|do\\s+not|don.?t))",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1467,7 +1650,9 @@
             "Uses walking skeleton",
             "Tracks unfinished acceptance tests honestly",
             "Keeps unit-test green rule"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1497,7 +1682,9 @@
         {
           "name": "seed-and-replay",
           "type": "regex",
-          "pattern": "(?is)(seed).{0,120}(replay|save|log|print|failing\\s+input|corpus)|(replay|corpus|failing\\s+input).{0,120}(seed)"
+          "pattern": "(?is)(seed).{0,120}(replay|save|log|print|failing\\s+input|corpus)|(replay|corpus|failing\\s+input).{0,120}(seed)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "timeout-quarantine",
@@ -1507,12 +1694,16 @@
             "quarantine",
             "denylist",
             "hang"
-          ]
+          ],
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "nightly-not-fast-suite",
           "type": "regex",
-          "pattern": "(?is)(nightly|separate|opt[- ]in|not\\s+default|outside\\s+the\\s+fast\\s+suite|CI\\s+budget)"
+          "pattern": "(?is)(nightly|separate|opt[- ]in|not\\s+default|outside\\s+the\\s+fast\\s+suite|CI\\s+budget)",
+          "severity": "gate",
+          "oracle": "strong"
         },
         {
           "name": "qualitative-review",
@@ -1521,7 +1712,9 @@
             "Makes fuzz failures reproducible",
             "Controls hangs/noisy cases",
             "Separates long fuzzing from fast validation"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1556,7 +1749,9 @@
           ],
           "pass_exit_code": 0,
           "timeout_s": 30,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "severity": "gate",
+          "oracle": "demo"
         },
         {
           "name": "qualitative-review",
@@ -1564,7 +1759,9 @@
           "rubric": [
             "Oracle strength",
             "Honest red/green evidence"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1596,7 +1793,9 @@
           ],
           "pass_exit_code": 0,
           "timeout_s": 30,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "severity": "gate",
+          "oracle": "demo"
         },
         {
           "name": "qualitative-review",
@@ -1604,7 +1803,9 @@
           "rubric": [
             "Finding quality",
             "No over-abstraction of tests"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1636,7 +1837,9 @@
           ],
           "pass_exit_code": 0,
           "timeout_s": 30,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "severity": "gate",
+          "oracle": "demo"
         },
         {
           "name": "qualitative-review",
@@ -1644,7 +1847,9 @@
           "rubric": [
             "Proportionality",
             "Over-application restraint"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1676,7 +1881,9 @@
           ],
           "pass_exit_code": 0,
           "timeout_s": 60,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "severity": "gate",
+          "oracle": "demo"
         },
         {
           "name": "qualitative-review",
@@ -1684,7 +1891,9 @@
           "rubric": [
             "Assertion scope",
             "No treadmill fix"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1716,7 +1925,9 @@
           ],
           "pass_exit_code": 0,
           "timeout_s": 300,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "severity": "gate",
+          "oracle": "demo"
         },
         {
           "name": "qualitative-review",
@@ -1724,7 +1935,9 @@
           "rubric": [
             "Contract framing",
             "Determinism"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
@@ -1756,7 +1969,9 @@
           ],
           "pass_exit_code": 0,
           "timeout_s": 60,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts."
+          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "severity": "gate",
+          "oracle": "demo"
         },
         {
           "name": "qualitative-review",
@@ -1764,11 +1979,295 @@
           "rubric": [
             "Shape-first diagnosis",
             "No doubling down"
-          ]
+          ],
+          "severity": "soft",
+          "oracle": "live"
         }
       ],
       "tags": [
         "google-testing-blog"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-mutation-recurring-lane-contract",
+      "split": "tune",
+      "kind": "testing",
+      "prompt_ref": "../skill-development/evals/fixtures/e64-mutation-recurring-lane-contract/prompt.md",
+      "expected_behavior": [
+        "Reject the copied score floor and require a completed target-CI baseline before scheduling.",
+        "Narrow scope, require demonstrated fault-class bite, and reconcile capacity with timeout.",
+        "Require ownership and stop recurring operational failures before expansion."
+      ],
+      "assertions": [
+        {
+          "name": "mutation-recurring-lane-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e64-mutation-recurring-lane-contract",
+            "{output_dir}"
+          ],
+          "timeout_s": 30,
+          "severity": "gate",
+          "oracle": "demo"
+        },
+        {
+          "name": "mutation-recurring-lane-review",
+          "type": "judge",
+          "rubric": [
+            "Operational safety",
+            "Evidence calibration",
+            "Actionable ownership and stop policy"
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "mutation",
+        "operational-cost",
+        "issue-20"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-mutation-survivor-triage-cuefree",
+      "split": "tune",
+      "kind": "testing",
+      "prompt_ref": "../skill-development/evals/fixtures/e65-mutation-survivor-triage/prompt.md",
+      "expected_behavior": [
+        "Reject restoration of an incomparable round mutation score as the goal.",
+        "Separate completed survivors from timeout, compile, no-coverage, and infrastructure statuses.",
+        "Triage equivalent/redundant and actionable survivors into behavior or code decisions."
+      ],
+      "assertions": [
+        {
+          "name": "mutation-survivor-triage-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e65-mutation-survivor-triage",
+            "{output_dir}"
+          ],
+          "timeout_s": 30,
+          "severity": "gate",
+          "oracle": "demo"
+        },
+        {
+          "name": "mutation-survivor-triage-review",
+          "type": "judge",
+          "rubric": [
+            "Status interpretation",
+            "Like-for-like calibration",
+            "Actionable triage"
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "mutation",
+        "cue-free",
+        "issue-20"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-combinatorial-cost-aware-portfolio",
+      "split": "tune",
+      "kind": "testing",
+      "prompt_ref": "../skill-development/evals/fixtures/e66-combinatorial-cost-aware-portfolio/prompt.md",
+      "expected_behavior": [
+        "Keep mandatory regressions and exact canonical-registry enrollment.",
+        "Combine exhaustive cheap slices, constrained pairwise coverage, and named variable-strength groups.",
+        "Compare heterogeneous costs and require shadow plus mutation/sabotage evidence before deletion."
+      ],
+      "assertions": [
+        {
+          "name": "combinatorial-cost-aware-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e66-combinatorial-cost-aware-portfolio",
+            "{output_dir}"
+          ],
+          "timeout_s": 30,
+          "severity": "gate",
+          "oracle": "demo"
+        },
+        {
+          "name": "combinatorial-cost-aware-review",
+          "type": "judge",
+          "rubric": [
+            "Mandatory evidence",
+            "Interaction coverage",
+            "Cost and replacement validation"
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "combinatorial",
+        "cost-aware-portfolio",
+        "issue-21"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "pos-combinatorial-registry-sabotage",
+      "split": "tune",
+      "kind": "testing",
+      "prompt": "Write a small stdlib-only Python conformance harness with REGISTRY, one_way_cases(registry), cases exposing member_id, and contract_passes(case). Add unittest coverage for exact registry/case ID equality. In an isolated registry, inject a deliberately broken fake, prove automatic enrollment, and prove its generated contract fails. Do not use copied expected IDs or a voluntary covered flag. Return the complete implementation in exactly two Python code fences, headed portfolio.py and test_portfolio.py.",
+      "expected_behavior": [
+        "Derive exact member IDs from the canonical registry.",
+        "Inject a fake only in an isolated registry and select that generated fake by ID.",
+        "Prove the injected generated case fails the real contract oracle."
+      ],
+      "assertions": [
+        {
+          "name": "registry-sabotage-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e67-combinatorial-registry-sabotage",
+            "{output_dir}"
+          ],
+          "timeout_s": 60,
+          "severity": "gate",
+          "oracle": "demo"
+        },
+        {
+          "name": "registry-sabotage-review",
+          "type": "judge",
+          "rubric": [
+            "Registry-derived enrollment",
+            "Connected sabotage dataflow",
+            "Executable oracle bite"
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "combinatorial",
+        "registry-conformance",
+        "sabotage",
+        "issue-21"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "adv-mutation-valid-recurring-lane",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt_ref": "../skill-development/evals/fixtures/e68-hidden-mutation-valid-recurring-lane/prompt.md",
+      "expected_behavior": [
+        "Approve the lane because all conservative recurrence prerequisites are demonstrated.",
+        "Preserve focused scope, ownership, capacity, expiry, and no aggregate score floor."
+      ],
+      "assertions": [
+        {
+          "name": "valid-recurring-lane-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e68-hidden-mutation-valid-recurring-lane",
+            "{output_dir}"
+          ],
+          "timeout_s": 30,
+          "severity": "gate",
+          "oracle": "demo"
+        },
+        {
+          "name": "valid-recurring-lane-review",
+          "type": "judge",
+          "rubric": [
+            "Affirmative decision",
+            "Conservative prerequisite recognition",
+            "No blanket mutation rejection"
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "mutation",
+        "restraint",
+        "issue-20"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "adv-combinatorial-known-high-order-regression",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt_ref": "../skill-development/evals/fixtures/e69-hidden-combinatorial-known-high-order-regression/prompt.md",
+      "expected_behavior": [
+        "Refuse deletion and retain the repaired high-order regression alongside pairwise rows.",
+        "Explain that pairwise modeled coverage is not a correctness proof for the missing four-way fault."
+      ],
+      "assertions": [
+        {
+          "name": "known-high-order-regression-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e69-hidden-combinatorial-known-high-order-regression",
+            "{output_dir}"
+          ],
+          "timeout_s": 30,
+          "severity": "gate",
+          "oracle": "demo"
+        },
+        {
+          "name": "known-high-order-regression-review",
+          "type": "judge",
+          "rubric": [
+            "Regression retention",
+            "Pairwise limitation",
+            "No unsafe deletion"
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "combinatorial",
+        "restraint",
+        "high-order-regression",
+        "issue-21"
       ],
       "domain": "testing-quality",
       "difficulty": "extended",
@@ -1796,14 +2295,13 @@
           ]
         }
       ],
-      "applies_to_cases": [],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "## Reference matrix"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-red-evidence",
@@ -1822,16 +2320,13 @@
           ]
         }
       ],
-      "applies_to_cases": [
-        "neg-no-red-claim"
-      ],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "### Use red-green-refactor when feasible"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-antipatterns",
@@ -1850,14 +2345,13 @@
           ]
         }
       ],
-      "applies_to_cases": [],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "### Detect mode"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-types-vs-tests",
@@ -1875,14 +2369,13 @@
           ]
         }
       ],
-      "applies_to_cases": [],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "### Push internal invariants into types/schemas/contracts"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-real-objects",
@@ -1901,14 +2394,13 @@
           ]
         }
       ],
-      "applies_to_cases": [],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "### Prefer real behavior over mocks"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-final-report",
@@ -1924,14 +2416,13 @@
           ]
         }
       ],
-      "applies_to_cases": [],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "## Final report contract"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-error-path-principle",
@@ -1948,16 +2439,13 @@
           ]
         }
       ],
-      "applies_to_cases": [
-        "pos-fault-injection-error-paths"
-      ],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "### Test error-handling paths, not just invalid input"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-concurrency-contract",
@@ -1974,16 +2462,13 @@
           ]
         }
       ],
-      "applies_to_cases": [
-        "pos-concurrency-contract-pinning"
-      ],
       "mechanism": "section",
       "class": "instructions",
       "target": {
         "skill_root": "testing-best-practices/SKILL.md",
         "heading": "### Test concurrent code under a race detector, and pin the concurrency contract"
       },
-      "notes": "Materialized removal: runner-visible skill tree is altered by the declared mechanism/target."
+      "notes": "Materialized by Skill Eval Harness v0.6.0. Preparation still fans answer-population ablations across all answer cases; filter to the cases named by expected_regressions before model execution."
     },
     {
       "id": "no-gtb-damp-and-value-choice",
@@ -2054,5 +2539,6 @@
       },
       "notes": "2026-08-28 matrix: base arms passed (frontier ceiling); guards weaker models and drift. The E61 fixture oracle is negation-aware after real-output validation."
     }
-  ]
+  ],
+  "old_skill_revision": "6e8cd8b7bad570126277e08ad445c5bd21cb92d9"
 }

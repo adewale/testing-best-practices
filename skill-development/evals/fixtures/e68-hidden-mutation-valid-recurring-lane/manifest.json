@@ -1,0 +1,13 @@
+{
+  "eval_id": "E68-hidden-mutation-valid-recurring-lane",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_sample": "samples/bad",
+  "checks": [
+    "approves a justified focused recurring lane",
+    "recognizes demonstrated fault-class/oracle bite plus completed baseline, measured capacity, owner, and notification",
+    "preserves changed-code/actionable-survivor scope",
+    "does not turn the operating contract into a blanket scheduling prohibition"
+  ]
+}
