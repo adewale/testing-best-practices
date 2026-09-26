@@ -156,7 +156,7 @@ Built from analysis of testing patterns across 16 GitHub accounts and three engi
 - [bradfitz](https://github.com/bradfitz) (Go team) -- protocol-faithful fake servers
 - [joewalnes](https://github.com/joewalnes) -- minimalist testing frameworks
 - [ivanmoore](https://github.com/ivanmoore) -- TDD katas, mock object exercises
-- [adewale](https://github.com/adewale) -- property-based testing, mock fidelity, test quality audits
+- [adewale](https://github.com/adewale) -- property-based testing, mock fidelity, test quality audits; the 2026-09 portfolio verification audit (`research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`) re-checks those repos and adds gate liveness/integrity, vacuous-pass, and agent-era coupling lessons
 - [chrischabot](https://github.com/chrischabot) -- 5-tier test architecture, API scenario tests
 - [tirsen](https://github.com/tirsen) -- retry patterns
 - [antirez](https://github.com/antirez) (Redis creator) -- differential fuzzing vs. a reference oracle, digest roundtrips, `DEBUG` as a testability surface, recall testing for approximate algorithms, agent-as-QA
@@ -197,6 +197,7 @@ testing-best-practices/             # The installable skill (ships to agents)
 research/                           # Source material (does not ship)
   METHODOLOGY.md                    # How we research a practitioner (a floor, not a ceiling)
   LESSONS_FROM_*.md                 # One file per practitioner/account/org (incl. LESSONS_FROM_GOOGLE_TESTING_BLOG.md)
+  PORTFOLIO_VERIFICATION_AUDIT_2026-09.md  # Cross-repo audit of adewale's verification mechanisms; skill-change backlog
   DESIGN_FOR_TESTABILITY_LITERATURE.md
   ANTIPATTERNS.md
   CORRECTNESS_BY_CONSTRUCTION.md
