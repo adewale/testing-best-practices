@@ -401,8 +401,8 @@ Priorities: **P0** = the repo currently believes something false about its verif
 
 | Project | What verifies it today | Change (priority): why |
 |---|---|---|
-| **keyboardia** | 5,070 Vitest unit tests; 319 `fc.assert`; 134 workerd integration tests; 8 Playwright lanes with exact result contracts; CI-rendered visual baselines; blocking AST test-quality gates | **P0** Make the offline-audio lane fail closed (`import('node-web-audio-api').catch(()=>null)` + `skipIf` in 3 files) and make `verify-receipts.mjs` fail on 0 receipts: required lanes can be green while running nothing. **P1** Delete the CI-to-production proxy in `vite.config.ts`: any `CI=true` Playwright run would mutate production. **P1** Move meta-verification and heavy renders out of `test:unit`, then lower `testTimeout` from 30 s: at load 20–30 there were 14 timeouts, 0 alone. **P1** Make `createSessionWithRetry` (112 sites) retry only transport errors and 429, and retract Lesson 16: 5xx retries bypass `flaky: 0`. **P2** Install `@vitest/coverage-v8` or delete the thresholds; schedule Stryker with an equivalent-mutant allowlist. **P2** Add AGENTS.md; generate TESTING.md counts from `lane-contracts.json`. |
-| **agentic-mermaid** | 7,553 tests, 0 mocks; differential, metamorphic and combinatorial conformance; sabotage worktrees; Stryker (break 90); MCP conformance; tarball fuzz; staged deploy with rollback | **P0** The deploy gate warns and skips green when the version isn't on npm. 0.4.2 was never published, so the live site has been stale since 07-31. Fail instead, and add a scheduled live `gitSha` freshness check. **P1** Move wall-clock `elapsedMs` budgets (89 uses) to a timing lane and lint them. **P1** Bun stdio MCP hang (3 of 8 manual runs): add a stress lane, report it upstream, document Node as the supported runtime. **P1** Replace the 525 literal YAML asserts with parsed invariants. **P2** Golden approvals should be independent of the authoring agent. **P3** Clean up 64 leaked temp dirs per run. |
+| **keyboardia** | 5,070 Vitest unit tests; 319 `fc.assert`; 134 workerd integration tests; 8 Playwright lanes with exact result contracts; CI-rendered visual baselines; blocking AST test-quality gates | **P0** Make `verify-receipts.mjs` fail on 0 receipts: the CI step that verifies receipts runs over none and exits 0. **P1** Make the 3 offline-audio files fail closed (`import('node-web-audio-api').catch(()=>null)` + `skipIf`): each passes alone with 7 tests skipped. (Corrected 2026-09-27: this was listed as P0, but other render files already fail closed, so the lane as a whole still goes red.) **P1** Delete the CI-to-production proxy in `vite.config.ts`: any `CI=true` Playwright run would mutate production. **P1** Move meta-verification and heavy renders out of `test:unit`, then lower `testTimeout` from 30 s: at load 20–30 there were 14 timeouts, 0 alone. **P1** Make `createSessionWithRetry` (112 sites) retry only transport errors and 429, and retract Lesson 16: 5xx retries bypass `flaky: 0`. **P2** Install `@vitest/coverage-v8` or delete the thresholds; schedule Stryker with an equivalent-mutant allowlist. **P2** Add AGENTS.md; generate TESTING.md counts from `lane-contracts.json`. |
+| **agentic-mermaid** | 7,553 tests, 0 mocks; differential, metamorphic and combinatorial conformance; sabotage worktrees; Stryker (break 90); MCP conformance; tarball fuzz; staged deploy with rollback | **P0** The deploy gate warns and skips green when the version isn't on npm. 0.4.2 was never published, so the live site has been stale since 07-31. Fail instead, and add a scheduled live `gitSha` freshness check. **P1** Move wall-clock `elapsedMs` budgets (89 uses) to a timing lane and lint them. ~~**P1** Bun stdio MCP hang~~ (corrected 2026-09-27: already fixed on `main` by #301, which requires Bun ≥ 1.4.0; the audit ran Bun 1.3.13). **P1** Replace the 525 literal YAML asserts with parsed invariants. **P2** Golden approvals should be independent of the authoring agent. **P3** Clean up 64 leaked temp dirs per run. |
 | **geist_fabrik** | 1,538 unit + 185 integration tests on 3 OS/Python legs; branch gate 70% (at 71.1%); stateful Hypothesis; 147 AUTO acceptance criteria; release-the-tested-bytes | **P0** Enforce "a test that cannot fail" with an AST meta-test, and port the 41 loop-only geist tests to `assert_valid_suggestions` (0 callers): dead geists stayed green for months. **P1** Schedule the real-model, slow and benchmark tiers, which run nowhere. **P1** Replace workflow string tests with actionlint + a release dry-run; they missed two release bugs. **P2** Ratchet the MANUAL acceptance count (84, 36%). |
 | **tasche** | 1,243 pytest (72 `@given`); 241 Vitest; mock-fidelity tests. 126 Playwright/axe and 35 staging E2E tests are manual | **P0** Record real D1 responses and fix MockD1: its "fidelity" test asserts `changes == 1` for a no-match DELETE, which production code contradicts, so the 409 path is unreachable. **P0** Restore the SQLite bm25 tests removed in `45cc325`. **P1** Put `agent-tools/check_*.py` in `make check`, and run `verify-staging` nightly. **P1** Fail the smoke test on `"error"` health. **P2** Replace `test.skip()`-on-failure with capability probes; add a CLAUDE.md Testing section. |
 | **planet_cf** | 1,426 pytest; 159 `@given`; 87.7% branch coverage; migrations run against real SQLite | **P0** `e2e.yml` never deploys the commit it tests and is green without secrets. **P0** The migration step swallows every error. **P0** Use `detect-secrets-hook`: `scan --baseline` absorbs new secrets. **P1** Fix or delete the orphaned Vitest suite (10/27 red). **P1** Replace the `from_regex` property that fails `too_slow` under coverage. **P2** Amend Lesson 31 (no density quota); pin `ty`. |
@@ -455,6 +455,34 @@ Priorities: **P0** = the repo currently believes something false about its verif
 | **python-workers-skill** | **P1** Parse or compile the ~2,300 lines of code-bearing references in CI; enforce `last_verified` freshness. It predates all 5 upstream-expert corrections. |
 | **cf-advisor-skill** | **P3** Archive it, or add a banner pointing to cfdoctor. |
 | **Fleet-wide** | Package `check_install_boundary.py` (11 copies) as a harness subcommand or a reusable workflow. Let Dependabot/Renovate own action pins (`setup-uv@v9` broke 3 repos at once). Record the skill version each repo applied. |
+
+---
+
+## What implementing the recommendations found (2026-09-27)
+
+The per-project recommendations were implemented as one pull request per repository, each on a branch named `claude/verification-audit-fixes`. Every new or changed check was shown to fail before it was shown to pass. Two rows above were wrong and are corrected in place (`keyboardia` offline audio, `agentic-mermaid` Bun hang).
+
+Several of the new checks found real defects on their first run:
+
+| Repository | Check added | What it found |
+|---|---|---|
+| `tasche` | Search tests restored against a SQLite double built from the migrations | A 500 on `?q=&sort=title_asc` (ambiguous column) |
+| `flux-search` | Live-production tests ported offline through the real handler | FTS5 500s on hyphenated queries and on bare `AND`/`OR`/`NOT` |
+| `xampler` | Examples run in the local runtime in CI | No example with a git dependency could start (the packager now defaults to `--no-build`), and a JSON helper made a KV route return 500 |
+| `guardrails-skill` | CI installs the plugin and counts registered hook events | The plugin's hooks had never loaded |
+| `slide-maker` | Swallowed `goto` failures removed from the render gate | The gate had been auditing a blank page |
+| `atlas` | Node canvas vs Chromium text-measurement parity | Unit tests measured the drop cap 8–21% off the browser |
+| `geist_fabrik` | Loop-only assertions replaced with exact expectations | 27 of 41 geists returned nothing on the fixture vault; a parser round-trip bug |
+| `olsen` | Tag-gated tests compiled in CI | Two compile errors and stale EXIF expectations |
+| `python-workers-issues` | Process-group teardown check | Each test orphaned 7 `wrangler`/`workerd` processes |
+| `MaintainerBot` | Golden test of the deterministic pipeline | Completed TODOs counted as open |
+| `python-workers-skill` | Code blocks in references compiled or parsed | Two broken code samples |
+| `planet_cf` | Production deploy dry run | Without a dependency sync the bundle held only the 16 source modules; with it, 236 |
+
+Two findings about the checkers themselves support "prove a gate can go red" (`references/gate-integrity.md` §3, §5):
+
+- `gremlins` 0.6.0 ignores its `--threshold-*` command-line flags: a threshold of 101 exits 0. Only thresholds in its config file fail the run.
+- New checkers written for these PRs were wrong on first draft and were caught by their own planted-violation tests: a capability-guard scanner that missed a cast form (`bobbin`), and a defect-replay probe that the suite did not kill (`garten`).
 
 ---
 
@@ -511,7 +539,7 @@ Verified 2026-09-26 against the repositories' current state and history:
 | Repo | Result |
 |---|---|
 | keyboardia | unit 5,055/5,070 (14 load timeouts, 0 alone); workerd integration 134/134; static gates pass; coverage unrunnable |
-| agentic-mermaid | 7,502 pass / 5 fail / 1 error in 31 min (3 load timeouts, 1 no-IPv6 sandbox, 1 Bun stdio hang) |
+| agentic-mermaid | 7,502 pass / 5 fail / 1 error in 31 min (3 load timeouts, 1 no-IPv6 sandbox, 1 Bun stdio hang on an unsupported Bun 1.3.13) |
 | geist_fabrik | 1,525 + 174 pass; branch 71.1%; 147/147 acceptance criteria |
 | tasche | 1,243 pytest + 241 Vitest pass |
 | planet_cf | 1,426 pass; the CI coverage step fails (Hypothesis `too_slow`); Vitest 10/27 fail |

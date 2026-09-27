@@ -57,7 +57,7 @@ satisfies is a dead test.
 | `::warning::` + skip that ends a deploy green | Nothing shipped, and the badge is green | Fail on the normal path; alert on live-version drift (§5) |
 | Step iterating an empty set (scanner over a directory with no targets) | Zero findings from zero inputs | Scan committed canary fixtures: one that must fire, one that must not |
 | Coverage threshold configured but never invoked, or its provider not installed | The number is never computed | Run it in CI, or delete the dead threshold |
-| Mutation `break: null`, no threshold, or dispatch-only | Cannot fail on its own | Threshold from a measured baseline, or keep it explicitly diagnostic |
+| Mutation `break: null`, no threshold, a threshold the tool ignores, or dispatch-only | Cannot fail on its own | Threshold from a measured baseline, shown to fail when set above the score; or keep it explicitly diagnostic |
 | Fail-open imports (`import(x).catch(() => null)` + `skipIf`) | A required lane passes when its dependency fails to load | Fail when CI is set; assert the skip count is zero |
 | Warning-only expiry or review dates | Warnings nobody reads | Fail after a grace period; warn ahead of time |
 | E2E against production or a deployment not built from this commit | Tests someone else's code | Target a local server or a deploy of this SHA |
