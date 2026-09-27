@@ -10,8 +10,11 @@ the artifact, not prose about it):
 - the e2e tests still run (green-by-deletion fails).
 """
 from __future__ import annotations
-import re, sys
+
+import re
+import sys
 from pathlib import Path
+
 
 def main() -> int:
     root = Path(sys.argv[1])

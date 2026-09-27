@@ -6,7 +6,11 @@ and fail against a mutant that drops the LIKE wildcards. Only a test that runs t
 query on real SQLite catches it; SQL-substring and mocked-cursor rewrites pass.
 """
 from __future__ import annotations
-import shutil, subprocess, sys, tempfile
+
+import shutil
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent

@@ -9,7 +9,9 @@ dead/never run, demands removing the skipif, or raises the owned, notifying
 advisory job to a P0 dead gate.
 """
 from __future__ import annotations
-import re, sys
+
+import re
+import sys
 from pathlib import Path
 
 NEG = re.compile(r"(\bnot\b|n't|\bno longer\b|\bnever\b)[^.\n]{0,15}$")

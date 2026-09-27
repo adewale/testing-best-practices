@@ -9,7 +9,9 @@ wrangler/miniflare, or a recording). Failing shapes: endorses the mock, or propo
 changing production to expect 1.
 """
 from __future__ import annotations
-import re, sys
+
+import re
+import sys
 from pathlib import Path
 
 NEG = re.compile(r"(\bnot\b|n't|\bno\b|\bnever\b)[^.\n]{0,20}$")

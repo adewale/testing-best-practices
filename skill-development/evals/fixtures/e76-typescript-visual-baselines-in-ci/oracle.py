@@ -9,8 +9,11 @@ Structural checks over the candidate files:
   (`--update-snapshots` together with workflow_dispatch/container/CI image).
 """
 from __future__ import annotations
-import re, sys
+
+import re
+import sys
 from pathlib import Path
+
 
 def main() -> int:
     root = Path(sys.argv[1])
@@ -25,7 +28,7 @@ def main() -> int:
     if re.search(r"test(\.describe)?\.(skip|fixme)\([^)]*(process\.env\.CI|isCI)", ts):
         errors.append("visual test is skipped on CI")
     if not (re.search(r"--update-snapshots", text) and
-            re.search(r"workflow_dispatch|mcr\.microsoft\.com/playwright|container|ci image|same image", text, re.I)):
+            re.search(r"workflow_dispatch|mcr\.microsoft\.com/playwright|container|ci image|same image", text, re.IGNORECASE)):
         errors.append("no way to render baselines on the CI image")
     for e in errors:
         print(e, file=sys.stderr)

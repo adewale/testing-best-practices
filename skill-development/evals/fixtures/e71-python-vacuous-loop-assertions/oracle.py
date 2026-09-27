@@ -6,7 +6,11 @@ implementation and fail against a mutant whose threshold typo makes suggest()
 return []. Loop-only tests (and `len(result) >= 0`) pass on the mutant.
 """
 from __future__ import annotations
-import shutil, subprocess, sys, tempfile
+
+import shutil
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent

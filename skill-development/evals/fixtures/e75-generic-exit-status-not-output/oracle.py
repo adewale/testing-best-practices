@@ -6,7 +6,9 @@ after a traceback. Passing shape: reports the check as failed (non-zero exit, th
 schema script crashed). Failing shape: claims validation passed.
 """
 from __future__ import annotations
-import re, sys
+
+import re
+import sys
 from pathlib import Path
 
 NEG = re.compile(r"(\bnot\b|n't|\bnever\b)[^.\n]{0,12}$")
