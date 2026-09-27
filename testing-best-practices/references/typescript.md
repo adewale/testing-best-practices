@@ -15,6 +15,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      // Without `include`, thresholds only see files some test happens to
+      // import; untested entrypoints silently drop out of the denominator.
       include: ['src/**/*.ts'],
       exclude: ['src/types/**', 'src/**/*.d.ts'],
     },
@@ -22,7 +24,12 @@ export default defineConfig({
 });
 ```
 
-For Cloudflare Workers:
+Use one timeout budget everywhere. `testTimeout: isCI ? 15_000 : 5_000` makes a
+fresh local clone the flaky environment; put slow tiers (corpus, scale, subprocess
+builds) in their own project with a budget measured under parallel load.
+
+For Cloudflare Workers (runs tests inside workerd, the real runtime — prefer it
+to hand-written binding fakes):
 ```typescript
 import { defineWorkersConfig } from '@cloudflare/vitest-pool-workers/config';
 
@@ -87,9 +94,15 @@ it('roundtrip: decode(encode(x)) === x', () => {
 `fc.array()`, `fc.record()`, `fc.uuid()`, `fc.webUrl()`,
 `fc.constantFrom(...)`, `fc.option()`. Use `fc.record()` and `fc.letrec()` for specification-valid structures; keep hostile arbitrary input in a separate totality property.
 
+- **Small finite domains**: enumerate, don't sample. `fc.integer({ min: 0, max: 117 }).map(i => ELEMENTS[i])` at 100 runs misses dozens of the 118 elements each run; `for (const el of ELEMENTS)` covers all of them.
+- **Dates**: `fc.date({ noInvalidDate: true })` or bounded integer timestamps; invalid dates shrink into false failures.
+- **Budgets**: size the test timeout to `numRuns`, or move deep runs to a scheduled budget. A property that takes 1.4 s alone can exceed a 5 s default under parallel load.
+
 ### Collection, Replay, and Command Models
 
 When Vitest projects, filters, or workspaces make reachability uncertain, inspect collection with the same CI configuration. `--filesOnly` proves file-level discovery, not collection of a particular test; add a persistent guard only where that configuration has a real drift risk.
+
+A global seed set in a setup file makes PR gates deterministic, but it also makes bare `fc.sample` return the same draw on every call, and it must reach every Vitest project (pass it into the Workers pool as a binding). Pair the fixed PR seed with a scheduled random-seed run that commits each counterexample as a regression case; a CI seed that finds a bug is a finding, not a flake.
 
 Preserve fast-check's `seed` and `path` for `fc.assert`. Model-based failures also report a `replayPath`; pass it to `fc.commands`, not `fc.assert`. Ensure the configuration that runs the property receives those values; logging them is not replay.
 
@@ -119,16 +132,47 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/e2e',
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  // Required lanes: no retries. A retry turns an intermittent race into a green
+  // run; gate on the reporter's counts instead (see below).
+  retries: 0,
   use: {
-    baseURL: 'http://localhost:8787',
+    baseURL: 'http://localhost:8787', // a local server built from this commit
     screenshot: 'only-on-failure',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
     { name: 'mobile', use: { viewport: { width: 375, height: 812 } } },
   ],
+});
+```
+
+**Result contract**: in CI, check the JSON reporter's stats — `unexpected == 0`,
+`flaky == 0`, `skipped` equal to the expected number, and optionally the exact test
+titles per project — so a dropped, renamed, or silently skipped test cannot hide
+behind a green run. Keep helper-level retries (a `createSessionWithRetry` loop) to
+transport errors and 429s and make them visible; retrying 5xx below the reporter
+bypasses the flaky count. Keep tests that call a deployed service in a separate
+`live` project run after deploy: a PR suite that hits production tests production,
+not the PR.
+
+### Deterministic async races (no sleeps)
+
+Hold responses on deferred promises and release them in the order the test chooses:
+
+```typescript
+test('a stale response cannot overwrite newer results', async ({ page }) => {
+  const pending = new Map<string, (body: unknown) => Promise<void>>();
+  await page.route('**/api/search?*', (route) => {
+    const q = new URL(route.request().url()).searchParams.get('q')!;
+    pending.set(q, (body) => route.fulfill({ json: body }));
+  });
+  await page.fill('#q', 'a');
+  await page.fill('#q', 'ab');
+  await expect.poll(() => pending.size).toBe(2);
+  await pending.get('ab')!({ results: ['ab'] });
+  await pending.get('a')!({ results: ['a'] }); // late, stale response
+  await expect(page.locator('.result')).toHaveText(['ab']);
 });
 ```
 
@@ -145,21 +189,36 @@ test('component layout', async ({ page }) => {
   });
 });
 
-// Skip in CI (font rendering differs)
-test.skip(!!process.env.CI, 'Visual tests skipped in CI');
 ```
 
-### Mock contract tests (validate mocks against real browser)
+Baselines are platform-specific (fonts, antialiasing), so **render them on the
+image CI uses** rather than skipping visual tests in CI: a manual
+`workflow_dispatch` job runs `npx playwright test --update-snapshots` in the
+pinned Playwright container and uploads the new `*-linux.png` files as an artifact
+for review; commit them only after looking at them, and never auto-update in CI.
+Suites that were skipped in CI because baselines existed only for macOS ran zero
+times. If pixels stay noisy, keep a loose pixel tolerance and carry precision in
+structural assertions (computed style, bounding boxes, SVG structure), or golden a
+deterministic intermediate (draw-command list, text frame). A
+`page.screenshot({ path })` that nothing compares is not a test.
+
+### Doubles vs. the real engine
+
+When a real engine can run in-process (node-canvas, SQLite loaded from migrations,
+workerd via vitest-pool-workers), delete the hand-written mock and use it. Keep a
+contract test only for a double you must keep, take its expected values from the
+real engine, and delete the contract when the double goes:
 
 ```typescript
-test('canvas measureText returns positive width', async ({ page }) => {
+// The double hard-codes 16px system-ui metrics; the real browser must agree.
+test('text-measure double matches Chromium within 1px', async ({ page }) => {
   await page.goto('/');
-  const width = await page.evaluate(() => {
+  const real = await page.evaluate(() => {
     const ctx = document.createElement('canvas').getContext('2d')!;
     ctx.font = '16px system-ui';
     return ctx.measureText('Hello').width;
   });
-  expect(width).toBeGreaterThan(0);
+  expect(Math.abs(real - measureDouble('Hello', '16px system-ui'))).toBeLessThanOrEqual(1);
 });
 ```
 

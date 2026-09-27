@@ -1,0 +1,12 @@
+name: Render visual baselines
+on: workflow_dispatch
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.57.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npx playwright test tests/visual.spec.ts --update-snapshots
+      - uses: actions/upload-artifact@v4
+        with: {name: linux-baselines, path: 'tests/**/*-linux.png'}

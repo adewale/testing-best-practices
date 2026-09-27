@@ -1,0 +1,15 @@
+{
+  "eval_id": "E76-typescript-visual-baselines-in-ci",
+  "language": "typescript",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-fixme"
+  ],
+  "checks": [
+    "required lane does not retry failures",
+    "visual test runs in CI (no CI skip/fixme)",
+    "baselines are rendered on the CI image through a reviewed workflow"
+  ]
+}

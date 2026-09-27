@@ -153,6 +153,13 @@ func TestLiveFeedFetch(t *testing.T) { ... }
 
 Run with: `go test -tags=network ./pkg/crawler`
 
+Tagged files are invisible to the default build, so they rot silently: a signature
+change elsewhere breaks them and nothing notices. Compile every tag set in CI even
+when the tests cannot run there (`go vet -tags=network ./...` or
+`go test -tags=network -run '^$' ./...`), and compile a tagged file with its tags
+whenever you edit it. If the tests need a resource, give one lane that resource and
+make it fail when the tests skip.
+
 ## Assertion Patterns
 
 Go has no assertion library in stdlib. Use `t.Errorf` (continue) or
@@ -270,10 +277,10 @@ func TestWithResource(t *testing.T) {
 func TestMain(m *testing.M) {
     // Setup (runs once before all tests)
     db := setupGlobalTestDB()
-    defer db.Close()
 
-    // Run all tests
-    os.Exit(m.Run())
+    code := m.Run()
+    db.Close() // os.Exit skips deferred calls, so clean up explicitly
+    os.Exit(code)
 }
 ```
 

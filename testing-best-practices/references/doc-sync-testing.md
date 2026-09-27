@@ -32,6 +32,21 @@ def test_settings_are_documented(settings_headings):
         assert setting.name in settings_headings
 ```
 
+## Pattern: Verification claims in project docs
+
+Testing docs, lessons-learned files, and agent instructions (CLAUDE.md, AGENTS.md)
+are read by agents as instructions, so stale verification claims actively mislead.
+Check the claims that drift:
+
+- test counts, lane counts, and timeouts quoted in docs match the runner's collection
+  and config (generate them, or assert them);
+- scripts and commands named in docs exist;
+- statements such as "no CI" or "SKILL.md must stay under N lines" match the tree;
+- version manifests that agents are told to read agree with `package.json`/`pyproject`;
+- `last_verified` or review dates are recent enough for the content they certify;
+- skill frontmatter respects the spec (name matches directory, description ≤1024
+  characters).
+
 ## When to add these
 
 - CLI commands listed in README or docs

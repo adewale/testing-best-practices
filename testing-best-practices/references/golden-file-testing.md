@@ -166,6 +166,19 @@ The test becomes a change detector, not a behavior test. Mitigations:
 - For interactive review tools (`cargo insta review`), prefer them over
   blanket-accept
 
+### Hash-only goldens
+Pinning an exact render or op-stream hash gives no reviewable diff: every art or
+layout change becomes a "rebind the hashes" commit, and a backend change needs a
+second hash table. Prefer structural or perceptual goldens with a visible diff
+(draw-command lists, text frames, SVG structure, images reviewed as images), and
+treat pin churn per change as a health metric. If you must keep hashes, re-pin
+through a tool that records a written review of what changed.
+
+### Self-approved goldens
+A golden created or re-approved by the same actor in the same change as the code it
+checks is a characterization, not an independent oracle. Require an approval that
+did not come from the authoring agent, or review the rendered diff yourself.
+
 ### Coupling to incidental detail
 Timestamps, UUIDs, map iteration order, whitespace make tests fail on noise.
 Fix at write-time:
@@ -269,3 +282,8 @@ export const parseDocument = USE_JSDOM ? parseWithJSDOM : parseLinkedomHTML;
 
 Run the same fixtures through different backends; expected output should
 agree.
+
+When rendered output legitimately differs across platforms (fonts, GPU,
+antialiasing), golden the deterministic intermediate (text frames, draw-command
+lists) rather than dropping to "runs without error", and render any pixel baselines
+on the same image CI uses.

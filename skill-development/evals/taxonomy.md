@@ -35,6 +35,7 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `variable-strength`
 - `cost-aware-portfolio`
 - `registry-conformance`
+- `gate-integrity`
 
 ## Risk-class tags
 - `security`
@@ -103,6 +104,13 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `toothless-generated-test`
 - `blanket-ban-on-recurring-analysis`
 - `pairwise-as-proof`
+- `always-green-gate`
+- `green-by-deletion`
+- `vacuous-assertion`
+- `silent-tier-downgrade`
+- `output-grep-validation`
+- `visual-skip-in-ci`
+- `ci-retries`
 
 ## Minimum release coverage
 Before calling the skill improvement complete, the eval matrix should cover:

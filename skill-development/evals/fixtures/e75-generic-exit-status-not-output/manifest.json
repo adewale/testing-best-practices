@@ -1,0 +1,14 @@
+{
+  "eval_id": "E75-generic-exit-status-not-output",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-mixed"
+  ],
+  "checks": [
+    "reports the check as failed from the non-zero exit",
+    "does not claim validation passed on the strength of reassuring output"
+  ]
+}

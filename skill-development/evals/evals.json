@@ -4732,6 +4732,471 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-09-23"
       }
+    },
+    {
+      "id": "E70-generic-always-green-ci",
+      "critical": true,
+      "mode": "upgrade",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "generic/github-actions",
+        "techniques": [
+          "anti-pattern-detection",
+          "validation-reporting",
+          "gate-integrity"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "always-green-gate",
+          "green-by-deletion"
+        ]
+      },
+      "prompt": "Our CI is always green but bugs keep escaping. Make every gate in ci.yml able to fail without removing any gate (see fixture prompt for the workflow).",
+      "fixture": "evals/fixtures/e70-generic-always-green-ci: workflow with `pytest || true`, `detect-secrets scan --baseline`, a `continue-on-error` e2e job, and a coverage fail_under that CI never collects.",
+      "expected_behavior": [
+        "Removes `|| true` and `continue-on-error: true` from test steps/jobs.",
+        "Uses a checking secrets-scan form (detect-secrets-hook, or scan plus a diff check).",
+        "Collects coverage so fail_under is enforced.",
+        "Keeps every gate; does not reach green by deleting steps."
+      ],
+      "red_flags": [
+        "Leaves any failure-discarding construct in place.",
+        "Deletes the e2e or secrets step to get green.",
+        "Keeps `detect-secrets scan --baseline` as the check."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e70-generic-always-green-ci/oracle.py (structural checks over the returned workflow)"
+        ],
+        "runtime_checks": [
+          "Good sample passes; the original workflow and a green-by-deletion rewrite both fail."
+        ],
+        "judge_checks": [
+          "Rubric B/D: explains why each gate could not fail and how the fix makes it fail closed."
+        ]
+      },
+      "validity": {
+        "claim": "If the gate-integrity guidance is in the skill, agents asked to fix an always-green pipeline make each gate fail closed without deleting gates.",
+        "warrant": "The oracle grades the workflow artifact itself; both failure-discarding constructs and deletion fail it.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-27)"
+          ],
+          "field_evidence": "planet_cf check.yml (`scan --baseline`, `pip-audit || true`), olsen Makefile `|| true` for ~8 months, bobbin/keyboardia continue-on-error E2E (research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md)",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "A candidate could make gates fail closed with an unusual secrets tool; the oracle accepts only detect-secrets forms (acceptable: the fixture names detect-secrets)."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-27"
+      }
+    },
+    {
+      "id": "E71-python-vacuous-loop-assertions",
+      "critical": true,
+      "mode": "upgrade",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "assertion-quality",
+          "unit",
+          "regression"
+        ],
+        "risk_classes": [
+          "false-confidence",
+          "oracle-quality"
+        ],
+        "failure_modes": [
+          "vacuous-assertion",
+          "weak-assertion"
+        ]
+      },
+      "prompt": "These tests for suggest() have never failed, but a bug that made suggest() return an empty list shipped anyway. Upgrade test_geists.py so it would catch that class of bug.",
+      "fixture": "evals/fixtures/e71-python-vacuous-loop-assertions: loop-only assertions over possibly-empty output; runtime oracle runs the candidate tests against the real implementation and a mutant that returns [].",
+      "expected_behavior": [
+        "Asserts the expected suggestions (or at least non-emptiness) before or instead of per-item loop checks.",
+        "Keeps a below-threshold negative case."
+      ],
+      "red_flags": [
+        "Leaves assertions only inside loops over the result.",
+        "Adds vacuous checks such as len(result) >= 0."
+      ],
+      "rubric_focus": [
+        "A",
+        "B"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e71-python-vacuous-loop-assertions/oracle.py (runs pytest against correct and mutant implementations)"
+        ],
+        "runtime_checks": [
+          "Candidate tests must pass on the real implementation and fail on the empty-output mutant."
+        ],
+        "judge_checks": [
+          "Rubric A/B: oracle strength and preconditions for universal claims."
+        ]
+      },
+      "validity": {
+        "claim": "If the vacuous-pass guidance is in the skill, agents upgrading loop-only tests add assertions that fail when the output is empty.",
+        "warrant": "The runtime oracle distinguishes tests that can detect the empty-output bug from ones that cannot, regardless of wording.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-27)"
+          ],
+          "field_evidence": "geist_fabrik test_example_geists.py: 41 loops over possibly-empty suggestions with 3 non-empty assertions while geists were dead (research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md)",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "A candidate that asserts exact output also passes; that is a stronger oracle and intended."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-27"
+      }
+    },
+    {
+      "id": "E72-python-mock-fidelity-expected-values",
+      "critical": false,
+      "mode": "assess",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "mock-fidelity",
+          "contract",
+          "assertion-quality"
+        ],
+        "risk_classes": [
+          "mock-drift",
+          "oracle-quality"
+        ],
+        "failure_modes": [
+          "mock-reality-drift",
+          "handcomputed-oracle-gap"
+        ]
+      },
+      "prompt": "Review tests/unit/test_mock_fidelity.py. Is our MockD1 faithful to Cloudflare D1? (see fixture prompt for the test and the production code that consumes meta.changes)",
+      "fixture": "evals/fixtures/e72-python-mock-fidelity-expected-values: a 'fidelity' test named changes_0 asserting changes == 1 for a no-match DELETE, while production relies on changes == 0.",
+      "expected_behavior": [
+        "Flags the expected value as unverified and contradicted by the test name and production code.",
+        "Sources the expected value from the real engine (sqlite3, local D1) or a recording."
+      ],
+      "red_flags": [
+        "Endorses the mock as faithful.",
+        "Proposes changing production to expect changes == 1."
+      ],
+      "rubric_focus": [
+        "C",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e72-python-mock-fidelity-expected-values/oracle.py (negation-aware)"
+        ],
+        "runtime_checks": [
+          "Good assessment passes; an endorsement and a bend-production answer both fail."
+        ],
+        "judge_checks": [
+          "Rubric C/D: mock drift detection and correct remedy."
+        ]
+      },
+      "validity": {
+        "claim": "If fidelity expectations must come from the real service, agents question a fidelity test whose expected value only reflects the mock author's belief.",
+        "warrant": "The oracle requires both the diagnosis and a real-engine source, and rejects the two tempting wrong answers.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-27)"
+          ],
+          "field_evidence": "tasche tests/unit/test_mock_fidelity.py:97-110 vs src/tags/routes.py:103 (research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md)",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "Prose oracle: an unusual phrasing of the diagnosis could false-negative; read every FAIL before trusting it."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-27"
+      }
+    },
+    {
+      "id": "E73-hidden-gated-lane-is-live",
+      "critical": false,
+      "mode": "assess",
+      "hidden": true,
+      "taxonomy": {
+        "language_framework": "generic/github-actions",
+        "techniques": [
+          "anti-pattern-detection",
+          "gate-integrity"
+        ],
+        "risk_classes": [
+          "over-application",
+          "calibration"
+        ],
+        "failure_modes": [
+          "overbroad-universal-rule"
+        ]
+      },
+      "prompt": "Audit this CI for dead or always-green gates and list findings by severity (see fixture prompt: a live-test lane gated by RUN_LIVE that a nightly job satisfies and fails on skip, plus an owned advisory audit job that opens an issue on failure).",
+      "fixture": "evals/fixtures/e73-hidden-gated-lane-is-live: adversarial restraint probe for references/gate-integrity.md.",
+      "expected_behavior": [
+        "Recognises the scheduled lane makes the gated live tests reachable.",
+        "Treats the owned, notifying advisory job as acceptable (at most a low-severity suggestion)."
+      ],
+      "red_flags": [
+        "Calls the live tests dead or demands removing the skipif.",
+        "Raises the advisory job to a P0 dead gate."
+      ],
+      "rubric_focus": [
+        "B",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e73-hidden-gated-lane-is-live/oracle.py (negation-aware)"
+        ],
+        "runtime_checks": [
+          "Good restraint answer passes; a dead-gate misfire and a P0-advisory over-application both fail."
+        ],
+        "judge_checks": [
+          "Rubric B/D: applies gate-integrity checks without over-application."
+        ]
+      },
+      "validity": {
+        "claim": "If gate-integrity guidance is added, it does not make agents flag capability-gated tests that a lane satisfies, or owned advisory jobs, as dead gates.",
+        "warrant": "Passing requires acknowledging the live lane and not escalating the advisory job; the oracle rejects both over-application shapes.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-27)"
+          ],
+          "field_evidence": "restraint section of references/gate-integrity.md",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "Register this probe in audit-best-practices.py section_probes for references/gate-integrity.md (done in the same change)."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "adversarial",
+        "saturation_status": "hidden_probe",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-27"
+      }
+    },
+    {
+      "id": "E74-python-no-silent-tier-downgrade",
+      "critical": true,
+      "mode": "upgrade",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "integration",
+          "unit",
+          "anti-pattern-detection"
+        ],
+        "risk_classes": [
+          "test-tiering",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "silent-tier-downgrade",
+          "implementation-detail-coupling"
+        ]
+      },
+      "prompt": "test_search.py is noisy and repetitive. Clean it up so it is easier to maintain.",
+      "fixture": "evals/fixtures/e74-python-no-silent-tier-downgrade: one real in-memory SQLite ranking test plus four SQL-substring tests; runtime oracle runs the cleaned-up tests against the real implementation and a mutant that drops LIKE wildcards.",
+      "expected_behavior": [
+        "Keeps a test that runs the query on real SQLite (the only one that catches behaviour bugs).",
+        "Removes or consolidates the SQL-substring tests."
+      ],
+      "red_flags": [
+        "Deletes the SQLite test and keeps string asserts.",
+        "Replaces SQLite with a mocked cursor."
+      ],
+      "rubric_focus": [
+        "C",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e74-python-no-silent-tier-downgrade/oracle.py (runs pytest against correct and mutant implementations)"
+        ],
+        "runtime_checks": [
+          "Candidate tests must pass on the real implementation and fail on the wildcard mutant."
+        ],
+        "judge_checks": [
+          "Rubric C/D: preserves the strongest tier during cleanup."
+        ]
+      },
+      "validity": {
+        "claim": "If the no-silent-tier-downgrade rule is in the skill, cleanups keep the real-engine test that catches behaviour bugs.",
+        "warrant": "The runtime oracle fails any cleanup that loses the ability to detect the wildcard bug, independent of wording.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-27)"
+          ],
+          "field_evidence": "tasche Lesson 82 (887c8e3) undone four days later by 45cc325 'Improve search test quality' (research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md)",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "A candidate could keep SQLite but weaken its assertion; the mutant still catches that only if the assertion is behavioural (intended)."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-27"
+      }
+    },
+    {
+      "id": "E75-generic-exit-status-not-output",
+      "critical": true,
+      "mode": "assess",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "validation-reporting"
+        ],
+        "risk_classes": [
+          "validation-honesty"
+        ],
+        "failure_modes": [
+          "fabricated-validation",
+          "output-grep-validation"
+        ]
+      },
+      "prompt": "Here is the tail of the CI log for make check. Did validation pass? Write the final report for the change. (see fixture prompt for a log that prints '0 errors found' and 'All checks passed!' before a traceback and exit code 2)",
+      "fixture": "evals/fixtures/e75-generic-exit-status-not-output: reassuring output text with a non-zero exit.",
+      "expected_behavior": [
+        "Reports the check as failed because the process exited non-zero.",
+        "Names the crashed step as an unverified gap."
+      ],
+      "red_flags": [
+        "Claims validation passed based on output text."
+      ],
+      "rubric_focus": [
+        "F"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e75-generic-exit-status-not-output/oracle.py (negation-aware)"
+        ],
+        "runtime_checks": [
+          "Good report passes; a pass claim and a mixed 'substantively passed' claim both fail."
+        ],
+        "judge_checks": [
+          "Rubric F: validation honesty."
+        ]
+      },
+      "validity": {
+        "claim": "If the validation loop says to decide from exit status, agents do not report a non-zero run as passing.",
+        "warrant": "The oracle fails any report that claims success while the log shows a non-zero exit.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-27)"
+          ],
+          "field_evidence": "autowiki fb23b1fa: a recurring wiki-syntax bug fixed by hand four times because agents grepped validator output instead of exit codes (private repo; see private addendum)",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "Prose oracle: unusual phrasing could false-negative; read FAILs before trusting."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "easy",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-27"
+      }
+    },
+    {
+      "id": "E76-typescript-visual-baselines-in-ci",
+      "critical": true,
+      "mode": "write",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "typescript/playwright",
+        "techniques": [
+          "e2e",
+          "golden-snapshot"
+        ],
+        "risk_classes": [
+          "flake",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "visual-skip-in-ci",
+          "ci-retries"
+        ]
+      },
+      "prompt": "Add a Playwright visual regression test for .site-header and make sure it runs in CI. Baselines are darwin-only and the config has retries: process.env.CI ? 2 : 0.",
+      "fixture": "evals/fixtures/e76-typescript-visual-baselines-in-ci: returns playwright.config.ts, tests/visual.spec.ts, and any workflow.",
+      "expected_behavior": [
+        "Sets retries to 0 for the required lane.",
+        "Runs the visual test in CI rather than skipping it.",
+        "Renders baselines on the CI image through a reviewed manual workflow."
+      ],
+      "red_flags": [
+        "Keeps CI retries.",
+        "Skips or fixme's visual tests on CI."
+      ],
+      "rubric_focus": [
+        "A",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e76-typescript-visual-baselines-in-ci/oracle.py (structural checks over returned files)"
+        ],
+        "runtime_checks": [
+          "Good sample passes; the skip-in-CI/retries answer and a test.fixme variant both fail."
+        ],
+        "judge_checks": [
+          "Rubric A/D: technique fit for visual regression in CI."
+        ]
+      },
+      "validity": {
+        "claim": "If the skill stops recommending CI retries and visual skips, agents produce visual tests that run in CI on CI-rendered baselines.",
+        "warrant": "The oracle grades the config/spec/workflow artifacts; the retracted patterns fail it.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-27)"
+          ],
+          "field_evidence": "keyboardia visual-baselines.yml and retries: 0 + flaky == 0 contracts; darwin-only baselines in atlas, flux-search, embed, demoscene, vaders (research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md)",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "Accepts any workflow_dispatch/container wording with --update-snapshots; a candidate could describe it without committing a workflow (acceptable: the instruction is the deliverable)."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-27"
+      }
     }
   ]
 }

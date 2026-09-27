@@ -68,6 +68,8 @@ Keep two parser domains explicit:
 
 Validate a “valid” generator independently; otherwise malformed data can make deep behavior unreachable.
 
+Generation cost matters: a large bounded `st.from_regex(...)` or a filter that rejects most candidates trips the `too_slow`/`filter_too_much` health checks under coverage or CI load. Build values directly (`st.text(alphabet=..., min_size=..., max_size=...)`), and register a CI settings profile (`settings.register_profile("ci", ...)`) rather than suppressing health checks.
+
 Treat Hypothesis's example database as a cache, not the only permanent regression record. Promote important minimized inputs with `@example` or a deterministic regression; use `--hypothesis-seed` for short-lived reproduction. See `references/property-based-testing.md` for shared generator and oracle guidance.
 
 ## Fixtures and Test Data
@@ -155,12 +157,24 @@ pytestmark = [
 ]
 ```
 
+The gated lane must exist: some CI job (nightly or post-deploy) sets `RUN_E2E_TESTS=1`, provides the staging URL, and fails if these tests skip there.
+
+## Known bugs and expected failures
+
+Use `@pytest.mark.xfail(strict=True, reason=...)` with the bug condition as the assertion, so an upstream fix turns the run red and prompts cleanup. Do not call `pytest.xfail()` imperatively inside the test body: it reports "xfailed" whether or not the bug is still present, and a regression after the fix stays green. Once the bug is fixed, delete the xfail so the test fails hard on regression.
+
+## Declared compatibility
+
+Test the floor you declare. If `requires-python = ">=3.12"`, some CI leg (and the type checker's `pythonVersion`) must run 3.12; otherwise raise the floor to what is tested.
+
 ## Coverage commands
 
 ```bash
 pytest --cov=src --cov-branch --cov-report=term-missing
 pytest --cov-fail-under=80  # Optional threshold
 ```
+
+A `fail_under` in `pyproject.toml` does nothing unless CI runs pytest with `--cov`. Measure `source` over the package, and exclude test doubles (`testing/fakes.py`) so 100% is not earned by covering the fakes.
 
 ## Choosing values and matchers
 

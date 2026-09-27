@@ -1,0 +1,15 @@
+{
+  "eval_id": "E72-python-mock-fidelity-expected-values",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-bend-prod"
+  ],
+  "checks": [
+    "flags the no-match DELETE `changes == 1` expectation as unverified/contradicted",
+    "sources the expected value from the real engine or a recording",
+    "does not endorse the mock or bend production to it"
+  ]
+}

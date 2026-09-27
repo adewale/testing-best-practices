@@ -1,0 +1,14 @@
+{
+  "eval_id": "E74-python-no-silent-tier-downgrade",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-mocked"
+  ],
+  "checks": [
+    "cleaned-up tests still pass against the correct implementation",
+    "cleaned-up tests still catch a behavior bug only a real-SQLite test can see"
+  ]
+}

@@ -26,6 +26,8 @@ When an agent uses this skill, it produces higher-quality tests than it would on
 npx skills add adewale/testing-best-practices
 ```
 
+Record the skill version you applied (for example in your repo's testing doc) so guidance the skill later retracts can be traced; see the "Retracted guidance" list in `CHANGELOG.md`.
+
 Skills appear on skills.sh automatically after users install the repo with the skills CLI. Install counts and leaderboard rankings come from anonymous CLI telemetry; opt out with `DISABLE_TELEMETRY=1`. The repo page customization in `skills.sh.json` is picked up after the repository is seen by telemetry and the cache refreshes.
 
 ## Agent compatibility
@@ -65,7 +67,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 ## What's covered
 
-### Core principles (always loaded, ~4,100 estimated tokens)
+### Core principles (always loaded, ~4,600 estimated tokens)
 
 - Red-Green-Refactor TDD, with honest red-vs-green evidence reporting
 - Test quality over quantity (Kent Beck's Test Desiderata, assertion strength, coverage as a map rather than proof)
@@ -79,6 +81,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 - Differential, shadow-model, statistical-oracle, pirate/conformance, golden/snapshot, VCR/recorded-fixture, exhaustive, and mutation-style testing when the risk boundary calls for them
 - Test data builders, customer-readable examples, fixtures, and logging fakes that keep test intent visible
 - Correctness by construction — types/schemas/contracts over repeated runtime checks; invariant-proof tests plus model-gap tests
+- Gate integrity: whether each check runs and can fail (dead, always-green, and unreachable gated tiers), vacuous passes, and testing custom checkers from both sides
 - Validation loop before reporting done, including checks for weak assertions, skips, sleeps, live network, mock drift, fault masking, and unverified TDD claims
 
 ### Reference files (loaded on demand)
@@ -110,7 +113,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 | `references/golden-file-testing.md` | Transformation pipelines, snapshot tests, promote workflow, save/load or migration roundtrips |
 | `references/deterministic-time.md` | Code depends on time, timers, scheduling, flaky time tests, or background work reachable only by sleeps |
 | `references/vcr-cassettes.md` | Code calling external APIs |
-| `references/doc-sync-testing.md` | CLI commands or plugin hooks in docs |
+| `references/doc-sync-testing.md` | CLI commands, plugin hooks, or verification claims in docs and agent instructions |
+| `references/gate-integrity.md` | CI/hooks/test-config changes, gated or scheduled tiers, "is this check running and can it fail?", deploy verification |
 | `references/mutation-testing.md` | Focused mutation diagnostics, survivor triage, and recurring-lane safety |
 | `references/combinatorial-testing.md` | Large interacting-factor matrices and cost-aware covering portfolios |
 | `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |
@@ -124,15 +128,15 @@ The project now uses layered evals rather than a single public prompt table:
 
 | Layer | Current state |
 |------|---------------|
-| Public prompt evals | 12 cases in `evals/evals.json` across Python, TypeScript, Go, and Rust |
 | Development eval suite | 69 cases in `skill-development/evals/evals.json`: 38 write, 13 upgrade, 16 assess, 2 detect |
 | Hidden probes | 17 hard/adversarial probes tracked by eval-health metadata |
 | Shared benchmark | 48 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
 | Fixture oracles | 46 fixture oracles; each good sample passes and bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
-| Best-practices audit | 110/110, including adversarial-probe coverage for new technique sections |
-| Local gate | `python3 skill-development/scripts/check-all.py` passes; `score-skill-version.py` reports 100/100 |
+| Best-practices audit | Regression guard: all 110 checks pass, including adversarial-probe coverage for new technique sections. A pass means no known regression, not a quality score |
+| Local gate | `python3 skill-development/scripts/check-all.py` passes. `score-skill-version.py` is a static regression rubric (all checks pass); it no longer discriminates between versions, so read it as a guard, not a grade |
+| Archived | The 12-case public prompt set from 2026-05 is in `evals/archive/`; no gate reads it |
 
 Run the full local non-LLM gate with:
 
@@ -186,6 +190,7 @@ testing-best-practices/             # The installable skill (ships to agents)
     deterministic-time.md           # Topic: clock injection, time virtualization, async/background seams
     differential-testing.md         # Topic: reference implementations, ports, SDKs, shadow/statistical oracles
     doc-sync-testing.md             # Topic: documentation drift
+    gate-integrity.md               # Topic: dead/always-green gates, gated tiers, vacuous passes, deploy truth
     exhaustive-testing.md           # Topic: small state spaces
     fuzzing.md                      # Topic: coverage-guided targets, corpora, replay, campaign tiers
     golden-file-testing.md          # Topic: transformation pipelines, snapshot tests, digest roundtrips
@@ -208,10 +213,9 @@ research/                           # Source material (does not ship)
   NOVEL_TESTING_TYPES.md
 
 evals/                              # Public/shared prompt eval assets
-  evals.json                        # 12 public prompt evals across 4 languages
   shared-benchmark.json             # 48 shared benchmark cases
   shared-harness.md                 # Shared harness contract
-  files/                            # Fixture code for public eval prompts
+  archive/                          # Retired 2026-05 public prompt evals and their files (no gate reads them)
   fixtures/                         # Runnable prompt fixtures
   oracles/                          # Shared fixture oracle helpers
 
