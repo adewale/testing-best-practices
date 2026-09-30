@@ -31,6 +31,7 @@ Rules the skill has withdrawn. If your repository enforces one of these (a scrip
   - `E77-generic-mutation-lane-no-floor`: prose oracle.
   - `E78-python-classify-equivalent-survivors`: runtime oracle. Tests must kill the real boundary survivor and must not kill the two equivalent ones.
   - `E10` no longer expects a mutation-testing recommendation.
+- `research/IMPLEMENTATION_LOCK_IN_2026-09.md`: tests that lock in an implementation (output hashes, byte-exact goldens, source-text assertions, pinned incidental numbers, copied counts). It covers prevalence, churn and false-alarm rates across the owner's repositories, their origins (including this skill's characterization and golden guidance), a literature review, and proposed skill changes. The skill text itself is not changed yet.
 - `research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`: "Mutation testing: cost and benefit". The audit's mutation-floor and mutation-schedule recommendations are corrected.
 
 ### Added (gate integrity and agent-era failure modes)

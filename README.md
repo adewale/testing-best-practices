@@ -161,7 +161,7 @@ Built from analysis of testing patterns across 16 GitHub accounts and three engi
 - [bradfitz](https://github.com/bradfitz) (Go team) -- protocol-faithful fake servers
 - [joewalnes](https://github.com/joewalnes) -- minimalist testing frameworks
 - [ivanmoore](https://github.com/ivanmoore) -- TDD katas, mock object exercises
-- [adewale](https://github.com/adewale) -- property-based testing, mock fidelity, test quality audits; the 2026-09 portfolio verification audit (`research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`) re-checks those repos and adds gate liveness/integrity, vacuous-pass, and agent-era coupling lessons
+- [adewale](https://github.com/adewale) -- property-based testing, mock fidelity, test quality audits; the 2026-09 portfolio verification audit (`research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`) re-checks those repos and adds gate liveness/integrity, vacuous-pass, and agent-era coupling lessons; `research/IMPLEMENTATION_LOCK_IN_2026-09.md` measures how hashes, pins and byte-exact oracles lock in implementations across those repos, with a literature review and the changes this skill needs
 - [chrischabot](https://github.com/chrischabot) -- 5-tier test architecture, API scenario tests
 - [tirsen](https://github.com/tirsen) -- retry patterns
 - [antirez](https://github.com/antirez) (Redis creator) -- differential fuzzing vs. a reference oracle, digest roundtrips, `DEBUG` as a testability surface, recall testing for approximate algorithms, agent-as-QA
