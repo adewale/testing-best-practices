@@ -17,6 +17,19 @@ Use it when one or more apply:
 Do not enroll every module merely for parity. Start with changed, covered code or
 a small critical module.
 
+**Try cheaper checks first.** Red-green (the new test fails against the old code)
+answers most "would the tests catch this?" questions. Next, seed one fault by hand
+in a scratch copy: neuter one central function or reintroduce one past bug, run
+only the tests that import it, and revert. Use a tool when these leave a question
+about a specific module.
+
+**Estimate before running.** Cost is roughly mutants × per-mutant test time ÷
+workers, plus triage time for each survivor you read. A command runner (Stryker
+`testRunner: 'command'`) reruns the whole test command for every mutant; prefer
+per-test coverage analysis. Run the tool on demand (`npx`, `uvx`, `go run
+…@version`) rather than keeping a dependency nothing runs: its dependency tree
+still needs security patches.
+
 ## Why it works: Execute, Infect, Propagate
 
 For a seeded fault to be caught, the mutated statement must be **executed**, the
@@ -60,6 +73,11 @@ shows the caveat is material, not that 45% is a universal rate
 miss some real-fault classes, including algorithmic changes and code deletion
 ([Just et al.](https://doi.org/10.1145/2635868.2635929)).
 
+Do not export private helpers, mark production code, or pin implementation
+details (tie-breaks, epsilons, cache contents) to kill a survivor. If only such a
+test could kill it, classify it (unreachable through the public interface, or
+performance-only) and move on.
+
 Use the selected tool's status and denominator definitions. A mutation score is
 not percent correctness, and `100%` is not a universal attainable target.
 Mutation-score correlation with real-fault detection becomes weak when test-suite
@@ -98,6 +116,9 @@ system follows this pattern rather than publishing a codebase mutation score
 As this skill's conservative default for an unattended recurring lane, require:
 
 - one complete retained baseline on the target CI; **no baseline, no schedule**;
+- a change-based trigger (paths filter, `--diff`, incremental mode) that skips
+  runs when nothing in scope changed; a calendar schedule over unchanged code
+  repeats the same result and informs no decision;
 - evidence that the lane bites on a named fault class (a repaired fault, seeded
   sabotage, or prior actionable mutant);
 - focused scope whose measured runtime fits its timeout and compute budget;
@@ -109,7 +130,9 @@ Default to informational results. Prefer a changed-code policy such as “no new
 surviving actionable mutant” over an absolute repository score. A requested round
 number is not calibration: with no comparable baseline/history, do not configure
 an absolute floor. If one is later justified, derive it from reviewed history for
-that exact lane. [StrykerJS defaults `break` to `null`](https://stryker-mutator.io/docs/stryker-js/configuration/), so build failure is opt-in.
+that exact lane on the target runners: under local load, timeouts count as kills
+and inflate the score, so report the kill-only rate alongside it.
+[StrykerJS defaults `break` to `null`](https://stryker-mutator.io/docs/stryker-js/configuration/), so build failure is opt-in.
 
 Sharding a whole-repository sweep may fix capacity, but it does not prove the
 scope has value; narrow to changed code or a named critical module first. After
@@ -130,3 +153,15 @@ runtime bite, an owner, a decision, capacity, and a removal criterion.
 | Java/JVM | PIT | History and targeted classes |
 | Go | gremlins | Package-focused mutation |
 | Rust | cargo-mutants | Package/file filters |
+
+Tool traps seen in practice:
+- gremlins 0.6.0 ignores its `--threshold-*` flags; put thresholds in its config
+  file and show the run failing when one is set above the score.
+- A warm Go test cache makes gremlins time out nearly every mutant, and timeouts
+  count as kills; run `go clean -testcache` first.
+- gremlins `--diff` run from the repository root marks every mutant skipped
+  (repo-relative vs package-relative paths); run it inside the package with
+  `diff.relative=true`, and skip packages the diff does not touch.
+- StrykerJS's 5 s default timeout can fail the dry run on a slow test; fix the
+  test rather than raising the global timeout.
+- Stryker's incremental file is not kept between CI runs unless it is cached.

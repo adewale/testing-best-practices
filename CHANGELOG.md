@@ -15,6 +15,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 - **Operationally safe mutation guidance for issue #20** — recurring lanes now require a retained target-CI baseline, demonstrated fault-class bite, focused scope/capacity, an owner/action path, calibrated policy, expiry, and stop-before-expansion behavior; survivor triage separates equivalent/redundant/domain-invalid mutants and tool statuses from actionable gaps.
+- **Cost rules for mutation testing**, from a 2026-09-30 measurement across the owner's repositories. Recurring mutation lanes spent about 170 runner-hours and found nothing, while cheap one-off checks found every real gap. The reference now says:
+  - try red-green and a hand-seeded fault in a scratch copy before a tool;
+  - estimate mutants × per-mutant test time before running, and run the tool on demand rather than as a standing dependency;
+  - never export internals, mark production code or pin implementation details to kill a survivor;
+  - recurring lanes need a change-based trigger that skips unchanged code;
+  - take floors from target-runner runs and report the kill-only rate, because timeouts count as kills under load.
+
+  It also lists tool traps: gremlins ignoring CLI thresholds and a warm Go test cache, gremlins `--diff` from the repository root, Stryker's 5 s default timeout, and an incremental file that is not cached.
 - **Cost-aware combinatorial guidance for issue #21** — new installable reference and primary-source synthesis cover exact registry enrollment, constrained pairwise bases, variable-strength risk groups, heterogeneous cost vectors, CI-history calibration, shadow validation, and mandatory retention of known high-order regressions without universal defect-detection percentages.
 - **Evals E64–E69 and six self-testing fixtures** — mutation failure/keep probes, cue-free survivor triage, cost-aware portfolio design, static registry-sabotage analysis, and high-order-regression restraint. Combined suite: 69 development evals, 46 fixture oracles, 17 hidden probes, and 48 shared-harness cases.
 - **Skill Eval Harness v0.6 integration** — schema-v2 manifest, materialized ablations, schema-v3 telemetry compatibility, focused case/ablation filtering, AST-only shared grading for untrusted E67 code, an explicitly non-replayable historical multi-model receipt, and pinned manifest/ablation validation in the deterministic gate.
