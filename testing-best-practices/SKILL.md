@@ -107,7 +107,7 @@ For sanitizers, validators, filters, auth/security checks, and transformations, 
 
 Assert the fields the behavior under test is about. Full-object/whole-structure equality implicitly asserts every unrelated field, so the test breaks on unrelated changes and joins a change-detector treadmill (update the literal each time a field is added). Reserve whole-state comparison for tests where breadth is the contract — golden files and save/load roundtrips (`references/golden-file-testing.md`). Prefer assertion forms whose failure message alone can start the debugging (matchers/fluent asserts that print expected vs. actual, not bare booleans); when many tests keep breaking for innocent reasons like iteration order, fix the assertion vocabulary (order-insensitive/structural matchers), not each test. For coverage, gate new/changed code rather than one repo-wide number, and read what is *not* covered as the review signal.
 
-Every custom oracle, linter, validator, fixer, or eval grader needs a known-good input that passes and a known-bad input that fails. Goldens, approvals, or eval cases written by the same actor in the same change as the code are characterizations, not independent oracles.
+Every custom oracle, linter, validator, fixer, or eval grader needs a known-good input that passes and a known-bad input that fails; keep them small, and don't rerun an expensive checker for every bad input. Goldens, approvals, or eval cases written by the same actor in the same change as the code are characterizations, not independent oracles.
 
 ### Prefer real behavior over mocks
 
@@ -186,7 +186,7 @@ Report evidence by severity and include positive observations. For generative te
 3. **Mock-reality drift**: hardcoded mocks that would not notice real API/schema changes.
 4. **Tier integrity**: unit tests hitting live network, integration tests mocking every boundary they claim to exercise, E2E tests that mock the system under test or drive it through a test facade, PR suites that target production, and whether the artifact under test is the artifact deployed.
 5. **Determinism**: sleeps, wall-clock time, unseeded random, order dependence, global state leaks.
-6. **Coverage quality**: branch coverage, mutation/gap analysis for high-coverage suites with escaping bugs.
+6. **Coverage quality**: branch coverage; for high-coverage suites with escaping bugs, seed a fault on the critical path and see whether any test fails, cheapest first (`references/gate-integrity.md` §5). A recurring mutation lane is not a default recommendation.
 7. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
 8. **Lifecycle fit**: throwaway probes over-tested, reusable assets under-tested, or structure-only changes getting behavior-test theater.
 9. **Example quality**: business examples buried in UI scripts, unreadable fixtures, or helpers that form a DSL but have no tests of their own.
@@ -226,6 +226,7 @@ Use concrete search signals from `references/antipatterns.md`:
 - Global state/env/registry mutations without cleanup.
 - Snapshot/golden updates without diff review.
 - CI steps with `|| true`, `continue-on-error`, `scan --baseline`, or `::warning::` skips; coverage or mutation thresholds that never run.
+- Mutation run as a program: calendar schedules over unchanged code, round-number floors, internals exported or pinned only to kill survivors.
 - Assertions only inside loops over possibly-empty results; `violations == []` with no non-empty check; tests that import nothing from the code under test.
 - Source, CSS, or workflow text read and asserted as strings; helper-level retry loops; raised global timeouts or `isCI ? a : b` budgets.
 

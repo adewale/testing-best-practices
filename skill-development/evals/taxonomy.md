@@ -57,6 +57,7 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `maintainability`
 - `operational-cost`
 - `over-application`
+- `verification-cost`
 
 ## Failure-mode tags
 - `weak-assertion`
@@ -111,6 +112,8 @@ Every eval in `evals/evals.json` must include a `taxonomy` object so coverage is
 - `output-grep-validation`
 - `visual-skip-in-ci`
 - `ci-retries`
+- `calendar-recurrence`
+- `mutant-chasing`
 
 ## Minimum release coverage
 Before calling the skill improvement complete, the eval matrix should cover:

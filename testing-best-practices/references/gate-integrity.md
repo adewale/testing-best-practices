@@ -57,13 +57,18 @@ satisfies is a dead test.
 | `::warning::` + skip that ends a deploy green | Nothing shipped, and the badge is green | Fail on the normal path; alert on live-version drift (§5) |
 | Step iterating an empty set (scanner over a directory with no targets) | Zero findings from zero inputs | Scan committed canary fixtures: one that must fire, one that must not |
 | Coverage threshold configured but never invoked, or its provider not installed | The number is never computed | Run it in CI, or delete the dead threshold |
-| Mutation `break: null`, no threshold, a threshold the tool ignores, or dispatch-only | Cannot fail on its own | Threshold from a measured baseline, shown to fail when set above the score; or keep it explicitly diagnostic |
+| A threshold the tool silently ignores (gremlins 0.6.0 CLI `--threshold-*`) | The claimed gate never fires | Put it where the tool reads it, and show it failing when set above the score |
 | Fail-open imports (`import(x).catch(() => null)` + `skipIf`) | A required lane passes when its dependency fails to load | Fail when CI is set; assert the skip count is zero |
 | Warning-only expiry or review dates | Warnings nobody reads | Fail after a grace period; warn ahead of time |
 | E2E against production or a deployment not built from this commit | Tests someone else's code | Target a local server or a deploy of this SHA |
 
 Prove a gate works by planting a violation in a scratch copy (a failing test, a
 fake secret, an empty target) and watching it go red, then revert.
+
+Not every check that cannot fail is a dead gate. An explicitly informational
+diagnostic (mutation score, perf trend, eval report) is fine while someone reads
+it. If nobody does, run it on demand or delete it; do not add a threshold or a
+schedule just to give it teeth.
 
 ## 4. Vacuous passes: the instrument measures something else
 
@@ -88,13 +93,22 @@ fake secret, an empty target) and watching it go red, then revert.
 - **Both sides**: every custom oracle, linter, validator, auto-fixer, scanner, and
   eval grader needs at least one known-good input that passes and one known-bad
   input that fails, checked in CI. Detectors also need near-miss controls that
-  must not fire. Write fixtures from the failure, not from the regex.
-- **Cheap targeted mutation**:
-  - A sabotage kill matrix: neuter one central function in a scratch copy; every
-    test file that imports it should fail; count survivors.
-  - Committed defect-replay probes: reintroduce each past bug; the suite must fail.
-  - Invariants that a no-op satisfies (determinism, count preservation) need a
-    change-witness assertion that state actually changed.
+  must not fire. Write fixtures from the failure, not from the regex. Keep them
+  cheap: when the checker is expensive, compute its result once and assert each
+  tampered variant against it, and give slow checker self-tests their own lane.
+- **Seed faults cheapest first**, and stop when the question is answered:
+  1. Red-green: the new or changed test fails against the code before the fix.
+  2. A hand-seeded fault in a scratch copy or worktree, never the shared tree:
+     neuter one central function or reintroduce one past bug, run only the tests
+     that import it, record which fail, revert. A sabotage kill matrix is this
+     applied to one function: every importing test file should fail.
+  3. A mutation tool scoped to the changed function or file, run on demand
+     (`references/mutation-testing.md`), only when 1–2 leave a real question.
+
+  Prefer a regression test to a committed replay probe; commit probes only where
+  a test cannot express the bug (gates, corpora, checkers), and run them when
+  their paths change. Invariants that a no-op satisfies (determinism, count
+  preservation) need a change-witness assertion that state actually changed.
 - **The author is not the oracle**: goldens, approvals, and eval cases produced in
   the same change by the same actor are characterizations until independently
   reviewed. Report a trivial baseline next to any eval score.
@@ -116,11 +130,19 @@ Before scheduling a nightly E2E, fuzz, perf, eval, or mutation lane:
 - decide notify-or-block: a red schedule that does neither is a write-only log;
 - set a stop rule: after 3 consecutive failures, fix, narrow, disable, or delete
   before growing scope;
-- state a removal criterion.
+- state a removal criterion;
+- trigger on change, not the calendar: a paths filter, a diff scope, or
+  incremental mode, and skip when nothing in scope changed since the last
+  completed run. Re-running on unchanged code repeats the same result and
+  informs no decision;
+- take any floor from runs on the target runners, never from a local run: under
+  load, timeouts are counted as kills and inflate mutation scores.
 
-Gates cost minutes and attention. Weigh suite shape by where CI time goes, not
-just test counts, and retire gates that never fire. Mutation specifics are in
-`references/mutation-testing.md`.
+Gates cost minutes and attention. Before adding a lane, estimate runs × jobs ×
+minutes; on private repositories those minutes are billed, and running out stops
+every gate at once. Cancel superseded runs. Weigh suite shape by where CI time
+goes, not just test counts, and retire gates that never fire or never change a
+decision. Mutation specifics are in `references/mutation-testing.md`.
 
 ## 7. Restraint: don't over-apply
 

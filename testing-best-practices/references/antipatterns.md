@@ -22,6 +22,7 @@
 | Permissive environment | Regex-dispatched SQL fakes, hand-built schemas, bindings missing from the test config, fakes that never fail | P1 |
 | Hidden retries / timeout ratchet | Helper loops retrying 5xx; `retries: CI ? n : 0`; repeatedly raised global timeouts; `isCI ? a : b` budgets | P2 |
 | Self-authored oracle | Goldens, approvals, or eval questions written by the same actor in the same change as the code they judge | P2 |
+| Mutation program without a decision | Calendar-scheduled mutation over unchanged code; round-number or "no survivors" floors; private helpers exported, production markers added, or tie-breaks and cache internals pinned to kill a survivor | P2 |
 
 ## Anti-Pattern Details
 
@@ -139,8 +140,9 @@ test, `try/finally` for plugin registration.
 what ran, not what would be caught.
 
 **Fix**: Judge oracle strength, not counts: a test with weak sole assertions is
-weak whatever the coverage. Use focused mutation testing on critical code. Make
-coverage informational, not blocking, and check its denominator (thresholds only
+weak whatever the coverage. To find the weak ones, seed a fault in the code a
+test claims to cover and see whether it fails (cheapest first:
+`references/gate-integrity.md` §5). Make coverage informational, not blocking, and check its denominator (thresholds only
 see files the tests load unless `include` lists the source tree).
 
 **Never turn a heuristic into a quota.** A per-file or per-test assertion minimum
@@ -278,8 +280,10 @@ scanners run over an empty directory, coverage thresholds never invoked, CI that
 stopped executing (quota, billing, missing runner) while pushes continue.
 
 **Fix**: Make each gate fail closed and prove it by planting a violation in a
-scratch copy. An advisory job needs an owner, a schedule, a notification, and an
-exit plan. See `references/gate-integrity.md`.
+scratch copy. An advisory job needs an owner, a change-based trigger, a
+notification, and an exit plan. A diagnostic nobody reads is a cost, not a dead
+gate: run it on demand or delete it rather than adding a threshold. See
+`references/gate-integrity.md`.
 
 ### 17. Vacuous passes
 
@@ -325,3 +329,28 @@ saying so. Lessons written down the week before are undone.
 
 **Fix**: When removing or replacing tests, list them by tier and keep the tier or
 stronger. A lesson or postmortem counts only when a check enforces it.
+
+### 21. Mutation program without a decision
+
+**What**: Mutation testing run as a standing program rather than to answer a
+question about specific tests. Signals:
+- scheduled runs over unchanged code that repeat the same score;
+- floors copied from round numbers, set above the measured score, or taken
+  from a loaded local run;
+- "no surviving mutants" as a definition of done, or every survivor treated as
+  a release blocker;
+- private helpers exported, production code marked, or implementation details
+  (tie-breaks, epsilons, cache internals) pinned only to kill a survivor;
+- tests that enforce enrollment in the mutation lane;
+- a mutation tool kept as a dependency that nothing runs;
+- source-text "sabotage proofs" for regex change-detectors, which only test the
+  regex.
+
+**Why it hurts**: The recurring lanes cost runner-hours and, more lastingly,
+couple tests to implementation. The survivors they surface are often
+equivalent. Real findings come from cheap one-off checks.
+
+**Fix**: Seed faults cheapest first (`references/gate-integrity.md` §5), then
+use a tool scoped to changed code, on demand. Classify a survivor that is
+equivalent, unreachable through the public interface, or performance-only; do
+not chase it. Delete lanes that have never changed a decision.

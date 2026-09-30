@@ -67,7 +67,7 @@ Language-specific guidance loads on demand based on the project's language. Adva
 
 ## What's covered
 
-### Core principles (always loaded, ~4,600 estimated tokens)
+### Core principles (always loaded, ~4,700 estimated tokens)
 
 - Red-Green-Refactor TDD, with honest red-vs-green evidence reporting
 - Test quality over quantity (Kent Beck's Test Desiderata, assertion strength, coverage as a map rather than proof)
@@ -128,10 +128,10 @@ The project now uses layered evals rather than a single public prompt table:
 
 | Layer | Current state |
 |------|---------------|
-| Development eval suite | 69 cases in `skill-development/evals/evals.json`: 38 write, 13 upgrade, 16 assess, 2 detect |
-| Hidden probes | 17 hard/adversarial probes tracked by eval-health metadata |
+| Development eval suite | 78 cases in `skill-development/evals/evals.json`: 39 write, 18 upgrade, 19 assess, 2 detect |
+| Hidden probes | 18 hard/adversarial probes tracked by eval-health metadata |
 | Shared benchmark | 48 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
-| Fixture oracles | 46 fixture oracles; each good sample passes and bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round |
+| Fixture oracles | 55 fixture oracles; each good sample passes and every bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round; of E70–E78, 3 run the candidate's tests against seeded mutants, and E78 also requires that two equivalent mutants survive |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | Regression guard: all 110 checks pass, including adversarial-probe coverage for new technique sections. A pass means no known regression, not a quality score |

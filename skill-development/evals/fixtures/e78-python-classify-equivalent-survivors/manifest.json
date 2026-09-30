@@ -1,0 +1,15 @@
+{
+  "eval_id": "E78-python-classify-equivalent-survivors",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-cache-poison",
+    "samples/adversarial-no-boundary"
+  ],
+  "checks": [
+    "tests pass against the correct implementation and kill the MIN_SCORE boundary mutant",
+    "tests do not kill the tie-break or cache mutants, which are equivalent through the public interface"
+  ]
+}

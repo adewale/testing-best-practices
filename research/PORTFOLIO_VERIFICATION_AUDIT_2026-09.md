@@ -134,7 +134,7 @@ This is the single biggest gap. Assess check #10 already asks whether the config
   - `::warning::Skipping…` that ends a deploy green (`agentic-mermaid`);
   - steps that iterate an empty set (`skill_scanner` self-scan finds 0 skills);
   - coverage thresholds that are configured but never invoked, or whose provider isn't installed (`skill_scanner` has 80% configured against 78% actual; `keyboardia` lacks `@vitest/coverage-v8`);
-  - `thresholds.break: null` or dispatch-only mutation;
+  - ~~`thresholds.break: null` or dispatch-only mutation~~ (corrected 2026-09-30; see "Mutation testing: cost and benefit": an informational diagnostic is not a dead gate, and Stryker's default is `break: null`);
   - fail-open dynamic imports (`import(x).catch(() => null)` plus `skipIf`).
 - **Runner collection parity**: CI's collector may not see every test. `skill-eval-harness` CI runs `unittest discover`, which cannot see 56 pytest-only cases (2 Hypothesis properties plus a 54-case exhaustive matrix). Compare collected counts between collectors.
 - **Deploy freshness**: a post-deploy smoke proves only a deploy that happened. Compare the live build SHA or version with the deployable `main` (`agentic-mermaid`'s `capabilities.json` `gitSha` is 53 commits stale). Also require that E2E targets the artifact built from this commit: `planet_cf`'s `e2e.yml` never deploys what it tests, and `flux-search` PR CI tests production, not the PR.
@@ -226,7 +226,7 @@ Extend antipattern #7 (coupled to implementation) and the Detect list:
   - after 3 consecutive failures, fix, narrow, disable or delete (`agentic-mermaid`'s rule);
   - a removal criterion.
 
-  Informational gates need an exit plan: `vaders`' density audit has been `continue-on-error` since April; `olsen`, `garten`, `yaket` and `aha` all have mutation lanes that cannot fail.
+  Informational gates need an exit plan: `vaders`' density audit has been `continue-on-error` since April; `olsen`, `garten`, `yaket` and `aha` all have mutation lanes that cannot fail. (corrected 2026-09-30; see "Mutation testing: cost and benefit": that is correct for a diagnostic. The fix is to tie them to changes or run them on demand, not to add floors.)
 - **Prune discipline for agent-scale test volume.** Examples:
   - `keyboardia`'s knowledge-disposition audit for deleted tests (superseded / subsumed / re-expressed / evaporated) found a live bug.
   - A private repo deleted 1,222 lines of "ceremony" only after mutation showed it caught nothing.
@@ -370,7 +370,7 @@ The group review of skill repos ran this repo's gates: `check-all.py` passes, ta
    - Warning-only expiries get ignored: `cfdoctor` has been overdue since 2026-09-08, and `pythonbyexample` will fail every PR from 2026-12-01.
 3. **Advisory-forever gates.**
    - `vaders` has kept its density audit as `continue-on-error` since April.
-   - Of the four mutation setups (`olsen`, `garten`, `yaket`, `aha`), none can fail on its own.
+   - Of the four mutation setups (`olsen`, `garten`, `yaket`, `aha`), none can fail on its own. (corrected 2026-09-30; see "Mutation testing: cost and benefit": the problem is re-running them on unchanged code, not the missing floor.)
    - `rogue_planet` runs gosec, Trivy and Codecov as `continue-on-error`.
 4. **Production inside the test suite.**
    - `flux-search`'s `npm test` includes 9 files that call the production Worker.
@@ -401,7 +401,7 @@ Priorities: **P0** = the repo currently believes something false about its verif
 
 | Project | What verifies it today | Change (priority): why |
 |---|---|---|
-| **keyboardia** | 5,070 Vitest unit tests; 319 `fc.assert`; 134 workerd integration tests; 8 Playwright lanes with exact result contracts; CI-rendered visual baselines; blocking AST test-quality gates | **P0** Make `verify-receipts.mjs` fail on 0 receipts: the CI step that verifies receipts runs over none and exits 0. **P1** Make the 3 offline-audio files fail closed (`import('node-web-audio-api').catch(()=>null)` + `skipIf`): each passes alone with 7 tests skipped. (Corrected 2026-09-27: this was listed as P0, but other render files already fail closed, so the lane as a whole still goes red.) **P1** Delete the CI-to-production proxy in `vite.config.ts`: any `CI=true` Playwright run would mutate production. **P1** Move meta-verification and heavy renders out of `test:unit`, then lower `testTimeout` from 30 s: at load 20–30 there were 14 timeouts, 0 alone. **P1** Make `createSessionWithRetry` (112 sites) retry only transport errors and 429, and retract Lesson 16: 5xx retries bypass `flaky: 0`. **P2** Install `@vitest/coverage-v8` or delete the thresholds; schedule Stryker with an equivalent-mutant allowlist. **P2** Add AGENTS.md; generate TESTING.md counts from `lane-contracts.json`. |
+| **keyboardia** | 5,070 Vitest unit tests; 319 `fc.assert`; 134 workerd integration tests; 8 Playwright lanes with exact result contracts; CI-rendered visual baselines; blocking AST test-quality gates | **P0** Make `verify-receipts.mjs` fail on 0 receipts: the CI step that verifies receipts runs over none and exits 0. **P1** Make the 3 offline-audio files fail closed (`import('node-web-audio-api').catch(()=>null)` + `skipIf`): each passes alone with 7 tests skipped. (Corrected 2026-09-27: this was listed as P0, but other render files already fail closed, so the lane as a whole still goes red.) **P1** Delete the CI-to-production proxy in `vite.config.ts`: any `CI=true` Playwright run would mutate production. **P1** Move meta-verification and heavy renders out of `test:unit`, then lower `testTimeout` from 30 s: at load 20–30 there were 14 timeouts, 0 alone. **P1** Make `createSessionWithRetry` (112 sites) retry only transport errors and 429, and retract Lesson 16: 5xx retries bypass `flaky: 0`. **P2** Install `@vitest/coverage-v8` or delete the thresholds; ~~schedule Stryker with an equivalent-mutant allowlist~~ (corrected 2026-09-30; see "Mutation testing: cost and benefit": keep it manual; three manual runs found only equivalent survivors, while hand-seeded sabotage found the real gaps). **P2** Add AGENTS.md; generate TESTING.md counts from `lane-contracts.json`. |
 | **agentic-mermaid** | 7,553 tests, 0 mocks; differential, metamorphic and combinatorial conformance; sabotage worktrees; Stryker (break 90); MCP conformance; tarball fuzz; staged deploy with rollback | **P0** The deploy gate warns and skips green when the version isn't on npm. 0.4.2 was never published, so the live site has been stale since 07-31. Fail instead, and add a scheduled live `gitSha` freshness check. **P1** Move wall-clock `elapsedMs` budgets (89 uses) to a timing lane and lint them. ~~**P1** Bun stdio MCP hang~~ (corrected 2026-09-27: already fixed on `main` by #301, which requires Bun ≥ 1.4.0; the audit ran Bun 1.3.13). **P1** Replace the 525 literal YAML asserts with parsed invariants. **P2** Golden approvals should be independent of the authoring agent. **P3** Clean up 64 leaked temp dirs per run. |
 | **geist_fabrik** | 1,538 unit + 185 integration tests on 3 OS/Python legs; branch gate 70% (at 71.1%); stateful Hypothesis; 147 AUTO acceptance criteria; release-the-tested-bytes | **P0** Enforce "a test that cannot fail" with an AST meta-test, and port the 41 loop-only geist tests to `assert_valid_suggestions` (0 callers): dead geists stayed green for months. **P1** Schedule the real-model, slow and benchmark tiers, which run nowhere. **P1** Replace workflow string tests with actionlint + a release dry-run; they missed two release bugs. **P2** Ratchet the MANUAL acceptance count (84, 36%). |
 | **tasche** | 1,243 pytest (72 `@given`); 241 Vitest; mock-fidelity tests. 126 Playwright/axe and 35 staging E2E tests are manual | **P0** Record real D1 responses and fix MockD1: its "fidelity" test asserts `changes == 1` for a no-match DELETE, which production code contradicts, so the 409 path is unreachable. **P0** Restore the SQLite bm25 tests removed in `45cc325`. **P1** Put `agent-tools/check_*.py` in `make check`, and run `verify-staging` nightly. **P1** Fail the smoke test on `"error"` health. **P2** Replace `test.skip()`-on-failure with capability probes; add a CLAUDE.md Testing section. |
@@ -409,13 +409,13 @@ Priorities: **P0** = the repo currently believes something false about its verif
 | **bobbin** | 867 workers-pool tests + 68 node tests; 27 fast-check files; blocking E2E against a seeded local fixture (35/35) | **P1** Add interface-faithful AI and Vectorize bindings: semantic search has no test path (open since the June audit). **P1** Seed the scale tests and give them a slow project; they time out with unseeded `Math.random`. **P2** Schedule `alerts:production` and `health:production`. |
 | **atlas** | 644 Vitest; fast-check; budgets; SEO checks; Playwright desktop + 1 mobile spec | **P1** Replace 259 `waitForTimeout` (~391 s of sleep) with condition waits. **P1** Keep one visual system, with Linux baselines in CI: 43 of 79 fixes are layout/visual bugs and that tier never runs in CI. **P1** Serve fonts locally in tests. **P2** Replace the vestigial mock-contract spec with a node-canvas vs Chromium parity check. **P2** Enumerate all 118 elements instead of sampling. **P2** Add planted-violation tests for the `lint-*` scripts. |
 | **pythonbyexample** | 227 unittest; Hypothesis; 13 editorial gates; byte-exact verification of all 109 examples; `pywrangler dev` + Chrome in CI; lock parity | **P1** Replace CSS/JS source-substring tests (14 of 17 agent-added) with computed-style checks in the existing CDP test. **P1** Make `make deploy` run `smoke_deployment.py`. **P2** Warn 30 days before waiver expiry: CI fails on every PR from 2026-12-01. **P2** Fix stale doc claims (54 vs 31 tests; the deleted fixture script). |
-| **aha** | Go tests; rapid + native fuzz; fault-injection sweep; `internal/testquality` ratchets; MCP conformance | **P1** Require all 8 conformance legs in CI (`AHA_MCP_REQUIRE_ALL_LEGS=1`): 5 skip and the step still exits 0. **P1** Make the fuzz drift guard bidirectional. **P2** Turn the corpus-missing skips into `t.Fatal`; run a nightly mutation baseline on the 5 critical packages. |
+| **aha** | Go tests; rapid + native fuzz; fault-injection sweep; `internal/testquality` ratchets; MCP conformance | **P1** Require all 8 conformance legs in CI (`AHA_MCP_REQUIRE_ALL_LEGS=1`): 5 skip and the step still exits 0. **P1** Make the fuzz drift guard bidirectional. **P2** Turn the corpus-missing skips into `t.Fatal`; ~~run a nightly mutation baseline on the 5 critical packages~~ (corrected 2026-09-30; see "Mutation testing: cost and benefit": measured at 2–2.5 h per run, about 60–75 runner-hours a month, with about 30% of sampled corpus mutants surviving; run it on the package or diff you changed). |
 | **flux-search** | ~120 `fc.assert`; state-machine invariants; node:sqlite D1; deferred-promise race E2E (manual) | **P1** Move the 9 live-production files out of `npm test` into a post-deploy `live` project: PR CI tests production, not the PR. **P1** Use one timeout budget for CI and local runs: default local gives 9 timeouts, CI settings 0. **P2** Run Playwright in CI against `wrangler dev` with Linux baselines. **P2** `ngram-cases` logs instead of asserting. |
 | **vaders** | 2,607 tests; fast-check; Playwright; density audit (advisory) | **P1** Add a `vitest-pool-workers` lane for DO alarms and hibernation: 5 fixes needed mock widening. **P1** Typecheck every workspace (client-core has 20 errors). **P2** Run a PR E2E smoke with state waits; size PBT timeouts to `numRuns`. **P3** Replace the density audit with a blocking weak-sole-assertion check. |
 | **rogue_planet** | Go tests with `-race`; real-feed `testdata/` snapshots; network tests behind a build tag | **P1** Run `go vet -tags=network ./...` in CI and fix `crawler_live_test.go:70`, which has not compiled since 2025-11-02. **P2** Inject a clock instead of the ±20% jitter tolerance. **P2** Delete the fake `test-integration` target. |
-| **olsen** | Go tests (CGO SQLite, DNG fixtures); Makefile; gremlins weekly | **P1** Seed facet, lifecycle and engine tests from `PhotoBuilder` fixtures, and fail CI if they skip (18 skip today). **P1** Compile and run the LibRaw-tagged tests in the existing `build-raw` job. **P2** Give gremlins thresholds; fix TestMain cleanup; make the smoke test open the DB. |
-| **yaket** | 238 Vitest; `vitest-pool-workers` lane; Python differential parity | **P1** Run all Python parity files in CI, pin the upstream reference, and add parity to `release.yml` (the audit asked for it). **P2** Move package-smoke out of Vitest: it runs `tsc` inside a 5 s test. **P2** Schedule Stryker so `break: 85` means something. |
-| **garten** | 981 tests; mock-contract tests against real Chromium; Stryker (`break: null`) | **P1** Commit the 12 defect-replay probes as an executable script. **P2** Set a Stryker `break`. **P3** Pin the browser revision. |
+| **olsen** | Go tests (CGO SQLite, DNG fixtures); Makefile; gremlins weekly | **P1** Seed facet, lifecycle and engine tests from `PhotoBuilder` fixtures, and fail CI if they skip (18 skip today). **P1** Compile and run the LibRaw-tagged tests in the existing `build-raw` job. **P2** ~~Give gremlins thresholds~~ (corrected 2026-09-30; see "Mutation testing: cost and benefit": tie the weekly lane to changes in the packages it mutates; 16 weekly runs re-scored unchanged code with identical results); fix TestMain cleanup; make the smoke test open the DB. |
+| **yaket** | 238 Vitest; `vitest-pool-workers` lane; Python differential parity | **P1** Run all Python parity files in CI, pin the upstream reference, and add parity to `release.yml` (the audit asked for it). **P2** Move package-smoke out of Vitest: it runs `tsc` inside a 5 s test. ~~**P2** Schedule Stryker so `break: 85` means something.~~ (corrected 2026-09-30; see "Mutation testing: cost and benefit": keep it on demand; its dry run fails on Stryker's 5 s default timeout.) |
+| **garten** | 981 tests; mock-contract tests against real Chromium; Stryker (`break: null`) | **P1** Commit the 12 defect-replay probes as an executable script. ~~**P2** Set a Stryker `break`.~~ (corrected 2026-09-30; see "Mutation testing: cost and benefit": remove the weekly schedule instead, and run the probes on PRs that touch the code.) **P3** Pin the browser revision. |
 | **demoscene** | 114 unit + 56 workerd tests; fast-check; Playwright; **no CI** | **P0** Add CI running `test:fast` and gate `deploy` on it; nothing enforces a good suite. **P1** Add non-empty preconditions to the layout invariants; generate Linux baselines. **P2** Set `coverage.include: ["src/**"]`, since the 90% threshold ignores unloaded entrypoints. **P3** Exclude tests from jscpd. |
 | **claude-history-explorer** | 348 pytest on 3 OSes; 47 Vitest; golden-URL bridge tests | **P1** Schedule `npm audit` and block only on production-high; bump hono. Blocking audit is red today with no code change. **P1** Make a missing golden fixture fail in CI. |
 | **sunrise** / **sunrise-deploy** | workerd D1 from migrations; browser project; `verify` script; no CI | **P1 (sunrise)** Add a workflow: strangers fork and deploy this template. **P1 (sunrise-deploy)** Merge upstream 0.2.0 (21 commits behind, still on the yes-man fake D1) or mark it frozen. **P2** Add a doc-sync test for `sunrise.version.json` (0.1.0) vs `package.json` (0.2.0), which agents are told to read. |
@@ -483,6 +483,94 @@ Two findings about the checkers themselves support "prove a gate can go red" (`r
 
 - `gremlins` 0.6.0 ignores its `--threshold-*` command-line flags: a threshold of 101 exits 0. Only thresholds in its config file fail the run.
 - New checkers written for these PRs were wrong on first draft and were caught by their own planted-violation tests: a capability-guard scanner that missed a cast form (`bobbin`), and a defect-replay probe that the suite did not kill (`garten`).
+
+---
+
+## Mutation testing: cost and benefit (2026-09-30)
+
+A second pass asked what recommending mutation testing without a cost model has done. It covered the eight repositories with mutation work and the owner's private repositories' CI bills. It used Actions run history, job logs, git history, and fresh local runs.
+
+**Recurring lanes cost about 170 runner-hours and found nothing.** All of these repositories are public, so the minutes were free.
+
+| Lane | Runs | Runner time | Findings |
+|---|---|---|---|
+| `agentic-mermaid` nightly (retired 07-14) | 28 runs, 217 jobs, 0 successes | 7,357 min | none; the `routes` job hit its 90-min timeout every night against about 165 min of work |
+| `agentic-mermaid` per-PR incremental + route sabotage | 1,427 + 979 jobs | 2,636 min | none (one harness mismatch) |
+| `garten` weekly | 16, all on one unchanged SHA | 161 min | none; the same score every week |
+| `olsen` weekly | 16, on unchanged code | 101 min | none; 60 survivors never triaged |
+
+`keyboardia`, `yaket` and `aha` never ran mutation in CI. In the private repositories whose Actions minutes ran out on 2026-09-04, mutation-style tests used about 0.05% of billed minutes. The cause of that block was un-cancelled push runs, exhaustive unit tests and repeated browser-matrix dispatches.
+
+**Everything useful came from cheap, one-off checks:**
+- `keyboardia`: about 70 hand-seeded sabotage checks found 4 always-green properties and 15 properties a no-op reducer satisfies; importers surviving a neutered function went from 6/12 to 0/12.
+- `garten`: one scoped Stryker pass found 4 real test gaps. Its 12 defect-replay probes take about 2 minutes.
+- `olsen`: two hand-seeded mutants exposed 13 query subtests that skipped in CI and a wrong oracle.
+- `agentic-mermaid`: focused harvests led to 2 dead-code removals and some test gaps.
+- A private repository: one-off sabotage audits found at least 8 tests that could not fail and a real bug one of them hid, and justified deleting 1,222 lines.
+
+No repository has a product bug that was found by a surviving tool-generated mutant.
+
+**The damage was mostly not compute:**
+- **Code bent to the score.**
+  - Private helpers were exported only so tests could kill mutants: 5 in `yaket`, 1 in `agentic-mermaid`.
+  - `mutation-scope` markers were added to 4 `agentic-mermaid` source files.
+  - A private repository added a registry seam that exists "only for mutation tests".
+- **Tests pinned to implementation to kill survivors.**
+  - `agentic-mermaid`: A* tie-breaks, pixel epsilons and geometry snapshots.
+  - `yaket`: a cache-poisoning test for mutants its own audit had called equivalent.
+  - `olsen`: a concurrency test that kills its mutant only some of the time.
+- **Scores treated as targets.**
+  - 14 `break: 60` floors, one of them above the lane's measured score.
+  - Round floors of 85, 70 and 90.
+  - "No surviving mutants" as a definition of done in `aha`, which has about 275 survivors in one package.
+  - "The mutation score is the truer number."
+- **Attention.**
+  - A lane stayed red for 26 nights, so its one real signal was read 12 days late.
+  - An equivalent-mutant task stayed open for five months.
+  - About 3,700 lines of mutation infrastructure, repair branches and post-mortems in one repository, and an open PR to remove the rest.
+- **Supply chain.** In `agentic-mermaid`, Stryker was the only dependency pulling in `minimatch`/`brace-expansion`. Its advisories caused three dependency PRs and the 0.4.2 "security patch" version bump. That version has never been published, and it is the version the deploy gate has been skipping on.
+- **Runtime inside the suites was negligible** (0.05–0.14%). `keyboardia`'s expensive in-suite work was tamper tests of evidence verifiers, which rerun a full oracle for every variant: 32% of unit test time and the cause of its timeout increases. That is a cost of "test the tester", not of mutation.
+
+**Attribution.** The skill's text from 2026-04-11 included:
+- "Don't run on every commit — too slow. Run nightly or weekly."
+- "80% mutation score with 70% coverage > 95% coverage with 50% mutation score."
+- "Surviving mutants in security code are P0 issues."
+- "After a quality audit reveals low assertion density."
+
+Downstream it became:
+- `garten` (`c906f5b`) and `olsen` (`563b405`): commits titled after this skill added weekly lanes the same day.
+- `yaket`: "use mutation testing periodically".
+- `keyboardia`: a "90 high threshold" the skill never stated.
+- `agentic-mermaid`: a cron with no completed run, and "the mutation score is the truer number".
+- `aha`: "a surviving mutant … is a P0".
+
+Downstream repos also contradicted the skill: `agentic-mermaid` enrolled every module and added floors, and `keyboardia`'s mutation plan predates it.
+
+**This audit repeated the mistake.**
+- It recommended schedules or floors for 5 repositories.
+- It called `break: null` a dead gate.
+- Its PRs added:
+  - a weekly lane whose dry run fails in 15 s (`yaket`);
+  - a floor taken from a load-inflated local score (`garten`: 75.75% locally with 23 timeouts, 73.86% on CI);
+  - thresholds on a calendar lane (`olsen`).
+
+These are corrected above and in the PRs.
+
+**The fix** (skill text in this PR, plus PR #27's operating contract):
+1. Seed faults cheapest first:
+   - red-green;
+   - a hand-seeded fault in a scratch copy, running only the importing tests;
+   - only then a mutation tool scoped to changed code, on demand.
+2. Recurring lanes are triggered by change, not the calendar, and skip when nothing in scope changed. Floors come only from runs on the target runners, because load inflates scores through timeouts.
+3. Classify equivalent, unreachable or speed-only survivors. Never export internals, mark production code, or pin implementation details to kill one.
+4. Treat an unread diagnostic as a cost to remove, not a dead gate to arm.
+5. Keep checker self-tests cheap.
+6. Estimate runs × jobs × minutes before adding any lane; on private repositories those minutes are billed.
+7. Record tool traps:
+   - gremlins 0.6.0 ignores its CLI thresholds;
+   - a warm Go test cache makes gremlins report mass timeouts;
+   - Stryker's 5 s default timeout can fail the dry run;
+   - Stryker's incremental file is not persisted in CI.
 
 ---
 

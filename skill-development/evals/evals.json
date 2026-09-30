@@ -643,12 +643,13 @@
       "fixture": "Suite with high line coverage, low branch coverage, trivial assertions, and no mutation testing.",
       "expected_behavior": [
         "Explain coverage is informational and line coverage does not prove bug detection.",
-        "Recommend assertion quality review and mutation/pseudo-mutation testing.",
+        "Recommend assertion quality review and a cheap fault-seeding check on the critical path (red-green, a hand-seeded fault, or a one-off scoped mutation run).",
         "Prioritize critical paths over broad test-count increases."
       ],
       "red_flags": [
         "Recommends raising coverage threshold to 100%.",
-        "Ignores weak assertions."
+        "Ignores weak assertions.",
+        "Recommends a scheduled repository-wide mutation lane or a mutation-score target."
       ],
       "rubric_focus": [
         "C",
@@ -5196,6 +5197,137 @@
         "saturation_status": "unknown",
         "known_discriminates_versions": [],
         "last_reviewed": "2026-09-27"
+      }
+    },
+    {
+      "id": "E77-generic-mutation-lane-no-floor",
+      "critical": false,
+      "mode": "upgrade",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "mutation",
+          "gate-integrity"
+        ],
+        "risk_classes": [
+          "verification-cost",
+          "over-application"
+        ],
+        "failure_modes": [
+          "calendar-recurrence",
+          "always-green-gate"
+        ]
+      },
+      "prompt": "A weekly Stryker lane has re-scored unchanged main 16 times (73.86% every run, break: null, never failed); an audit called it a dead gate. Give the lane some teeth, e.g. break: 70.",
+      "fixture": "evals/fixtures/e77-generic-mutation-lane-no-floor: prompt plus good/bad/adversarial answers; negation-aware prose oracle.",
+      "expected_behavior": [
+        "Removes or replaces the calendar schedule: identical scores on unchanged code inform no decision.",
+        "Moves the cheap defect-replay probes to a change-based trigger (PRs touching the relevant paths).",
+        "Keeps Stryker on demand or change-scoped; derives any floor from target-CI runs, not a round number."
+      ],
+      "red_flags": [
+        "Adds break: 70 (or any floor) and keeps the weekly cron.",
+        "Treats an unread informational diagnostic as a dead gate to be given a threshold."
+      ],
+      "rubric_focus": [
+        "C",
+        "H"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e77-generic-mutation-lane-no-floor/oracle.py (negation-aware prose oracle)"
+        ],
+        "runtime_checks": [],
+        "judge_checks": [
+          "Rubric C/H: proportionate verification; cost stated; no floor on a calendar lane."
+        ]
+      },
+      "validity": {
+        "claim": "If the cost-first mutation guidance is in the skill, a request to give a calendar mutation lane teeth is redirected to change-based triggers instead of a floor.",
+        "warrant": "The oracle fails answers that add a numeric floor while keeping the weekly schedule, and answers that never address the schedule.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + bad/fail self-tests (2026-09-30)"
+          ],
+          "field_evidence": "garten and olsen weekly lanes: 32 runs on unchanged SHAs, identical scores, zero follow-up commits; this repo's own 2026-09 audit recommended floors and schedules for 5 repos (research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md, 'Mutation testing: cost and benefit')",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "An answer that adds a floor together with a change-based trigger passes; a floor derived from target-CI history on a change-triggered lane is acceptable under the recurring-lane contract."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-30"
+      }
+    },
+    {
+      "id": "E78-python-classify-equivalent-survivors",
+      "critical": true,
+      "mode": "upgrade",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "mutation",
+          "unit"
+        ],
+        "risk_classes": [
+          "verification-cost",
+          "maintainability"
+        ],
+        "failure_modes": [
+          "mutant-chasing",
+          "implementation-detail-coupling"
+        ]
+      },
+      "prompt": "A mutation run on keyphrase.py left three survivors (tie-break < to <=, cache-hit path to if False, MIN_SCORE >= to >). Write test_keyphrase.py so the tests kill all three survivors.",
+      "fixture": "evals/fixtures/e78-python-classify-equivalent-survivors: keyphrase.py with a private tie-break and cache; three mutants, two equivalent through the public interface; runtime oracle.",
+      "expected_behavior": [
+        "Kills the MIN_SCORE boundary survivor with a public-interface test at exactly the threshold.",
+        "Classifies the tie-break and cache survivors as equivalent through the public interface and does not chase them."
+      ],
+      "red_flags": [
+        "Imports or exports private helpers to kill the tie-break survivor.",
+        "Poisons or inspects the cache to kill a speed-only survivor."
+      ],
+      "rubric_focus": [
+        "C",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [
+          "evals/fixtures/e78-python-classify-equivalent-survivors/oracle.py (runs pytest against the correct module and three mutants)"
+        ],
+        "runtime_checks": [
+          "Candidate tests must pass on the real module, fail on the boundary mutant, and pass on the two equivalent mutants."
+        ],
+        "judge_checks": [
+          "Rubric C/D: survivors triaged; no implementation coupling."
+        ]
+      },
+      "validity": {
+        "claim": "If the skill says to classify rather than chase equivalent survivors, candidates kill the real survivor through the public interface and leave the equivalent ones.",
+        "warrant": "Any test that kills the tie-break or cache mutant must reach private state, because both are unobservable through top_phrases; the oracle detects this by running the tests against those mutants.",
+        "backing": {
+          "runtime_checks": [
+            "fixture oracle good/pass + three bad/fail self-tests (2026-09-30)"
+          ],
+          "field_evidence": "yaket exported 5 private helpers and added a cache-poisoning test to kill mutants its own audit had called equivalent; agentic-mermaid exported findLabelSlot and pinned A* tie-breaks and pixel epsilons (research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md)",
+          "model_runs": "none yet: ship-but-flag until paired with/without-skill generations are run"
+        },
+        "rebuttals": [
+          "A candidate that refuses to write any tests fails (the boundary survivor is real); a timing-based cache test would also be flagged, which is intended."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-09-30"
       }
     }
   ]
