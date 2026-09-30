@@ -568,7 +568,8 @@ These are corrected above and in the PRs.
 6. Estimate runs × jobs × minutes before adding any lane; on private repositories those minutes are billed.
 7. Record tool traps:
    - gremlins 0.6.0 ignores its CLI thresholds;
-   - a warm Go test cache makes gremlins report mass timeouts;
+   - a warm Go test cache makes gremlins report mass timeouts, which count as kills: `olsen` read 100% efficacy with 172 of 332 mutants timed out, against 84.64% after `go clean -testcache`;
+   - gremlins `--diff` run from the repository root compares repo-relative paths with package-relative ones, so it marks every mutant skipped; an empty diff mutates the whole package;
    - Stryker's 5 s default timeout can fail the dry run;
    - Stryker's incremental file is not persisted in CI.
 
