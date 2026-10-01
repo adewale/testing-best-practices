@@ -220,7 +220,7 @@ evals/                              # Public/shared prompt eval assets
   oracles/                          # Shared fixture oracle helpers
 
 skill-development/                  # Development-only evals and quality gates
-  evals/                            # 69 rubric evals, schema, scorecard, health plan, fixture oracles
+  evals/                            # 78 rubric evals, schema, scorecard, health plan, fixture oracles
   scripts/check-all.py              # Runs all local non-LLM gates
   scripts/                          # Static audit, oracle runners, mini-repos, prompt-eval runner, scoring tools
 

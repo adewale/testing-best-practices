@@ -18,20 +18,26 @@ Rules the skill has withdrawn. If your repository enforces one of these (a scrip
 | "Use focused mutation testing on critical code" as the fix for coverage chasing, and "mutation/gap analysis" as the Assess default | `references/antipatterns.md` #10, `SKILL.md` Assess #6 | Seed faults cheapest first: red-green, a hand-seeded fault in a scratch copy, then a scoped on-demand tool run | Every finding in the portfolio came from cheap one-off checks; recurring lanes spent about 170 runner-hours and found nothing |
 | Mock-contract tests as the primary remedy for mock drift | `references/typescript.md`, `references/antipatterns.md` #3 | Prefer deleting the mock for an in-process real engine; take a double's expected values from the real service | atlas deleted its mock for node-canvas and the contract test kept guarding nothing; tasche's "fidelity" test pinned the mock author's belief |
 
-`skill-development/scripts/static-audit.py` now fails (P0) if any retracted wording returns. The remaining mutation wording on `main` ("Run nightly or weekly", "80% mutation score with 70% coverage > …", "Surviving mutants in security code are P0 issues") is removed by PR #27; add static-audit guards for it once #27 merges.
+`skill-development/scripts/static-audit.py` guards the retracted wording. PR #27 removed the cadence-first mutation advice, arbitrary score ranking, and automatic P0 classification; its guards are preserved here.
+
+### Corrected (combined PR 27/28 review, 2026-10-02)
+- Golden verification fails without a reviewed baseline and never writes one; generating candidates is a separate authoring operation. Matching empty-string baselines remain valid.
+- Gate guidance preserves justified scheduled discovery, requires fault detection by relevant behavior tests rather than every importer, and distinguishes empty inspected inputs from a valid empty violation set.
+- Checker calibration reuses prepared inputs, runs the checker on each negative variant, and retains one end-to-end preparation-to-verdict check.
+- Exhaustive cost arithmetic now states 240 × 35 ms = 8.4 seconds before overhead. The merged eval inventory preserves E64–E78 and all registered restraint probes.
 
 ### Added (cost-first mutation guidance)
 - `references/gate-integrity.md`:
   - §3: an informational diagnostic is not a dead gate.
-  - §5: seed faults cheapest first; keep checker self-tests cheap (compute an expensive result once, then assert each tampered variant against it).
-  - §6: recurring lanes trigger on change and skip unchanged code; floors come only from target-runner runs; estimate runs × jobs × minutes (billed on private repositories); cancel superseded runs.
+  - §5: seed faults cheapest first; reuse expensive prepared inputs while running the checker on each negative variant, and retain one full preparation-to-verdict test.
+  - §6: select triggers from the evidence the lane can add; change-filter deterministic reruns while preserving justified scheduled discovery and environment checks. Calibrate thresholds on comparable target-runner history; estimate runs × jobs × minutes and cancel superseded runs.
 - `references/antipatterns.md` #21, "Mutation program without a decision", with a detection-table row. #10 and #16 no longer point to mutation or scheduling as the default fix.
 - `SKILL.md`: Assess #6 and a Detect signal for mutation run as a program; cheap known-bad inputs.
 - Evals:
   - `E77-generic-mutation-lane-no-floor`: prose oracle.
   - `E78-python-classify-equivalent-survivors`: runtime oracle. Tests must kill the real boundary survivor and must not kill the two equivalent ones.
   - `E10` no longer expects a mutation-testing recommendation.
-- `research/IMPLEMENTATION_LOCK_IN_2026-09.md`: tests that lock in an implementation (output hashes, byte-exact goldens, source-text assertions, pinned incidental numbers, copied counts). It covers prevalence, churn and false-alarm rates across the owner's repositories, their origins (including this skill's characterization and golden guidance), a literature review, and proposed skill changes. The skill text itself is not changed yet.
+- `research/IMPLEMENTATION_LOCK_IN_2026-09.md`: tests that lock in an implementation (output hashes, byte-exact goldens, source-text assertions, pinned incidental numbers, copied counts). It covers prevalence, churn and false-alarm rates across the owner's repositories, their origins, a literature review, and proposed skill changes. The missing-golden verification path is corrected here; the broader expected-value and characterization changes remain in issue #30.
 - `research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`: "Mutation testing: cost and benefit". The audit's mutation-floor and mutation-schedule recommendations are corrected.
 
 ### Added (gate integrity and agent-era failure modes)

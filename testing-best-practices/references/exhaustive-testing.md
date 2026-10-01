@@ -1,8 +1,8 @@
 # Exhaustive Testing via Property-Based Testing
 
 When the state space is small enough, don't sample — test *every* combination.
-"Small enough" means few cells **and** cheap cells: 240 cells at 35 µs is free; 240
-cells at 35 ms is 20 seconds of CI on every run.
+"Small enough" means few cells **and** cheap cells: 240 cells at 35 µs take about
+8.4 ms; 240 cells at 35 ms take 8.4 seconds, before setup and runner overhead.
 
 ## When the space is bounded
 

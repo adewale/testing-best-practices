@@ -72,8 +72,10 @@ schedule just to give it teeth.
 
 ## 4. Vacuous passes: the instrument measures something else
 
-- A universal assertion over a possibly-empty set ("every row fits", `violations
-  == []`) needs a non-empty precondition; print the denominator.
+- A universal assertion can pass without exercising the intended scenario when
+  its input set is empty. Assert non-empty inputs only when the scenario requires
+  them, and report how many inputs were inspected. `violations == []` is a valid
+  expected result; check the inspected inputs, not that violations exist.
 - Zero-sample aggregates (`Math.min(...[])` is `Infinity`) must refuse n = 0.
 - A test or script that reimplements the logic and imports nothing from the SUT
   tests its own copy.
@@ -94,14 +96,17 @@ schedule just to give it teeth.
   eval grader needs at least one known-good input that passes and one known-bad
   input that fails, checked in CI. Detectors also need near-miss controls that
   must not fire. Write fixtures from the failure, not from the regex. Keep them
-  cheap: when the checker is expensive, compute its result once and assert each
-  tampered variant against it, and give slow checker self-tests their own lane.
+  cheap: reuse expensive prepared inputs, then run the checker on each focused
+  negative variant. Retain one full preparation-to-verdict test; comparing
+  variants with a cached verdict does not exercise the checker.
 - **Seed faults cheapest first**, and stop when the question is answered:
   1. Red-green: the new or changed test fails against the code before the fix.
   2. A hand-seeded fault in a scratch copy or worktree, never the shared tree:
      neuter one central function or reintroduce one past bug, run only the tests
-     that import it, record which fail, revert. A sabotage kill matrix is this
-     applied to one function: every importing test file should fail.
+     that exercise the affected behavior, record which fail, revert. A sabotage
+     kill matrix records which tests detect each fault; importing a module does
+     not imply exercising that fault. Require detection by an appropriate
+     behavior test, not failure of every importing test file.
   3. A mutation tool scoped to the changed function or file, run on demand
      (`references/mutation-testing.md`), only when 1–2 leave a real question.
 
@@ -128,15 +133,18 @@ Before scheduling a nightly E2E, fuzz, perf, eval, or mutation lane:
   keep the report;
 - set a runtime budget and name an owner;
 - decide notify-or-block: a red schedule that does neither is a write-only log;
-- set a stop rule: after 3 consecutive failures, fix, narrow, disable, or delete
-  before growing scope;
+- choose a stop rule for repeated operational failures or untriaged findings:
+  fix, narrow, disable, or delete before growing scope;
 - state a removal criterion;
-- trigger on change, not the calendar: a paths filter, a diff scope, or
-  incremental mode, and skip when nothing in scope changed since the last
-  completed run. Re-running on unchanged code repeats the same result and
-  informs no decision;
-- take any floor from runs on the target runners, never from a local run: under
-  load, timeouts are counted as kills and inflate mutation scores.
+- choose the trigger from what can produce new evidence. Deterministic mutation
+  reruns with unchanged code, tests, operators, and environment usually add none;
+  use change filters or incremental results. Scheduled fuzz discovery can explore
+  new inputs, and E2E, performance, or eval runs can expose environment,
+  dependency, model, or workload changes without a source edit. Keep a calendar
+  lane when that purpose, its budget, and its result consumer are explicit;
+- calibrate any threshold on comparable target-runner history. For mutation
+  scores, report actual kills separately from timeouts: their score treatment
+  depends on the tool, and local load can inflate a timeout-inclusive score.
 
 Gates cost minutes and attention. Before adding a lane, estimate runs × jobs ×
 minutes; on private repositories those minutes are billed, and running out stops

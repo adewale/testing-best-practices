@@ -8,8 +8,10 @@ Two closely related patterns for asserting on complex output:
   test file. Best when an assertion would otherwise be a long, brittle
   field-by-field comparison.
 
-Both share the **promote workflow**: don't hand-write the expected output.
-The framework writes it the first time, you review the diff, then commit.
+Both can use an explicit **promote workflow**: generate a candidate in authoring
+mode, review it against the intended contract, then commit it. Verification is
+read-only: missing or different expected output fails, and CI never creates or
+updates baselines. Hand-written contract-derived expectations are also valid.
 
 ## Golden Files
 
@@ -18,8 +20,9 @@ The framework writes it the first time, you review the diff, then commit.
 1. Put input files in `tests/fixtures/`
 2. Run the transformation and save output to `tests/expected/`
 3. On subsequent runs, compare output against expected files
-4. If no expected file exists, create a baseline automatically
-5. To update: delete the expected file and re-run (or set an env var)
+4. If no expected file exists, fail without writing one
+5. To update: use a separate authoring command to generate a candidate, review
+   its behavioral changes, and explicitly accept it
 
 ### The pattern (from kepano/defuddle)
 
@@ -32,9 +35,8 @@ describe('Fixtures Tests', () => {
     const result = transform(input);
     const expected = loadExpected(name);
 
-    if (!expected) {
-      saveExpected(name, result);  // Auto-baseline
-      return;
+    if (expected === undefined || expected === null) {
+      throw new Error(`Missing reviewed golden: ${name}`);
     }
 
     expect(result.trim()).toEqual(expected.trim());
@@ -83,8 +85,8 @@ sidecar (`__snapshots__/`), not in a separate fixtures tree.
 
 ### The promote workflow
 
-1. Write the test with an empty expected slot
-2. Run tests — framework writes the actual output as the expected
+1. Write the test with an empty expected slot; ordinary verification must fail
+2. Run the framework's explicit update/authoring command to generate a candidate
 3. Subsequent runs: framework compares actual vs expected, fails with a diff
 4. When the change is intentional: run with `--update` (or interactive review)
 5. **Commit the snapshot file with the code change** — the snapshot diff in
@@ -108,8 +110,8 @@ def test_render_invoice(snapshot):
     assert invoice.render() == snapshot
 ```
 
-First run creates `__snapshots__/test_invoice.ambr` with the rendered output.
-Subsequent runs compare. On legitimate change: `pytest --snapshot-update`.
+Generate and review `__snapshots__/test_invoice.ambr` with
+`pytest --snapshot-update`. Ordinary runs compare and must fail if it is missing.
 
 ### Rust (insta) — the inline form
 
