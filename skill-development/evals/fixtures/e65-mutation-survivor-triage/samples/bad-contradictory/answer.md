@@ -1,0 +1,1 @@
+The score is not correctness; nevertheless release only when the mutation score reaches 70%. Classify equivalent survivors, compare like-for-like scope and denominator, separate timeout and infrastructure statuses from survivors, triage representative survivors, and add behavior regression tests for actionable cases.

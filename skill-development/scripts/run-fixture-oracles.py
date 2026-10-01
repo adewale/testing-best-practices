@@ -7,6 +7,7 @@ pass; bad must fail. This catches toothless eval oracles before we trust them.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -17,7 +18,16 @@ CORE_LANGS = {"python", "go", "typescript", "rust"}
 
 
 def run(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(cmd, cwd=cwd, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    env = os.environ.copy()
+    env["TBP_TRUSTED_FIXTURE_SELF_TEST"] = "1"
+    return subprocess.run(
+        cmd,
+        cwd=cwd,
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
 
 
 def main() -> int:

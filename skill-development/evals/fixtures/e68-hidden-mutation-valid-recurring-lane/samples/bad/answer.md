@@ -1,0 +1,1 @@
+I cannot approve this lane. The seeded sabotage proves fault-class bite, six baselines fit capacity, the security owner receives notifications, changed-code scope is focused, and quarterly 90-day expiry exists—but recurring mutation should remain manual.

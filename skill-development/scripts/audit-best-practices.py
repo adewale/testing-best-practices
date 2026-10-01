@@ -70,6 +70,8 @@ def main() -> int:
         ("references/antipatterns.md", "Asserting through fault-masking code"): "E54-hidden-spec-clamp-not-masking",
         ("SKILL.md", "Reserve whole-state comparison for tests where breadth is the contract"): "E58-hidden-narrow-not-roundtrip",
         ("references/antipatterns.md", "Logic in tests / over-DRY test code"): "E63-hidden-damp-keeps-builders",
+        ("references/mutation-testing.md", "no baseline, no schedule"): "E68-hidden-mutation-valid-recurring-lane",
+        ("references/combinatorial-testing.md", "Known regressions are mandatory"): "E69-hidden-combinatorial-known-high-order-regression",
     }
     by_id = {e["id"]: e for e in evals}
     unguarded = []

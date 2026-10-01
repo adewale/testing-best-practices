@@ -113,9 +113,11 @@ The xUnit/legacy-code literature is where the production-safety guardrails live.
 
 **The E46 guardrail has literature backing.** Test Logic in Production + Ariane 5 + Freedman's "tested component may differ from deployed component" are the canonical statements of what our restraint probe enforces (clock injection, never an env-var bypass).
 
-**One genuinely new concept: fault-hiding (PIE).** The skill teaches mutation testing operationally but not the underlying theory: code that masks internal anomalies (silent recovery, clamping, high domain/range-ratio operations, swallowed errors) passes tests while harboring faults. A candidate skill delta — *not* shipped with this document, pending the standard fixture/ablation/restraint-probe discipline:
-- antipatterns: "fault-masking code" signal (silent value-clamping/recovery around computation, beyond the existing swallowed-exception entry), with assertions-on-internal-state as the fix;
-- `mutation-testing.md`: one paragraph grounding mutation in PIE (execution/infection/propagation) — explains *which* surviving mutants matter.
+**Fault-hiding (PIE) was promoted with restraint.** The skill now explains that code masking internal anomalies (silent recovery, clamping, high domain/range-ratio operations, swallowed errors) can block propagation and let broken computations pass. The shipped delta is deliberately narrower than the original candidate:
+- `antipatterns.md` names fault-masking but prefers a smaller public/observable seam; pre-mask/internal assertions are allowed only at a stable approved testability seam, and specified clamps/fallbacks are excluded;
+- `mutation-testing.md` grounds diagnosis in execution/infection/propagation while requiring survivor classification rather than treating every survivor as a gap.
+
+E52/E53 later saturated against model priors; E54 remains the hidden restraint probe proving a documented clamp is not automatically a smell. The retained value is the PIE framing, the propagation-restoring seam choice, and explicit restraint—not a claim of broad marginal detection lift.
 
 **Also notable:** Binder's built-in test is the academic ancestor of the Redis `DEBUG` surface from our antirez research — independent convergence, practitioner and academy arriving at set/reset + reporters + assertions. And Sharma et al. 2023 is a literature-scale version of our own honest-claims lesson: developer-plausible testability claims don't survive measurement unchanged.
 
