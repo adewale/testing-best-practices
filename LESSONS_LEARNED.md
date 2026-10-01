@@ -73,6 +73,18 @@ The most valuable insights came from reading actual test files in production rep
 - Steph Ango: add a fixture file = add a test (zero-code test creation)
 - Mary Rose Cook: test at the user-facing level, pin non-deterministic inputs
 
+### Research notes are read downstream as instructions — correct them like code
+
+The April note on the owner's own repositories said "measure assertion density". The next day an agent working in one of those repositories turned it into a ≥3-assertions-per-file quota. It met the quota with `isinstance` asserts and added a flaky property test in the same commit. The same note praised patterns that had already rotted: network tests behind build tags that no longer compiled, a mock-contract test whose mock had been deleted, and a coverage floor that CI never ran.
+
+Research files in this repo are not inert background; agents in other repositories read them as guidance. Re-verify praised practices before citing them, mark corrections inline with dates, and keep a retracted-guidance list (CHANGELOG) so downstream enforcement of withdrawn rules can be found.
+
+### A recommendation to add a check must carry its cost and the decision it informs
+
+The April mutation guidance named a cadence ("nightly or weekly") and a score comparison, but no cost model. Downstream, lanes were scheduled on the calendar and floors were set. Over about 170 runner-hours, the recurring lanes found nothing. Meanwhile every real finding came from cheap one-off checks: hand-seeded faults, a single scoped run, defect replays. The lasting damage was not the compute. It was exported internals, tests pinned to implementation, score targets, and a tool dependency whose advisories forced a release.
+
+This repository's own September audit then repeated the error within days. It called Stryker's default `break: null` a dead gate and recommended floors and schedules for five repositories. The rule now: every "add a check" recommendation states its expected cost (runs × minutes, triage time) and the decision it will change. Use the cheapest check that can change that decision.
+
 ### One combined file per batch was a mistake
 
 We initially lumped 7 practitioners into one `LESSONS_FROM_PRACTITIONERS.md`. Individual contributions got buried. Splitting into one file per person made each practitioner's key idea stand out and made the research navigable.

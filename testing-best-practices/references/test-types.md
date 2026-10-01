@@ -107,6 +107,10 @@ When users, domain experts, bug reporters, support teams, or PMs provide concret
 | Behavior change | Add or update a test that can fail for the behavior. Prefer red-green evidence when feasible. |
 | Pure structure/tidying | Use the existing green suite. If no suite protects the behavior, add characterization tests first. |
 | Technical debt repayment/refactor | Characterize current behavior, then refactor under a green suite; debt without tests is harder to repay safely. |
+| Demo, starter, or example repo | A build/type check (e.g. `tsc --noEmit` plus a dry-run deploy) can be the whole verification. Say so explicitly; do not leave an unmodified scaffold test that cannot pass. |
+| Content or data repository (wiki, corpus, generated site) | The system under test is the corpus plus its gates: syntax, link targets, retrieval evals, freshness. The gate scripts and auto-fixers get the unit tests, with known-good and known-bad fixtures. |
+| Experiential product quality (game feel, audio, visual taste) | Tests guard invariants. Aesthetic claims need a dated, scheduled human review with an artifact (video, audio capture); do not encode taste as pinned numbers or hashes. |
+| Long-lived repo with many gates | Gates cost time and attention. Check each one runs and can fail, and retire gates that never fire; see `references/gate-integrity.md`. |
 
 ## TDD micro-tactics
 
@@ -132,7 +136,10 @@ Team rule: do not commit failing unit tests. For solo work, a broken test can be
 
 ### Smoke Tests
 - **When**: Every deployable unit (app, service, CLI)
-- **What**: "The app starts and responds to the main endpoint"
+- **What**: "The app starts, responds to the main endpoint, and touches its core
+  dependency" (opens the database and runs one query). `--help` is not a smoke test.
+- **After deploy**: also check that the live version or build SHA matches what you
+  meant to ship; a deploy step that skips and ends green is a failure mode.
 - **Cost**: Very low — one test that boots the app
 
 ### Regression Tests
@@ -166,7 +173,7 @@ A small target is distinct from a long campaign. Keep it fast, bounded, connecte
 - [ ] Domain experts supplied concrete examples that define a story or rule
 - [ ] A new feature changes the meaning of an existing action (redirects it, overrides it, alters its default) — test the composed workflow, not each feature alone; two individually well-tested features can still destroy data at their seam
 
-**Rules**: Golden path first, gate behind env vars, limit to 5-15 tests. For business-rule examples, prefer acceptance tests at the domain/API seam and only enough UI/E2E coverage to prove wiring. For a new service or first feature, build a **walking skeleton**: the thinnest build/deploy/test slice that exercises real packaging, configuration, and one path through the system. Track not-yet-implemented acceptance tests as in-progress with an issue/story link; do not hide them as unconditional skips. Record known fidelity gaps when a fake replaces a real service, and schedule a real-service check when that risk matters.
+**Rules**: Golden path first, gate behind env vars, limit to 5-15 tests. For business-rule examples, prefer acceptance tests at the domain/API seam and only enough UI/E2E coverage to prove wiring. For a new service or first feature, build a **walking skeleton**: the thinnest build/deploy/test slice that exercises real packaging, configuration, and one path through the system. Track not-yet-implemented acceptance tests as in-progress with an issue/story link; do not hide them as unconditional skips. Record known fidelity gaps when a fake replaces a real service, and schedule a real-service check when that risk matters. Drive the golden path through trusted user input: a run through a test facade or backdoor (`window.__test`, an injected store) is not user-journey evidence. Target the artifact built from this commit (a local server, or a deployment of this SHA) — never production from a PR suite. For platform SDK wrappers, state which realism level each check reaches (static → local runtime emulation such as workerd, Pyodide in Node, or `wrangler dev` → realistic data → deployed) and keep at least one local-runtime check in CI.
 **Cost**: High setup, slow, can be flaky.
 
 ### Documentation-Code Sync Tests
@@ -256,8 +263,11 @@ on selected boundaries.
 ### Visual Regression / Screenshot Tests
 - **When helpful**: UI-heavy projects where pixel layout matters
 - **Costs**: Cross-platform font differences cause false positives
-- **Mitigations**: Skip in CI, disable animations, capture components not pages,
-  mask timestamps and dynamic content
+- **Mitigations**: Render baselines on the CI image through a reviewed manual
+  workflow (never skip in CI, never auto-update), disable animations, capture
+  components not pages, mask timestamps and dynamic content. Where pixels stay
+  noisy, keep a loose tolerance and carry precision in structural assertions, or
+  golden a deterministic intermediate. A screenshot nothing compares is not a test.
 
 ### Mutation Testing
 - **When helpful**: After a quality audit reveals weak assertions; for
@@ -288,8 +298,8 @@ Use the engine's minimized failure and replay mechanism rather than a universal 
 For any project, start with:
 0. **Step Zero pass**: invariants encoded in types where the language allows.
    You write the type instead of the test.
-1. One smoke test (app starts and responds)
-2. Unit tests for business logic (3+ assertions, happy + sad path) — exercise
+1. One smoke test (app starts, responds, and touches its core dependency)
+2. Unit tests for business logic (meaningful oracles, happy + sad path) — exercise
    *behavior* on the precise types, not validation the types already enforce
 3. Regression test for every bug fix (written before the fix)
 

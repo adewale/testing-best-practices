@@ -26,6 +26,12 @@ P0_PATTERNS = [
     ("references/correctness-by-construction.md", r"Email\{\} outside the package compiles", "Go unexported-field example should use zero value, not external Email{} literal"),
     ("references/mutation-testing.md", r'mutant "survived" \(test gap found\)', "a surviving mutant must be triaged, not automatically labeled a test gap"),
     ("references/mutation-testing.md", r"80% mutation score with 70% coverage", "arbitrary mutation-score ranking encourages score-as-target policy"),
+    # Retracted 2026-09 after the portfolio verification audit; see CHANGELOG "Retracted guidance".
+    ("references/typescript.md", r"retries:\s*process\.env\.CI\s*\?\s*[1-9]", "required-lane Playwright example retries in CI (retracted: use retries: 0 plus a flaky == 0 result contract)"),
+    ("references/typescript.md", r"test\.skip\(!!process\.env\.CI", "visual tests skipped in CI (retracted: render baselines on the CI image)"),
+    ("references/test-types.md", r"Mitigations\*\*: Skip in CI", "visual regression mitigation says skip in CI (retracted)"),
+    ("references/test-types.md", r"3\+ assertions", "assertion-count rule in the test-type guide (retracted: counts are a heuristic, never a quota)"),
+    ("references/antipatterns.md", r"Track assertion density", "assertion density as a fix (retracted: it became quotas downstream)"),
 ]
 
 P1_PATTERNS = [

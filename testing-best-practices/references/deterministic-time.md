@@ -224,6 +224,26 @@ Whatever the seam, these guardrails are non-negotiable:
 - **Keep introspection read-only**, as a public documented contract — not
   `obj._internal` reaches that couple tests to implementation details.
 
+## Deadline and performance assertions
+
+Sleeps are not the only wall-clock dependence. `expect(elapsedMs).toBeLessThan(3000)`,
+30-second polling deadlines, and 5-second default timeouts on property or subprocess
+tests all pass alone and fail when the machine is busy — which is normal once several
+agents or CI shards share CPUs.
+
+- Assert bounded **work** (call counts, iterations, bytes, queries) instead of elapsed
+  time where the contract allows.
+- Put genuine deadline contracts in an isolated lane with measured headroom
+  (roughly 10× the typical time survives contention), or drive them with an
+  injected clock.
+- Treat a **timeout ratchet** — the global timeout raised again and again — as a sign
+  that heavy work sits in the wrong tier. Move those tests to their own project with a
+  measured budget; do not raise the default.
+- `isCI ? 15_000 : 5_000` budgets make a fresh local clone the flaky environment. Use
+  one budget per project.
+- Widening a timing tolerance (±10% → ±20%) is a smell; route the component through
+  the clock abstraction instead.
+
 ## Anti-patterns
 
 | Anti-pattern | Fix |

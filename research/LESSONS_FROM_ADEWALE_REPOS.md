@@ -2,6 +2,8 @@
 
 > Extracted from scanning ~30 repositories across Go, Python, TypeScript, and Vue.
 > Date: 2026-04-11
+>
+> **Corrected 2026-09-26.** Re-checked against each repository's history and current state in `PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`. Factual errors are fixed inline and marked *(corrected 2026-09)*. Takeaways #3 and #7 were reframed: downstream agents read this file as instructions, and #3 became an assertion-count quota.
 
 ---
 
@@ -45,11 +47,11 @@ The adewale repos demonstrate a mature, evolving testing philosophy. Key themes:
 | atlas | TypeScript | Vitest + jsdom | fast-check | Playwright (5 device profiles) | -- |
 | flux-search | TypeScript | Vitest | fast-check | -- | -- |
 | embed.oshineye.dev | TypeScript | Vitest | -- | Playwright | -- |
-| tasche | Python | pytest + pytest-asyncio | Hypothesis | httpx against staging | pytest-cov, branch=true |
+| tasche | Python | pytest + pytest-asyncio | Hypothesis | httpx against staging (manual only) | -- (never configured; corrected 2026-09) |
 | skill_scanner | Python | pytest | -- | -- | 80% fail_under |
 | rogue_planet | Go | testing + httptest | -- (table-driven) | go test -tags=network | 75% target |
-| geist_fabrik | Python | pytest + pytest-cov | -- | Integration tests | branch=true, --cov-branch |
-| planet_cf | Python | pytest | -- | Playwright + real Workers | -- |
+| geist_fabrik | Python | pytest + pytest-cov | Hypothesis (since 2026-03-14; corrected 2026-09) | Integration tests | branch=true, --cov-branch |
+| planet_cf | Python | pytest | Hypothesis (117 `@given` by April; corrected 2026-09) | agent-browser + live Workers (not Playwright; does not deploy the commit under test) | -- |
 | bobbin | TypeScript | Vitest + @cloudflare/vitest-pool-workers | -- | -- | -- |
 | qc | Python | Custom QuickCheck | qc itself | -- | -- |
 | gaetestbed | Python | unittest mixins | -- | -- | -- |
@@ -270,16 +272,20 @@ test('text measurement returns positive height for real fonts', async ({ page })
 
 **Lesson**: When your unit tests use mocks that return fixed values, add contract tests in a real browser that verify the mock's assumptions still hold.
 
+*(Corrected 2026-09)* atlas removed its pretext mocks on 2026-04-03 (`9a16ad7`) in favour of a real engine (node-canvas), so this contract now guards a mock that no longer exists. When a real engine can run in-process, deleting the mock beats contract-testing it.
+
 ### Pattern: Mock Fidelity Tests (tasche)
 
 tasche has `tests/unit/test_mock_fidelity.py` that validates the mock infrastructure itself:
 
 - Verifies MockD1 parameter binding catches mismatches
 - Verifies MockKV TTL tracking works correctly
-- Verifies MockR2 list pagination matches the real API contract
-- Verifies MockQueue message storage format
+- ~~Verifies MockR2 list pagination matches the real API contract~~
+- ~~Verifies MockQueue message storage format~~ *(corrected 2026-09: no such tests exist; the fidelity classes cover D1 bind, D1 run changes, KV TTL, and R2 httpMetadata)*
 
 **Lesson**: If your test infrastructure includes custom mocks (as opposed to using a mocking framework), write tests *for* those mocks. A broken mock silently passes everything.
+
+*(Added 2026-09)* The expected values in those tests must come from the real service. One of tasche's fidelity tests is named `…changes_0…` but asserts `changes == 1` for a DELETE that matches nothing "to match D1 behavior", while production code relies on `changes == 0`. A fidelity test that pins the mock author's belief is mock drift with extra steps.
 
 ### Pattern: Metrics Contract Tests (atlas)
 
@@ -387,6 +393,8 @@ These tests caught two bugs that hundreds of unit tests missed:
 
 **Lesson**: "For platform-specific runtimes, E2E tests against real infrastructure are not optional — they are the only tier that validates the actual contract between your code and the platform."
 
+*(Corrected 2026-09)* No automation runs tasche's staging E2E or its Playwright/axe tier; the last recorded Playwright run was 2026-02-22. A tier that exists but that no job runs is documentation, not verification (see `references/gate-integrity.md` in the skill).
+
 ### E2E with Playwright (atlas, embed.oshineye.dev, planet_cf, tts-playground)
 
 atlas has the most sophisticated Playwright setup:
@@ -460,7 +468,9 @@ test('folio layout', async ({ page }) => {
 2. **Animation timing** causes false positives unless explicitly disabled
 3. **Dynamic content** (timestamps, random IDs) must be masked or frozen
 
-**Lesson**: Visual regression tests are most valuable run locally before push, not in CI. Use them as a pre-commit safety net, not a gate.
+~~**Lesson**: Visual regression tests are most valuable run locally before push, not in CI. Use them as a pre-commit safety net, not a gate.~~
+
+*(Retracted 2026-09)* Every visual suite in the portfolio that followed this ran zero times in CI (atlas, flux-search, embed, demoscene, vaders; keyboardia until July 2026). keyboardia's fix works: render baselines on the CI image through a reviewed manual workflow, keep per-platform baselines, and never auto-update. atlas's visual tier is now opt-in behind `RUN_VISUAL=1`, and its mock-contract spec guards a mock deleted on 2026-04-03.
 
 ---
 
@@ -528,6 +538,8 @@ def pytest_configure(config):
 
 **Lesson**: Make the decision between real objects and stubs explicit and marker-driven. Unit tests (`-m "not slow"`) get stubs; integration tests get real dependencies.
 
+*(Corrected 2026-09)* geist_fabrik replaced the `-m`-string-keyed injection on 2026-09-08 (`c163c34`) with a marker-driven session patch that refuses mixed sessions.
+
 ---
 
 ## Flaky Test Patterns
@@ -540,7 +552,9 @@ def pytest_configure(config):
 go test -tags=network ./pkg/crawler -v
 ```
 
-**Lesson**: Network-dependent tests should be behind build tags/markers, excluded from the default test run.
+**Lesson**: Network-dependent tests should be behind build tags/markers, excluded from the default test run — **and still compiled in CI** (`go vet -tags=network ./...`).
+
+*(Corrected 2026-09)* rogue_planet's `-tags=network` tests have not compiled since `65d22f3` (2025-11-02). Nothing compiled them, and a later agent commit said "All tests pass" after editing the file.
 
 ### Pattern: Time-Invariant Tests (rogue_planet)
 
@@ -561,7 +575,7 @@ async function waitForAnimations(page, ms = 600) {
 
 ### Anti-Pattern: Visual Tests in CI
 
-atlas explicitly skips visual regression tests in CI because font rendering differs across environments. This is the right call — don't let cross-platform rendering differences make your tests flaky.
+atlas explicitly skips visual regression tests in CI because font rendering differs across environments. ~~This is the right call~~ *(retracted 2026-09: the result was a visual tier that never ran; generate baselines on the CI image instead, as keyboardia does)*.
 
 ---
 
@@ -604,6 +618,8 @@ Multiple repos use a `specs/` directory containing detailed specifications that 
 
 **Lesson**: Security tools should scan themselves as a regression test. This catches false positive rate regressions.
 
+*(Corrected 2026-09)* skill_scanner's CI "self-scan security gate" (`skill_scanner.py . --fail-on-high`) finds 0 skills in the repository root and exits 0, so it checks nothing; a gate over an empty target needs a canary fixture that must fire. The self-scan test also has only an upper bound (`< 200`), so a broken pattern loader that returns 0 findings would pass.
+
 ---
 
 ## Coverage Configuration
@@ -634,6 +650,8 @@ exclude_lines = [
 fail_under = 80
 show_missing = true
 ```
+
+*(Corrected 2026-09)* CI never runs pytest with `--cov`, so this floor is never evaluated; measured branch coverage is 78%. Configured is not enforced.
 
 ### Go Coverage (rogue_planet)
 
@@ -830,11 +848,11 @@ From tasche Lesson #31: Local platform simulators are useful for development but
 
 1. **Every parser/normalizer needs a "never crashes on arbitrary input" property test**
 2. **Mock contract tests should validate that mock return values match reality**
-3. **Measure assertion density, not just test count or coverage percentage**
+3. **Read oracle strength, not counts**. *(Reframed 2026-09: "measure assertion density" was turned into a ≥3-per-file quota downstream and met with `isinstance` asserts. Use counts only to find tests to read.)*
 4. **E2E tests against real infrastructure are the only tier that validates platform contracts**
 5. **Three-tier architecture (unit → integration → E2E) with clear rules for each tier**
 6. **Prefer real objects; when you must mock, test the mocks themselves**
-7. **Visual regression tests belong in local dev, not CI (font rendering differs)**
+7. **Visual regression tests belong in CI on baselines rendered on the CI image**. *(Reversed 2026-09: "local dev, not CI" produced visual suites that never ran.)*
 8. **Gate network/platform-dependent tests behind markers or environment variables**
 9. **Boundary-first generators (test low/high bounds before random values) catch edge cases**
 10. **Conservation laws make excellent property tests** ("no new characters", "monotonic with more input")

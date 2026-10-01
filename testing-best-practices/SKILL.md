@@ -60,13 +60,14 @@ Topical references by trigger:
 - Complex outputs, snapshots, transformation pipelines, save/load or migration roundtrips → `references/golden-file-testing.md`
 - Time, timers, schedules, sleeps, flaky time tests, background threads/async work tests can only reach by sleeping → `references/deterministic-time.md`
 - External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
-- CLI/plugin/docs registry sync → `references/doc-sync-testing.md`
+- CLI/plugin/docs registry sync, or verification claims in docs and agent instructions → `references/doc-sync-testing.md`
 - Mutation testing, mutation scores/survivors, recurring mutation lanes, or high coverage but escaping bugs → `references/mutation-testing.md`. For recurrence, no completed target-CI baseline or demonstrated fault-class bite means no schedule; never copy an absolute score floor.
 - Small finite state spaces → `references/exhaustive-testing.md`
 - Large configuration/feature/runtime matrices, pairwise replacement, or interacting factors → `references/combinatorial-testing.md`. Preserve fixed regressions and exact registry enrollment; use named variable-strength groups and shadow evidence before deletion.
 - Arithmetic/domain operators/laws → `references/mathematical-properties.md`
 - Fixtures/builders/assertion helpers → `references/test-data-builders.md`
 - Same invariant checked across layers, type-vs-test decisions, invalid states → `references/correctness-by-construction.md`
+- CI/hooks/test-config changes, gated or scheduled tiers, "is this check running and can it fail?", deploy verification → `references/gate-integrity.md`
 
 ## Core principles
 
@@ -100,20 +101,25 @@ When practicing TDD, keep a visible **test list**. Park new edge-case ideas ther
 
 Coverage shows what ran; it does not prove bugs would be caught. Prefer branch coverage over line coverage and treat coverage as a map for finding untested paths, not a quality gate by itself.
 
-Assertion count is a heuristic, not a law. Example-based behavior tests often need multiple meaningful assertions to verify structure, state, and negative cases. But a property test, table row, or exception test may have one excellent oracle. Flag weak sole assertions such as “not empty,” `toBeDefined()`, `toBeTruthy()`, `Assert.IsNotNull(result)`, or logging without assertions.
+Assertion count is a heuristic, not a law; never turn it into a quota. Example-based behavior tests often need multiple meaningful assertions to verify structure, state, and negative cases. But a property test, table row, or exception test may have one excellent oracle. Flag weak sole assertions such as “not empty,” `toBeDefined()`, `toBeTruthy()`, `Assert.IsNotNull(result)`, or logging without assertions.
 
 For sanitizers, validators, filters, auth/security checks, and transformations, verify both directions where applicable: dangerous/invalid content is rejected or removed, and safe/valid content is preserved.
 
 Assert the fields the behavior under test is about. Full-object/whole-structure equality implicitly asserts every unrelated field, so the test breaks on unrelated changes and joins a change-detector treadmill (update the literal each time a field is added). Reserve whole-state comparison for tests where breadth is the contract — golden files and save/load roundtrips (`references/golden-file-testing.md`). Prefer assertion forms whose failure message alone can start the debugging (matchers/fluent asserts that print expected vs. actual, not bare booleans); when many tests keep breaking for innocent reasons like iteration order, fix the assertion vocabulary (order-insensitive/structural matchers), not each test. For coverage, gate new/changed code rather than one repo-wide number, and read what is *not* covered as the review signal.
+
+Every custom oracle, linter, validator, fixer, or eval grader needs a known-good input that passes and a known-bad input that fails; keep them small, and don't rerun an expensive checker for every bad input. Goldens, approvals, or eval cases written by the same actor in the same change as the code are characterizations, not independent oracles.
 
 ### Prefer real behavior over mocks
 
 Prefer, in order:
 
 1. Real in-memory/local objects, temp dirs, in-memory databases, real parsers.
-2. Purpose-built fakes that implement the same interface and can record history.
-3. Deterministic stubs for controlled edge cases.
-4. Framework mocks as a last resort.
+2. Local emulation of the real runtime (workerd/vitest-pool-workers, Pyodide in Node, `wrangler dev`, SQLite loaded from migrations).
+3. Purpose-built fakes that implement the same interface and can record history.
+4. Deterministic stubs for controlled edge cases.
+5. Framework mocks as a last resort.
+
+Take a double's expected values from the real service (recorded or locally emulated), never from the mock author's belief; when a real engine can run in-process, delete the mock.
 
 Prefer visible state over call choreography: assert the saved row, emitted event, response body, file on disk, or a small logging fake's recorded effects. Do not mock values; construct them. Mock roles you own, not third-party libraries directly; wrap provider SDKs behind an owned interface and add a contract/VCR check for the real provider shape. For interaction tests, allow queries and expect commands: getters can be called freely, side-effecting commands are where expectations earn their keep.
 
@@ -174,12 +180,13 @@ For transformations or complex generated output, use golden files with explicit 
 
 Report evidence by severity and include positive observations. For generative tests, load the relevant language and topical references before recommending engine-specific changes. Check:
 
+0. **Is it running, and can it fail?** For each tier: the job that runs it, its last result on the default branch, whether gated tests are reachable, and whether each gate can go red (`|| true`, `continue-on-error`, baseline updaters, skip-green, empty targets). A dead gate is the first finding. See `references/gate-integrity.md`.
 1. **Sabotage / false confidence**: skipped/focused tests, no assertions, logging-not-asserting, commented-out assertions, always-true assertions.
 2. **Oracle strength**: weak sole assertions, missing negative/error/state/structural assertions, tautologies. For property tests, a bare never-crashes oracle is weak when a semantic invariant is available.
 3. **Mock-reality drift**: hardcoded mocks that would not notice real API/schema changes.
-4. **Tier integrity**: unit tests hitting live network, integration tests mocking every boundary they claim to exercise, E2E tests that mock the system under test.
+4. **Tier integrity**: unit tests hitting live network, integration tests mocking every boundary they claim to exercise, E2E tests that mock the system under test or drive it through a test facade, PR suites that target production, and whether the artifact under test is the artifact deployed.
 5. **Determinism**: sleeps, wall-clock time, unseeded random, order dependence, global state leaks.
-6. **Coverage quality**: branch coverage, mutation/gap analysis for high-coverage suites with escaping bugs.
+6. **Coverage quality**: branch coverage; for high-coverage suites with escaping bugs, seed a fault on the critical path and see whether any test fails, cheapest first (`references/gate-integrity.md` §5). A recurring mutation lane is not a default recommendation.
 7. **Invariant placement**: repeated internal validation that should be a type/schema/contract.
 8. **Lifecycle fit**: throwaway probes over-tested, reusable assets under-tested, or structure-only changes getting behavior-test theater.
 9. **Example quality**: business examples buried in UI scripts, unreadable fixtures, or helpers that form a DSL but have no tests of their own.
@@ -203,6 +210,8 @@ Common upgrades:
 - Replace broad mocks with fakes, contract tests, or assertions on public behavior.
 - Replace repeated object literals with builders that keep behavior-specific fields explicit.
 
+Never silently downgrade a tier: list removed or replaced tests by tier, and keep real-engine tests (SQLite, workerd, browser) unless an equal or stronger tier replaces them. A lesson or postmortem counts only when a check enforces it.
+
 ### Detect mode
 
 Use concrete search signals from `references/antipatterns.md`:
@@ -216,6 +225,10 @@ Use concrete search signals from `references/antipatterns.md`:
 - Mock return values identical to assertions.
 - Global state/env/registry mutations without cleanup.
 - Snapshot/golden updates without diff review.
+- CI steps with `|| true`, `continue-on-error`, `scan --baseline`, or `::warning::` skips; coverage or mutation thresholds that never run.
+- Mutation run as a program: calendar schedules over unchanged code, round-number floors, internals exported or pinned only to kill survivors.
+- Assertions only inside loops over possibly-empty results; `violations == []` with no non-empty check; tests that import nothing from the code under test.
+- Source, CSS, or workflow text read and asserted as strings; helper-level retry loops; raised global timeouts or `isCI ? a : b` budgets.
 
 ## Validation loop
 
@@ -227,7 +240,9 @@ After writing or changing tests:
 4. For security/transformation tests, verify both rejection/removal and preservation.
 5. For invariant work, verify both tactics where relevant: property/invariant proof and invalid-state reachability.
 6. For property/fuzz tests, confirm the claimed input domain, independent oracle, engine-native replay, and—where configuration makes it uncertain—collection or target selection with the exact CI command.
-7. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them.
+7. Decide pass/fail from exit status, not output text. Run the exact CI entrypoint rather than a sub-mode, and compile tag-gated files you touched with their tags.
+8. When repairing CI, keep "update a stale selector" separate from "weaken an assertion or raise a timeout", and justify every weakening. Call a failure pre-existing only after reproducing it on a clean checkout of the base.
+9. If validation is blocked, report the exact command, failure, and next-best check. Never claim tests passed without running them; say which environment a green claim came from, and check the pushed commit's CI when there is one.
 
 ## Final report contract
 
@@ -238,6 +253,7 @@ Tests changed/assessed:
 Behavior covered:
 Commands run:
 Results:
+CI status (ran / red / not running):
 TDD evidence (if claimed):
 Gaps / risks:
 Follow-ups:

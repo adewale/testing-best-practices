@@ -72,6 +72,7 @@ def main() -> int:
         ("references/antipatterns.md", "Logic in tests / over-DRY test code"): "E63-hidden-damp-keeps-builders",
         ("references/mutation-testing.md", "no baseline, no schedule"): "E68-hidden-mutation-valid-recurring-lane",
         ("references/combinatorial-testing.md", "Known regressions are mandatory"): "E69-hidden-combinatorial-known-high-order-regression",
+        ("references/gate-integrity.md", "Restraint: don't over-apply"): "E73-hidden-gated-lane-is-live",
     }
     by_id = {e["id"]: e for e in evals}
     unguarded = []

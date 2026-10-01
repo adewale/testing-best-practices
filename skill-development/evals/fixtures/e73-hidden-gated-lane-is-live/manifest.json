@@ -1,0 +1,15 @@
+{
+  "eval_id": "E73-hidden-gated-lane-is-live",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-p0-advisory"
+  ],
+  "checks": [
+    "recognises the scheduled lane makes the gated live tests reachable",
+    "does not demand removing the capability gate",
+    "does not raise an owned, notifying advisory job to a P0 dead gate"
+  ]
+}

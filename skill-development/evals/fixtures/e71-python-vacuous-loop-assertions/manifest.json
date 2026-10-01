@@ -1,0 +1,14 @@
+{
+  "eval_id": "E71-python-vacuous-loop-assertions",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-vacuous"
+  ],
+  "checks": [
+    "upgraded tests pass against the correct implementation",
+    "upgraded tests fail against a mutant that returns [] (no vacuous loop-only assertions)"
+  ]
+}

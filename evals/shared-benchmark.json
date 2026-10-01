@@ -59,13 +59,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },
@@ -106,13 +103,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },
@@ -153,13 +147,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },
@@ -203,13 +194,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },
@@ -252,13 +240,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },
@@ -299,13 +284,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },
@@ -348,13 +330,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },
@@ -399,13 +378,10 @@
           "oracle": "strong"
         },
         {
-          "name": "validation",
-          "type": "contains_any",
-          "values": [
-            "run",
-            "validation",
-            "assert"
-          ],
+          "name": "validation-evidence",
+          "type": "regex",
+          "pattern": "(?i)\\b(pytest|go test|vitest|jest|npm (run )?test|npx (vitest|jest|playwright)|cargo (test|nextest)|python3? -m (pytest|unittest)|bun test|uv run pytest)\\b|\\b(did not|could not|couldn't|was unable to|unable to|not able to) (run|execute)\\b",
+          "description": "Names a concrete test-runner command, or states honestly that tests could not be run. Replaces a contains_any of 'run'/'validation'/'assert', which any prose satisfied.",
           "severity": "gate",
           "oracle": "strong"
         },

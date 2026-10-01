@@ -81,6 +81,19 @@ def test_get_missing_key_raises(store):
         store.get("absent")
 ```
 
+Expected values in the contract suite come from the real implementation — a
+recording, a local emulator run (`wrangler d1 execute --local`, miniflare), or the
+real library — never from what the fake's author believed. A fake that returns
+`changes: 1` for a DELETE that matched nothing makes the "not found" branch of
+production code unreachable in tests.
+
+**Shared tooling with known consumers**: a library or harness that knows who depends
+on it (a manifest list, a workspace) should validate those consumers in its own CI
+before release, and consumers should test through the real library (e.g., run its
+`prepare`/`validate` on their config) rather than asserting their belief about how it
+resolves paths. Floating `>=` ranges plus mismatched documentation pins plus a lenient
+schema is a recurring drift source.
+
 ## When to use
 
 - Any test calling a third-party API (LLM providers, payment, auth)

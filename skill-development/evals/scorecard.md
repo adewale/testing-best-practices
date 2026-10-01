@@ -233,14 +233,14 @@ Full model matrix, harness commands, integration defects, and retained local-onl
 
 ## Release gates
 
-_Current deterministic state after the 2026-10-01 follow-up review; historical model evidence remains separately bounded above._
+_Current deterministic state after integrating PRs #27/#28 on 2026-10-02; historical model evidence remains separately bounded above._
 
 - [x] Static P0 count is 0.
 - [x] Static P1 count is 0.
-- [x] All 28 critical development eval definitions satisfy the scoring/fixture gates.
+- [x] All 34 critical development eval definitions satisfy the scoring/fixture gates.
 - [x] Artifact rubric is 100/100 and the best-practices audit is 110/110.
 - [x] No broken local links.
-- [x] `SKILL.md` is 246 lines, below the 500-line hard max and 350-line target.
+- [x] `SKILL.md` is 262 lines, below the 500-line hard max and 350-line target.
 
 ## Version comparison against GitHub versions
 
@@ -253,3 +253,46 @@ Compared on 2026-05-21. Full notes: `../VERSION_COMPARISON.md` from this file's 
 | Current working skill | 100/100 | 0 | 0 | 10/10 | 9/9 | Passes local non-LLM gates |
 
 Interpretation: the artifact rubric distinguishes all three versions. The fixture-backed prompt oracles are saturated across first/current/local, so they are useful sanity checks but not sufficient alone. Add harder hidden variants targeted at assertion calibration, PBT weak examples, integration classification, and correctness-by-construction deletion safety.
+
+## 2026-10-02 combined PR 27/28 verification
+
+Base before both PRs: `82c6eccc0f6e1feeb82221b331b6f308209e7e20`.
+PR #28 was rebased onto merged PR #27 at
+`6a3e4a397fe03ec65246bc96e859c0073712ec54`. All E64–E78 definitions and
+registered restraint probes were retained: 78 eval definitions, 55 fixture
+oracles, 18 hidden probes, and 48 shared cases with 10 materialized ablations.
+
+The combined static audit finds 7 P0 / 2 P1 retracted-text findings on the
+pre-PR skill and 0 / 0 on the revised skill. This demonstrates removal of known
+bad guidance, not an effect estimate for agent behavior.
+
+A scratch Node runner executed the exact golden-example test body from the
+baseline and revised references with injected fixture/transform/storage helpers:
+
+| Scenario | Baseline example | Revised example |
+|---|---|---|
+| Missing expected file | Passes and writes a baseline | Fails, writes nothing |
+| Matching expected output | Passes | Passes, writes nothing |
+| Mismatching expected output | Fails | Fails, writes nothing |
+| Matching empty-string baseline | Passes and rewrites baseline | Passes, writes nothing |
+
+This is execution evidence for the example's verification control flow. It is
+not a framework integration test or evidence that models will choose this test
+shape. The scratch runner is untracked; the compared example sources remain in
+Git. Existing E71/E74/E78 runtime fixture checks cover empty-output faults,
+loss of real-engine evidence, and discrimination between a behavioral fault and
+equivalent mutants. Good/bad calibration also preserves legitimate recurring
+mutation work (E68), high-order regressions (E69), and owned advisory lanes (E73).
+
+The current-manifest hash in the historical receipt was updated for the combined
+manifest, with an explicit integration note. Historical generation identities,
+scores, and hashes were preserved. Absent ignored historical run trees remain
+reported as unverified; a green receipt check does not recreate them.
+
+No new model generations were performed for this combined tree. The historical
+21/63 versus 8/63 result is still historical evidence, and E70–E78's calibration
+does not prove skill uptake. A future outcome comparison should freeze baseline
+and revised skills, use untouched tasks in isolated workspaces, grade artifacts
+blindly with behavior-preserving controls and real defects, and compare cost as
+well as fault detection. The entrypoint grows about 16.1% in the repository's
+character-based token estimate, so improvement must justify that overhead.

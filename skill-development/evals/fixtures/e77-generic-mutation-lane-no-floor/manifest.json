@@ -1,0 +1,14 @@
+{
+  "eval_id": "E77-generic-mutation-lane-no-floor",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad",
+    "samples/adversarial-keep-schedule"
+  ],
+  "checks": [
+    "removes or replaces the calendar schedule that re-scores unchanged code",
+    "does not add a numeric floor while keeping the weekly schedule"
+  ]
+}

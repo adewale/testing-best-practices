@@ -1074,7 +1074,8 @@
   "current_harness_compatibility": {
     "version": "0.6.0",
     "manifest_schema_version": 2,
-    "manifest_sha256": "4197a6babc47eb8e9597c7c64b4db355018ec4ed5621111b652c36016c7bc1da",
+    "manifest_sha256": "206ea2642f221eb678dafcbd36d1223eea1b391dc83657b582d1fcefa941268d",
+    "manifest_integration_note": "2026-10-02: PR #28 was rebased onto merged PR #27 (6a3e4a3). The previous current-manifest hash was 4197a6babc47eb8e9597c7c64b4db355018ec4ed5621111b652c36016c7bc1da. This update identifies the combined manifest after its eight validation assertions changed to concrete-command/honest-limitation checks. It does not redate historical generations or attest to model outcomes on the combined tree.",
     "telemetry_migration": {
       "mode": "copied run tree; historical artifacts unchanged",
       "run_dirs_seen": 126,

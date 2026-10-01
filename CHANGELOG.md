@@ -5,6 +5,71 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Retracted guidance
+Rules the skill has withdrawn. If your repository enforces one of these (a script, a lint, a lesson, a quota), it is enforcing guidance the skill no longer gives.
+
+| Retracted rule | Where it appeared | Replaced by | Why |
+|---|---|---|---|
+| Playwright `retries: process.env.CI ? 2 : 0` in the required-lane example | `references/typescript.md` | `retries: 0` plus a reporter contract (`flaky == 0`, `unexpected == 0`, expected skips) | Retries turned races into green runs; keyboardia's required lanes run with zero retries and assert zero flaky results |
+| "Skip visual tests in CI (font rendering differs)" | `references/typescript.md`, `references/test-types.md` | Render baselines on the CI image through a reviewed manual workflow; keep precision in structural assertions | Every portfolio visual suite that followed this ran zero times in CI |
+| "Unit tests … (3+ assertions …)" | `references/test-types.md` | "meaningful oracles"; counts are a heuristic, never a quota | Became per-file/per-test quotas met with `isinstance` and not-empty checks (planet_cf Lesson 31, vaders density audit) |
+| "Track assertion density alongside coverage" | `references/antipatterns.md` #10 | Judge oracle strength; never turn a count into a quota | Same downstream quota effect |
+| "Mutation `break: null` … cannot fail on its own" as a dead-gate signal, fixed by adding a threshold (added earlier in this release) | `references/gate-integrity.md` §3, `research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md` | An unread diagnostic is a cost: run it on demand or delete it; recurring lanes trigger on change, with floors only from target-runner history | It led this repository's own audit to add a weekly lane that fails its dry run in 15 s (`yaket`), a floor taken from a load-inflated score (`garten`), and thresholds on a calendar lane over unchanged code (`olsen`) |
+| "Use focused mutation testing on critical code" as the fix for coverage chasing, and "mutation/gap analysis" as the Assess default | `references/antipatterns.md` #10, `SKILL.md` Assess #6 | Seed faults cheapest first: red-green, a hand-seeded fault in a scratch copy, then a scoped on-demand tool run | Every finding in the portfolio came from cheap one-off checks; recurring lanes spent about 170 runner-hours and found nothing |
+| Mock-contract tests as the primary remedy for mock drift | `references/typescript.md`, `references/antipatterns.md` #3 | Prefer deleting the mock for an in-process real engine; take a double's expected values from the real service | atlas deleted its mock for node-canvas and the contract test kept guarding nothing; tasche's "fidelity" test pinned the mock author's belief |
+
+`skill-development/scripts/static-audit.py` guards the retracted wording. PR #27 removed the cadence-first mutation advice, arbitrary score ranking, and automatic P0 classification; its guards are preserved here.
+
+### Corrected (combined PR 27/28 review, 2026-10-02)
+- Golden verification fails without a reviewed baseline and never writes one; generating candidates is a separate authoring operation. Matching empty-string baselines remain valid.
+- Gate guidance preserves justified scheduled discovery, requires fault detection by relevant behavior tests rather than every importer, and distinguishes empty inspected inputs from a valid empty violation set.
+- Checker calibration reuses prepared inputs, runs the checker on each negative variant, and retains one end-to-end preparation-to-verdict check.
+- Exhaustive cost arithmetic now states 240 × 35 ms = 8.4 seconds before overhead. The merged eval inventory preserves E64–E78 and all registered restraint probes.
+
+### Added (cost-first mutation guidance)
+- `references/gate-integrity.md`:
+  - §3: an informational diagnostic is not a dead gate.
+  - §5: seed faults cheapest first; reuse expensive prepared inputs while running the checker on each negative variant, and retain one full preparation-to-verdict test.
+  - §6: select triggers from the evidence the lane can add; change-filter deterministic reruns while preserving justified scheduled discovery and environment checks. Calibrate thresholds on comparable target-runner history; estimate runs × jobs × minutes and cancel superseded runs.
+- `references/antipatterns.md` #21, "Mutation program without a decision", with a detection-table row. #10 and #16 no longer point to mutation or scheduling as the default fix.
+- `SKILL.md`: Assess #6 and a Detect signal for mutation run as a program; cheap known-bad inputs.
+- Evals:
+  - `E77-generic-mutation-lane-no-floor`: prose oracle.
+  - `E78-python-classify-equivalent-survivors`: runtime oracle. Tests must kill the real boundary survivor and must not kill the two equivalent ones.
+  - `E10` no longer expects a mutation-testing recommendation.
+- `research/IMPLEMENTATION_LOCK_IN_2026-09.md`: tests that lock in an implementation (output hashes, byte-exact goldens, source-text assertions, pinned incidental numbers, copied counts). It covers prevalence, churn and false-alarm rates across the owner's repositories, their origins, a literature review, and proposed skill changes. The missing-golden verification path is corrected here; the broader expected-value and characterization changes remain in issue #30.
+- `research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`: "Mutation testing: cost and benefit". The audit's mutation-floor and mutation-schedule recommendations are corrected.
+
+### Added (gate integrity and agent-era failure modes)
+- **`references/gate-integrity.md`**: is each check running, and can it fail? Covers liveness per tier (job, trigger, last result, collection parity), gated-test reachability (compiled in CI, resource provided, fails on skip), gate-integrity signals (`|| true`, `continue-on-error`, baseline updaters, skip-green, empty targets, unrun thresholds, fail-open imports), vacuous passes and test linkage, testing custom checkers from both sides, sabotage kill matrices and defect-replay probes, deploy freshness and artifact truth, an operating contract for recurring lanes, restraint rules, an audit-record template, and starter mechanical checks.
+- **SKILL.md**:
+  - Assess step 0 ("is it running, and can it fail?").
+  - A local-runtime-emulation rung in the real-over-mocks ladder, with the rule that a double's expected values come from the real service.
+  - Test custom oracles from both sides; the author is not the oracle.
+  - No silent tier downgrades in Upgrade mode.
+  - New Detect signals.
+  - Validation loop: decide by exit status, run the exact CI entrypoint, compile tag-gated files, separate selector repair from weakening, reproduce "pre-existing" failures on a clean base, record the environment of green claims.
+  - Final report adds "CI status".
+- **References**:
+  - `antipatterns.md` #16–#20: always-green and dead gates, vacuous passes, permissive environments/yes-man doubles, self-authored oracles, silent tier downgrades. Detection-table rows for these and for source/config-text assertions and hidden retries.
+  - `deterministic-time.md`: deadline and performance assertions, timeout ratchets, CI-conditional budgets.
+  - `property-based-testing.md`: PBT budgets, generator cost, seeds as findings, enumeration of small domains, change-witnesses.
+  - `python.md`: Hypothesis generation cost and CI profiles, strict xfail over imperative `pytest.xfail()`, testing the declared `requires-python` floor, coverage configured ≠ enforced.
+  - `go.md`: compile every build-tag set in CI; `os.Exit` skips deferred cleanup in `TestMain`.
+  - `golden-file-testing.md`: hash-only goldens, self-approved goldens, platform-specific output.
+  - `doc-sync-testing.md`: verification claims in docs and agent instructions.
+  - `vcr-cassettes.md`: expected values from recordings; consumer contract tests for shared tooling.
+  - `exhaustive-testing.md`: per-cell cost as a feasibility criterion, and checking the layer that decides the property first, with three safety rules (issue #22).
+  - `test-types.md`: calibration rows for demos, content repos, experiential quality, and gate-heavy repos; smoke tests that touch the core dependency and check deploy freshness; trusted-input golden paths; realism levels for platform SDK wrappers.
+- **Evals E70–E76** with fixture oracles (good passes, every bad fails). E71 and E74 run the candidate's tests against a seeded mutant. E73 is a hidden adversarial restraint probe for the gate-integrity section, registered in `audit-best-practices.py`.
+- **`research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md`**: the evidence behind these changes (a verification audit across the owner's repositories).
+
+### Changed (eval hygiene)
+- The 8 shared cases that checked validation with `contains_any ["run","validation","assert"]` now use a regex that requires a concrete test-runner command or an honest "could not run".
+- The unmaintained 12-case public prompt set and its files moved to `evals/archive/`. README no longer advertises it as current coverage.
+- README reports the 100/100 and 110/110 static rubrics as regression guards, not quality scores.
+- `research/LESSONS_FROM_ADEWALE_REPOS.md`: corrected factual errors found by the 2026-09 audit, and reframed the assertion-density and visual-in-CI takeaways.
+
 ### Added (property-based testing and fuzzing)
 - **Focused PBT and fuzzing references** — choose the generated input layer deliberately, use an independent oracle, preserve engine-native replay, and distinguish property generation from coverage-guided corpus mutation.
 - **Thin engine adapters** — document the collection and replay facts that materially differ across Hypothesis, fast-check, Go's native fuzzer, and Rapid.
