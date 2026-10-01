@@ -57,11 +57,13 @@ For every factor record:
 - which oracle makes each row meaningful;
 - environment/setup requirements and stable case IDs.
 
-Prefer enum/registry-derived values over copied lists. Use a generator such as
-ACTS, PICT, or another constraint-aware tool, but treat its output as a smaller
-valid suite—not a proven global minimum. Commit or retain the model, constraints,
-generator/version, seed when stochastic, rows, and a machine-checkable coverage
-report.
+Prefer enum/registry-derived values over copied lists. Importing the owner is not
+enough if a filter, unsupported shape, or disconnected caller silently drops
+members: additions to the owner must force either enrollment or an explicit
+blocking classification. Use a generator such as ACTS, PICT, or another
+constraint-aware tool, but treat its output as a smaller valid suite—not a proven
+global minimum. Commit or retain the model, constraints, generator/version, seed
+when stochastic, rows, and a machine-checkable coverage report.
 
 ### Constraints
 
@@ -72,7 +74,11 @@ covering a required feasible tuple. Independently check both:
 1. every emitted row is valid;
 2. every required feasible tuple is covered.
 
-Do not use constraints merely to remove awkward but valid scenarios.
+Do not use constraints merely to remove awkward but valid scenarios. A row counts
+only when setup and the oracle account for the whole modeled input; a parser or
+adapter that silently drops an unknown factor/value has not covered that row.
+Reject unsupported input or emit an explicit, tested diagnostic rather than
+accepting partial behavior as success.
 
 ### Variable strength
 
@@ -116,9 +122,14 @@ assert modeled == expected
 
 Then test the test infrastructure: inject a fake registry member in an isolated
 registry, prove it is enrolled automatically, give it deliberately broken
-behavior, and prove the generated contract fails for the intended oracle. Do
-not use copied expected lists, optional `covered: true` flags, or self-reported
-capabilities without contradiction tests.
+behavior, and prove the generated contract fails for the intended oracle. Break
+discovery, enrollment, wiring, and the behavior oracle separately. For a gate
+that claims completeness, unsupported registry shapes or unresolved owners are
+errors, not silent exemptions. Trace at least one generated case through the
+real executor or public caller; direct helper parity does not prove that live
+wiring supplies the complete input. Do not use copied or filtered expected
+lists, optional `covered: true` flags, or self-reported capabilities without
+contradiction tests.
 
 ## Cost-aware selection without false precision
 
@@ -163,7 +174,9 @@ Run old and proposed portfolios in shadow before deleting tests:
 4. keep a rotating randomized full-suite/holdout sample to expose selection
    blind spots;
 5. compare case count, CPU and wall time, p50/p90 critical path, retries/flakes,
-   triage, maintenance churn, baseline review, kills, and escaped defects;
+   triage, maintenance churn, baseline review, kills, and escaped defects; keep
+   checker calibration proportional by reusing expensive prepared evidence for
+   focused tamper cases rather than rebuilding the whole oracle per variant;
 6. if pull requests use change-aware selection, make unknown paths, policy
    changes, deletions, and both sides of renames fail safe, while retaining the
    complete matrix on main/release or an owned slower lane;

@@ -2140,7 +2140,7 @@
       "kind": "testing",
       "prompt": "Write a small stdlib-only Python conformance harness with REGISTRY, one_way_cases(registry), cases exposing member_id, and contract_passes(case). Add unittest coverage for exact registry/case ID equality. In an isolated registry, inject a deliberately broken fake, prove automatic enrollment, and prove its generated contract fails. Do not use copied expected IDs or a voluntary covered flag. Return the complete implementation in exactly two Python code fences, headed portfolio.py and test_portfolio.py.",
       "expected_behavior": [
-        "Derive exact member IDs from the canonical registry.",
+        "Directly enumerate exact member IDs from the canonical registry without filtering the owner universe.",
         "Inject a fake only in an isolated registry and select that generated fake by ID.",
         "Prove the injected generated case fails the real contract oracle."
       ],
@@ -2162,9 +2162,9 @@
           "name": "registry-sabotage-review",
           "type": "judge",
           "rubric": [
-            "Registry-derived enrollment",
-            "Portfolio-bound sabotage dataflow",
-            "Static candidate contract plus separately calibrated trusted runtime fixture"
+            "Owner-derived completeness with no silent filtering",
+            "Isolated fake enrollment",
+            "Connected fake-to-contract failure"
           ],
           "severity": "soft",
           "oracle": "live"

@@ -11,7 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SHARED = ROOT / "evals/oracles/development_fixture_oracle.py"
 FIXTURE = ROOT / "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/oracle.py"
-GOOD = ROOT / "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/samples/good"
+SAMPLES = ROOT / "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/samples"
+GOOD = SAMPLES / "good"
 
 
 def run(command: list[str], *, trusted_fixture_flag: bool = False) -> None:
@@ -21,6 +22,12 @@ def run(command: list[str], *, trusted_fixture_flag: bool = False) -> None:
     proc = subprocess.run(command, text=True, capture_output=True, env=env)
     if proc.returncode:
         raise AssertionError(f"command failed: {command}\nstdout={proc.stdout}\nstderr={proc.stderr}")
+
+
+def run_rejected(command: list[str]) -> None:
+    proc = subprocess.run(command, text=True, capture_output=True)
+    if proc.returncode == 0:
+        raise AssertionError(f"invalid candidate passed: {command}\nstdout={proc.stdout}\nstderr={proc.stderr}")
 
 
 def main() -> int:
@@ -58,7 +65,22 @@ def main() -> int:
         ])
         assert not marker.exists(), "shared harness grading executed model code"
 
-    print("OK: E67 shared/local candidate grading is static-only")
+        for sample_name in ("bad-partial-owner", "bad-toothless-contract"):
+            sample = SAMPLES / sample_name
+            rejected = root / f"shared-{sample_name}"
+            rejected.mkdir()
+            rejected.joinpath("output.md").write_text(
+                f"portfolio.py\n```python\n{sample.joinpath('portfolio.py').read_text()}\n```\n"
+                f"test_portfolio.py\n```python\n{sample.joinpath('test_portfolio.py').read_text()}\n```\n"
+            )
+            run_rejected([
+                sys.executable,
+                str(SHARED),
+                "e67-combinatorial-registry-sabotage",
+                str(rejected),
+            ])
+
+    print("OK: E67 shared/local candidate grading is static-only and fails closed on partial/vacuous cases")
     return 0
 
 

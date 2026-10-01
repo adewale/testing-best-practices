@@ -20,15 +20,18 @@ a small critical module.
 **Try cheaper checks first.** Red-green (the new test fails against the old code)
 answers most "would the tests catch this?" questions. Next, seed one fault by hand
 in a scratch copy: neuter one central function or reintroduce one past bug, run
-only the tests that import it, and revert. Use a tool when these leave a question
-about a specific module.
+only the tests that import it, and revert. The seeded fault must execute changed
+code; deleting a source string and testing the replacement script proves nothing
+about product behavior. Use a tool when these leave a question about a specific
+module.
 
 **Estimate before running.** Cost is roughly mutants × per-mutant test time ÷
 workers, plus triage time for each survivor you read. A command runner (Stryker
 `testRunner: 'command'`) reruns the whole test command for every mutant; prefer
-per-test coverage analysis. Run the tool on demand (`npx`, `uvx`, `go run
-…@version`) rather than keeping a dependency nothing runs: its dependency tree
-still needs security patches.
+per-test coverage analysis. Measure any change-based selector against
+fixture-loaded and dynamically discovered tests before trusting its savings.
+Run the tool on demand (`npx`, `uvx`, `go run …@version`) rather than keeping a
+dependency nothing runs: its dependency tree still needs security patches.
 
 ## Why it works: Execute, Infect, Propagate
 
@@ -120,11 +123,17 @@ As this skill's conservative default for an unattended recurring lane, require:
   runs when nothing in scope changed; a calendar schedule over unchanged code
   repeats the same result and informs no decision;
 - evidence that the lane bites on a named fault class (a repaired fault, seeded
-  sabotage, or prior actionable mutant);
+  sabotage, or prior actionable mutant) and informs a decision beyond simply
+  rerunning a retained red-green regression;
 - focused scope whose measured runtime fits its timeout and compute budget;
 - a named owner and a result that either blocks a decision or notifies someone;
 - stable scope/operators plus like-for-like history before any score policy;
 - an expiry/removal criterion and response to repeated operational failures.
+
+Even diff-scoped mutation can lose to red-green plus one focused seeded fault
+once runner, suppression, dependency, review-noise, and survivor-triage costs are
+included. Remove a lane that does not produce incremental actionable evidence;
+"changed lines only" controls cost but does not by itself prove value.
 
 Default to informational results. Prefer a changed-code policy such as “no newly
 surviving actionable mutant” over an absolute repository score. A requested round
@@ -162,6 +171,7 @@ Tool traps seen in practice:
 - gremlins `--diff` run from the repository root marks every mutant skipped
   (repo-relative vs package-relative paths); run it inside the package with
   `diff.relative=true`, and skip packages the diff does not touch.
-- StrykerJS's 5 s default timeout can fail the dry run on a slow test; fix the
-  test rather than raising the global timeout.
+- StrykerJS's 5 s default timeout can fail the dry run on a slow test; diagnose
+  and narrow the selected test path first, then set a measured timeout only when
+  the behavior is legitimately slow.
 - Stryker's incremental file is not kept between CI runs unless it is cached.

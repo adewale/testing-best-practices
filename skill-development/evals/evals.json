@@ -4547,13 +4547,14 @@
         "failure_modes": [
           "copied-registry-list",
           "voluntary-enrollment-flag",
-          "toothless-generated-test"
+          "toothless-generated-test",
+          "partial-owner-discovery"
         ]
       },
       "prompt": "Write a stdlib Python conformance harness whose one_way_cases(registry) derives one case per canonical REGISTRY member and contract_passes(case) checks behavior. Add exact-set tests plus an isolated deliberately broken fake proving automatic enrollment and oracle failure.",
       "fixture": "Untrusted Python registry-harness response graded with AST-only shape/data-flow checks; the checked-in reference samples separately exercise dynamic fake injection and unittest discovery.",
       "expected_behavior": [
-        "Derive cases from the supplied registry rather than a copied expected list.",
+        "Directly enumerate every supplied registry member rather than copying or filtering the owner universe.",
         "Assert exact equality between registry IDs and generated one-way case IDs.",
         "Inject a fake member in isolated test state and prove it is enrolled automatically.",
         "Prove the fake's generated contract returns false for the intended behavior."
@@ -4561,7 +4562,8 @@
       "red_flags": [
         "Maintains a second hard-coded member list.",
         "Uses covered: true or another voluntary opt-in flag.",
-        "Only asserts the fake case exists without proving its bad behavior is rejected."
+        "Only asserts the fake case exists without proving its bad behavior is rejected.",
+        "Imports the canonical registry but filters or silently skips one of its members."
       ],
       "rubric_focus": [
         "B",
@@ -4570,7 +4572,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/oracle.py requires portfolio imports, nonconstant argument-derived functions, runnable unittest.TestCase structure, exact enrollment, and connected fake-to-contract data flow without executing candidate code"
+          "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/oracle.py requires portfolio imports, direct unfiltered owner enumeration, argument-derived contract behavior, runnable unittest.TestCase structure, exact enrollment, and connected fake-to-contract data flow without executing candidate code"
         ],
         "runtime_checks": [
           "Only the explicitly allowlisted checked-in runtime calibration samples are dynamically imported and executed; the alternate historical representation and all model candidates remain AST-only."
@@ -4581,7 +4583,7 @@
       },
       "validity": {
         "claim": "The skill produces a structurally connected registry-enrollment and sabotage test design; the trusted reference fixture demonstrates the intended runtime protocol.",
-        "warrant": "AST analysis binds the tests to imports from portfolio, requires unittest methods, rejects skips/dead branches/shadowing, copies the canonical registry, injects a named fake, derives cases, asserts exact IDs, selects the generated fake, and asserts contract failure. This remains structural rather than proof of candidate runtime semantics.",
+        "warrant": "AST analysis binds the tests to imports from portfolio, requires unittest methods, rejects skips/dead branches/shadowing, directly enumerates the supplied canonical registry without filters, injects a named fake, derives cases, asserts exact IDs, selects the generated fake, and asserts contract failure. This remains structural rather than proof of candidate runtime semantics.",
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test",
@@ -4597,7 +4599,7 @@
         "difficulty": "hard",
         "saturation_status": "saturated_public",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-09-23"
+        "last_reviewed": "2026-10-01"
       }
     },
     {

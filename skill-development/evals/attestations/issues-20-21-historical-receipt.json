@@ -1067,13 +1067,14 @@
     "All issue prompts are committed public tune cases, not private holdout/holdback.",
     "Generation manifest hash was not captured before execution; prepared-task hash and evaluated skill-tree hash are retained.",
     "E58-E60 one-shot results are excluded from effect-size claims.",
-    "Candidates and traces are ignored local artifacts, not tracked evidence; a clean clone cannot independently replay the reported objective matrix."
+    "Candidates and traces are ignored local artifacts, not tracked evidence; a clean clone cannot independently replay the reported objective matrix.",
+    "The 2026-10-01 owner-derived-completeness and non-vacuous-contract hardening of E67, plus later mutation cost wording, postdate candidate generation; the retained E67 one-shot regrade remains 1/7 with skill versus 0/7 without."
   ],
   "evidence_state": "Historical v0.4.0 generation receipt, regraded with the post-audit E64-E66 oracles. It is not a reproducible attestation, v0.6 generation result, or evaluation of the final rebased skill tree.",
   "current_harness_compatibility": {
     "version": "0.6.0",
     "manifest_schema_version": 2,
-    "manifest_sha256": "b5d46a05d8455671a92903cea3e76608748904b39dc503598dfd2c5d4b29243a",
+    "manifest_sha256": "4197a6babc47eb8e9597c7c64b4db355018ec4ed5621111b652c36016c7bc1da",
     "telemetry_migration": {
       "mode": "copied run tree; historical artifacts unchanged",
       "run_dirs_seen": 126,

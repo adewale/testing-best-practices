@@ -76,6 +76,62 @@ estimate. Repository history supplies these concrete signals:
   ([#21](https://github.com/adewale/aha/pull/21)). Exact enrollment must reach
   the executor, not merely a manifest.
 
+### Follow-up after the initial review
+
+A follow-up through 2026-10-01 triaged 116 newly created pull requests and 14
+new issues across the owner's repositories, then read the directly relevant
+decision records. It changed two details of this PR rather than its overall
+portfolio shape:
+
+- Agentic Mermaid evaluated the strongest plausible mutation proposal—bounded,
+  diff-scoped, advisory review findings—and still rejected it after estimating
+  runner, test-selection, suppression, dependency, review-noise, and triage
+  costs ([issue #355](https://github.com/adewale/agentic-mermaid/issues/355)).
+  It then removed Stryker, source markers, recurring mutation jobs, and overlapping
+  revert probes while retaining red-green evidence
+  ([PR #361](https://github.com/adewale/agentic-mermaid/pull/361)). This sharpens
+  the rule: change scoping controls cost but does not prove incremental value;
+  recurring mutation must beat cheaper red-green and focused seeded-fault checks
+  on actionable decisions.
+- A wider cleanup replaced source/hash receipts with behavioral, differential,
+  metamorphic, model-based, and semantic-golden checks
+  ([Agentic Mermaid #357](https://github.com/adewale/agentic-mermaid/pull/357),
+  [Pengslide #2](https://github.com/adewale/pengslide/pull/2),
+  [#3](https://github.com/adewale/pengslide/pull/3), and
+  [#6](https://github.com/adewale/pengslide/pull/6)). Text replacement that is
+  never imported or executed is not sabotage evidence.
+- Keyboardia's owner-derived hash and synchronization repair showed that merely
+  importing a production registry can still hide partial discovery: one gate
+  inspected only 20 of 38 mutations, and helper-level parity missed a live
+  caller that dropped state
+  ([#124](https://github.com/adewale/keyboardia/pull/124), generalized as
+  [testing-best-practices #29](https://github.com/adewale/testing-best-practices/issues/29)).
+  Exact enrollment therefore needs owner-derived universes, fail-closed handling
+  of unsupported shapes, and at least one live executor/caller witness.
+- Property/model/differential tests found real cross-surface defects after
+  implementation-pinning checks were removed
+  ([Agentic Mermaid #359](https://github.com/adewale/agentic-mermaid/pull/359)
+  and [#369](https://github.com/adewale/agentic-mermaid/pull/369)). Subsequent
+  issues record silent partial renderings and parser/renderer disagreement
+  ([#367](https://github.com/adewale/agentic-mermaid/issues/367),
+  [#368](https://github.com/adewale/agentic-mermaid/issues/368)). Tuple coverage
+  needs a meaning-preservation or explicit-failure oracle; silently ignored
+  input is not a covered case.
+- Testing a checker from both sides also has a cost boundary. Keyboardia measured
+  repeated full evidence recomputation for tamper variants at about 32% of unit
+  test time ([#125](https://github.com/adewale/keyboardia/issues/125)). Reuse one
+  expensive prepared result for focused negative variants while keeping one
+  end-to-end recomputation.
+
+The open portfolio-audit PR
+([testing-best-practices #28](https://github.com/adewale/testing-best-practices/pull/28))
+contains broader gate-integrity and implementation-lock-in changes. Those remain
+separate from issues #20/#21; this PR takes only the mutation-cost and exact-
+enrollment consequences to avoid duplicating E70–E78 or depending on an unmerged
+branch. The open Skill Eval Harness redesign
+([#100](https://github.com/adewale/skill-eval-harness/pull/100)) may later add
+first-class eval-health gates, but this PR remains pinned to stable v0.6.0.
+
 These histories reinforce three separations used below: product findings versus
 operational/capture status, modeled coverage versus executable oracle bite, and
 pull-request selection versus complete release evidence.

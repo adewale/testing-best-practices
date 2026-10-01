@@ -217,7 +217,7 @@ Model: `gpt-5.6-sol`, final `n=1` per arm. The with-arm preloaded the local work
 | E64 mutation recurring-lane contract | PASS | FAIL | Discriminates after review hardening: with-guidance rejected bootstrap `break: 60`, chose a focused pilot, required demonstrated fault-class bite/baseline/owner/capacity, and distinguished operational/untriaged failures from acted-on findings. |
 | E65 cue-free mutation survivor triage | PASS | FAIL | Public tune probe discriminates in this initial Pi run: with-guidance rejected the round target, separated actual survivors from incomplete/tool statuses, independently raised equivalence, and proposed like-for-like triage. |
 | E66 combinatorial cost-aware portfolio | PASS | FAIL | Discriminates: with-guidance kept exact enrollment and the four-way regression, exhausted cheap slices, used constrained pairwise plus a named 3-way group, compared multiple cost classes, and required shadow + mutation/sabotage evidence before deletion. |
-| E67 registry sabotage | PASS | PASS | Historical initial result only. Current candidate grading is static and requires portfolio imports, runnable unittest structure, isolated fake injection, exact IDs, and failing-contract data flow; trusted samples separately calibrate runtime behavior. |
+| E67 registry sabotage | PASS | PASS | Historical initial result only. Current candidate grading is static and requires direct unfiltered owner enumeration, portfolio imports, runnable unittest structure, isolated fake injection, exact IDs, and failing-contract data flow; trusted samples separately calibrate runtime behavior. |
 | E68 valid recurring lane keep-probe | PASS | PASS | Historical initial result only; the current oracle also rejects nominal approval followed by refusal or deferral. |
 | E69 known high-order regression keep-probe | PASS | PASS | Historical initial result only; the current oracle rejects documentation-only retention and inflected/anaphoric deletion. |
 
@@ -233,7 +233,7 @@ Full model matrix, harness commands, integration defects, and retained local-onl
 
 ## Release gates
 
-_Current deterministic state on 2026-09-23; historical model evidence remains separately bounded above._
+_Current deterministic state after the 2026-10-01 follow-up review; historical model evidence remains separately bounded above._
 
 - [x] Static P0 count is 0.
 - [x] Static P1 count is 0.

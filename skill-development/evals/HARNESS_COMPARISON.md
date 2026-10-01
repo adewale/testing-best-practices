@@ -70,7 +70,9 @@ scores that tree 3/3, 3/3, and 2/3 respectively.
 E67–E69 were also run once per model and arm. A post-audit regrade of the locally
 retained samples passes E67 on 1/7 with-skill versus 0/7 without, E68 on 5/7
 versus 0/7, and E69 on 1/7 versus 0/7. The coding contract remains sensitive to
-candidate representation and the prose probes vary by model. Keep them as
+candidate representation and the prose probes vary by model. The current E67
+checker additionally rejects an owner registry that is imported but filtered,
+a false positive found after these generations. Keep E67–E69 as
 regression/restraint probes; do not infer effect sizes from `n=1`.
 
 ## Historical v0.4 trigger results

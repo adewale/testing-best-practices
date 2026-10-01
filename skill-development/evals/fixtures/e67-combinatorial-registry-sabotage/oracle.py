@@ -64,6 +64,85 @@ def function_return(function: ast.FunctionDef) -> ast.Return | None:
     return returns[0] if returns else None
 
 
+def direct_registry_iterator(expression: ast.AST, argument: str) -> bool:
+    if isinstance(expression, ast.Name):
+        return expression.id == argument
+    if isinstance(expression, ast.Call):
+        if (
+            isinstance(expression.func, ast.Attribute)
+            and isinstance(expression.func.value, ast.Name)
+            and expression.func.value.id == argument
+            and expression.func.attr in {"items", "keys"}
+            and not expression.args
+            and not expression.keywords
+        ):
+            return True
+        if (
+            isinstance(expression.func, ast.Name)
+            and expression.func.id in {"iter", "list", "sorted", "tuple"}
+            and len(expression.args) == 1
+            and not expression.keywords
+        ):
+            return direct_registry_iterator(expression.args[0], argument)
+    return False
+
+
+def directly_enumerates_registry(function: ast.FunctionDef) -> bool:
+    if not function.args.args:
+        return False
+    argument = function.args.args[0].arg
+    returned = function_return(function)
+    if returned is None or returned.value is None:
+        return False
+    expression = returned.value
+    if (
+        isinstance(expression, ast.Call)
+        and isinstance(expression.func, ast.Name)
+        and expression.func.id in {"list", "set", "tuple"}
+        and len(expression.args) == 1
+        and not expression.keywords
+    ):
+        expression = expression.args[0]
+    if not isinstance(expression, (ast.GeneratorExp, ast.ListComp, ast.SetComp)):
+        return False
+    if len(expression.generators) != 1:
+        return False
+    generator = expression.generators[0]
+    if generator.is_async or generator.ifs or not direct_registry_iterator(generator.iter, argument):
+        return False
+    if isinstance(generator.target, ast.Name):
+        member_id_name = generator.target.id
+    elif (
+        isinstance(generator.target, (ast.Tuple, ast.List))
+        and generator.target.elts
+        and isinstance(generator.target.elts[0], ast.Name)
+    ):
+        member_id_name = generator.target.elts[0].id
+    else:
+        return False
+    if any(isinstance(node, ast.IfExp) for node in ast.walk(expression.elt)):
+        return False
+    return references_name(expression.elt, member_id_name)
+
+
+def attribute_root_name(node: ast.AST) -> str | None:
+    while isinstance(node, ast.Attribute):
+        node = node.value
+    return node.id if isinstance(node, ast.Name) else None
+
+
+def calls_subject_behavior(function: ast.FunctionDef) -> bool:
+    if not function.args.args:
+        return False
+    argument = function.args.args[0].arg
+    return any(
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and attribute_root_name(node.func) == argument
+        for node in ast.walk(function)
+    )
+
+
 def portfolio_shape(path: Path) -> list[str]:
     try:
         tree = ast.parse(path.read_text(errors="ignore"))
@@ -100,6 +179,12 @@ def portfolio_shape(path: Path) -> list[str]:
         returned = function_return(function)
         if returned is None or not references_name(function, argument):
             errors.append(f"portfolio.py {name} must return after using its argument")
+        if name == "one_way_cases" and not directly_enumerates_registry(function):
+            errors.append(
+                "portfolio.py one_way_cases must directly enumerate every supplied registry member without filters"
+            )
+        if name == "contract_passes" and not calls_subject_behavior(function):
+            errors.append("portfolio.py contract_passes must call behavior reached through its case argument")
 
     return errors
 

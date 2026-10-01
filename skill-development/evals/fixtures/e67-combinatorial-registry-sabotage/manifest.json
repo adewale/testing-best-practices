@@ -5,6 +5,8 @@
   "checks": [
     "one_way_cases(registry) derives cases from the supplied canonical registry",
     "tests assert exact registry/case ID equality",
+    "one_way_cases directly enumerates the supplied owner registry without filtering members",
+    "contract_passes calls behavior reached through the generated case rather than returning a vacuous result",
     "an injected fake member is enrolled without editing a copied list",
     "the fake's deliberately broken behavior fails contract_passes",
     "the candidate's unittest suite passes"
@@ -12,7 +14,9 @@
   "execution_policy": "Candidate grading and alternate representation samples are AST-only. Dynamic import/unittest execution requires TBP_TRUSTED_FIXTURE_SELF_TEST=1 and one of the oracle's explicitly allowlisted checked-in runtime sample paths.",
   "bad_samples": [
     "samples/bad",
-    "samples/bad-disconnected"
+    "samples/bad-disconnected",
+    "samples/bad-partial-owner",
+    "samples/bad-toothless-contract"
   ],
   "good_samples": [
     "samples/good",
