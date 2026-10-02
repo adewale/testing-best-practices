@@ -30,6 +30,7 @@ COMMANDS = [
     [sys.executable, "scripts/test-run-prompt-evals.py"],
     [sys.executable, "scripts/run-mini-repos.py"],
     [sys.executable, "scripts/test-untrusted-oracles.py"],
+    ["node", "scripts/test-exhaustive-example.mjs"],
     [sys.executable, "scripts/test-harness-workflow.py"],
     [sys.executable, "scripts/test-blind-comparison.py"],
     [sys.executable, "scripts/verify-issues20-21-receipt.py"],
