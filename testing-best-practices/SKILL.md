@@ -62,7 +62,7 @@ Topical references by trigger:
 - External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
 - CLI/plugin/docs registry sync, or verification claims in docs and agent instructions → `references/doc-sync-testing.md`
 - Mutation testing, mutation scores/survivors, recurring mutation lanes, or high coverage but escaping bugs → `references/mutation-testing.md`. For recurrence, no completed target-CI baseline or demonstrated fault-class bite means no schedule; never copy an absolute score floor.
-- Small finite state spaces → `references/exhaustive-testing.md`
+- Finite state spaces or expensive cross-products → `references/exhaustive-testing.md`
 - Large configuration/feature/runtime matrices, pairwise replacement, or interacting factors → `references/combinatorial-testing.md`. Preserve fixed regressions and exact registry enrollment; use named variable-strength groups and shadow evidence before deletion.
 - Arithmetic/domain operators/laws → `references/mathematical-properties.md`
 - Fixtures/builders/assertion helpers → `references/test-data-builders.md`
@@ -129,7 +129,7 @@ Use property-based testing when behavior spans a broader input or operation spac
 
 Match the generator to the behavior being tested: arbitrary input for totality and documented errors, specification-valid input for semantic branches, stateful traces for lifecycle behavior, and corpus mutation for coverage-guided discovery. Use an oracle independent of the implementation. Property tools construct values and shrink failures; coverage-guided fuzzers mutate a corpus toward new control flow. Do not use the terms or tools interchangeably.
 
-For small finite spaces, prefer exhaustive generation over sampling. See `references/property-based-testing.md` for generator, oracle, execution, and replay guidance.
+For small finite spaces, prefer exhaustive generation over sampling, after checking per-cell cost and whether a cheaper layer decides the property (`references/exhaustive-testing.md`). See `references/property-based-testing.md` for generator, oracle, execution, and replay guidance.
 
 ### Test error-handling paths, not just invalid input
 
