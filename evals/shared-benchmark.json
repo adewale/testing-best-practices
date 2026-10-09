@@ -1095,10 +1095,11 @@
         "fixtures/round3-url-parser/test/parser.test.ts",
         "fixtures/round3-url-parser/package.json"
       ],
-      "prompt": "Assess and improve the attached URL parser tests. Focus on test quality rather than coverage percentage.",
+      "prompt": "Assess and improve the attached URL parser tests. Focus on test quality rather than coverage percentage. Preserve the existing contract: parseUrl delegates to new URL(input), without a base URL, and throws TypeError for invalid inputs. Explain the weak truthiness assertion, then include exactly one JSON code fence with a cases array containing 4 to 8 concrete test vectors. Each vector has input and either expected (literal href, protocol, hostname, port, pathname, search and hash strings) or throws: TypeError. Include at least two distinct valid inputs and two distinct invalid inputs (including a relative path). Valid cases must cover a non-root pathname, a query, a fragment, and URL normalization. Do not derive expected values by calling parseUrl or new URL. Test-code suggestions are welcome, but the JSON vectors are what the deterministic check grades.",
       "expected_behavior": [
         "Flag toBeTruthy weak assertion.",
-        "Recommend property/fuzz tests and valid-or-error/roundtrip/no-crash oracles for arbitrary strings."
+        "Give independent literal expectations for valid URL fields and TypeError expectations for invalid inputs; do not replace the throwing API with a never-throws contract.",
+        "Use concrete normalization, path, query and fragment cases; property/fuzz suggestions are supplementary, not proof of assertion quality."
       ],
       "assertions": [
         {
@@ -1113,41 +1114,16 @@
           "oracle": "strong"
         },
         {
-          "name": "property-or-fuzz",
-          "type": "contains_any",
-          "values": [
-            "property-based",
-            "fast-check",
-            "fuzz",
-            "arbitrary strings"
-          ],
-          "severity": "gate",
-          "oracle": "strong"
-        },
-        {
-          "name": "strong-oracles",
-          "type": "contains_any",
-          "values": [
-            "valid-or-error",
-            "roundtrip",
-            "never crashes",
-            "structured error"
-          ],
-          "severity": "gate",
-          "oracle": "strong"
-        },
-        {
-          "name": "fixture-script-oracle",
+          "name": "literal-url-test-vectors",
           "type": "script",
           "command": [
-            "python3",
-            "oracles/fixture_oracle.py",
-            "{output_dir}",
-            "round3-fixture-url-parser-tests"
+            "node",
+            "oracles/url_test_vectors.mjs",
+            "{output_dir}"
           ],
           "pass_exit_code": 0,
           "timeout_s": 10,
-          "description": "Deterministic fixture-backed oracle; run benchmark with --allow-scripts.",
+          "description": "Checks bounded JSON test vectors against the native URL contract, including invalid inputs and normalization. Does not execute candidate tests or prove property-testing quality. Requires Node.js; run with --allow-scripts.",
           "severity": "gate",
           "oracle": "demo"
         },
@@ -2317,7 +2293,7 @@
           "assertions": [
             "flags-weak-truthy",
             "weak-assertion-flagged",
-            "fixture-script-oracle"
+            "literal-url-test-vectors"
           ]
         }
       ],

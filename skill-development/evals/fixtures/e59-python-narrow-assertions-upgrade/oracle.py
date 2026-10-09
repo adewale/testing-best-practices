@@ -24,6 +24,56 @@ BALANCE_OK = re.compile(
 )
 
 
+def records_expected_transaction(body: str) -> bool:
+    """Check literal transaction equality, not merely the word transactions.
+
+    This is static shape evidence, not execution of the proposed tests. Accept
+    equality of the transaction list, or a single transaction with a length
+    check and either dict equality or all three literal field expectations.
+    """
+    tree = ast.parse(body)
+    accounts = {
+        call.args[0].id
+        for call in ast.walk(tree)
+        if isinstance(call, ast.Call) and isinstance(call.func, ast.Name)
+        and call.func.id == "apply_deposit" and len(call.args) >= 3
+        and isinstance(call.args[0], ast.Name)
+        and isinstance(call.args[1], ast.Constant) and call.args[1].value == 50
+        and isinstance(call.args[2], ast.Constant) and call.args[2].value == "salary"
+    }
+    expected = {"kind": "deposit", "amount": 50, "memo": "salary"}
+    for account in accounts:
+        comparisons = []
+        for node in ast.walk(tree):
+            value = node.test if isinstance(node, ast.Assert) else None
+            if isinstance(value, ast.Compare) and len(value.ops) == 1 and isinstance(value.ops[0], ast.Eq):
+                comparisons.append((value.left, value.comparators[0]))
+            elif isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "assertEqual" and len(node.args) >= 2:
+                comparisons.append((node.args[0], node.args[1]))
+        length = False
+        row = False
+        fields = set()
+        for left, right in comparisons:
+            for actual, literal in ((left, right), (right, left)):
+                try:
+                    value = ast.literal_eval(literal)
+                except (ValueError, TypeError):
+                    continue
+                expression = ast.unparse(actual)
+                if expression == f"{account}.transactions" and value == [expected]:
+                    return True
+                if expression == f"len({account}.transactions)" and value == 1:
+                    length = True
+                if expression == f"{account}.transactions[0]" and value == expected:
+                    row = True
+                for field, want in expected.items():
+                    if expression == f"{account}.transactions[0][{field!r}]" and value == want:
+                        fields.add(field)
+        if length and (row or fields == set(expected)):
+            return True
+    return False
+
+
 def judged_tests(src: str) -> list[tuple[str, list[str]]] | None:
     try:
         tree = ast.parse(src)
@@ -88,11 +138,10 @@ def main() -> int:
     ):
         errors.append("no narrow assertion that the balance is 150 after the deposit")
     if not any(
-        "apply_deposit" in body
-        and any("transactions" in assertion for assertion in assertions)
+        records_expected_transaction(body)
         for body, assertions in tests
     ):
-        errors.append("no assertion on the recorded transaction")
+        errors.append("no literal assertion of the single recorded deposit (kind, amount and memo)")
 
     for e in errors:
         print(e, file=sys.stderr)

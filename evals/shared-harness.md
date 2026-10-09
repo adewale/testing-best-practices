@@ -79,3 +79,58 @@ skill-benchmark benchmark evals/shared-benchmark.json --runs eval-runs/latest \
 ```
 
 Script assertions are repo-owned commands and require `--allow-scripts`. The harness does not sandbox them. Shared E67 grading performs AST-only checks on model output; execute candidate code only in a disposable OS/container sandbox with no secrets, network, or writable host mounts.
+
+## What the checks establish
+
+| Check | What a pass establishes | What it does not establish |
+|---|---|---|
+| Manifest validation / leakage audit | Declared cases and references satisfy the checked schema and detectable leakage rules. | Independent test quality, absence of all leakage, or model uplift. |
+| `contains`, `contains_any`, regex | The saved answer contains the requested text pattern. | Correct advice, working tests, or effective PBT. An `oracle: strong` label does not turn a text match into behavioral evidence. |
+| Fixture scripts that inspect prose | The answer meets that script's bounded content rules. | Working candidate code or production behavior. Read the actual checker, not its generic description. |
+| AST fixture scripts / GTB adapter | Extracted code is parseable and has the specific checked assertion/implementation shapes. | That the code executes successfully or its assertions catch every defect. Shared E67 never executes candidate code. |
+| Trusted fixture self-tests | Known good/bad samples have the expected result under the local checker. | Generalization to arbitrary answers, or a model comparison. |
+| Optional qualitative judge | The configured judge rated the saved output against its rubric. | An independent executable oracle; ratings can be wrong. No judge run is required by this documentation change. |
+| Collector / backend stub checks | The tested entrypoint discovers the expected IDs or handles the stubbed invocation correctly. | A live CLI's current behavior, model quality, or a successful provider call. |
+| Paired skill / no-skill comparison | With fixed revisions, cases, models and comparable runs, it can estimate an effect on those measured outcomes. | Portfolio-wide causal uplift, or comparability after prompts/oracles change. |
+
+### URL parser: literal test-vector check
+
+`round3-fixture-url-parser-tests` previously accepted a keyword salad and
+recommended a no-crash oracle for an API that intentionally throws. Its revised
+prompt requests bounded JSON test vectors with independent literal expected
+fields and invalid-input `TypeError` cases. The replacement script checks those
+data values against Node's native URL behavior, including normalization and
+path/query/fragment coverage. It never evaluates model-supplied code.
+
+A pass establishes a useful, correct **test plan for this fixture**, not that
+suggested Vitest tests execute, a property generator is effective, or the model
+understands every URL edge case. The existing weak-assertion text check only
+establishes that the answer mentions the problem. The script retains its `demo`
+classification; this is one case repair, not global retiering or a new gate
+policy. The removed property/fuzz keyword requirements were not evidence of
+effective technique selection.
+
+Run its local positive/negative controls without a model or new dependency:
+
+```sh
+node --test evals/oracles/url_test_vectors.test.mjs
+```
+
+The shared script requires Node.js (the controls use Node 22+). Missing runtime,
+malformed/oversized output and missing vectors fail closed. No CI job, scheduled
+campaign or paid model run is added. Historical scores for the old prompt/oracle
+are not comparable to this revision; rerun both variants before making a causal
+claim. Other cases keep their existing grading policy and still have the limits
+shown above; this is not a claim that every weak eval has been repaired.
+
+### E59: recorded deposit, not merely a transaction-list mention
+
+`pos-narrow-assertions-upgrade` previously accepted `assert
+account.transactions is not None`: an empty list satisfies it. Its existing
+AST checker now requires literal kind/amount/memo expectations for the single
+recorded deposit, either as a list equality or a length check plus row/field
+equalities. Both normal and reversed equalities and `assertEqual` are supported.
+The new non-None-list negative sample is checked through the existing fixture
+self-test mechanism. This proves the checker rejects that specific weak shape;
+it does not prove candidate tests run, reach their assertions or bind to the
+real implementation. The shared GTB adapter and `demo` tier are unchanged.
