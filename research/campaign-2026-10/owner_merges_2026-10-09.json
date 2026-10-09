@@ -1,0 +1,277 @@
+{
+ "reworked_campaign_prs": [
+  {
+   "repo": "MaintainerBot",
+   "pr": 2,
+   "campaign_head": "002346b",
+   "merged_head": "b93b167",
+   "owner_commits_after_campaign": [
+    "Merge pull request #3 from adewale/claude/test-audit-campaign",
+    "Keep verification policy unchanged and share deterministic replay fixture",
+    "Pin a real pull-request URL in the no-model golden handoff"
+   ],
+   "files_removed": [
+    "scripts/test-rejections.mjs"
+   ],
+   "workflow_changes": []
+  },
+  {
+   "repo": "embed.oshineye.dev",
+   "pr": 2,
+   "campaign_head": "36ae3c3",
+   "merged_head": "01267da",
+   "owner_commits_after_campaign": [
+    "Keep embed verification within the existing default budget"
+   ],
+   "files_removed": [
+    ".claude/hooks/stop-check.sh",
+    ".claude/settings.json",
+    ".github/workflows/ci.yml",
+    ".github/workflows/visual-baselines.yml"
+   ],
+   "workflow_changes": [
+    ".github/workflows/ci.yml +0/-72",
+    ".github/workflows/visual-baselines.yml +0/-53"
+   ]
+  },
+  {
+   "repo": "flux-search",
+   "pr": 26,
+   "campaign_head": "642d5b1",
+   "merged_head": "84e71e5",
+   "owner_commits_after_campaign": [
+    "Keep offline verification atomic and within the existing budget",
+    "Keep local browser checks isolated and within the existing test budget",
+    "Reuse the redundant type-property budget for real FTS syntax checks"
+   ],
+   "files_removed": [
+    ".github/workflows/live.yml",
+    ".github/workflows/visual-baselines.yml"
+   ],
+   "workflow_changes": [
+    ".github/workflows/ci.yml +3/-37",
+    ".github/workflows/live.yml +0/-31",
+    ".github/workflows/visual-baselines.yml +0/-30"
+   ]
+  },
+  {
+   "repo": "garten",
+   "pr": 3,
+   "campaign_head": "c97923b",
+   "merged_head": "fc5c2b4",
+   "owner_commits_after_campaign": [
+    "Model Garten timing with shrinkable command sequences (#2)",
+    "Merge commit '3c1184440c9c4fb1aacbfe7a84a99865f5b2b979' into claude/verification-audit-fix",
+    "Keep Garten verification bounded and repair parser and RNG edge cases"
+   ],
+   "files_removed": [
+    ".github/workflows/probes.yml",
+    "scripts/defect-probes/P01-theme-undefined-merge.patch",
+    "scripts/defect-probes/P02-seed-stride-collision.patch",
+    "scripts/defect-probes/P03-opaque-background.patch",
+    "scripts/defect-probes/P04-resize-blanks-canvas.patch",
+    "scripts/defect-probes/P05-skipped-generation-events.patch",
+    "scripts/defect-probes/P06-vine-path-discarded.patch",
+    "scripts/defect-probes/P07-inverted-painter-order.patch",
+    "scripts/defect-probes/P08-nan-passes-clamping.patch",
+    "scripts/defect-probes/P09-palette-tail-truncation.patch",
+    "scripts/defect-probes/P10-hex-parser-divergence.patch",
+    "scripts/defect-probes/P11-destroy-not-terminal-for-seek.patch",
+    "scripts/defect-probes/P12-pool-cap-below-legal-max.patch",
+    "scripts/defect-probes/run.mjs",
+    "vitest.stryker.config.ts"
+   ],
+   "workflow_changes": [
+    ".github/workflows/ci.yml +1/-1",
+    ".github/workflows/probes.yml +0/-47"
+   ]
+  },
+  {
+   "repo": "keyboardia",
+   "pr": 122,
+   "campaign_head": "0176641",
+   "merged_head": "4bac945",
+   "owner_commits_after_campaign": [
+    "Keep session read retries within one attempt budget",
+    "Preserve the existing opt-in coverage configuration"
+   ],
+   "files_removed": [],
+   "workflow_changes": []
+  },
+  {
+   "repo": "rogue_planet",
+   "pr": 13,
+   "campaign_head": "a0972b5",
+   "merged_head": "0e9d6d5",
+   "owner_commits_after_campaign": [
+    "Fuzz feed normalization in CI (#12)",
+    "Merge remote-tracking branch 'origin/main' into claude/verification-audit-fixes",
+    "Harden HTML assertions without expanding verification costs",
+    "Pin per-feed errors and fail early if retry handshake ends",
+    "Account for fetch error context in per-feed assertion"
+   ],
+   "files_removed": [],
+   "workflow_changes": [
+    ".github/workflows/go.yml +14/-13"
+   ]
+  },
+  {
+   "repo": "skill-eval-harness",
+   "pr": 97,
+   "campaign_head": "a2a79af",
+   "merged_head": "6e6739b",
+   "owner_commits_after_campaign": [
+    "docs: record test collection lesson (#84)",
+    "Merge remote-tracking branch 'origin/main' into claude/verification-audit-fixes",
+    "Focus validation repairs without downstream CI or oracle policy expansion"
+   ],
+   "files_removed": [
+    ".github/workflows/downstream-consumers.yml"
+   ],
+   "workflow_changes": [
+    ".github/workflows/downstream-consumers.yml +0/-44"
+   ]
+  },
+  {
+   "repo": "sunrise",
+   "pr": 4,
+   "campaign_head": "eb43e53",
+   "merged_head": "a8517d3",
+   "owner_commits_after_campaign": [
+    "Make discovery deduplication deterministic (#2)",
+    "Reconcile merged discovery tests without duplicating CI builds",
+    "Preserve cached snapshots and keep verification in existing lanes",
+    "Scope complete discovery snapshots to each scan and repository",
+    "Include snapshot completeness in existing refresh evidence",
+    "Keep scanner identity out of dashboard payloads",
+    "Return the persisted change identity from the existing upsert"
+   ],
+   "files_removed": [],
+   "workflow_changes": [
+    ".github/workflows/ci.yml +7/-26"
+   ]
+  },
+  {
+   "repo": "tts-playground",
+   "pr": 2,
+   "campaign_head": "5052a63",
+   "merged_head": "7278558",
+   "owner_commits_after_campaign": [
+    "Repair deployment credential journeys without expanding CI"
+   ],
+   "files_removed": [],
+   "workflow_changes": [
+    ".github/workflows/ci.yml +0/-23"
+   ]
+  },
+  {
+   "repo": "vaders",
+   "pr": 11,
+   "campaign_head": "9eb2e7b",
+   "merged_head": "9946430",
+   "owner_commits_after_campaign": [
+    "Shrink multiplayer state-machine journeys (#10)",
+    "Merge remote-tracking branch 'origin/main' into claude/verification-audit-fixes",
+    "Keep verification fixes within the existing test budget"
+   ],
+   "files_removed": [
+    "scripts/check-weak-sole-assertions.mjs",
+    "scripts/check-weak-sole-assertions.test.mjs",
+    "scripts/weak-sole-assertions.baseline.json",
+    "web/src/testing/pbt.ts",
+    "worker/runtime-test/durable-objects.test.ts",
+    "worker/vitest.runtime.config.ts"
+   ],
+   "workflow_changes": [
+    ".github/workflows/ci.yml +5/-24"
+   ]
+  },
+  {
+   "repo": "vaders",
+   "pr": 12,
+   "campaign_head": "76b958c",
+   "merged_head": "cc036df",
+   "owner_commits_after_campaign": [
+    "Shrink multiplayer state-machine journeys (#10)",
+    "Merge remote-tracking branch 'origin/main' into batch2-ready-vaders12",
+    "Prepare rendering and E2E fixes without adding recurring checks",
+    "Avoid a duplicate frontend build for local E2E startup"
+   ],
+   "files_removed": [],
+   "workflow_changes": []
+  }
+ ],
+ "owner_added_pbt_fuzz": [
+  {
+   "repo": "aha",
+   "pr": 21,
+   "technique": "fuzz",
+   "budget": "FUZZTIME per target via verify.sh, default 2s",
+   "where": "existing verify.sh fuzz step"
+  },
+  {
+   "repo": "olsen",
+   "pr": 10,
+   "technique": "fuzz",
+   "budget": "FUZZTIME=10s",
+   "where": "step in existing CI test job"
+  },
+  {
+   "repo": "rogue_planet",
+   "pr": 12,
+   "technique": "fuzz",
+   "budget": "FUZZTIME=20s",
+   "where": "existing go.yml"
+  },
+  {
+   "repo": "yaket",
+   "pr": 2,
+   "technique": "pbt+differential fuzz",
+   "budget": "numRuns: 25",
+   "where": "existing CI job"
+  },
+  {
+   "repo": "skill_scanner",
+   "pr": 12,
+   "technique": "pbt",
+   "budget": "max_examples=100",
+   "where": "existing pytest step"
+  },
+  {
+   "repo": "claude-history-explorer",
+   "pr": 13,
+   "technique": "pbt",
+   "budget": "Hypothesis default settings",
+   "where": "existing test run"
+  },
+  {
+   "repo": "garten",
+   "pr": 2,
+   "technique": "pbt (shrinkable command sequences)",
+   "budget": "numRuns: 100",
+   "where": "existing test run"
+  },
+  {
+   "repo": "vaders",
+   "pr": 10,
+   "technique": "pbt (state-machine journeys)",
+   "budget": "numRuns: 50",
+   "where": "existing test run"
+  },
+  {
+   "repo": "sunrise",
+   "pr": 2,
+   "technique": "pbt",
+   "budget": "numRuns 100-250",
+   "where": "existing CI workflow"
+  },
+  {
+   "repo": "atlas",
+   "pr": 36,
+   "technique": "exhaustive (generated data)",
+   "budget": "118 bundles",
+   "where": "existing CI job"
+  }
+ ],
+ "owner_statement_2026-10-09": "My various projects have shown how mutation testing can start out affordable and then become stupendously exponentially expensive. PBT and Fuzzing seem (based on experience so far) more bounded and thus less risky."
+}
