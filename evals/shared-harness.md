@@ -123,6 +123,13 @@ are not comparable to this revision; rerun both variants before making a causal
 claim. Other cases keep their existing grading policy and still have the limits
 shown above; this is not a claim that every weak eval has been repaired.
 
+The #20/#21 receipt's compatibility-manifest hash is a historical snapshot,
+not a requirement that future benchmarks remain byte-identical. Its verifier
+reports a revision mismatch without rewriting that receipt or treating its
+scores as current evidence. Current manifest validation remains a separate
+blocking gate; retained run/tree/script hashes and objective regrading remain
+checked where the corresponding artifacts exist.
+
 ### E59: recorded deposit, not merely a transaction-list mention
 
 `pos-narrow-assertions-upgrade` previously accepted `assert
