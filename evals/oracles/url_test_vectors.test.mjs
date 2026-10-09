@@ -54,6 +54,9 @@ test('rejects duplicate, missing, oversized and non-JSON test vectors', () => {
 test('rejects removal of the relative-path negative control', () => {
   const cases = copy(); cases[2].input = 'another invalid URL';
   assert.throws(() => checkVectors(output(cases)));
+  const whitespaceOnly = copy();
+  whitespaceOnly[0].input = ' https://example.com/path?q=1#part ';
+  assert.throws(() => checkVectors(output(whitespaceOnly)));
 });
 test('actual shared command reads data only and fails closed on missing/oversized output', () => {
   const directory = mkdtempSync(join(tmpdir(), 'url-oracle-control-'));

@@ -17,11 +17,49 @@ import re
 import sys
 from pathlib import Path
 
-BALANCE_OK = re.compile(
-    r"(account\.balance|\[[\"']balance[\"']\]|\.balance)\s*==\s*150"
-    r"|assertEqual\(\s*(account\.balance|[^,]*\[[\"']balance[\"']\])\s*,\s*150"
-    r"|assertEqual\(\s*150\s*,\s*(account\.balance|[^,]*\[[\"']balance[\"']\])"
-)
+def deposit_comparisons(body: str) -> dict[str, list[tuple[ast.expr, ast.expr]]]:
+    """Direct assertions after a literal deposit, on that same binding.
+
+    Deliberately a bounded static shape check: it does not execute candidate
+    Python or infer arbitrary control flow, helpers, aliases or parametrisation.
+    Nested unused functions and assertions before the call are not evidence.
+    """
+    function = ast.parse(body).body[0]
+    comparisons: dict[str, list[tuple[ast.expr, ast.expr]]] = {}
+    for statement in function.body:
+        if isinstance(statement, ast.Assign):
+            for target in statement.targets:
+                if isinstance(target, ast.Name):
+                    comparisons.pop(target.id, None)
+        if isinstance(statement, ast.Expr) and isinstance(statement.value, ast.Call):
+            call = statement.value
+            if (isinstance(call.func, ast.Name) and call.func.id == "apply_deposit"
+                    and len(call.args) >= 3 and isinstance(call.args[0], ast.Name)
+                    and isinstance(call.args[1], ast.Constant) and call.args[1].value == 50
+                    and isinstance(call.args[2], ast.Constant) and call.args[2].value == "salary"):
+                comparisons[call.args[0].id] = []
+        pairs = []
+        if isinstance(statement, ast.Assert):
+            value = statement.test
+            if isinstance(value, ast.Compare) and len(value.ops) == 1 and isinstance(value.ops[0], ast.Eq):
+                pairs.append((value.left, value.comparators[0]))
+        elif isinstance(statement, ast.Expr) and isinstance(statement.value, ast.Call):
+            call = statement.value
+            if isinstance(call.func, ast.Attribute) and call.func.attr in {"assertEqual", "assertDictEqual"} and len(call.args) >= 2:
+                pairs.append((call.args[0], call.args[1]))
+        for assertions in comparisons.values():
+            assertions.extend(pairs)
+    return comparisons
+
+
+def records_expected_balance(body: str) -> bool:
+    for account, comparisons in deposit_comparisons(body).items():
+        for left, right in comparisons:
+            for actual, literal in ((left, right), (right, left)):
+                if (ast.unparse(actual) == f"{account}.balance"
+                        and isinstance(literal, ast.Constant) and literal.value == 150):
+                    return True
+    return False
 
 
 def records_expected_transaction(body: str) -> bool:
@@ -31,25 +69,8 @@ def records_expected_transaction(body: str) -> bool:
     equality of the transaction list, or a single transaction with a length
     check and either dict equality or all three literal field expectations.
     """
-    tree = ast.parse(body)
-    accounts = {
-        call.args[0].id
-        for call in ast.walk(tree)
-        if isinstance(call, ast.Call) and isinstance(call.func, ast.Name)
-        and call.func.id == "apply_deposit" and len(call.args) >= 3
-        and isinstance(call.args[0], ast.Name)
-        and isinstance(call.args[1], ast.Constant) and call.args[1].value == 50
-        and isinstance(call.args[2], ast.Constant) and call.args[2].value == "salary"
-    }
     expected = {"kind": "deposit", "amount": 50, "memo": "salary"}
-    for account in accounts:
-        comparisons = []
-        for node in ast.walk(tree):
-            value = node.test if isinstance(node, ast.Assert) else None
-            if isinstance(value, ast.Compare) and len(value.ops) == 1 and isinstance(value.ops[0], ast.Eq):
-                comparisons.append((value.left, value.comparators[0]))
-            elif isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "assertEqual" and len(node.args) >= 2:
-                comparisons.append((node.args[0], node.args[1]))
+    for account, comparisons in deposit_comparisons(body).items():
         length = False
         row = False
         fields = set()
@@ -133,7 +154,7 @@ def main() -> int:
             "(the change-detector treadmill: updating the literal per field addition)"
         )
     if not any(
-        "apply_deposit" in body and BALANCE_OK.search("\n".join(assertions))
+        records_expected_balance(body)
         for body, assertions in tests
     ):
         errors.append("no narrow assertion that the balance is 150 after the deposit")

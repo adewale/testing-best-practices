@@ -99,7 +99,8 @@ Script assertions are repo-owned commands and require `--allow-scripts`. The har
 recommended a no-crash oracle for an API that intentionally throws. Its revised
 prompt requests bounded JSON test vectors with independent literal expected
 fields and invalid-input `TypeError` cases. The replacement script checks those
-data values against Node's native URL behavior, including normalization and
+data values against Node's native URL behavior, including normalization beyond
+mere surrounding-whitespace trimming and
 path/query/fragment coverage. It never evaluates model-supplied code.
 
 A pass establishes a useful, correct **test plan for this fixture**, not that
@@ -137,7 +138,11 @@ account.transactions is not None`: an empty list satisfies it. Its existing
 AST checker now requires literal kind/amount/memo expectations for the single
 recorded deposit, either as a list equality or a length check plus row/field
 equalities. Both normal and reversed equalities and `assertEqual` are supported.
-The new non-None-list negative sample is checked through the existing fixture
-self-test mechanism. This proves the checker rejects that specific weak shape;
+Direct balance and transaction equalities must follow the literal deposit on
+the same account binding. Assertions before the deposit, on another account,
+or inside an unused nested helper do not count. The controls use the existing
+fixture self-test mechanism. This remains a bounded static checker: indirect
+helpers, aliases and arbitrary control flow are not inferred.
+This proves the checker rejects those specific weak shapes;
 it does not prove candidate tests run, reach their assertions or bind to the
 real implementation. The shared GTB adapter and `demo` tier are unchanged.

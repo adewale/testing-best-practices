@@ -41,7 +41,8 @@ export function checkVectors(text) {
     path ||= parsed.pathname !== '' && parsed.pathname !== '/';
     query ||= parsed.search !== '';
     fragment ||= parsed.hash !== '';
-    normalized ||= parsed.href !== vector.input;
+    // Whitespace trimming alone is not the requested URL normalization case.
+    normalized ||= parsed.href !== vector.input.trim();
   }
   if (valid < 2 || invalid < 2 || !relative || !path || !query || !fragment || !normalized) {
     throw new Error('missing valid/invalid, relative-path, path, query, fragment or normalization coverage');
