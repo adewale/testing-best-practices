@@ -48,7 +48,7 @@ Each unit gets one outcome:
 
 ### The label record
 
-One record per unit, in `merge_labels.jsonl` (to be created):
+One record per unit, in `merge_labels.jsonl` (first pass done 2026-10-10). For example:
 
 ```json
 {
@@ -57,36 +57,76 @@ One record per unit, in `merge_labels.jsonl` (to be created):
   "merged_pr": 3,
   "campaign_head": "c97923b",
   "merged_head": "fc5c2b4",
-  "paths": [".github/workflows/probes.yml", "scripts/defect-probes/*.patch"],
   "kind": "ci-lane",
   "technique": "mutation",
   "outcome": "removed",
-  "owner_commit": "Keep Garten verification bounded and repair parser and RNG edge cases",
-  "owner_reason": "quoted from the merged PR's Cost and limits section",
-  "records": ["<record id(s) whose suggested change produced this unit>"],
-  "ce": ["CE-013", "CE-052"]
+  "files": {".github/workflows/probes.yml": "removed", "scripts/defect-probes/run.mjs": "removed"},
+  "campaign_lines": [474, 0],
+  "owner_edit_lines": [0, 474],
+  "owner_reason": "Keep Garten verification bounded",
+  "records": [],
+  "ce": []
 }
 ```
 
-`kind` is one of `fix`, `test`, `ci-lane`, `ci-step`, `budget`, `config`, `script`, `doc`. `technique` uses the same values as `records.jsonl`.
+The `files` list is shortened here. `kind` is one of `fix`, `test`, `ci-lane`, `ci-step`, `budget`, `config`, `script`, `doc`, or `pr` for a PR merged without any owner commit. `technique` uses the same values as `records.jsonl`.
 
 ### How the labels are made
 
-1. **Diff.** For each merged PR, take the PR's own diff twice: at the campaign head, against its base then, and at the merged head, against its base at merge time. Both SHAs are in `owner_merges_2026-10-09.json`. Comparing the two diffs, rather than the two heads, keeps changes that reached the default branch from other PRs (for example garten #2, merged into garten #3) out of the labels.
-2. **Group hunks into units.** Use `git blame` on the campaign head, or the campaign commit messages, to find the commit that introduced each hunk. Group by purpose.
-3. **Assign outcomes mechanically.**
-   - A deleted path, or a fully reverted hunk, is `removed`.
-   - An edited hunk is `changed`.
-   - An untouched hunk is `kept`.
-4. **Check `changed` by hand.** A rename is still `kept`. A budget cut or a fold into an existing job is `changed`. Attach the owner's stated reason, from the commit message or the PR body's **Cost and limits** section.
-5. **Link units to records.** Match on repo, PR (through the fold map: for example, garten's records name #4, which was folded into #3), and the paths in each record's evidence. Each record's `ce` field then links the unit to the candidate edits.
-6. **Roll up to records.** Fill `owner_outcome` in `records.jsonl`:
-   - every linked unit `kept` gives `kept`;
-   - every linked unit `removed` gives `removed`;
-   - anything mixed gives `changed`;
-   - no linked unit, or an open PR, gives `pending`.
+`merge_labels.py` does steps 1 and 2. `merge_units.py` does steps 3 to 5, with the grouping into units written out by hand.
 
-About 90 records come from repos whose PRs have merged, so the first pass labels roughly a fifth of the dataset. Each later merge adds labels by the same procedure.
+1. **Two trees per merged PR.**
+   - **T0** is `main` just before the merge (the merge commit's first parent), merged with the head the campaign left (`git merge-tree`). It is what merging the campaign's work unchanged would have produced.
+   - **TM** is the tree of the owner's merge commit.
+
+   Every difference between T0 and TM is the owner's rework. Changes that reached `main` through other PRs are in both trees and cancel out. That covers garten #2 (squash-merged, then merged into #3) and MaintainerBot #2 (rebuilt by the owner on top of #3).
+2. **One mechanical label per file the campaign changed.**
+   - `kept`: TM has exactly the campaign's version.
+   - `removed`: TM has `main`'s version.
+   - `changed`: TM has a third version. Each file also records how many lines the owner added and removed (`owner_edit_lines`), which separates a one-line touch-up from a rewrite.
+   - `conflict`: merging the campaign head into `main` conflicts on the file. These are rare, and counted as `changed`.
+3. **Group files into units by hand, by purpose.** A unit is `kept` if every file in it is kept, `removed` if every file is removed, and `changed` otherwise. The owner's stated reason comes from their commit messages and the merged PR's **Cost and limits** section.
+4. **Link units to records** through the paths in each record's `evidence.files`, after mapping folded PRs to their survivor (for example, garten's records name #4, which was folded into #3). Each record's `ce` field then links the unit to the candidate edits.
+5. **Roll up to records.** Fill `owner_outcome` in `records.jsonl`:
+   - `kept`: every linked unit kept;
+   - `removed`: every linked unit removed;
+   - `changed`: mixed;
+   - `unlinked`: the PR merged, but none of the record's evidence files is a file the PR changed;
+   - `pending`: the PR is still open;
+   - empty: the record has no PR.
+
+   The linked unit IDs go in `owner_units`.
+
+Campaign PRs merged without any owner commit count as one `kept` unit each. There are eight: five campaign PRs (kirby_tarot #3, lempicka #2, MaintainerBot #3, pengslide #10, pi-comfort #2) and three audit PRs (kirby_tarot #2, pengslide #1, geist_fabrik #92).
+
+### First-pass results (2026-10-10)
+
+| | Units | Records linked |
+|---|---|---|
+| Kept | 27 (including the 8 whole PRs) | 57 |
+| Changed | 35 | 33 |
+| Removed | 14 | 2 |
+| Unlinked | | 25 |
+
+- **What the owner removed:**
+  - every new CI lane: the E2E job, visual baselines, nightly live checks, the downstream clone, the defect probes and embed's new CI;
+  - both mutation configurations;
+  - `.claude` stop hooks;
+  - one set of component-test assertion upgrades;
+  - one runtime Durable Object suite;
+  - one PBT helper;
+  - one oracle re-tiering;
+  - one execution-policy expansion.
+- **Twelve of the 14 removed units have no linked record.** The removed recurring cost was added alongside findings, not because of one. A record-level analysis cannot see it; the unit labels can.
+- **"Changed" usually means trimmed, not rewritten.** In most changed units, the owner's edit is much smaller than what the campaign wrote. The exceptions:
+  - garten's PBT budget, where the owner's #2 replaced the property suite;
+  - garten's docs-sync test;
+  - vaders #11's assertion checker and CI;
+  - vaders #12's App render test, which the owner replaced with a render check;
+  - skill-eval-harness's manifest lint, which was mostly deleted.
+- **Per-CE acceptance rates are too thin to use yet.** 13 candidate edits have any linked record, and none has more than six.
+
+Each later merge adds labels by the same procedure. Add the PR to `owner_merges_2026-10-09.json`, or to a successor file, and add its units to `merge_units.py`.
 
 ### What the labels are for
 
@@ -286,7 +326,7 @@ A candidate edit is **recommended for shipping** when all of these hold:
 
 ## 12. Order of work
 
-1. Write `merge_labels.jsonl` for the 11 merged PRs, and fill `owner_outcome` (section 3).
+1. ~~Write `merge_labels.jsonl` for the 11 merged PRs, and fill `owner_outcome` (section 3).~~ First pass done on 2026-10-10.
 2. Write the CE patches for the cost family, and their fixtures from seeds, counterexamples and merge labels.
 3. Stage 0 for those fixtures.
 4. Stages 1 and 2 for the cost family. Report the results to the owner, with the CE-060 wording question.

@@ -7,6 +7,8 @@ This directory holds the lesson records from the October 2026 test-audit campaig
 | `records.jsonl` | 458 records, one JSON object per line: 320 from the campaign, 43 from the pilot, and 95 from before the campaign. The original fields are unchanged; the fields below are added |
 | `classify.py` | The tagging rules and hand labels. `python3 classify.py records.jsonl` re-tags the dataset reproducibly |
 | `owner_merges_2026-10-09.json` | What the owner kept and removed in the 11 campaign PRs merged on 2026-10-09, plus the 10 PBT, fuzz and exhaustive PRs the owner merged in the same window, with their budgets |
+| `merge_labels_files.jsonl` | One mechanical label per file each merged campaign PR changed: `kept`, `changed`, `removed` or `conflict`, plus the owner's edit size. Made by `merge_labels.py` |
+| `merge_labels.jsonl` | 76 change units with an outcome, the owner's reason, and the records and candidate edits they link to. Made by `merge_units.py`, which also fills `owner_outcome` in `records.jsonl`. The method is in `EVAL_ABLATION_DESIGN.md`, section 3 |
 
 ## Added fields
 
@@ -20,7 +22,8 @@ This directory holds the lesson records from the October 2026 test-audit campaig
 | `verified_by_planted_bug` | True when the record's evidence includes a planted bug. This is mutation-style *verification* by the session that wrote the record. It is not mutation testing as a CI technique |
 | `cost_concern` | Whose recurring cost the record discusses: `mutation`, `pbt`, `fuzz`, `exhaustive`, `ci-lane`, `test-runtime`, `eval-tokens` or `none` |
 | `cost_direction` | Whether the record's proposal `limits` that cost, `adds` to it, or is `neutral` |
-| `owner_outcome` | Empty for now. Holds `kept`, `changed`, `removed` or `pending` once the merge-label pass links records to what the owner did with the resulting change (see `EVAL_ABLATION_DESIGN.md`, section 3) |
+| `owner_outcome` | What the owner did with the change the record led to. `kept` 57, `changed` 33, `removed` 2, `unlinked` 25 (the PR merged, but none of the record's evidence files is a file it changed), `pending` 235 (the PR is open), empty 106 (no PR). See `EVAL_ABLATION_DESIGN.md`, section 3 |
+| `owner_units` | The `merge_labels.jsonl` units the record links to |
 | `label_method` | `hand`: 94 records reviewed by hand on 2026-10-09 (all that mention mutation, PBT, fuzzing or cost). `rules-v1`: keyword rules only. Hand-labelled records keep the rule output in `rules_v1` |
 
 ## Counts
@@ -64,7 +67,7 @@ Cost concern and direction (records with a concern only):
   - calendar lanes re-scoring unchanged code.
 - **PBT and fuzzing.** These are thinly covered: 4 records are primarily about PBT and **none** about fuzzing. The campaign did not study their cost. The evidence that PBT and fuzzing stay bounded comes from outside the records: the owner's own merges (`owner_merges_2026-10-09.json`) and the owner's statement.
 - **"Planted bug" is not "mutation testing".** 217 records were verified with planted bugs: the campaign's mandatory kill tables. That is a one-off verification cost paid by the session, not a recurring CI lane. Analyses of mutation cost should use `cost_concern`, not `verified_by_planted_bug`.
-- **Recurring cost added by the campaign shows up in its PRs, not its records.** None of the 94 hand-labelled records argues for adding recurring cost (the other 364 records were not checked for this), yet the campaign PRs added many CI jobs, workflows and schedules, and the owner removed them at merge time. The kept-or-removed labels (`owner_outcome`) are what will capture that.
+- **Recurring cost added by the campaign shows up in its PRs, not its records.** None of the 94 hand-labelled records argues for adding recurring cost (the other 364 records were not checked for this), yet the campaign PRs added many CI jobs, workflows and schedules, and the owner removed them at merge time. The unit labels confirm it: 12 of the 14 units the owner removed have no linked record. Use `merge_labels.jsonl`, not `owner_outcome`, to study removed cost.
 - **Self-reported minutes (`cost_minutes`)** mix investigation, planted-bug runs and review, so they cannot be split by technique.
 
 ## Known limits of the labels
