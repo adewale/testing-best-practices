@@ -8,6 +8,15 @@ Latest capture: 2026-09-20, covering PR 24's compact PBT/fuzzing guidance plus P
 
 ## Skill Design
 
+### An oracle must connect its assertion to the behaviour it claims to check
+
+PR #33's E59 checker initially accepted a deposit call plus a literal assertion
+anywhere in the test. Controls showed that an assertion before the deposit, an
+unrelated account's balance and an unused nested assertion helper all passed.
+Tie the supported assertion shape to the same binding after the operation,
+and name the static checker's limits. This is an oracle repair, not evidence of
+model uplift or a reason to prescribe AST shapes in the reusable skill.
+
 ### Progressive disclosure saves tokens but requires sharp triggers
 
 Splitting `advanced-patterns.md` (747 lines) into 9 topic files cut typical token load by ~50%. But the triggers must be specific: "read references/advanced-patterns.md" loads everything; "read references/characterization-testing.md IF you're refactoring legacy code" loads only what's needed. Generic pointers waste context.
