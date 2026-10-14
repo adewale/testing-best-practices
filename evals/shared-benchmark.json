@@ -2030,7 +2030,7 @@
       ],
       "tags": [
         "mutation",
-        "cue-free",
+        "report-status",
         "issue-20"
       ],
       "domain": "testing-quality",

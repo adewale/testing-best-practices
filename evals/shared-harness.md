@@ -192,6 +192,8 @@ Prompts and oracles changed, so historical scores are not comparable to this
 revision. Any later skill/no-skill comparison must run both arms against this
 same frozen benchmark and model configuration, with independent held-out tasks.
 No new jobs, schedules, mutation campaigns or live-model runs are added.
+E65's stable legacy ID contains `cuefree`, but its revised prompt supplies
+classification choices: it is a visible decision case, not a cue-free holdback.
 
 The historical receipt also pins the reproduction scripts. A current script
 revision is not corruption of the old receipt and must not freeze future oracle
