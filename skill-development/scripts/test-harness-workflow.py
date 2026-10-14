@@ -2,6 +2,7 @@
 """Deterministic smoke tests for focused v0.6 task preparation."""
 from __future__ import annotations
 
+import importlib.util
 import json
 import subprocess
 import sys
@@ -22,6 +23,15 @@ def prepare(*args: str) -> list[dict]:
 
 
 def main() -> int:
+    verifier = ROOT / "skill-development/scripts/verify-issues20-21-receipt.py"
+    spec = importlib.util.spec_from_file_location("historical_receipt", verifier)
+    assert spec is not None and spec.loader is not None
+    receipt_checker = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(receipt_checker)
+    recorded = {"oracle.py": "old-hash", "runner.py": "runner-hash"}
+    assert receipt_checker.reproduction_matches(dict(recorded), recorded)
+    assert not receipt_checker.reproduction_matches({"oracle.py": "new-hash", "runner.py": "runner-hash"}, recorded)
+    assert not receipt_checker.reproduction_matches({"oracle.py": "old-hash"}, recorded)
     paired = prepare(
         "--cases",
         "pos-mutation-recurring-lane-contract,pos-mutation-survivor-triage-cuefree",
@@ -73,7 +83,7 @@ def main() -> int:
     assert invalid.returncode != 0
     assert "unknown tune case IDs" in invalid.stderr
 
-    print("OK: focused harness preparation filters cases and ablation fanout")
+    print("OK: focused preparation filters fanout; changed/missing scripts are not historical reproduction evidence")
     return 0
 
 

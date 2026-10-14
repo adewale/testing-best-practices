@@ -15,8 +15,9 @@ fuzz, evals, post-deploy smoke, lint/types) record:
   dispatch);
 - the last run on the default branch: status, duration, and test count.
 
-A tier with no job is presumed broken until run. A test that exists but no job
-runs is documentation, not verification.
+A tier with no observed run is unverified, not necessarily broken. A deliberately
+manual check can provide evidence when run; distinguish that from a promised
+automatic gate whose configured job never selects it.
 
 Check that runs executed, not just that they are green or red: a runner was
 assigned, the duration is plausible, and counts are non-zero. CI that is red or
@@ -126,6 +127,11 @@ schedule just to give it teeth.
   - Test declared compatibility floors (`requires-python`, `engines`).
 
 ## 6. Recurring lanes and advisory gates: an operating contract
+
+These checks assess an existing or explicitly proposed lane; they do not require
+a new one. Prefer replacement inside the existing budget. Do not add jobs,
+schedules, paid calls or larger discovery budgets without agreement on their
+cost. Mutation is an on-demand diagnostic by default, not a recurring gate.
 
 Before scheduling a nightly E2E, fuzz, perf, eval, or mutation lane:
 

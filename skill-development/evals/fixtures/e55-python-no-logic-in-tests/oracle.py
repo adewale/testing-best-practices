@@ -16,6 +16,10 @@ literal-presence and computed-expectation checks, but NOT toward the
 enshrined-double-slash check: a candidate may legitimately parametrize a
 "rejects malformed URLs" test over double-slash examples (validated against
 a real model candidate that did exactly that).
+
+Additionally require correct literal equalities connected to direct profile
+and avatar calls in test bodies. This bounded check does not expand arbitrary
+parameterization, helper calls, aliases or control flow and never executes code.
 """
 from __future__ import annotations
 
@@ -30,6 +34,45 @@ COMPUTED = re.compile(
     r"BASE_URL\s*\+|\+\s*BASE_URL|f[\"'][^\"'\n]*\{BASE_URL"
     r"|==\s*base\s*\+|\bexpected\s*=\s*base\s*\+"
 )
+
+
+def literal_contracts(src: str) -> set[str]:
+    """Only count direct equalities connecting a literal to its subject call."""
+    tree = ast.parse(src)
+    found = set()
+    for function in tree.body:
+        if not isinstance(function, (ast.FunctionDef, ast.AsyncFunctionDef)) or not function.name.startswith("test"):
+            continue
+        for statement in function.body:
+            if not isinstance(statement, ast.Assert) or not isinstance(statement.test, ast.Compare):
+                continue
+            comparison = statement.test
+            if len(comparison.ops) != 1 or not isinstance(comparison.ops[0], ast.Eq):
+                continue
+            for call, expected in [(comparison.left, comparison.comparators[0]), (comparison.comparators[0], comparison.left)]:
+                if not (isinstance(call, ast.Call) and isinstance(call.func, ast.Name)
+                        and call.func.id in {"profile_url", "avatar_url"}
+                        and isinstance(expected, ast.Constant) and isinstance(expected.value, str)
+                        and not call.keywords and len(call.args) == (2 if call.func.id == "profile_url" else 3)):
+                    continue
+                base, username = call.args[:2]
+                if isinstance(base, ast.Name) and base.id == "BASE_URL":
+                    base_value = "https://example.com/"
+                elif isinstance(base, ast.Constant) and isinstance(base.value, str):
+                    base_value = base.value
+                else:
+                    continue
+                if not isinstance(username, ast.Constant) or not isinstance(username.value, str):
+                    continue
+                wanted = base_value.rstrip("/") + "/users/" + username.value
+                if call.func.id == "avatar_url":
+                    size = call.args[2]
+                    if not isinstance(size, ast.Constant) or type(size.value) is not int:
+                        continue
+                    wanted += "/avatar?size=" + str(size.value)
+                if expected.value == wanted:
+                    found.add(call.func.id)
+    return found
 
 
 def judged_segments(src: str) -> tuple[list[str], list[str]] | None:
@@ -76,6 +119,7 @@ def main() -> int:
     errors: list[str] = []
     assertion_segments: list[str] = []
     support_segments: list[str] = []
+    connected_contracts: set[str] = set()
     for f in files:
         segs = judged_segments(f.read_text(errors="ignore"))
         if segs is None:
@@ -83,6 +127,7 @@ def main() -> int:
         else:
             assertion_segments.extend(segs[0])
             support_segments.extend(segs[1])
+            connected_contracts.update(literal_contracts(f.read_text(errors="ignore")))
     assertion_joined = "\n".join(assertion_segments)
     broad_joined = "\n".join(assertion_segments + support_segments)
 
@@ -100,6 +145,8 @@ def main() -> int:
             "no assertion against a literal single-slash URL "
             "(expected e.g. \"https://example.com/users/bob\")"
         )
+    if connected_contracts != {"profile_url", "avatar_url"}:
+        errors.append("need direct, correct literal equalities for both profile_url and avatar_url; unrelated assertions, inequality and unused helpers do not count")
     if LITERAL_BUGGY.search(assertion_joined):
         errors.append("literal expectation enshrines the double-slash bug")
 

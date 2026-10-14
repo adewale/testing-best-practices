@@ -8,6 +8,25 @@ Latest capture: 2026-09-20, covering PR 24's compact PBT/fuzzing guidance plus P
 
 ## Skill Design
 
+### Campaign follow-up: generalize the decision, not the ceremony (14 October 2026)
+
+The accepted portfolio repairs favor bounded work in existing jobs, independent
+oracles and enforcement at the actual boundary. The skill now carries those
+decision rules, not Bobbin/Flux's lease protocols, universal schedules or a
+mutation requirement disguised as hand-seeded probes. A manual test is
+unverified until run, not inherently broken merely because it has no CI job.
+Useful, explicitly approved existing lanes remain a counterexample to blanket
+bans. These are evidence-backed guidance corrections, not measured causal lift.
+
+Eight conceptual evals now check requested decisions rather than vocabulary;
+E55 rejects three previously accepted disconnected/inequality/dead-helper
+answers. E60's grader previously executed model-generated Python without a
+sandbox: static-only candidate grading fixes that trust boundary without
+building a new sandbox service. Keep trusted fixture self-tests, static shapes,
+test-plan correctness and actual candidate execution as separate claims.
+Two private holdout prompts are absent, so do not manufacture held-out evidence
+or compare revised prompts/oracles with archived model scores.
+
 ### An oracle must connect its assertion to the behaviour it claims to check
 
 PR #33's E59 checker initially accepted a deposit call plus a literal assertion

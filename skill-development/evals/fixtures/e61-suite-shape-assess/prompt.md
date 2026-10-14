@@ -24,4 +24,10 @@ CI notes:
   retry.
 - Most e2e specs assert business rules (VAT rates by country, coupon
   stacking, currency rounding) by driving the browser through checkout.
-```
+
+Include exactly one JSON fence with `business_rule_tier` (`domain`, `service`,
+`api` or `browser`), `integration_contracts` (boolean), `browser_role`
+(`wiring_and_core_journeys`, `all_business_rules` or `none`), `retry_action`
+(`diagnose_not_increase` or `increase`), and `first_action` (`move_rule_tests`,
+`more_e2e` or `increase_retries`). The deterministic check grades the decision
+fields; qualitative judgment still covers the reasoning and migration plan.

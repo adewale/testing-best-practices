@@ -17,6 +17,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+from decision_vectors import check_output
+
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "skill-development" / "evals" / "fixtures"
 
@@ -68,6 +70,15 @@ def main() -> int:
     if not oracle.exists() or not output.exists():
         print(f"missing fixture oracle or output: {oracle}, {output}", file=sys.stderr)
         return 2
+
+    if fixture_name.startswith(("e57-", "e58-", "e61-", "e64-", "e65-", "e66-", "e68-", "e69-")):
+        try:
+            check_output(fixture_name, output)
+        except (OSError, UnicodeError, ValueError, TypeError, KeyError) as exc:
+            print(f"FAIL: {exc}", file=sys.stderr)
+            return 1
+        print("PASS: requested decision fields only (data-only; candidate code not executed)")
+        return 0
 
     with tempfile.TemporaryDirectory(prefix="skill-eval-candidate-") as tmp:
         candidate = Path(tmp)
