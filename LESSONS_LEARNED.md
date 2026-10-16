@@ -8,6 +8,30 @@ Latest capture: 2026-09-20, covering PR 24's compact PBT/fuzzing guidance plus P
 
 ## Skill Design
 
+### Adversarial controls must reach the actual fault and actual fixture (16 October 2026)
+
+Independent review of #34 found that E55 accepted slashless-only cases, which
+also pass the buggy implementation: naming the right function and literal is
+not enough if the input avoids the defect. Require the supported trailing-slash
+case for both affected calls, while retaining slashless inputs as positive controls.
+E60 inferred fixture use from an argument name, but direct parametrization can
+replace that fixture with the fake alone. Its bounded static checker now credits
+only undecorated tests; it does not pretend to interpret decorator semantics.
+The second review also caught a rebound slashless BASE_URL and a renamed pytest
+fixture: matching the spelling of a binding is not enough. Credit the prompt's
+constant only through its unshadowed direct import, and keep the fixture factory
+within its explicit supported decorator shape. These bad candidates were accepted
+before and are rejected after, without executing them.
+
+The same review found E66's qualitative judge still required mutation/sabotage
+evidence and its positive sample proposed a new slower lane, contradicting the
+revised task's explicit cost exclusions. Change the prompt, expected behavior,
+positive control and evidence description together; a data-only JSON pass cannot
+establish that the surrounding prose or the judge's instructions are consistent.
+Remove stale runtime and regex claims when a checker becomes static or data-only;
+retain historical receipts as history, not descriptions of current measurement.
+No model run or causal-uplift inference follows from these checker repairs.
+
 ### Campaign follow-up: generalize the decision, not the ceremony (14 October 2026)
 
 The accepted portfolio repairs favor bounded work in existing jobs, independent

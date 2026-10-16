@@ -18,7 +18,9 @@ enshrined-double-slash check: a candidate may legitimately parametrize a
 a real model candidate that did exactly that).
 
 Additionally require correct literal equalities connected to direct profile
-and avatar calls in test bodies. This bounded check does not expand arbitrary
+and avatar calls with trailing-slash bases, so the reported bug is reached.
+Slashless cases remain valid positive controls but do not count as regressions.
+This bounded check does not expand arbitrary
 parameterization, helper calls, aliases or control flow and never executes code.
 """
 from __future__ import annotations
@@ -37,8 +39,19 @@ COMPUTED = re.compile(
 
 
 def literal_contracts(src: str) -> set[str]:
-    """Only count direct equalities connecting a literal to its subject call."""
+    """Count direct literal equalities whose inputs reach the trailing-slash bug."""
     tree = ast.parse(src)
+    # The prompt's constant is known only through its direct import. A local
+    # assignment, argument or renamed import may instead bind a slashless URL.
+    base_imports = [node for node in ast.walk(tree) if isinstance(node, (ast.Import, ast.ImportFrom))
+                    for alias in node.names if (alias.asname or alias.name) == "BASE_URL"]
+    known_base = (len(base_imports) == 1 and base_imports[0] in tree.body and isinstance(base_imports[0], ast.ImportFrom)
+                  and base_imports[0].module == "urls" and base_imports[0].level == 0
+                  and any(alias.name == "BASE_URL" and alias.asname is None for alias in base_imports[0].names)
+                  and not any((isinstance(node, ast.Name) and node.id == "BASE_URL" and isinstance(node.ctx, (ast.Store, ast.Del)))
+                              or (isinstance(node, ast.arg) and node.arg == "BASE_URL")
+                              or (isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name == "BASE_URL")
+                              for node in ast.walk(tree)))
     found = set()
     for function in tree.body:
         if not isinstance(function, (ast.FunctionDef, ast.AsyncFunctionDef)) or not function.name.startswith("test"):
@@ -56,11 +69,13 @@ def literal_contracts(src: str) -> set[str]:
                         and not call.keywords and len(call.args) == (2 if call.func.id == "profile_url" else 3)):
                     continue
                 base, username = call.args[:2]
-                if isinstance(base, ast.Name) and base.id == "BASE_URL":
+                if isinstance(base, ast.Name) and base.id == "BASE_URL" and known_base:
                     base_value = "https://example.com/"
                 elif isinstance(base, ast.Constant) and isinstance(base.value, str):
                     base_value = base.value
                 else:
+                    continue
+                if not base_value.endswith("/"):
                     continue
                 if not isinstance(username, ast.Constant) or not isinstance(username.value, str):
                     continue
@@ -146,7 +161,7 @@ def main() -> int:
             "(expected e.g. \"https://example.com/users/bob\")"
         )
     if connected_contracts != {"profile_url", "avatar_url"}:
-        errors.append("need direct, correct literal equalities for both profile_url and avatar_url; unrelated assertions, inequality and unused helpers do not count")
+        errors.append("need direct, correct literal equalities with trailing-slash bases for both profile_url and avatar_url; slashless-only cases, unrelated assertions, inequality and unused helpers do not count")
     if LITERAL_BUGGY.search(assertion_joined):
         errors.append("literal expectation enshrines the double-slash bug")
 

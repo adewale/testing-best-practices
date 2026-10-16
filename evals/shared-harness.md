@@ -170,12 +170,20 @@ oversized output. No candidate code is executed and no model call is made.
 | E69 | Retain the exact four-factor regression, without claiming pairwise replaces it. | Does not execute the renderer or matrix. |
 
 E55 now connects literal equality expectations to the corresponding direct
-profile/avatar calls. Inequalities, unrelated literals and unused nested
-helpers all passed the previous checker and are now rejected. It supports direct
-literal calls/equalities, not arbitrary aliases, parameterized test expansion
+profile/avatar calls with trailing-slash bases. Slashless-only tests pass the
+buggy fixture and cannot count as regressions; they remain useful positive
+controls alongside the trailing-slash cases. Inequalities, unrelated literals
+and unused nested helpers all passed the previous checker and are now rejected. It supports direct
+literal calls/equalities, with BASE_URL credited only through its direct,
+unshadowed import from urls; a rebound constant receives no regression credit.
+It does not expand arbitrary aliases, parameterized tests
 or general control flow. E60 now grades untrusted output statically: a supported
 shared pytest fixture selects fake and real stores, and direct set/get and
-missing-key assertions use that fixture. Its old dynamic checks run only for
+missing-key assertions in undecorated tests use that fixture. Decorated tests
+are not credited: parametrization can override a same-named fixture, and skip
+markers can prevent execution. Only the direct fixture decorator with params is
+supported; name= and additional factory decorators are not interpreted.
+Its old dynamic checks run only for
 the exact trusted sample directories with the local self-test flag. An ambient
 flag cannot authorize execution of another candidate directory. This narrows
 the execution claim; it does not turn an AST match into runtime evidence.
@@ -194,6 +202,12 @@ same frozen benchmark and model configuration, with independent held-out tasks.
 No new jobs, schedules, mutation campaigns or live-model runs are added.
 E65's stable legacy ID contains `cuefree`, but its revised prompt supplies
 classification choices: it is a visible decision case, not a cue-free holdback.
+
+E66's qualitative expectations and positive control respect the prompt's
+existing-budget restriction. Validate replacements with old/new comparison and
+existing repaired-fault regressions, not an additional slower lane or new
+mutation/sabotage runs. If the contracts cannot fit, retain tests and report the
+tradeoff rather than instructing a judge to reward excluded work.
 
 The historical receipt also pins the reproduction scripts. A current script
 revision is not corruption of the old receipt and must not freeze future oracle

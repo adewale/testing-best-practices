@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Oracle for E60: inspect untrusted candidates without executing them.
 
-Default grading checks a bounded shared-pytest-fixture shape statically. It does
+Default grading checks a bounded shared-pytest-fixture shape and undecorated test
+functions statically. It does
 not claim runtime validation or infer arbitrary helpers, aliases or control flow.
 Only the exact checked-in sample roots with the trusted self-test flag run the
 legacy dynamic controls below; an ambient flag never authorizes another path.
@@ -47,13 +48,20 @@ def static_contract(files: list[Path]) -> list[str]:
     functions = [node for tree in trees for node in tree.body if isinstance(node, ast.FunctionDef)]
     fixtures = []
     for fn in functions:
+        # Stay within the direct factory shape. In particular name= changes
+        # pytest's registered name; another decorator may replace the factory.
+        if len(fn.decorator_list) != 1:
+            continue
         for decorator in fn.decorator_list:
             if not (isinstance(decorator, ast.Call) and isinstance(decorator.func, ast.Attribute)
                     and isinstance(decorator.func.value, ast.Name)
                     and decorator.func.value.id == "pytest" and decorator.func.attr == "fixture"):
                 continue
+            if decorator.args or len(decorator.keywords) != 1 or decorator.keywords[0].arg != "params":
+                continue
             params = next((kw.value for kw in decorator.keywords if kw.arg == "params"), None)
             if not (isinstance(params, (ast.List, ast.Tuple)) and
+                    len(params.elts) == 2 and
                     [item.value for item in params.elts if isinstance(item, ast.Constant)] == ["fake", "real"]):
                 continue
             # Only the direct two-branch factory is supported; mere references
@@ -78,7 +86,10 @@ def static_contract(files: list[Path]) -> list[str]:
         errors.append("no supported shared fixture directly selects FakeStore and RealStore")
     get_checked = missing_checked = False
     for fn in functions:
-        if not fn.name.startswith("test_"):
+        # Parametrization can override a same-named fixture, and skip/other
+        # decorators can change test reachability. This bounded checker only
+        # credits plain tests, rather than pretending to interpret decorators.
+        if not fn.name.startswith("test_") or fn.decorator_list:
             continue
         names = {arg.arg for arg in fn.args.args} & set(fixtures)
         for name in names:

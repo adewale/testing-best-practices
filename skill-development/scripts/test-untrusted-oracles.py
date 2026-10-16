@@ -166,6 +166,10 @@ def test_e60_static_only(root: Path) -> None:
     (shared / "output.md").write_text("```python\n" + poison + "\n```\n")
     run([sys.executable, str(ROOT / "evals/oracles/gtb_output_adapter.py"), str(shared), fixture.name])
     assert not marker.exists(), "E60 shared grading executed untrusted code"
+    for name in ("bad-fixture-override", "bad-renamed-fixture"):
+        invalid = (fixture / "samples" / name / "test_store_contract.py").read_text()
+        (shared / "output.md").write_text("```python\n" + invalid + "\n```\n")
+        run_rejected([sys.executable, str(ROOT / "evals/oracles/gtb_output_adapter.py"), str(shared), fixture.name])
     print("OK: E60 shared/local grading never executes candidate Python")
 
 

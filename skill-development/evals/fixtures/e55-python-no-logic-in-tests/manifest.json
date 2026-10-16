@@ -3,9 +3,9 @@
   "language": "python",
   "oracle": "oracle.py",
   "good_sample": "samples/good",
-  "bad_samples": ["samples/bad", "samples/adversarial-no-assert", "samples/adversarial-inequality", "samples/adversarial-unrelated", "samples/adversarial-dead-helper"],
+  "bad_samples": ["samples/bad", "samples/adversarial-no-assert", "samples/adversarial-inequality", "samples/adversarial-unrelated", "samples/adversarial-dead-helper", "samples/adversarial-slashless-only", "samples/adversarial-rebound-base"],
   "checks": [
     "states expected URLs as literal values instead of recomputing them from BASE_URL with the SUT's own concatenation",
-    "the literal expectations use the correct single-slash form, so the upgraded tests fail against the double-slash bug"
+    "both affected calls include a trailing-slash base and the correct single-slash literal expectation, so the reported bug is actually reached"
   ]
 }

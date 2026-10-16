@@ -3761,7 +3761,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "AST-only: direct correct literal equalities connected to both profile_url and avatar_url calls; inequalities, unrelated literals and unused helpers do not count. Candidate tests are not executed."
+          "AST-only: direct correct literal equalities connected to both profile_url and avatar_url calls with trailing-slash bases; slashless-only cases, inequalities, unrelated literals and unused helpers do not count. Candidate tests are not executed."
         ],
         "runtime_checks": [],
         "judge_checks": [
@@ -3909,8 +3909,8 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real candidate that recommended parametrize-with-named-rows (a legitimate DAMP-compatible fix) — parametr/subtest now count as the split recommendation; the over-DRY guard still fails the bad sample."
         },
         "rebuttals": [
-          "The logic-flag regex matches the bare word 'loop', so an assessment that only praises the loop could partially credit check 1; the split and over-DRY checks still gate it (the bad sample passes check 1 and still fails).",
-          "An assessment could recommend pytest.mark.parametrize with named literal rows — that is a legitimate DAMP-compatible fix; the oracle accepts it because parametrize language matches the split/explicit-data patterns."
+          "The deterministic checker validates explicit JSON decisions, not prose diagnosis; the qualitative judge must assess whether findings are grounded in the fixture.",
+          "Named literal parametrization can be DAMP-compatible. The checker requires the requested literal-data and per-behavior decisions, not a regex match on parametrization vocabulary."
         ]
       },
       "eval_health": {
@@ -4066,7 +4066,7 @@
         ]
       },
       "prompt": "After a fake drifted from the real store and shipped a bug, add tests that keep FakeStore honest with respect to RealStore (both provided, real works offline).",
-      "fixture": "evals/fixtures/e60-python-fake-contract-weld: RealStore (sqlite, KeyError on missing) + FakeStore. Runtime oracle runs candidate pytest three ways: pristine must pass; a drifted fake (get->None) must fail; a drifted real (get->None) must fail — only a shared contract suite run against BOTH implementations passes all three.",
+      "fixture": "evals/fixtures/e60-python-fake-contract-weld: RealStore (offline sqlite, KeyError on missing) + FakeStore. Candidate grading is AST-only for a direct shared fixture and literal contract assertions. Legacy pristine/drift runtime controls apply only to exact trusted bundled good/bad self-tests, not arbitrary candidates.",
       "expected_behavior": [
         "Write one contract suite parameterized over FakeStore and RealStore asserting the shared contract (set/get roundtrip, missing key raises KeyError, overwrite, delete).",
         "The same expectations execute against the real implementation, not only the fake."
@@ -4081,7 +4081,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "AST-only: a supported shared pytest fixture selects FakeStore and RealStore; direct literal set/get and missing-key KeyError assertions use it. Candidate code is never executed; dynamic checks are restricted to trusted bundled self-tests."
+          "AST-only: a supported shared pytest fixture selects FakeStore and RealStore; direct literal set/get and missing-key KeyError assertions in undecorated tests use it. Decorators, including fixture-overriding parametrization, are not inferred. Candidate code is never executed; dynamic checks are restricted to trusted bundled self-tests."
         ],
         "runtime_checks": [],
         "judge_checks": [
@@ -4090,7 +4090,7 @@
       },
       "validity": {
         "claim": "The skill makes agents weld fakes to reality with one contract suite run against both implementations (Google Testing Blog: Fake Your Way to Better Tests 2013; Exercise Service Call Contracts 2018).",
-        "warrant": "The two drift mutants are exactly the failure the pattern prevents; killing both is only possible when the same expectations run against fake and real.",
+        "warrant": "The bounded AST check connects direct contract assertions to a fixture selecting both implementations; it does not establish execution or full contract coverage. Historical trusted runtime controls exercise the missing-key drift scenario separately.",
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28); both drift substitutions verified distinct"
@@ -4098,8 +4098,8 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md."
         },
         "rebuttals": [
-          "sqlite TEXT affinity can surprise a candidate that stores non-str values; the prompt pins keys/values to str, so pristine-run failures from typed values are instruction-following misses, not oracle noise.",
-          "A candidate could duplicate the suite (one copy per impl) instead of parameterizing — semantically equivalent welding; the runtime oracle accepts it, and the judge layer handles style."
+          "The supported AST shape uses literal string keys and values; broader type behavior and arbitrary setup require separate review, not inferred runtime validation.",
+          "Duplicated suites can be behaviorally equivalent, but the current bounded checker supports only a direct shared fixture. Renamed fixtures and decorated tests are unsupported; rejection is not proof that an alternative suite is incorrect."
         ]
       },
       "eval_health": {
@@ -4153,7 +4153,7 @@
       },
       "validity": {
         "claim": "The skill makes agents assess suite shape (tier balance) as a first-class finding (Google Testing Blog: Just Say No to More End-to-End Tests 2015; Fixing a Test Hourglass 2020; SMURF 2024).",
-        "warrant": "The oracle's five checks map one-to-one to the shape diagnosis, the push-down move, the kept E2E core, and the doubling-down failure; a per-test-only assessment cannot pass.",
+        "warrant": "The data-only checker validates explicit migration, retained-core and retry decisions. The qualitative judge, not the deterministic checker, assesses the inventory-grounded shape diagnosis; neither measures the runtime of a replacement suite.",
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
@@ -4161,8 +4161,8 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real base-opus candidate: 'critical-path journeys' phrasing now counts as keeping the E2E core, and doubling-down matches followed by negation language ('...is the wrong one') no longer count as recommendations."
         },
         "rebuttals": [
-          "The push-down check's verb regex can be satisfied by coverage-praise phrasing in rare cases; the shape/integration/core/doubling-down checks still gate (the bad sample passes that one check and fails four others).",
-          "An assessment recommending deleting most E2E without naming replacements would pass the shape checks but fail the push-down requirement, which demands a destination tier."
+          "Correct JSON decisions do not establish a correct prose diagnosis; the qualitative judge must assess the inventory-specific reasoning.",
+          "The migration decisions require destination tiers and retained integration/core journeys; they do not verify implementation, coverage or runtime of the proposed replacements."
         ]
       },
       "eval_health": {
@@ -4470,7 +4470,7 @@
         "Exhaust cheap finite slices and generate a constrained pairwise base.",
         "Elevate only named high-risk groups to 3-way or higher coverage.",
         "Separate expensive boundaries using runtime, setup, flake/rerun, maintenance, review, and triage costs.",
-        "Require shadow replay plus repaired-fault and mutation/sabotage evidence before deletion."
+        "Compare old/new portfolios and replay existing repaired-fault regressions within the existing budget before deletion. Do not add jobs, schedules or mutation/sabotage testing; retain tests and report the tradeoff if the contracts cannot fit."
       ],
       "red_flags": [
         "Runs the full Cartesian product.",
