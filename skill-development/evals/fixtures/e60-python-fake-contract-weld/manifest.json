@@ -3,10 +3,10 @@
   "language": "python",
   "oracle": "oracle.py",
   "good_sample": "samples/good",
-  "bad_sample": "samples/bad",
+  "bad_samples": ["samples/bad", "samples/bad-fixture-override", "samples/bad-renamed-fixture"],
   "checks": [
-    "candidate tests pass against the pristine FakeStore and RealStore",
-    "a drifted fake (get returns None on missing keys) makes the suite fail — the fake's contract is actually asserted",
-    "a drifted real store makes the suite fail — the same expectations run against the real implementation, welding fake to real"
+    "AST-only candidate grading requires a direct shared fixture with only params=['fake', 'real']; renamed or multiply decorated fixtures are unsupported",
+    "undecorated tests request that fixture and contain direct literal set/get and missing-key KeyError assertions; candidate Python is not executed",
+    "legacy pristine/drift execution is restricted to the exact trusted bundled good/bad self-test roots, not evidence of arbitrary candidate runtime behavior"
   ]
 }

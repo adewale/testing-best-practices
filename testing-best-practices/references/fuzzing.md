@@ -25,9 +25,15 @@ Use the engine's seed/corpus and failure-artifact mechanism. Persist minimized f
 |---|---|
 | Seed/regression replay | Keep found bugs fixed; not active discovery |
 | Bounded PR/push discovery | Catch shallow regressions when target cost permits |
-| Scheduled discovery | Rotate longer exploration and grow useful corpus |
-| Continuous service | Distributed discovery for mature exposed libraries |
+| On-demand deeper discovery | Investigate a concrete parser risk within a fixed budget |
+| Explicitly agreed scheduled/continuous discovery | Explore beyond the ordinary budget when sustained cost and an owner are justified |
+
+Default to seed replay plus short bounded discovery in an existing job when
+discovery earns its cost. Bound expensive invocations as well as the campaign.
+For Go, `-fuzztime=<N>x` bounds iterations when a wall-clock discovery limit causes
+deadline flakes; keep the surrounding job deadline unchanged. A budget increase
+or new schedule requires a reason, not parity with another repository.
 
 Follow the language reference or selected engine documentation for collection, active discovery, and replay. Where CI duplicates source target names in a manually maintained matrix, compare the source inventory with that matrix; otherwise do not add a policy guard merely because fuzzing exists.
 
-**Restraint.** Trusted, internally constructed, typed input does not earn a fuzz target merely because a helper manipulates a string. Prefer examples, exhaustive cases, or ordinary properties unless exposure, parser complexity, unsafe behavior, crash history, or security impact justifies active discovery. Seed replay on every change plus scheduled discovery can be the right cost split; do not demand long campaigns on every PR.
+**Restraint.** Trusted, internally constructed, typed input does not earn a fuzz target merely because a helper manipulates a string. Prefer examples, exhaustive cases, or ordinary properties unless exposure, parser complexity, unsafe behavior, crash history, or security impact justifies active discovery. Do not demand scheduled discovery or long campaigns on every PR.

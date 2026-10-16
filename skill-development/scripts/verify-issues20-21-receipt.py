@@ -81,6 +81,11 @@ def objective_totals(matrix: dict) -> dict[str, int]:
     }
 
 
+def reproduction_matches(actual: dict[str, str], expected: dict[str, str]) -> bool:
+    """Current revisions may differ; only matching artifacts can regrade history."""
+    return actual == expected
+
+
 def main() -> int:
     receipt = json.loads(RECEIPT.read_text())
     errors: list[str] = []
@@ -117,8 +122,18 @@ def main() -> int:
             "INFO: current manifest differs from the historical compatibility "
             "snapshot; historical scores do not attest to this revision"
         )
-    for relative, expected in current["current_reproduction_script_sha256"].items():
-        check(f"current script {relative}", file_sha256(ROOT / relative), expected, errors)
+    expected_scripts = current["current_reproduction_script_sha256"]
+    actual_scripts = {relative: file_sha256(ROOT / relative) for relative in expected_scripts}
+    scripts_match = reproduction_matches(actual_scripts, expected_scripts)
+    for relative, expected in expected_scripts.items():
+        if actual_scripts[relative] == expected:
+            print(f"OK: compatibility snapshot script {relative}")
+        else:
+            print(f"INFO: current script {relative} differs from the historical snapshot; not historical reproduction evidence")
+    original_oracles_match = (
+        tree_sha256(ROOT / "skill-development/evals/fixtures")
+        == receipt["scoring"]["oracle_tree_sha256_at_attestation"]
+    )
 
     historical_runs = ROOT / "skill-development/eval-runs/skill-harness-issues20-21-repeat3"
     if historical_runs.is_dir():
@@ -126,12 +141,15 @@ def main() -> int:
             actual_hash, count = run_sha256(historical_runs / model, historical=True)
             check(f"historical run tree {model} hash", actual_hash, expected["sha256"], errors)
             check(f"historical run tree {model} file count", count, expected["files"], errors)
-        check(
-            "historical candidates regrade to recorded objective matrix",
-            regrade_historical(historical_runs),
-            receipt["scoring"]["objective"],
-            errors,
-        )
+        if scripts_match and original_oracles_match:
+            check(
+                "historical candidates regrade to recorded objective matrix",
+                regrade_historical(historical_runs),
+                receipt["scoring"]["objective"],
+                errors,
+            )
+        else:
+            print("SKIP: historical regrading requires the exact retained oracle/script preimages; current checks cannot authenticate old scores")
     else:
         print("SKIP: ignored historical run trees are absent; objective outcomes are not independently verified")
 

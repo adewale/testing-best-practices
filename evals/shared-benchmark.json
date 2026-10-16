@@ -1739,9 +1739,9 @@
           "type": "script",
           "command": [
             "python3",
-            "oracles/gtb_output_adapter.py",
-            "{output_dir}",
-            "e57-python-damp-shared-fixture"
+            "oracles/development_fixture_oracle.py",
+            "e57-python-damp-shared-fixture",
+            "{output_dir}"
           ],
           "pass_exit_code": 0,
           "timeout_s": 30,
@@ -1783,9 +1783,9 @@
           "type": "script",
           "command": [
             "python3",
-            "oracles/gtb_output_adapter.py",
-            "{output_dir}",
-            "e58-hidden-narrow-not-roundtrip"
+            "oracles/development_fixture_oracle.py",
+            "e58-hidden-narrow-not-roundtrip",
+            "{output_dir}"
           ],
           "pass_exit_code": 0,
           "timeout_s": 30,
@@ -1915,9 +1915,9 @@
           "type": "script",
           "command": [
             "python3",
-            "oracles/gtb_output_adapter.py",
-            "{output_dir}",
-            "e61-suite-shape-assess"
+            "oracles/development_fixture_oracle.py",
+            "e61-suite-shape-assess",
+            "{output_dir}"
           ],
           "pass_exit_code": 0,
           "timeout_s": 60,
@@ -2030,7 +2030,7 @@
       ],
       "tags": [
         "mutation",
-        "cue-free",
+        "report-status",
         "issue-20"
       ],
       "domain": "testing-quality",
@@ -2047,7 +2047,7 @@
       "expected_behavior": [
         "Keep mandatory regressions and exact canonical-registry enrollment.",
         "Combine exhaustive cheap slices, constrained pairwise coverage, and named variable-strength groups.",
-        "Compare heterogeneous costs and require shadow plus mutation/sabotage evidence before deletion."
+        "Compare heterogeneous costs and validate replacements using old/new comparison and existing repaired-fault regressions within the existing budget; do not add jobs, schedules or mutation/sabotage testing."
       ],
       "assertions": [
         {

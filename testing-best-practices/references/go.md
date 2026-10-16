@@ -66,6 +66,10 @@ Native `FuzzXxx` targets have two execution modes:
 - `go test` replays `f.Add` and `testdata/fuzz` seeds; it does not perform active coverage-guided discovery.
 - `go test <package> -run='^$' -fuzz='^FuzzXxx$' -fuzztime=30s` performs bounded discovery. `-fuzz` must select exactly one target in exactly one package.
 
+Use the repository's existing bounded discovery allowance, not the example's
+30 seconds as a default. `-fuzztime=100x` bounds iterations instead of duration
+when time-boxed discovery flakes; the CI job timeout still bounds total work.
+
 If the ordinary `go test` invocation includes the package and does not exclude its fuzz tests, committed `testdata/fuzz/<target>` inputs already provide regression replay. Recognize that coverage before recommending another job. Change the discovery setup only for a concrete gap in target selection, replay, preserved failures, or the risk-appropriate budget.
 
 Inventory targets with `go test -list '^Fuzz' ./...`. If CI duplicates target names in a manually maintained discovery matrix, compare that matrix with the source inventory; otherwise do not add a policy guard merely because fuzzing exists. Commit minimized native failures under `testdata/fuzz/FuzzXxx/`; retain Rapid failures that are required regressions. See `references/property-based-testing.md` and `references/fuzzing.md` for shared guidance.
