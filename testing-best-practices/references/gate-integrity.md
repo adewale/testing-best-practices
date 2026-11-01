@@ -160,6 +160,23 @@ decision. Mutation specifics are in `references/mutation-testing.md`.
 
 ## 7. Restraint: don't over-apply
 
+Before calling a check redundant, expand its callers. Demoscene's `test:full`
+ran `test:fast` and then coverage, so both Vitest suites ran twice with the same
+configs. Retain the covered runs and their thresholds; remove only the extra
+invocations. Planet CF's incident response added a standalone migration test
+step beside the unit lane that already collected it. Keep the SQLite assertions
+in that lane rather than requiring two executions of the same mitigation.
+
+Include triggers and tool defaults in this review: a same-repository PR update
+can schedule both push and PR runs, and `setup-go` already caches modules by
+default. State which branch/tag checks remain before narrowing events. These
+are audit questions, not new required jobs or generated command inventories.
+
+Frozen review evidence belongs to the revision that produced it. Verify its
+bytes and original case inventory there; adding a current test must not force
+an old pilot's screenshots to be regenerated. Live regression coverage remains
+the responsibility of the current suite.
+
 - A capability-gated test is fine when a lane provides the capability and fails
   on skip.
 - An advisory job with an owner, a schedule, and a notification is not a dead
