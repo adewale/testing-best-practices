@@ -5,7 +5,7 @@
   "good_sample": "samples/good",
   "checks": [
     "explicitly rejects restoration of an aggregate score as the objective",
-    "independently considers equivalent and other non-actionable survivors",
+    "classifies supplied equivalence and non-actionable report facts; does not independently prove equivalence",
     "separates actual survivors from timeout/compile/no-coverage/infrastructure statuses",
     "requires like-for-like scope/operator/denominator comparison",
     "triages representative survivors into behavior or code decisions",

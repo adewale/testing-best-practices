@@ -40,3 +40,9 @@ class TestBilling(unittest.TestCase):
 For reference, `billing.compute_discount(account)` is documented as: gold-tier
 accounts get a discount of 10% of their balance; all other tiers get no
 discount.
+
+Include exactly one JSON fence with `computed_expectation` and
+`shared_mutable_state` (booleans), `setup_location` (`per_behavior` or
+`shared_mutable_fixture`), and `expectation_source` (`specified_literals` or
+`implementation_formula`). The deterministic check grades those decisions;
+qualitative review covers the explanation and proposed restructuring.

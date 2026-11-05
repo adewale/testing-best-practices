@@ -36,6 +36,12 @@ Before writing, assessing, or changing tests:
 6. **Choose the smallest useful test tier** from `references/test-types.md`.
 7. **Load only relevant references** from the matrix below.
 
+Work within the user's time, compute and spending budget. Reuse existing test
+jobs and replace redundant work before adding work. New jobs, schedules, retries,
+model/provider calls and larger generative budgets are cost changes, not automatic
+consequences of a test-quality finding. Respect explicit exclusions; do not
+replace a forbidden mutation campaign with hand-seeded mutations.
+
 If the language is unsupported by a dedicated reference, follow project conventions plus the generic principles here.
 
 ## Reference matrix
@@ -109,6 +115,12 @@ Assert the fields the behavior under test is about. Full-object/whole-structure 
 
 Every custom oracle, linter, validator, fixer, or eval grader needs a known-good input that passes and a known-bad input that fails; keep them small, and don't rerun an expensive checker for every bad input. Goldens, approvals, or eval cases written by the same actor in the same change as the code are characterizations, not independent oracles.
 
+Give each checked rule a negative input that reaches it: an earlier guard must
+not reject the input first. An answer that repeats the task, or recommends the
+opposite action while mentioning the right vocabulary, must not pass an eval.
+State what each oracle proves; parseable code, a correct test plan and executed
+behavior are different evidence.
+
 ### Prefer real behavior over mocks
 
 Prefer, in order:
@@ -121,6 +133,13 @@ Prefer, in order:
 
 Take a double's expected values from the real service (recorded or locally emulated), never from the mock author's belief; when a real engine can run in-process, delete the mock.
 
+A matching engine is not the complete service contract: SQLite checks SQL
+semantics, not D1's binding API or transaction/parameter limits. Validate the
+relevant adapter once through the local runtime. For concurrent publication,
+exercise the interleaving at the actual write; a preceding successful check does
+not prove that a later write is guarded. Test only guarantees the product promises,
+not exactly-once effects or atomic whole-rebuild visibility by default.
+
 Prefer visible state over call choreography: assert the saved row, emitted event, response body, file on disk, or a small logging fake's recorded effects. Do not mock values; construct them. Mock roles you own, not third-party libraries directly; wrap provider SDKs behind an owned interface and add a contract/VCR check for the real provider shape. For interaction tests, allow queries and expect commands: getters can be called freely, side-effecting commands are where expectations earn their keep.
 
 ### Use properties for broad input spaces
@@ -128,6 +147,11 @@ Prefer visible state over call choreography: assert the saved row, emitted event
 Use property-based testing when behavior spans a broader input or operation space than examples can cover economically. Choose a property that states meaningful behavior—roundtrip, idempotence, conservation, metamorphic relation, algebraic law, or agreement with a small model—not merely that execution did not crash.
 
 Match the generator to the behavior being tested: arbitrary input for totality and documented errors, specification-valid input for semantic branches, stateful traces for lifecycle behavior, and corpus mutation for coverage-guided discovery. Use an oracle independent of the implementation. Property tools construct values and shrink failures; coverage-guided fuzzers mutate a corpus toward new control flow. Do not use the terms or tools interchangeably.
+
+Anchor self-consistency properties to a specified result or independent check:
+idempotence also holds for an implementation that erases every value, and two
+paths sharing code can agree on the same defect. Assert the effect of accepted
+state-machine commands; do not teach the model whatever the SUT returned.
 
 For small finite spaces, prefer exhaustive generation over sampling, after checking per-cell cost and whether a cheaper layer decides the property (`references/exhaustive-testing.md`). See `references/property-based-testing.md` for generator, oracle, execution, and replay guidance.
 

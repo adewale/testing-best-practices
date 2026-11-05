@@ -32,3 +32,13 @@ signal rather than fixing it.
 
 Sequenced this way, PR feedback drops from ~2h40m to minutes for most
 changes, and release blocks stop being coin flips.
+
+```json
+{
+  "business_rule_tier": "domain",
+  "integration_contracts": true,
+  "browser_role": "wiring_and_core_journeys",
+  "retry_action": "diagnose_not_increase",
+  "first_action": "move_rule_tests"
+}
+```

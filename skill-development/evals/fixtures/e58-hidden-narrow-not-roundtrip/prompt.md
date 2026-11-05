@@ -19,3 +19,8 @@ A reviewer commented on a PR that touches quota handling:
 
 Assess: is the reviewer right? What would you change about this test, if
 anything? Write your assessment as Markdown.
+
+Include exactly one JSON fence with `retain_whole_state` and
+`quota_only_replacement` (booleans), and `contract` (`save_load_identity` or
+`quota_fields_only`). The deterministic check grades that decision, not merely
+mentions of “canonical” or “roundtrip”.

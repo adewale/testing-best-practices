@@ -15,8 +15,9 @@ fuzz, evals, post-deploy smoke, lint/types) record:
   dispatch);
 - the last run on the default branch: status, duration, and test count.
 
-A tier with no job is presumed broken until run. A test that exists but no job
-runs is documentation, not verification.
+A tier with no observed run is unverified, not necessarily broken. A deliberately
+manual check can provide evidence when run; distinguish that from a promised
+automatic gate whose configured job never selects it.
 
 Check that runs executed, not just that they are green or red: a runner was
 assigned, the duration is plausible, and counts are non-zero. CI that is red or
@@ -127,6 +128,11 @@ schedule just to give it teeth.
 
 ## 6. Recurring lanes and advisory gates: an operating contract
 
+These checks assess an existing or explicitly proposed lane; they do not require
+a new one. Prefer replacement inside the existing budget. Do not add jobs,
+schedules, paid calls or larger discovery budgets without agreement on their
+cost. Mutation is an on-demand diagnostic by default, not a recurring gate.
+
 Before scheduling a nightly E2E, fuzz, perf, eval, or mutation lane:
 
 - run the exact configuration once to completion on the target infrastructure and
@@ -153,6 +159,23 @@ goes, not just test counts, and retire gates that never fire or never change a
 decision. Mutation specifics are in `references/mutation-testing.md`.
 
 ## 7. Restraint: don't over-apply
+
+Before calling a check redundant, expand its callers. Demoscene's `test:full`
+ran `test:fast` and then coverage, so both Vitest suites ran twice with the same
+configs. Retain the covered runs and their thresholds; remove only the extra
+invocations. Planet CF's incident response added a standalone migration test
+step beside the unit lane that already collected it. Keep the SQLite assertions
+in that lane rather than requiring two executions of the same mitigation.
+
+Include triggers and tool defaults in this review: a same-repository PR update
+can schedule both push and PR runs, and `setup-go` already caches modules by
+default. State which branch/tag checks remain before narrowing events. These
+are audit questions, not new required jobs or generated command inventories.
+
+Frozen review evidence belongs to the revision that produced it. Verify its
+bytes and original case inventory there; adding a current test must not force
+an old pilot's screenshots to be regenerated. Live regression coverage remains
+the responsibility of the current suite.
 
 - A capability-gated test is fine when a lane provides the capability and fails
   on skip.

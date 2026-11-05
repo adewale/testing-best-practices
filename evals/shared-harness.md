@@ -78,7 +78,7 @@ skill-benchmark benchmark evals/shared-benchmark.json --runs eval-runs/latest \
   --out /tmp/testing-best-practices-benchmark.json
 ```
 
-Script assertions are repo-owned commands and require `--allow-scripts`. The harness does not sandbox them. Shared E67 grading performs AST-only checks on model output; execute candidate code only in a disposable OS/container sandbox with no secrets, network, or writable host mounts.
+Script assertions are repo-owned commands and require `--allow-scripts`. The harness does not sandbox them. Shared E60 and E67 grading perform AST-only checks on model output; execute candidate code only in a disposable OS/container sandbox with no secrets, network, or writable host mounts.
 
 ## What the checks establish
 
@@ -87,7 +87,8 @@ Script assertions are repo-owned commands and require `--allow-scripts`. The har
 | Manifest validation / leakage audit | Declared cases and references satisfy the checked schema and detectable leakage rules. | Independent test quality, absence of all leakage, or model uplift. |
 | `contains`, `contains_any`, regex | The saved answer contains the requested text pattern. | Correct advice, working tests, or effective PBT. An `oracle: strong` label does not turn a text match into behavioral evidence. |
 | Fixture scripts that inspect prose | The answer meets that script's bounded content rules. | Working candidate code or production behavior. Read the actual checker, not its generic description. |
-| AST fixture scripts / GTB adapter | Extracted code is parseable and has the specific checked assertion/implementation shapes. | That the code executes successfully or its assertions catch every defect. Shared E67 never executes candidate code. |
+| AST fixture scripts / GTB adapter | Extracted code is parseable and has the specific checked assertion/implementation shapes. | That the code executes successfully or its assertions catch every defect. Shared E60 and E67 never execute candidate code. |
+| Data-only decision scripts | The requested fields record the correct bounded decision for the supplied facts. | Correct surrounding prose, a working implementation, good judgment outside those facts, or skill uplift. |
 | Trusted fixture self-tests | Known good/bad samples have the expected result under the local checker. | Generalization to arbitrary answers, or a model comparison. |
 | Optional qualitative judge | The configured judge rated the saved output against its rubric. | An independent executable oracle; ratings can be wrong. No judge run is required by this documentation change. |
 | Collector / backend stub checks | The tested entrypoint discovers the expected IDs or handles the stubbed invocation correctly. | A live CLI's current behavior, model quality, or a successful provider call. |
@@ -146,3 +147,72 @@ helpers, aliases and arbitrary control flow are not inferred.
 This proves the checker rejects those specific weak shapes;
 it does not prove candidate tests run, reach their assertions or bind to the
 real implementation. The shared GTB adapter and `demo` tier are unchanged.
+
+## October campaign follow-up: decisions, not vocabulary
+
+Eight tune cases (E57, E58, E61, E64, E65, E66, E68 and E69) now request one
+bounded JSON decision. Shared and local entrypoints use the same data-only
+checker instead of separate prose regexes. Existing fixture self-tests remain
+in the same gate; their known-good samples include the requested data. The
+existing untrusted-oracle self-test checks every field independently, missing
+fields, prompt echo, sibling answers, keyword salad, duplicate keys/fences and
+oversized output. No candidate code is executed and no model call is made.
+
+| Case | Checked decision | Important limit |
+|---|---|---|
+| E57 | Identify mirrored expectations/shared mutable state and choose per-behavior literal setup. | Does not execute the suggested billing tests. |
+| E58 | Retain whole-state save/load identity rather than quota-only replacement. | Does not validate serialization. |
+| E61 | Move rule checks below the browser; retain integration/wiring coverage; diagnose retries. | Does not measure an actual replacement suite's runtime or lost coverage. |
+| E64 | Defer the unowned, uncalibrated broad lane; recognize single-runner capacity and missing evidence. | Does not measure CI or authorize mutation testing. |
+| E65 | Reject an incomparable score target; distinguish seven concrete report statuses. | Classification assumes the supplied report facts; it does not establish equivalence independently. |
+| E66 | Production registry, cheap exhaustive slices, constrained pairwise, named elevated group, retained regression and distinct costs. | Does not construct or prove the matrix; the judge still evaluates group relevance and budget reasoning. |
+| E68 | Preserve the explicitly cost-approved hypothetical lane's scope, owner, timeout and expiry. | Not permission to create a lane in the user's repositories. |
+| E69 | Retain the exact four-factor regression, without claiming pairwise replaces it. | Does not execute the renderer or matrix. |
+
+E55 now connects literal equality expectations to the corresponding direct
+profile/avatar calls with trailing-slash bases. Slashless-only tests pass the
+buggy fixture and cannot count as regressions; they remain useful positive
+controls alongside the trailing-slash cases. Inequalities, unrelated literals
+and unused nested helpers all passed the previous checker and are now rejected. It supports direct
+literal calls/equalities, with BASE_URL credited only through its direct,
+unshadowed import from urls; a rebound constant receives no regression credit.
+It does not expand arbitrary aliases, parameterized tests
+or general control flow. E60 now grades untrusted output statically: a supported
+shared pytest fixture selects fake and real stores, and direct set/get and
+missing-key assertions in undecorated tests use that fixture. Decorated tests
+are not credited: parametrization can override a same-named fixture, and skip
+markers can prevent execution. Only the direct fixture decorator with params is
+supported; name= and additional factory decorators are not interpreted.
+Its old dynamic checks run only for
+the exact trusted sample directories with the local self-test flag. An ambient
+flag cannot authorize execution of another candidate directory. This narrows
+the execution claim; it does not turn an AST match into runtime evidence.
+
+All `demo`/`live` labels and qualitative judges are retained. A manifest audit
+may therefore still report fourteen weak-oracle recommendations: clearing that
+warning by relabeling would not strengthen evidence. Ten cases receive these
+additional repairs; E59 and E67 retain their already-documented static guards.
+The two private holdout/holdback prompts are absent here and are not recreated
+from training cases. Their owners must supply them before a genuine held-out
+comparison. No broad causal uplift is claimed.
+
+Prompts and oracles changed, so historical scores are not comparable to this
+revision. Any later skill/no-skill comparison must run both arms against this
+same frozen benchmark and model configuration, with independent held-out tasks.
+No new jobs, schedules, mutation campaigns or live-model runs are added.
+E65's stable legacy ID contains `cuefree`, but its revised prompt supplies
+classification choices: it is a visible decision case, not a cue-free holdback.
+
+E66's qualitative expectations and positive control respect the prompt's
+existing-budget restriction. Validate replacements with old/new comparison and
+existing repaired-fault regressions, not an additional slower lane or new
+mutation/sabotage runs. If the contracts cannot fit, retain tests and report the
+tradeoff rather than instructing a judge to reward excluded work.
+
+The historical receipt also pins the reproduction scripts. A current script
+revision is not corruption of the old receipt and must not freeze future oracle
+repairs. Its verifier reports a compatibility mismatch without rewriting hashes;
+retained run-tree digests and the old skill tree are still checked strictly.
+Historical regrading is skipped unless the exact oracle/script preimages match.
+Do not regrade old prose answers with the new JSON decision checker and call
+that a reproduced old score.

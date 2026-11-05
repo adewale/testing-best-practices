@@ -39,3 +39,12 @@ broken shared abstraction in tests has no test of its own to catch it. Keep
 any helper strictly for constructing value objects with the asserted-upon
 fields passed explicitly; do not route these tests back through a shared
 fixture.
+
+```json
+{
+  "computed_expectation": true,
+  "shared_mutable_state": true,
+  "setup_location": "per_behavior",
+  "expectation_source": "specified_literals"
+}
+```

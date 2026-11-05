@@ -7,8 +7,8 @@
     "preserves mandatory regressions and exact canonical-registry enrollment",
     "combines exhaustive cheap slices with constrained pairwise coverage",
     "uses variable strength only for named high-risk groups",
-    "separates expensive boundaries by measured cost/cadence",
-    "requires shadow replay plus mutation/sabotage evidence before deletion"
+    "separates expensive boundaries by cost while staying inside existing jobs and budget",
+    "requires old/new comparison and existing repaired-fault regression replay before deletion, without new lanes or mutation/sabotage testing"
   ],
   "bad_samples": [
     "samples/bad",

@@ -3761,11 +3761,9 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e55-python-no-logic-in-tests/oracle.py over the candidate test file (literal single-slash expectation present; no BASE_URL-derived expected values; no enshrined double slash)"
+          "AST-only: direct correct literal equalities connected to both profile_url and avatar_url calls with trailing-slash bases; slashless-only cases, inequalities, unrelated literals and unused helpers do not count. Candidate tests are not executed."
         ],
-        "runtime_checks": [
-          "Upgraded tests, run against the fixture's urls.py, fail on the double-slash bug (red evidence reportable)."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Score with rubric.md C/H: does the answer name the computed-expectation problem and report honest red/green status?"
         ]
@@ -3787,9 +3785,9 @@
       },
       "eval_health": {
         "difficulty": "medium",
-        "saturation_status": "saturated_public",
+        "saturation_status": "unknown",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-08-28"
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -3894,7 +3892,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e57-python-damp-shared-fixture/oracle.py over the candidate assessment (flags logic-in-test AND shared-fixture distance; recommends splitting; does not recommend DRY-ing harder)"
+          "Data-only JSON decisions identify mirrored expectations and shared mutable state, choosing per-behavior literal setup. Candidate tests are not executed."
         ],
         "runtime_checks": [],
         "judge_checks": [
@@ -3911,15 +3909,15 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real candidate that recommended parametrize-with-named-rows (a legitimate DAMP-compatible fix) — parametr/subtest now count as the split recommendation; the over-DRY guard still fails the bad sample."
         },
         "rebuttals": [
-          "The logic-flag regex matches the bare word 'loop', so an assessment that only praises the loop could partially credit check 1; the split and over-DRY checks still gate it (the bad sample passes check 1 and still fails).",
-          "An assessment could recommend pytest.mark.parametrize with named literal rows — that is a legitimate DAMP-compatible fix; the oracle accepts it because parametrize language matches the split/explicit-data patterns."
+          "The deterministic checker validates explicit JSON decisions, not prose diagnosis; the qualitative judge must assess whether findings are grounded in the fixture.",
+          "Named literal parametrization can be DAMP-compatible. The checker requires the requested literal-data and per-behavior decisions, not a regex match on parametrization vocabulary."
         ]
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "saturated_public",
+        "saturation_status": "unknown",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-08-28"
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -3957,11 +3955,9 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e58-hidden-narrow-not-roundtrip/oracle.py over candidate output (defends whole-state comparison; rejects narrowing the roundtrip)"
+          "Data-only JSON decisions retain whole-state save/load identity and reject quota-only replacement. Serialization is not executed."
         ],
-        "runtime_checks": [
-          "The whole-state identity is the contract; restraint (no narrowing) is the only passing shape."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Score with rubric.md B/D; pass requires distinguishing roundtrip-identity tests from narrow behavior tests without over-applying either."
         ]
@@ -3982,9 +3978,9 @@
       },
       "eval_health": {
         "difficulty": "adversarial",
-        "saturation_status": "hidden_probe",
+        "saturation_status": "unknown",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-08-28"
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -4070,7 +4066,7 @@
         ]
       },
       "prompt": "After a fake drifted from the real store and shipped a bug, add tests that keep FakeStore honest with respect to RealStore (both provided, real works offline).",
-      "fixture": "evals/fixtures/e60-python-fake-contract-weld: RealStore (sqlite, KeyError on missing) + FakeStore. Runtime oracle runs candidate pytest three ways: pristine must pass; a drifted fake (get->None) must fail; a drifted real (get->None) must fail — only a shared contract suite run against BOTH implementations passes all three.",
+      "fixture": "evals/fixtures/e60-python-fake-contract-weld: RealStore (offline sqlite, KeyError on missing) + FakeStore. Candidate grading is AST-only for a direct shared fixture and literal contract assertions. Legacy pristine/drift runtime controls apply only to exact trusted bundled good/bad self-tests, not arbitrary candidates.",
       "expected_behavior": [
         "Write one contract suite parameterized over FakeStore and RealStore asserting the shared contract (set/get roundtrip, missing key raises KeyError, overwrite, delete).",
         "The same expectations execute against the real implementation, not only the fake."
@@ -4084,17 +4080,17 @@
         "F"
       ],
       "measurement": {
-        "static_checks": [],
-        "runtime_checks": [
-          "evals/fixtures/e60-python-fake-contract-weld/oracle.py: pytest passes pristine AND fails under drifted-fake AND fails under drifted-real"
+        "static_checks": [
+          "AST-only: a supported shared pytest fixture selects FakeStore and RealStore; direct literal set/get and missing-key KeyError assertions in undecorated tests use it. Decorators, including fixture-overriding parametrization, are not inferred. Candidate code is never executed; dynamic checks are restricted to trusted bundled self-tests."
         ],
+        "runtime_checks": [],
         "judge_checks": [
           "Score with rubric.md C/F: contract framing, deterministic offline setup, no live dependencies."
         ]
       },
       "validity": {
         "claim": "The skill makes agents weld fakes to reality with one contract suite run against both implementations (Google Testing Blog: Fake Your Way to Better Tests 2013; Exercise Service Call Contracts 2018).",
-        "warrant": "The two drift mutants are exactly the failure the pattern prevents; killing both is only possible when the same expectations run against fake and real.",
+        "warrant": "The bounded AST check connects direct contract assertions to a fixture selecting both implementations; it does not establish execution or full contract coverage. Historical trusted runtime controls exercise the missing-key drift scenario separately.",
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28); both drift substitutions verified distinct"
@@ -4102,15 +4098,15 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md."
         },
         "rebuttals": [
-          "sqlite TEXT affinity can surprise a candidate that stores non-str values; the prompt pins keys/values to str, so pristine-run failures from typed values are instruction-following misses, not oracle noise.",
-          "A candidate could duplicate the suite (one copy per impl) instead of parameterizing — semantically equivalent welding; the runtime oracle accepts it, and the judge layer handles style."
+          "The supported AST shape uses literal string keys and values; broader type behavior and arbitrary setup require separate review, not inferred runtime validation.",
+          "Duplicated suites can be behaviorally equivalent, but the current bounded checker supports only a direct shared fixture. Renamed fixtures and decorated tests are unsupported; rejection is not proof that an alternative suite is incorrect."
         ]
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "saturated_public",
+        "saturation_status": "unknown",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-08-28"
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -4148,7 +4144,7 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e61-suite-shape-assess/oracle.py (shape named; integration middle; push-down recommendation; small E2E core kept; no retry/timeout/more-E2E doubling-down)"
+          "Data-only JSON decisions move business-rule tests below the browser, retain integration/core journeys and diagnose rather than increase retries. Runtime and coverage of a replacement suite are not measured."
         ],
         "runtime_checks": [],
         "judge_checks": [
@@ -4157,7 +4153,7 @@
       },
       "validity": {
         "claim": "The skill makes agents assess suite shape (tier balance) as a first-class finding (Google Testing Blog: Just Say No to More End-to-End Tests 2015; Fixing a Test Hourglass 2020; SMURF 2024).",
-        "warrant": "The oracle's five checks map one-to-one to the shape diagnosis, the push-down move, the kept E2E core, and the doubling-down failure; a per-test-only assessment cannot pass.",
+        "warrant": "The data-only checker validates explicit migration, retained-core and retry decisions. The qualitative judge, not the deterministic checker, assesses the inventory-grounded shape diagnosis; neither measures the runtime of a replacement suite.",
         "backing": {
           "runtime_checks": [
             "fixture oracle good/pass + bad/fail self-test (2026-08-28)"
@@ -4165,15 +4161,15 @@
           "ablation_matrix": "2026-08-28 ablation matrix (sonnet+opus sub-agents, arms base/current/new, n=1 per cell): all populated cells PASS after oracle hardening; no with/without delta observed on 2026 frontier models -> regression guard. Full table: skill-development/evals/scorecard.md. Oracle hardened against a real base-opus candidate: 'critical-path journeys' phrasing now counts as keeping the E2E core, and doubling-down matches followed by negation language ('...is the wrong one') no longer count as recommendations."
         },
         "rebuttals": [
-          "The push-down check's verb regex can be satisfied by coverage-praise phrasing in rare cases; the shape/integration/core/doubling-down checks still gate (the bad sample passes that one check and fails four others).",
-          "An assessment recommending deleting most E2E without naming replacements would pass the shape checks but fail the push-down requirement, which demands a destination tier."
+          "Correct JSON decisions do not establish a correct prose diagnosis; the qualitative judge must assess the inventory-specific reasoning.",
+          "The migration decisions require destination tiers and retained integration/core journeys; they do not verify implementation, coverage or runtime of the proposed replacements."
         ]
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "saturated_public",
+        "saturation_status": "unknown",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-08-28"
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -4346,11 +4342,9 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e64-mutation-recurring-lane-contract/oracle.py over candidate output"
+          "Data-only JSON decisions defer recurrence, reject the copied score floor, narrow scope and identify missing baseline/fault-class/owner evidence. No CI or mutation run is performed."
         ],
-        "runtime_checks": [
-          "Fixture oracle self-test requires baseline, focused scope, capacity, owner/action path, calibrated floor, and stop-before-expansion behavior."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Score whether the response prevents the documented operational failure rather than merely making the workflow more elaborate."
         ]
@@ -4370,11 +4364,9 @@
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "active",
-        "known_discriminates_versions": [
-          "local-working-tree-vs-no-skill-2026-07-22"
-        ],
-        "last_reviewed": "2026-09-23"
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -4399,12 +4391,12 @@
         ]
       },
       "prompt": "Our mutation dashboard fell from 73% to 51% after the module tripled in size. The report now contains hundreds of entries, and several analysis jobs did not complete. Management wants an acceptance plan whose goal is back above 70%. Assess that request and propose the plan.",
-      "fixture": "Cue-free score-restoration holdback with changed scope, many report entries, and incomplete jobs but no mention of equivalence or status semantics.",
+      "fixture": "Visible tune case with seven supplied report rows, explicit classification choices and a data-only JSON decision check. The legacy ID is retained; this is no longer a cue-free holdback.",
       "expected_behavior": [
         "Explicitly reject restoration of the aggregate score as the objective.",
         "Require like-for-like scope, operators, and denominator before trend comparison.",
         "Separate actual survivors from no-coverage, timeout, compile/static, and infrastructure statuses.",
-        "Independently classify representative survivors including equivalent, redundant, dead-code, specified-masking, invalid-operator, and actionable cases.",
+        "Classify the supplied report facts into actionable/equivalent survivors, timeout, compile failure, no coverage, confirmed infrastructure failure and unobserved results; do not claim independent equivalence proof.",
         "Use reviewed behavior/code decisions rather than a round score as acceptance."
       ],
       "red_flags": [
@@ -4419,11 +4411,9 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e65-mutation-survivor-triage/oracle.py over candidate output"
+          "Data-only JSON decisions reject an incomparable score target and classify seven supplied report statuses. Equivalence is assumed from the report, not independently proven."
         ],
-        "runtime_checks": [
-          "Fixture oracle requires explicit score-framing rejection, spontaneous equivalence classification, survivor/status separation, comparable denominator, triage, and actionable decisions."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Confirm mutation remains useful as guidance without being promoted to a correctness target."
         ]
@@ -4439,16 +4429,14 @@
         "rebuttals": [
           "A capable base model may independently challenge the score target; with/without ablation must measure marginal value.",
           "Equivalent-mutant rates from one Java study must not be generalized as a fixed denominator correction.",
-          "Text-oracle polarity is guarded by explicit rejection patterns and a negated-challenge bad sample, but judge review remains necessary."
+          "The decision oracle grades supplied status classifications, not spontaneous triage or the surrounding prose; judge review remains necessary."
         ]
       },
       "eval_health": {
         "difficulty": "adversarial",
-        "saturation_status": "hidden_probe",
-        "known_discriminates_versions": [
-          "local-working-tree-vs-no-skill-2026-07-22"
-        ],
-        "last_reviewed": "2026-09-23"
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -4482,7 +4470,7 @@
         "Exhaust cheap finite slices and generate a constrained pairwise base.",
         "Elevate only named high-risk groups to 3-way or higher coverage.",
         "Separate expensive boundaries using runtime, setup, flake/rerun, maintenance, review, and triage costs.",
-        "Require shadow replay plus repaired-fault and mutation/sabotage evidence before deletion."
+        "Compare old/new portfolios and replay existing repaired-fault regressions within the existing budget before deletion. Do not add jobs, schedules or mutation/sabotage testing; retain tests and report the tradeoff if the contracts cannot fit."
       ],
       "red_flags": [
         "Runs the full Cartesian product.",
@@ -4498,11 +4486,9 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e66-combinatorial-cost-aware-portfolio/oracle.py over candidate output"
+          "Data-only JSON decisions check registry source, cheap exhaustive slices, constrained pairwise, a named factor group, regression retention and distinct cost classes. The generated matrix and actual cost are not verified."
         ],
-        "runtime_checks": [
-          "Fixture oracle checks the full decision ladder and validation-before-deletion behavior."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Reject both exhaustive-everything and sample-a-few extremes; score explicit obligations, costs, and residual risks."
         ]
@@ -4522,11 +4508,9 @@
       },
       "eval_health": {
         "difficulty": "hard",
-        "saturation_status": "active",
-        "known_discriminates_versions": [
-          "local-working-tree-vs-no-skill-2026-07-22"
-        ],
-        "last_reviewed": "2026-09-23"
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -4640,11 +4624,9 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e68-hidden-mutation-valid-recurring-lane/oracle.py over candidate output"
+          "Data-only JSON decisions preserve the explicitly cost-approved hypothetical lane's scope, owner, timeout, expiry and lack of aggregate floor. No lane is created."
         ],
-        "runtime_checks": [
-          "Keep-probe oracle requires approval plus recognition of baseline, capacity, owner/action path, and focused scope."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Pass only if the agent applies the checklist as a contract rather than a blanket ban."
         ]
@@ -4663,9 +4645,9 @@
       },
       "eval_health": {
         "difficulty": "adversarial",
-        "saturation_status": "hidden_probe",
+        "saturation_status": "unknown",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-09-23"
+        "last_reviewed": "2026-10-14"
       }
     },
     {
@@ -4706,11 +4688,9 @@
       ],
       "measurement": {
         "static_checks": [
-          "evals/fixtures/e69-hidden-combinatorial-known-high-order-regression/oracle.py over candidate output"
+          "Data-only JSON decisions retain the exact four-factor regression and reject pairwise replacement. The renderer/matrix is not executed."
         ],
-        "runtime_checks": [
-          "Keep-probe oracle requires explicit retention and a pairwise limitation explanation."
-        ],
+        "runtime_checks": [],
         "judge_checks": [
           "Confirm optimization never outranks direct repaired-fault evidence."
         ]
@@ -4729,9 +4709,9 @@
       },
       "eval_health": {
         "difficulty": "adversarial",
-        "saturation_status": "hidden_probe",
+        "saturation_status": "unknown",
         "known_discriminates_versions": [],
-        "last_reviewed": "2026-09-23"
+        "last_reviewed": "2026-10-14"
       }
     },
     {

@@ -112,6 +112,12 @@ non-equivalent survivor plausibly represents a critical exploit or bypass.
 
 ## Operating a recurring lane
 
+Do not add mutation to recurring CI by default. Prefer a bounded, on-demand
+diagnostic tied to a concrete question; if the user excludes mutation, skip both
+tools and hand-seeded substitutes. The prerequisites below assess an existing
+or explicitly requested lane, not permission to create one. A measured useful
+lane is not automatically invalid; recurrence still needs agreement on cost.
+
 Prefer changed-code, incremental, or review-time feedback. Google's at-scale
 system follows this pattern rather than publishing a codebase mutation score
 ([Petrovic et al.](https://doi.org/10.1109/TSE.2021.3107634)).

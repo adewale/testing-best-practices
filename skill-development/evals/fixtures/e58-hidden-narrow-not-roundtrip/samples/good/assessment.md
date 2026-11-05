@@ -24,3 +24,11 @@ prevent. A canonical dump that ignores fields cannot fail for them.
 Narrow assertions and whole-state roundtrips answer different questions:
 "is this behavior right?" versus "does persistence preserve everything?"
 This test is the second kind; keep it whole.
+
+```json
+{
+  "retain_whole_state": true,
+  "quota_only_replacement": false,
+  "contract": "save_load_identity"
+}
+```
