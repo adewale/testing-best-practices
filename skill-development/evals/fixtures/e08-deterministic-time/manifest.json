@@ -3,10 +3,15 @@
   "language": "generic",
   "oracle": "oracle.py",
   "good_sample": "samples/good",
-  "bad_sample": "samples/bad",
   "checks": [
     "rejects arbitrary sleeps/timeouts",
     "expects fake or injected clock/scheduler",
     "expects condition-based deterministic validation"
+  ],
+  "bad_samples": [
+    "samples/bad",
+    "samples/bad-comments",
+    "samples/bad-unrelated",
+    "samples/bad-skipped"
   ]
 }
