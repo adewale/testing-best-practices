@@ -1,33 +1,43 @@
 #!/usr/bin/env python3
+"""Grade executed candidate behavior, rather than source keywords."""
+
 from __future__ import annotations
-import re
+
 import sys
 from pathlib import Path
 
-BAD = ["sleep(", "time.sleep", "Thread.Sleep", "Task.Delay", "waitForTimeout", "setTimeout(", "skip(", "test.skip"]
-GOOD = ["fakeclock", "fake_clock", "clock", "scheduler", "advance", "tick", "run_pending", "wait_until"]
+FIXTURE = Path(__file__).resolve().parent
+sys.path.insert(0, str(FIXTURE.parents[1]))
+from behavioral_oracle import grade
+
+REFERENCE = (FIXTURE / "impl/app/scheduler.py").read_text()
 
 
-def main() -> int:
+def main():
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.cwd()
-    text = "\n".join(p.read_text(errors="ignore") for p in root.rglob("*.*") if p.suffix in {".py", ".ts", ".tsx", ".go", ".rs", ".md"})
-    # Mentions like "do not use sleep" are acceptable in prose. Forbid only
-    # actual sleep/timeout calls in candidate code or unqualified recommendations.
-    low = "\n".join(
-        line.lower() for line in text.splitlines()
-        if not any(guard in line.lower() for guard in ["do not", "don't", "never", "instead of", "without", "using `sleep", "using sleep", "fixed `sleep", "fixed sleep", "replace"])
+    module = "app/scheduler.py"
+    return grade(
+        root,
+        FIXTURE,
+        {"app/__init__.py": "", module: REFERENCE},
+        {
+            "runs before deadline": {
+                module: REFERENCE.replace(
+                    "due <= self.clock.now", "due <= self.clock.now + 1"
+                )
+            },
+            "never runs scheduled job": {
+                module: REFERENCE.replace("callback()", "pass")
+            },
+            "repeats completed job": {
+                module: REFERENCE.replace(
+                    "if due > self.clock.now",
+                    "if True",
+                )
+            },
+        },
     )
-    errors=[]
-    for token in BAD:
-        if token.lower() in low:
-            errors.append(f"forbidden flake token: {token}")
-    if not any(token in low for token in GOOD):
-        errors.append("missing fake/injected clock or deterministic scheduler signal")
-    if not re.search(r"assert|expect\(|require\.|t\.fatal|prop_assert", low):
-        errors.append("missing assertion")
-    if errors:
-        for e in errors: print(e, file=sys.stderr)
-        return 1
-    return 0
+
+
 if __name__ == "__main__":
     raise SystemExit(main())
