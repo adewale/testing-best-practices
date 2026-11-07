@@ -146,3 +146,15 @@ helpers, aliases and arbitrary control flow are not inferred.
 This proves the checker rejects those specific weak shapes;
 it does not prove candidate tests run, reach their assertions or bind to the
 real implementation. The shared GTB adapter and `demo` tier are unchanged.
+
+## Implementation-lock repair case
+
+`adv-ai-implementation-locks` materializes the candidate's Python test fences
+and uses the E79 offline behavioral runner. Build it from
+`skill-development/evals` with
+`docker build -f Dockerfile.behavioral-oracles -t tbp-behavioral-oracles:local .`
+before grading. Missing containment fails grading; candidate code never runs
+on the host as a fallback. The fixture checks an allowed serializer refactor
+as well as lost values/order and corrupted-resource acceptance. Fixture
+self-tests validate discrimination; paired model generations and measured skill
+improvement have not yet been run.

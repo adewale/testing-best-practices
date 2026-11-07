@@ -5329,6 +5329,72 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-09-30"
       }
+    },
+    {
+      "id": "E79-implementation-locks",
+      "critical": true,
+      "mode": "upgrade",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "unit",
+          "mutation"
+        ],
+        "risk_classes": [
+          "maintainability",
+          "verification-cost"
+        ],
+        "failure_modes": [
+          "implementation-detail-coupling"
+        ]
+      },
+      "prompt": "# Repair an AI-written implementation lock\n\nAn AI wrote a catalog exporter and tests that pin the SHA-256 of its output.\nA whitespace-only serializer refactor fails CI, so another agent proposes\nrefreshing every hash or deleting all hash checks. Correct the tests instead.\n\nSubmit Python pytest tests in named code fences (for example\n`test_catalog.py`). Import `export_items` and `verify_resource` from `catalog`.\nDo not reimplement or replace those functions.\n\n`export_items(items)` accepts a list of objects with string `id` and `label`\nfields and returns JSON `{\"items\": items}`. Preserve the objects, values and\nlist order, including an empty list and Unicode. Whitespace and JSON object-key\norder are not public contracts. Tests must accept an equivalent serializer.\n\n`verify_resource(payload: bytes, expected_sha256: str)` returns the identical\nbytes when their SHA-256 matches, and raises `ValueError` for changed bytes.\nThis integrity contract must remain tested. Write tests that catch lost labels,\nchanged list order and an implementation that accepts corrupted resources.\nExplain briefly which implementation pin you replaced and which hash remains.\n",
+      "fixture": "evals/fixtures/e79-implementation-locks: catalog exporter and resource integrity API; isolated executable oracle.",
+      "expected_behavior": [
+        "Replace output-byte identity with independent JSON value/list-order assertions.",
+        "Keep resource integrity acceptance and corruption rejection.",
+        "Accept the allowed serializer refactor and reject every behavior fault."
+      ],
+      "red_flags": [
+        "Refresh hashes without checking values.",
+        "Remove corrupted-resource rejection.",
+        "Copy the exporter into a test helper."
+      ],
+      "rubric_focus": [
+        "C",
+        "D"
+      ],
+      "measurement": {
+        "runtime_checks": [
+          "Run candidate tests on the baseline, allowed serialization refactor and behavioral faults."
+        ],
+        "judge_checks": [
+          "Review which identity controls remain and why."
+        ],
+        "static_checks": [
+          "Validate fixture manifest and reference links; no keyword-presence behavioral oracle."
+        ]
+      },
+      "validity": {
+        "claim": "Candidates repair implementation locks while retaining integrity verification.",
+        "warrant": "Executed tests must accept equivalent serialization and reject lost values/order and corrupted resources.",
+        "backing": {
+          "runtime_checks": [
+            "known-good and three bad self-test candidates"
+          ],
+          "model_runs": "none yet; paired skill/no-skill generations remain unmeasured"
+        },
+        "rebuttals": [
+          "Containment does not prove a malicious suite cannot inspect and game the reference."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-11-06"
+      }
     }
   ]
 }

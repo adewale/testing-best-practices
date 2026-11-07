@@ -58,6 +58,7 @@ Topical references by trigger:
 - Legacy/refactor safety → `references/characterization-testing.md`
 - Reimplementation, port, multi-language SDK, custom data structure with no reference, or approximate/probabilistic/ANN/ranking output → `references/differential-testing.md`
 - Complex outputs, snapshots, transformation pipelines, save/load or migration roundtrips → `references/golden-file-testing.md`
+- AI-written code audits, hashes/pins/approvals that break on harmless refactors, or requests to refresh baselines to make CI green → `references/implementation-coupling.md`
 - Time, timers, schedules, sleeps, flaky time tests, background threads/async work tests can only reach by sleeping → `references/deterministic-time.md`
 - External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
 - CLI/plugin/docs registry sync, or verification claims in docs and agent instructions → `references/doc-sync-testing.md`
@@ -74,6 +75,15 @@ Topical references by trigger:
 ### Test behavior through public contracts
 
 Good tests describe observable behavior: outputs, state transitions, side effects, rendered UI, persisted data, API contracts, or invariants. Avoid tests that break under behavior-preserving refactors: private methods, incidental call order, exact SQL strings, or broad mock choreography.
+
+When auditing or correcting AI-written code, trace each hash, pin, snapshot,
+approval and source-text assertion to the contract it claims to protect.
+Preserve dependency/integrity pins and historical provenance. Replace gates
+that merely freeze an implementation with checks at the real behavior-owning
+boundary. Prove both sides: an allowed refactor still passes, and a credible
+behavioral defect fails. Never fix this by refreshing every hash, deleting the
+gate without a keeper, or moving the same implementation into a test helper.
+See `references/implementation-coupling.md` for the audit and correction loop.
 
 When a user brings examples, tables, bug reports, spreadsheet rows, or support cases, treat them as communication artifacts first and assertions second. Preserve the business language, then run the examples against the narrowest honest seam: usually the domain/service/API contract, not a full UI path for every business-rule row. UI/E2E tests should prove the wiring and golden path; rule tables should exercise the domain layer directly.
 
@@ -193,6 +203,7 @@ Report evidence by severity and include positive observations. For generative te
 10. **Generative evidence**: the configured runner reaches the production path, the generator reaches the claimed domain, the oracle is independent, and seed replay is not mislabeled as active discovery. Verify the exact CI configuration when multiple runners, projects, filters, or duplicated target lists make reachability uncertain; add a permanent drift guard only for recurring risk.
 11. **Test-code readability (DAMP)**: logic in test bodies (loops/branches/computed expectations), expectations derived from the SUT's own constants, shared fixtures mutated far from the assertions that depend on them. See `references/antipatterns.md`.
 12. **Suite shape**: count tests per tier; name the inverted pyramid/ice-cream cone (mostly E2E over a thin unit base) and the hourglass (unit + E2E with an empty integration middle). Recommend the smallest-tier home for each E2E case that has one — business rules move below the UI — while keeping a small golden-path/critical-journey E2E core.
+13. **Implementation locks**: distinguish hashes that establish identity from checks that claim correctness. Trace source fingerprints, exact encoded-image comparisons, private-name/SQL/CSS matches and whole-tree approval invalidation to their consumers. Classify each as retain, replace or narrow, with a named behavioral keeper and counterfactual evidence (`references/implementation-coupling.md`).
 
 ### Upgrade mode
 
@@ -229,6 +240,7 @@ Use concrete search signals from `references/antipatterns.md`:
 - Mutation run as a program: calendar schedules over unchanged code, round-number floors, internals exported or pinned only to kill survivors.
 - Assertions only inside loops over possibly-empty results; `violations == []` with no non-empty check; tests that import nothing from the code under test.
 - Source, CSS, or workflow text read and asserted as strings; helper-level retry loops; raised global timeouts or `isCI ? a : b` budgets.
+- Digests of source or generated output presented as behavioral proof; automatic golden refreshes; approvals invalidated by unrelated files; test-side copies that stay green when production changes. A hash/search hit is a lead, not a defect verdict.
 
 ## Validation loop
 

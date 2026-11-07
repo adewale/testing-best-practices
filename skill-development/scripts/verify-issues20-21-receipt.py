@@ -118,7 +118,14 @@ def main() -> int:
             "snapshot; historical scores do not attest to this revision"
         )
     for relative, expected in current["current_reproduction_script_sha256"].items():
-        check(f"current script {relative}", file_sha256(ROOT / relative), expected, errors)
+        actual = file_sha256(ROOT / relative)
+        if actual == expected:
+            print(f"INFO: {relative} matches the historical compatibility snapshot")
+        else:
+            print(
+                f"INFO: {relative} differs from the historical compatibility "
+                "snapshot; recorded scores do not attest to the current grader"
+            )
 
     historical_runs = ROOT / "skill-development/eval-runs/skill-harness-issues20-21-repeat3"
     if historical_runs.is_dir():

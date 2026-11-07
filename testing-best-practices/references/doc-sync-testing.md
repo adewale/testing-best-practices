@@ -1,5 +1,11 @@
 # Documentation-Code Sync Testing
 
+Distinguish public contracts from implementation identity before pinning source
+or outputs. See [implementation locks](implementation-coupling.md): retain
+integrity and provenance controls while checking values, visible behavior or
+public registries independently of private names and source serialization.
+
+
 Use the code itself as the source of truth and verify docs match.
 
 ## Pattern: Every CLI command must be documented

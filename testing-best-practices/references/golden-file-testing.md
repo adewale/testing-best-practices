@@ -1,5 +1,11 @@
 # Golden File and Snapshot Testing
 
+Distinguish public contracts from implementation identity before pinning source
+or outputs. See [implementation locks](implementation-coupling.md): retain
+integrity and provenance controls while checking values, visible behavior or
+public registries independently of private names and source serialization.
+
+
 Two closely related patterns for asserting on complex output:
 
 - **Golden files**: input file → output file, both on disk. Auto-discovered.

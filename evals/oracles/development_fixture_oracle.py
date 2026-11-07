@@ -79,6 +79,17 @@ def main() -> int:
                 print(error, file=sys.stderr)
             return 1 if errors else 0
 
+        if fixture_name == "e79-implementation-locks":
+            blocks = re.findall(r"```(?:python|py)\s*\n(.*?)```", output.read_text(), re.DOTALL | re.IGNORECASE)
+            if not blocks:
+                print("missing executable Python tests", file=sys.stderr)
+                return 1
+            for index, block in enumerate(blocks):
+                (candidate / f"test_candidate_{index}.py").write_text(block)
+            # This fixture's grader runs arbitrary candidates in its offline
+            # container. It never enables the trusted-sample host exception.
+            return subprocess.run([sys.executable, str(oracle), str(candidate)]).returncode
+
         (candidate / "output.md").write_text(output.read_text(errors="replace"))
         return subprocess.run([sys.executable, str(oracle), str(candidate)]).returncode
 
