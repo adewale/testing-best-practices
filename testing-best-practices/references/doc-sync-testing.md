@@ -1,5 +1,11 @@
 # Documentation-Code Sync Testing
 
+Distinguish public contracts from implementation identity before pinning source
+or outputs. See [implementation locks](implementation-coupling.md): retain
+integrity and provenance controls while checking values, visible behavior or
+public registries independently of private names and source serialization.
+
+
 Use the code itself as the source of truth and verify docs match.
 
 ## Pattern: Every CLI command must be documented
@@ -38,12 +44,13 @@ Testing docs, lessons-learned files, and agent instructions (CLAUDE.md, AGENTS.m
 are read by agents as instructions, so stale verification claims actively mislead.
 Check the claims that drift:
 
-- test counts, lane counts, and timeouts quoted in docs match the runner's collection
-  and config (generate them, or assert them);
+- omit volatile test titles/counts from current instructions, or derive them
+  from the runner; do not freeze a copied roster as a permanent gate;
 - scripts and commands named in docs exist;
 - statements such as "no CI" or "SKILL.md must stay under N lines" match the tree;
 - version manifests that agents are told to read agree with `package.json`/`pyproject`;
-- `last_verified` or review dates are recent enough for the content they certify;
+- historical review dates identify the evidence's original subject; current
+  verification requires relevant new evidence, not an automatic freshness ritual;
 - skill frontmatter respects the spec (name matches directory, description ≤1024
   characters).
 

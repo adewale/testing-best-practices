@@ -2,13 +2,14 @@
 
 [![skills.sh](https://skills.sh/b/adewale/testing-best-practices)](https://skills.sh/adewale/testing-best-practices)
 
-An agent skill that enforces testing best practices when writing, reviewing, or improving tests. Built from 25 research documents covering real-world testing patterns across 16 GitHub accounts, three engineering organizations, books, and long-form testing literature; grounded in practitioner work from Kent Beck (TDD) to TigerBeetle (deterministic simulation), Jane Street (expect tests), Ward Cunningham (Fit/customer examples), Salvatore Sanfilippo / antirez (Redis-style differential fuzzing and testability seams), and an analysis of the Google Testing Blog's feed-enumerated 404-post archive (test sizes, flake data, mutation testing at scale, the test-double canon; raw batch artifacts were not retained).
+An agent skill for writing, reviewing, and improving tests, including reducing verification work that obstructs useful changes. Built from practitioner and portfolio research across 16 GitHub accounts, three engineering organizations, books, and long-form testing literature; grounded in practitioner work from Kent Beck (TDD) to TigerBeetle (deterministic simulation), Jane Street (expect tests), Ward Cunningham (Fit/customer examples), Salvatore Sanfilippo / antirez (Redis-style differential fuzzing and testability seams), and an analysis of the Google Testing Blog's feed-enumerated 404-post archive (test sizes, flake data, mutation testing at scale, the test-double canon; raw batch artifacts were not retained).
 
 ![A typographic ledger of the sixteen testing techniques this skill teaches, organised into three tiers — Always (Unit, Smoke, Regression); When triggered (Property-based, End-to-end, Doc/Code sync, Contract, VCR cassette, Characterization, Differential, Golden file, Pirate/Conformance); With caution (Visual/Screenshot, Mutation, Performance, Fuzz). A top strip frames the red-green-refactor rhythm: a test that fails first, the smallest code that passes, clean up while green.](research/diagrams/skill-ledger.png)
 
 ## What it does
 
-When an agent uses this skill, it produces higher-quality tests than it would on its own. Specifically:
+The skill teaches the following practices. Measured improvement depends on the
+model and task; see the eval status below.
 
 - **Property-based tests reach meaningful behavior** with input domains and independent semantic oracles matched to the claim
 - **Fuzzing is used proportionally**: targets, seed replay, active discovery, and long campaigns are treated as different evidence and cost decisions
@@ -111,6 +112,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 | `references/characterization-testing.md` | Refactoring legacy code |
 | `references/differential-testing.md` | Reimplementing algorithms, multi-language SDKs, shadow models, approximate/probabilistic outputs |
 | `references/golden-file-testing.md` | Transformation pipelines, snapshot tests, promote workflow, save/load or migration roundtrips |
+| `references/implementation-coupling.md` | AI-written implementation locks; distinguish behavior, byte integrity and historical provenance |
+| `references/verification-cost.md` | Stalled PRs, repeated approval/regeneration, expensive checker tests and safe subtraction |
 | `references/deterministic-time.md` | Code depends on time, timers, scheduling, flaky time tests, or background work reachable only by sleeps |
 | `references/vcr-cassettes.md` | Code calling external APIs |
 | `references/doc-sync-testing.md` | CLI commands, plugin hooks, or verification claims in docs and agent instructions |
@@ -128,10 +131,11 @@ The project now uses layered evals rather than a single public prompt table:
 
 | Layer | Current state |
 |------|---------------|
-| Development eval suite | 78 cases in `skill-development/evals/evals.json`: 39 write, 18 upgrade, 19 assess, 2 detect |
+| Development eval suite | Write, upgrade, assess and detect cases in `skill-development/evals/evals.json`; derive the current inventory with `score-evals.py` |
 | Hidden probes | 18 hard/adversarial probes tracked by eval-health metadata |
-| Shared benchmark | 48 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
-| Fixture oracles | 55 fixture oracles; each good sample passes and every bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round; of E70–E78, 3 run the candidate's tests against seeded mutants, and E78 also requires that two equivalent mutants survive |
+| Shared benchmark | Cases and materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
+| Fixture oracles | Positive/negative calibration through `run-fixture-oracles.py`; some execute candidate tests, while bounded plan/AST checks establish only their documented decisions/shapes |
+| Ceremony comparison, 2026-11-07 | Six scenario plans and four older open PRs. Initial plans saturated; a source-only draft regressed, was corrected and retested. Final blind pairs tie the frozen PR #40 baseline, with no demonstrated uplift. A follow-up passes nine direct checks of an existing archive repair; fresh model generation is blocked by network policy. [Protocol, results and limitations](skill-development/evals/receipts/ceremony-study-2026-11-07.md) |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | Regression guard: all 110 checks pass, including adversarial-probe coverage for new technique sections. A pass means no known regression, not a quality score |
@@ -149,7 +153,7 @@ Eval definitions, rubrics, schema, scorecards, and health tracking live under `s
 
 ## Research corpus
 
-Built from analysis of testing patterns across 16 GitHub accounts and three engineering organizations, backed by 27 Markdown research files:
+Built from analysis of testing patterns across 16 GitHub accounts and three engineering organizations, with source documents under `research/`:
 
 - [kentbeck](https://github.com/kentbeck) -- Test Desiderata (12 properties of good tests), TCR, MoneyPython; books: TDD: By Example (red/green/refactor, test list, green-bar strategies, testing patterns), XP Explained (test-what-might-break, 100% rule, ten-minute build), Tidy First? (behavior vs. structure changes)
 - [npryce](https://github.com/npryce) (GOOS co-author) -- factcheck, snodge, make-it-easy, worktorule; GOOS book: walking skeleton, double feedback loop, listen-to-your-tests, mock roles not objects, allow queries / expect commands
@@ -172,6 +176,10 @@ Built from analysis of testing patterns across 16 GitHub accounts and three engi
 - [Google Testing Blog](https://testing.googleblog.com/) -- analysis of the feed-enumerated 404-post archive (2007–2026; see the retained metadata receipt and artifact limitation): enforceable small/medium/large test sizes, feedback-loop-over-realism (70/20/10 pyramid → SMURF), fleet-scale flakiness data (size beats tool choice), fidelity-ranked test doubles with owner-maintained fakes and contract suites, DAMP test style, changelist coverage bands, mutation testing with arid-mutant suppression, TotT/incentive-driven testing culture
 
 Research documents are in `research/`: practitioner/account/org lesson notes plus methodology and cross-cutting literature, antipattern, decision-tree, novel-testing, and correctness-by-construction notes. The research process itself is captured in `research/METHODOLOGY.md` — a minimum checklist (GitHub history including actual test files and commit authorship, books, long-form writing, talks/interviews, pre-GitHub tools, post-mortems and criticism), explicitly framed as a floor rather than a ceiling.
+
+[Agent-created verification traps](research/AGENT_CEREMONY_TRAPS_2026-11.md)
+traces blocked changes, repeated assurance repairs and subsequent subtraction
+across the owner's projects, including ways this skill contributed to the problem.
 
 ## Project structure
 
@@ -205,6 +213,7 @@ research/                           # Source material (does not ship)
   METHODOLOGY.md                    # How we research a practitioner (a floor, not a ceiling)
   LESSONS_FROM_*.md                 # One file per practitioner/account/org (incl. LESSONS_FROM_GOOGLE_TESTING_BLOG.md)
   PORTFOLIO_VERIFICATION_AUDIT_2026-09.md  # Cross-repo audit of adewale's verification mechanisms; skill-change backlog
+  AGENT_CEREMONY_TRAPS_2026-11.md     # Longitudinal evidence of blocked work and safe subtraction
   DESIGN_FOR_TESTABILITY_LITERATURE.md
   COMBINATORIAL_TEST_PORTFOLIOS.md
   ANTIPATTERNS.md
@@ -213,14 +222,14 @@ research/                           # Source material (does not ship)
   NOVEL_TESTING_TYPES.md
 
 evals/                              # Public/shared prompt eval assets
-  shared-benchmark.json             # 48 shared benchmark cases
+  shared-benchmark.json             # Shared benchmark cases
   shared-harness.md                 # Shared harness contract
   archive/                          # Retired 2026-05 public prompt evals and their files (no gate reads them)
   fixtures/                         # Runnable prompt fixtures
   oracles/                          # Shared fixture oracle helpers
 
 skill-development/                  # Development-only evals and quality gates
-  evals/                            # 78 rubric evals, schema, scorecard, health plan, fixture oracles
+  evals/                            # Rubric evals, schema, scorecard, health plan, fixture oracles
   scripts/check-all.py              # Runs all local non-LLM gates
   scripts/                          # Static audit, oracle runners, mini-repos, prompt-eval runner, scoring tools
 

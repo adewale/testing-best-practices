@@ -208,7 +208,8 @@ A small target is distinct from a long campaign. Keep it fast, bounded, connecte
 - [ ] No existing test suite for the code being changed
 - [ ] Behavior is undocumented and unclear
 
-**How**: Call the code and record actual outputs as assertions. See
+**How**: Use temporary characterizations while changing existing code, then
+convert them to required behavior checks or retire them. See
 `references/characterization-testing.md`.
 **Cost**: Low setup, medium maintenance (must decide which behaviors to keep).
 
@@ -229,7 +230,8 @@ See `references/differential-testing.md`.
 - [ ] You have real-world input files to test against
 
 **How**: Store inputs in `tests/fixtures/`, expected outputs in `tests/expected/`.
-Auto-discover fixtures, auto-baseline on first run. See
+Auto-discover fixtures; missing expected output fails verification. Generate
+candidates separately and review against the intended contract. See
 `references/golden-file-testing.md`.
 **Cost**: Low setup. Human-reviewable baselines. Catches drift.
 
@@ -308,7 +310,8 @@ Add Tier 2 and 3 tests as trigger conditions apply.
 ## After writing tests: the dual question
 
 For each test you wrote, ask: *could a tighter type have replaced this?* If
-yes, do the type change and delete the test. The goal is a small,
+yes, propose the type change within scope, and delete the test only when the
+invariant is enforced and no distinct trust boundary loses protection. The goal is a small,
 behavior-focused test suite anchored by a strong type system, not a large
 suite that re-enacts the type system at runtime.
 

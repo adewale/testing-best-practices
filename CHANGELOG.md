@@ -5,11 +5,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Corrected (agent-created verification traps, 2026-11-07)
+- Add the longitudinal portfolio evidence in `research/AGENT_CEREMONY_TRAPS_2026-11.md` and route stalled/expensive verification work to `references/verification-cost.md`.
+- Revisit the user requirement before repairing enforcement. Remove demonstrated duplicate or obsolete machinery without requiring another keeper; preserve distinct security, integrity, historical evidence and current behavior contracts.
+- Separate authoring-time regression controls from permanent CI policy, and behavior-preservation evidence from bug-fix red/green evidence. Reuse expensive checker inputs while executing every relevant rejection path.
+- Correct characterization retirement, golden field-count/cascade heuristics, hash rebind tooling, volatile documentation rosters and unconditional type-driven test deletion.
+- E80 adds a bounded six-plan oracle and legitimate-safeguard control in the existing eval infrastructure. Frozen old/revised skill batches and blind reviews of four older open PRs are recorded in `skill-development/evals/receipts/ceremony-study-2026-11-07.md`; the initial plan comparison is saturated and does not demonstrate model uplift. No new workflow, schedule or product gate is added.
+- Extend the research with good-pr's archive/current-tree coupling and Keyboardia's later authorization renewal and capture-race correction. Nine one-off checks exercise the existing archive repair without changing the skill; a fresh model comparison is unrun because the environment denies the backend endpoint.
+
 ### Retracted guidance
 Rules the skill has withdrawn. If your repository enforces one of these (a script, a lint, a lesson, a quota), it is enforcing guidance the skill no longer gives.
 
 | Retracted rule | Where it appeared | Replaced by | Why |
 |---|---|---|---|
+| Every lesson/postmortem needs an enforcing check | `SKILL.md` Upgrade | Correct guidance, architecture or an existing test; add recurring checks only for a distinct justified risk | The portfolio repeatedly built machinery to maintain earlier assurance machinery |
+| Every removed assertion needs a keeper | `references/implementation-coupling.md` | Preserve distinct guarantees; a demonstrated duplicate or obsolete freeze may be deleted without replacement | Otherwise cleanup recreates proof-only infrastructure |
+| Auto-baseline on first run; snapshot because there are more than five fields or updates should cascade; add written re-pin tooling | `references/test-types.md`, `references/golden-file-testing.md` | Read-only verification of small reviewed contracts; replace incidental locks | These recommendations encouraged implementation freezes and repeated regeneration |
+| Copy/assert current test counts and titles; delete tests whenever a type could replace them | `references/doc-sync-testing.md`, `references/test-types.md` | Omit/derive volatile facts; require enforced invariants, scope and retained trust boundaries before deletion | Test renames became documentation work; a possible type improvement is not proof that a runtime safeguard is redundant |
 | Playwright `retries: process.env.CI ? 2 : 0` in the required-lane example | `references/typescript.md` | `retries: 0` plus a reporter contract (`flaky == 0`, `unexpected == 0`, expected skips) | Retries turned races into green runs; keyboardia's required lanes run with zero retries and assert zero flaky results |
 | "Skip visual tests in CI (font rendering differs)" | `references/typescript.md`, `references/test-types.md` | Render baselines on the CI image through a reviewed manual workflow; keep precision in structural assertions | Every portfolio visual suite that followed this ran zero times in CI |
 | "Unit tests … (3+ assertions …)" | `references/test-types.md` | "meaningful oracles"; counts are a heuristic, never a quota | Became per-file/per-test quotas met with `isinstance` and not-empty checks (planet_cf Lesson 31, vaders density audit) |

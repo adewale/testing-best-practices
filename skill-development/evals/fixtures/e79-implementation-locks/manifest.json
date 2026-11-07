@@ -1,0 +1,16 @@
+{
+  "eval_id": "E79-implementation-locks",
+  "language": "python",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad-refresh-hash",
+    "samples/bad-remove-integrity",
+    "samples/bad-copy"
+  ],
+  "checks": [
+    "allows equivalent JSON serialization",
+    "rejects dropped labels and changed list order",
+    "retains corrupted-resource rejection"
+  ]
+}

@@ -140,6 +140,8 @@ def grade(
     fixture: Path,
     baseline: dict[str, str],
     faults: dict[str, dict[str, str]],
+    *,
+    equivalents: dict[str, dict[str, str]] | None = None,
 ) -> int:
     root = root.resolve()
     try:
@@ -155,9 +157,23 @@ def grade(
                 "candidate must execute non-skipped tests successfully on reference:\n"
                 + original["output"]
             )
+        for name, modules in (equivalents or {}).items():
+            result = run_tests(root, {**baseline, **modules}, trusted=trusted)
+            if (
+                result["code"]
+                or result["ids"] != original["ids"]
+                or result["skipped"]
+                or result["errors"]
+            ):
+                raise ValueError(
+                    f"{name}: allowed behavior-preserving change rejected:\n"
+                    + result["output"]
+                )
         for name, modules in faults.items():
             if all(baseline.get(path) == source for path, source in modules.items()):
-                raise ValueError(f"{name}: fault did not change the reference implementation")
+                raise ValueError(
+                    f"{name}: fault did not change the reference implementation"
+                )
             result = run_tests(root, {**baseline, **modules}, trusted=trusted)
             if (
                 result["ids"] != original["ids"]

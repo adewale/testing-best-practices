@@ -8,10 +8,15 @@ safety net for refactoring.
 
 1. Pick a function you need to change
 2. Call it with various inputs
-3. Record the actual outputs as assertions — even if they look wrong
+3. Record actual outputs as explicitly temporary characterizations, noting surprises
 4. Now you have a test that will break if your refactoring changes behavior
 5. Refactor, keeping characterization tests green
-6. After refactoring, decide which behaviors to keep and which to fix
+6. After refactoring, retain only required behaviors: convert pins to contract,
+   property or reference checks, or retire them. File uncertain behaviors for
+   a product decision rather than freezing them permanently.
+
+These are scaffolding for changing existing code, not independent correctness
+oracles for new code. Prefer relational or invariant checks where sufficient.
 
 ## Example
 

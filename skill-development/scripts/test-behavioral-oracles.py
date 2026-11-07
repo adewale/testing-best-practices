@@ -22,7 +22,7 @@ def grade(fixture: Path, candidate: Path) -> subprocess.CompletedProcess:
 
 
 def main() -> int:
-    for name in ("e08-deterministic-time", "e33-python-fault-injection"):
+    for name in ("e08-deterministic-time", "e33-python-fault-injection", "e79-implementation-locks"):
         fixture = FIXTURES / name
         manifest = json.loads((fixture / "manifest.json").read_text())
         good = manifest.get("good_samples", [manifest.get("good_sample")])

@@ -2226,6 +2226,99 @@
       "success_goals": [
         "outcome"
       ]
+    },
+    {
+      "id": "adv-ai-implementation-locks",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt_ref": "../skill-development/evals/fixtures/e79-implementation-locks/prompt.md",
+      "expected_behavior": [
+        "Replace output identity with public JSON value/order checks.",
+        "Retain resource integrity acceptance and corruption rejection.",
+        "Accept equivalent serialization; reject each behavioral fault."
+      ],
+      "assertions": [
+        {
+          "name": "implementation-lock-behavior-oracle",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e79-implementation-locks",
+            "{output_dir}"
+          ],
+          "timeout_s": 150,
+          "severity": "gate",
+          "oracle": "demo"
+        },
+        {
+          "name": "integrity-versus-implementation-review",
+          "type": "judge",
+          "rubric": [
+            "Explains the replaced implementation lock.",
+            "Retains integrity verification.",
+            "Uses the production API and independent expectations."
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "ai-written-code",
+        "implementation-coupling",
+        "integrity",
+        "behavior"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
+    },
+    {
+      "id": "adv-assurance-ceremony",
+      "split": "tune",
+      "kind": "adversarial",
+      "prompt_ref": "../skill-development/evals/fixtures/e80-ceremony-decisions/prompt.md",
+      "expected_behavior": [
+        "Retire demonstrated obsolete or duplicate machinery without a replacement program.",
+        "Preserve historical artifacts, actual checker execution and independent trust boundaries.",
+        "Separate bug regression from behavior preservation; accept no safe cut."
+      ],
+      "assertions": [
+        {
+          "name": "ceremony-inventory-plan",
+          "type": "script",
+          "command": [
+            "python3",
+            "oracles/development_fixture_oracle.py",
+            "e80-ceremony-decisions",
+            "{output_dir}"
+          ],
+          "severity": "soft",
+          "oracle": "demo"
+        },
+        {
+          "name": "proportionate-review",
+          "type": "judge",
+          "rubric": [
+            "Retire demonstrated obsolete or duplicate machinery without a replacement program.",
+            "Preserve historical artifacts, actual checker execution and independent trust boundaries.",
+            "Separate bug regression from behavior preservation; accept no safe cut."
+          ],
+          "severity": "soft",
+          "oracle": "live"
+        }
+      ],
+      "tags": [
+        "verification-cost",
+        "restraint"
+      ],
+      "domain": "testing-quality",
+      "difficulty": "extended",
+      "success_goals": [
+        "outcome"
+      ]
     }
   ],
   "ablations": [
