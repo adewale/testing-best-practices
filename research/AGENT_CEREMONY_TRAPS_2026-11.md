@@ -82,7 +82,19 @@ rejection check and retaining one full end-to-end path.
 whole-app identity states and binds Stack B's historical packet to its original
 revisions. Its [7 November comment](https://github.com/adewale/keyboardia/pull/130#issuecomment-6699584873)
 records another pre-test failure: a changed merge base expired the harness
-authorization. This documents coupling, not permission to bypass owner approval.
+authorization. A [later comment](https://github.com/adewale/keyboardia/pull/130#issuecomment-6700989266)
+records its renewal at `d4087f94`; expiry is a historical failure, not the current
+blocker. It also corrects an earlier screenshot-race proposal: cancelling an
+animation still produced two rasters, whereas awaiting its completion produced
+one in 60 reported attempts. Those are the author's measurements, not reruns here.
+This documents coupling, not permission to bypass owner approval or dismiss a
+reproducible capture defect.
+
+[#127](https://github.com/adewale/keyboardia/pull/127#issuecomment-6254800077),
+open since 7 October, makes the product conflict explicit: the redesign removes
+the very dropdown that whole-app identity states require. Its separate 2.25px
+grid-offset regression is a real defect with a reported failing control. Retiring
+obsolete identity states must preserve that check and reviewable visual evidence.
 
 **Lesson:** separate historical approval from current behavior. Cache expensive
 preparation, not verifier verdicts. Keep original artifact integrity intact.
@@ -127,6 +139,27 @@ and cut contributor guidance by 69%, retaining relevant specialist security chec
 
 **Lesson:** follow consumers and command expansion; omit volatile copied facts.
 Do not answer every renamed test by updating documentation and its checker.
+
+## 8. Good PR: an archive verifier froze the next skill edit
+
+[good-pr #18](https://github.com/adewale/good-pr/pull/18), open since 1 November,
+fixes a verifier that required the current skill tree to equal the tree recorded
+in an archived model run. A later prose edit therefore failed archive validation
+even though neither the old outputs nor their source had changed. The repair
+uses an explicit historical mode in the existing job, preserves exact recorded
+source/artifact checks, and states that the archive does not evaluate today's skill.
+Default verification still requires a matching current tree.
+
+A one-off [implementation probe](../skill-development/evals/receipts/ceremony-study-2026-11-07.md#follow-up-real-archive-verification)
+at frozen base `f517d6e7` and PR head `e80c8a31` confirms that distinction with
+nine checks. The old command rejects an added prose comment; historical mode
+accepts it while rejecting altered outputs, manifest, baseline and statistics.
+The PR's twelve existing evidence-verifier unit tests also pass. This exercises
+the existing repair; it does not show that the revised skill caused that repair
+or improves model decisions.
+
+**Lesson:** preserve the integrity of a past claim without requiring the product
+to remain in its past state. Exactness can be correct while its scope is wrong.
 
 ## Implications for this skill
 

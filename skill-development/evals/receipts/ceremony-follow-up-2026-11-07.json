@@ -1,0 +1,389 @@
+{
+  "protocol": {
+    "kind": "one-off implementation probe, not a model comparison",
+    "frozen_skill_head": "22b2b24fb53b701b098c3fe483fb5e3d513e3859",
+    "source_repository": "adewale/good-pr",
+    "base": "f517d6e7f264a4e85c310d18ca57017ab889250c",
+    "candidate": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+    "question": "Does separating archive verification from current-skill claims permit later prose edits while preserving real archive integrity checks?",
+    "checks": [
+      [
+        "base-clean",
+        0,
+        "OK: regraded 81 outputs"
+      ],
+      [
+        "base-later-prose-edit",
+        1,
+        "installed skill has uncommitted changes"
+      ],
+      [
+        "candidate-default",
+        1,
+        "installed skill tree changed"
+      ],
+      [
+        "candidate-historical",
+        0,
+        "does not evaluate the current skill"
+      ],
+      [
+        "candidate-historical-later-prose-edit",
+        0,
+        "does not evaluate the current skill"
+      ],
+      [
+        "candidate-historical-corrupt-output",
+        1,
+        "sanitized outputs hash mismatch"
+      ],
+      [
+        "candidate-historical-corrupt-manifest",
+        1,
+        "manifest hash mismatch"
+      ],
+      [
+        "candidate-historical-corrupt-baseline",
+        1,
+        "frozen baseline snapshot content hash mismatch"
+      ],
+      [
+        "candidate-historical-forged-statistic",
+        1,
+        "derived aggregate statistics differ"
+      ]
+    ],
+    "limits": [
+      "No model output, skill triggering, or incremental model uplift is tested.",
+      "No source PR is modified or merged; temporary local clones are restored after every probe.",
+      "This verifies the existing PR repair, not a repair authored by the skill in this study.",
+      "No additional skill tuning, permanent gate, schedule, or fixture registration follows this probe."
+    ]
+  },
+  "results": [
+    {
+      "case": "base-clean",
+      "source_revision": "f517d6e7f264a4e85c310d18ca57017ab889250c",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 0,
+      "stdout": "OK: regraded 81 outputs and verified canonical statistics, run-matrix hashes, and source annotations\n",
+      "stderr": "",
+      "meets_expectation": true
+    },
+    {
+      "case": "base-later-prose-edit",
+      "source_revision": "f517d6e7f264a4e85c310d18ca57017ab889250c",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "installed skill has uncommitted changes\n",
+      "meets_expectation": true,
+      "mutation": {
+        "path": "skills/good-pr/SKILL.md",
+        "original_sha256": "c69e2c6b3c20d27b2fdd2bca4b50587ac0bb422753fc0d53b008f422eeeac310",
+        "altered_sha256": "f078de15c03df247edd3d9afb3e40e1a794af13acbc6dd5906bf5e4ee9a55f54",
+        "operation": "append newline and a probe comment"
+      }
+    },
+    {
+      "case": "candidate-default",
+      "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "installed skill tree changed after the annotated source commit\n",
+      "meets_expectation": true
+    },
+    {
+      "case": "candidate-historical",
+      "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "--historical",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 0,
+      "stdout": "OK: regraded 81 outputs and verified canonical statistics, run-matrix hashes, and source annotations\nScope: archived evidence for 7614095b51c3859050d899cfefde1544b52dd179; does not evaluate the current skill or attest execution source bytes\n",
+      "stderr": "",
+      "meets_expectation": true
+    },
+    {
+      "case": "candidate-historical-later-prose-edit",
+      "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "--historical",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 0,
+      "stdout": "OK: regraded 81 outputs and verified canonical statistics, run-matrix hashes, and source annotations\nScope: archived evidence for 7614095b51c3859050d899cfefde1544b52dd179; does not evaluate the current skill or attest execution source bytes\n",
+      "stderr": "",
+      "meets_expectation": true,
+      "mutation": {
+        "path": "skills/good-pr/SKILL.md",
+        "original_sha256": "45edbd89e9b4bffab0b0c3e07ddcc8a079dfeab90ca14ec7a8aa35454ea52fc5",
+        "altered_sha256": "7532526e04735416d8e2e641b2fc6b0af903e1ba390e7f0633260f4f75d5b386",
+        "operation": "append newline and a probe comment"
+      }
+    },
+    {
+      "case": "candidate-historical-corrupt-output",
+      "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "--historical",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "sanitized outputs hash mismatch: 5bf4ee3a5ff343e799cf5b3545085756da85f41ea7f043b6813e6667920fb805 != d6a579c34591323160b2c48e91d7aa8bef4fa0b140fddc06215b96e68c486cd0\n",
+      "meets_expectation": true,
+      "mutation": {
+        "path": "evals/results/visual-evidence-gpt-5.4-outputs.jsonl",
+        "original_sha256": "d6a579c34591323160b2c48e91d7aa8bef4fa0b140fddc06215b96e68c486cd0",
+        "altered_sha256": "5bf4ee3a5ff343e799cf5b3545085756da85f41ea7f043b6813e6667920fb805",
+        "operation": "append newline"
+      }
+    },
+    {
+      "case": "candidate-historical-corrupt-manifest",
+      "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "--historical",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "manifest hash mismatch: 4dc3d9fcdc83e7359a8a347f746d9e96e751a99096daae521006c8b761cd2589 != 4bb94fe857bd12f8bc315356acac40bef943aa00707d399d3d9155fef0e89151\n",
+      "meets_expectation": true,
+      "mutation": {
+        "path": "evals/visual-evidence-benchmark.json",
+        "original_sha256": "4bb94fe857bd12f8bc315356acac40bef943aa00707d399d3d9155fef0e89151",
+        "altered_sha256": "4dc3d9fcdc83e7359a8a347f746d9e96e751a99096daae521006c8b761cd2589",
+        "operation": "append newline"
+      }
+    },
+    {
+      "case": "candidate-historical-corrupt-baseline",
+      "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "--historical",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "frozen baseline snapshot content hash mismatch\n",
+      "meets_expectation": true,
+      "mutation": {
+        "path": "evals/baselines/good-pr-8e613be/SKILL.md",
+        "original_sha256": "fb95c0b7858678fbf6051840ba151953da6bdee6fadb0a64d7ecc4b24124a74b",
+        "altered_sha256": "a25ec8d33771d1193263b7412a342b0c60310d50fa0d96d908b3302ca231fddd",
+        "operation": "append newline"
+      }
+    },
+    {
+      "case": "candidate-historical-forged-statistic",
+      "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "command": [
+        "python3",
+        "scripts/build_eval_evidence.py",
+        "verify",
+        "--historical",
+        "evals/results/visual-evidence-gpt-5.4.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "derived aggregate statistics differ from the committed run matrix\n",
+      "meets_expectation": true,
+      "mutation": {
+        "path": "evals/results/visual-evidence-gpt-5.4.json",
+        "original_sha256": "0443af2db840d365cb958f2563de232270b2d27a1dbb28e7536dd7d7279d77f9",
+        "altered_sha256": "740f652bc55f456a0e2c91e5f056c7334e068cafc03dd3c91de3a248372ecbc6",
+        "operation": "replace first aggregate rate with -1"
+      }
+    }
+  ],
+  "implementation": "import hashlib\nimport json\nimport subprocess\nfrom pathlib import Path\n\nprotocol = json.loads(Path('/tmp/tbp-follow-up-protocol.json').read_text())\nbase = Path('/tmp/tbp-good-pr-base-probe')\ncandidate = Path('/tmp/tbp-good-pr-probe')\nsummary = Path('evals/results/visual-evidence-gpt-5.4.json')\nresults = []\n\ndef run(name, root, historical=False, mutation=None):\n    path, altered = mutation if mutation else (None, None)\n    original = path.read_bytes() if path else None\n    command = ['python3', 'scripts/build_eval_evidence.py', 'verify']\n    if historical:\n        command.append('--historical')\n    command.append(str(summary))\n    try:\n        if path:\n            path.write_bytes(altered)\n        completed = subprocess.run(command, cwd=root, capture_output=True, text=True)\n        expected = next(check for check in protocol['checks'] if check[0] == name)\n        result = {\n            'case': name, 'source_revision': protocol['base' if root == base else 'candidate'],\n            'command': command, 'exit_code': completed.returncode,\n            'stdout': completed.stdout, 'stderr': completed.stderr,\n            'meets_expectation': completed.returncode == expected[1]\n                and expected[2] in completed.stdout + completed.stderr,\n        }\n        if path:\n            result['mutation'] = {\n                'path': str(path.relative_to(root)),\n                'original_sha256': hashlib.sha256(original).hexdigest(),\n                'altered_sha256': hashlib.sha256(altered).hexdigest(),\n                'operation': 'replace first aggregate rate with -1' if name.endswith('statistic')\n                    else 'append newline and a probe comment' if 'prose' in name\n                    else 'append newline',\n            }\n        results.append(result)\n    finally:\n        if path:\n            path.write_bytes(original)\n\nrun('base-clean', base)\np = base / 'skills/good-pr/SKILL.md'\nrun('base-later-prose-edit', base, mutation=(p, p.read_bytes() + b'\\n<!-- one-off later prose edit -->\\n'))\nrun('candidate-default', candidate)\nrun('candidate-historical', candidate, historical=True)\np = candidate / 'skills/good-pr/SKILL.md'\nrun('candidate-historical-later-prose-edit', candidate, historical=True,\n    mutation=(p, p.read_bytes() + b'\\n<!-- one-off later prose edit -->\\n'))\nfor case, relative in [\n    ('corrupt-output', 'evals/results/visual-evidence-gpt-5.4-outputs.jsonl'),\n    ('corrupt-manifest', 'evals/visual-evidence-benchmark.json'),\n    ('corrupt-baseline', 'evals/baselines/good-pr-8e613be/SKILL.md'),\n]:\n    p = candidate / relative\n    run('candidate-historical-' + case, candidate, historical=True,\n        mutation=(p, p.read_bytes() + b'\\n'))\np = candidate / summary\ndata = json.loads(p.read_text())\ndata['final_frozen_run']['old_skill']['objective_pass_rate'] = -1\nrun('candidate-historical-forged-statistic', candidate, historical=True,\n    mutation=(p, (json.dumps(data, indent=2) + '\\n').encode()))\nrecord = {\n    'protocol': protocol,\n    'results': results,\n    'implementation': Path(__file__).read_text(),\n    'working_trees_restored': all(not subprocess.run(\n        ['git', 'status', '--porcelain'], cwd=root, capture_output=True, text=True,\n        check=True).stdout for root in [base, candidate]),\n}\nPath('/tmp/tbp-follow-up-results.json').write_text(json.dumps(record, indent=2) + '\\n')\nfor result in results:\n    print(result['case'], 'PASS' if result['meets_expectation'] else 'FAIL',\n          result['exit_code'], (result['stdout'] + result['stderr']).strip().splitlines()[-1])\nassert all(result['meets_expectation'] for result in results)\nassert record['working_trees_restored']\n",
+  "working_trees_restored": true,
+  "sources": {
+    "K87": {
+      "url": "https://github.com/adewale/keyboardia/pull/87",
+      "title": "Add envelope v2 authoring: UI, MCP, notation, and verification",
+      "created_at": "2026-08-02T09:12:07Z",
+      "updated_at": "2026-10-19T08:09:14Z",
+      "head_sha": "fbcd2685864e98859dba19b1e0ebecbabdc3ed1d",
+      "base_sha": "869d3f5095084003e1251aa3ebf2eab8f65f62fe",
+      "body": "## What and why\n\nAdd envelope-v2 authoring on the runtime foundation already merged in #116 and\ntiming stack #107\u2013#114: capability-aware exact editing, atomic XY transactions,\nMCP authoring/read/analysis, and notation v2.4 with executable examples.\nThis PR does not replace the scheduler, readiness state machine, output graph,\nor renderer-migration authorities.\n\n## Rebase \u2014 2026-10-19\n\nRebased onto main `869d3f5095084003e1251aa3ebf2eab8f65f62fe`. Previous PR head\n`bdf9bae25e6b13e635dd0d368e2447a3f23118b7` is retained locally as\n`backup/pr87-before-20261019`; its October 3 CI completed successfully.\n\nMain now includes #122, incorporating the work from closed PRs #123/#126, plus\n#128's patched dependency trees. Their three Vitest projects, shared audit\nfixtures, bounded retries, fail-closed audio checks, and lockfiles are preserved.\nThe sole textual rebase conflict was Lessons Learned: main's Lesson 83 is kept\nand the earlier authoring-ownership lesson is numbered 84. No new product/audio\nbehavior was introduced by this rebase. Spec status and historical receipts\nare explicitly dated.\n\n## Verification\n\nFresh local macOS / Node 26 verification (CI uses Node 24):\n\n- Product unit lane: **4,938 passed**, one existing environment-gated skip.\n- Audio-render lane: **26 passed**; verification-tooling lane: **117 passed**.\n- Real built Worker integration: **131 passed**.\n- Real local Worker browser lane: **77 passed**, zero skips/retries and exact\n  identity gate pass, including authored-envelope convergence and reload.\n- Editor contract: **3 passed**; editor-disabled runtime/notation: **1 passed**;\n  both exact-identity gates pass with zero helper retries.\n- App build/TypeScript, lint, Worker typecheck/dry-run bundle: pass.\n- Documentation/examples, resource budgets, all test-quality checks, manifests,\n  and exact E2E inventories: pass; every one of 375 test files has a lane.\n- All three lockfile-pinned dependency installs report zero known vulnerabilities.\n\nNew-head GitHub CI is running. Do not\nreuse the October 3 green CI run as evidence for this new head. No retries,\nskips, timeout increases or hook bypasses were added to make checks pass.\n\n## Costs and limits\n\nFresh same-toolchain builds against current main reproduce these measurements:\n\n| Gzipped JavaScript | Main | Candidate | Delta |\n|---|---:|---:|---:|\n| Initial graph | 227,479 B | 227,841 B | +362 B (+0.16%) |\n| All chunks | 313,121 B | 326,516 B | +13,395 B (+4.28%) |\n| Lazy sequencer/editor | 29,787 B | 38,467 B | +8,680 B (+29.14%) |\n\nNotation is a separate lazy 4,337 B gzip chunk. The audio catalogue remains\n582 files / 42,914,625 encoded bytes with the same content hash. Worker bundle:\n2,030,691 JS bytes, 3,506,127 uploaded bytes, within the explicit ratchet.\nBoth builds retain the existing >500 kB main-chunk warning. Browser heap and\ndecoded-memory deltas are not measured; unchanged assets do not prove unchanged\nUI heap. These local runs do not establish CI p50/p95 or production readiness.\n\n## Integration and remaining work\n\n- #127's piano-roll dock conflicts with this branch in the track row, parameter\n  editor, pattern-tools panel, sequencer wiring, row regression, and lane\n  contracts. Headless MCP/notation is a useful first review unit; envelope UI\n  should integrate with the chosen dock, not become a competing row layout.\n- #130 is #127's green harness prerequisite and its authority is pinned to\n  current main. Review it before another merge moves that base.\n- D2 Summary \u2192 Shape \u2192 Details, recipes, track-local Start/Tail, selected-track\n  phase audition, and labelling/hiding unsynced global synth macros remain.\n- Renderer promotion still requires independent real advanced-renderer PCM,\n  listening approvals, canary/rollback, and one release cycle. All 32 native\n  presets retain their native route. Additional loop/release assets and nonzero\n  loop crossfade remain separately gated; no new assets are promoted.\n- #75 mute/solo ownership, #106 source certification, and #115 Safari background\n  policy remain separate unresolved acceptance work.\n\nThis remains a broad authoring candidate, not a completed ADSR overhaul or a\nrenderer cutover. No merge or deployment is performed by this rebase.\n\n## Visual evidence\n\nThe rebase changes no authoring pixels relative to the previous PR head; main\ndoes not yet have this exact editor. Retained historical image: inspect the AHD\ncapability summary and Trigger/Gate choice. It is not a new-head screenshot and\ndoes not prove beginner usability, audible equivalence, or mobile memory.\n\n![Historical exact AHD editor with its capability summary and Trigger/Gate controls](https://raw.githubusercontent.com/adewale/keyboardia/0fb06b66e9d0516c7ee4f661b61dfd3e1966e822/artifacts/envelope-v2-current-desktop.jpg)\n\nReproduce current controls: `cd app && npm run test:e2e:envelope`. Current browser\ncontracts independently cover the capability controls and portrait/landscape\nexposure; product/multiplayer tests cover transactional state behavior.\n"
+    },
+    "K127": {
+      "url": "https://github.com/adewale/keyboardia/pull/127",
+      "title": "feat: piano roll editor dock, with spec, mocks and a first implementation",
+      "created_at": "2026-10-07T19:35:58Z",
+      "updated_at": "2026-10-18T22:33:49Z",
+      "head_sha": "88941adda4411569377cd28215504ffd4af896f2",
+      "base_sha": "869d3f5095084003e1251aa3ebf2eab8f65f62fe",
+      "body": "## What changed\n\nThis PR now carries the piano roll editor dock in three layers, which are at different points:\n\n- **Spec** (`specs/PIANO-ROLL-DOCK.md`): the current design. Rows on a 36 \u00d7 50 cell lattice at a 53px pitch; a 231px control tile with the track (name over M S) on the left and the pattern ([Notes | Lane | Tools] over [Copy | Clear | Delete], transpose and steps beside) on the right; production's naming rule; lock marks (level fill, pitch badge, tie bridge, envelope fold, dashed kept lock); Lucide icons; one button language (solid commands, hollow state boxes that fill light when on, bare-text information); the roll opening at 18px per semitone; a copy status line in the transport; the name keeping production's click-to-preview and double-click rename.\n- **Interactive mock** (`specs/mocks/piano-roll-dock.html`): implements that design end to end.\n- **App implementation** (`app/`): an earlier phase of the design. `PianoRollEditor` and the editor dock under the grid with detents and ghosts; the loop ruler in the grid on shared step geometry (`step-geometry.ts`); Step and Track panes; the landscape bottom dock; a two-line control block at 134px; the SVG pitch contour overlay, the mobile edit panel, `InlineDrawer` and the dock's Grid view retired; row Copy, Clear and Delete moved into the Track pane.\n- **Grid alignment fix** (84cee834): `.tracks-inner` is inline-flex, so it sat on its first item's baseline. Once the loop ruler row became that first item, the whole grid dropped 2.25px and every cell landed on a quarter pixel (the 36\u00d737 step-cell and 49px velocity-lane captures). `vertical-align: top` restores it.\n- **Visual baselines** (585ab334): regenerated on the CI image by `visual-baselines.yml` (run 39162664986) and reviewed image by image. Four intended changes: the ruler inside the scroller with its \"Loop\" label (sequencer-grid, tablet, desktop-wide), and the velocity lane at 1184px because the control column is 134px.\n\nThe implementation does not yet follow the latest spec: tile F at 231px with actions in the tile, the 36 \u00d7 50 lattice, the new lock marks in place of in-cell pitch contour marks, Lucide icons and the light on-state are still to do.\n\nThis branch is rebased onto `main` at `869d3f50`. The rebase preserves the previous PR head's file tree, including main's Lesson 83 and this branch's Lessons 84 and 85.\n\n## Why\n\nKeep sequencer rows contiguous while giving every track Track and Step editing and melodic tracks a Notes view, without panels opening between rows.\n\n## Verification\n\n- Pre-push T0 on each push: manifests, E2E inventories and unit tests.\n- `npm run lint`, `npm run typecheck` and `npm run validate:test-quality` passed locally on 84cee834.\n- Grid fix: the loop-ruler placement test in `e2e/piano-roll-dock.spec.ts` asserts the ruler row starts at the scroller's top edge. 41 tests across the dock, landscape-alignment, velocity-lane, pitch-contour and scrollbar specs pass with the fix.\n- CI on 585ab334: every lane green, including E2E Visual Regression, except Stack A Identity (see Risk).\n- The mock was exercised in headless Chromium: tile geometry, pane switching, copy/paste/cancel status, name preview vs double-click rename, roll sizing; no page errors.\n\n- [x] If this fixes a bug, the regression test fails when the fix is reverted or disabled (or the description explains why that control is impractical). Control for the grid fix: with `vertical-align: top` removed, the loop-ruler test fails with `Expected: 0, Received: 2.25`.\n\n## Risk\n\nThe app code reflects an older phase of the design than the spec and mock, so reviewing the implementation against the spec will show deliberate gaps. Open decisions recorded in the spec: amending `specs/ICON-SYSTEM.md` for icon-only Copy/Clear/Delete, and a resting treatment that tells Delete from Clear.\n\n**Stack A Identity is red and needs a maintainer decision.** The gate requires head to render identically to the merge base, and this redesign removes the row's step-count dropdown and changes the row's DOM. Its protected harness can only change through a prerequisite PR or a one-time merge-base exception. Details are in the PR comment.\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01PXUAugHpQB6qUibTr1x3pW",
+      "comments": [
+        {
+          "url": "https://github.com/adewale/keyboardia/pull/127#issuecomment-6254800077",
+          "body": "**Stack A Identity is red by design on this PR, and it needs a maintainer decision.**\n\nThe gate requires head to render identically to the merge base. This PR redesigns the track row, so it can't:\n\n- **Stack B full-app `*-step-open` (6 states):** they time out waiting for `.track-row .step-count-trigger`. The redesign removed the step-count dropdown from the row, so the element no longer exists.\n- **Stack B `full-app-landscape-*-unaffected` (3):** the accessibility tree differs because the row's DOM changed (two-line control block, pitch-editor toggle). This is intended.\n- **Stack A `desktop-integrated-fx-*` (3):** in the catalogue, `.swing-value` in the transport changed from cyan monospace 11px to yellow 14px. The catalogue imports only `TrackRow.css`, and this PR moved the pattern-tools rules (including a global `.swing-value`) to `PatternToolsPanel.css`. In the production bundle the transport swing value is unchanged: the rule order is the same in both builds.\n\n`serve-stack-a-comparison.mjs` protects the harness files and refuses edits to them unless `STACK_A_ALLOW_HARNESS_CHANGES=1`. A fix from inside this PR would weaken the gate, so I haven't touched it. The two routes the README and history support:\n\n1. A prerequisite harness PR: drop or re-target the step-count full-app states, re-record the landscape states, and have the catalogue import `PatternToolsPanel.css`.\n2. A one-time merge-base exception for this PR, as used for the Stack B pilot and the colour-role migration.\n\nThe other failures on this PR are addressed. 84cee834 fixes the 2.25px grid offset behind the step-cell, velocity-lane and sample-picker drifts; the regression check fails with \"Received: 2.25\" when the fix is reverted. 585ab334 adds the CI-rendered baselines for the intended grid changes.\n\n---\n_Generated by [Claude Code](https://claude.ai/code)_",
+          "created_at": "2026-10-18T20:31:53Z"
+        }
+      ]
+    },
+    "G18": {
+      "url": "https://github.com/adewale/good-pr/pull/18",
+      "title": "Check retired-tool callers and scope PR verification claims",
+      "created_at": "2026-11-01T05:08:56Z",
+      "updated_at": "2026-11-01T05:08:56Z",
+      "head_sha": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+      "base_sha": "f517d6e7f264a4e85c310d18ca57017ab889250c",
+      "body": "Deleting a validator can leave package scripts and contributor instructions calling a missing file. A later follow-up push can also leave a PR claiming that older checks passed at the new head. Add explicit review guidance and tune scenarios for both failures.\n\nThe existing proof verifier exposed the same evidence-scope problem: it requires today's skill tree to match an archived model run, so any subsequent skill edit fails that CI step. Add an explicit `verify --historical` mode for CI that still checks recorded source trees, artifact hashes, baseline bytes, regraded outputs, and canonical statistics. Its output states that the archive does not evaluate the current skill. Default verification and bundle building retain the clean, matching current-skill requirement. Preserve the archived results unchanged and update the affected ablation patch offsets.\n\nValidation: all 44 unit tests, install-boundary, Ruff, both pinned Harness 0.6.0 manifests, strict leakage/ablation checks, blocker audit, and historical verification of all 81 archived outputs passed locally. Tests cover default rejection of a changed skill, archive-only scope, and corrupt-artifact rejection. No new model comparison was run; the historical run is not evidence of improved behavior at this head.\n",
+      "patches": [
+        {
+          "filename": ".github/workflows/install-boundary.yml",
+          "patch": "@@ -31,5 +31,5 @@ jobs:\n           uvx --from skill-eval-harness==0.6.0 skill-benchmark validate --strict-leakage --check-ablations evals/shared-benchmark.json\n           uvx --from skill-eval-harness==0.6.0 skill-benchmark audit-manifest --fail-on-blockers evals/shared-benchmark.json > /dev/null\n           uvx --from skill-eval-harness==0.6.0 skill-benchmark validate --strict-leakage evals/visual-evidence-benchmark.json\n-      - name: Verify committed eval proof bundle\n-        run: python3 scripts/build_eval_evidence.py verify evals/results/visual-evidence-gpt-5.4.json\n+      - name: Verify archived eval proof bundle at its recorded source revision\n+        run: python3 scripts/build_eval_evidence.py verify --historical evals/results/visual-evidence-gpt-5.4.json"
+        },
+        {
+          "filename": "evals/ablations/no-template.patch",
+          "patch": "@@ -1,11 +1,11 @@\n-@@ -207,7 +207,0 @@\n+@@ -215,7 +215,0 @@\n -See `references/pr-template.md` for a fill-in template. The key sections:\n -\n -- **What** \u2014 one-sentence summary\n -- **Why** \u2014 link to issue, brief root cause explanation\n -- **How** \u2014 approach taken, alternatives considered\n -- **Testing** \u2014 what you tested, how, and evidence it works\n -- **Risk** \u2014 what could go wrong and how you mitigated it\n-@@ -307,2 +307,0 @@\n+@@ -322,2 +322,0 @@\n -4. **Help write the description** \u2014 use `references/pr-template.md` as a\n -   starting point and fill it in together"
+        },
+        {
+          "filename": "evals/shared-benchmark.json",
+          "patch": "@@ -1409,6 +1409,70 @@\n         \"outcome\",\n         \"style\"\n       ]\n+    },\n+    {\n+      \"id\": \"tune-retire-validator-callers\",\n+      \"split\": \"tune\",\n+      \"kind\": \"pr-review\",\n+      \"prompt\": \"Review a PR deleting scripts/legacy-check.py. The workflow no longer calls it, but AGENTS.md still requires python scripts/legacy-check.py before every contribution and package.json check still invokes it. The replacement is python scripts/validate.py. The old benchmark archive records successful runs of legacy-check.py. What belongs in this PR?\",\n+      \"expected_behavior\": [\n+        \"Require updates to both live AGENTS.md instructions and package.json callers and verification of the surviving validate.py command.\",\n+        \"Preserve clearly dated historical benchmark evidence rather than rewriting it as a run of the replacement.\",\n+        \"Avoid adding an alias or replacement checker solely to keep the retired ritual alive.\"\n+      ],\n+      \"assertions\": [\n+        {\n+          \"name\": \"maintenance-evidence\",\n+          \"type\": \"judge\",\n+          \"gate\": true,\n+          \"rubric\": [\n+            \"Require updates to both live AGENTS.md instructions and package.json callers and verification of the surviving validate.py command.\",\n+            \"Preserve clearly dated historical benchmark evidence rather than rewriting it as a run of the replacement.\",\n+            \"Avoid adding an alias or replacement checker solely to keep the retired ritual alive.\"\n+          ]\n+        }\n+      ],\n+      \"tags\": [\n+        \"maintenance\",\n+        \"evidence-scope\"\n+      ],\n+      \"domain\": \"pull-request-quality\",\n+      \"difficulty\": \"core\",\n+      \"success_goals\": [\n+        \"outcome\"\n+      ]\n+    },\n+    {\n+      \"id\": \"tune-pr-evidence-revisions\",\n+      \"split\": \"tune\",\n+      \"kind\": \"pr-review\",\n+      \"prompt\": \"Write the testing note for a PR at head c3. A benchmark at a1 passed last month, local unit tests at b2 passed today, and the follow-up c3 only changes contributor prose. CI for c3 is queued. The current draft says All checks passed; confidence 10/10.\",\n+      \"expected_behavior\": [\n+        \"State the a1 benchmark, b2 local tests, and queued c3 CI with their distinct revision scopes.\",\n+        \"Remove the all-checks-passed claim and unsupported confidence score; do not fabricate a c3 local run or claim final-head CI passed.\",\n+        \"Keep the note short and explain the docs-only follow-up without treating it as proof of a test run.\"\n+      ],\n+      \"assertions\": [\n+        {\n+          \"name\": \"maintenance-evidence\",\n+          \"type\": \"judge\",\n+          \"gate\": true,\n+          \"rubric\": [\n+            \"State the a1 benchmark, b2 local tests, and queued c3 CI with their distinct revision scopes.\",\n+            \"Remove the all-checks-passed claim and unsupported confidence score; do not fabricate a c3 local run or claim final-head CI passed.\",\n+            \"Keep the note short and explain the docs-only follow-up without treating it as proof of a test run.\"\n+          ]\n+        }\n+      ],\n+      \"tags\": [\n+        \"maintenance\",\n+        \"evidence-scope\"\n+      ],\n+      \"domain\": \"pull-request-quality\",\n+      \"difficulty\": \"core\",\n+      \"success_goals\": [\n+        \"outcome\"\n+      ]\n     }\n   ],\n   \"ablations\": ["
+        },
+        {
+          "filename": "evals/shared-harness.md",
+          "patch": "@@ -133,6 +133,13 @@ Treat visible tune-case statistics as descriptive effect sizes, not as holdout\n or confirmatory significance claims. The proof builder deliberately omits\n inferential p-values for these tuned cases.\n \n+For ongoing CI, verify the archived bundle with `verify --historical` and the same\n+summary path. This still checks the recorded immutable source trees, output and\n+manifest hashes, baseline snapshot, and canonical statistics. It does not claim\n+the current skill was evaluated. Default `verify` and `build` retain the matching,\n+clean current-skill requirement. A new claim about model performance at a later\n+skill revision needs a fresh run; do not rewrite the old receipt to name new bytes.\n+\n Two sequential replication attempts on pre-fix Harness commit `96013a5`\n reproduced the temporary Codex-home cleanup race tracked in\n [Skill Eval Harness #45](https://github.com/adewale/skill-eval-harness/issues/45),"
+        },
+        {
+          "filename": "scripts/build_eval_evidence.py",
+          "patch": "@@ -411,7 +411,7 @@ def build(args: argparse.Namespace) -> int:\n     return verify_summary(summary_path)\n \n \n-def verify_summary(summary_path: Path) -> int:\n+def verify_summary(summary_path: Path, *, historical: bool = False) -> int:\n     summary = json.loads(summary_path.read_text(encoding=\"utf-8\"))\n     if summary.get(\"schema_version\") != 3:\n         raise SystemExit(\"unsupported eval proof schema\")\n@@ -534,11 +534,12 @@ def verify_summary(summary_path: Path) -> int:\n         raise SystemExit(\"annotated source commit has the wrong skill tree\")\n     if baseline_tree != revisions[\"baseline_skill_git_tree\"]:\n         raise SystemExit(\"baseline source commit has the wrong skill tree\")\n-    current_tree = git(\"rev-parse\", \"HEAD:skills/good-pr\")\n-    if current_tree != annotated_tree:\n-        raise SystemExit(\"installed skill tree changed after the annotated source commit\")\n-    if git(\"status\", \"--porcelain\", \"--untracked-files=all\", \"--\", \"skills/good-pr\"):\n-        raise SystemExit(\"installed skill has uncommitted changes\")\n+    if not historical:\n+        current_tree = git(\"rev-parse\", \"HEAD:skills/good-pr\")\n+        if current_tree != annotated_tree:\n+            raise SystemExit(\"installed skill tree changed after the annotated source commit\")\n+        if git(\"status\", \"--porcelain\", \"--untracked-files=all\", \"--\", \"skills/good-pr\"):\n+            raise SystemExit(\"installed skill has uncommitted changes\")\n     if (\n         hash_git_tree(revisions[\"annotated_good_pr_git_sha\"], \"skills/good-pr\")\n         != revisions[\"annotated_skill_content_sha256\"]\n@@ -583,6 +584,11 @@ def verify_summary(summary_path: Path) -> int:\n         f\"OK: regraded {expected} outputs and verified canonical statistics, \"\n         \"run-matrix hashes, and source annotations\"\n     )\n+    if historical:\n+        print(\n+            f\"Scope: archived evidence for {revisions['annotated_good_pr_git_sha']}; \"\n+            \"does not evaluate the current skill or attest execution source bytes\"\n+        )\n     return 0\n \n \n@@ -604,14 +610,18 @@ def parse_args() -> argparse.Namespace:\n     build_parser.add_argument(\"--out-dir\", type=Path, default=ROOT / \"evals/results\")\n     verify_parser = subparsers.add_parser(\"verify\")\n     verify_parser.add_argument(\"summary\", type=Path)\n+    verify_parser.add_argument(\n+        \"--historical\", action=\"store_true\",\n+        help=\"Verify archived evidence against its recorded revisions, without claiming it covers the current skill\",\n+    )\n     return parser.parse_args()\n \n \n def main() -> int:\n     args = parse_args()\n     if args.command == \"build\":\n         return build(args)\n-    return verify_summary(args.summary)\n+    return verify_summary(args.summary, historical=args.historical)\n \n \n if __name__ == \"__main__\":"
+        },
+        {
+          "filename": "skills/good-pr/SKILL.md",
+          "patch": "@@ -199,6 +199,14 @@ severity. For security fixes, use a neutral, specific title, state concrete\n impact/evidence, and let maintainers choose urgency and triage. Panic PRs that\n break more than they fix destroy trust faster than anything.\n \n+When retiring a tool or command, search its callers and instructions in workflows,\n+hooks, package scripts, docs, and contributor guidance. Resolve live references in\n+the same change; keep historical evidence clearly dated. For example, deleting a\n+validator while leaving `AGENTS.md` telling contributors to run it breaks the\n+documented contribution path. Name the surviving command and verify it, or state\n+that the step is intentionally removed. Do not build a replacement checker merely\n+to preserve an obsolete ritual.\n+\n ### 6. A Description That Stands Alone\n \n The PR description is your pitch. A maintainer should understand *everything*\n@@ -212,6 +220,13 @@ See `references/pr-template.md` for a fill-in template. The key sections:\n - **Testing** \u2014 what you tested, how, and evidence it works\n - **Risk** \u2014 what could go wrong and how you mitigated it\n \n+Tie verification claims to the revision and environment checked. A historical\n+benchmark, local test run, and CI run at the final PR head answer different\n+questions. For example: \"Historical benchmark at `<sha>` retained; local validation\n+passed before this docs-only commit; CI for the current head is pending.\" Check\n+the latest head after any follow-up push. Report pending, skipped, or failed checks\n+as such; a prose review score cannot substitute for test or CI evidence.\n+\n ### 7. Trust Is Earned\n \n If this is your first contribution to a project:"
+        },
+        {
+          "filename": "skills/good-pr/references/review-checklist.md",
+          "patch": "@@ -11,6 +11,8 @@ and check it off or note why it doesn't apply.\n - [ ] **Matches project style** \u2014 naming, structure, error handling follow\n       existing patterns\n - [ ] **No new dependencies** \u2014 or dependency addition was discussed first\n+- [ ] **Retired tooling** \u2014 live callers and contributor instructions updated;\n+      surviving commands verified and historical records kept clearly dated\n \n ## Testing\n \n@@ -54,6 +56,8 @@ and check it off or note why it doesn't apply.\n - [ ] **Why** \u2014 root cause or motivation explained\n - [ ] **How** \u2014 approach described, alternatives noted if relevant\n - [ ] **Testing** \u2014 test strategy and verification steps documented\n+- [ ] **Evidence scope** \u2014 historical results, local checks, and CI identify the\n+      revisions they cover; latest-head CI status is stated accurately\n - [ ] **Risk** \u2014 potential impact areas identified and mitigated\n \n ## Final Check"
+        },
+        {
+          "filename": "tests/test_eval_evidence.py",
+          "patch": "@@ -2,11 +2,14 @@\n \n import hashlib\n import importlib.util\n+import io\n import json\n import sys\n import tempfile\n import unittest\n+from contextlib import redirect_stdout\n from pathlib import Path\n+from unittest.mock import patch\n \n ROOT = Path(__file__).resolve().parents[1]\n SCRIPT = ROOT / \"scripts/build_eval_evidence.py\"\n@@ -18,6 +21,42 @@\n \n \n class EvalEvidenceTests(unittest.TestCase):\n+    def test_default_verification_rejects_a_different_current_skill(self) -> None:\n+        real_git = MODULE.git\n+\n+        def changed_head(*args: str) -> str:\n+            return \"different-tree\" if args == (\"rev-parse\", \"HEAD:skills/good-pr\") else real_git(*args)\n+\n+        with (\n+            patch.object(MODULE, \"git\", side_effect=changed_head),\n+            self.assertRaisesRegex(SystemExit, \"installed skill tree changed\"),\n+        ):\n+            MODULE.verify_summary(ROOT / \"evals/results/visual-evidence-gpt-5.4.json\")\n+\n+    def test_historical_verification_preserves_archived_source_scope(self) -> None:\n+        real_git = MODULE.git\n+\n+        def changed_head(*args: str) -> str:\n+            if args == (\"rev-parse\", \"HEAD:skills/good-pr\"):\n+                self.fail(\"Historical verification must not substitute the current skill for recorded source\")\n+            return real_git(*args)\n+\n+        output = io.StringIO()\n+        with patch.object(MODULE, \"git\", side_effect=changed_head), redirect_stdout(output):\n+            self.assertEqual(0, MODULE.verify_summary(\n+                ROOT / \"evals/results/visual-evidence-gpt-5.4.json\", historical=True,\n+            ))\n+        self.assertIn(\"does not evaluate the current skill\", output.getvalue())\n+\n+    def test_historical_verification_still_rejects_corrupt_artifacts(self) -> None:\n+        with (\n+            patch.object(MODULE, \"sha256_file\", return_value=\"0\" * 64),\n+            self.assertRaisesRegex(SystemExit, \"manifest hash mismatch\"),\n+        ):\n+            MODULE.verify_summary(\n+                ROOT / \"evals/results/visual-evidence-gpt-5.4.json\", historical=True,\n+            )\n+\n     def test_repo_relative_accepts_cli_relative_path(self) -> None:\n         self.assertEqual(\n             Path(\"evals/visual-evidence-benchmark.json\"),"
+        }
+      ]
+    },
+    "K130": {
+      "head_sha": "d4087f9415660d1c181f39e8aa50981c9ec01ebc",
+      "url": "https://github.com/adewale/keyboardia/pull/130",
+      "comments": [
+        {
+          "url": "https://github.com/adewale/keyboardia/pull/130#issuecomment-6551537084",
+          "body": "**E2E Tests (mock API), (offline functional), (PCM capture) and (real backend) failed on 5f17f63b, and the cause is not this PR's.**\n\nAll four died at `npx playwright install --with-deps chromium`, before any test ran:\n\n```\nRunner Image: ubuntu-26.04 (20261025.179.1)\nBEWARE: your OS is not officially supported by Playwright; installing dependencies for ubuntu26.04-x64 as a fallback.\nCannot install dependencies for ubuntu26.04-x64 with Playwright 1.57.0!\nError: ERROR: Playwright does not support chromium on ubuntu26.04-x64\n```\n\nGitHub moved `ubuntu-latest` to Ubuntu 26.04. Ten Playwright jobs in `ci.yml` float on `ubuntu-latest`: instrument-validation, e2e-tests, e2e-offline-functional, e2e-offline-audio, e2e-pcm, e2e-real-backend, e2e-real-backend-webkit, e2e-mobile-safari and e2e-visual. Only `stack-a-identity` is pinned to `ubuntu-24.04`. Every PR and main will hit this until CI changes; a re-run lands on the same image. No fix exists on main yet (still 869d3f50).\n\nProposed patch, a separate CI PR rather than widening this one:\n\n- Pin those jobs to `runs-on: ubuntu-24.04`, as `stack-a-identity` already is.\n- Pin the regenerate job in `visual-baselines.yml` the same way. The committed Linux baselines were rendered on 24.04, and a 26.04 runner would also change font rasterisation.\n- Moving to 26.04 later means a Playwright release that supports it plus regenerated visual baselines.\n\n---\n_Generated by [Claude Code](https://claude.ai/code)_",
+          "created_at": "2026-11-01T01:05:04Z"
+        },
+        {
+          "url": "https://github.com/adewale/keyboardia/pull/130#issuecomment-6551598149",
+          "body": "**Stack A Identity failed on f925c5ee: `step-count-open-width-768`, 1761 pixels outside the targets. This time the attached captures show what changed.**\n\nThat is the same state and the same pixel count as the failure on 68430e6c. The before/after/diff images attached by 0c9ee7fa locate it:\n\n- Every differing pixel is text inside the open step-count menu (x 101\u2013178, y 180\u2013445). Backgrounds, borders and every element's rect are identical, and the ink totals are identical.\n- In each unselected row, the grey secondary label (`\u00bc bar`, `2 bars`, `triplet`\u2026) is drawn **exactly 1px higher** on head than on base, while the white value next to it doesn't move. In the selected row it's the reverse: the label stays and `16` moves up 1px.\n\nSo the same glyphs snap to a different whole pixel with identical geometry. My leading hypothesis, not yet proven:\n\n- The menu's 150ms `dropdown-appear` animation (`translateY(-4px)` \u2192 0) can give it its own compositing layer.\n- Text on that layer snaps against the layer's grid instead of the page's, so the result depends on whether the layer still exists when the screenshot rasterises.\n- The state started failing only after 68430e6c, which finishes animations right after each action. It failed 2 of the 3 CI runs since, and passed 20 local repeats plus 75 local runs under load on an older Chromium (1194, against CI's 1200).\n\nOptions, none pushed while the branch is being edited:\n\n1. **Cancel instead of finish** the finished, non-filled animations in the capture's settle step, then wait two frames, so no animation layer can survive into the screenshot.\n2. **Revert the Stack B half of 68430e6c** and fix `transpose-option-hover` by settling only that state's hover target.\n3. **Snap `.dropdown-menu`'s fixed `top` to whole pixels in product code.** Most direct, but a product change, so it belongs in its own PR before this one.\n\nI'd try (1) first and confirm it over repeated CI runs, since the race only shows on CI.\n\n---\n_Generated by [Claude Code](https://claude.ai/code)_",
+          "created_at": "2026-11-01T01:10:55Z"
+        },
+        {
+          "url": "https://github.com/adewale/keyboardia/pull/130#issuecomment-6699584873",
+          "body": "**Stack A Identity failed on deb5ae3 before any test ran: the one-time harness authority has expired.**\n\n```\nError: Protected Stack A identity files differ from the merge base. Land harness changes as a prerequisite with STACK_A_ALLOW_HARNESS_CHANGES=1.\n```\n\n`serve-stack-a-comparison.mjs` authorises this PR's harness edits only while the merge base is `869d3f5095084003e1251aa3ebf2eab8f65f62fe`. Merging main (119fc84) moved it to `90ecc152330cabc33060788f14c67795307d4bba` (#132), so the exception no longer applies. This is the expiry the PR's Risk section describes, not a regression.\n\nThe fix is one line, the same deliberate update the earlier exceptions needed:\n\n```js\nconst catalogueReviewBaseSha = '90ecc152330cabc33060788f14c67795307d4bba';\n```\n\nIt expires again if main moves before this merges. I haven't pushed it, because this PR is in draft and being edited.\n\nThe runner-image failures from 1 November are gone: #132 pins every Linux job to `ubuntu-24.04`.\n\n---\n_Generated by [Claude Code](https://claude.ai/code)_",
+          "created_at": "2026-11-07T00:28:35Z"
+        },
+        {
+          "url": "https://github.com/adewale/keyboardia/pull/130#issuecomment-6700989266",
+          "body": "**Pushed d4087f94: renews the authority for base `90ecc152` and fixes the `step-count-open-width-768` race.** This corrects my earlier recommendation.\n\nThe race reproduced locally on Chromium 1243, which let me probe it. The step-count menu sits at `top: 138.5px`, so its text can snap to either pixel. Over 30 opens at 768\u00d71024:\n\n| Settle step after the click | Distinct label rasters |\n|---|---|\n| `finish()` (68430e6c) | 2 (29 / 1) |\n| `cancel()` (my earlier option 1) | 2 (29 / 1) |\n| let the animation end on its own | 1 (30 / 30) |\n| `await animation.finished` | 1 (60 / 60, the same raster) |\n\nSo cancelling would not have fixed it. Both specs now await each finite animation's `finished` promise. Hovering still waits for the menu to stop moving, so `transpose-option-hover` stays fixed.\n\nLocally against 90ecc152: eight consecutive full identity runs, 47/47 Chromium tests each, against a baseline of one failure in four runs. `validate:stack-b-evidence` passes with full history; on a shallow clone your ancestry check can't run, but CI's Stack A job fetches with depth 0.\n\n---\n_Generated by [Claude Code](https://claude.ai/code)_",
+          "created_at": "2026-11-07T02:25:13Z"
+        }
+      ],
+      "patches": [
+        {
+          "filename": "app/.husky/pre-push",
+          "patch": "@@ -15,6 +15,13 @@ if [ ! -t 1 ] || [ ! -t 2 ]; then\n fi\n \n set -e\n+\n+# Hooks export repository-local Git overrides. Clear them before verification:\n+# tests initialise throwaway repositories and must not write into this one.\n+for git_env_name in $(git rev-parse --local-env-vars); do\n+    unset \"$git_env_name\"\n+done\n+\n cd app\n \n echo \"PRE-PUSH T0: manifests, E2E inventories, and unit tests\""
+        },
+        {
+          "filename": "app/identity/README.md",
+          "patch": "@@ -60,7 +60,22 @@ Once the harness exists in the merge base, the server uses that base-owned\n catalogue and refuses simultaneous edits to protected identity files. Harness\n updates therefore land as explicit prerequisite PRs by setting\n `STACK_A_ALLOW_HARNESS_CHANGES=1`; ordinary product refactors cannot weaken\n-their own evidence.\n+their own evidence. While a harness change is authorised, both revisions are\n+rendered with the catalogue under review, so a catalogue edit is not reported\n+as a product change.\n+\n+## Retired: whole-product states\n+\n+The Stack B pilot also compared eight states of the production build, base\n+against head, across the whole page. They were evidence for that one-time\n+migration, and their receipts stay bound in\n+`audit/css-consistency/stack-b-evidence`. As a per-PR gate they could not\n+survive any intended layout change, and they found the step-count dropdown\n+through the old track row's DOM. They were retired ahead of the piano roll\n+dock. Component identity stays here. Full-page coverage stays with\n+`e2e/visual.spec.ts`, whose baselines are regenerated on the CI image and\n+reviewed. The catalogue imports its stylesheets in production's bundle order,\n+so the cascade it tests is the product's.\n \n Portrait and landscape entries exercise responsive CSS in canonical Chromium.\n A separate mobile-WebKit project uses emulated touch (`hasTouch`); neither lane"
+        },
+        {
+          "filename": "app/identity/stack-a-identity.spec.ts",
+          "patch": "@@ -97,10 +97,19 @@ async function performAction(page: Page, action: StackAAction) {\n   else await locator.click();\n }\n \n-async function settleReactEffects(page: Page) {\n-  await page.evaluate(() => new Promise<void>((resolve) => {\n-    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));\n-  }));\n+async function settleAfterAction(page: Page) {\n+  await page.evaluate(async () => {\n+    await new Promise<void>((resolve) => {\n+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));\n+    });\n+    // A menu or panel animates open. Wait for the opening to end on its own:\n+    // hovering mid-animation lets the locator's scroll land on a moving\n+    // target, and ending it early with finish() leaves text on a half-pixel\n+    // menu snapped either way, depending on when its layer goes.\n+    await Promise.all(document.getAnimations()\n+      .filter((animation) => Number.isFinite(animation.effect?.getTiming().iterations))\n+      .map((animation) => animation.finished.catch(() => undefined)));\n+  });\n }\n \n async function assertExpectation(page: Page, expectation: StackAExpectation) {\n@@ -130,9 +139,9 @@ async function captureContract(\n \n   for (const action of state.actions ?? []) {\n     await performAction(page, action);\n-    // Effects such as dropdown auto-scroll must settle before the next action,\n-    // otherwise locator scrolling can race the component's own effect.\n-    await settleReactEffects(page);\n+    // Effects such as dropdown auto-scroll, and opening animations, must\n+    // settle before the next action, otherwise locator scrolling can race them.\n+    await settleAfterAction(page);\n   }\n   for (const expectation of state.expectations) await assertExpectation(page, expectation);\n "
+        },
+        {
+          "filename": "app/identity/stack-b-manifest.ts",
+          "patch": "@@ -40,64 +40,6 @@ if (stackBStates.length !== stackBStateIds.length) {\n   throw new Error('Stack B manifest contains an unknown or duplicate catalogue state');\n }\n \n-export interface StackBFullAppState {\n-  id: string;\n-  viewport: { width: number; height: number };\n-  action: 'hidden-portrait' | 'hidden-landscape' | 'desktop-step';\n-  intendedResult: string;\n-}\n-\n-export const stackBFullAppStates: StackBFullAppState[] = [\n-  {\n-    id: 'full-app-desktop-step-open',\n-    viewport: { width: 1280, height: 800 },\n-    action: 'desktop-step',\n-    intendedResult: 'Desktop row triggers and the open step menu receive the pilot skin.',\n-  },\n-  {\n-    id: 'full-app-mobile-portrait-hidden',\n-    viewport: { width: 375, height: 812 },\n-    action: 'hidden-portrait',\n-    intendedResult: 'Portrait consumption remains pixel-identical because editing dropdowns stay hidden.',\n-  },\n-  {\n-    id: 'full-app-landscape-compact-unaffected',\n-    viewport: { width: 480, height: 320 },\n-    action: 'hidden-landscape',\n-    intendedResult: 'Compact landscape remains pixel-identical because TrackDrawer uses a native select and transpose buttons.',\n-  },\n-  {\n-    id: 'full-app-landscape-narrow-unaffected',\n-    viewport: { width: 667, height: 375 },\n-    action: 'hidden-landscape',\n-    intendedResult: 'Narrow landscape remains pixel-identical because TrackDrawer uses other controls.',\n-  },\n-  {\n-    id: 'full-app-landscape-wide-unaffected',\n-    viewport: { width: 844, height: 390 },\n-    action: 'hidden-landscape',\n-    intendedResult: 'Wide landscape remains pixel-identical because TrackDrawer uses a native select and transpose buttons.',\n-  },\n-  {\n-    id: 'full-app-tablet-landscape-step-open',\n-    viewport: { width: 1024, height: 768 },\n-    action: 'desktop-step',\n-    intendedResult: 'Tablet landscape keeps the desktop editor and receives the pilot skin.',\n-  },\n-  {\n-    id: 'full-app-width-768-step-open',\n-    viewport: { width: 768, height: 1024 },\n-    action: 'desktop-step',\n-    intendedResult: 'The inclusive 768px boundary preserves product mode and receives the pilot skin.',\n-  },\n-  {\n-    id: 'full-app-width-769-step-open',\n-    viewport: { width: 769, height: 1024 },\n-    action: 'desktop-step',\n-    intendedResult: 'The 769px neighbour preserves product mode and receives the pilot skin.',\n-  },\n-];\n-\n export const stackBDecorativeProperties = new Set([\n   'backgroundColor',\n   'backgroundImage',"
+        },
+        {
+          "filename": "app/identity/stack-b-visual.spec.ts",
+          "patch": "@@ -1,5 +1,5 @@\n import { createHash } from 'node:crypto';\n-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';\n+import { mkdirSync, writeFileSync } from 'node:fs';\n import { platform, release } from 'node:os';\n import { dirname, resolve } from 'node:path';\n import { expect, test, type Page, type TestInfo } from '@playwright/test';\n@@ -13,7 +13,6 @@ import {\n import {\n   STACK_B_MIGRATION_BASE_SHA,\n   stackBDecorativeProperties,\n-  stackBFullAppStates,\n   stackBStates,\n } from './stack-b-manifest';\n import {\n@@ -37,8 +36,6 @@ function configuredPort(name: string, fallback: number): number {\n }\n \n const comparisonPort = configuredPort('STACK_A_COMPARISON_PORT', 4179);\n-const baseProductPort = configuredPort('STACK_A_BASE_PRODUCT_PORT', 4180);\n-const headProductPort = configuredPort('STACK_A_HEAD_PRODUCT_PORT', 4181);\n const approvedDropdownTokens = {\n   '--dropdown-control-background': '#2a2a2a',\n   '--dropdown-control-border': '#6c6c76',\n@@ -62,12 +59,6 @@ const approvedSharedTokenLinks = {\n   '--dropdown-option-selected-background': 'var(--color-surface-active)',\n   '--dropdown-option-secondary-text': 'var(--color-text-muted)',\n } as const;\n-const holby = JSON.parse(readFileSync(resolve(process.cwd(), 'scripts/demo-sessions/holby.json'), 'utf8')) as {\n-  name: string;\n-  state: unknown;\n-};\n-const holbyId = '8444f694-0a9a-41f3-815d-b9c6eb518c50';\n-\n const styleProperties = [\n   'display', 'position', 'visibility', 'opacity', 'color', 'backgroundColor',\n   'backgroundImage', 'borderTopColor', 'borderRightColor', 'borderBottomColor',\n@@ -128,9 +119,18 @@ async function performAction(page: Page, action: StackAAction) {\n }\n \n async function settle(page: Page) {\n-  await page.evaluate(() => new Promise<void>((resolve) => {\n-    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));\n-  }));\n+  await page.evaluate(async () => {\n+    await new Promise<void>((resolve) => {\n+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));\n+    });\n+    // A menu or panel animates open. Wait for the opening to end on its own:\n+    // hovering mid-animation lets the locator's scroll land on a moving\n+    // target, and ending it early with finish() leaves text on a half-pixel\n+    // menu snapped either way, depending on when its layer goes.\n+    await Promise.all(document.getAnimations()\n+      .filter((animation) => Number.isFinite(animation.effect?.getTiming().iterations))\n+      .map((animation) => animation.finished.catch(() => undefined)));\n+  });\n }\n \n async function settleForScreenshot(page: Page) {\n@@ -235,67 +235,6 @@ async function captureCatalogue(page: Page, side: Side, state: StackAState) {\n   return readPageContract(page);\n }\n \n-async function installProductFixture(page: Page) {\n-  await page.route('**/api/sessions/**', async (route) => {\n-    const request = route.request();\n-    const pathname = new URL(request.url()).pathname;\n-    if (request.method() === 'GET' && pathname === `/api/sessions/${holbyId}`) {\n-      await route.fulfill({\n-        status: 200,\n-        contentType: 'application/json',\n-        body: JSON.stringify({\n-          id: holbyId,\n-          name: holby.name,\n-          state: holby.state,\n-          createdAt: 1783638000000,\n-          updatedAt: 1783638000000,\n-          lastAccessedAt: 1783638000000,\n-          remixedFrom: null,\n-          remixedFromName: null,\n-          remixCount: 0,\n-          immutable: false,\n-        }),\n-      });\n-      return;\n-    }\n-    await route.fulfill({ status: 404, contentType: 'application/json', body: '{\"error\":\"fixture route\"}' });\n-  });\n-}\n-\n-async function captureFullApp(\n-  page: Page,\n-  side: Side,\n-  state: (typeof stackBFullAppStates)[number],\n-) {\n-  await page.setViewportSize(state.viewport);\n-  await page.emulateMedia({ reducedMotion: 'reduce' });\n-  await installProductFixture(page);\n-  const port = side === 'base' ? baseProductPort : headProductPort;\n-  await page.goto(`http://127.0.0.1:${port}/s/${holbyId}`);\n-  if (state.action === 'hidden-portrait') {\n-    await expect(page.locator('.portrait-track-row')).toHaveCount(10, { timeout: 15_000 });\n-    await expect(page.locator('.dropdown-trigger:visible')).toHaveCount(0);\n-  } else if (state.action === 'hidden-landscape') {\n-    await expect(page.locator('.track-row')).toHaveCount(10, { timeout: 15_000 });\n-    await expect(page.locator('.dropdown-trigger:visible')).toHaveCount(0);\n-  } else {\n-    await expect(page.locator('.track-row')).toHaveCount(10, { timeout: 15_000 });\n-    await page.locator('.track-row .step-count-trigger').first().click();\n-    await expect(page.locator('.step-count-menu')).toBeVisible();\n-  }\n-  await page.addStyleTag({\n-    // The static production-build server intentionally has no WebSocket.\n-    // Remove only live presence/status from layout so its reconnect timer\n-    // cannot move stable product pixels between contract capture and screenshot.\n-    content: '.avatar-stack, .connection-status { display: none !important; }',\n-  });\n-  await page.evaluate(() => document.fonts.ready);\n-  await page.evaluate(() => window.scrollTo(0, 0));\n-  await page.mouse.move(0, 0);\n-  await settleForScreenshot(page);\n-  return readPageContract(page);\n-}\n-\n function styleViolations(\n   base: CapturedContract,\n   head: CapturedContract,\n@@ -468,7 +407,7 @@ async function comparisonRevisions(page: Page) {\n }\n \n async function preserveEvidence(\n-  group: 'catalogue' | 'full-app',\n+  group: 'catalogue',\n   id: string,\n   baseRevision: string,\n   headRevision: string,\n@@ -534,7 +473,7 @@ async function preserveEvidence(\n async function assertApprovedDifference(\n   page: Page,\n   testInfo: TestInfo,\n-  group: 'catalogue' | 'full-app',\n+  group: 'catalogue',\n   id: string,\n   base: CapturedContract,\n   head: CapturedContract,\n@@ -557,6 +496,15 @@ async function assertApprovedDifference(\n     head.screenshot,\n     approvedRegions,\n   );\n+  // A failure here returns before preserveEvidence attaches the captures, so\n+  // attach them now: the pixels are the only record of what changed.\n+  if (changedOutsideTargets > 0) {\n+    await Promise.all([\n+      testInfo.attach(`${id}-before`, { body: base.screenshot, contentType: 'image/png' }),\n+      testInfo.attach(`${id}-after`, { body: head.screenshot, contentType: 'image/png' }),\n+      testInfo.attach(`${id}-diff`, { body: pixels.diff, contentType: 'image/png' }),\n+    ]);\n+  }\n \n   expect(head.aria, 'accessibility-tree identity failed').toBe(base.aria);\n   expect(violations, 'geometry or non-decorative style changed').toEqual([]);\n@@ -611,23 +559,6 @@ test.describe('Stack B approved dropdown differences', () => {\n     });\n   }\n \n-  for (const state of stackBFullAppStates) {\n-    test(`${state.id} @stack-b-full-app`, async ({ page }, testInfo) => {\n-      const base = await captureFullApp(page, 'base', state);\n-      const head = await captureFullApp(page, 'head', state);\n-      await assertApprovedDifference(\n-        page,\n-        testInfo,\n-        'full-app',\n-        state.id,\n-        base,\n-        head,\n-        state.action === 'desktop-step',\n-        state,\n-      );\n-    });\n-  }\n-\n   test('approved palette contrast and minimum target size @stack-b-accessibility', async ({ page }) => {\n     await page.setViewportSize({ width: 375, height: 812 });\n     await page.goto(stateUrl('head', 'dropdowns'));"
+        },
+        {
+          "filename": "app/identity/test-title-inventory.txt",
+          "patch": "@@ -19,14 +19,6 @@ stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a step-count-\n stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a transpose-open-mobile-landscape-wide @stack-b-visual\n stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a step-count-open-width-768 @stack-b-visual\n stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a step-count-open-width-769 @stack-b-visual\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-desktop-step-open @stack-b-full-app\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-mobile-portrait-hidden @stack-b-full-app\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-landscape-compact-unaffected @stack-b-full-app\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-landscape-narrow-unaffected @stack-b-full-app\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-landscape-wide-unaffected @stack-b-full-app\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-tablet-landscape-step-open @stack-b-full-app\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-width-768-step-open @stack-b-full-app\n-stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a full-app-width-769-step-open @stack-b-full-app\n stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a approved palette contrast and minimum target size @stack-b-accessibility\n stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a single-choice menus share the selected-item grammar @stack-b-accessibility\n stack-b-visual.spec.ts \u203a Stack B approved dropdown differences \u203a selection, Escape and outside click preserve expected focus ownership @stack-b-accessibility"
+        },
+        {
+          "filename": "app/scripts/serve-stack-a-comparison.mjs",
+          "patch": "@@ -85,8 +85,18 @@ function harnessExistsAtBase(baseSha) {\n   return result.status === 0;\n }\n \n+// One-time authority, requested by the maintainer ahead of the piano roll\n+// dock, for retiring the full-app states and loading TrackRow.css before\n+// Transport.css in the catalogue. Like the two below, it expires when main\n+// moves.\n+const catalogueReviewBaseSha = '90ecc152330cabc33060788f14c67795307d4bba';\n+\n+function harnessChangeAuthorised(baseSha) {\n+  return process.env.STACK_A_ALLOW_HARNESS_CHANGES === '1' || baseSha === catalogueReviewBaseSha;\n+}\n+\n function assertProtectedHarnessUnchanged(baseSha) {\n-  if (process.env.STACK_A_ALLOW_HARNESS_CHANGES === '1') return;\n+  if (harnessChangeAuthorised(baseSha)) return;\n   // One-time authority for the maintainer-requested single-PR Stack B pilot.\n   // A rebase changes this SHA and deliberately expires both the exception and\n   // its generated before/after evidence.\n@@ -152,7 +162,10 @@ try {\n     stdio: 'inherit',\n   });\n   worktreeAdded = true;\n-  if (!baseOwnsHarness) copyHarnessIntoBase();\n+  // An authorised harness change that edits the catalogue would otherwise be\n+  // reported as a product change: render both revisions with the catalogue\n+  // under review, so the comparison still measures only product code.\n+  if (!baseOwnsHarness || harnessChangeAuthorised(baseSha)) copyHarnessIntoBase();\n   symlinkSync(join(appRoot, 'node_modules'), join(baseApp, 'node_modules'), 'dir');\n   build(baseApp, baseDist);\n   build(appRoot, headDist);"
+        },
+        {
+          "filename": "app/scripts/verify-stack-b-evidence.mjs",
+          "patch": "@@ -32,10 +32,6 @@ function assert(condition, message) {\n   if (!condition) throw new Error(message);\n }\n \n-const stackBManifest = readFileSync(resolve(appRoot, 'identity/stack-b-manifest.ts'), 'utf8');\n-const migrationBase = stackBManifest.match(/STACK_B_MIGRATION_BASE_SHA = '([\\da-f]{40})'/)?.[1];\n-assert(migrationBase, 'Unable to read the Stack B migration base');\n-\n const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));\n assert(manifest.schemaVersion === 1, 'Unsupported Stack B approval manifest schema');\n assert(manifest.generator?.name === 'app/scripts/finalize-stack-b-evidence.mjs', 'Unexpected evidence finalizer');\n@@ -57,12 +53,15 @@ for (const entry of manifest.files) {\n }\n assert(manifest.checks.boundFileCount === actualFiles.length, 'Bound evidence file count is stale');\n \n-const expectedReceipts = readFileSync(resolve(appRoot, 'identity/test-title-inventory.txt'), 'utf8')\n+// These receipts describe the frozen pilot, including its retired full-app\n+// states. Derive their inventory from the revision that produced them; edits\n+// to today's test catalogue must not require regenerating historical evidence.\n+const expectedReceipts = git(['show', `${manifest.headRevision}:app/identity/test-title-inventory.txt`])\n   .split(/\\r?\\n/)\n   .flatMap((line) => {\n     const match = line.match(/stack-b-visual\\.spec\\.ts .* \u203a ([^ ]+) @stack-b-(visual|full-app)$/);\n     if (!match) return [];\n-    return [`${match[2] === 'visual' ? 'catalogue' : 'full-app'}--${match[1]}.json`];\n+    return [`${match[2] === 'full-app' ? 'full-app' : 'catalogue'}--${match[1]}.json`];\n   })\n   .sort();\n const actualReceipts = readdirSync(receiptsRoot).filter((name) => name.endsWith('.json')).sort();\n@@ -91,30 +90,18 @@ const readme = readFileSync(resolve(evidenceRoot, 'README.md'), 'utf8');\n assert(readme.includes(manifest.baseRevision), 'Evidence README omits the approved base revision');\n assert(readme.includes(manifest.headRevision), 'Evidence README omits the candidate source revision');\n \n-const requestedBase = process.env.STACK_A_BASE_REF\n-  || (process.env.GITHUB_BASE_REF ? `origin/${process.env.GITHUB_BASE_REF}` : 'origin/main');\n-const currentBase = git(['merge-base', 'HEAD', requestedBase]);\n-if (currentBase === migrationBase) {\n-  assert(manifest.baseRevision === currentBase, 'The merge base moved; regenerate Stack B evidence');\n-  const candidateExists = spawnSync(\n-    'git',\n-    ['cat-file', '-e', `${manifest.headRevision}^{commit}`],\n-    { cwd: repoRoot, stdio: 'ignore' },\n-  );\n-  assert(candidateExists.status === 0, 'The candidate source revision is unavailable');\n-  const isAncestor = spawnSync(\n-    'git',\n-    ['merge-base', '--is-ancestor', manifest.headRevision, 'HEAD'],\n-    { cwd: repoRoot, stdio: 'ignore' },\n-  );\n-  assert(isAncestor.status === 0, 'The candidate source revision is not an ancestor of HEAD');\n-  const drift = git(['diff', '--name-only', manifest.headRevision, 'HEAD', '--'])\n-    .split(/\\r?\\n/)\n-    .filter(Boolean)\n-    .filter((path) => !path.startsWith('audit/css-consistency/stack-b-evidence/'));\n-  assert(drift.length === 0, `Source changed after evidence generation:\\n${drift.join('\\n')}`);\n-}\n+// This immutable packet attests to its recorded migration revisions. Current browser\n+// and accessibility gates own today's behavior; unrelated commits do not invalidate history.\n+const candidateExists = spawnSync('git', ['cat-file', '-e', `${manifest.headRevision}^{commit}`],\n+  {cwd: repoRoot, stdio: 'ignore'});\n+assert(candidateExists.status === 0, 'The recorded candidate source revision is unavailable');\n+const recordedBase = spawnSync('git', ['merge-base', '--is-ancestor', manifest.baseRevision, manifest.headRevision],\n+  {cwd: repoRoot, stdio: 'ignore'});\n+assert(recordedBase.status === 0, 'The recorded base is unavailable or not an ancestor of the captured candidate');\n+const isAncestor = spawnSync('git', ['merge-base', '--is-ancestor', manifest.headRevision, 'HEAD'],\n+  {cwd: repoRoot, stdio: 'ignore'});\n+assert(isAncestor.status === 0, 'The recorded candidate source revision is not an ancestor of HEAD');\n \n console.log(\n-  `Stack B evidence verified: ${actualReceipts.length} receipts and ${actualFiles.length} bound files for ${manifest.headRevision}.`,\n+  `Historical Stack B evidence verified (not an approval of current HEAD): ${actualReceipts.length} receipts and ${actualFiles.length} bound files for ${manifest.headRevision}.`,\n );"
+        },
+        {
+          "filename": "app/src/stack-a-catalog/StackACatalog.tsx",
+          "patch": "@@ -6,8 +6,11 @@ import { StepCountDropdown } from '../components/StepCountDropdown';\n import { TransposeDropdown } from '../components/TransposeDropdown';\n import { EffectsPanel } from '../components/EffectsPanel';\n import { TrackDrawer } from '../components/TrackDrawer';\n-import { Transport } from '../components/Transport';\n+// Production loads TrackRow.css before Transport.css. Loaded after it, a\n+// generic TrackRow selector such as .swing-value would restyle the transport\n+// in the catalogue but never in the product.\n import '../components/TrackRow.css';\n+import { Transport } from '../components/Transport';\n import { DEFAULT_EFFECTS_STATE } from '../shared/effects-defaults';\n import type { EffectsState } from '../shared/sync-types';\n import './catalog.css';"
+        },
+        {
+          "filename": "specs/TESTING.md",
+          "patch": "@@ -872,3 +872,9 @@ The `unit` Vitest lane runs under a 15-second global timeout (`app/vitest.config\n ### E2E Testing\n - [Playwright Documentation](https://playwright.dev/)\n - [Testing Library](https://testing-library.com/)\n+\n+Stack B evidence is a historical packet for its recorded base/candidate pair.\n+Verification retains every artifact hash and receipt identity and requires the\n+recorded candidate to remain in history. It does not approve later HEADs; current\n+visual, accessibility and interaction gates own those. Later source edits do not\n+require rewriting historical approval metadata."
+        }
+      ]
+    }
+  },
+  "existing_unit_tests": {
+    "command": "python3 -m unittest discover -s tests -p test_eval_evidence.py",
+    "source_revision": "e80c8a31b2519912d839a6ae6cf6b0eab974a3d6",
+    "tests": 12,
+    "exit_code": 0
+  },
+  "fresh_model_comparison": {
+    "status": "not_run",
+    "skill_unchanged_since": "22b2b24fb53b701b098c3fe483fb5e3d513e3859",
+    "backend": "codex exec --ephemeral --sandbox read-only --skip-git-repo-check --json",
+    "failure": "Proxy connection failed: HTTP CONNECT failed with status 403",
+    "destination": "chatgpt.com/backend-api/codex/responses",
+    "cause": "Destination absent from the enforced environment network allowlist. No network-change tool is available.",
+    "candidate_outputs": 0,
+    "note": "The previous read-only installation-state error was resolved with permitted application-state write access; network policy then blocked the smoke test before any task generation."
+  }
+}

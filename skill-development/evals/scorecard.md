@@ -16,6 +16,13 @@ is made. The exact inherited model build and token/cost telemetry are unavailabl
 
 [Full protocol, failures, PR findings and replayable saved answers](receipts/ceremony-study-2026-11-07.md).
 
+A follow-up keeps the skill fixed at `22b2b24` and exercises good-pr #18's
+existing archive-verifier repair: all nine allowed-change/integrity checks and
+twelve existing unit tests pass. This is implementation evidence, not model
+uplift. A fresh model comparison could not run: the environment rejects the
+Codex backend with HTTP 403. Additional older-PR findings and retained commands
+are in the same receipt's follow-up section.
+
 Use this file to record baseline and post-change scores. Do not treat provisional/mental scores as release evidence; release evidence needs runnable fixture output or a saved transcript.
 
 ## Scoring rule

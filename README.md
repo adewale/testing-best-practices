@@ -135,7 +135,7 @@ The project now uses layered evals rather than a single public prompt table:
 | Hidden probes | 18 hard/adversarial probes tracked by eval-health metadata |
 | Shared benchmark | Cases and materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
 | Fixture oracles | Positive/negative calibration through `run-fixture-oracles.py`; some execute candidate tests, while bounded plan/AST checks establish only their documented decisions/shapes |
-| Ceremony comparison, 2026-11-07 | Six scenario plans and four older open PRs. Initial plans saturated; a source-only draft regressed, was corrected and retested. Final blind pairs tie the frozen PR #40 baseline, with no demonstrated uplift. [Protocol, results and limitations](skill-development/evals/receipts/ceremony-study-2026-11-07.md) |
+| Ceremony comparison, 2026-11-07 | Six scenario plans and four older open PRs. Initial plans saturated; a source-only draft regressed, was corrected and retested. Final blind pairs tie the frozen PR #40 baseline, with no demonstrated uplift. A follow-up passes nine direct checks of an existing archive repair; fresh model generation is blocked by network policy. [Protocol, results and limitations](skill-development/evals/receipts/ceremony-study-2026-11-07.md) |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | Regression guard: all 110 checks pass, including adversarial-probe coverage for new technique sections. A pass means no known regression, not a quality score |

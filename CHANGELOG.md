@@ -11,6 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Separate authoring-time regression controls from permanent CI policy, and behavior-preservation evidence from bug-fix red/green evidence. Reuse expensive checker inputs while executing every relevant rejection path.
 - Correct characterization retirement, golden field-count/cascade heuristics, hash rebind tooling, volatile documentation rosters and unconditional type-driven test deletion.
 - E80 adds a bounded six-plan oracle and legitimate-safeguard control in the existing eval infrastructure. Frozen old/revised skill batches and blind reviews of four older open PRs are recorded in `skill-development/evals/receipts/ceremony-study-2026-11-07.md`; the initial plan comparison is saturated and does not demonstrate model uplift. No new workflow, schedule or product gate is added.
+- Extend the research with good-pr's archive/current-tree coupling and Keyboardia's later authorization renewal and capture-race correction. Nine one-off checks exercise the existing archive repair without changing the skill; a fresh model comparison is unrun because the environment denies the backend endpoint.
 
 ### Retracted guidance
 Rules the skill has withdrawn. If your repository enforces one of these (a script, a lint, a lesson, a quota), it is enforcing guidance the skill no longer gives.

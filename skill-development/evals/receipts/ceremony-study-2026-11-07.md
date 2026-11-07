@@ -146,3 +146,69 @@ The retained PR answers and blind judgments can be independently re-read. New
 generations require a usable model backend and should retain both variants,
 exact configuration and comparable inputs; they are not necessary to replay
 the saved plan verdicts.
+
+## Follow-up: real archive verification
+
+The skill is held fixed at `22b2b24fb53b701b098c3fe483fb5e3d513e3859` for
+this follow-up. No additional guidance was tuned. A fresh CLI smoke test got
+past installation-state initialization but could not reach the model: the
+environment proxy rejected `chatgpt.com/backend-api/codex/responses` with HTTP
+403. That destination is absent from the enforced allowlist; no environment
+network-change tool is available. No candidate was generated, and there is no
+new model comparison or harder-case model score to report.
+
+Instead, a bounded implementation probe exercises an existing repair from
+[good-pr #18](https://github.com/adewale/good-pr/pull/18), open since 1 November.
+It tests a concrete recommendation in the fixed guidance: separate historical
+evidence from claims about the current skill, preserving actual archive integrity.
+The commands and expected outcomes were frozen before the probe ran. The
+[follow-up record](ceremony-follow-up-2026-11-07.json) retains that protocol,
+the runner text, exact commands, outputs, mutations and source excerpts.
+
+Base: `f517d6e7f264a4e85c310d18ca57017ab889250c`.
+Candidate: `e80c8a31b2519912d839a6ae6cf6b0eab974a3d6`.
+Both are temporary local checkouts of good-pr; the source PR was not changed.
+
+| Actual command/input | Expected result | Observed |
+|---|---|---|
+| Base `verify`, clean tree | Accept intact archive | Pass; 81 saved outputs regraded |
+| Base `verify`, later prose comment in the skill | Reject due to current-skill coupling | Rejects uncommitted skill changes |
+| Candidate default `verify` | Retain strict current-skill requirement | Rejects changed current skill tree |
+| Candidate `verify --historical` | Accept intact archive; identify historical scope | Pass with explicit current-skill disclaimer |
+| Historical mode, later prose comment | Accept unchanged archive | Pass with the same disclaimer |
+| Historical mode, newline appended to saved outputs | Reject altered archive bytes | Rejects output hash mismatch |
+| Historical mode, newline appended to manifest | Reject altered protocol bytes | Rejects manifest hash mismatch |
+| Historical mode, newline appended to frozen baseline | Reject altered baseline bytes | Rejects baseline content hash mismatch |
+| Historical mode, aggregate rate replaced with `-1` | Reject forged statistics | Rejects noncanonical aggregate |
+
+All nine expectations pass. Every mutation is restored in `finally`; both
+checkouts are clean afterward. The candidate's existing evidence-verifier
+unit module also passes all twelve tests:
+
+```sh
+python3 -m unittest discover -s tests -p test_eval_evidence.py
+python3 scripts/build_eval_evidence.py verify --historical evals/results/visual-evidence-gpt-5.4.json
+```
+
+This is execution evidence for the repair already present in #18. It is not an
+agent-authored cleanup from this study, a current model run, an independent
+attestation of archived execution source, or evidence of incremental skill uplift.
+The probe is a one-off research exercise, not a registered fixture or new CI job.
+
+### Additional older-PR findings
+
+These are manual applications of the fixed guidance, not scored model answers.
+Frozen PR bodies, the relevant discussion and selected source patches are in
+the follow-up record. Reported browser/product results were not rerun here.
+
+| PR / frozen head | Supported distinction and useful next action |
+|---|---|
+| [Keyboardia #127](https://github.com/adewale/keyboardia/pull/127), open since 7 October; `88941adda4411569377cd28215504ffd4af896f2` | Its body and discussion identify whole-app identity states waiting for a deliberately removed dropdown. Retarget or retire that obsolete requirement through the authorized harness change; preserve current visual review and the separate grid-offset regression. The stated spec/implementation gaps remain real product work. |
+| [Keyboardia #130](https://github.com/adewale/keyboardia/pull/130), open since 18 October; `d4087f9415660d1c181f39e8aa50981c9ec01ebc` | The patch retires whole-app identity states while keeping component identity, hashes, historical receipt inventories and recorded ancestry. The newer discussion renews the expired authority and corrects a proposed capture fix using reported experiments. Do not describe the old expiry as today's blocker or delete checks merely because capture synchronization needed repair. |
+| [Good PR #18](https://github.com/adewale/good-pr/pull/18), open since 1 November; `e80c8a31b2519912d839a6ae6cf6b0eab974a3d6` | The historical-mode repair has direct allowed-change and corruption evidence above. Preserve strict matching for new current-skill claims; use historical verification for an unchanged past run. An archive disclaimer is necessary to avoid silently upgrading its scope. |
+| [Keyboardia #87](https://github.com/adewale/keyboardia/pull/87), open since 2 August; `fbcd2685864e98859dba19b1e0ebecbabdc3ed1d` | Its body reports actual conflicts with #127 and unfinished authoring/renderer acceptance work. Age, file count and many passing lanes do not establish useless ceremony. Review a bounded authoring unit against the chosen dock and preserve the distinct renderer acceptance requirements. This finding uses the body only, not a full code review. |
+
+The follow-up strengthens the research's concrete mechanism and counterexamples.
+The earlier saturated comparison remains the only generation evidence for this
+guidance. A claim that it improves autonomous decisions still needs a fresh,
+usable model backend and harder tasks without the supplied diagnosis.
