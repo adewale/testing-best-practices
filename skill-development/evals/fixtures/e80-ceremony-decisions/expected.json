@@ -1,0 +1,79 @@
+{
+  "S1": {
+    "decision": "change",
+    "retire": [
+      "alpha_gate",
+      "reseal_tool"
+    ],
+    "retain": [
+      "capture",
+      "contact",
+      "font_sha"
+    ],
+    "introduce": []
+  },
+  "S2": {
+    "decision": "change",
+    "retire": [
+      "nightly",
+      "sabotage",
+      "revert"
+    ],
+    "retain": [
+      "label_regression",
+      "release_security"
+    ],
+    "introduce": []
+  },
+  "S3": {
+    "decision": "change",
+    "retire": [
+      "matrix",
+      "receipt",
+      "regenerator"
+    ],
+    "retain": [
+      "comparisons",
+      "browser"
+    ],
+    "introduce": []
+  },
+  "S4": {
+    "decision": "change",
+    "retire": [
+      "repeat_setup",
+      "timeout_raise"
+    ],
+    "retain": [
+      "end_to_end",
+      "each_rejection",
+      "pcm_recompute"
+    ],
+    "introduce": []
+  },
+  "S5": {
+    "decision": "change",
+    "retire": [
+      "universal_red",
+      "optout",
+      "test_roster"
+    ],
+    "retain": [
+      "preservation",
+      "bug_regressions",
+      "cli_examples"
+    ],
+    "introduce": []
+  },
+  "S6": {
+    "decision": "keep",
+    "retire": [],
+    "retain": [
+      "signature",
+      "checksum",
+      "tenant",
+      "browser"
+    ],
+    "introduce": []
+  }
+}

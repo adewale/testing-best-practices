@@ -1,0 +1,16 @@
+{
+  "eval_id": "E80-ceremony-decisions",
+  "language": "generic",
+  "oracle": "oracle.py",
+  "good_sample": "samples/good",
+  "bad_samples": [
+    "samples/bad-extra-gate",
+    "samples/bad-drop-integrity",
+    "samples/bad-keywords"
+  ],
+  "checks": [
+    "six scoped retire/retain decisions",
+    "no compensating permanent machinery",
+    "keep legitimate signatures, byte integrity and tenant checks"
+  ]
+}

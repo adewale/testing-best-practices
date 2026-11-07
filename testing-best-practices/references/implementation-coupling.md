@@ -4,6 +4,11 @@ Use this workflow when an AI has written the implementation, tests, expected
 results and approval machinery together. Agreement among those artifacts is
 not independent proof. Apply the same standard to human-written code.
 
+First ask whether the check still protects a distinct requirement. A duplicate
+or obsolete one-time gate may be deleted without a replacement; a pin must not
+veto an owner-authorized behavior change. See [verification cost](verification-cost.md)
+before building reseal tools, recurring fault campaigns or approval exceptions.
+
 ## Classify the promise before changing the check
 
 | Check | What exact identity establishes | Default action |
@@ -43,8 +48,8 @@ authored content can be real contracts. Ask for the requirement and consumer.
 
 ## Correct it at the owning boundary
 
-Move useful assertions to the real producer/consumer before removing the old
-check. Drive HTTP handlers, production database queries, both sides of a wire
+Move useful, still-required assertions to the real producer/consumer before
+removing the old check. Drive HTTP handlers, production database queries, both sides of a wire
 protocol, real components/renderers or emitted module/request graphs. Keep
 real-engine tests at their existing boundary. Do not create a second
 implementation, export internals solely for tests, or source-slice and
@@ -68,7 +73,9 @@ make an unrelated README edit a product regression.
 
 Run the nearest owning tests and required repository checks. Show an allowed
 implementation variant staying green and a behavioral fault going red, then
-restore production bytes. Name the keeper for every removed assertion. State
+restore production bytes. Name retained coverage, or explain why a removed
+assertion had no distinct guarantee and needs no keeper. These can be local
+authoring checks, not permanent jobs or another approval protocol. State
 which pins remain and why, exact commands/results and unverified boundaries.
 Label static inspection honestly; do not claim an executed independent oracle.
 

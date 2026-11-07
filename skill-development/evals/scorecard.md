@@ -1,5 +1,21 @@
 # Eval Scorecard
 
+## 2026-11-07 verification-ceremony comparison
+
+Compared frozen PR #40 (`1f2250ac`) with added proportional-verification guidance
+using fresh, isolated-context sub-agent candidate batches. Two batches per arm
+pass all six E80 plan decisions; supplied-fact reviews of four older open PRs
+have eight blind ties. This panel is saturated, not evidence of incremental lift.
+
+An exploratory source-only pass exposed draft overreach (missing production
+context became a new release prerequisite) and a missed concrete publication
+gap. The reference was narrowed; a fresh final batch passes six plans and its
+four source-only reviews tie the baseline 4–4 under a new blind review. These
+are now tune/regression cases; no held-out, multi-model or productivity claim
+is made. The exact inherited model build and token/cost telemetry are unavailable.
+
+[Full protocol, failures, PR findings and replayable saved answers](receipts/ceremony-study-2026-11-07.md).
+
 Use this file to record baseline and post-change scores. Do not treat provisional/mental scores as release evidence; release evidence needs runnable fixture output or a saved transcript.
 
 ## Scoring rule

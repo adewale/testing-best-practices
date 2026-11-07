@@ -5395,6 +5395,75 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-11-06"
       }
+    },
+    {
+      "id": "E80-ceremony-decisions",
+      "critical": false,
+      "mode": "assess",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "generic",
+        "techniques": [
+          "test-tier-selection",
+          "assertion-quality"
+        ],
+        "risk_classes": [
+          "verification-cost",
+          "maintainability",
+          "over-application"
+        ],
+        "failure_modes": [
+          "assurance-escalation",
+          "historical-evidence-freeze",
+          "blanket-safeguard-deletion"
+        ]
+      },
+      "prompt": "# Review the next development action\n\nFor each case, follow its task. Return a JSON array with all six decisions in one json code fence. Inventory IDs are local to each case. Do not execute project code.\n\n## S1\n\nRecommend the smallest supported next action. Return a JSON object with id, decision (change/defer/keep), retire (inventory IDs), retain (inventory IDs), introduce (new permanent machinery; empty if none), rationale, and validation. Review only; do not claim tests or production checks ran.\n\nThe owner asks to make three game riders distinguishable and explicitly permits changing or removing obstructing seals. A reviewed historical capture records the old rider shapes. The new shapes pass foot-contact and continuity tests but change 144 alpha hashes. The proposed reseal tool is used only to update those hashes and requires a four-section review. Downloaded font integrity is a separate contract.\n\n- `alpha_gate`: current render must equal historical alpha hashes\n- `reseal_tool`: updates alpha gate after a four-section review\n- `capture`: immutable old reviewed capture\n- `contact`: current foot-contact and continuity behavior tests\n- `font_sha`: checksum of downloaded font\n\n## S2\n\nRecommend the smallest supported next action. Return a JSON object with id, decision (change/defer/keep), retire (inventory IDs), retain (inventory IDs), introduce (new permanent machinery; empty if none), rationale, and validation. Review only; do not claim tests or production checks ran.\n\nAn agent must resume an abandoned nightly mutation campaign before delivering a label fix. All 26 scheduled runs failed or were cancelled; attempted repairs grew the matrix to 41 jobs. No actionable product defect was found. A source-patching sabotage helper and a second revert helper duplicate an existing focused label regression that fails before its bug fix. The owner asks to stop paying for redundant verification, retaining the product regression and release security checks.\n\n- `nightly`: 41-job scheduled mutation campaign\n- `sabotage`: source-patching duplicate helper\n- `revert`: second duplicate helper\n- `label_regression`: focused executed label regression\n- `release_security`: independent release security checks\n\n## S3\n\nRecommend the smallest supported next action. Return a JSON object with id, decision (change/defer/keep), retire (inventory IDs), retain (inventory IDs), introduce (new permanent machinery; empty if none), rationale, and validation. Review only; do not claim tests or production checks ran.\n\nReview a PR changing ordinary UI button colors. Two captioned before/after screenshots show the result. Existing browser tests cover both themes, keyboard focus, and forced colors, with a demonstrated regression control. An evidence linter classifies all programmatically built HTML as generated scientific output and asks for 30 screenshot permutations, per-image hashes, a receipt, and a regeneration command. These extra artifacts answer no additional review question. The owner asks for the smallest trustworthy PR.\n\n- `comparisons`: two captioned before/after comparisons\n- `browser`: existing focus/theme/forced-color regressions\n- `matrix`: 30 generated screenshot permutations\n- `receipt`: per-image hash receipt\n- `regenerator`: tool used only to regenerate the matrix/receipt\n\n## S4\n\nRecommend the smallest supported next action. Return a JSON object with id, decision (change/defer/keep), retire (inventory IDs), retain (inventory IDs), introduce (new permanent machinery; empty if none), rationale, and validation. Review only; do not claim tests or production checks ran.\n\nEvidence-verifier tests repeatedly prepare an expensive audio matrix for every one-field tamper case. This costs 175 seconds and drove 15→30→60-second timeout increases. Structural rejection is cheap, but accepted PCM must still be recomputed from bytes. A proposed optimization would cache the final verdict. The owner wants less test setup cost without weakening detection. One full preparation→recompute→verdict integration already exists; prepared matrix input can be cloned safely between cases.\n\n- `repeat_setup`: fresh full matrix preparation per tamper case\n- `timeout_raise`: another proposed timeout increase\n- `end_to_end`: one full preparation-to-verdict integration\n- `each_rejection`: real verifier invocation for each tampered input\n- `pcm_recompute`: accepted PCM checked against raw bytes\n\n## S5\n\nRecommend the smallest supported next action. Return a JSON object with id, decision (change/defer/keep), retire (inventory IDs), retain (inventory IDs), introduce (new permanent machinery; empty if none), rationale, and validation. Review only; do not claim tests or production checks ran.\n\nA behavior-preserving module move passes the existing product suite on base and head. CI nevertheless requires every PR to have a failing-base test; refactors must obtain an opt-out label. A docs check also freezes current test titles and counts, so a test rename demands an appendix rewrite. Public documented CLI commands are separately checked by executing their examples. The owner asks to simplify these requirements, while keeping bug-fix regressions and working documentation.\n\n- `universal_red`: every PR must fail a test on base\n- `optout`: refactor opt-out label machinery\n- `test_roster`: copied test titles/counts in current docs\n- `preservation`: existing product preservation suite\n- `bug_regressions`: focused red-green evidence for actual bug fixes\n- `cli_examples`: executed public CLI examples\n\n## S6\n\nRecommend the smallest supported next action. Return a JSON object with id, decision (change/defer/keep), retire (inventory IDs), retain (inventory IDs), introduce (new permanent machinery; empty if none), rationale, and validation. Review only; do not claim tests or production checks ran.\n\nReview a release change. A tarball signature and checksum identify the actual installed bytes. An authorization regression rejects a request from another tenant, and a browser test proves the exported document is displayed. All run once in the existing release path. A previous cross-tenant bug was caught by the authorization test. No unnecessary execution or incidental implementation pin is demonstrated. The owner asks whether any verification can safely be cut; an empty finding list is acceptable.\n\n- `signature`: signed installed tarball identity\n- `checksum`: tarball byte integrity\n- `tenant`: real cross-tenant authorization regression\n- `browser`: exported-document display wiring\n",
+      "fixture": "evals/fixtures/e80-ceremony-decisions: six bounded inventory plans; data-only oracle.",
+      "expected_behavior": [
+        "Retire demonstrated obsolete or duplicate machinery without a replacement program.",
+        "Preserve historical artifacts, actual checker execution and independent trust boundaries.",
+        "Separate bug regression from behavior preservation; accept no safe cut."
+      ],
+      "red_flags": [
+        "Build reseal/exception machinery instead of removing incidental locks.",
+        "Cache verdicts or delete byte-integrity/tenant checks.",
+        "Treat plan vocabulary as executed cleanup evidence."
+      ],
+      "rubric_focus": [
+        "C",
+        "D",
+        "H"
+      ],
+      "measurement": {
+        "runtime_checks": [],
+        "static_checks": [
+          "Validate exact inventory decisions in JSON; reject extra gates, missing integrity and keyword-only answers."
+        ],
+        "judge_checks": [
+          "Review rationale, scope and validation honesty separately."
+        ]
+      },
+      "validity": {
+        "claim": "Candidate selects proportionate plans for these six supplied situations.",
+        "warrant": "The plan must retain each distinct guarantee and remove only the demonstrated redundant inventory.",
+        "backing": {
+          "runtime_checks": [
+            "one positive and three contrasting negative plan controls"
+          ],
+          "model_runs": "2026-11-07: frozen PR40 skill versus revised guidance, two independent batches each; results in receipts/ceremony-study-2026-11-07.md"
+        },
+        "rebuttals": [
+          "Inventory plans are not executed cleanup, prose correctness or causal productivity evidence.",
+          "Visible cases are saturated in this initial comparison; batch trials share context within a trial."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "saturated_public",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-11-07"
+      }
     }
   ]
 }

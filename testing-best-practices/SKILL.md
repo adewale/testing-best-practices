@@ -8,7 +8,8 @@ description: >
   sabotaged/skipped/weak tests. Use when writing tests, reviewing test quality,
   fixing flaky tests, improving coverage quality, or when the user mentions
   TDD, testing, coverage, mocks, invariants, types vs tests, defense in depth,
-  fuzzing, generative testing, or test quality.
+  fuzzing, generative testing, test quality, or development blocked by costly
+  verification, implementation freezes, approval machinery, or test ceremony.
 compatibility: Agent Skills clients including Codex, OpenCode, Pi, Gemini CLI, and Claude Code.
 metadata:
   author: adewale
@@ -59,6 +60,7 @@ Topical references by trigger:
 - Reimplementation, port, multi-language SDK, custom data structure with no reference, or approximate/probabilistic/ANN/ranking output → `references/differential-testing.md`
 - Complex outputs, snapshots, transformation pipelines, save/load or migration roundtrips → `references/golden-file-testing.md`
 - AI-written code audits, hashes/pins/approvals that break on harmless refactors, or requests to refresh baselines to make CI green → `references/implementation-coupling.md`
+- Stalled PRs, repeated verification/approval work, expensive checker tests, or requests to reduce ceremony → `references/verification-cost.md`
 - Time, timers, schedules, sleeps, flaky time tests, background threads/async work tests can only reach by sleeping → `references/deterministic-time.md`
 - External APIs, recorded real responses, mock drift → `references/vcr-cassettes.md`
 - CLI/plugin/docs registry sync, or verification claims in docs and agent instructions → `references/doc-sync-testing.md`
@@ -92,6 +94,17 @@ When a user brings examples, tables, bug reports, spreadsheet rows, or support c
 Do not give every artifact the same test plan. Reusable libraries, parsers, payment/auth/security boundaries, migrations, and code that will be refactored deserve stronger regression/property/contract coverage. Throwaway probes, one-off research scripts, or generated exploration may need only a smoke check or no tests if the user accepts that lifecycle.
 
 Separate **behavior changes** from **structure changes**. Behavior changes need tests that can fail for the new/changed behavior. Pure tidying/refactoring should ride an existing green suite; if no such suite exists, add characterization tests for the behavior you need to preserve before refactoring.
+
+When verification obstructs the requested change, revisit the requirement before
+repairing its enforcement. A snapshot, report, lesson, score or prior approval
+does not create a product requirement. Delete demonstrated duplicate or obsolete
+machinery; it needs no replacement keeper when no distinct guarantee is lost.
+Keep historical evidence bound to its original subject and use current behavior
+checks for today's code. Prefer existing tests or a bounded authoring-time check
+over a new permanent gate, receipt, exception protocol or recurring campaign.
+A bug regression should fail before its fix; preservation tests may pass on
+both revisions. Do not turn this distinction into universal failing-base gates
+or refactor opt-out labels. See `references/verification-cost.md`.
 
 For a new service with no pipeline, start with a walking skeleton: the thinnest build/deploy/test slice. Track unfinished acceptance tests as visible in-progress items tied to a story/issue, not silent skips. Keep unit tests green; do not commit failing unit tests as proof.
 
@@ -190,7 +203,7 @@ For transformations or complex generated output, use golden files with explicit 
 
 Report evidence by severity and include positive observations. For generative tests, load the relevant language and topical references before recommending engine-specific changes. Check:
 
-0. **Is it running, and can it fail?** For each tier: the job that runs it, its last result on the default branch, whether gated tests are reachable, and whether each gate can go red (`|| true`, `continue-on-error`, baseline updaters, skip-green, empty targets). A dead gate is the first finding. See `references/gate-integrity.md`.
+0. **Is it useful, running, and able to fail?** First identify the user outcome, distinct risk and current cost. A redundant or obsolete check can be removed instead of made blocking. For retained tiers, inspect the job, last default-branch result, reachability and failure path (`|| true`, `continue-on-error`, baseline updaters, skip-green, empty targets). See `references/gate-integrity.md` and `references/verification-cost.md`.
 1. **Sabotage / false confidence**: skipped/focused tests, no assertions, logging-not-asserting, commented-out assertions, always-true assertions.
 2. **Oracle strength**: weak sole assertions, missing negative/error/state/structural assertions, tautologies. For property tests, a bare never-crashes oracle is weak when a semantic invariant is available.
 3. **Mock-reality drift**: hardcoded mocks that would not notice real API/schema changes.
@@ -221,7 +234,12 @@ Common upgrades:
 - Replace broad mocks with fakes, contract tests, or assertions on public behavior.
 - Replace repeated object literals with builders that keep behavior-specific fields explicit.
 
-Never silently downgrade a tier: list removed or replaced tests by tier, and keep real-engine tests (SQLite, workerd, browser) unless an equal or stronger tier replaces them. A lesson or postmortem counts only when a check enforces it.
+Never silently downgrade a tier: explain removed or replaced coverage, and keep
+real-engine evidence (SQLite, workerd, browser) for distinct product or trust
+boundaries. A proven duplicate, unused tool or expired one-time freeze may be
+deleted without replacement. Lessons can correct guidance, architecture or an
+existing test; they do not each require a new check. Validate the actual change
+at its owning boundary, without constructing proof-only infrastructure.
 
 ### Detect mode
 

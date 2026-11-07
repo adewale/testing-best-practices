@@ -66,7 +66,8 @@ function getFixtures() {
 - **Zero-code test creation**: add a fixture file = add a test case
 - **Human-readable expected output**: Markdown/text, not binary
 - **Real-world inputs**: actual web pages, documents, source files
-- **Drift detection**: any change to transformation logic is caught
+- **Behavior comparison**: changes to the specified output are reviewable;
+  incidental serialization changes should be normalized away
 
 ### When to use
 - HTML → Markdown extraction
@@ -145,10 +146,9 @@ sidecar `__snapshots__/` style.
 
 ## When to use snapshot tests instead of field-by-field assertions
 
-- The output has more than ~5 fields you'd otherwise assert on individually
+- A small, normalized projection of the output is itself the reviewed contract
 - The output is a tree, AST, rendered DOM, log sequence, or formatted text
-- The same shape is asserted on across many tests (a single change should
-  cascade through the snapshots, not require editing 50 assertions)
+- One reviewed representation is clearer than independent specified-field checks
 - The structure is part of the contract, not just the values
 
 ## When NOT to use snapshot tests
@@ -179,8 +179,9 @@ Pinning an exact render or op-stream hash gives no reviewable diff: every art or
 layout change becomes a "rebind the hashes" commit, and a backend change needs a
 second hash table. Prefer structural or perceptual goldens with a visible diff
 (draw-command lists, text frames, SVG structure, images reviewed as images), and
-treat pin churn per change as a health metric. If you must keep hashes, re-pin
-through a tool that records a written review of what changed.
+investigate repeated pin churn. Keep hashes only where exact bytes are the
+contract or historical provenance. Replace an incidental lock instead of adding
+a re-pin tool or written-review ceremony around it.
 
 ### Self-approved goldens
 A golden created or re-approved by the same actor in the same change as the code it
@@ -208,9 +209,9 @@ intended. Mitigations:
 - Keep snapshots small and focused (one snapshot per behavior, not per test)
 - Don't snapshot the entire program state — snapshot the part this test
   exercises
-- When a refactor cascades through snapshots, split into two commits:
-  "refactor (no behavior change, regenerated snapshots)" + "feature
-  (intentional behavior change)"
+- If a behavior-preserving refactor cascades through snapshots, narrow the
+  compared contract. Do not normalize away required behavior or mechanically
+  approve a new baseline just to complete the refactor.
 
 ### Loss of intent
 A snapshot like `"hello Bob"` doesn't tell you what's important. The test
