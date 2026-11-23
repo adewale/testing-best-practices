@@ -1,0 +1,40 @@
+{
+  "repository": "adewale/visivotab",
+  "total_prs": 1,
+  "pages_checked": [
+    "GET /repos/adewale/visivotab/pulls?state=all&per_page=100, pages 1 and 2 returned 1 and 0. Read the title and body of #1.",
+    "PR #1 files page 1 returned all 17 paths reported by the PR detail. Read the six-commit inventory, the two testing commits, and the complete test-file patches."
+  ],
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Migrate extension to Chrome Manifest V3",
+      "url": "https://github.com/adewale/visivotab/pull/1",
+      "state": "open",
+      "merged": false,
+      "classification": "Explicit test-quality follow-up inside a migration PR",
+      "weakness": "The initial tests in this PR used a minimal two-photo API stub, repeated storage doubles, and example image widths of 800 and 2000. These left the actual 1280-pixel cutoff and many image layouts unchecked.",
+      "remedy": "Reworked both existing Vitest suites using shared builders, Flickr-shaped fixtures, generated layout invariants, exact cache cutoffs and cache-state assertions on errors.",
+      "test_paths": [
+        "test/newtab.test.js",
+        "test/photo-cache.test.js",
+        "test/builders.js",
+        "test/fixtures/flickr-api.js"
+      ],
+      "diff_evidence": [
+        "Commit ee8bd04 introduced 21 new-tab and 18 cache tests. Its direct successor 52b668c explicitly cited testing-best-practices and modified both existing test files. The base branch had no tests.",
+        "test/photo-cache.test.js checks that 1280 retains the original URL and 1281 selects the smaller URL. On HTTP 500 or an empty photoset the test reads the stored cache and compares it with the seeded contents.",
+        "test/newtab.test.js generates image and window dimensions and checks coverage on both axes and center alignment. test/fixtures/flickr-api.js models success, empty and API error responses with a link to Flickr's API documentation."
+      ],
+      "evidence_url": "https://github.com/adewale/visivotab/commit/52b668c470a1addcab913057bd2dd5daa0335b8a",
+      "transferable_rule": "For threshold logic, test the threshold and its adjacent value. For a large input space, check an observable invariant. Inject controllable randomness to enumerate finite outcomes reproducibly.",
+      "outcome_caveat": "The diff contains 59 test declarations, up from 39. The commit reports 59 passing. The head has zero GitHub check runs and zero commit statuses, and this audit did not rerun the suite. The nine-origin test samples Math.random() 1,000 times and another property ignores its generated integer, so neither deterministically exercises every path. The Flickr fixture is manually maintained."
+    }
+  ],
+  "exclusions": [
+    "The baseline feature tests in ee8bd04 are context for the later quality-specific rewrite. The Playwright example lives only in TODO.md."
+  ],
+  "limitations": [
+    "The aggregate file API omitted the 6,087-line added package-lock.json patch. All 17 changed names and all candidate test patches were available, including the lockfile delta in the final quality commit."
+  ]
+}

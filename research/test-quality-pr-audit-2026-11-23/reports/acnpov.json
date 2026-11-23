@@ -1,0 +1,10 @@
+{
+  "repository": "adewale/acnpov",
+  "total_prs": 0,
+  "pages_checked": 1,
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": [],
+  "source": "https://api.github.com/repos/adewale/acnpov/pulls?state=all&per_page=100&page=1",
+  "cross_check": "GitHub issue search for repo:adewale/acnpov is:pr returned total_count 0 and incomplete_results false."
+}

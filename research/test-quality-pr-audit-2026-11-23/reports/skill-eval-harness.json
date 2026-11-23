@@ -1,0 +1,1863 @@
+{
+  "repository": "adewale/skill-eval-harness",
+  "total_prs": 89,
+  "pages_checked": 2,
+  "enumeration": {
+    "date": "2026-11-23",
+    "url": "https://api.github.com/repos/adewale/skill-eval-harness/pulls?state=all&per_page=100&page=1",
+    "page_sizes": [
+      89,
+      0
+    ],
+    "states": {
+      "open": 14,
+      "merged": 71,
+      "closed_unmerged": 4
+    },
+    "author_or_date_filters": false,
+    "changed_files": "All 89 titles, bodies and changed-file inventories screened. GraphQL returned 89 pull requests with hasNextPage=false. The file projections for #85 (164 paths) and #100 (132 paths) were paginated with REST. The inventories total 1,589 changed-file entries. A local three-dot Git diff from each PR’s merge-base to its head matched every changed path for every PR. Candidate diffs were inspected from those Git objects, avoiding API patch truncation."
+  },
+  "matching_prs": [
+    {
+      "number": 4,
+      "title": "Support ablation variants in Pi smoke runner",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Superseded evaluation-method experiment",
+      "weakness": "The original smoke runner compared only whole-skill and no-skill variants. It could not probe a proposed component’s contribution.",
+      "attempted_remedy": "Allow the existing Pi smoke to select an ablation and instruct the model to ignore the named component while keeping the skill mounted.",
+      "test_paths": [
+        "examples/adewale-workspace/run_pi_smoke.py"
+      ],
+      "diff_evidence": [
+        "variant_runtime accepts ablation:<id>, looks up its removed_component and includes it in the instruction. The code still passes the original skill paths to the invocation."
+      ],
+      "transferable_rule": "Verify the experimental manipulation in the input itself. An instruction to ignore a component cannot establish how the model would behave if the component were absent.",
+      "outcome_caveat": "Merged as instruction-simulated smoke support with no test-file change. #20 subsequently replaces this as the basis for materialized causal ablations.",
+      "head_checks": "No GitHub check rollup was returned for this PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/4/files"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Add script assertions, leakage lint, and judge command backend",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-method improvement",
+      "weakness": "A prompt could give away the literal phrase its own contains assertion rewarded. Existing output checks also lacked a way to run the repository’s deterministic artifact oracle.",
+      "attempted_remedy": "Detect prompt/assertion leakage and add an opt-in script assertion that evaluates the saved output directory.",
+      "test_paths": [
+        "tests/test_skill_benchmark.py",
+        "skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "The leakage fixture places the expected contains value in the prompt. The script-oracle test compares the no-opt-in path with an allowed command that checks the fixture output."
+      ],
+      "transferable_rule": "Check whether copying the prompt earns credit. Use an artifact-level oracle for observable work.",
+      "outcome_caveat": "The new lint flags literal overlap, which is only one form of leakage.",
+      "head_checks": "No GitHub check rollup was returned for this PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/5/files"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Improve README and repo contribution surfaces",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing-suite CI improvement",
+      "weakness": "The repository’s local tests and CLI smoke commands had no checked-in workflow to run them on pull requests.",
+      "attempted_remedy": "Introduce a CI workflow executing the existing unittest suite and both CLI help commands on Python 3.10, 3.11 and 3.12.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "CONTRIBUTING.md"
+      ],
+      "diff_evidence": [
+        "The new workflow triggers on pull_request and pushes to main, runs python -m unittest discover tests -v, and invokes skill_benchmark.py and run_pi_trigger_eval.py with --help after compilation."
+      ],
+      "transferable_rule": "Run the established user-facing checks in the same supported environments contributors are expected to maintain.",
+      "outcome_caveat": "This establishes execution for the tests unittest can collect. #39 later added properties that discovery missed, resolved through #97/#100.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/7/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/27339027737/job/80770713681"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Implement trace-aware eval harness slice",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-method improvement",
+      "weakness": "A command name in prose or tool output could be mistaken for observed execution. An empty trace could make an efficiency threshold appear satisfied.",
+      "attempted_remedy": "Require trace or metric evidence and distinguish command inputs from command output when grading process claims.",
+      "test_paths": [
+        "tests/test_skill_benchmark.py",
+        "skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "test_command_assertions_match_command_inputs_not_outputs challenges the detector with a command name in output. Another test removes the evidence required by process and efficiency assertions."
+      ],
+      "transferable_rule": "Exercise an oracle against both a real observed action and text that merely describes the action.",
+      "outcome_caveat": "These controls accompany new trace support. They do not validate every provider’s trace shape. #9 subsequently grounded the parser in actual provider shapes.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/8/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/27369476207/job/80877624649"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Ground trace runners and process assertions",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-method repair",
+      "weakness": "The Pi baseline could read the installed skill in the repository. Applying a with-skill process requirement to a no-skill arm also penalized the intended control.",
+      "attempted_remedy": "Build variant-specific temporary workspaces, scope assertions to the intended arms, and test normalization using Pi and Codex event shapes.",
+      "test_paths": [
+        "examples/adewale-workspace/run_pi_smoke.py",
+        "skill_benchmark.py",
+        "tests/test_skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "Tests check the mounted baseline workspace for the skill, grade a variant-specific process rule on both arms, and extract answers and tokens from Codex item.completed events."
+      ],
+      "transferable_rule": "Inspect what a baseline can actually access, and apply treatment-specific expectations only where the treatment exists.",
+      "outcome_caveat": "The live observations are reported by the author. The checked-in tests use shaped records and temporary workspaces.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/9/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/27373245201/job/80890725875"
+      ]
+    },
+    {
+      "number": 17,
+      "title": "Add eval-framework docs: architecture, abstractions, authoring guide, and roadmap",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/17",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-authoring approach proposal",
+      "weakness": "The project’s authoring practices had produced leaky keyword checks, trigger meta-prompts and cases that could keep passing without distinguishing an improved response.",
+      "attempted_remedy": "Document a paired authoring workflow with real fixtures, both positive and forbidden evidence, stronger artifact oracles where needed, and a rule for adding or pruning cases after observed failures.",
+      "test_paths": [
+        "docs/authoring-evals.md",
+        "docs/eval-framework-roadmap-spec.md",
+        "TODO.md"
+      ],
+      "diff_evidence": [
+        "The authoring guide explicitly describes the meta-prompt problem, presents a rendered-artifact oracle example, and separates tune/holdout/holdback. The roadmap proposes exposing whether a score rests on a strong or demo oracle."
+      ],
+      "transferable_rule": "Build the check around real inputs and the artifact a user receives. Retain cases that discriminate outcomes and reserve held-out examples for verification.",
+      "outcome_caveat": "A design and guidance PR with no changed test files. #19 and #22 subsequently propose and implement concrete checks of evaluator behavior.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/17/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/27833590320/job/82376105485"
+      ]
+    },
+    {
+      "number": 19,
+      "title": "Add confidence floor specification for eval harness measurement",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/19",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing-approach proposal",
+      "weakness": "The project had no explicit cross-cutting test plan for detector polarity, baseline leakage, repeatable re-grading, or the model-free grading promise.",
+      "attempted_remedy": "Specify positive and negative fixture pairs for every registered detector, a cross-runner isolation check, repeat grading over saved files, and a no-network/no-subprocess guard.",
+      "test_paths": [
+        "docs/eval-framework-roadmap-spec.md",
+        "TODO.md"
+      ],
+      "diff_evidence": [
+        "CF.1 proposes deriving coverage from OBJECTIVE_ASSERTIONS. CF.2 requests a baseline workspace walk. CF.3 calls for comparing repeated output bytes and CF.4 for intercepting calls from core grading."
+      ],
+      "transferable_rule": "Make the grader’s promises executable and decide how a new detector or backend will inherit them.",
+      "outcome_caveat": "Specification only. #22 supplies executable coverage.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        22
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/19/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/27839887311/job/82396330698"
+      ]
+    },
+    {
+      "number": 20,
+      "title": "Materialized skill ablations + trustworthy-measurement harness (Claude runner, judge dimension, readiness gate)",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/20",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test audit and evaluation-method repair",
+      "weakness": "Ablation arms could retain the entire skill and rely on an instruction to ignore it. Missing or crashed runs could enter judge tasks and paired summaries.",
+      "attempted_remedy": "Physically remove the declared component, bind comparisons to provenance, and challenge the reporting and judging paths with missing and failed outputs.",
+      "test_paths": [
+        "tests/test_audit_fixes.py",
+        "tests/test_ablation_model.py",
+        "tests/test_skill_benchmark.py",
+        "tests/test_example_demo.py",
+        "examples/adewale-workspace/run_pi_smoke.py"
+      ],
+      "diff_evidence": [
+        "test_missing_output_emits_no_judge_task and test_infra_failure_emits_no_judge_task sit beside a scorable positive control. Other tests exclude a crashed arm from paired overhead and apply the differential invariant to real skill material."
+      ],
+      "transferable_rule": "Verify the treatment changed the input and both sides actually produced scorable observations before measuring a difference.",
+      "outcome_caveat": "The offline fixtures demonstrate wiring and exclusion. They do not establish a model’s response to a real ablation.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        4
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/20/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28532297022/job/84584694725"
+      ]
+    },
+    {
+      "number": 22,
+      "title": "Implement eval-framework roadmap spec with cost telemetry and confidence floor",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/22",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing-approach implementation",
+      "weakness": "A new objective detector could have the wrong polarity or lack coverage. An isolation test checking only the empty arm would also pass if neither arm mounted the skill.",
+      "attempted_remedy": "Implement #19’s detector controls, baseline marker search with a with-skill twin, repeated grading, and model/network guards.",
+      "test_paths": [
+        "tests/test_confidence_floor.py",
+        "tests/fixtures/detectors/contains/should-fire.json",
+        "tests/fixtures/detectors/contains/should-pass.json"
+      ],
+      "diff_evidence": [
+        "CF1 actually grades both fixture polarities for every registered OBJECTIVE_ASSERTIONS entry and checks for missing and orphan pairs. CF2 searches mounted file contents for a planted marker. The diff adds 44 fixture files across 22 detector directories, despite the PR body’s 48/24 claim."
+      ],
+      "transferable_rule": "Derive the fixture inventory from the runtime registry and execute both polarities. Pair an absence assertion with a witness that the treatment is present.",
+      "outcome_caveat": "#19 is the proposal for this work. The committed fixtures check known counterexamples and do not measure live model accuracy.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        19
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/22/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28594043565/job/84784666982"
+      ]
+    },
+    {
+      "number": 24,
+      "title": "Add follow-up features 1, 2, 5, 6, 8: ablation significance, judge alignment, reliability, tool taxonomy, error analysis",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/24",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test audit",
+      "weakness": "Green happy paths missed a label-inverting judge whose F1 became null, a tool selector matching command text, and overconfident ablation claims based on too few repetitions.",
+      "attempted_remedy": "Add adversarial known-answer cases, distinguish tool names from command text, and exercise both underpowered and sufficiently replicated ablations.",
+      "test_paths": [
+        "tests/test_followup_features.py",
+        "tests/test_skill_benchmark.py",
+        "skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "test_f1_is_zero_not_none_for_label_inverting_judge fixes a concrete expected value. test_single_shot_regression_is_indeterminate_not_confirmed and a mixed significant/underpowered pair distinguish three plausible verdicts."
+      ],
+      "transferable_rule": "Choose cases that separate zero from unknown and useful evidence from an underpowered coincidence.",
+      "outcome_caveat": "The revert and mutation campaign is described in the PR. These particular mutants were not independently replayed here.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/24/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28630903482/job/84907378674"
+      ]
+    },
+    {
+      "number": 25,
+      "title": "Trustworthy-measurement expansion: external-review gaps (G1–G6), contamination + judge-robustness probes, tool-using judge, and audit hardening",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/25",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit evaluation-method audit with test repairs",
+      "weakness": "An always-passing judge could look consistent, and skipped dependent assertions could veto a case or alter its denominator. The initial tests missed order sensitivity.",
+      "attempted_remedy": "Probe judges with empty and master-key answers and reversed order. Check skipped and running critical dependents, prerequisites and consensus order explicitly.",
+      "test_paths": [
+        "tests/test_external_review_gaps.py",
+        "tests/test_followup_features.py",
+        "skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "Separate tests establish that a running critical failure vetoes, a skipped critical dependent does not veto, a skipped soft dependent leaves the denominator, and a master-key vulnerability is attributed to the right control."
+      ],
+      "transferable_rule": "Test the judge with inputs it must reject. Permute declarations when semantics promise order independence.",
+      "outcome_caveat": "The probes show specific flaws in controlled inputs. A passing probe does not certify a judge generally.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/25/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28684157642/job/85073533462"
+      ]
+    },
+    {
+      "number": 26,
+      "title": "Add skill-trigger-matrix: measure skill activation across agents × models, with the tuning-journey doc and smoke test",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/26",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-fixture improvement",
+      "weakness": "The bundled demo had no paired should-trigger/should-not-trigger cases, so an agent that always activated could look successful. A stub that ignored the description could also pass.",
+      "attempted_remedy": "Give the existing demo both polarities, exercise them across model cells and weaken the description as a negative control.",
+      "test_paths": [
+        "examples/demo-skill/evals/shared-benchmark.json",
+        "tests/test_trigger_matrix.py",
+        "tests/test_doc_refs.py"
+      ],
+      "diff_evidence": [
+        "test_demo_manifest_has_both_polarities and test_stub_matrix_passes_both_polarities_per_model guard the fixture. test_weakened_description_under_triggers_offline substitutes a generic description and expects missed positives."
+      ],
+      "transferable_rule": "Perturb the input a behavioral test claims to depend on and verify the measured outcome changes.",
+      "outcome_caveat": "Offline behavior comes from the stub. #88 later fixes the stub’s inability to observe a second real discovery field.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        88
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/26/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28685359699/job/85076929900"
+      ]
+    },
+    {
+      "number": 27,
+      "title": "Consolidation audit: one owner per concept, subject-organized tests, and drift guards",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/27",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit test-suite consolidation audit",
+      "weakness": "Test helpers and imports were copied across PR-named modules. Duplicated runner logic had already drifted in manifest resolution, run discovery and cost handling.",
+      "attempted_remedy": "Move builders into tests/helpers.py, reorganize tests around the subsystem they verify, remove the unused manifest generator and exercise shared behavior across commands.",
+      "test_paths": [
+        "tests/helpers.py",
+        "tests/test_audit_fixes.py",
+        "tests/test_cbc.py",
+        "tests/test_roadmap_features.py",
+        "tests/test_consolidation_guards.py",
+        "tests/test_grading.py",
+        "tests/test_judging.py"
+      ],
+      "diff_evidence": [
+        "The patch deletes earlier PR-named test modules and redistributes subjects into grading, judging, reporting, statistics and runners. It adds drift checks for shared runner behavior and exact helper identity."
+      ],
+      "transferable_rule": "Share fixture setup and locate tests by behavior. Decide whether a guard protects observable agreement or merely a particular implementation.",
+      "outcome_caveat": "The removals include relocated coverage. #106 proposes removing helper identity and source-spelling checks introduced by this consolidation.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        106
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/27/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28687635220/job/85083111220"
+      ]
+    },
+    {
+      "number": 28,
+      "title": "Add Codex trigger-matrix parity and agent capability registry",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/28",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded live-smoke coverage improvement",
+      "weakness": "An advertised live-smoke environment switch could exist without a test that consumes it, and a test that merely found an agent name could miss trace drift.",
+      "attempted_remedy": "Add registry-to-smoke checks and opt-in end-to-end smoke lanes for Pi and Codex alongside trace and capability checks.",
+      "test_paths": [
+        "tests/test_trigger_matrix.py",
+        "tests/test_skill_benchmark.py",
+        "agent_capabilities.py"
+      ],
+      "diff_evidence": [
+        "test_advertised_live_smoke_envs_are_consumed_by_tests maps declared smoke settings to tests. Other cases exercise command-array trace evidence and distinct trace roots per run."
+      ],
+      "transferable_rule": "Verify that each advertised integration check has an executable entry point, and distinguish registration coverage from an observed live run.",
+      "outcome_caveat": "The PR explicitly says it did not run a live Codex smoke or mutation checks.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        106
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/28/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28716532040/job/85158822575"
+      ]
+    },
+    {
+      "number": 30,
+      "title": "Consolidate answer-runner output onto one RunnerOutcome writer",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/30",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded cross-runner contract tests",
+      "weakness": "Codex and Claude could emit different files and missing-value semantics for equivalent runs, while each producer’s separate tests still looked correct.",
+      "attempted_remedy": "Exercise both answer runners against the same artifact contract and verify timeout, empty-answer and missing-telemetry cases.",
+      "test_paths": [
+        "tests/test_runners.py",
+        "tests/test_consolidation_guards.py",
+        "skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "RunnerOutcomeContractTests compares the on-disk shape from both producers. Cases distinguish an empty answer from a value derivable from a trace, check timeout encoding and verify missing telemetry for empty Codex output."
+      ],
+      "transferable_rule": "When producers claim the same protocol, pass the same cases through each producer and inspect the serialized artifacts.",
+      "outcome_caveat": "Some additional guards constrain source structure. Cross-producer artifact tests provide separate behavioral evidence.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/30/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28753325700/job/85256072988"
+      ]
+    },
+    {
+      "number": 31,
+      "title": "Docs surface-area audit: moat-first README, command reference split, one-definer concept docs, two journey walkthroughs",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/31",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test repair",
+      "weakness": "A check that only resolves the file portion of a Markdown link passes when an in-page section has moved or no longer exists.",
+      "attempted_remedy": "Check file and fragment together, including same-file links, duplicate heading slugs and fenced code that should not create headings.",
+      "test_paths": [
+        "tests/test_doc_links.py",
+        "tests/test_consolidation_guards.py"
+      ],
+      "diff_evidence": [
+        "relative_doc_links_resolve loads target heading slugs and records a broken link when the fragment is absent. heading_slugs numbers duplicate headings; the fixture traversal handles file.md#fragment and #fragment."
+      ],
+      "transferable_rule": "Follow the same target a reader uses. File existence proves less than a complete navigable link.",
+      "outcome_caveat": "The implementation models GitHub heading rules locally. The reported red-before fix was not rerun against GitHub’s renderer.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/31/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28736198841/job/85210717370"
+      ]
+    },
+    {
+      "number": 33,
+      "title": "Closed",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/33",
+      "state": "closed",
+      "merged": false,
+      "classification": "Closed test and evaluation-fixture repair",
+      "weakness": "A Claude answer run could use the repository as its working directory while tests returned canned answers and never checked the mounted treatment.",
+      "attempted_remedy": "Run the fake Claude binary in the prepared workspace and make the answer depend on whether it can actually read the mounted skill.",
+      "test_paths": [
+        "tests/test_claude_adapter.py",
+        "skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "The new stub returns MOUNTED only when skills/root-0/SKILL.md exists in its current directory. The test calls run_claude and reads output.md; the production invocation gains cwd=str(ws)."
+      ],
+      "transferable_rule": "Make a test double’s output depend on the environmental condition the integration promises.",
+      "outcome_caveat": "Closed without merge. The exact new test is absent from #34’s tip; similar cwd checks appear in later work. The PR had no description.",
+      "head_checks": "No GitHub check rollup was returned for this PR head.",
+      "related_prs": [
+        34
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/33/files"
+      ]
+    },
+    {
+      "number": 34,
+      "title": "Add native Claude and Codex agent backend parity",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/34",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded runner and judge test improvement",
+      "weakness": "Existing provider-specific fixtures did not establish whether an exit-zero error envelope or a judge running in the repository could be mistaken for successful, isolated execution.",
+      "attempted_remedy": "Exercise native Claude/Codex dispatch through the common entry point and inspect failure artifacts and the judge’s actual working directory.",
+      "test_paths": [
+        "tests/test_claude_adapter.py",
+        "tests/test_judging.py",
+        "tests/test_runners.py"
+      ],
+      "diff_evidence": [
+        "test_json_is_error_marks_infra_failure_even_with_zero_exit challenges the provider response independently of process status. The Codex judge test verifies its default cwd is isolated from the repository."
+      ],
+      "transferable_rule": "Test application success separately from process exit and observe the workspace from inside the invoked process.",
+      "outcome_caveat": "The added offline contracts do not certify installed provider versions. #33 separately tests treatment-file visibility in the answer path.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/34/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28901466286/job/85738972712"
+      ]
+    },
+    {
+      "number": 35,
+      "title": "Harden runner and docs invariants",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/35",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test and release-gate repair",
+      "weakness": "The release workflow had no consumer-style installation test, and existing runner checks could accept a string 'false' as a true trigger label or invoke Pi from the parent directory.",
+      "attempted_remedy": "Install the built wheel and invoke its three console scripts before publication. Add counterexamples for a non-Boolean label, a spawn failure and cwd inheritance.",
+      "test_paths": [
+        "tests/test_consolidation_guards.py",
+        "tests/test_trigger_matrix.py",
+        ".github/workflows/publish.yml"
+      ],
+      "diff_evidence": [
+        "The diff adds test_eval_set_requires_real_boolean_should_trigger alongside a valid false case, test_pi_trigger_runner_invokes_pi_from_isolated_workspace, and test_publish_workflow_smokes_the_built_wheel_before_upload."
+      ],
+      "transferable_rule": "Test the distributable users install, and distinguish a parsed false value from a truthy look-alike.",
+      "outcome_caveat": "The workflow and assertions are inspectable. No package was published or tested against PyPI as part of this audit.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/35/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/28938299629/job/85854044589"
+      ]
+    },
+    {
+      "number": 36,
+      "title": "Add Vibe backend and isolate native CLI credentials",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/36",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test-double repair",
+      "weakness": "Earlier fake Codex processes returned an answer on standard output without using the real CLI’s final-message file, so the tests could pass with the output channel miswired.",
+      "attempted_remedy": "Make the existing fake Codex require --output-last-message and write its final answer to the supplied path. Strengthen workspace and persisted-output checks alongside the new backend.",
+      "test_paths": [
+        "tests/test_runners.py",
+        "tests/test_trigger_matrix.py",
+        "tests/test_judging.py"
+      ],
+      "diff_evidence": [
+        "The old fake simply printed content. The replacement asserts the actual flag, extracts its argument and writes the file. A separate test checks redaction in both a saved trace and a returned error."
+      ],
+      "transferable_rule": "Make the double consume and produce the same externally visible channels as the tool it represents.",
+      "outcome_caveat": "The Codex protocol evidence here is from fake processes. New Vibe-only cases are incidental to this classification.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/36/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29032939789/job/86170239602"
+      ]
+    },
+    {
+      "number": 38,
+      "title": "Add judge-calibration and eval-porting journeys, fix 14 docs-audit findings, raise the setuptools build floor",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/38",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded judge-calibration approach",
+      "weakness": "A consistently approving judge could look reliable. The existing demo had no reference-label path showing whether calibration and negative control probes detect that judge.",
+      "attempted_remedy": "Add paired careful and rubber-stamp demo judges. Compare both against the same four labelled runs and against empty and master-key controls.",
+      "test_paths": [
+        "examples/demo-skill/evals/shared-benchmark.json",
+        "examples/demo-skill/stub_judge.py",
+        "tests/test_example_demo.py"
+      ],
+      "diff_evidence": [
+        "DemoJudgeTests expects the careful judge to yield two true positives and two true negatives. The lenient judge achieves recall 1.0 but precision 0.5, kappa 0 and a control leak rate of 1.0."
+      ],
+      "transferable_rule": "Include a deliberately bad judge that a calibration exercise must expose. Compare its failures to concrete human labels.",
+      "outcome_caveat": "These are offline demonstration labels and judges. They do not measure agreement for a production model.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/38/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29060966912/job/86262527523"
+      ]
+    },
+    {
+      "number": 39,
+      "title": "Make telemetry availability explicit",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/39",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded telemetry test and smoke redesign",
+      "weakness": "A successful command could conceal a missing trigger polarity, and absent cost or a different repetition could be reported as comparable measurement.",
+      "attempted_remedy": "Require both declared trigger rows, preserve measured zero versus missing, and include mismatched repetition and model-root cases. Add generated telemetry checks.",
+      "test_paths": [
+        "scripts/smoke_supported_clis.py",
+        "tests/test_smoke_supported_clis.py",
+        "tests/test_telemetry_domain.py",
+        "tests/test_telemetry_properties.py",
+        "tests/test_skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "The smoke assessor is given only the expected positive and must reject the report. Fixtures reject singleton arms from different repetitions. MeasurementModelTests distinguishes an available zero from unavailable data."
+      ],
+      "transferable_rule": "Test the denominator and absence cases of a smoke or aggregate. Verify that the configured runner collects any generated properties.",
+      "outcome_caveat": "#84 and #100 show that unittest discovery originally omitted the added module-level property tests. Their presence in this diff did not establish continuous CI coverage.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        40,
+        41,
+        84,
+        100
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/39/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29092946445/job/86362444632"
+      ]
+    },
+    {
+      "number": 40,
+      "title": "Fix Pi trigger observations and telemetry",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/40",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-oracle repair",
+      "weakness": "A negative Pi trigger could receive passing credit when the provider returned an error inside an exit-zero JSON stream. Repeated lifecycle usage could be counted more than once.",
+      "attempted_remedy": "Drive the trigger runner with an exit-zero provider-error record and verify unavailable observation, persisted metadata and no successful negative. Keep a non-Pi control for usage semantics.",
+      "test_paths": [
+        "tests/test_trigger_matrix.py",
+        "tests/test_cost_telemetry.py",
+        "tests/test_smoke_supported_clis.py"
+      ],
+      "diff_evidence": [
+        "test_pi_json_provider_error_cannot_pass_a_negative_trigger sets process returncode to 0 but supplies a provider error. Other tests compare Pi terminal usage with non-Pi delta events."
+      ],
+      "transferable_rule": "A negative result requires a healthy observation window. Surface failed observation separately from an observed absence.",
+      "outcome_caveat": "#41 formalizes this boundary and adds reusable protocol fixtures.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        41
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/40/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29102647668/job/86395166720"
+      ]
+    },
+    {
+      "number": 41,
+      "title": "Make trigger observations correct by construction",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/41",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing-approach and evaluation-oracle repair",
+      "weakness": "Hand-built booleans allowed a trigger report to claim a pass that contradicted process failure or missing skill evidence. Individual happy paths did not cover the crossings.",
+      "attempted_remedy": "Add redacted Pi success, retry and provider-error fixtures. Enumerate the trigger truth table and require persisted results and live smoke assessments to agree with the facts.",
+      "test_paths": [
+        "tests/fixtures/pi/provider-error-exit-zero.jsonl",
+        "tests/fixtures/pi/retry-then-success.jsonl",
+        "tests/test_trigger_contracts.py",
+        "tests/test_smoke_supported_clis.py",
+        "tests/test_trigger_matrix.py"
+      ],
+      "diff_evidence": [
+        "Tests check contradictory constructors, nonzero completion, evidence kind and JSON round trips. Another feeds the smoke assessor a persisted pass that contradicts a failed provider."
+      ],
+      "transferable_rule": "Enumerate the legal combinations for small state machines and keep captured protocol evidence on each important edge.",
+      "outcome_caveat": "The captured Pi fixtures constrain those protocol shapes. Later #61 changes the incomplete report semantics.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        40,
+        61
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/41/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29106636022/job/86408627782"
+      ]
+    },
+    {
+      "number": 42,
+      "title": "Make evaluation domain states correct by construction",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/42",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded evaluation-contract audit",
+      "weakness": "Hand-picked success fixtures allowed a failed command to count as executed, duplicate judge verdicts to win by order, and a missing answer to be reconstructed from trace text.",
+      "attempted_remedy": "Replace permissive expectations and test failed/unknown command states, contradictory outcomes, duplicate verdicts and mismatched experimental arms at the persisted boundaries.",
+      "test_paths": [
+        "tests/test_runners.py",
+        "tests/test_judging.py",
+        "tests/test_jetty_contracts.py",
+        "tests/test_experimental_pairs.py"
+      ],
+      "diff_evidence": [
+        "The older derive-answer-from-trace behavior is replaced by test_trace_is_never_a_fallback_final_answer. Tests separately reject duplicate stored verdict IDs and assert that failed commands do not satisfy command filters."
+      ],
+      "transferable_rule": "Test what a piece of evidence can actually establish. Challenge duplicates and ambiguous fallbacks before aggregating.",
+      "outcome_caveat": "This is a broad production and test change. The evidence here concerns the repaired scoring and runner contracts.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        44
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/42/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29117941232/job/86445883845"
+      ]
+    },
+    {
+      "number": 43,
+      "title": "Release v0.6.0",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/43",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded release-smoke repair",
+      "weakness": "The minimum live smoke could pass even when a runner reported available, zero-valued operation counts from a missing or partial trace.",
+      "attempted_remedy": "Require the existing smoke to assess schema-v3 trace completeness. Pair the incomplete trace with available versus unavailable metric records.",
+      "test_paths": [
+        "scripts/smoke_supported_clis.py",
+        "tests/test_smoke_supported_clis.py",
+        "tests/test_cost_telemetry.py"
+      ],
+      "diff_evidence": [
+        "test_answer_assessment_rejects_trace_zeros_when_trace_is_incomplete passes the assessor the same incomplete trace with two different availability claims. Only the explicitly unavailable one is accepted."
+      ],
+      "transferable_rule": "Make a smoke inspect semantic evidence as well as command completion, particularly when zero is meaningful.",
+      "outcome_caveat": "The PR reports one live Claude pair. One pair establishes integration behavior only and was not rerun in this audit.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        44
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/43/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29118692352/job/86448365335"
+      ]
+    },
+    {
+      "number": 44,
+      "title": "Prevent incomplete evidence from becoming valid measurements",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/44",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test audit and oracle replacement",
+      "weakness": "A successful process or a non-envelope stdout could certify a valid answer or complete operation evidence despite independent failures of response, trace or artifacts. Some previous tests endorsed permissive parsing.",
+      "attempted_remedy": "Replace the permissive Claude assertion, exercise all 81 combinations of four three-valued evidence axes, and fault-inject artifact replacement and tampering.",
+      "test_paths": [
+        "tests/test_telemetry_domain.py",
+        "tests/test_claude_adapter.py",
+        "tests/test_runners.py",
+        "tests/test_jetty_contracts.py"
+      ],
+      "diff_evidence": [
+        "test_full_state_product_never_promotes_an_independent_axis nests all four axes over complete/incomplete/unknown. The suite now treats a non-envelope as diagnostic text; a failed installation must restore the previous artifact commit."
+      ],
+      "transferable_rule": "Generate the full product of independent availability dimensions and verify the externally observable state after an interrupted replacement.",
+      "outcome_caveat": "Provider-shaped deterministic fixtures were used. The PR reports no new paid live smoke.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/44/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29129733898/job/86482604114"
+      ]
+    },
+    {
+      "number": 46,
+      "title": "Fix Codex home cleanup races",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/46",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded reliability-test audit",
+      "weakness": "A cleanup test that checked only function return could miss a lost answer, a surviving pipe-holding process or a second task reusing a dirty directory.",
+      "attempted_remedy": "Inject cleanup failures and launch subprocesses that keep capture pipes open. Assert a bounded return, persisted answer/trace/commit, distinct homes and later task completion.",
+      "test_paths": [
+        "tests/test_runners.py",
+        "skill_benchmark.py"
+      ],
+      "diff_evidence": [
+        "test_success_quiesces_pipe_holding_group_without_full_timeout and test_timeout_does_not_wait_forever_for_escaped_child_capture_pipes cover both success and timeout. A separate cleanup-race test checks artifacts and the next task."
+      ],
+      "transferable_rule": "Test resources and persisted results after failure, including the next caller. Use a real subprocess when OS lifetime is the contract.",
+      "outcome_caveat": "The reported repeated timing runs were not rerun here. Process-group behavior differs by platform.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/46/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/29502249488/job/87633874621"
+      ]
+    },
+    {
+      "number": 47,
+      "title": "Validate the Jetty adapter against production and fix the mock-reality drift",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/47",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit test-double and fixture audit",
+      "weakness": "The Jetty mock accepted the adapter’s imagined upload, trajectory identifiers and inline results. A live run exposed four mismatches despite passing mock tests.",
+      "attempted_remedy": "Replace the old inline-output mock, commit sanitized provider responses, assert both submit responses and the real artifact lookup, and add an opt-in end-to-end smoke/failure path.",
+      "test_paths": [
+        "tests/fixtures/jetty/chat-completion-200-completed.json",
+        "tests/fixtures/jetty/chat-completion-202-running.json",
+        "tests/fixtures/jetty/trajectory-detail-completed.json",
+        "tests/test_jetty_live_contract.py",
+        "tests/test_skill_benchmark.py",
+        "tests/test_smoke_jetty.py"
+      ],
+      "diff_evidence": [
+        "test_run_jetty_uploads_submits_polls_and_replaces_placeholders becomes a test of bundle upload, polling and artifact fetching. The fixture suite checks storage-detail results and both HTTP submit shapes. The live smoke covers export/run/import/benchmark."
+      ],
+      "transferable_rule": "When a real integration contradicts the fake, capture redacted boundary responses, correct the fake and retain a small opt-in live verification.",
+      "outcome_caveat": "Checked-in fixtures and assertions were verified. The token-backed production validation and specific live outcomes are the author’s report.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        3
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/47/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30593497494/job/91040902185"
+      ]
+    },
+    {
+      "number": 51,
+      "title": "Trace-depth slice: stream Claude traces, per-step judging, paired trigger evidence, trajectory diff",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/51",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-method repair",
+      "weakness": "A terminal-only Claude answer envelope left the saved tool trace nearly empty. A per-step judgment or trajectory difference could look valid on incomplete or absent evidence.",
+      "attempted_remedy": "Exercise stream-mode Claude at the normal entry point, restrict judgment to completed steps, and block or omit trajectory comparisons without observed evidence.",
+      "test_paths": [
+        "tests/test_claude_adapter.py",
+        "tests/test_grading.py",
+        "tests/test_reporting.py",
+        "tests/test_trigger_matrix.py"
+      ],
+      "diff_evidence": [
+        "The adapter test checks that a stream run writes actual trace records. The grading tests compare missing events, a trace with no completed steps and a positive deferred judge task. A missing-trace trajectory pair is blocked."
+      ],
+      "transferable_rule": "Use the data source required by the judgment and test the difference between no data and an observed empty result.",
+      "outcome_caveat": "This includes new product surfaces. The qualifying portion repairs the existing Claude observation channel and its interpretation.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/51/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30473405251/job/90648981894"
+      ]
+    },
+    {
+      "number": 53,
+      "title": "Tier-1 consistency pass: trace dialect registry, significance inside the causal door, shared doc-ref fixer",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/53",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded evaluation-method and guard repair",
+      "weakness": "A trigger comparison could draw a causal conclusion from partially observed or unevenly repeated arms. An orphaned Claude tool result could count as a completed command.",
+      "attempted_remedy": "Bring significance inside the common causal decision and require matched complete populations. Challenge an orphaned tool result and ambiguous documentation references.",
+      "test_paths": [
+        "tests/test_ablation_model.py",
+        "tests/test_trigger_matrix.py",
+        "tests/test_claude_adapter.py",
+        "tests/test_doc_refs.py"
+      ],
+      "diff_evidence": [
+        "test_significance_never_rescues_or_flips_the_other_gates checks that statistical significance cannot override other missing evidence. An unmatched tool result is classified as error evidence and never a completed call."
+      ],
+      "transferable_rule": "Make every necessary precondition observable. Exercise combinations where one attractive signal would hide a failed prerequisite.",
+      "outcome_caveat": "The case-direction behavior had already landed in #51. This change centralizes it and closes remaining evidence gaps.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        51,
+        57
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/53/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30478264411/job/90665352607"
+      ]
+    },
+    {
+      "number": 57,
+      "title": "Make eval evidence construction fail closed end to end",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/57",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit evidence audit with embedded test repairs",
+      "weakness": "Some integration paths dropped missing rows, paired unequal populations with zip, accepted stale judge results or promoted permissive parser inputs. The suite had tests that explicitly accepted ambiguous evidence.",
+      "attempted_remedy": "Reverse permissive expectations and exercise lost rows, stale evidence and ambiguous inputs at the producer, storage and comparison boundaries.",
+      "test_paths": [
+        "tests/test_comparisons.py",
+        "tests/test_ablations.py",
+        "tests/test_artifact_integrity.py",
+        "tests/test_claude_adapter.py",
+        "tests/test_ty_regressions.py"
+      ],
+      "diff_evidence": [
+        "The comparison suite rejects unequal run counts before zip truncation, a missing candidate output, and a saved verdict after the candidate changes. An existing Claude test changes from tolerating to rejecting a fenced protocol envelope."
+      ],
+      "transferable_rule": "Test the intended population before aggregation, and bind a saved result to the exact inputs it judged.",
+      "outcome_caveat": "The PR reports fourteen mutation scenarios over its audit waves. This review verified their target assertions, not all fourteen replays.",
+      "head_checks": "GitHub reported SUCCESS across 3 check contexts for the exact PR head.",
+      "related_prs": [
+        53,
+        100
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/57/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30531666757/job/90835187312"
+      ]
+    },
+    {
+      "number": 58,
+      "title": "Make human-text assertions Unicode-safe by construction",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/58",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-oracle repair",
+      "weakness": "A visually unchanged answer containing U+200B could fail a human-text assertion or evade a negative assertion. Applying normalization to executable command text would create the opposite error.",
+      "attempted_remedy": "Use one versioned comparison view for human-text assertions, retain exact checks where raw text matters, and test both positive and negative polarity and timeout behavior.",
+      "test_paths": [
+        "tests/test_text_contracts.py",
+        "tests/test_grading.py",
+        "text_contracts.py"
+      ],
+      "diff_evidence": [
+        "test_issue_55_positive_and_negative_assertions_share_one_comparison_view checks both sides on obscured text. Additional tests preserve meaningful controls, require exact command matching and reject an unavailable regex result as evidence of absence."
+      ],
+      "transferable_rule": "Build equivalence classes around the actual contract and include close examples the normalization must keep distinct.",
+      "outcome_caveat": "The policy deliberately normalizes only a defined set of characters. These tests do not imply universal visual equivalence.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/58/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30589129172/job/91027312143"
+      ]
+    },
+    {
+      "number": 61,
+      "title": "Make trigger measurement completeness a typed capability",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/61",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-report and contract-test repair",
+      "weakness": "A partial trigger cohort could expose a plausible failure rate, and previous tests treated a pass Boolean as total even for incomplete observations.",
+      "attempted_remedy": "Split incomplete from complete cohorts, withhold pass/trigger rates on the incomplete projection, and test the report and CLI behavior for both.",
+      "test_paths": [
+        "tests/test_trigger_contracts.py",
+        "tests/test_trigger_reporting.py",
+        "tests/test_trigger_matrix.py"
+      ],
+      "diff_evidence": [
+        "The test for a total pass field is replaced as the wire contract changes. test_incomplete_cohort_has_diagnostics_but_no_quality_rate and the two command exit tests exercise the consumer-visible consequence."
+      ],
+      "transferable_rule": "When evidence is incomplete, test which measurements must be absent as well as which diagnostic fields remain.",
+      "outcome_caveat": "The PR reports that restoring pass_rate on the incomplete variant made the cohort and matrix tests fail. No independent mutation replay here.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        41
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/61/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30593210945/job/91039772838"
+      ]
+    },
+    {
+      "number": 62,
+      "title": "Integrate Google Antigravity (Agy) Backend and Enforce Strict Protocol Validation",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/62",
+      "state": "closed",
+      "merged": false,
+      "classification": "Closed cross-backend testing-approach proposal",
+      "weakness": "Provider-specific happy paths allowed malformed or truncated streams and unknown tool steps to appear as a valid empty trace or a clean negative. One new provider exposed the broader gap.",
+      "attempted_remedy": "Define per-backend fixture profiles and common healthy/degenerate cases. Add generated conservation checks mapping observed steps to recorded activity or a rejected stream.",
+      "test_paths": [
+        "tests/test_backend_conformance.py",
+        "tests/test_trace_conservation.py",
+        "tests/fixtures/agy/stream-json-unknown-event.jsonl",
+        "tests/test_trigger_matrix.py"
+      ],
+      "diff_evidence": [
+        "The profiles are checked against every registered answer runner. The trace tests generate repeated and interleaved tool steps and verify the fixtures conserve them. A broken stream may not become a clean no-trigger."
+      ],
+      "transferable_rule": "Require each adapter to pass the same hostile and healthy cases, and reconcile input activity with the events a downstream grader sees.",
+      "outcome_caveat": "Closed without merge. #82 reworks this cross-backend testing effort, so the two PRs are one line of work.",
+      "head_checks": "No GitHub check rollup was returned for this PR head.",
+      "related_prs": [
+        82
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/62/files"
+      ]
+    },
+    {
+      "number": 63,
+      "title": "docs: cover the full pipeline in the OTel roadmap",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/63",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test repair",
+      "weakness": "The OTel roadmap coverage check accepted a command mentioned anywhere in prose and did not detect duplicates or invented commands.",
+      "attempted_remedy": "Derive subcommands and installed console scripts from the parser and packaging metadata. Match the delimited inventory in the document.",
+      "test_paths": [
+        "tests/test_consolidation_guards.py",
+        "docs/otel-support-plan.md"
+      ],
+      "diff_evidence": [
+        "test_otel_roadmap_accounts_for_every_cli_surface reads the roadmap table and compares its entries with build_arg_parser and project.scripts. This replaces the earlier text-mention test."
+      ],
+      "transferable_rule": "When a document claims exhaustive coverage, check the actual table against the authoritative inventory in both directions.",
+      "outcome_caveat": "This guards the documented scope. It does not prove any OTel instrumentation exists.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/63/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30592228112/job/91036822160"
+      ]
+    },
+    {
+      "number": 65,
+      "title": "Unify backend registration across agent surfaces",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/65",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test repair",
+      "weakness": "The parity-doc test looked only for a backend’s name. A row could give the wrong command, capability, telemetry or smoke policy and remain green.",
+      "attempted_remedy": "Replace the name-only guard with an exact comparison between the table and the registry and test registration failures for incomplete or inconsistent rows.",
+      "test_paths": [
+        "tests/test_consolidation_guards.py",
+        "agent_capabilities.py",
+        "docs/agent-parity.md"
+      ],
+      "diff_evidence": [
+        "test_every_capability_row_appears_in_the_parity_doc is replaced by test_parity_doc_matches_registry_policy. Tests plant partial registrations and incorrect implementation/command bindings."
+      ],
+      "transferable_rule": "A name match does not validate the values beside it. Compare each promised field with an independent source of truth.",
+      "outcome_caveat": "Agreement with the registry does not prove actual behavior of the provider represented by that row.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        38
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/65/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30613551556/job/91101517082"
+      ]
+    },
+    {
+      "number": 67,
+      "title": "Type judge invocation results",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/67",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded backend conformance improvement",
+      "weakness": "Existing judge backend examples did not demonstrate that adding a future backend with a dictionary-shaped or inconsistent result was rejected before its verdict was recorded.",
+      "attempted_remedy": "Register a deliberately nonconforming judge implementation and exercise the shared dispatch boundary, alongside valid native and shell backends.",
+      "test_paths": [
+        "tests/test_judging.py",
+        "tests/test_judge_contracts.py",
+        "judge_contracts.py"
+      ],
+      "diff_evidence": [
+        "test_registry_rejects_an_untyped_judge_backend_result exercises a synthetic backend rather than changing a production provider. JudgeInvocationTests separately challenge malformed measurement and provenance inputs."
+      ],
+      "transferable_rule": "Test an extension boundary with a deliberately invalid extension, in addition to testing known built-ins.",
+      "outcome_caveat": "Removal of the runtime check was reported to make the conformance test fail. That particular mutation was not rerun.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/67/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30594478377/job/91043740163"
+      ]
+    },
+    {
+      "number": 68,
+      "title": "Make the central CLI type-clean under ty",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/68",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded retirement of obsolete tests",
+      "weakness": "The temporary diagnostic-baseline script and its tests modeled the historical debt of the central module. Keeping the baseline after the module became type-clean would continue to allow old exceptions, while the Windows checking configuration had missed a platform error.",
+      "attempted_remedy": "Delete the baseline script and its tests, make the ordinary checker cover the central module and Windows, and retain focused runtime tests for newly exposed boundary cases.",
+      "test_paths": [
+        "scripts/check_ty_regressions.py",
+        "tests/test_ty_regressions.py",
+        "tests/test_skill_benchmark.py",
+        "tests/test_reporting.py",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "The old occurrence/diagnostic matching suite and script are deleted. test_central_cli_remains_in_the_project_ty_gate and a non-string run-path report fixture cover the replacement gate and one runtime case."
+      ],
+      "transferable_rule": "When a temporary exception tracker no longer represents a supported state, delete its tests together with the tracker and verify the replacement gate covers its subjects.",
+      "outcome_caveat": "The deleted baseline mechanism was introduced in #57. This is a retirement and focused testing change as well as a type cleanup.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        57,
+        72
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/68/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30596688095/job/91050464439"
+      ]
+    },
+    {
+      "number": 69,
+      "title": "Make Jetty attempts crash-resumable",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/69",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded crash-recovery testing approach",
+      "weakness": "An uninterrupted fake response gave no evidence that the existing Jetty adapter would resume correctly after an acknowledged remote action, a failed checkpoint or process death.",
+      "attempted_remedy": "Inject crashes around remote and durable transitions, restart the operation with a recording client, and use a real subprocess to test lock ownership and release.",
+      "test_paths": [
+        "tests/test_jetty_attempt_journal.py",
+        "tests/test_jetty_contracts.py",
+        "tests/test_smoke_jetty.py"
+      ],
+      "diff_evidence": [
+        "test_faults_at_every_remote_boundary_resume_without_duplicate_submit enumerates checkpoints and expected external call counts. test_committed_result_replays_without_any_remote_call checks a completed restart."
+      ],
+      "transferable_rule": "For a resumable external operation, test durable state and observed call counts across interruption and restart. Use the OS for process locking.",
+      "outcome_caveat": "Most coverage exercises the new journal; the reusable fault matrix extends the earlier successful-request integration test. No live service crash was induced.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/69/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30617843085/job/91115097324"
+      ]
+    },
+    {
+      "number": 71,
+      "title": "Add first-class Gemini CLI backend",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/71",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded provider-fixture and evaluator repair",
+      "weakness": "A generic detector could treat a file-search or bulk-read request as proof of loading a skill. Synthetic fixtures alone could silently impose protocol rules absent from the provider.",
+      "attempted_remedy": "Pin the upstream CLI fixture/version, pair it with a realistic fake executable, and challenge the shared evidence detector with search intents and actual completed reads.",
+      "test_paths": [
+        "tests/fixtures/gemini/README.md",
+        "tests/fixtures/gemini/tool-answer.stream.jsonl",
+        "tests/test_gemini_backend.py",
+        "tests/test_gemini_contracts.py",
+        "tests/test_runners.py"
+      ],
+      "diff_evidence": [
+        "The tests accept an upstream conformance fixture without invented invariants and reject read_many_files inclusion as proof of a skill read. A live-smoke test checks the recorded CLI version."
+      ],
+      "transferable_rule": "Distinguish an attempted search from observed access. Record the origin and version of the protocol fixture used as evidence.",
+      "outcome_caveat": "The PR deliberately withholds autonomous-trigger claims pending a credentialed positive/negative proof. Most Gemini-only tests cover a new feature.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/71/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30638402955/job/91181810271"
+      ]
+    },
+    {
+      "number": 72,
+      "title": "Automatically type-check every project module",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/72",
+      "state": "closed",
+      "merged": true,
+      "classification": "Static contract-testing improvement",
+      "weakness": "An explicit list of type-checked modules let new modules escape coverage, and the closed outcome families had no dedicated compile-time consumers that would fail when new variants were unhandled.",
+      "attempted_remedy": "Replace the allowlist with a project module glob and add type-only exhaustive consumers for runner, trigger, cohort and judge results.",
+      "test_paths": [
+        "type_tests/abstraction_contracts.py",
+        "tests/test_skill_benchmark.py",
+        "tests/test_text_contracts.py",
+        "pyproject.toml"
+      ],
+      "diff_evidence": [
+        "The new static test file routes fall-through in four typed consumers to _assert_never. The runtime suite’s existing configuration checks are updated for the project-wide glob."
+      ],
+      "transferable_rule": "Test extension-sensitive invariants against the whole supported population. A new variant or module should force the related proof to update.",
+      "outcome_caveat": "These are static proofs about the closed types. #81 subsequently extends the tooling and packaging inventories.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        81
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/72/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30692747030/job/91350305876"
+      ]
+    },
+    {
+      "number": 78,
+      "title": "Type grading observations and judge tasks",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/78",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded evaluation and expected-result repair",
+      "weakness": "An existing test expected a nonzero process with a diagnostic to be classified solely as a provider failure. Loose verdict fields also allowed unavailable or skipped rows to be confused with failure.",
+      "attempted_remedy": "Change the expected process classification while preserving the provider diagnostic, and introduce explicit grading observation tests for satisfied, failed, unavailable and skipped rows.",
+      "test_paths": [
+        "tests/test_trigger_contracts.py",
+        "tests/test_grading_contracts.py",
+        "tests/test_judge_contracts.py"
+      ],
+      "diff_evidence": [
+        "test_nonzero_process_with_terminal_provider_error_retains_process_failure now asserts PROCESS_FAILED, return code 1 and the provider diagnostic. The new grading test checks four example observations."
+      ],
+      "transferable_rule": "Separate independent facts in the oracle and test the reported reason as well as the classification.",
+      "outcome_caveat": "#102 later demonstrated that this four-example grading test missed partially observed pass rows. Its grading replacement reached #97.",
+      "head_checks": "GitHub reported SUCCESS across 8 check contexts for the exact PR head.",
+      "related_prs": [
+        97,
+        102
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/78/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30692747239/job/91350306363"
+      ]
+    },
+    {
+      "number": 79,
+      "title": "Type report coverage cohorts",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/79",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation-denominator repair",
+      "weakness": "Means over surviving rows could look like complete headline results when a metric or grade was missing. An explicit zero denominator was conflated with unavailability.",
+      "attempted_remedy": "Exercise mixed cohorts with all attempts retained, separate empty/partial/not-applicable states and withhold a headline when an eligible attempt is missing a metric.",
+      "test_paths": [
+        "tests/test_report_contracts.py",
+        "tests/test_reporting.py",
+        "report_contracts.py"
+      ],
+      "diff_evidence": [
+        "test_metric_missing_from_complete_rows_is_partial_not_a_survivor_headline and test_partial_grading_cannot_publish_a_slice_headline check the consumer-facing behavior. The suite also rejects invalid rates and duplicate attempt identities."
+      ],
+      "transferable_rule": "Count attempted and observed cases separately. A statistic over surviving rows needs a distinct projection from a complete headline.",
+      "outcome_caveat": "These fixtures verify report semantics on constructed data. They do not establish model behavior.",
+      "head_checks": "GitHub reported SUCCESS across 8 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/79/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30692747063/job/91350305890"
+      ]
+    },
+    {
+      "number": 81,
+      "title": "Enforce typed abstraction coverage",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/81",
+      "state": "closed",
+      "merged": true,
+      "classification": "Coverage and gate-testing improvement",
+      "weakness": "Package, type-check and documentation inventories were maintained separately. An unlisted module, script or shipped example could escape the quality gate.",
+      "attempted_remedy": "Add executable comparisons of actual top-level files, packaged modules, analyzer patterns and warning-fatal CI on both platforms.",
+      "test_paths": [
+        "tests/test_type_coverage.py",
+        "pyproject.toml",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "TypeCoverageContractTests compares runtime modules to packaging, checks CI’s warning policy for both platforms and checks analysis of runtime, tooling, examples and static proofs."
+      ],
+      "transferable_rule": "Test the inventory a gate actually traverses, especially when the build artifact and the analyzer have separate inclusion rules.",
+      "outcome_caveat": "This extends #72. #91 and #96 later revise the trigger fingerprint inventory, which is a separate concern from analyzer coverage.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        72,
+        91,
+        96
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/81/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/30692868379/job/91350632589"
+      ]
+    },
+    {
+      "number": 82,
+      "title": "Integrate Google Antigravity (`agy`) as a native backend",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/82",
+      "state": "open",
+      "merged": false,
+      "classification": "Replacement cross-backend test audit",
+      "weakness": "Earlier single-backend checks missed empty or malformed output presented as success, and unclassified tool events could disappear before the grader. The first Agy attempt did not establish comparable guarantees across existing providers.",
+      "attempted_remedy": "Apply healthy and malformed fixture profiles to every registered answer backend. Check input/output event conservation, trace evidence and fixture provenance alongside versioned captures.",
+      "test_paths": [
+        "tests/test_backend_conformance.py",
+        "tests/test_trace_conservation.py",
+        "tests/fixtures/agy/README.md",
+        "tests/test_agy_contracts.py",
+        "tests/test_smoke_agy.py"
+      ],
+      "diff_evidence": [
+        "The registry coverage test prevents an adapter from omitting the hostile-input profile. Generated interleaved tool steps must be translated or rejected. Fixtures distinguish search-only output from a recorded skill read; the README identifies real captures and synthetic cases."
+      ],
+      "transferable_rule": "Validate the same failure contract across every implementation and reconcile events at the boundary where a grader could silently lose them.",
+      "outcome_caveat": "Open replacement of closed #62. It incorporates #103’s containment policy work; the three PRs do not establish three independent provider validations.",
+      "head_checks": "No GitHub check rollup was returned for this PR head.",
+      "related_prs": [
+        62,
+        103
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/82/files"
+      ]
+    },
+    {
+      "number": 84,
+      "title": "docs: preserve the telemetry test-collection lesson",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/84",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit test-collection audit, superseded implementation",
+      "weakness": "Property and parameterized telemetry tests in tests/test_telemetry_properties.py existed but the configured unittest invocation collected zero tests from the file.",
+      "attempted_remedy": "The initial branch switched CI to pytest, with a focused collect-only step. After the substantive fix landed separately, the merged version preserved the lesson and the chosen two-runner parity policy.",
+      "test_paths": [
+        "LESSONS_LEARNED.md",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "GitHub’s force-push timeline preserves the prior tip. Its parent 5f40fb94c5352db38e16d52c038bad7dae128990 replaces python -m unittest discover tests -v with a targeted pytest --collect-only plus pytest tests -v. The final delta changes only LESSONS_LEARNED.md."
+      ],
+      "transferable_rule": "Compare executed test IDs under the configured runner. A dependency being installed and a test file existing do not prove collection.",
+      "outcome_caveat": "The pytest migration did not ship through #84. #100 made the tests discoverable and added the ID parity check. The workflow path is historical; the lesson is the only file in the final diff.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        39,
+        97,
+        100
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/84/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/37549056903/job/112559927195",
+        "https://github.com/adewale/skill-eval-harness/commit/5f40fb94c5352db38e16d52c038bad7dae128990",
+        "https://github.com/adewale/skill-eval-harness/commit/2861d4ab4c53705238f590a9b53adda8e25e7bd5"
+      ]
+    },
+    {
+      "number": 85,
+      "title": "Plugin-eval import, runtime spend ceiling, and eval-quality review",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/85",
+      "state": "open",
+      "merged": false,
+      "classification": "Explicit evaluation-quality review with recorded controls",
+      "weakness": "Imported checks could never pass on native runners. Existing checks could reject a good answer for formatting, disagree with a judge or look model-dependent on a tiny sample.",
+      "attempted_remedy": "Detect never-passing checks, formatting near misses and same-run judge disagreement as review findings. Refuse impossible import mappings and run the findings on an original and a larger recorded output set.",
+      "test_paths": [
+        "tests/test_eval_quality_review.py",
+        "tests/test_review_contracts.py",
+        "tests/test_plugin_eval_import.py",
+        "tests/fixtures/eval-quality/README.md",
+        "review_contracts.py"
+      ],
+      "diff_evidence": [
+        "RecordedRealOutputTests reads the recorded and replication trees. Tests require an actual failing objective check and a passing judge on the same run. The replication retains the never-passing check; the reported model-order inversion does not replicate."
+      ],
+      "transferable_rule": "Save the observations and rerun a suspected verifier failure on an independent sample. Keep diagnostic flags separate from the score.",
+      "outcome_caveat": "Open. The recordings are inspectable. The model-order analysis is exploratory, uses a chosen order and lacks multiple-comparison correction. Some related Claude runner fixes also appear in #100.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        100
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/85/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36017871909/job/107694948187"
+      ]
+    },
+    {
+      "number": 86,
+      "title": "Fault cases for skill evals: tool_faults, tool bridge, conservation law, demo",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/86",
+      "state": "open",
+      "merged": false,
+      "classification": "Evaluation-method improvement with paired fault fixtures",
+      "weakness": "An incidental tool failure could affect one evaluation arm and masquerade as a skill effect. A declared fault could appear in the setup without ever reaching the observed trace.",
+      "attempted_remedy": "Deliver the same controlled tool fault to both arms, fingerprint it, record the actual completed call and reject comparisons when the declared stimulus cannot be reconciled with the trace.",
+      "test_paths": [
+        "tests/test_runners.py",
+        "tests/test_grading.py",
+        "tests/fixtures/detectors/tool_call/should-fire.json",
+        "tests/fixtures/detectors/tool_call/should-pass.json",
+        "examples/demo-skill/evals/shared-benchmark.json"
+      ],
+      "diff_evidence": [
+        "FaultConservationLawTests checks the served fault against recorded completed calls and error polarity. test_prepare_copies_faults_onto_every_arm_and_into_the_fingerprints covers treatment symmetry. Existing oracle fixture pairs gain the error selector."
+      ],
+      "transferable_rule": "For fault-injection comparisons, verify that each arm received the same disturbance and that the observer actually saw it.",
+      "outcome_caveat": "Open. This is an evaluation-design change with new product machinery. The offline bridge and demo do not demonstrate recovery by any particular live model.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/86/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/35440607990/job/105890616303"
+      ]
+    },
+    {
+      "number": 87,
+      "title": "Derive retries from the trace protocol instead of assuming zero",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/87",
+      "state": "open",
+      "merged": false,
+      "classification": "Evaluation-metric and fixture repair",
+      "weakness": "The original trace spec’s example supplied retries=0 even where a provider could not reveal retries. Removing that default later also hid genuinely observed Pi retries.",
+      "attempted_remedy": "Derive the Pi count from protocol retry markers, distinguish a measured zero from a truncated trace, and test that unsupported dialects leave the metric unavailable.",
+      "test_paths": [
+        "tests/test_runners.py",
+        "tests/test_cost_telemetry.py",
+        "docs/trace-aware-eval-spec.md"
+      ],
+      "diff_evidence": [
+        "Tests feed the pinned Pi retry/terminal stream shapes to the dialect, check a truncated stream yields no count, and exercise the final metrics path for derived versus absent retries."
+      ],
+      "transferable_rule": "A metric fixture needs one measured zero, a nonzero witness, and an unobservable or interrupted case.",
+      "outcome_caveat": "Open. #8 introduced the original example, #57 removed the fabricated zero, and #87 proposes recovering the observed subset.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        8,
+        57,
+        88
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/87/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36238407523/job/108394311239"
+      ]
+    },
+    {
+      "number": 88,
+      "title": "Walk the two trace-depth journeys on a demo that can carry them",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/88",
+      "state": "open",
+      "merged": false,
+      "classification": "Embedded repair of an insensitive test fixture",
+      "weakness": "The demo’s discovery ablation removed when_to_use, but its offline agent consulted only description. The advertised ablation could therefore change no outcome in that fixture.",
+      "attempted_remedy": "Have the stub consult both routing inputs, change the weakened-description control accordingly, and test trajectory and discovery examples against the actual outputs.",
+      "test_paths": [
+        "run_trigger_matrix.py",
+        "examples/demo-skill/stub_judge.py",
+        "tests/test_trigger_matrix.py",
+        "tests/test_example_demo.py"
+      ],
+      "diff_evidence": [
+        "The existing test_weakened_description_under_triggers_offline now weakens both description and when_to_use. DemoJourney tests include a no-lift case whose path changes and a lenient per-step judge that misses a repeated action."
+      ],
+      "transferable_rule": "Verify that a fixture is sensitive to the input being manipulated. A controlled mutation should change the observed behavior.",
+      "outcome_caveat": "Open, stacked on #87. This repairs the stub introduced for #26; it demonstrates the documented offline effect only.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        26
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/88/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36239196872/job/108396410281"
+      ]
+    },
+    {
+      "number": 89,
+      "title": "Split skill_benchmark.py into subsystem modules behind the CLI",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/89",
+      "state": "closed",
+      "merged": false,
+      "classification": "Closed test-mock audit embedded in refactor",
+      "weakness": "Following a module split, mocks substituted names on the public CLI re-export, while implementations looked the names up elsewhere. Negative call assertions could pass without intercepting anything.",
+      "attempted_remedy": "Retarget patches to the consuming modules and add a guard for ineffective CLI patches and for import/registry drift.",
+      "test_paths": [
+        "tests/test_consolidation_guards.py",
+        "tests/test_gemini_backend.py",
+        "tests/test_jetty_attempt_journal.py",
+        "tests/test_judging.py",
+        "tests/test_reporting.py"
+      ],
+      "diff_evidence": [
+        "Examples retarget CLI helper patches to agent_clis, jetty_adapter, judge_execution and eval_grading. test_patches_on_the_cli_module_reach_the_code_under_test audits the tests’ lookup locations."
+      ],
+      "transferable_rule": "Patch where the dependency is looked up. For a no-call assertion, first establish that the substitute intercepts the path it is meant to observe.",
+      "outcome_caveat": "Closed without merge. The PR reports 48 stranded patch sites in 36 tests, with 15 still green. Its remedy is represented separately in open #91–#96.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/89/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36241043758/job/108401475895"
+      ]
+    },
+    {
+      "number": 91,
+      "title": "Guard module boundaries before splitting skill_benchmark.py",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/91",
+      "state": "open",
+      "merged": false,
+      "classification": "Test-guard improvement in the split stack",
+      "weakness": "A negative interaction test patched on the public CLI could remain green after its real caller moves, and a manually hashed module could leave the trigger inventory without a test failure.",
+      "attempted_remedy": "Add a guard checking CLI patch targets against names actually loaded there. Require every packaged module to be classified and registry references to resolve in the named owner.",
+      "test_paths": [
+        "tests/test_consolidation_guards.py",
+        "tests/test_type_coverage.py",
+        "scripts/fix_doc_refs.py"
+      ],
+      "diff_evidence": [
+        "test_patches_on_skill_benchmark_reach_the_code_under_test inspects Python names and test patch sites. test_every_packaged_module_is_classified_for_trigger_identity compares the packaged inventory to identified and exempt modules."
+      ],
+      "transferable_rule": "Install a check for ineffective test substitutions before moving code whose tests depend on them.",
+      "outcome_caveat": "Open replacement layer for #89. #96 subsequently proposes replacing the maintained fingerprint exemption list with an independently derived import closure.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        89,
+        92,
+        96
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/91/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36245426013/job/108413617844"
+      ]
+    },
+    {
+      "number": 92,
+      "title": "Split out the harness foundations from skill_benchmark.py",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/92",
+      "state": "open",
+      "merged": false,
+      "classification": "Embedded test-double repair in the split stack",
+      "weakness": "The existing invocation compatibility test would patch the CLI’s alias after run_argv_with_timeout moved to harness_io, leaving the dependency used by the wrapper untouched.",
+      "attempted_remedy": "Move this test’s fake to the lookup in harness_io so its assertions continue to observe the real wrapper.",
+      "test_paths": [
+        "tests/test_invocation_contracts.py",
+        "harness_io.py"
+      ],
+      "diff_evidence": [
+        "The patch changes mock.patch.object(sb, 'invoke_argv_with_timeout', side_effect=invoke) to the same patch on harness_io."
+      ],
+      "transferable_rule": "When extracting a wrapper, make its existing contract tests intercept the dependency in the wrapper’s new namespace.",
+      "outcome_caveat": "Open incremental replacement of part of #89; this layer retargets one site.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        89,
+        91,
+        93
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/92/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36245444113/job/108413664202"
+      ]
+    },
+    {
+      "number": 93,
+      "title": "Split out traces, run artifacts, and the runners",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/93",
+      "state": "open",
+      "merged": false,
+      "classification": "Embedded test-double repair in the split stack",
+      "weakness": "Runner and Jetty mock sites would target CLI aliases after extraction. In particular, a mock recording zero spawns could never detect a call made through agent_clis.",
+      "attempted_remedy": "Move process, backend, Jetty client and artifact-loader patches to their consuming modules so existing failure and recovery tests use the intended substitutes.",
+      "test_paths": [
+        "tests/test_gemini_backend.py",
+        "tests/test_jetty_attempt_journal.py",
+        "tests/test_runners.py"
+      ],
+      "diff_evidence": [
+        "The diff changes run_argv_capture and invoke_argv_with_timeout patches to agent_clis, gemini_cli_invoke to answer_backends, and JettyClient and load_jsonl patches to jetty_adapter."
+      ],
+      "transferable_rule": "Recheck all negative-call tests and external-service fakes after moving production call sites.",
+      "outcome_caveat": "Open incremental replacement of part of #89. The PR attributes 29 retargeted sites to this layer.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        89,
+        92,
+        94
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/93/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36245458741/job/108413706148"
+      ]
+    },
+    {
+      "number": 94,
+      "title": "Split out grading and judging",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/94",
+      "state": "open",
+      "merged": false,
+      "classification": "Embedded test-double repair in the split stack",
+      "weakness": "The judge loader and provider fakes would intercept only a re-export after extraction. A 'never loaded' assertion on the wrong loader could pass even when the actual loader ran.",
+      "attempted_remedy": "Move patches to judge_execution and eval_grading, including the load_json/die paths and native judge invocations.",
+      "test_paths": [
+        "tests/test_judging.py",
+        "tests/test_claude_adapter.py",
+        "tests/test_gemini_backend.py",
+        "tests/test_text_contracts.py"
+      ],
+      "diff_evidence": [
+        "The test patches for native codex_cli_invoke and gemini_cli_invoke now target judge_execution. The injected threshold case for embedding_similarity now patches eval_grading."
+      ],
+      "transferable_rule": "For tests that assert a dependency was skipped, exercise a positive path through the same interception point.",
+      "outcome_caveat": "Open incremental replacement of part of #89. The PR attributes 17 retargeted sites to this layer.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        89,
+        93,
+        95
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/94/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36245470567/job/108413740431"
+      ]
+    },
+    {
+      "number": 95,
+      "title": "Split out statistics, reports, and the commands built on them",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/95",
+      "state": "open",
+      "merged": false,
+      "classification": "Embedded false-positive test repair in the split stack",
+      "weakness": "A reporting test expecting SystemExit would still pass if its mock were stranded: the real report builder could exit for a missing manifest before the intended duplicate-identity check.",
+      "attempted_remedy": "Patch build_benchmark_report in benchmark_reports, where aggregate resolves it, so the prepared reports actually reach the tested collision path.",
+      "test_paths": [
+        "tests/test_reporting.py",
+        "benchmark_reports.py"
+      ],
+      "diff_evidence": [
+        "ReportFormatsTests keeps its two same/distinct manifest configurations but changes mock.patch.object(sb, 'build_benchmark_report', side_effect=[report, report]) to benchmark_reports."
+      ],
+      "transferable_rule": "When two paths raise the same exception, verify the intended boundary was reached or check the specific reason.",
+      "outcome_caveat": "Open incremental replacement of part of #89. The narrow patch restores interception; generic exception checks remain vulnerable to other same-type failures.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        89,
+        94,
+        96
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/95/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/36245482410/job/108413772047"
+      ]
+    },
+    {
+      "number": 96,
+      "title": "Make skill_benchmark.py the CLI and narrow trigger identity to what runs load",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/96",
+      "state": "open",
+      "merged": false,
+      "classification": "Embedded testing-approach replacement in the split stack",
+      "weakness": "The hand-maintained list of supposedly non-trigger modules could agree with itself even while the actual runner imported different code, making experiment identities either too narrow or overly sensitive.",
+      "attempted_remedy": "Replace the manual classification test with a static import-closure check for both trigger entry points and an independent subprocess observation of an offline trigger run.",
+      "test_paths": [
+        "tests/test_type_coverage.py",
+        "tests/test_consolidation_guards.py",
+        "run_trigger_matrix.py",
+        "run_pi_trigger_eval.py"
+      ],
+      "diff_evidence": [
+        "The file drops test_every_packaged_module_is_classified_for_trigger_identity and adds test_a_real_trigger_run_loads_only_identified_modules. The static check compares the hashed files to a discovered closure."
+      ],
+      "transferable_rule": "Derive inventory expectations from a separate source and sample the real entry point to catch errors in the derivation.",
+      "outcome_caveat": "Open top of the replacement stack. The body reports 15 extra and four missing entries in the earlier 35-file list; the static and live-import checks are visible in the diff.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        89,
+        91,
+        95
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/96/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/41258978101/job/124708084268"
+      ]
+    },
+    {
+      "number": 97,
+      "title": "Repair manifest path checks and compatibility guidance without changing grading policy",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/97",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test audit, partial incorporation of #102",
+      "weakness": "Four hand-picked class checks missed partially observed successes. Digest fields also lacked malformed and round-trip assertions. A separate suite of path checks could leave validate, prepare and audit disagreeing.",
+      "attempted_remedy": "Merge the grading test replacements, exercise the 12 row shapes and serialized values, and bring manifest path and legacy hint checks across the three commands.",
+      "test_paths": [
+        "tests/test_grading_contracts.py",
+        "tests/test_manifest.py",
+        "tests/test_consolidation_guards.py",
+        "scripts/check_consumer_manifests.py"
+      ],
+      "diff_evidence": [
+        "The complete grading test file matches #102 byte-for-byte (blob 720b33adb806). test_every_row_shape_grades_as_exactly_one_state checks type, projection and reparse; path cases expect the same rejection across three entry points."
+      ],
+      "transferable_rule": "Use a hand-derived product of inputs and check both classification and persisted output. Check the same invalid input via each public route.",
+      "outcome_caveat": "Merged. #102’s separate 39-combination telemetry test is absent. An earlier downstream-cloning CI gate was dropped from the final diff. An early commit on this branch (b63c4b5) originated the exact parity script and property-test conversion that landed first via #100.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        84,
+        100,
+        102
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/97/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/37872253384/job/113632771107",
+        "https://github.com/adewale/skill-eval-harness/commit/b63c4b59442876c655e1d7ee42a53b63e0053279",
+        "https://github.com/adewale/skill-eval-harness/commit/176b38094ef2c69e39cc5cdfaf3bc7b6032e169a"
+      ]
+    },
+    {
+      "number": 100,
+      "title": "Rate eval health, exclude cut-off and wrong-model runs, fix harness bugs (#99)",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/100",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit broad test audit and gate repair",
+      "weakness": "Unittest CI skipped module-level telemetry properties. CLI tests built argument objects that real parsers did not produce, and several tests or release gates could appear successful while skipping work or accepting incomplete evidence.",
+      "attempted_remedy": "Move properties into discoverable TestCase methods, compare collected IDs between runners, route command tests through real parsers, plant red cases for bypassed gates, and test the installed wheel in a clean environment.",
+      "test_paths": [
+        "tests/test_telemetry_properties.py",
+        "scripts/check_test_collection_parity.py",
+        "tests/test_gate_integrity.py",
+        "tests/test_cli_contracts.py",
+        "scripts/check_installed_wheel.py",
+        "tests/test_eval_health.py"
+      ],
+      "diff_evidence": [
+        "The diff replaces module-level generated properties with TestCase methods, adds collection-ID comparison, and plants swallowed failures and unledgered skips as fixtures. Command tests now use the public parser. Health checks run known answers and distinguish a missing or incomplete benchmark from a clean gate. Commit 499e940 replaces source checks requiring one iterator or cost owner with checks that public commands agree on discovered runs and actual costs."
+      ],
+      "transferable_rule": "Check actual collection and normal entry points. Challenge the checks themselves with a planted defect, a skipped path and a fresh installation of the published artifact.",
+      "outcome_caveat": "Merged with successful hosted Python and Windows checks. Seeded fault counts are author-reported. Captured and synthetic fake-agent data do not substitute for credentialed verification of each provider. Overlaps #84 and some runner fixes in #85. The collection script and converted tests in #97’s earlier b63c4b5 match the corresponding introduction commits here byte-for-byte.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        84,
+        85,
+        97,
+        106
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/100/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/37074196262/job/111060282594",
+        "https://github.com/adewale/skill-eval-harness/commit/76d83160ff9c973e132aeac6de2fb5d1183893e7",
+        "https://github.com/adewale/skill-eval-harness/commit/9584e4b285a7456c4532c2101618f33117b24158",
+        "https://github.com/adewale/skill-eval-harness/commit/499e9404fec7558d0c0ef09e4dcccec84dcef90e",
+        "https://github.com/adewale/skill-eval-harness/commit/1e1fcc81b1272e3656482c53d58f484d326e45f2"
+      ]
+    },
+    {
+      "number": 102,
+      "title": "Test audit: grading states and telemetry aggregates over their whole input space",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/102",
+      "state": "closed",
+      "merged": false,
+      "classification": "Explicit test audit with independent mutation replay",
+      "weakness": "Four picked grading rows could not detect changing the rule for partial or missing evidence. Aggregate tests had no mixed observed/not-applicable row and did not check the reasons/counts over a complete finite space.",
+      "attempted_remedy": "Replace the grading test with 12 row shapes and round-trip assertions, cover digest and legacy defaults, and add all 39 one-to-three-row telemetry state sequences with counts, reasons and totals.",
+      "test_paths": [
+        "tests/test_grading_contracts.py",
+        "tests/test_telemetry_domain.py"
+      ],
+      "diff_evidence": [
+        "Independent replay on the PR base: replacing the grading OR with AND passed the 8 old tests but produced 3 failures in the 10 replacement tests. Dropping not-applicable from the partial-total condition passed all 13 old telemetry tests but caused 8 failures in the 14 replacement tests. All old/new unmutated focused files passed."
+      ],
+      "transferable_rule": "Select independent counterexamples for every input and important output field in a small state space. Keep replacement tests outside the baseline discovery root during comparative mutation testing. Have an independent reviewer choose some seeded faults; the author reports that four previously unchecked cases survived that second pass.",
+      "outcome_caveat": "Closed unmerged as a PR. The grading file is byte-identical in merged #97; its telemetry test is absent there and from #100. This audit independently replayed only those two mutants on the focused files. Some telemetry expectations derive from the implementation’s invariant rather than an external specification. At audited main 64bc5b2 the grading blob still matches #102 and telemetry still matches the pre-attempt blob.",
+      "head_checks": "GitHub reported SUCCESS across 4 check contexts for the exact PR head.",
+      "related_prs": [
+        97
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/102/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/37097819696/job/111131252820",
+        "https://github.com/adewale/skill-eval-harness/commit/04763168bc073791f31bc11be88c4aee822b23aa",
+        "https://github.com/adewale/skill-eval-harness/commit/34d5b1ff919865199d4c38f45005b766f27e54c2"
+      ]
+    },
+    {
+      "number": 106,
+      "title": "Verify runner behavior without pinning helper object identity",
+      "url": "https://github.com/adewale/skill-eval-harness/pull/106",
+      "state": "open",
+      "merged": false,
+      "classification": "Explicit test simplification",
+      "weakness": "Several consolidation tests required identical Python helper objects or banned literal spellings in source even when two implementations had the same public behavior.",
+      "attempted_remedy": "Delete the shared helper identity assertions and source-literal bans. Retain value equality for CLI defaults and evidence vocabulary and the existing cross-command behavior tests.",
+      "test_paths": [
+        "tests/test_consolidation_guards.py"
+      ],
+      "diff_evidence": [
+        "The diff deletes assertIs checks for the repo-root resolver, mounting, subprocess and trace label helpers. The Codex default and raw evidence comparisons use assertEqual; scans for literal strings in runner source are removed."
+      ],
+      "transferable_rule": "Delete tests whose only failure is a harmless implementation change when behavior is already checked through the public boundary.",
+      "outcome_caveat": "Open. Hosted Python and Windows checks succeeded at the audited head. The author reported one unrelated local Gemini/PATH failure; the retained command-level tests were already present. Reverses part of the guard strategy introduced in #27 and #28.",
+      "head_checks": "GitHub reported SUCCESS across 6 check contexts for the exact PR head.",
+      "related_prs": [
+        27,
+        28,
+        100
+      ],
+      "sources": [
+        "https://github.com/adewale/skill-eval-harness/pull/106/files",
+        "https://github.com/adewale/skill-eval-harness/actions/runs/42315003272/job/128225334874"
+      ]
+    }
+  ],
+  "overlaps": [
+    "#19 proposed the confidence-floor testing approach that #22 implemented. #4’s simulated ablation is the precursor to #20’s materialized replacement.",
+    "#27’s consolidation tested both public behavior and private identity. #100 replaced several source checks with real command outputs; #106 proposes removing further helper identity and source-spelling assertions.",
+    "#39 introduced property tests visible to pytest but missing from unittest CI. An earlier form of #84 attempted to switch CI to pytest. Its final diff only records the lesson. Commit b63c4b5 from early #97 supplied the exact property-test conversion and parity checker later incorporated in #100 commits 76d8316 and 9584e4b (blobs abce294f and 36f16286).",
+    "#102’s grading tests reached merged #97, with the same test file, but its new telemetry table did not reach #97 or audited main. The full #102 proposal was closed unmerged.",
+    "#89 is the superseded one-shot module extraction. #91 introduces guards, #92–#95 relocate mock lookups and #96 replaces the earlier manual fingerprint guard. These are individually enumerated PRs, not independent discoveries.",
+    "#62 and #82 are alternative PRs for the cross-backend conformance and activity-conservation work. #82 includes #103’s separate policy changes. #85 and #100 contain some overlapping Claude runner fixes, but the recorded verifier review and CI audit are different."
+  ],
+  "exclusions": [
+    {
+      "category": "New surfaces or their companion tests",
+      "pr_numbers": [
+        1,
+        2,
+        3
+      ],
+      "reason": "Jetty implementation specs and first adapter test slice. #47 later audits the mismatch between its mocks and production."
+    },
+    {
+      "category": "Routine documentation and releases",
+      "pr_numbers": [
+        6,
+        10,
+        11,
+        12,
+        14,
+        15,
+        16,
+        23,
+        32,
+        59,
+        90
+      ],
+      "reason": "README and release updates, repo-effectiveness reviews, introductions, roadmaps or walkthroughs of existing machinery. #11 records #9’s lesson. #15 explains interpretation. #17 and #19 separately document concrete changes to how assessments should be designed and tested."
+    },
+    {
+      "category": "Product feature and compatibility changes",
+      "pr_numbers": [
+        13,
+        29,
+        74,
+        75,
+        76,
+        77,
+        80,
+        103
+      ],
+      "reason": "Reporting, naming and typed-boundary implementation with feature coverage or fixture adaptation. #80 updates an old stub to meet the new registry contract. #103’s new containment policy and tests are also part of #82; its isolated diff does not repair a pre-existing test."
+    },
+    {
+      "category": "Tooling, formatting, supply chain and scheduling",
+      "pr_numbers": [
+        50,
+        56,
+        60,
+        104,
+        105
+      ],
+      "reason": "Ruff upgrade and formatting, action versions/pinning, an initial type-check setup or CI cancellation. #68, #72 and #81 separately change test or proof coverage. #105 adjusts the expected workflow list to accommodate its new pinning workflow."
+    }
+  ],
+  "limitations": [
+    "This repository builds an evaluation system. Matches distinguish explicit test audits and concrete testing or evaluation-method repairs from new product features that merely have accompanying tests. Documentation-only design proposals are identified as such. Counts are PR records, not independent shipped remedies.",
+    "Hosted check status is the GitHub rollup for the exact head, not proof that every meaningful input or live provider was exercised. Most historical runs, benchmarks and claimed mutation sweeps were not rerun. Independent runs in this audit were limited to the two focused #102 mutants and their unmutated controls.",
+    "Recorded provider fixtures and deliberately bad judges provide bounded evidence about the included cases. Fresh paid or credentialed integrations were not run. A PR’s state and its final diff may differ from earlier revisions or transplants into other PRs."
+  ],
+  "independent_verification": {
+    "target": 102,
+    "method": "Two independently executed focused unittest comparisons with isolated temporary files and a minimal environment. Replaced one condition at a time on the PR base, running the old test file and its PR replacement against the same source. All four unmutated controls passed.",
+    "mutants": [
+      {
+        "condition": "grading availability == partial OR passed is None changed to AND",
+        "old": "8 tests passed",
+        "replacement": "10 tests, 3 failures"
+      },
+      {
+        "condition": "remove not_applicable from the partial telemetry aggregate condition",
+        "old": "13 tests passed",
+        "replacement": "14 tests, 8 failures"
+      }
+    ],
+    "inference": "The two defects discriminated between the old and proposed focused tests. Whole-suite mutation results and the rest of the PR’s mutants remain author-reported."
+  },
+  "focused_examples": [
+    {
+      "pr": 102,
+      "reason": "Direct independent old/new mutation comparison with a partially merged outcome."
+    },
+    {
+      "pr": 100,
+      "reason": "Proves gate integrity, collector parity, CLI wiring, clean wheel install and seeded-fault sensitivity."
+    },
+    {
+      "pr": 106,
+      "reason": "Deletes implementation-identity tests while retaining public behavior."
+    },
+    {
+      "pr": 47,
+      "reason": "Captured production responses disproved assumptions in passing test doubles."
+    },
+    {
+      "pr": 89,
+      "reason": "Open replacement stack includes negative mock assertions and generic exceptions that previously passed for the wrong reason."
+    },
+    {
+      "pr": 85,
+      "reason": "Recorded outputs separate a consistently broken verifier from an apparent model-order effect that failed replication."
+    }
+  ]
+}

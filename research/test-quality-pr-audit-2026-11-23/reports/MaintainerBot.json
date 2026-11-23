@@ -1,0 +1,180 @@
+{
+  "repository": "adewale/MaintainerBot",
+  "total_prs": 10,
+  "pages_checked": {
+    "endpoint": "https://api.github.com/repos/adewale/MaintainerBot/pulls?state=all&per_page=100&page=1",
+    "pull_request_page_counts": [
+      10,
+      0
+    ],
+    "scope": "All dates, states and authors. Open 4, merged 6, closed unmerged 0.",
+    "changed_file_counts": {
+      "1": 13,
+      "2": 7,
+      "3": 7,
+      "4": 3,
+      "5": 3,
+      "6": 6,
+      "7": 1,
+      "8": 6,
+      "9": 3,
+      "10": 1
+    },
+    "file_inventory": "All ten changed-file collections were read. Each first page contained fewer than 100 files and its count matched the PR detail's changed_files field. Titles, bodies and file inventories were screened for all ten."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Test the real rejection filter and deterministic no-model handoff",
+      "url": "https://github.com/adewale/MaintainerBot/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct replacement and deletion of an ineffective test",
+      "weakness": "The standalone rejection test filtered two hard-coded rows with its own implementation and imported no production code. Running the same pipeline twice also cannot establish which recommendations, links and persisted data are correct.",
+      "attempted_remedy": "Delete the toy script and its separate package command. Exercise the real ledger parser, report builder and no-model handoff with a fixed clock, known expected rows and a checked-in replay fixture. Share one pipeline run across read-only assertions.",
+      "test_paths": [
+        "scripts/test-rejections.mjs (deleted)",
+        "tests/rejections.test.ts",
+        "tests/daily-pipeline.golden.test.ts",
+        "tests/fixtures/golden-run-context.json",
+        "package.json"
+      ],
+      "diff_evidence": [
+        "tests/rejections.test.ts imports rejectedFingerprints and buildDeterministicReport from src/maintenance/daily.ts. Its cases at lines 41, 54, 63 and 80 cover ledger rows, documented examples, unreadable input and retention of the exact surviving row in both output lists.",
+        "tests/daily-pipeline.golden.test.ts:231 runs the pipeline once. The tests check the PR link, saved artifacts and expected actions. Lines 336–349 replay the fixture and assert that the GitHub fetch stub received no calls. package.json removes both invocations of the old script."
+      ],
+      "transferable_rule": "Before deleting an imitation test, replace each intended guarantee with an observable assertion on the real entry point. Use an independently reviewed expected result and reuse an expensive fixture when its consumers only read it.",
+      "outcome_verification": "GitHub records the merge and a successful pnpm test step for head b93b167. The suite uses a stubbed GitHub API and in-memory storage. The whole-bundle comparison at line 333 also pins stateFingerprint and inputHash values. Regenerating that fixture requires review.",
+      "verification_url": "https://github.com/adewale/MaintainerBot/actions/runs/37872115487/job/113632347451"
+    },
+    {
+      "number": 3,
+      "title": "Test audit: fix daily admission 500, contract-check the Workflow fake, test the secret scanner",
+      "url": "https://github.com/adewale/MaintainerBot/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test audit and repair",
+      "weakness": "The route tests used hand-written Workflows mocks that concealed the real missing-instance response. The first use of an idempotency key could fail before a workflow was created. The CI secret scanner also lacked positive and negative controls.",
+      "attempted_remedy": "Replace per-test mocks with one fake, run shared lookup cases against both the fake and the Miniflare Workflows runtime, and test the admission route. Drive the real scanner in temporary checkouts with known findings and clean or near-miss files.",
+      "test_paths": [
+        "tests/app.test.ts",
+        "tests/support/workflow-binding.ts",
+        "tests/workflow-binding.contract.test.ts",
+        "tests/check-secrets.test.ts"
+      ],
+      "diff_evidence": [
+        "tests/workflow-binding.contract.test.ts:85 runs the same unknown-ID rejection and create-then-get assertions on both implementations. tests/app.test.ts:101, 120 and 153 cover first use, unrelated lookup errors and a concurrent creator.",
+        "tests/support/workflow-binding.ts:51 records every create command before checking whether an instance already exists. tests/app.test.ts:147 asserts zero commands on reuse, preserving a check that a final-state-only fake could lose.",
+        "tests/check-secrets.test.ts:33 spawns the actual script. It asserts exit status and finding category for known findings and successful exit for clean and near-miss fixtures."
+      ],
+      "transferable_rule": "Pin a fake to the real runtime at behavior the application depends on. Preserve existing side-effect assertions when replacing spies with state. Test each blocking checker with a known failure and a near miss.",
+      "outcome_verification": "GitHub records the merge and successful pnpm test at head d452c80. Actions history independently shows 56 of 56 scheduled runs failed from August 8 through October 2. The 50 scheduled runs returned for October 4 through November 23 also failed. The data establishes no deployed recovery or common cause for those later failures. The local mutation results are reported by the PR author. The fake and local runtime do not establish deployed duplicate-create race behavior.",
+      "verification_url": "https://github.com/adewale/MaintainerBot/actions/runs/37096965597/job/111128750980",
+      "additional_verification_urls": [
+        "https://github.com/adewale/MaintainerBot/actions/runs/37027583040",
+        "https://github.com/adewale/MaintainerBot/actions/runs/45046669813"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Validate sprintf-js precision with a reproducible pnpm patch",
+      "url": "https://github.com/adewale/MaintainerBot/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing approach strengthened within a dependency repair",
+      "weakness": "The previous caller-level smoke check, documented in #5, already passed with the old formatter. Continued shell operation could therefore give the same result whether the dependency patch was installed or absent.",
+      "attempted_remedy": "Keep the existing caller behavior as a control, automate it, and add a distinct contract for the exact formatter resolved by the consumer. Retain those controls as the acceptance criterion for replacing the local patch.",
+      "test_paths": [
+        "tests/sprintf-contract.test.ts",
+        "docs/SECURITY.md",
+        "docs/LESSONS_LEARNED.md"
+      ],
+      "diff_evidence": [
+        "tests/sprintf-contract.test.ts:6–7 resolves the formatter through just-bash. Lines 12 and 22 exercise the installed formatter and boundary behavior. At line 31 a separate test verifies that the Bash interpreter remains usable after a rejected command.",
+        "docs/SECURITY.md makes passing the same controls a condition for retiring the patch. It records why the dependency version alone cannot verify the installed change."
+      ],
+      "transferable_rule": "When an outer layer already handles a failure, test the component that changed through its actual consumer. Keep the outer-layer test as a separate regression control.",
+      "outcome_verification": "GitHub records the merge and a successful pnpm test at head 965a57a. The pre-patch distinction between the formatter failures and the already-passing caller control is reported by the author. The audit did not rerun the old package or verify deployment.",
+      "verification_url": "https://github.com/adewale/MaintainerBot/actions/runs/38975002172/job/117222199100"
+    },
+    {
+      "number": 7,
+      "title": "Replace the removed rejection-test command in contributor instructions",
+      "url": "https://github.com/adewale/MaintainerBot/pull/7",
+      "state": "open",
+      "merged": false,
+      "classification": "Contributor test instructions repaired after a test deletion",
+      "weakness": "The documented pre-push recipe still required a package script removed in #2. Following the recipe stopped at the missing command before running the replacement coverage.",
+      "attempted_remedy": "Point the existing pre-push recipe at the ordinary Vitest entry point that includes the real rejection-filter tests.",
+      "test_paths": [
+        "README.md",
+        "package.json (unchanged in #7)",
+        "tests/rejections.test.ts (unchanged in #7)"
+      ],
+      "diff_evidence": [
+        "The sole changed line is README.md:172. It replaces pnpm run test:rejections with pnpm test. The #2 patch confirms that the former package script was removed, that the latter runs Vitest, and that the replacement test imports the production filter."
+      ],
+      "transferable_rule": "When retiring a test command, find its remaining callers in contributor recipes as well as package scripts and CI. Route those callers to the suite that owns the guarantee.",
+      "outcome_verification": "The PR is open. GitHub records a successful pnpm test at head 4ba3bb9. The diff changes contributor instructions only. The test behavior and deletion belong to #2.",
+      "verification_url": "https://github.com/adewale/MaintainerBot/actions/runs/41257391454/job/124703353776"
+    },
+    {
+      "number": 8,
+      "title": "Ground maintenance recommendations in existing work and coverage",
+      "url": "https://github.com/adewale/MaintainerBot/pull/8",
+      "state": "open",
+      "merged": false,
+      "classification": "Explicit manual evaluation approach within a broader prompt change",
+      "weakness": "The analyst could recommend duplicate cleanup or discard distinct checks based on similar commands. The existing prompt had no supplied cases for a reviewer to judge overlap, admission-boundary coverage or a valid empty recommendation.",
+      "attempted_remedy": "Add six evidence-to-expected-recommendation scenarios for human review of model output. Strengthen the analyst guidance and require a named cost, behavior guarantee, owner and verification for proposed cleanup.",
+      "test_paths": [
+        "docs/maintenance-recommendations.md (manual evaluation)",
+        "tests/audit-prompt-version.test.ts (prompt-cache regression only)",
+        "tests/fixtures/golden-run-context.json (version field only)"
+      ],
+      "diff_evidence": [
+        "docs/maintenance-recommendations.md:8 introduces six review cases. Lines 15–16 require preserving checks with different triggers or permissions and responding to an admission incident at its failing boundary. Other cases cover missing diff evidence, rejection history and an empty result.",
+        "tests/audit-prompt-version.test.ts:25 uses a mocked analyst to verify old and absent prompt versions refresh, then reuse the new result. The change to the existing golden alters only its promptVersion string."
+      ],
+      "transferable_rule": "Turn qualitative review guidance into concrete input and expected-judgment pairs. Keep an evaluation of output quality separate from an automated test of cache or version plumbing.",
+      "outcome_verification": "The PR is open. GitHub records a successful pnpm test at head d344957. The manual evaluation table was added. No execution of those scenarios against live model output or improvement in recommendation quality was established.",
+      "verification_url": "https://github.com/adewale/MaintainerBot/actions/runs/41275803958/job/124757624582"
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Upgrade Flue 0.3.11 → 0.9.1",
+      "url": "https://github.com/adewale/MaintainerBot/pull/1",
+      "reason": "Runtime and workflow migration. The verification commands exercise the migrated product. The file inventory contains no repository test repair."
+    },
+    {
+      "number": 4,
+      "title": "chore: patch vulnerable development tooling",
+      "url": "https://github.com/adewale/MaintainerBot/pull/4",
+      "reason": "Developer-tool dependency update. tests/workflow-binding.contract.test.ts wraps the existing Miniflare setup in convertV4MiniflareOptions. The same runtime, cases and assertions are preserved. This is harness compatibility with the new dependency."
+    },
+    {
+      "number": 5,
+      "title": "Patch shared runtime advisories without replacing Flue parents",
+      "url": "https://github.com/adewale/MaintainerBot/pull/5",
+      "reason": "Runtime dependency updates and a manual check of a caller. The diff changes the manifest, lockfile and lessons. #6 subsequently adds an independently discriminating formatter contract and automates the caller control."
+    },
+    {
+      "number": 9,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/MaintainerBot/pull/9",
+      "reason": "Workflow action pinning, its static policy check and Dependabot configuration. The changes concern workflow supply-chain lint."
+    },
+    {
+      "number": 10,
+      "title": "Bump the github-actions group with 4 updates",
+      "url": "https://github.com/adewale/MaintainerBot/pull/10",
+      "reason": "Dependabot changes four action references in the existing CI file. No test logic or testing approach changes."
+    }
+  ],
+  "limitations": [
+    "The API omitted inline lockfile hunks in #1 and #4. Their complete changed-file inventories were verified, and the source, manifest and relevant test diffs were available.",
+    "Hosted job records corroborate execution and exit status. This was a read-only history audit. Historical local red/green experiments, manual evaluations and deployments were not replayed."
+  ]
+}

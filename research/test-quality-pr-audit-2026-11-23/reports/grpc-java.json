@@ -1,0 +1,16 @@
+{
+  "repository": "adewale/grpc-java",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/grpc-java/pulls?state=all&per_page=100&page=1",
+      "returned": 0,
+      "exhausted": true
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": [
+    "GitHub's collection covers pull requests targeting this fork. Pull requests targeting its upstream repository have a separate collection."
+  ]
+}

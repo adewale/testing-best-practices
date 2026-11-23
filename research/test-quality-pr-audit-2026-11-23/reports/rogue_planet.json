@@ -1,0 +1,378 @@
+{
+  "repository": "adewale/rogue_planet",
+  "total_prs": 20,
+  "pages_checked": {
+    "pull_request_collection": "https://api.github.com/repos/adewale/rogue_planet/pulls?state=all&per_page=100&page=1",
+    "pull_request_pages": [
+      {
+        "page": 1,
+        "returned": 20
+      },
+      {
+        "page": 2,
+        "returned": 0
+      }
+    ],
+    "state_counts": {
+      "open": 5,
+      "closed_unmerged": 2,
+      "merged": 13
+    },
+    "changed_files": "Read all 20 paginated filename inventories and the REST files page for each PR. The two inventories agreed on all 225 file entries. Patches matched reported additions and deletions for every content change. PR #4 includes two pure document renames with no patch.",
+    "number_of_files_per_pr": {
+      "1": 1,
+      "2": 5,
+      "3": 3,
+      "4": 32,
+      "5": 3,
+      "6": 1,
+      "7": 16,
+      "8": 1,
+      "9": 44,
+      "10": 25,
+      "11": 34,
+      "12": 8,
+      "13": 29,
+      "14": 12,
+      "15": 1,
+      "16": 1,
+      "17": 3,
+      "18": 4,
+      "19": 1,
+      "20": 1
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Add Atom Torture Test suite for XHTML/MathML/SVG handling",
+      "url": "https://github.com/adewale/rogue_planet/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Fixture-based conformance testing for the existing parser",
+      "weakness": "The normalizer suite lacked paired XHTML, MathML and SVG feed examples that could expose loss of visible content during normalization.",
+      "attempted_remedy": "Add three multi-entry Atom fixtures and exercise them through the existing parser, checking content type, preserved text and markup behavior.",
+      "test_paths": [
+        "pkg/normalizer/normalizer_torture_test.go",
+        "testdata/atom-torture-xhtml.xml",
+        "testdata/atom-torture-mathml.xml",
+        "testdata/atom-torture-svg.xml"
+      ],
+      "diff_evidence": [
+        "TestXHTML_ComplexStructure fails when the expected list or link disappears. The sanitization cases also check that benign text survives.",
+        "The newly added TestMathML_BasicEquations and TestSVG_Inline cases log either outcome for some policy decisions. The TODO explicitly leaves verification against the original examples for later."
+      ],
+      "transferable_rule": "Choose fixtures that distinguish the required behaviors. Give each behavior that matters a failing assertion and preserve the fixture's provenance.",
+      "outcome_verification": "Merged. GitHub returned no check runs on the PR head or merge commit. The reported coverage gain was not independently measured. PRs #3 and #4 subsequently audited the corpus and filled two gaps.",
+      "related_prs": [],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/2/files"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Comprehensive Project Code Audit",
+      "url": "https://github.com/adewale/rogue_planet/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Documented audit of existing fixtures and coverage reporting",
+      "weakness": "The audit found that the published 88.4% library average excluded the CLI, reported at 26.6%. The Atom conformance fixtures had been constructed from secondary sources.",
+      "attempted_remedy": "Add a coverage-denominator check to the Go audit guide. Specify a comparison of the fixtures with the original cases and propose command-level tests for missing execution, error, validation and output paths.",
+      "test_paths": [
+        "docs/GO_AUDITING_HEURISTICS.md",
+        "specs/v0.4.0-plan.md"
+      ],
+      "diff_evidence": [
+        "The guide's Test Coverage Exclusions section asks reviewers to verify inclusion of cmd/ and justify exclusions. P2.6 in the release plan identifies pkg/normalizer/normalizer_torture_test.go and its three fixtures, and sets out which comparisons to make.",
+        "P5.4 and D1.3 name cmd/rp/*_test.go and enumerate specific missing command behaviors. The three changed files are documents."
+      ],
+      "transferable_rule": "Include excluded packages in coverage discussions and compare a named conformance suite against its source before treating the name as evidence of coverage.",
+      "outcome_verification": "Merged as guidance and a plan. The diff executes no test changes. GitHub returned no check runs on the head or merge commit. PRs #4 and #6 contain related implementation.",
+      "related_prs": [
+        4,
+        6
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/3/files"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Claude/0.4.0 011 c ub zz rw6 bf1g4w z2x nf hw",
+      "url": "https://github.com/adewale/rogue_planet/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing fixture repair embedded in a networking PR",
+      "weakness": "The original Atom suite omitted two source examples that distinguish XML case handling and relative URL resolution. Existing coverage reporting also obscured the CLI.",
+      "attempted_remedy": "Compare the fixtures with the original examples, add the missing cases, and publish separate library and overall coverage figures.",
+      "test_paths": [
+        "pkg/normalizer/normalizer_torture_test.go",
+        "testdata/atom-torture-xhtml.xml",
+        "specs/research/ATOM_TORTURE_TEST_RESEARCH.md",
+        "specs/TODO.md"
+      ],
+      "diff_evidence": [
+        "TestXHTML_CaseSensitivity fails if required text or bold formatting disappears or if an uppercase element is observed in lowercase. TestXMLBase_RelativeURLResolution requires finding its fixture entry, but several wrong-resolution branches only log a message.",
+        "The fixture and research report identify both omitted cases. The TODO now discloses the CLI figure alongside the library and overall averages."
+      ],
+      "transferable_rule": "Trace a conformance fixture to the distinction in its source example, then verify its expected result with an assertion that fails on the alternative behavior.",
+      "outcome_verification": "Merged. The relative URL test still permits several incorrect outputs. GitHub returned no check runs on the head or merge commit. Networking tests added alongside the feature are incidental to this match.",
+      "related_prs": [
+        2,
+        3
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/4/files"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Add table-driven tests for command functions (+9.9% cmd/rp coverage)",
+      "url": "https://github.com/adewale/rogue_planet/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated command-level coverage for existing behavior",
+      "weakness": "The CLI validation and workflow paths identified by the earlier audit had little direct coverage. A successful invocation alone would miss incorrect diagnostics.",
+      "attempted_remedy": "Give existing commands isolated temporary configurations and make the verification table assert both the returned error and the user-visible diagnostic.",
+      "test_paths": [
+        "cmd/rp/commands_test.go"
+      ],
+      "diff_evidence": [
+        "TestCmdVerify exercises a missing database, output directory and template, plus a valid configuration. Each row specifies wantErr and wantOutput.",
+        "TestCmdInit checks filesystem artifacts. The update, fetch and generate success cases look for completion text, which is a weaker check of downstream state."
+      ],
+      "transferable_rule": "For a command that diagnoses several faults, arrange one fault per case and check both the exit behavior and the specific diagnostic.",
+      "outcome_verification": "Merged with a test-only diff. GitHub returned no check runs on the PR head or merge commit. The PR's coverage percentages are author-reported.",
+      "related_prs": [
+        3
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/6/files"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "v0.4.0: Performance fix + comprehensive concurrency documentation",
+      "url": "https://github.com/adewale/rogue_planet/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Assertion audit and concurrency regression coverage embedded in a refactor",
+      "weakness": "The refactor could serialize HTTP while functional tests still passed. A companion assertion audit also identified log-only failures and empty or nonempty checks in sanitizer tests.",
+      "attempted_remedy": "Instrument concurrent fetches and writes separately. Record concrete assertion defects and proposed corrections in the audit.",
+      "test_paths": [
+        "pkg/fetcher/fetcher_concurrency_test.go",
+        "pkg/fetcher/fetcher_test.go",
+        "specs/TEST_ASSERTION_QUALITY_AUDIT.md",
+        "specs/TEST_ASSERTION_FIX_RESULTS.md"
+      ],
+      "diff_evidence": [
+        "TestFetchFeed_Concurrency requires at least two overlapping crawler operations. TestFetchFeed_MutexProtectsDatabase checks at least two concurrent fetches and at most one concurrent database write.",
+        "The audit documents two log-only sanitizer checks and an incorrect named-entity expectation. The changed-file inventory contains no normalizer test edit, so the recorded sanitizer fixes cannot be attributed to this PR's code diff."
+      ],
+      "transferable_rule": "Measure overlap in the work that should run concurrently and exclusivity in the work that must serialize. Inspect test files separately from an audit's claimed fixes.",
+      "outcome_verification": "Merged. GitHub returned no check runs on the PR head or merge commit. Its additional 250 ms wall-clock threshold was later removed by #13 through work shared with #14.",
+      "related_prs": [
+        13,
+        14
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/7/files"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Add comprehensive security and quality audit report",
+      "url": "https://github.com/adewale/rogue_planet/pull/9",
+      "state": "open",
+      "merged": false,
+      "classification": "Testing approach in a broad security and quality audit",
+      "weakness": "Fixed examples left arbitrary parser inputs and several database failure paths unexamined. The audit also identified remaining gaps at the command and generator boundaries.",
+      "attempted_remedy": "Introduce native fuzz targets for both parsers, exercise real database state after failed batch writes, and update an existing generator assertion to follow the generated stylesheet.",
+      "test_paths": [
+        "pkg/normalizer/normalizer_fuzz_test.go",
+        "pkg/opml/opml_fuzz_test.go",
+        "pkg/repository/repository_test.go",
+        "pkg/generator/generator_test.go",
+        "AUDIT.md"
+      ],
+      "diff_evidence": [
+        "FuzzNormalizerParse seeds representative feed files and calls Parse. FuzzOPMLParse also calls ExtractFeeds on successful parses. These targets detect panics, with no assertion on parsed feed semantics.",
+        "TestUpsertEntriesBatch_Atomicity seeds an existing row, submits a mixed valid/invalid batch and checks persisted row count after the error. TestResponsiveDesign now checks the page's stylesheet reference and the CSS's media query."
+      ],
+      "transferable_rule": "Distinguish crash detection from semantic fuzz properties. After a failed write, inspect persistent state as well as the error.",
+      "outcome_verification": "Open. At the reviewed head, Linux and macOS tests passed, Windows tests failed and Build was skipped. The open PR's audit and feature changes are not evidence of a merged repair.",
+      "related_prs": [],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/9/files",
+        "https://github.com/adewale/rogue_planet/actions/runs/29357017362"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Modernize Go code to use Go 1.22+ features",
+      "url": "https://github.com/adewale/rogue_planet/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test lifecycle and benchmark harness modernization",
+      "weakness": "Tests started work from independent background contexts. Parser and storage benchmarks manually managed iterations and reset timing in setup.",
+      "attempted_remedy": "Use testing.T.Context as the parent for test-scoped work and adopt the Go benchmark harness's B.Loop in the normalizer and repository benchmarks.",
+      "test_paths": [
+        "pkg/crawler/crawler_test.go",
+        "pkg/normalizer/normalizer_bench_test.go",
+        "pkg/repository/repository_bench_test.go"
+      ],
+      "diff_evidence": [
+        "Timeout and cancellation subtests in crawler_test.go now derive their contexts from t.Context().",
+        "The sanitizer and parser benchmarks replace explicit b.ResetTimer and counted b.N loops with b.Loop. Repository write benchmarks retain a separate input index where values vary across iterations."
+      ],
+      "transferable_rule": "Tie task lifetimes to the test that owns them. Let the benchmark harness manage measurement while preserving the workload's input variation.",
+      "outcome_verification": "Merged. All seven head check runs succeeded. This is a maintenance improvement. The PR contains no demonstrated prior timing error, leak or behavior defect killed by the new harness.",
+      "related_prs": [],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/10/files",
+        "https://github.com/adewale/rogue_planet/actions/runs/22647218060"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Fuzz feed normalization in CI",
+      "url": "https://github.com/adewale/rogue_planet/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "Semantic fuzz testing and repair of its initial test oracle",
+      "weakness": "The first revision relied partly on sanitizer idempotence. A permissive sanitizer can produce the same unsafe result twice, and silently dropping valid seed entries can let other checks pass.",
+      "attempted_remedy": "Retain determinism and fixed-point checks, add an independently implemented streaming-token check and require known-valid seeds to preserve entries and benign text. Run a bounded fuzz campaign in CI.",
+      "test_paths": [
+        "pkg/normalizer/normalizer_fuzz_test.go",
+        ".github/workflows/go.yml",
+        "Makefile"
+      ],
+      "diff_evidence": [
+        "The first commit fffc2fcd re-sanitizes content and summary. The final commit 411fceca adds checkFeedHTML and TestFeedHTMLOracle, including benign and disallowed controls and deeply nested data.",
+        "FuzzParseFeed uses a fixed fetch time and a 128 KiB input cap. Ubuntu CI runs make test-fuzz FUZZTIME=10s."
+      ],
+      "transferable_rule": "When a property lets an implementation agree with itself, add an independent oracle and known-good inputs that must survive. Exercise the oracle on both sides of its decision.",
+      "outcome_verification": "Merged. All seven head check runs succeeded. The reported mutation result and separate 20-second campaign were not independently rerun. The token check covers its specified rendering properties.",
+      "related_prs": [],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/12/files",
+        "https://github.com/adewale/rogue_planet/actions/runs/37869631580",
+        "https://github.com/adewale/rogue_planet/commit/fffc2fcd39a641af4c07f2dd8e20027d3a579cc0",
+        "https://github.com/adewale/rogue_planet/commit/411fceca929470740c5921bfe3acce3de7a03b94"
+      ]
+    },
+    {
+      "number": 13,
+      "title": "Fix title escaping and make concurrency and timing checks deterministic",
+      "url": "https://github.com/adewale/rogue_planet/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "Deterministic timing, restored integration coverage and consolidated audit fixes",
+      "weakness": "Scheduler delays distorted retry and rate-limit tests. The HTML generation integration test was permanently skipped. The integration Make target repeated ordinary package tests, and the tagged live suite could drift out of compilation.",
+      "attempted_remedy": "Inject recordable clocks and synchronize on cancellation or request milestones, re-enable the local HTTP-to-HTML path, remove the misleading target, compile the tagged suite in vet and incorporate the six commits from #14.",
+      "test_paths": [
+        "pkg/crawler/crawler_test.go",
+        "pkg/ratelimit/ratelimit_test.go",
+        "pkg/fetcher/fetcher_concurrency_test.go",
+        "pkg/timeprovider/timeprovider_test.go",
+        "cmd/rp/integration_test.go",
+        "cmd/rp/xss_pipeline_test.go",
+        "Makefile",
+        ".github/workflows/go.yml"
+      ],
+      "diff_evidence": [
+        "Retry tests inspect requested backoff durations. Rate-limit tests advance a fake clock for token refills. Fetcher tests require overlapping crawler calls and match each recorded error to its feed.",
+        "TestHTMLGeneration removes t.Skip, exercises a local HTTP fixture, writes SQLite and validates both entry titles and links in the generated file. CI runs go vet -tags=network ./... and Makefile drops the old -tags=integration target.",
+        "The PR commit list includes all six commits from #14 and a merge explicitly folding that branch. Its hostile-feed and assertion repairs are shared evidence."
+      ],
+      "transferable_rule": "Use simulated time for time policy and explicit synchronization for work ordering. Exercise the real local path behind an integration target and confirm that each tagged suite is compiled.",
+      "outcome_verification": "Merged. All seven head checks succeeded, including Linux, macOS and Windows tests. Tagged vet compiles the network suite. Live-feed execution, real-browser rendering and the reported duration improvement were not independently verified.",
+      "related_prs": [
+        14
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/13/files",
+        "https://github.com/adewale/rogue_planet/actions/runs/37871951023",
+        "https://github.com/adewale/rogue_planet/commit/a0972b5b03aff223dfc4de2378b0c2179644a7ba"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Test audit: fix stored XSS via entry titles, replace oracles that could not fail",
+      "url": "https://github.com/adewale/rogue_planet/pull/14",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated audit of ineffective assertions, folded into PR #13",
+      "weakness": "A helper-level sanitizer suite missed the final rendered title. Literal tag checks could miss real markup, optional entry guards skipped assertions, and a cancellation double ignored the context.",
+      "attempted_remedy": "Inspect the actual generated page structurally with benign preservation controls. Require all fixture cases, use fixed expected dates, track errors by feed and cancel an actual in-flight HTTP request.",
+      "test_paths": [
+        "cmd/rp/xss_pipeline_test.go",
+        "internal/htmlsafety/htmlsafety_test.go",
+        "pkg/normalizer/normalizer_realworld_test.go",
+        "pkg/normalizer/normalizer_xss_test.go",
+        "pkg/fetcher/fetcher_concurrency_test.go"
+      ],
+      "diff_evidence": [
+        "TestHostileFeedProducesSafePage drives the crawler, normalizer, SQLite and cmdGenerate, parses index.html, then checks structural violations and retained benign text. The HTML checker has its own positive and near-miss cases.",
+        "TestParseJSONFeedEdgeCases replaces conditional nil guards with a required-entry loop and a fixed fetch timestamp. The fetcher tests replace a log-only mock flag and a total-result count with per-feed records and cancellation assertions."
+      ],
+      "transferable_rule": "Exercise the point at which output becomes trusted, test the checker itself, and require the fixture to reach every assertion. Calibrate doubles against the real runtime behavior.",
+      "outcome_verification": "Closed without a standalone merge. All six commits appear in merged #13. The head's three OS test jobs passed and Security Scan failed. The PR reports that six of eleven applicable planted changes survived the old suite and all eleven were caught by the new suite. This audit did not rerun that experiment.",
+      "related_prs": [
+        13
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/rogue_planet/pull/14/files",
+        "https://github.com/adewale/rogue_planet/actions/runs/37092717310",
+        "https://github.com/adewale/rogue_planet/commit/a0972b5b03aff223dfc4de2378b0c2179644a7ba"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1
+      ],
+      "reason": "MathJax decision research only."
+    },
+    {
+      "numbers": [
+        5,
+        8
+      ],
+      "reason": "Documentation maintenance and a retrospective changelog. Neither changes a test or introduces an additional testing method."
+    },
+    {
+      "numbers": [
+        11
+      ],
+      "reason": "The IO writer improves production testability. The changed test lines only add the new context argument to existing calls or follow a User-Agent symbol rename. No new observable effect is asserted."
+    },
+    {
+      "numbers": [
+        15,
+        16
+      ],
+      "reason": "CI cache ownership, superseded-run cancellation and artifact retention. The test commands and matrix are preserved."
+    },
+    {
+      "numbers": [
+        17
+      ],
+      "reason": "GitHub Actions pinning and a configuration linter for immutable references."
+    },
+    {
+      "numbers": [
+        18,
+        19,
+        20
+      ],
+      "reason": "A patched Go toolchain and parser dependencies, followed by two Dependabot action-version updates. The PRs do not change test behavior."
+    }
+  ],
+  "limitations": [
+    "GitHub enumeration used all states without author or date filters. Merge status, commits and available head checks were read from GitHub. A passing job establishes that invocation's status only.",
+    "No local builds, live feeds, browser runs or mutation experiments were executed for this historical audit. The head and merge-commit check endpoints returned zero runs for #2, #3, #4, #6 and #7.",
+    "PRs #13 and #14 are separate attempts with overlapping code. All six commits of the closed #14 are included in the merged #13."
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "repository": "adewale/adewale",
+  "total_prs": 1,
+  "pages_checked": [
+    1,
+    2
+  ],
+  "page_counts": [
+    1,
+    0
+  ],
+  "per_page": 100,
+  "source": "https://api.github.com/repos/adewale/adewale/pulls?state=all&per_page=100&page=1",
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Add skill-eval-harness to profile README",
+      "url": "https://github.com/adewale/adewale/pull/1",
+      "state": "closed",
+      "merged": true,
+      "evidence": "The entire diff adds one project link and description to README.md. The linked evaluation harness lives in another repository.",
+      "files_url": "https://github.com/adewale/adewale/pull/1/files"
+    }
+  ],
+  "limitations": []
+}

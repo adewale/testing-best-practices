@@ -1,0 +1,513 @@
+{
+  "repository": "adewale/cfdoctor",
+  "as_of": "2026-11-23",
+  "total_prs": 34,
+  "pages_checked": 2,
+  "enumeration": {
+    "collection": "https://api.github.com/repos/adewale/cfdoctor/pulls?state=all&per_page=100&page=1",
+    "pr_page_sizes": [
+      34,
+      0
+    ],
+    "states": {
+      "open": 9,
+      "merged": 24,
+      "closed_unmerged": 1
+    },
+    "changed_file_entries": 941,
+    "file_pages": "All 34 PR file inventories checked at 100 per page. #3 had 104 entries across 2 pages. #36 had 214 across 3 pages. Other inventories ended on page 1.",
+    "review": "Read titles, bodies and file inventories across all authors and dates. Examined relevant changes, including embedded and withdrawn evaluator repairs. Verified reported head checks for matches against GitHub check-run records."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/cfdoctor/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "evaluation design",
+      "weakness": "The existing evaluation was tied to a multi-repository checkout. Visible prompts alone could conceal saturation or memorization.",
+      "remedy": "Added a standalone benchmark manifest with paired skill/no-skill runs, private splits and a staged dashboard-claim fixture.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md",
+        "evals/fixtures/round3-dashboard-claim/wrangler.toml"
+      ],
+      "diff_evidence": "The manifest separates tune, holdout and holdback, references private prompt/answer paths, and gives the fixture real project files. The runbook requires private prompts for scored hidden runs.",
+      "transferable_rule": "Pair variants on identical tasks and keep hidden cases out of the generation material. Identify cases both variants already solve.",
+      "outcome": "Author reported four successful public trigger cases. GitHub returned no head check runs. Hidden prompts and ablation measurements were absent.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/1/files"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Skill improvement pass: stable check IDs, detection evals, coverage matrix, verified citations",
+      "url": "https://github.com/adewale/cfdoctor/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "suite and CI repair",
+      "weakness": "The old CI self-scan ran without asserting a clean result. Trigger checks did not establish whether the scanner recognized specific problems.",
+      "remedy": "Added a fixture runner using stable check IDs, false-negative reproductions, a clean control and a registry/matrix consistency check. CI enforces zero self-findings outside deliberate fixtures.",
+      "test_paths": [
+        "scripts/eval_detection.py",
+        ".github/workflows/ci.yml",
+        "evals/fixtures/detection/clean-baseline/expected.json",
+        "evals/fixtures/detection/gap-stream-preload-split/expected.json",
+        "scripts/check_coverage.py"
+      ],
+      "diff_evidence": "The runner checks required and forbidden IDs and max_findings. clean-baseline sets its budget to zero. CI parses findings and asserts the list is empty. Five gap fixtures cover misses, including corroboration across files.",
+      "transferable_rule": "Make a smoke command fail on the unwanted result. Exercise each demonstrated blind spot with a fixture and provide an all-clear control.",
+      "outcome": "Head validation passed. The PR attributes a 9/14 to 14/14 transition to the fixes. The historical before run was not reproduced here.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/3/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/27232111196/job/80414653897"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Add dead cross-boundary RPC audit path",
+      "url": "https://github.com/adewale/cfdoctor/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded test workflow repair",
+      "weakness": "Running local validation wrote timestamped results to the tracked report directory and omitted checks that maintainers used elsewhere.",
+      "remedy": "Changed npm test to verify manifests, scanner cleanliness, fixtures and coverage. Normal runs direct reports outside the checkout, and npm run update-results refreshes published evidence.",
+      "test_paths": [
+        "package.json",
+        "scripts/eval_detection.py",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The detection runner accepts --out-dir. The npm test script uses /tmp output paths and a zero-findings assertion, while the explicit update-results command retains the report-writing defaults.",
+      "transferable_rule": "Keep verification repeatable without changing tracked evidence. Refresh baselines through an explicit operation.",
+      "outcome": "Head validation passed. The feature's new RPC tests are separate from this test workflow repair.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/6/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/27294932487/job/80625014676"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/cfdoctor/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "existing evaluator upgrade",
+      "weakness": "Fixture-backed cases relied on general keyword assertions with limited case-specific rejection rules.",
+      "remedy": "Wired executable grading scripts into three existing model-evaluation cases.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The clean control forbids high-severity reports. The runaway control requires both a recursion description and a retry-related term. The manifest checks the script exit code for each case.",
+      "transferable_rule": "Make each fixture's requirements and disqualifiers executable, and check whether the rules reject believable wrong answers.",
+      "outcome": "Head validation passed. The author observed two successful script checks on saved answers and 24 remaining leakage warnings. The oracle still relied on text matches, later challenged in #15.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/7/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/27314903096/job/80693224295"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/cfdoctor/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "evaluation reporting only",
+      "weakness": "Existing benchmark cases lacked fields needed to inspect results by difficulty, goal or trigger type.",
+      "remedy": "Annotated 27 cases for slice reporting.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The diff adds domain, difficulty and success_goals to 27 cases and trigger_type to four. No scoring assertions changed.",
+      "transferable_rule": "Record case characteristics when the analysis needs to expose differences hidden by an overall score.",
+      "outcome": "Head validation passed. The PR supplies metadata for future reports and establishes no change in failure detection.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/9/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/27369516101/job/80877762318"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Move runtime skill to narrow install directory",
+      "url": "https://github.com/adewale/cfdoctor/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded artifact validation",
+      "weakness": "The previous package declaration treated the repository root as the skill directory. Existing checks did not enforce a boundary between runtime materials and the repository's evaluation corpus.",
+      "remedy": "Moved the runtime under a declared directory and introduced a CI and local check of that declared boundary.",
+      "test_paths": [
+        "scripts/check_install_boundary.py",
+        ".github/workflows/install-boundary.yml",
+        "package.json"
+      ],
+      "diff_evidence": "The checker resolves package/plugin declarations, requires SKILL.md, and fails on evals, tests, research and generated artifacts within the declared directories.",
+      "transferable_rule": "Resolve the same package boundary the consumer uses and explicitly check which evaluation materials can enter it.",
+      "outcome": "GitHub recorded a successful install-boundary check. The checker inspects declared directories. The PR reports a separate npm pack dry run.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/11/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/27562612169/job/81478249449"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Add approval-gated Wrangler snapshots for deployed state",
+      "url": "https://github.com/adewale/cfdoctor/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded benchmark and oracle repair",
+      "weakness": "The existing 24 visible answer cases missed the capability being evaluated. One-run legacy scores varied and a loose evaluator could credit unsupported claims or reject a safe paraphrase.",
+      "remedy": "Added targeted, fixture-backed probes, adversarial answers and matched repeated comparisons against pinned main and no skill.",
+      "test_paths": [
+        "research/gpt55-pr12-regression-analysis.md",
+        "evals/oracles/fixture_oracle.py",
+        "tests/test_fixture_oracle.py",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "Oracle unit tests accept safe uses of prohibitions but reject recommendations of the same commands. They reject a keyword list and a global claim based on one of two active versions, and exercise multiple equivalent approval phrases.",
+      "transferable_rule": "Before attributing a score change, verify which tested capability and evidence each case actually exercises. Admit equivalent safe answers and reject near-identical unsupported claims.",
+      "outcome": "Head validation passed. The report identifies run variance in the earlier comparison. Raw private inputs were outside Git and the primary model also judged its own model family.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/12/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/29209852116/job/86695616992"
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Harden cfdoctor evidence, precision, and eval efficiency",
+      "url": "https://github.com/adewale/cfdoctor/pull/15",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit evaluator hardening",
+      "weakness": "Detached keywords, contradictory findings and flattened fixture paths could fool existing controls. A threshold of 1.0 also marked useful responses as failures.",
+      "remedy": "Made the evaluator parse finding blocks, scoped expected evidence, restored fixture path fidelity, added adversarial positive and negative self-tests, and calibrated grading thresholds.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "tests/test_fixture_oracle.py",
+        "scripts/eval_detection.py",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "New tests reject isolated keywords and fabricated findings on clean projects, accept a quoted dashboard claim, and verify staged entrypoint paths. The detection runner looks up evidence terms only in required findings. The benchmark sets an explicit 0.85 threshold and resource limits.",
+      "transferable_rule": "Build controls for false acceptance and false rejection. Bind evidence to the actual finding and stage files at the paths used by the consumer.",
+      "outcome": "Head validation passed. Model comparisons used visible cases, one run per case/variant and the same model family for generation and judging.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/15/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/29164822775/job/86576032079"
+      ]
+    },
+    {
+      "number": 16,
+      "title": "Add 7 docs-grounded scanner checks + guidance from Orange Cloud Report review",
+      "url": "https://github.com/adewale/cfdoctor/pull/16",
+      "state": "open",
+      "merged": false,
+      "classification": "embedded cross-detector precision control",
+      "weakness": "A fixture implementing a new detector's recommended remediation triggered an unrelated existing secret detector. Merely forbidding the new detector would have missed that contradiction.",
+      "remedy": "Kept the specific suppression assertion and required the corrected fixture to yield no findings after incorporating #17.",
+      "test_paths": [
+        "evals/fixtures/detection/turnstile-verified/expected.json",
+        "evals/fixtures/detection/turnstile-verified/src/index.js"
+      ],
+      "diff_evidence": "The expected file both forbids CFDOC-SEC-TURNSTILE-NO-SITEVERIFY and sets max_findings to zero. The PR identifies #17 as the separate repair for the legacy credential detector.",
+      "transferable_rule": "Exercise the recommended fix with the whole tool. A targeted suppression alone can conceal a cross-rule false alarm.",
+      "outcome": "Open PR with successful head validation. The seven new detectors' ordinary feature coverage is outside this match. The underlying scanner fix is counted under #17.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/16/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/30155440043/job/89672541400"
+      ]
+    },
+    {
+      "number": 17,
+      "title": "Stop reporting credential references as committed secrets",
+      "url": "https://github.com/adewale/cfdoctor/pull/17",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded precision regression",
+      "weakness": "The existing detector had a literal-credential positive fixture but accepted normal credential references as evidence of a committed secret. A positive-only suite missed a false alarm for the recommended implementation.",
+      "remedy": "Added an explicit zero-finding control for credential references and paired it with positive checks for literals in code and configuration.",
+      "test_paths": [
+        "evals/fixtures/detection/secret-reference-not-literal/expected.json",
+        "tests/test_static_scan.py"
+      ],
+      "diff_evidence": "The new fixture forbids the affected check and caps total findings at zero. Three scanner tests distinguish request/binding references, a literal in code and a literal in configuration.",
+      "transferable_rule": "Protect both sides of a precision fix. A detector disabled wholesale must still fail a positive test.",
+      "outcome": "Head validation passed. The PR reports the new cases failed against main and its pre-existing positive fixture stayed green. No independent base rerun was performed.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/17/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/30155213487/job/89671983002"
+      ]
+    },
+    {
+      "number": 19,
+      "title": "Add Containers runtime coverage and idle-window cost check",
+      "url": "https://github.com/adewale/cfdoctor/pull/19",
+      "state": "open",
+      "merged": false,
+      "classification": "embedded brittle test repair",
+      "weakness": "An existing ledger validity test hard-coded 2026-07-11, requiring a source edit whenever the real fixture's as_of changed.",
+      "remedy": "Derive the snapshot validity date from the ledger while retaining fixed dates for time-bound mutation cases.",
+      "test_paths": [
+        "tests/test_claim_ledger.py"
+      ],
+      "diff_evidence": "The old dt.date(2026, 7, 11) argument becomes dt.date.fromisoformat(self.ledger['as_of']). The assertions still require no errors or warnings for that snapshot.",
+      "transferable_rule": "Tie a snapshot consistency assertion to the snapshot's declared clock. Use explicitly controlled dates when the boundary itself is the behavior.",
+      "outcome": "Open PR with successful head validation. The change applies to the snapshot test. The new Containers detector fixture is ordinary feature coverage.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/19/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/30218994780/job/89838014790"
+      ]
+    },
+    {
+      "number": 20,
+      "title": "Add D1 rows-read cost coverage from the whatmedicaidpays incident",
+      "url": "https://github.com/adewale/cfdoctor/pull/20",
+      "state": "open",
+      "merged": false,
+      "classification": "embedded comparative evaluation repair",
+      "weakness": "An earlier model comparison used a baseline from before a relevant cost gate shipped. The old rubric also missed valid paraphrases, and raw fixtures contained the intended diagnosis.",
+      "remedy": "Reran against current main with diagnosis-revealing files and comments removed. Retained the old run, reported the overlap between arms and adjudicated wording misses.",
+      "test_paths": [
+        "evals/results/sonnet-d1-fixture-2026-08-10.md",
+        "evals/fixtures/detection/d1-nplus1-dashboard/expected.json"
+      ],
+      "diff_evidence": "The committed report gives the two baseline revisions, staging exclusions, nine-run design and narrowed result. Both current arms blocked the bad project 3/3. The existing detection fixture adds a required check ID.",
+      "transferable_rule": "Refresh a comparative baseline when the default branch gains related behavior. Remove answer-revealing material and check automated grading against valid paraphrases.",
+      "outcome": "Open PR with successful head validation. The comparison is a committed report, with one open-label grader, three runs per cell and no main-arm control for the remediated fixture.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/20/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/39162340871/job/117778085613"
+      ]
+    },
+    {
+      "number": 21,
+      "title": "Cover the StandardAgents DO runaway-loop bill: cycle/SQL-scan checks, scenario 24, budget-alert semantics",
+      "url": "https://github.com/adewale/cfdoctor/pull/21",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded benchmark repair",
+      "weakness": "A targeted prompt gave away the diagnosis and another claimed attachments that were absent. The initial targeted rows could not establish incremental value.",
+      "remedy": "Discarded those targeted rows, staged a neutral two-file project, and made the deterministic grader require evidence available only from the fixture.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/oracles/fixture_oracle.py",
+        "tests/test_fixture_oracle.py"
+      ],
+      "diff_evidence": "The evaluator requires the actual cycle members SessionCoordinator and TaskRunner and the stable scanner ID. Unit tests remove the ID or substitute a member and expect a failing exit. The billing case becomes a standalone question.",
+      "transferable_rule": "Remove diagnoses from inputs, stage promised artifacts and independently vary the evidence that the grading rule requires.",
+      "outcome": "Head validation passed. The PR reports a fresh 18-answer targeted run. The broad 33-case comparison showed no statistically significant overall gain and private cases were unavailable.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/21/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/32581227253/job/97050787587"
+      ]
+    },
+    {
+      "number": 22,
+      "title": "Capture kentcdodds.com PR #890 D1 isolate-cache lessons",
+      "url": "https://github.com/adewale/cfdoctor/pull/22",
+      "state": "open",
+      "merged": false,
+      "classification": "embedded precision regression",
+      "weakness": "An initial safe fixture missed a real false positive found during validation against five repositories. The detector confused a per-call result accumulator with state retained between requests.",
+      "remedy": "Added the real-world shape to the safe fixture and a minimal pair distinguishing function-local from module-scope state.",
+      "test_paths": [
+        "tests/test_static_scan.py",
+        "tests/test_detector_near_misses.py",
+        "evals/fixtures/detection/d1-shared-cache-safe/src/accumulator.ts"
+      ],
+      "diff_evidence": "Commit 291dea17 adds test_function_local_accumulator_map_is_not_flagged and the accumulator source. The final near-miss table changes where the map lives while keeping the D1 aggregate.",
+      "transferable_rule": "Turn a field-discovered false alarm into a near-miss differing in the one property that matters for the contract.",
+      "outcome": "Open PR with successful head validation. The report about five live repositories comes from the PR. It concerns a detector developed on this branch.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/22/files",
+        "https://github.com/adewale/cfdoctor/commit/291dea177b6244028bd04d279747f48ecc5b8dfe",
+        "https://github.com/adewale/cfdoctor/actions/runs/39161146720/job/117774547851"
+      ]
+    },
+    {
+      "number": 24,
+      "title": "Teach Cloudflare Doctor to block crawler-amplified D1 page work",
+      "url": "https://github.com/adewale/cfdoctor/pull/24",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded evaluator repair",
+      "weakness": "Keyword-level grading could accept the correct verdict paired with a wrong cost equation, an incomplete route fix or an unsupported source. A previously reviewed case had already affected the oracle.",
+      "remedy": "Built a structural checker of per-route evidence, mechanism and remediation, deliberately wrong answers and valid examples for all supported verdicts. Relabeled the reviewed scenario as a frozen regression.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "tests/test_fixture_oracle.py",
+        "evals/results/public-route-cost-gate/README.md"
+      ],
+      "diff_evidence": "Tests reject headings and keywords without rows, distinct keys substituted for repeated uncached requests, and a fix confined to a dynamic route. Other cases require official support for caching claims or accept valid BLOCK, PASS and CONDITIONAL.",
+      "transferable_rule": "Test a plausible wrong explanation alongside the right conclusion. When a case shapes the rubric, report it as regression coverage.",
+      "outcome": "Head validation passed. Committed evidence covers two models on focused fixtures and a previously reviewed regression. It cannot establish generalization to independent incidents.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/24/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/35452368927/job/105921634639"
+      ]
+    },
+    {
+      "number": 26,
+      "title": "Run npm test in CI, fail overdue evidence reviews, and add near-miss and detection-eval tests",
+      "url": "https://github.com/adewale/cfdoctor/pull/26",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit verification audit and integration of #27",
+      "weakness": "A handwritten CI command list drifted from npm test, a separate workflow ran a duplicate check, expiry could warn indefinitely, and a hard-coded test date drifted when the policy was reviewed.",
+      "remedy": "Made CI run the canonical local commands, removed the duplicate workflow, tested the policy's warning/failure boundary and CLI exit, and incorporated #27's tests.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/install-boundary.yml",
+        "tests/test_claim_ledger.py",
+        "tests/test_check_links.py",
+        "tests/test_detector_near_misses.py",
+        "tests/test_eval_detection.py"
+      ],
+      "diff_evidence": "The workflow invokes npm test and npm run eval:validate. The expiry tests assert warning through the grace boundary, error one day later and CLI status 1. The link-policy test computes due date + 1. The two #27 test files have identical Git blob IDs in both PRs.",
+      "transferable_rule": "Give CI and maintainers one test entry point. Assert the warning-to-failure transition and its exit code before deleting a redundant gate.",
+      "outcome": "Merged and head validation passed. This is the landing PR for #27's near-miss and evaluator tests. Their mutation results are a single item of evidence across both PRs.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/26/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/38141685201/job/114476660761"
+      ]
+    },
+    {
+      "number": 27,
+      "title": "Test audit: near-miss controls for 16 detectors and a detection eval that can go red",
+      "url": "https://github.com/adewale/cfdoctor/pull/27",
+      "state": "closed",
+      "merged": false,
+      "classification": "explicit test-only audit",
+      "weakness": "Of 25 positively tested detectors, the audit found 19 without a fixture explicitly forbidding them. The all-passing fixture suite did not establish that the evaluator's rules or exit statuses could fail.",
+      "remedy": "Added 16 table-driven positive/near-miss pairs and eight evaluator tests. Reviewed an initial pair that froze a heuristic threshold and removed dependence on an unrelated file-level shortcut.",
+      "test_paths": [
+        "tests/test_detector_near_misses.py",
+        "tests/test_eval_detection.py",
+        "evals/README.md"
+      ],
+      "diff_evidence": "Each pair asserts the same check ID is present on the positive and absent on its near-miss. Temporary real-scanner fixtures test missing/forbidden IDs, budgets, evidence scoped to required findings, and exits 0/1/2 for good/mixed/empty sets. The N+1 positive uses 10 queries, away from a tunable threshold of six.",
+      "transferable_rule": "Widen a rule to check its near-miss, silence it to check the corresponding positive, and break each evaluator condition. Leave tuning latitude for non-contract thresholds. Verify the tested revision when reusing a detached worktree.",
+      "outcome": "Closed without merging as a standalone PR. GitHub checks passed and both new test blobs landed through #26. The author's planted-bug table reports 2/19 to 18/19 widened guards and 0/6 to 6/6 evaluator faults caught. One file-level heuristic was deliberately unpinned. Wrangler fake fidelity remained unverified.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/27/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/37098112969/job/111132090191"
+      ]
+    },
+    {
+      "number": 28,
+      "title": "Clarify general Cloudflare cost-audit principles",
+      "url": "https://github.com/adewale/cfdoctor/pull/28",
+      "state": "open",
+      "merged": false,
+      "classification": "withdrawn evaluator repair",
+      "weakness": "A first structural grading run rejected five independently assistant-reviewed synthetic answers over presentation details, equivalent descriptions and how rows were grouped.",
+      "remedy": "An intermediate commit added parser regressions accepting equivalent answers and rejecting wrong arithmetic and unsupported claims. The branch later removed that evaluation along with the narrow feature.",
+      "test_paths": [
+        "tests/test_fixture_oracle.py",
+        "evals/oracles/fixture_oracle.py",
+        "evals/results/private-d1-investigations/README.md",
+        "evals/results/private-d1-investigations/initial-structural-grades.json"
+      ],
+      "diff_evidence": "Commit eebca3ac records failures for heading/emphasis, deep vs shallow cohorts, split rows with shared frequency and equivalent index descriptions. The regression suite includes split-row answers and keyword-stuffed/wrong arithmetic answers. Commit d70fd16a removes the suite and receipt from the current head.",
+      "transferable_rule": "Keep the initial grades and unchanged answers when fixing an overly specific grader. Treat the regrade as grader development and use fresh answers for any later effectiveness claim.",
+      "outcome": "Open PR. GitHub validation passed on both historical and current heads. The intermediate receipt reports 0/5 to 5/5 when regrading identical answers, with assistant review. Native paired evaluation was blocked by authentication. These tests are absent from the current PR diff.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/commit/eebca3acdc7e5040f066d1893e1f486c19d43e48",
+        "https://github.com/adewale/cfdoctor/commit/d70fd16a33bfb7b3ccdef251ce446afd958d3cd4",
+        "https://github.com/adewale/cfdoctor/actions/runs/39173864102/job/117812389645"
+      ]
+    },
+    {
+      "number": 30,
+      "title": "Clarify Workflow billing and add regression evals",
+      "url": "https://github.com/adewale/cfdoctor/pull/30",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit regression evaluation within billing update",
+      "weakness": "The original documentation guard accepted generic text while the underlying billing rule changed. Ambiguous worksheet flags also produced a spurious apparent model gain.",
+      "remedy": "Paired old and new guards against three locally altered documents and tested a typed worksheet oracle with one wrong field at a time. Clarified ambiguous cases and reran them.",
+      "test_paths": [
+        "tests/test_check_links.py",
+        "evals/link-check-policy.json",
+        "tests/test_workflow_billing_oracle.py",
+        "evals/oracles/workflow_billing_oracle.py",
+        "evals/results/workflow-billing/README.md"
+      ],
+      "diff_evidence": "The old guard checks Steps/August 10. Tests assert the old policy accepts each semantic mutation and the new one reports content-drift. Worksheet tests reject numbers as strings, booleans, wrong values and contradictory duplicate worksheets.",
+      "transferable_rule": "Alter the fact a drift guard promises to protect while preserving generic page text. Vary a single typed answer field and reject contradictory duplicates.",
+      "outcome": "Head validation passed. The PR reports the old/new guard comparison as 0/3 vs 3/3 and 18/18 billing worksheets for all three model variants. The evaluation establishes no billing-answer accuracy gain.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/30/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/39157323221/job/117763115486"
+      ]
+    },
+    {
+      "number": 36,
+      "title": "Fix audit scope, false alarms, and workload checks found in Dataflare",
+      "url": "https://github.com/adewale/cfdoctor/pull/36",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded judge and evaluator repair",
+      "weakness": "The judge could call an observed scanner result fabricated because it lacked the execution trace. Old verdicts could also be reused after the grading evidence changed.",
+      "remedy": "Forwarded observed commands, outputs and permissions to the judge. Fingerprinted grading inputs and added controls for a legitimate scan, a false attribution, failed commands, missing logs and stale cached verdicts.",
+      "test_paths": [
+        "tests/test_audit_judge.py",
+        "evals/results/repair-final/judge_round.py",
+        "evals/results/focused-followup/judge-check.json",
+        "tests/test_eval_detection.py"
+      ],
+      "diff_evidence": "The forwarding test checks scanner_output and exit_code from the trace. A quoted mention cannot stand in for a run. Changing receipt A to receipt B invalidates a cached verdict. The detection runner also gained tests for missing required and present forbidden products.",
+      "transferable_rule": "Give evaluators the admissible evidence they need and bind cached assessments to it. Check a credible true claim and a plausible false attribution against the same evidence.",
+      "outcome": "Merged and head validation passed. Published focused results cover four judge controls and eight audits of known cases. They establish a targeted correction, with residual imprecision in recommendation wording.",
+      "sources": [
+        "https://github.com/adewale/cfdoctor/pull/36/files",
+        "https://github.com/adewale/cfdoctor/actions/runs/42378017136/job/128419529865"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "prs": [
+        2,
+        4,
+        8,
+        13
+      ],
+      "reason": "Example/config wording, retrospective documentation, agent metadata or install pin. #2 changes the trigger example extension. #4 documents lessons about pre-existing CI."
+    },
+    {
+      "prs": [
+        5,
+        10,
+        34
+      ],
+      "reason": "Dependency or harness version changes without repaired checks. #34 contains vendor release notes."
+    },
+    {
+      "prs": [
+        14,
+        25,
+        37
+      ],
+      "reason": "New product-check fixtures or ordinary feature regression coverage. #25 also bumps hard-coded test dates with new data. #37 refreshes stale report rows without changing those pre-existing fixtures' assertions."
+    },
+    {
+      "prs": [
+        18,
+        33
+      ],
+      "reason": "Lint-only or action-pinning policy work. #33 checks workflow dependency references with zizmor."
+    },
+    {
+      "prs": [
+        31,
+        32
+      ],
+      "reason": "CI event filtering or cancellation only."
+    }
+  ],
+  "limitations": [
+    "Open, withdrawn and merged efforts have distinct outcomes. #27's two new test files are byte-identical in merged #26. #28's evaluator repair was removed in branch history. #16 and #17 describe the same original cross-detector false alarm from complementary directions.",
+    "All changed filenames were recovered. GitHub omitted inline patches for 40 files across #3, #11, #12, #15, #30 and #36, including unchanged renames and large generated evidence. The cited source changes, historical commits and focused receipts were available.",
+    "GitHub check conclusions establish hosted job results for the observed commits. This read-only audit did not rerun the test suite, private cases, model evaluations or mutation trials. Numerical effectiveness claims are attributed to their originating records."
+  ]
+}

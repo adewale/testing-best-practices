@@ -1,0 +1,195 @@
+{
+  "repository": "adewale/skill_scanner",
+  "total_prs": 14,
+  "pages_checked": {
+    "endpoint": "https://api.github.com/repos/adewale/skill_scanner/pulls?state=all&per_page=100&page=1",
+    "results_per_page": [
+      14,
+      0
+    ],
+    "states": {
+      "merged": 10,
+      "closed_unmerged": 1,
+      "open": 3
+    },
+    "changed_file_counts": {
+      "1": 1,
+      "2": 10,
+      "3": 2,
+      "4": 5,
+      "5": 3,
+      "8": 6,
+      "9": 4,
+      "10": 6,
+      "11": 3,
+      "12": 5,
+      "13": 14,
+      "14": 7,
+      "15": 3,
+      "16": 1
+    },
+    "scope": "Reviewed every PR title, body, and its full REST changed-file inventory. All file lists fit on the first 100-file page. Inspected test, policy, and workflow patches for candidates."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Add comprehensive test suite with 174 tests across three tiers",
+      "url": "https://github.com/adewale/skill_scanner/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Foundational testing approach",
+      "weakness": "The base tree contained the scanner and four Markdown files. There was no automated regression suite for scoring, detector false positives or documentation drift.",
+      "attempted_remedy": "Introduced three pytest suites for infrastructure, detection and documentation consistency, shared fixtures, and a Python 3.11–3.13 CI matrix.",
+      "test_paths": [
+        "conftest.py",
+        "test_infrastructure.py",
+        "test_scanning.py",
+        "test_documentation.py",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "The shared scanner fixture creates a fresh SkillScanner. Filesystem tests use pyfakefs. Detection suites pair category positives with benign controls.",
+        "Documentation tests read the project’s Markdown and compare selected counts with scanner lists. CI runs pytest on all three Python versions."
+      ],
+      "transferable_rule": "Give a new test suite distinct jobs. Use benign controls for false positives and cross-check published claims against observable behavior.",
+      "outcome_caveat": "Merged. GitHub records three successful test jobs. The archived Python 3.11 job log returned HTTP 410, so the PR title’s test count was not independently verified. Later audits identified weaknesses in the original assertions and self-scan.",
+      "ci_run": "https://github.com/adewale/skill_scanner/actions/runs/21697302032"
+    },
+    {
+      "number": 4,
+      "title": "Add TESTING.md and code quality tools",
+      "url": "https://github.com/adewale/skill_scanner/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Contributor testing guidance",
+      "weakness": "The three suites were in place, but contributors had no dedicated guide for choosing a tier, constructing a fixture or pairing a detector example with a false-positive check.",
+      "attempted_remedy": "Documented rules for adding tests to each tier and how to run them. The other CI changes introduce static analysis tools.",
+      "test_paths": [
+        "TESTING.md",
+        "test_infrastructure.py",
+        "test_scanning.py",
+        "test_documentation.py"
+      ],
+      "diff_evidence": [
+        "The new 143-line TESTING.md maps changes to test files, asks for a benign companion for detector cases, prescribes reserved example addresses, and calls for checking documentation claims against code.",
+        "The three named test modules are referenced by the guide. Their assertions did not change in this PR."
+      ],
+      "transferable_rule": "A contributor guide should explain which test to write for a change, how to construct its input, and which behavior the test should distinguish.",
+      "outcome_caveat": "Merged. GitHub records successful test jobs. The archived Python 3.11 job log returned HTTP 410. The guide documents intent. Later PR #13 put the coverage threshold into the normal CI command and strengthened the self-scan.",
+      "ci_run": "https://github.com/adewale/skill_scanner/actions/runs/21733290650"
+    },
+    {
+      "number": 12,
+      "title": "Property-test hostile scanner inputs",
+      "url": "https://github.com/adewale/skill_scanner/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "Upgrade to existing parser tests",
+      "weakness": "The existing example corpus did not explore combinations of generated Unicode and Markdown or arbitrary truncation and length boundaries across the five image readers. Arbitrary bytes alone seldom produce meaningful metadata.",
+      "attempted_remedy": "Added bounded Hypothesis inputs, a no-crash property for all five readers and a separate exact round-trip property for valid PNG metadata. Added Hypothesis to the existing CI test job.",
+      "test_paths": [
+        "test_properties.py",
+        ".github/workflows/ci.yml",
+        "TESTING.md",
+        "LESSONS_LEARNED.md"
+      ],
+      "diff_evidence": [
+        "Generated Markdown goes through SkillScanner.scan_content. The property checks the type and source path of each returned finding.",
+        "Generated inputs with optional format signatures feed all five readers. A separate constructor creates a valid 1×1 PNG with a real checksum, and the test checks the exact generated keyword and text after extraction."
+      ],
+      "transferable_rule": "Pair an arbitrary-input no-crash test with a valid generated specimen that has an exact expected result. A parser that always returns an empty value can otherwise pass.",
+      "outcome_caveat": "Merged. The Python 3.11 CI log records 246 passing tests. The generated exact-content check covers PNG text metadata. For the other four readers the arbitrary-byte property checks the return type and exception behavior.",
+      "ci_run": "https://github.com/adewale/skill_scanner/actions/runs/33346275620"
+    },
+    {
+      "number": 13,
+      "title": "Test audit: real CI self-scan gate and coverage floor; two-sided tests for every regex rule; fix 4 rule bugs and doc drift",
+      "url": "https://github.com/adewale/skill_scanner/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "Merged audit of CI gates, detector tests and documentation tests",
+      "weakness": "The scanner’s CI gate could pass with zero inputs. Source-file tests skipped missing files and accepted zero findings in known noisy files. The normal pytest command omitted coverage. Detector category assertions and copied documentation lists also masked individual regressions.",
+      "attempted_remedy": "Added two fixture directories and CLI-level tests, failure on missing targets and minimum finding counts, and a 79% branch-enabled coverage gate. Folded in #14’s per-rule positive and near-miss tests and live documentation comparisons.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "test_scanning.py",
+        "fixtures/skills/benign/SKILL.md",
+        "fixtures/skills/malicious-canary/SKILL.md",
+        "pyproject.toml",
+        "test_detector_rules.py",
+        "test_documentation.py"
+      ],
+      "diff_evidence": [
+        "The canary must exit 1, return parseable JSON, report exactly one skill and include a high or critical finding. TestFixtureSkillGate also checks the expected detection categories. The benign fixture must exit 0 with only the expected provenance notice.",
+        "TestSelfScan replaces missing-file skips with assertions and checks lower bounds of 32, 32 and 3 for its three noisy files alongside the upper bound of 200. CI adds --cov and --cov-branch. The configured floor changes from an unused 80 to an enforced 79.",
+        "The rule and documentation test patches are identical to those in #14."
+      ],
+      "transferable_rule": "Make a passing CI gate prove it processed the intended input. A failing control also needs a check on the output so an unrelated crash cannot satisfy the gate.",
+      "outcome_caveat": "Merged. Each of the three GitHub test-job logs records 497 passing tests and 80.06% coverage with branch measurement enabled. Both fixture checks passed. The PR describes separate local runs at 79.84% and a local mutation exercise. The committed workflow does not repeat that exercise.",
+      "related_prs": [
+        14
+      ],
+      "ci_run": "https://github.com/adewale/skill_scanner/actions/runs/37908626336"
+    },
+    {
+      "number": 14,
+      "title": "Test audit: test every regex rule from both sides; fix 4 rule bugs and doc drift",
+      "url": "https://github.com/adewale/skill_scanner/pull/14",
+      "state": "closed",
+      "merged": false,
+      "classification": "Closed audit subsequently incorporated into #13",
+      "weakness": "A category-level assertion could pass when a different rule fired. The documentation tests also asserted copied flag and path lists and a literal “272” pattern claim, allowing behavior and documentation to drift together.",
+      "attempted_remedy": "Added two-sided per-rule assertions through the scanner, a check requiring a matching test row for each registered rule, and documentation checks against actual parser output, paths and pattern counts. The PR also corrected detector behavior uncovered by those tests.",
+      "test_paths": [
+        "test_detector_rules.py",
+        "test_documentation.py",
+        "skill_scanner.py"
+      ],
+      "diff_evidence": [
+        "test_rule_flags_malicious_line and test_rule_ignores_near_miss check the individual finding description in SkillScanner.scan_content results. test_every_rule_has_a_row enumerates the registry.",
+        "Documentation tests compare sets of README entries with CLI --help and get_default_skill_paths(), check the documented count against the actual collection, and parameterize previously repetitive table assertions."
+      ],
+      "transferable_rule": "Test the identity of the rule that fired through the production entry point, with a close benign case. If an inventory-size check can detect a deletion, disable a rule in place to measure whether its behavior is covered.",
+      "outcome_caveat": "Closed without merging directly. The Python 3.11 CI log records 492 passing tests and a self-scan that found zero skills. The test patches are identical in merged #13. The reported reduction from 90 of 117 individually disabled rules surviving to zero comes from the author’s local experiment. Per-rule severity is outside these assertions.",
+      "related_prs": [
+        13
+      ],
+      "ci_run": "https://github.com/adewale/skill_scanner/actions/runs/37097613224"
+    }
+  ],
+  "exclusions": [
+    {
+      "prs": [
+        1,
+        5,
+        8,
+        10
+      ],
+      "reason": "Remote scanning, image alt text, Unicode homographs, and additional detectors are product changes. The latter three add cases for the new features. Their test patches do not repair earlier tests."
+    },
+    {
+      "prs": [
+        9
+      ],
+      "reason": "The open directory-scanning proposal deletes five tests for ScanResult.is_safe and its JSON field alongside removal of that API. New tests cover the directory and symlink features. The removals follow the changed product contract."
+    },
+    {
+      "prs": [
+        3
+      ],
+      "reason": "Changelog and ignore-file update describes the suite introduced in #2."
+    },
+    {
+      "prs": [
+        11,
+        15,
+        16
+      ],
+      "reason": "Ruff configuration, GitHub Actions reference linting and a Dependabot Actions update, respectively. Their diffs do not change application test behavior."
+    }
+  ],
+  "limitations": [
+    "Reviewed historical patches and GitHub Actions records. No tests or mutation experiments were run for this audit.",
+    "Four qualifying PRs merged. The fifth, #14, closed separately and its two test patches also appear in #13."
+  ]
+}

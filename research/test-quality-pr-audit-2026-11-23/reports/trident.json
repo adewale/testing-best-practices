@@ -1,0 +1,1880 @@
+{
+  "repository": "adewale/trident",
+  "total_prs": 85,
+  "pages_checked": {
+    "collection": "https://api.github.com/repos/adewale/trident/pulls?state=all&per_page=100",
+    "all_state_collection_page_sizes": [
+      85,
+      0
+    ],
+    "state_counts": {
+      "merged": 80,
+      "open": 0,
+      "closed_unmerged": 5
+    },
+    "scope": "All authors, all states and all dates returned on 2026-11-23 UTC.",
+    "file_inventories": "All 85 titles and bodies and every PR file inventory screened. Paginated connector inventories were independently checked against paginated authenticated REST files and pull-detail changed_files. Every inventory count matched.",
+    "changed_file_entries": 7262,
+    "rest_file_pages": 135,
+    "per_pr_changed_files": {
+      "1": 40,
+      "4": 3,
+      "5": 11,
+      "6": 13,
+      "7": 20,
+      "8": 3,
+      "9": 3,
+      "10": 6,
+      "11": 2,
+      "12": 65,
+      "13": 34,
+      "14": 16,
+      "15": 4,
+      "16": 12,
+      "17": 2,
+      "18": 23,
+      "19": 14,
+      "20": 20,
+      "21": 56,
+      "22": 1066,
+      "23": 166,
+      "24": 34,
+      "27": 15,
+      "29": 41,
+      "32": 2,
+      "35": 7,
+      "36": 27,
+      "37": 104,
+      "39": 13,
+      "40": 30,
+      "42": 13,
+      "45": 13,
+      "46": 20,
+      "47": 18,
+      "48": 4,
+      "49": 21,
+      "50": 13,
+      "51": 19,
+      "52": 3,
+      "53": 25,
+      "54": 7,
+      "56": 12,
+      "57": 6,
+      "58": 1,
+      "59": 3,
+      "61": 4,
+      "63": 57,
+      "64": 9,
+      "65": 31,
+      "66": 49,
+      "67": 11,
+      "68": 44,
+      "69": 60,
+      "70": 96,
+      "71": 148,
+      "72": 1270,
+      "73": 263,
+      "74": 1166,
+      "75": 33,
+      "76": 1095,
+      "77": 3,
+      "78": 1,
+      "79": 11,
+      "80": 9,
+      "81": 3,
+      "82": 29,
+      "83": 31,
+      "84": 11,
+      "86": 52,
+      "88": 86,
+      "89": 68,
+      "90": 44,
+      "92": 26,
+      "93": 38,
+      "94": 54,
+      "96": 15,
+      "97": 3,
+      "98": 23,
+      "99": 20,
+      "100": 2,
+      "101": 77,
+      "102": 232,
+      "103": 2,
+      "104": 13,
+      "105": 43
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Make source benchmarks and retained reports reproducible after extraction",
+      "url": "https://github.com/adewale/trident/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing CLI test and fixture repair",
+      "weakness": "The source-command test supplied a fake external benchmark runner, allowing Trident to depend on files absent from a public checkout.",
+      "attempted_remedy": "Exercise the real Trident entry point in a public-source fixture and build its owned protocols in a disposable workspace.",
+      "test_paths": [
+        "tests/unified-benchmark-cli.test.ts"
+      ],
+      "diff_evidence": "The diff removes creation of eval/benchmark/unified/run.ts and constructs a minimal source tree without a benchmark package before invoking the CLI.",
+      "transferable_rule": "A distribution test should contain only files consumers actually receive.",
+      "outcome_caveat": "Full source execution still needs an independently supplied product checkout.",
+      "head_sha": "e7146635c0c3f0e8bcba1a9bee8f89bc6fb617bd",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 4,
+      "title": "Share regression cell arithmetic between the scorecard and bounded screens",
+      "url": "https://github.com/adewale/trident/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Shared performance-test methodology",
+      "weakness": "Bounded screens and the standard scorecard could apply different calculations or omit unavailable cells for the same regression test.",
+      "attempted_remedy": "Use one regressionCells implementation for both and exercise the gate with independently specified expected values and missing data.",
+      "test_paths": [
+        "tests/performance-gates.test.ts",
+        "performance-gates.ts"
+      ],
+      "diff_evidence": "The table-driven test deletes a round, zeros allocation samples, shortens a tail or invalidates semantics. Each affected result must be unavailable and blocking.",
+      "transferable_rule": "Share decision rules across gates, and verify independent numerical and missing-evidence examples.",
+      "outcome_caveat": "The stock scorecard was intended to retain its previous numerical results.",
+      "head_sha": "6faa0f3fa689e7e8e560f732dacb73590c4ae99f",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 5,
+      "title": "Benchmark unreleased builds of npm-backed and source-built tools as candidates",
+      "url": "https://github.com/adewale/trident/pull/5",
+      "state": "closed",
+      "merged": false,
+      "classification": "Embedded repair to benchmark isolation",
+      "weakness": "A local Agentic checkout could be recorded in the release lane, letting unreleased bytes substitute for released results.",
+      "attempted_remedy": "Key npm candidate records by artifact bytes, keep local source checkout records separate from releases and reject candidate artifacts encountered during release publication.",
+      "test_paths": [
+        "tests/candidate-mode.test.ts"
+      ],
+      "diff_evidence": "A test writes a release record and multiple same-version candidate records, checks reuse and publication, and asserts that an Agentic packageRoot resolves to a candidate.",
+      "transferable_rule": "Give candidate runs their own identity and namespace even when the version string matches a release.",
+      "outcome_caveat": "Closed unmerged. Its 160-line added test file covers npm artifacts and local checkout identity. The body describes source-candidate work that is visible separately in #16. The npm and comparison work was incorporated in #13.",
+      "head_sha": "18a7fe9edb596204954ea97e96a61609cd49dc7b",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 6,
+      "title": "Read markdown and wrapped labels the way renderers draw them",
+      "url": "https://github.com/adewale/trident/pull/6",
+      "state": "closed",
+      "merged": false,
+      "classification": "Unmerged repair to an existing output oracle",
+      "weakness": "The label checker treated Markdown delimiters as visible letters and missed wrapped labels drawn as sibling SVG text rows.",
+      "attempted_remedy": "Replay saved false failures and accept intended emphasis and geometrically adjacent rows while requiring all authored words.",
+      "test_paths": [
+        "tests/unified-label-rules.test.ts"
+      ],
+      "diff_evidence": "The cat in **the** hat accepts the rendered text with or without markers and rejects The cat in hat. The file also includes retained renderer outputs and controls for rows that must remain distinct.",
+      "transferable_rule": "Reproduce observer mistakes with saved real outputs and a close negative control.",
+      "outcome_caveat": "Closed unmerged and folded into #13. This proposal applies its Markdown relaxation broadly. #22 later narrowed it to typed Markdown labels.",
+      "head_sha": "14e3c00489c1efc86185d7a4d9c087d44d9ee0d5",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 7,
+      "title": "Finish source benchmark handoff and isolate campaign failures",
+      "url": "https://github.com/adewale/trident/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded runner isolation and bounded regression test",
+      "weakness": "One missing project artifact could abort other cache planning, and a wide terminal gutter could hang source-echo qualification.",
+      "attempted_remedy": "Record the unavailable artifact as a blocked variant, and isolate the stress check for real-width terminal output in a child process.",
+      "test_paths": [
+        "tests/unified-cli-resource-observer.test.ts",
+        "tests/unified-output-qualification.test.ts"
+      ],
+      "diff_evidence": "The artifact fixture asserts the preparation error is retained without an identity. A child script feeds the checker a 400,000-space gutter alongside real drawing and echoed-source controls.",
+      "transferable_rule": "Bound pathological-input tests outside the process that runs the rest of the suite. Attribute a failed setup to its own target.",
+      "outcome_caveat": "The stress case is synthetic and models the scale of a reported real output.",
+      "head_sha": "44f24692bdd90ecb404dc0ed24edca35f9f00149",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 9,
+      "title": "Keep community comparisons within matching interfaces and cohorts",
+      "url": "https://github.com/adewale/trident/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing benchmark comparison repair",
+      "weakness": "The league compared a Node API time to a browser time and ranked incompatible invocation surfaces together.",
+      "attempted_remedy": "Group observations by surface, output and compatible protocol/runtime cohort, and withhold relative costs when no matching baseline exists.",
+      "test_paths": [
+        "tests/project-report-view.test.ts"
+      ],
+      "diff_evidence": "A fixture combines 10 ms Mermaid browser SVG, 5 ms peer browser SVG and 1 ms Node SVG/source records, and checks the resulting surface-specific tables and ratios.",
+      "transferable_rule": "Define the comparison population before computing relative performance.",
+      "outcome_caveat": "The change recalculates presentation from recorded observations without recollecting measurements.",
+      "head_sha": "d093cdcde6c467c3a56aa28634e785b522f10194",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 11,
+      "title": "Import the corpus through the source workspace",
+      "url": "https://github.com/adewale/trident/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing corpus reproducibility repair",
+      "weakness": "Refreshing test inputs imported benchmark modules from an external checkout that had deleted them.",
+      "attempted_remedy": "Run the importer from Trident's source workspace with its own workload modules while retaining the supplying checkout revision.",
+      "test_paths": [
+        "unified/corpus-import.ts"
+      ],
+      "diff_evidence": "The importer switches from loading the external eval/benchmark modules to withAgenticWorkspace and a child --emit invocation. The parent persists the corpus and source revision.",
+      "transferable_rule": "Make fixture regeneration depend on the maintained owner of its generators.",
+      "outcome_caveat": "No automated test file changed in this PR. The public PR records a manual corpus equivalence check.",
+      "head_sha": "5a81171d19adeb7fa75e3cc48a1a6d376ceacf29",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 12,
+      "title": "Measure Mermaid's nine newer families beside the 23-family mark",
+      "url": "https://github.com/adewale/trident/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "Benchmark corpus coverage method",
+      "weakness": "An implementation-specific family registry omitted nine families recognized by the pinned specification implementation.",
+      "attempted_remedy": "Read literal examples from pinned upstream documentation, deduplicate them and expose the new families separately from the historical comparison.",
+      "test_paths": [
+        "tests/newer-families.test.ts",
+        "unified/corpus-import.ts"
+      ],
+      "diff_evidence": "The added test at the PR head checks the 23 historical families and nine named additions. The importer resolves the upstream tag to a commit, reads examples with git show and deduplicates exact source strings.",
+      "transferable_rule": "Derive corpus coverage from an independent source and preserve the identity of an older cohort.",
+      "outcome_caveat": "GitHub omitted inline patches for the cited #12 files. The added test was read at the exact PR head and the importer was compared at base and head. Some controls require the tagged checkout or installed oracle.",
+      "head_sha": "45851e9d50051aa98febbbce9e08890002cfca74",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 13,
+      "title": "Correct community qualification, candidate comparisons and required-family coverage",
+      "url": "https://github.com/adewale/trident/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluator and comparability repair",
+      "weakness": "Separated SVG text could satisfy one expected label. Different APIs could appear directly comparable, and a transition from passed to blocked could disappear.",
+      "attempted_remedy": "Use retained drawings and false-positive controls for label geometry, check binding/output identity before timing comparisons and surface changed dispositions.",
+      "test_paths": [
+        "tests/unified-label-rules.test.ts",
+        "tests/candidate-mode.test.ts",
+        "tests/unified-svg-browser-qualification.test.ts"
+      ],
+      "diff_evidence": "The candidate fixture changes the export from render to renderFast or adds PNG with all else fixed. The qualification suite loads archived false failures and includes controls against merging visibly distinct rows.",
+      "transferable_rule": "Test both directions of an oracle change, and treat the interface and disposition as part of the comparison.",
+      "outcome_caveat": "This merged work incorporates parts of #5 and #6. #22 subsequently narrowed its treatment of literal punctuation.",
+      "head_sha": "a23d8f70be07f4a7ef08edb051bc95aecd974d03",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 14,
+      "title": "Own remaining comparison and parser timing machinery in Trident",
+      "url": "https://github.com/adewale/trident/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluator and test ownership",
+      "weakness": "Parser sampling and evidence validation lived beside a different project's implementation, leaving overlapping measurement machinery and hard-to-reproduce reuse checks.",
+      "attempted_remedy": "Move the measurement code and its behavioral tests to the harness. Preserve the source and inventory checks and the separate first, warmup and repeated measurements.",
+      "test_paths": [
+        "tests/modern-editor-evidence.test.ts",
+        "tests/parser-timing.test.ts"
+      ],
+      "diff_evidence": "The relocated evidence fixture changes source, line identity, page bytes or upstream revision at a constant count. The timing test distinguishes a false return from a thrown parse error and retains samples for both.",
+      "transferable_rule": "Move behavioral tests with the code that owns an evidence contract.",
+      "outcome_caveat": "This was primarily a transfer of ownership. The PR describes later removal of duplicate code in the other repository.",
+      "head_sha": "2e92e4d3434139ebb46fdfd9b624268af72c40e3",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 15,
+      "title": "Preserve oracle caveats and separate accepted-input label checks",
+      "url": "https://github.com/adewale/trident/pull/15",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing denominator and oracle repair",
+      "weakness": "Raw pass rates included rejected legacy inputs or cases without usable label expectations while portable reports dropped the reference warnings.",
+      "attempted_remedy": "Preserve warnings with the originating record and publish a separate accepted-input, authored-label population with unavailable cases visible.",
+      "test_paths": [
+        "tests/project-report-view.test.ts"
+      ],
+      "diff_evidence": "The fixture mixes a valid input, a lost label, an oracle-rejected source, an unlabeled case and an external-model gap, then exercises publication through a temporary record store.",
+      "transferable_rule": "Calculate a pass rate over cases for which the oracle can substantiate the claim.",
+      "outcome_caveat": "Historical raw marks remain a different measure. The filtered view covers format and labels.",
+      "head_sha": "de4596f7970b3eb8866ca08d8c51c3d1f4d7243d",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 17,
+      "title": "Keep source candidate cache labels independent of run order",
+      "url": "https://github.com/adewale/trident/pull/17",
+      "state": "closed",
+      "merged": true,
+      "classification": "Run-order independence in an existing fixture",
+      "weakness": "A release and candidate built from the same revision could inherit whichever version label the previous run cached.",
+      "attempted_remedy": "Cache immutable build identity and project the caller's release or candidate label only on the returned record. Run the existing fixture in both orders.",
+      "test_paths": [
+        "tests/candidate-mode.test.ts"
+      ],
+      "diff_evidence": "test.each runs candidate-first and release-first and verifies separate labels and lanes for one build with identical bytes.",
+      "transferable_rule": "Run shared-cache scenarios in both orders and assert identity as well as reuse.",
+      "outcome_caveat": "The tests exercise source-candidate and release ordering for the shared build recipe.",
+      "head_sha": "0a0453c8cc64567d4ad1ccdc256035fb311cf31d",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 21,
+      "title": "Qualify rendered output and preserve fixed render denominators",
+      "url": "https://github.com/adewale/trident/pull/21",
+      "state": "closed",
+      "merged": true,
+      "classification": "Broad repair to existing rendering tests and evidence",
+      "weakness": "Parser-only fixtures were counted as failed drawings. A PNG envelope or SVG metadata could earn credit without proving decoded content or a connected, owned route.",
+      "attempted_remedy": "Give corpus entries independent intent, preserve positive-render denominators and check decoded pixels and actual owned drawing geometry.",
+      "test_paths": [
+        "tests/unified-workload-intent.test.ts",
+        "tests/unified-output-qualification.test.ts",
+        "tests/portable-fidelity.test.ts"
+      ],
+      "diff_evidence": "Tests reject an invented IHDR envelope and malformed or disconnected paths, keep parser-owned fragments outside positive render obligations and distinguish a pinned-oracle refusal from a renderer failure.",
+      "transferable_rule": "Declare the obligation for each input and observe the artifact required to satisfy it.",
+      "outcome_caveat": "The numerous changes are bundled. These examples establish the covered admission errors, not complete visual correctness.",
+      "head_sha": "9290e9645403b12ea1061ee258a0c87e86d4777e",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 22,
+      "title": "Fix literal labels and remove Agentic-only benchmark shortcuts",
+      "url": "https://github.com/adewale/trident/pull/22",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing false-positive and target-isolation repair",
+      "weakness": "Stripping apparent Markdown weakened literal expectations such as the pie label __proto__. Local product discovery could silently change which package was tested.",
+      "attempted_remedy": "Apply Markdown normalization only to labels identified as Markdown by the pinned oracle and require explicit, common acquisition rules for release targets.",
+      "test_paths": [
+        "tests/unified-label-rules.test.ts",
+        "tests/project-update.test.ts"
+      ],
+      "diff_evidence": "The existing label cases gain literal-punctuation and oracle-typing controls. Acquisition fixtures verify a catalog release cannot be replaced by a local checkout or discovered native binary.",
+      "transferable_rule": "Use source semantics to choose normalization and pin the artifact under test independently of the environment.",
+      "outcome_caveat": "The change corrects the broad matching allowed by #6/#13. The full changed-file list includes large removals of earlier evidence bundles.",
+      "head_sha": "7af7095428530dc709a59c4213ddf3d5f7c0ba21",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 23,
+      "title": "Move Agentic Mermaid product diagnostics out of Trident",
+      "url": "https://github.com/adewale/trident/pull/23",
+      "state": "closed",
+      "merged": true,
+      "classification": "Deliberate test relocation and deletion",
+      "weakness": "The generic harness carried source-only product diagnostics and tests that needed one project's synthetic workspace and exclusions.",
+      "attempted_remedy": "Move product-specific runners and tests to their owner and verify the public Trident package independently from a copied installation.",
+      "test_paths": [
+        "tests/standalone-scope.test.ts",
+        "tests/performance-gates.test.ts",
+        "tests/portable-kit.test.ts",
+        "tests/commands.test.ts"
+      ],
+      "diff_evidence": "The PR removes the 407-line product scorecard suite and 39-line standalone exclusions suite. The replacement fixture builds and runs the compiled worker in a copied package without the product checkout, docs or Git.",
+      "transferable_rule": "Place product-internal tests with their owner and exercise the standalone distribution through its supported entry point.",
+      "outcome_caveat": "The deletions are visible here. The PR identifies a companion repository for the moved tests.",
+      "head_sha": "f080278e31e4202ca89d524e4ee9e4cf3cbff038",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 24,
+      "title": "Make project selection, support and benchmark evidence explicit",
+      "url": "https://github.com/adewale/trident/pull/24",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing benchmark fairness and interpretation repair",
+      "weakness": "A missing model observer, an unavailable output and an unverified fork could be interpreted as comparable support evidence.",
+      "attempted_remedy": "Apply identical output admission to all implementations, report optional model and paint checks separately and require each project to supply its own evidence.",
+      "test_paths": [
+        "tests/fair-comparisons.test.ts",
+        "tests/project-report-view.test.ts"
+      ],
+      "diff_evidence": "The same SVG passes output admission across five adapter names. Removing Beta fails it in each case. Supplying a wrong native graph changes the model result while the SVG stays admitted.",
+      "transferable_rule": "Separate independent claims and use identical-output controls across implementations.",
+      "outcome_caveat": "The comparisons concern supported evidence categories. The PR does not establish that all catalogued brands have independent engines.",
+      "head_sha": "82c66d3593d140c4968bc3a69f438da42b9e855a",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 27,
+      "title": "Translate portable configuration through supported public APIs",
+      "url": "https://github.com/adewale/trident/pull/27",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing configuration oracle repair",
+      "weakness": "The font-size check accepted root metadata or unrelated correctly sized text, and the benchmark did not consistently send a semantic edit through each public API.",
+      "attempted_remedy": "Translate the edit into the supported public option, exercise the actual Node worker and measure the authored label's font.",
+      "test_paths": [
+        "tests/portable-configuration.test.ts",
+        "tests/portable-fidelity.test.ts"
+      ],
+      "diff_evidence": "The new fixture passes root 14 with label 24 and rejects root 24 with label 14, including when an unrelated 24-point text node is appended. An ambiguous stylesheet is unmeasured.",
+      "transferable_rule": "Attach assertions to the intended visible element and verify inputs travel through the public interface.",
+      "outcome_caveat": "The contract is bounded to reviewed configuration paths and observable labels.",
+      "head_sha": "05e712f28ce7d70864b2e25c4d7966903ce6258b",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 29,
+      "title": "Prepare 0.1 with verified public bindings and corrected lineage",
+      "url": "https://github.com/adewale/trident/pull/29",
+      "state": "closed",
+      "merged": true,
+      "classification": "Support verification method replacing configuration-only evidence",
+      "weakness": "Catalog configuration was used to describe support even where an actual public artifact had not executed or the same input could be counted twice.",
+      "attempted_remedy": "Run six independent positive inputs against the selected public artifact and keep negative controls, duplicate inputs and unavailable interfaces distinct.",
+      "test_paths": [
+        "tests/support-verification.test.ts",
+        "tests/portable-public-bindings.test.ts"
+      ],
+      "diff_evidence": "One positive row and two controls yield plannedInputs 6, passed 1 and two control rows. Repeating the same positive case yields zero passes and a duplicateCaseIds entry.",
+      "transferable_rule": "Require observable behavior from the exact public artifact and count independently authored inputs once.",
+      "outcome_caveat": "This is bounded invocation evidence. It does not measure full semantic fidelity, rendering quality or speed.",
+      "head_sha": "fb355806a71590ff03151ddae5613827e9593b52",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 36,
+      "title": "Verify public terminal and editable conversion bindings",
+      "url": "https://github.com/adewale/trident/pull/36",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to the maintainer test runner",
+      "weakness": "The existing two-way parallel Bun dispatcher could hang during the maintainer suite.",
+      "attempted_remedy": "Run the established suite serially through the usual test command and retain its timeout.",
+      "test_paths": [
+        "commands.ts",
+        "tests/commands.test.ts"
+      ],
+      "diff_evidence": "The test command removes --parallel=2 from Bun's invocation while preserving --timeout 30000 and the tests directory. The PR separately adds tests for new public bindings.",
+      "transferable_rule": "When a suite shares resources, verify the supported dispatcher can finish under its real execution settings.",
+      "outcome_caveat": "This records the test-runner fix inside a wider adapter PR. The PR reports local completion and offers no measured hang rate.",
+      "head_sha": "2af36e4c5fa67f34713f01a45d824a151182993f",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 37,
+      "title": "Add seven-implementation DaveBench PNG results and native adapters",
+      "url": "https://github.com/adewale/trident/pull/37",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded benchmark protocol and interrupted-test repair",
+      "weakness": "PNG comparisons could mix differing process histories or award timing to unreviewed output. A worker interruption could be attributed to the wrong case.",
+      "attempted_remedy": "Isolate participant process blocks, require reviewed decoded pixels and successful warmups, and distinguish an explicit API refusal from an interrupted transport.",
+      "test_paths": [
+        "davebench-png/seven/admission.test.mjs",
+        "davebench-png/controlled/contract.test.mjs",
+        "tests/community-external-disposition.test.ts"
+      ],
+      "diff_evidence": "The warmup fixture rejects timeout, error, stability-failed and contract-failed statuses. Equal A/A pairs yield [1,1], and a doubled replica must signal bias. A JSONL worker exits after a success and an explicit rejection.",
+      "transferable_rule": "Qualify the measured operation and process history before scoring its time. Preserve completed observations on interruption.",
+      "outcome_caveat": "The common timed input set is narrower than the documentation coverage set.",
+      "head_sha": "83f5652e8532bb73b9813f42bb52eb92c6e3d029",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 39,
+      "title": "Publish ecosystem benchmark tables and Mermaid charts",
+      "url": "https://github.com/adewale/trident/pull/39",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded benchmark-result verification method",
+      "weakness": "Historical tables and successful processes could obscure a later failed or incomplete campaign when reporting the latest evidence.",
+      "attempted_remedy": "Generate table and chart values from one numeric source, preserve dated history and have the current row reflect the most recent attempt.",
+      "test_paths": [
+        "tests/results-snapshot.test.ts"
+      ],
+      "diff_evidence": "A temporary campaign first records Render rejected and later supplies an empty attempt. The generated current row must change from failed to unavailable, while the earlier dated history remains present.",
+      "transferable_rule": "Preserve missing and failed attempts alongside successful historical observations.",
+      "outcome_caveat": "This is a result-reporting and replay check. It adds no new renderer measurements.",
+      "head_sha": "9eda85590a196c70eb53f4e47e2aa503e830931c",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 40,
+      "title": "Isolate selected-case runs and return AM reports",
+      "url": "https://github.com/adewale/trident/pull/40",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing suite ownership and subset isolation",
+      "weakness": "Product-specific report tests remained in the public harness, and a selected-case rerun needed a distinct identity to protect the full comparison.",
+      "attempted_remedy": "Move the product-only report tests to their owner. Isolate explicit subsets under a separate lane and count the actual exercised positive families.",
+      "test_paths": [
+        "tests/unified-invocation-census.test.ts",
+        "tests/unified-report-selection.test.ts",
+        "tests/portable-measurement.test.ts"
+      ],
+      "diff_evidence": "The PR deletes two 34-line product-specific test files. A configuration-reset subset must report one positive case and one family with zero canonical family representatives. An invalid-only subset reports zero families.",
+      "transferable_rule": "Keep the population and owning suite in the result identity before reusing a test score.",
+      "outcome_caveat": "The companion move is described by the PR. The local diff verifies removal and the new subset accounting.",
+      "head_sha": "4b03d6daf414a10efaf653cae02c375cc921b0f7",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 42,
+      "title": "Stack-rank comparable benchmark results and charts",
+      "url": "https://github.com/adewale/trident/pull/42",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing benchmark-result ranking method",
+      "weakness": "Alphabetic ordering obscured the actual measure, and completely blocked results could tie a measured zero.",
+      "attempted_remedy": "Rank within a named, comparable metric with an explicit direction, allow legitimate ties and withhold the rank for missing observations.",
+      "test_paths": [
+        "tests/results-snapshot.test.ts",
+        "tests/project-report-view.test.ts"
+      ],
+      "diff_evidence": "A two-row fixture makes both pass counts zero but marks one population entirely blocked. The expected ranks are 1 for the observed zero and null for the blocked case.",
+      "transferable_rule": "Treat missing evidence separately from an observed zero throughout ranking.",
+      "outcome_caveat": "The improvement concerns interpretation of retained measurements. It does not add an independent performance sample.",
+      "head_sha": "61f8feb9be8f48aa53111d225d6b780b7441c577",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 45,
+      "title": "Consolidate benchmark values and reporting rules",
+      "url": "https://github.com/adewale/trident/pull/45",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing reporting oracle and fixture deduplication",
+      "weakness": "Two value snapshots and separate ranking/chart parsers could disagree or coerce an unavailable value into zero.",
+      "attempted_remedy": "Use one evidence source and ranking implementation and verify provenance with a digest and a negative control for missing values.",
+      "test_paths": [
+        "tests/results-snapshot.test.ts",
+        "tests/project-report-view.test.ts"
+      ],
+      "diff_evidence": "The revised test accepts numeric strings 1 and 2 as 0.5, then substitutes Unavailable and requires a null rank and refusal to produce a numeric chart. The separate copied-row fixture is removed.",
+      "transferable_rule": "Check the independent provenance of a single authoritative fixture and exercise missing data in every consumer.",
+      "outcome_caveat": "The PR preserves existing measured values.",
+      "head_sha": "76f82c09e07449a7a8a42777a923b95a40b5965e",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 46,
+      "title": "Keep whole-editor workflows outside core benchmarks",
+      "url": "https://github.com/adewale/trident/pull/46",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing test-population scope repair",
+      "weakness": "Whole-editor workflows were being treated as missing renderer bindings, and partial historical campaigns could invent blockers for those applications.",
+      "attempted_remedy": "Give application workflows an explicit out-of-scope result and apply the same rule in selection, support verification and reporting.",
+      "test_paths": [
+        "tests/lineage.test.ts",
+        "tests/results-snapshot.test.ts"
+      ],
+      "diff_evidence": "A fixture with an editor and a renderer enables the descendant override and still gets only the renderer, out-of-scope cells for the editor and an empty missingOutputBindings list.",
+      "transferable_rule": "Represent inapplicability explicitly when the product has a different public contract.",
+      "outcome_caveat": "This entry covers result semantics and false blockers. The request to narrow which applications run was a scope decision.",
+      "head_sha": "a0048dbff7593144eda0a8b7d9eb1a832a01da5a",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 48,
+      "title": "Bind pinned ZenUML in the retained browser baseline",
+      "url": "https://github.com/adewale/trident/pull/48",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing reference-control and failure-classification repair",
+      "weakness": "A browser reference without Mermaid's ZenUML addon rejected valid inputs. Module or consumption failures could appear to prove unsupported syntax.",
+      "attempted_remedy": "Register the pinned addon on its first public call and classify unsupported families only from consistent source refusals of positive canonical probes.",
+      "test_paths": [
+        "tests/baseline-browser.test.ts"
+      ],
+      "diff_evidence": "The changed browser suite mixes canonical refusals, a successful canonical flowchart, a failed dynamic import and a consumption error, and checks the outcomes and subset selection.",
+      "transferable_rule": "Qualify the reference environment and distinguish failures of the test machinery from failures of the subject.",
+      "outcome_caveat": "The rule establishes support only for the stated public probes and addon version.",
+      "head_sha": "56f217b1bbb7901ee9f828018d1625f89de0e2e5",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40863873445/job/123413585842"
+      }
+    },
+    {
+      "number": 49,
+      "title": "Fix source-candidate comparisons and publish AM versus ZM results",
+      "url": "https://github.com/adewale/trident/pull/49",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing performance-test experimental-design repair",
+      "weakness": "Rotation and reversal cancelled each other, so a two-project benchmark always ran the same project first.",
+      "attempted_remedy": "Use each order and its reverse as a pair, then rotate the next pair. Test the balance for several cohort sizes and starting orders.",
+      "test_paths": [
+        "tests/docs-benchmark.test.ts",
+        "tests/candidate-mode.test.ts"
+      ],
+      "diff_evidence": "The fixture uses two, three and four projects, requires each position twice across 2N rounds and bounds every prefix's pairwise imbalance by prefix modulo 2.",
+      "transferable_rule": "Check order balance algebraically across actual run prefixes before comparing timings.",
+      "outcome_caveat": "This controls order bias but cannot establish that observed performance differences are causal.",
+      "head_sha": "fc769f649fd309db1284b1609a295e5bb195d9c4",
+      "head_checks": {
+        "total": 0,
+        "conclusions": {}
+      }
+    },
+    {
+      "number": 50,
+      "title": "Share PNG launcher and make offline checks CI-safe",
+      "url": "https://github.com/adewale/trident/pull/50",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing CI verification and fixture-runner repair",
+      "weakness": "A blanket benchmark guard rejected deterministic offline checks in CI, leaving maintainer fixtures without a hosted execution path.",
+      "attempted_remedy": "Add an explicit test:ci fixture suite and run it alongside lint, typecheck and snapshot verification without acquiring benchmark targets.",
+      "test_paths": [
+        "tests/ci-commands.test.ts",
+        ".github/workflows/checks.yml"
+      ],
+      "diff_evidence": "CI fixtures run the command dispatcher and assert successful offline checks. The workflow adds bun commands.ts results:snapshot --check and bun run test:ci, and the tests preserve refusal of full artifact collection in CI.",
+      "transferable_rule": "Exercise the actual CI entry point with the dependencies available there and keep target acquisition explicit.",
+      "outcome_caveat": "Hosted fixtures and the optional local artifact suite cover different environments.",
+      "head_sha": "be8ec7dccdbc832506ae6600f071be76e3a81b99",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40862984371/job/123410606565"
+      }
+    },
+    {
+      "number": 51,
+      "title": "Seal native PNG bindings and separate invalid-input checks",
+      "url": "https://github.com/adewale/trident/pull/51",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing negative-control and tested-artifact repair",
+      "weakness": "A saved Flutter binding could launch an ambient executable different from the sealed one. Invalid inputs did not have comparable rejection checks across transports.",
+      "attempted_remedy": "Seal and verify the launched executable, add two independently invalid sources, and report negative controls separately from the six positive cases.",
+      "test_paths": [
+        "tests/native-community.test.ts",
+        "tests/support-verification.test.ts"
+      ],
+      "diff_evidence": "A worker is launched with FLUTTER_COMMUNITY_EXECUTABLE pointing at /unsealed/other-worker. Other tests distinguish completed CLI rejection from broken transport, accepted output and missing evidence.",
+      "transferable_rule": "Bind tests to the executable they actually launch and check that failures occur at the intended boundary.",
+      "outcome_caveat": "#52 records a later real Flutter run. The changed test files here include bounded native fixtures.",
+      "head_sha": "53f23f4be371d43da403352166edc33d046da2ef",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40871168246/job/123438290235"
+      }
+    },
+    {
+      "number": 53,
+      "title": "Separate Mermaid Dart and Mermaid Flutter as branded projects",
+      "url": "https://github.com/adewale/trident/pull/53",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded benchmark-attribution repair",
+      "weakness": "A shared ID conflated the Dart SVG implementation and the branded Flutter PNG implementation, allowing result ownership to be ambiguous.",
+      "attempted_remedy": "Give the two publicly distinct targets their own IDs and withhold inherited scores while preserving historical records.",
+      "test_paths": [
+        "tests/results-snapshot.test.ts",
+        "tests/lineage.test.ts"
+      ],
+      "diff_evidence": "The snapshot test reads the real catalog and retained data, finds the Mermaid Flutter row by name and requires that it receive no previous Dart score.",
+      "transferable_rule": "Keep project and public interface identity attached to every reused result.",
+      "outcome_caveat": "This changes attribution and selection rather than adding new measurements of either product.",
+      "head_sha": "9d0403195a288c6b12ad265af066cedf8458ca0c",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40882399979/job/123477101437"
+      }
+    },
+    {
+      "number": 54,
+      "title": "Qualify Agentic Class and ER models against painted relationships",
+      "url": "https://github.com/adewale/trident/pull/54",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing visual and model oracle repair",
+      "weakness": "A wrong public parser binding prevented a native contract test from qualifying actual models. Label presence alone could not distinguish missing or redirected Class/ER relationships.",
+      "attempted_remedy": "Read the actual typed parse result, check exact directed endpoint multiplicities, and corroborate them with independently observed SVG routes and markers.",
+      "test_paths": [
+        "tests/portable-family-paint.test.ts",
+        "tests/portable-measurement.test.ts"
+      ],
+      "diff_evidence": "One test removes a relation or retargets it to C while keeping other fields intact. Additional cases keep metadata but remove or hide the corresponding visible route.",
+      "transferable_rule": "Check identity, direction and multiplicity on independently observed model and visible output.",
+      "outcome_caveat": "Supported shapes and marker encodings are bounded. Ambiguous material stays unmeasured.",
+      "head_sha": "31a0519660127fca5107da838723c95fc8e3e2b4",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40921634195/job/123616125077"
+      }
+    },
+    {
+      "number": 56,
+      "title": "Require an initial ecosystem baseline and refresh release documentation",
+      "url": "https://github.com/adewale/trident/pull/56",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit release-verification method change",
+      "weakness": "The first public release could satisfy its checklist with a six-input smoke even when the ecosystem benchmark had no reconciled baseline.",
+      "attempted_remedy": "Require a frozen, reconciled baseline and an applicability ledger for the first release, then document when later releases may reuse evidence.",
+      "test_paths": [
+        "RELEASE.md",
+        "BASELINE.md"
+      ],
+      "diff_evidence": "The new release gate requires B0 across applicable projects and benchmarks and explicitly records owning attempts, failures, gaps and skips. BASELINE.md sets out the pilot and freezes.",
+      "transferable_rule": "Match the release evidence requirement to the breadth of the claim and document what is still missing.",
+      "outcome_caveat": "The PR changes the procedure only. It says the required B0 collection was still pending.",
+      "head_sha": "079b7c81f961f8b8a901e9f561130272ec398917",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40923048334/job/123621137872"
+      }
+    },
+    {
+      "number": 57,
+      "title": "Admit selected peer releases without enforcing legacy defaults",
+      "url": "https://github.com/adewale/trident/pull/57",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing artifact-admission oracle repair",
+      "weakness": "A hard-coded peer default rejected a consistently identified newer Pele artifact as if it had to match the reference's pin.",
+      "attempted_remedy": "Keep the specification oracle and its addon pinned, but verify peer versions against their own selected and observed artifacts.",
+      "test_paths": [
+        "tests/current-report-version-admission.test.ts",
+        "tests/fidelity-community.test.ts"
+      ],
+      "diff_evidence": "The changed test publishes a retained Pele record for each supplied peer version and requires that exact version to be reported. A separate case still rejects a mismatched reference before acquisition.",
+      "transferable_rule": "Use an independent reference pin and validate each peer against the identity actually selected for it.",
+      "outcome_caveat": "The case qualifies internal version consistency. It does not equate results across releases.",
+      "head_sha": "033515d75ce70acec383c4908749158976ab5d46",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40937398395/job/123671470106"
+      }
+    },
+    {
+      "number": 58,
+      "title": "Seal the public OpenCode renderer runtime dependencies",
+      "url": "https://github.com/adewale/trident/pull/58",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to benchmark fixture admission",
+      "weakness": "The OpenCode renderer ran, yet its evidence was rejected because a project-wide dependency check demanded an unrelated editor plugin.",
+      "attempted_remedy": "Seal the runtime dependency closure of the actual public operation and reject reuse of older manifests lacking that closure.",
+      "test_paths": [
+        "unified/community-extra-source.ts"
+      ],
+      "diff_evidence": "The preparation path adds interpreted OpenCode to dependency-root and cache-admission checks, recording the renderer dependencies and verifying their selected runtime prefix.",
+      "transferable_rule": "Bind a test environment to the packages used by the exercised operation.",
+      "outcome_caveat": "No automated test file changed. The PR reports reproducing the defect against a frozen real component and checking its public outputs.",
+      "head_sha": "4a90176f65594775aa0a5aed892f5b188efe4d95",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40944341563/job/123695613847"
+      }
+    },
+    {
+      "number": 59,
+      "title": "Admit public CLI archives with explicit member and version identities",
+      "url": "https://github.com/adewale/trident/pull/59",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing release-fixture admission repair",
+      "weakness": "Two real public CLI artifacts were rejected because the fixture assumed a plain archive member name and an executable --version flag.",
+      "attempted_remedy": "Admit a reviewed dot-prefixed member and an explicitly declared release-tag identity. Retain checksum, path and tag checks.",
+      "test_paths": [
+        "tests/release-cli.test.ts",
+        "unified/release-cli.ts"
+      ],
+      "diff_evidence": "The fixture builds a shell executable that exits 2 for --version, archives it, hashes it and exercises the explicit tag-based path. Regressions retain refusal of mismatched tags and unsafe members.",
+      "transferable_rule": "A test adapter should recognize legitimate public distributions and still verify exactly which executable it runs.",
+      "outcome_caveat": "This expands two documented artifact forms, with versionless admission explicitly selected.",
+      "head_sha": "24ada549bce452a547961bd5b68d4109d701842f",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40947512706/job/123706647458"
+      }
+    },
+    {
+      "number": 61,
+      "title": "Record B0 preparation and adopt full sampling after the pilot",
+      "url": "https://github.com/adewale/trident/pull/61",
+      "state": "closed",
+      "merged": true,
+      "classification": "Pilot-driven performance-test method change",
+      "weakness": "A proposed five-cold-process baseline could never satisfy the existing first-use calibration minimum.",
+      "attempted_remedy": "Withdraw the undersampled pilot design and document an adopted five-round profile with 31 warm means and 20 fresh processes per replica and case.",
+      "test_paths": [
+        "BASELINE.md",
+        "BENCHMARKS.md"
+      ],
+      "diff_evidence": "The amended baseline budgets 178,200 fresh launch slots and states that five rounds still cannot yield a finite two-sided 95% median-ratio interval.",
+      "transferable_rule": "Use pilot results to determine whether a test can support the statistical claim before paying for collection.",
+      "outcome_caveat": "Documentation records the decision and its limits. #63 later changes the sampling design to six independent rounds.",
+      "head_sha": "c8f066ccde96ecbd7afa77a48eda282100f753a7",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40949448164/job/123713365330"
+      }
+    },
+    {
+      "number": 63,
+      "title": "Simplify campaign preparation, resumable collection and release checks",
+      "url": "https://github.com/adewale/trident/pull/63",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing sampling, reuse and campaign-evidence repair",
+      "weakness": "A five-round campaign lacked finite interval resolution, a pilot headline contradicted raw evidence, and partial runs depended on manual reconstruction.",
+      "attempted_remedy": "Version a six-round sampling protocol, derive summaries from owning reports, and validate resumable work and single invocations of negative controls.",
+      "test_paths": [
+        "tests/campaign-workflows.test.ts",
+        "tests/portable-measurement.test.ts",
+        "tests/campaign-resume-regressions.test.ts"
+      ],
+      "diff_evidence": "The sampling fixture requires six rounds of 31 warm means and five fresh samples and checks the v7 protocol. A worker appends actual calls to disk so an invalid control cannot silently incur repeated timing or resource runs.",
+      "transferable_rule": "Choose genuinely independent repetition units, and reconcile the final summary against the observations that produced it.",
+      "outcome_caveat": "This supersedes #61's sampling plan. Historical results retain their original protocol.",
+      "head_sha": "61e611471b143601b25976d89e3301fd6a2bb316",
+      "head_checks": {
+        "total": 1,
+        "conclusions": {
+          "success": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/40994186672/job/123863358398"
+      }
+    },
+    {
+      "number": 64,
+      "title": "Compare physical paths so symlinked macOS folders behave, and test on macOS",
+      "url": "https://github.com/adewale/trident/pull/64",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing suite portability and CI repair",
+      "weakness": "Linux-only CI used nonsymlinked temporary paths and missed three failures on macOS where temporary directories resolve through symlinks.",
+      "attempted_remedy": "Create real temporary symlinks in platform-independent fixtures, compare physical paths and run the CI fixture suite on macOS.",
+      "test_paths": [
+        "tests/physical-paths.test.ts",
+        "tests/native-community.test.ts",
+        ".github/workflows/checks.yml"
+      ],
+      "diff_evidence": "The added tests exercise copying evidence, native launch admission and a candidate directory through symlinks. The workflow adds Fixture tests on macOS.",
+      "transferable_rule": "Reproduce the OS-specific filesystem condition explicitly so the regression also runs on other platforms.",
+      "outcome_caveat": "The macOS CI job covers the fixture suite. It does not run artifact campaigns.",
+      "head_sha": "f75cda1afbd58997e3e09e03c213263cf1c68108",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41047695284/job/124035728284"
+      }
+    },
+    {
+      "number": 65,
+      "title": "Limit campaigns to 27 renderers and show their measured interfaces",
+      "url": "https://github.com/adewale/trident/pull/65",
+      "state": "closed",
+      "merged": true,
+      "classification": "Benchmark population and attribution method",
+      "weakness": "A renderer overview included validators, conversion-only tools and overlapping catalog entries, mixing distinct public capabilities in its comparison.",
+      "attempted_remedy": "Restrict the current renderer comparison to eligible output interfaces, retain catalogue-only identities and preserve their historical observations.",
+      "test_paths": [
+        "tests/lineage.test.ts",
+        "tests/results-snapshot.test.ts"
+      ],
+      "diff_evidence": "The report fixture inserts a previously high-scoring project, marks it catalog-only, and requires the remaining project to take rank 1 and its chart bar to be recomputed.",
+      "transferable_rule": "State the eligibility rule for a benchmark population and recalculate ranks without rewriting historical evidence.",
+      "outcome_caveat": "The exact 27-renderer population was an explicit project scope choice.",
+      "head_sha": "f05e4899c7d3eb8f35dac8ddda67b297ed33f953",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41083566057/job/124158725075"
+      }
+    },
+    {
+      "number": 66,
+      "title": "Publish the completed ecosystem benchmark results",
+      "url": "https://github.com/adewale/trident/pull/66",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to handling partial benchmark runs",
+      "weakness": "An interrupted round could generate a fabricated zero rank or chart bar. Variant identifiers and unlike terminal populations could also be conflated during import.",
+      "attempted_remedy": "Represent partial observations separately, reconcile equivalent case populations and report each public variant under the correct project.",
+      "test_paths": [
+        "tests/campaign-reporting-regressions.test.ts",
+        "tests/campaign-workflows.test.ts"
+      ],
+      "diff_evidence": "The regression supplies a complete second round for one peer and a Browser host deadline for another. It checks incomplete work remains visible without inventing a rank or chart bar. Other cases reject duplicate observations.",
+      "transferable_rule": "Keep partial counts, provenance and typed missingness until the final reduction.",
+      "outcome_caveat": "The PR imports a historical campaign. Its reporting changes were exercised without rerunning renderers.",
+      "head_sha": "9f786a62fefc4e5d6139dee39ea7b0e29483494c",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41097039210/job/124205252703"
+      }
+    },
+    {
+      "number": 67,
+      "title": "Complete Mermaid DaveBench coverage and preserve peer scores on reruns",
+      "url": "https://github.com/adewale/trident/pull/67",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing rolling comparison and denominator repair",
+      "weakness": "Rerunning one project replaced the full comparison and discarded still-comparable peer scores. Mere equality of case counts was insufficient for reuse.",
+      "attempted_remedy": "Select each project's latest compatible row only when protocol, input bytes and round count match, retaining individual run dates and receipts.",
+      "test_paths": [
+        "tests/campaign-reporting-regressions.test.ts"
+      ],
+      "diff_evidence": "A one-project rerun preserves peers for identical inputs. Changing input bytes while keeping the inventory size fixes the comparison to a single row and disables rolling reuse.",
+      "transferable_rule": "Check content identity and protocol before carrying peer results into a fresh comparison.",
+      "outcome_caveat": "The reported complete rerun covers Mermaid. Reused peer rows retain their own dates.",
+      "head_sha": "86e1b29925974d4541c00ea49f27de43322b81ab",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41106038493/job/124236009132"
+      }
+    },
+    {
+      "number": 68,
+      "title": "Check drawing correctness separately from SVG return",
+      "url": "https://github.com/adewale/trident/pull/68",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing drawing-correctness oracle repair",
+      "weakness": "A returned SVG stood in for a correct diagram, and label or model presence could conceal wrong direction or missing visible connections.",
+      "attempted_remedy": "Separate SVG returns from reviewed drawing correctness and test owned geometry and connected, directed routes with independent expected facts.",
+      "test_paths": [
+        "tests/docs-drawings.test.ts",
+        "tests/terminal-meaning.test.ts",
+        "tests/fidelity-paint.test.ts"
+      ],
+      "diff_evidence": "A successful SVG without a source review must be unknown. Changing the reviewed source to add B-->C makes the old review stale. Terminal controls keep labels intact while breaking direction or connectivity.",
+      "transferable_rule": "Separate transport success from content correctness and invalidate expected facts when the input changes.",
+      "outcome_caveat": "The initial reviewed subset is limited. Unreviewed cases retain an unknown result.",
+      "head_sha": "34e5a0e866c0773ab0c97def933aafecf7efed8c",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41157012681/job/124405919156"
+      }
+    },
+    {
+      "number": 69,
+      "title": "Use one DaveBench corpus for SVG and PNG output",
+      "url": "https://github.com/adewale/trident/pull/69",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing PNG benchmark and oracle repair",
+      "weakness": "The old PNG lane used a different corpus and treated a decodable nonblank image as adequate quality evidence. SVG-only assumptions excluded native PNG output.",
+      "attempted_remedy": "Use one source inventory for separate SVG and PNG lanes. Require a PNG-specific, source-bound review for PNG content credit.",
+      "test_paths": [
+        "tests/docs-png-drawings.test.ts",
+        "tests/docs-png-lane.test.ts"
+      ],
+      "diff_evidence": "A nonblank PNG with no matching image review is unknown. Missing expected facts or missing PNG bytes is also unknown. A blank image for a positive drawing is incorrect.",
+      "transferable_rule": "Evaluate each output format on its own bytes and comparable source inputs.",
+      "outcome_caveat": "Stacked on #68. Mechanical decode, content review and a converted image remain different evidence.",
+      "head_sha": "e7507f86d84fd23e23f1e85c76661eb46c54decc",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41162546298/job/124423046262"
+      }
+    },
+    {
+      "number": 70,
+      "title": "Benchmark real terminal examples with reviewed drawing contracts",
+      "url": "https://github.com/adewale/trident/pull/70",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing terminal-test corpus and oracle repair",
+      "weakness": "Four authored examples and a label-only check could pass a drawing with mirrored direction and gave little evidence about real project inputs.",
+      "attempted_remedy": "Replace the pilot with a provenance-tracked corpus and grade retained terminal ink against independent structure and direction facts.",
+      "test_paths": [
+        "tests/terminal-profile.test.ts",
+        "tests/terminal-corpus.test.ts",
+        "tests/terminal-meaning.test.ts"
+      ],
+      "diff_evidence": "A replay test changes ► to ◄ in the saved output, updates its byte digest and requires correct 1 to become incorrect 1 while the planned count stays 1.",
+      "transferable_rule": "Mutate the relevant visible behavior while keeping the rest of a real fixture intact and check that the verdict changes.",
+      "outcome_caveat": "Stacked on #69. The independently reviewed terminal profile covers a subset of the 120-source corpus.",
+      "head_sha": "b555992271eef91a5b57ab7c584ac4b0b6552554",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41164629475/job/124429439411"
+      }
+    },
+    {
+      "number": 71,
+      "title": "Remove duplicate collectors and publish ranked ecosystem benchmark results",
+      "url": "https://github.com/adewale/trident/pull/71",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing collector deduplication and replay repair",
+      "weakness": "The model suite duplicated SVG work, and reassessment could silently retain a previous pass after an observer threw, omitted a criterion or emitted duplicates.",
+      "attempted_remedy": "Remove the duplicate collector, make the model suite exercise public models, and require fresh assessments to account for every expected criterion.",
+      "test_paths": [
+        "tests/recheck-observations.test.ts",
+        "tests/fidelity-meaning.test.ts",
+        "tests/ci-commands.test.ts"
+      ],
+      "diff_evidence": "A fixture starts with a correct SVG and injects an observer exception. Another omits a previously passing criterion. A third duplicates checker coordinates. The new expectations withhold previous credit.",
+      "transferable_rule": "Invalidate old verdicts when a new observer fails or leaves holes. Collect a given artifact once where possible.",
+      "outcome_caveat": "The PR includes earlier stacked drawing work. The cited replay controls and collector consolidation are distinct changes.",
+      "head_sha": "191436a2f503e2a893601af81f257f84b36d8092",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41258972814/job/124708069173"
+      }
+    },
+    {
+      "number": 72,
+      "title": "Freeze a bounded benchmark baseline and require evidence for drawing scores",
+      "url": "https://github.com/adewale/trident/pull/72",
+      "state": "closed",
+      "merged": true,
+      "classification": "Broad audit of drawing observers and scored fixtures",
+      "weakness": "Returned artifacts and partially checked development fixtures could earn drawing-accuracy credit. Ambiguous source expectations and hidden labels could pass or fail for the wrong reason.",
+      "attempted_remedy": "Require complete reviewed source facts against the actual drawing, distinguish unknown from wrong, and move development cases to an unscored regression tier.",
+      "test_paths": [
+        "tests/docs-source-review.test.ts",
+        "tests/svg-opaque-labels.test.ts",
+        "tests/docs-png-capture-adversarial.test.ts"
+      ],
+      "diff_evidence": "Two Git commits with the same ID retain both facts and explicitly produce source-review-pending. Image-only labels remain unknown while recognized wrong or hidden DOM text fails. An earlier native invocation cannot be borrowed as the current capture.",
+      "transferable_rule": "An incomplete oracle cannot justify whole-case credit. Keep developer regressions in a separately identified population.",
+      "outcome_caveat": "The published baseline is bounded by reviewed facts and observable renderers. This large branch includes previously stacked changes.",
+      "head_sha": "d0701d64cc83ebfcf61f39f47b59be77b871a873",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41283437474/job/124779844018"
+      }
+    },
+    {
+      "number": 73,
+      "title": "Make benchmark coverage cheaper and correctness claims explicit",
+      "url": "https://github.com/adewale/trident/pull/73",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing observer validation, suite cost and scoring repair",
+      "weakness": "Repeated calls added cost to a coverage claim without qualifying timings. Failed, unsupported and unassessed outputs were mixed, and a discarded source direction produced a false pass.",
+      "attempted_remedy": "Use one call per input and format for coverage, separate eight outcomes and publish verified counts with uncertainty bounds. Validate with independent saved-output reviews.",
+      "test_paths": [
+        "tests/docs-benchmark.test.ts",
+        "tests/drawing-outcomes.test.ts",
+        "tests/terminal-independent-validation.test.ts"
+      ],
+      "diff_evidence": "The tests reject repeated coverage lanes, distinguish overlapping from disjoint correctness bounds, and bind 19 stratified terminal reviews across eight families to retained source and output hashes.",
+      "transferable_rule": "Choose repetitions for the question being measured and show how missing assessments bound a result.",
+      "outcome_caveat": "The independent review samples a subset. Overlapping bounds can leave the comparative result unresolved.",
+      "head_sha": "420229e382db4e66ea282ce0a51ab2e66809d149",
+      "head_checks": {
+        "total": 2,
+        "conclusions": {
+          "success": 2
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41292933580/job/124807758825"
+      }
+    },
+    {
+      "number": 74,
+      "title": "Make the three benchmarks work properly",
+      "url": "https://github.com/adewale/trident/pull/74",
+      "state": "closed",
+      "merged": true,
+      "classification": "Three-benchmark redesign with existing-test audit",
+      "weakness": "Unusable or echoed output could count as render completion, and adapted upstream callbacks could pass despite no native operation, a caught missing binding or duplicate titles.",
+      "attempted_remedy": "Validate returned artifacts, keep drawing checks separate, and run original upstream callbacks against a reference control with a per-callback audit on candidates.",
+      "test_paths": [
+        "tests/davebench-validity.test.ts",
+        "tests/mermaid-fidelity.test.ts"
+      ],
+      "diff_evidence": "Terminal fixtures preserve a real arrow drawing and reject ANSI-only or error text. Two expanded cases with the same title retain passed/failed separately. Caught adapter gaps and zero native calls cannot become passing Fidelity callbacks.",
+      "transferable_rule": "Require evidence that the subject executed and preserve distinct invocations, even when the test framework gives them identical names.",
+      "outcome_caveat": "Includes #76's cleanup. Later #83, #89 and #102 repair limitations in the initial control, adapters and scoring population.",
+      "head_sha": "35f887295ee4ac9cb0e4eb7b0fa339ca327c8ac2",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42103836797/job/127513351865"
+      }
+    },
+    {
+      "number": 75,
+      "title": "[Superseded by #74] Publish the 27-project campaign with separate benchmark rankings",
+      "url": "https://github.com/adewale/trident/pull/75",
+      "state": "closed",
+      "merged": false,
+      "classification": "Unmerged embedded observer and reporting repair",
+      "weakness": "Cached qualification or an incomplete source contract could supply a speed rank, and replay could demand external stylesheets that the original collection blocked.",
+      "attempted_remedy": "Recheck raw ownership and full source obligations before ranking native timings, and reproduce the original stylesheet policy during offline replay.",
+      "test_paths": [
+        "tests/recheck-observations.test.ts",
+        "tests/native-timing-report.test.ts"
+      ],
+      "diff_evidence": "A fixture with a qualified output-only bundle yields blocked attempts and null ranks after import. Replay fixtures accept a blocked external @import and still flag a missing required @font-face source.",
+      "transferable_rule": "Test a plausible cached pass against the complete current contract and reproduce the original asset policy.",
+      "outcome_caveat": "Closed unmerged and superseded by #74. Check attempts on this head include successes and a cancellation.",
+      "head_sha": "06bb0d3f56eab433f0890e800d69433b73bb8b1c",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 3,
+          "cancelled": 1
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/41670293488/job/126036545672"
+      }
+    },
+    {
+      "number": 76,
+      "title": "Remove the legacy pipelines; keep the three benchmarks",
+      "url": "https://github.com/adewale/trident/pull/76",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit deletion of obsolete tests and dead pipelines",
+      "weakness": "Legacy collectors and launchers were called solely by their own tests while the three supported benchmarks used different paths. A native error-receipt test also raced on macOS.",
+      "attempted_remedy": "Remove the unused collectors, their tests and their private fixtures, retaining preparation code reached by the supported benchmarks.",
+      "test_paths": [
+        "tests/native-community.test.ts",
+        "tests/external-invocations.test.ts",
+        "tests/campaign-workflows.test.ts",
+        "davebench-png/seven/admission.test.mjs"
+      ],
+      "diff_evidence": "GitHub's file inventory lists 110 removed files with .test. in the filename, including the obsolete native invocation and 210-line campaign-workflow suites. Their associated collectors are also deleted.",
+      "transferable_rule": "Before maintaining or fixing a flaky test, check that its subject is still reachable through a supported entry point.",
+      "outcome_caveat": "Merged into the #74 integration branch. File counts refer to this PR's base and do not add to #74 as independent deleted coverage.",
+      "head_sha": "41c536f4d47b8b2a7d353c9e8643c7280b254cc2",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42095401208/job/127484816608"
+      }
+    },
+    {
+      "number": 79,
+      "title": "Release 0.2.0",
+      "url": "https://github.com/adewale/trident/pull/79",
+      "state": "closed",
+      "merged": true,
+      "classification": "Release evidence-integrity checks embedded in a release PR",
+      "weakness": "Published aggregates lacked an automated check that all planned runs, cases and versions reconciled. A prepared project could enter an output lane its binding did not declare.",
+      "attempted_remedy": "Add CI checks that recompute retained reports and verify per-file/control populations and limits. Validate declared output support through the collector.",
+      "test_paths": [
+        "tests/release-results-integrity.test.ts",
+        "tests/community-declared-output.test.ts",
+        ".github/workflows/checks.yml"
+      ],
+      "diff_evidence": "The suite verifies exactly three complete DaveBench runs per row, regenerates the report from raw runs, checks every Drawing case once and matches Fidelity's file-level denominator to the reference.",
+      "transferable_rule": "Recompute summaries from the underlying observations and verify planned cases and target versions separately.",
+      "outcome_caveat": "These integrity checks verify consistency of published data. They do not independently validate renderer semantics.",
+      "head_sha": "5ecd892ea64d2364e860a1bd4e362a37aa6bcf00",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42123538572/job/127589737844"
+      }
+    },
+    {
+      "number": 82,
+      "title": "Publish 6 November results; automate campaigns; run CI browser tests on Playwright's Chromium",
+      "url": "https://github.com/adewale/trident/pull/82",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded browser CI and Fidelity test-environment repair",
+      "weakness": "CI could select a runner-supplied Chromium unrelated to the pinned Playwright, and incomplete schema views left genuine upstream callbacks unassessed.",
+      "attempted_remedy": "Launch Playwright's own browser in CI, record and smoke-test its executable, and cover additional native schema bindings with captured records.",
+      "test_paths": [
+        ".github/workflows/checks.yml",
+        "tests/fidelity-schema-views.test.ts"
+      ],
+      "diff_evidence": "The workflow derives chromium.executablePath(), exports TRIDENT_CHROMIUM_EXECUTABLE and launches that exact binary. Schema tests add real records captured from Pele and Bezel.",
+      "transferable_rule": "Verify the executable a browser test actually launches and model fixtures from the installed artifact being judged.",
+      "outcome_caveat": "This was a campaign and release update as well. The reported new callback coverage applies to the specified bindings.",
+      "head_sha": "ed7c9744c579a122d69beef73b1e70cbaca03706",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42310675233/job/128211027839"
+      }
+    },
+    {
+      "number": 83,
+      "title": "Move the reference to Mermaid 12.3.0; stop counting Trident's errors as Fidelity failures",
+      "url": "https://github.com/adewale/trident/pull/83",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit audit of false Fidelity failures",
+      "weakness": "A search of scored undefined outcomes found that Trident misread native models and charged candidates for defects in its own translation.",
+      "attempted_remedy": "Correct pinned reference and schema views, and distinguish a programming error originating in Trident from a real candidate refusal.",
+      "test_paths": [
+        "tests/mermaid-fidelity.test.ts",
+        "tests/fidelity-schema-views.test.ts"
+      ],
+      "diff_evidence": "A new negative-control test attributes a harness programming exception to an unassessed result and retains a candidate refusal as a failure. Other fixtures check actual Map and Kanban icon representations.",
+      "transferable_rule": "Audit clusters of identical failure values and identify which component produced the observed error.",
+      "outcome_caveat": "The release also changes the Mermaid oracle version, so raw before/after totals alone do not isolate this repair.",
+      "head_sha": "fd282fd4741c142cf987a2bbc53c1f1c4aef397b",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42324641502/job/128256982548"
+      }
+    },
+    {
+      "number": 86,
+      "title": "Validate benchmark evidence and recollect scores",
+      "url": "https://github.com/adewale/trident/pull/86",
+      "state": "closed",
+      "merged": true,
+      "classification": "Broad audit of false passes, error attribution and result merging",
+      "weakness": "Hidden labels, malformed SVG and truncated PNGs could pass. Candidate exceptions caught by an original negative assertion could pass or appear to be an adapter gap. Mergers trusted derived counts.",
+      "attempted_remedy": "Validate actual output and paint, persist native faults independently of assertion success, and rebuild totals from the complete matched callback population.",
+      "test_paths": [
+        "tests/mermaid-fidelity.test.ts",
+        "tests/davebench-validity.test.ts",
+        "tests/merge-fidelity-runs.test.ts"
+      ],
+      "diff_evidence": "A passed native test with a captured candidate RangeError and a later missing observation must fail for the RangeError. The merge test rejects a candidate missing one reference callback and a substituted control.",
+      "transferable_rule": "Record the provenance of errors and assert complete per-case evidence before deriving totals.",
+      "outcome_caveat": "The changes cover several artifact and runner classes. The tests establish specific counterexamples within each.",
+      "head_sha": "f82dd044cb6fa17202f7c399860f71d96655e481",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42368378545/job/128391198990"
+      }
+    },
+    {
+      "number": 88,
+      "title": "Enforce benchmark evidence invariants and verify native Flutter in CI",
+      "url": "https://github.com/adewale/trident/pull/88",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing execution, qualification and coverage invariant repair",
+      "weakness": "Missing lanes could disappear from a complete campaign, different callbacks could have the same pass count, and unavailable API time could be replaced by controller time.",
+      "attempted_remedy": "Freeze the plan, require an explicit result or block for each lane, and compare exact callback and audit outcomes before substituting Node for JSDOM.",
+      "test_paths": [
+        "tests/campaign-plan.test.ts",
+        "tests/dom-free-qualification.test.ts",
+        "tests/worker-session.test.ts",
+        "tests/davebench.test.ts"
+      ],
+      "diff_evidence": "A two-lane fixture rejects a missing lane, admits an explicit blocked row and rejects duplicates. Injecting a caught fault or renaming a callback invalidates Node qualification despite unchanged pass totals.",
+      "transferable_rule": "Compare planned case identities and individual outcomes before declaring completion or authorizing a runtime substitution.",
+      "outcome_caveat": "#89 later showed that an additional check of the actual runtime globals was necessary.",
+      "head_sha": "33a12f2b910e0e5fe33c202ee8e6a47819dcb764",
+      "head_checks": {
+        "total": 5,
+        "conclusions": {
+          "success": 5
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42393795867/job/128466755039"
+      }
+    },
+    {
+      "number": 89,
+      "title": "Complete benchmark evidence with verified source and runtime execution",
+      "url": "https://github.com/adewale/trident/pull/89",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing reference oracle and runtime validation overhaul",
+      "weakness": "The reference was a proxy, and a claimed Node qualification could use JSDOM globals. Nominal artifact names could hide changes to the code actually executed.",
+      "attempted_remedy": "Run pinned production source with its real compilers, record startup environments and bind executed bridge, dependency and runtime bytes to qualification.",
+      "test_paths": [
+        "tests/dom-free-qualification.test.ts",
+        "tests/fidelity-control.test.ts",
+        "tests/fidelity-bridge-binding.test.ts",
+        "tests/fidelity-environments.test.ts"
+      ],
+      "diff_evidence": "A claimed Node run with window set to object throws an environment error. Removing its receipt yields no qualified files. A separate test verifies the executing TypeScript rewriter's file hash belongs to the sealed dependency closure.",
+      "transferable_rule": "Validate a control through its real execution path, and test that a mislabeled environment or altered executable invalidates the claim.",
+      "outcome_caveat": "The PR reports 7,346 active reference callbacks. Exact-head hosted checks cover their named jobs, not every reported historical campaign.",
+      "head_sha": "732a082f22418b1f5bc1640a4842bd3a7cf267ce",
+      "head_checks": {
+        "total": 5,
+        "conclusions": {
+          "success": 5
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42446684692/job/128627026829"
+      }
+    },
+    {
+      "number": 90,
+      "title": "Preserve qualification across release labels and retain Drawing outputs",
+      "url": "https://github.com/adewale/trident/pull/90",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing test-cache identity and retained-output replay repair",
+      "weakness": "Release labels and stack locations invalidated otherwise identical qualifications, while Drawing failed to retain all returned outputs for reassessment.",
+      "attempted_remedy": "Key reuse on transitive executing inputs and meaningful assertion values, retain returned artifacts and qualify independent replay controls.",
+      "test_paths": [
+        "tests/fidelity-control.test.ts",
+        "tests/dom-free-qualification.test.ts",
+        "tests/drawing-capture.test.ts",
+        "tests/drawing-observer-contract.test.ts"
+      ],
+      "diff_evidence": "Fixtures preserve qualification on release-note edits but revoke it after changed executing dependencies or assertions. A capture test checks archive hash and size, extracts its manifest and matches returned outputs to evidence.",
+      "transferable_rule": "Set the invalidation boundary to executable inputs and observable behavior. Preserve actual artifacts for independent replay.",
+      "outcome_caveat": "The committed archive enables replay of retained outputs with recorded policies. It is distinct from rerunning the producing renderer.",
+      "head_sha": "77eb99512c5051837f00e9468dce0480b62bebc4",
+      "head_checks": {
+        "total": 5,
+        "conclusions": {
+          "success": 5
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42522438953/job/128858666948"
+      }
+    },
+    {
+      "number": 92,
+      "title": "Release Trident 0.3.0 with fresh benchmark results",
+      "url": "https://github.com/adewale/trident/pull/92",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to an existing release regression test",
+      "weakness": "After merging native PNG runs, stale summaries or rank tables could disagree with the combined raw runs, and a stale prepared runtime could reserve output before failing.",
+      "attempted_remedy": "Regenerate summaries and ranks from combined runs, strengthen their tests and check sealed runtime prerequisites before reserving output.",
+      "test_paths": [
+        "tests/campaign-native-png-merge.test.ts",
+        "tests/release-results-integrity.test.ts"
+      ],
+      "diff_evidence": "The modified merge test now checks the precise Flutter PNG rank, completed count and median, plus a separate SVG rank. The release test passes the actual optional freeze timestamp when reconstructing the published report.",
+      "transferable_rule": "After merging partial results, recompute every derived field and test the separate output populations.",
+      "outcome_caveat": "The release includes a fresh campaign. These assertions verify aggregation and admission rather than rechecking all the rendered outputs.",
+      "head_sha": "cb5033d2f509861daf47291acffb6c715982f785",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42550606535/job/128945097227"
+      }
+    },
+    {
+      "number": 93,
+      "title": "Recover Fidelity collection and reassess SVG label clipping",
+      "url": "https://github.com/adewale/trident/pull/93",
+      "state": "closed",
+      "merged": false,
+      "classification": "Unmerged attempt to repair callback collection and visual controls",
+      "weakness": "Unused imports could prevent original tests from loading. Adapter-created TypeErrors, inherited members and callable placeholders could accidentally satisfy assertions. HTML font-box overflow could mimic clipped glyphs.",
+      "attempted_remedy": "Defer unresolved imports until observed, audit native calls and faults, and test glyph ink against independent visible and clipped controls.",
+      "test_paths": [
+        "tests/fidelity-import-boundary.test.ts",
+        "tests/merge-fidelity-runs.test.ts",
+        "tests/svg-html-label-ink.test.ts"
+      ],
+      "diff_evidence": "A minimal real Vitest module exercises unused imports, namespace reflection, wrong replies and a candidate fault. Chromium fixtures assign correct and incorrect outcomes to the same ABC label at different clipping heights.",
+      "transferable_rule": "Test the observer and adapter with both positive and negative controls before attributing a failure or award to the subject.",
+      "outcome_caveat": "Closed unmerged. The PR says the final campaign was blocked by host process exhaustion. #97 fixed the leak and #98/#99 split and completed the two pieces.",
+      "head_sha": "16eb7e8291e7485b3cc5fa728a13fe7230dc053f",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42741762977/job/129584266873"
+      }
+    },
+    {
+      "number": 94,
+      "title": "Review Fidelity mappings and add checks of rendered structure",
+      "url": "https://github.com/adewale/trident/pull/94",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing model-translation and drawing oracle audit",
+      "weakness": "Incomplete adapters turned native capabilities into scoring errors or invented empty capabilities, while intact labels masked wrong edges, arrows or placement.",
+      "attempted_remedy": "Review actual native model shapes, preserve unavailable fields and apply independently controlled structural checks to retained drawings.",
+      "test_paths": [
+        "tests/fidelity-views-sequence-audit.test.ts",
+        "tests/drawing-structure.test.ts",
+        "tests/fidelity-agentic-source.test.ts"
+      ],
+      "diff_evidence": "A Chromium control reverses a route from M70 25 L150 25 to M150 25 L70 25, preserving labels, and requires topology to fail while layout passes. Sequence fixtures leave lost fields unsupported.",
+      "transferable_rule": "Use a counterexample that leaves superficial signals intact and changes only the contract under test.",
+      "outcome_caveat": "Later #102 removed candidate-specific bindings to enforce parity. Structural diagnostics here did not turn every retained drawing into a ranked whole-diagram verdict.",
+      "head_sha": "84f447183bb2d8dc3b3de9c1a1488b767c4a1484",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42775339613/job/129692408780"
+      }
+    },
+    {
+      "number": 96,
+      "title": "Measure flowchart SVG crossings and clearance from retained outputs",
+      "url": "https://github.com/adewale/trident/pull/96",
+      "state": "closed",
+      "merged": true,
+      "classification": "New observer addressing an existing test blind spot",
+      "weakness": "Existing label and structure checks did not measure actual edge crossings, endpoint re-entry or clearance in rendered flowcharts.",
+      "attempted_remedy": "Measure retained source-bound SVG geometry against scoped, direction-neutral rules, comparing only common assessed case IDs.",
+      "test_paths": [
+        "tests/layout-observer.test.ts",
+        "tests/layout-clearance.test.ts"
+      ],
+      "diff_evidence": "Two bend paths meeting at a vertex produce one crossing both before and after reversal. Changing the contact to a tangency produces zero. Arc-length cases exercise re-entry near a port.",
+      "transferable_rule": "Calibrate a geometry observer against near-boundary positive and negative examples, including direction reversal.",
+      "outcome_caveat": "This adds a diagnostic for supported flowchart geometry. Existing benchmark scores were not recomputed by this PR.",
+      "head_sha": "a863b87876ee6ed3df548d8caa737d0ee2e396af",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42871397480/job/130023286794"
+      }
+    },
+    {
+      "number": 97,
+      "title": "Reap persistent Fidelity bridge processes when they stop",
+      "url": "https://github.com/adewale/trident/pull/97",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing test-worker lifecycle repair",
+      "weakness": "Killing a bridge child and terminating its worker thread immediately left zombies, eventually exhausting the host during full test campaigns.",
+      "attempted_remedy": "Let the owner observe and reap the child before worker teardown. Test normal shutdown and a hung request that reaches its deadline.",
+      "test_paths": [
+        "tests/fidelity-session.test.ts",
+        "unified/mermaid-fidelity/bridge-client.mjs"
+      ],
+      "diff_evidence": "The fixture returns its own child PID, simulates a hung operation, and polls process.kill(pid, 0) after close or timeout. A zombie would still answer the existence probe.",
+      "transferable_rule": "Assert that the child is gone from the process table after both normal teardown and a timeout.",
+      "outcome_caveat": "The change targets the leak reported by #93. #99 records completion of the previously blocked campaign.",
+      "head_sha": "53bff7903d07fede52ec6eef8f73c31b81a120c2",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42884981888/job/130070797029"
+      }
+    },
+    {
+      "number": 98,
+      "title": "Qualify HTML label glyph ink and reassess retained SVG labels",
+      "url": "https://github.com/adewale/trident/pull/98",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing HTML label oracle and observer self-test repair",
+      "weakness": "A font box could exceed the clip while its letters remained visible, and browser or cleanup faults could be mistaken for usable glyph proof.",
+      "attempted_remedy": "Measure browser font metrics and actual text geometry, qualify the observer with visible and genuinely cropped controls and retain unknown when measurement fails.",
+      "test_paths": [
+        "fidelity/drawing/observer-contract.ts",
+        "tests/svg-html-label-ink.test.ts",
+        "tests/svg-glyph-witness.test.ts"
+      ],
+      "diff_evidence": "The same ABC label at 18 pixels of height is correct and at 12 is incorrect. Separate checks explicitly classify browser disconnection or failed comparison/cleanup as unassessed.",
+      "transferable_rule": "Validate visual observers against adjacent real renderings and give observer failure a separate outcome.",
+      "outcome_caveat": "Merged Drawing half of #93. The observer remains bounded to supported typography.",
+      "head_sha": "f7074757c36fb5b73c3818004aaeea18adbd1646",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42893765877/job/130101354259"
+      }
+    },
+    {
+      "number": 99,
+      "title": "Recollect Mermaid Fidelity under the final collection boundary",
+      "url": "https://github.com/adewale/trident/pull/99",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing upstream-test collection and adapter repair",
+      "weakness": "Unused unbound imports aborted files. When actually used, a placeholder, inherited member or transport failure could be misread as real native behavior. Repeated test titles could be joined incorrectly.",
+      "attempted_remedy": "Defer unused imports, audit observed unavailable surfaces even when caught, classify transport failures separately and merge by file-local ordinal.",
+      "test_paths": [
+        "tests/fidelity-import-boundary.test.ts",
+        "tests/fidelity-session.test.ts",
+        "tests/merge-fidelity-runs.test.ts"
+      ],
+      "diff_evidence": "An actual temporary Vitest suite includes unused and used imports, reflection and a deliberately wrong result. The merger fixture repeats a title within a file and changes completion order while preserving distinct gaps.",
+      "transferable_rule": "Bind an adapted test result to the particular invocation and native operation, and record missing-observer evidence even when the test catches it.",
+      "outcome_caveat": "Merged Fidelity half of #93 after #97. The PR reports requalifying and recollecting the full frozen worker cohort.",
+      "head_sha": "f9b4568795b992a6423bf1a8d0493f3c93af4c94",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/42904384479/job/130138431016"
+      }
+    },
+    {
+      "number": 102,
+      "title": "Release Trident 0.4.0 with fixed observers, admission and Fidelity scoring",
+      "url": "https://github.com/adewale/trident/pull/102",
+      "state": "closed",
+      "merged": true,
+      "classification": "Broad test-method audit with explicit parity and scoring repairs",
+      "weakness": "Fidelity scored internals outside candidates' public contracts and gave one project a private advantage. Drawing confused missing host fonts or wrapping with wrong output. Strict XML admission rejected browser-visible SVGs.",
+      "attempted_remedy": "Score a common public parse population, remove candidate-only shims, verify refusals against the pinned reference, and qualify output observers with browser and rendering controls.",
+      "test_paths": [
+        "tests/fidelity-scope-v3.test.ts",
+        "tests/fidelity-renderer-parity.test.ts",
+        "tests/davebench-admission.test.ts",
+        "tests/drawing-observer-contract.test.ts"
+      ],
+      "diff_evidence": "An internal touched by any candidate excludes that callback for all. A logged fixture checks Agentic's privileged renderer is never called. Browser-embeddable SVG with a strict XML violation passes display admission while preserving the XML diagnostic.",
+      "transferable_rule": "Keep the test contract and privileges symmetric across subjects. Separate format validity, observer uncertainty and native behavior.",
+      "outcome_caveat": "Several rounds and multiple protocols are bundled. #104 and #105 correct remaining evidence and classification gaps.",
+      "head_sha": "db5e2ff9f30c3dcff336741c63ceb66c9ac23a7f",
+      "head_checks": {
+        "total": 5,
+        "conclusions": {
+          "success": 5
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/43669302756/job/132675549611"
+      }
+    },
+    {
+      "number": 104,
+      "title": "Fidelity v3: verify refusals on every path and match reviewed reasons",
+      "url": "https://github.com/adewale/trident/pull/104",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing scorer and missing-audit evidence repair",
+      "weakness": "A review with numbers normalized to N failed to match a runtime reason such as C4. Refusals during module setup or before parsing sometimes lacked source for the reference oracle.",
+      "attempted_remedy": "Use the same reviewed-reason normalization on both sides and attach setup-time and empty-database sources to the relevant callback evidence.",
+      "test_paths": [
+        "tests/fidelity-scope-v3.test.ts",
+        "unified/mermaid-fidelity.ts",
+        "unified/mermaid-fidelity/runtime.ts"
+      ],
+      "diff_evidence": "The new test accepts C4 and CN for the reviewed project but rejects the same reason for a different project. The collector separates setup-refusal-v1 records and rejoins the source by file and reason.",
+      "transferable_rule": "Carry setup-time evidence across the full testing lifecycle and verify that normalization preserves the owner's identity.",
+      "outcome_caveat": "This narrows uncertainty while preserving the existing pass count. Normalization deliberately treats reasons differing only in numbers as the same reviewed form.",
+      "head_sha": "d0271a050845bdc802575c1be441b29975e5187f",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/43700869922/job/132771491423"
+      }
+    },
+    {
+      "number": 105,
+      "title": "Fidelity: close the six gap items and republish for 0.4.0",
+      "url": "https://github.com/adewale/trident/pull/105",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing callback setup, schema and uncertainty accounting repair",
+      "weakness": "Destructuring database members at module setup could abort an entire test file. Unreviewed model fields could imply an absence, and unavailable callbacks lacked a reconciled ownership breakdown.",
+      "attempted_remedy": "Resolve members inside the calling test, distinguish reviewed absence from an unbound view, and generate a per-candidate ledger that accounts for every unassessed callback.",
+      "test_paths": [
+        "tests/fidelity-setup-destructure.test.ts",
+        "tests/fidelity-views-native-coverage.test.ts",
+        "tests/fidelity-unassessed.test.ts",
+        "tests/fidelity-scope-v3.test.ts"
+      ],
+      "diff_evidence": "A temporary original suite destructures methods before tests and separately exercises a current parsed value, a missing member, an internal API and no call. The ledger checks owners and sums to each candidate score.",
+      "transferable_rule": "Attribute setup work at the point it is observed and reconcile unknown outcomes by their actionable cause.",
+      "outcome_caveat": "The PR also treats a source identified as a diagram by detectType as sufficient to verify some refusals even if parse rejects it. This is an explicit scoring definition.",
+      "head_sha": "ed8d6110b951a623eaf2ea95edf9bc2729d22910",
+      "head_checks": {
+        "total": 4,
+        "conclusions": {
+          "success": 4
+        },
+        "example_url": "https://github.com/adewale/trident/actions/runs/43751509786/job/132926273062"
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 8,
+      "title": "Name 23 families as the mark and say why the other ten are not scored",
+      "url": "https://github.com/adewale/trident/pull/8",
+      "state": "closed",
+      "merged": false,
+      "reason": "Documented an already selected 23-family boundary without changing the corpus or checks. Closed unmerged. #12 subsequently exercised the newer families."
+    },
+    {
+      "number": 10,
+      "title": "Republish the league table with per-surface groups",
+      "url": "https://github.com/adewale/trident/pull/10",
+      "state": "closed",
+      "merged": true,
+      "reason": "Regenerated public tables with the comparison fix from #9 using the existing five records."
+    },
+    {
+      "number": 16,
+      "title": "Benchmark unreleased commits of tools Trident builds from source",
+      "url": "https://github.com/adewale/trident/pull/16",
+      "state": "closed",
+      "merged": true,
+      "reason": "Extended candidate acquisition to source-built projects. The new tests primarily verify that feature. The prior candidate/release isolation repair is in #5/#13, and the subsequent order-dependent cache fix is #17."
+    },
+    {
+      "number": 18,
+      "title": "Publish compact community and PR benchmark comparison",
+      "url": "https://github.com/adewale/trident/pull/18",
+      "state": "closed",
+      "merged": true,
+      "reason": "Published existing results as a bounded comparison and charts. The method changes are recorded in #13, #15 and #17."
+    },
+    {
+      "number": 19,
+      "title": "Add Beautiful, Zombie and Frankenmermaid comparison results",
+      "url": "https://github.com/adewale/trident/pull/19",
+      "state": "closed",
+      "merged": true,
+      "reason": "Added published measurements from additional public releases in a separate host cohort. The harness, corpus and verification rules were unchanged."
+    },
+    {
+      "number": 20,
+      "title": "Publish all-benchmark scorecards and consistent project names",
+      "url": "https://github.com/adewale/trident/pull/20",
+      "state": "closed",
+      "merged": true,
+      "reason": "Updated naming, scorecards, benchmark inventory and provenance documentation from retained evidence."
+    },
+    {
+      "number": 32,
+      "title": "Explain benchmark names, provenance and supported projects in README",
+      "url": "https://github.com/adewale/trident/pull/32",
+      "state": "closed",
+      "merged": true,
+      "reason": "Rewrote benchmark names and the project support list in README using the existing support receipt."
+    },
+    {
+      "number": 35,
+      "title": "Explain benchmarks and show comparative result tables",
+      "url": "https://github.com/adewale/trident/pull/35",
+      "state": "closed",
+      "merged": true,
+      "reason": "Reorganized historical comparisons into worked tables and explained seven benchmark questions. The change presents existing measures and does not amend an executable check or adopted release gate."
+    },
+    {
+      "number": 47,
+      "title": "Skip Rusty Mermaid's broken npm release",
+      "url": "https://github.com/adewale/trident/pull/47",
+      "state": "closed",
+      "merged": true,
+      "reason": "Paused acquisition of one known broken npm release. Its tests verify the version-specific scheduling/exclusion and explicit candidate override."
+    },
+    {
+      "number": 52,
+      "title": "Record native PNG verification and finish issue 30",
+      "url": "https://github.com/adewale/trident/pull/52",
+      "state": "closed",
+      "merged": true,
+      "reason": "Documented a real native execution of the verification procedure already introduced by #51. This is corroborating follow-up evidence for that change."
+    },
+    {
+      "number": 77,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/trident/pull/77",
+      "state": "closed",
+      "merged": true,
+      "reason": "Pinned Actions references and added a policy linter for mutable action references. The substantive test suite and evaluation procedure are unchanged."
+    },
+    {
+      "number": 78,
+      "title": "Bump the github-actions group with 2 updates",
+      "url": "https://github.com/adewale/trident/pull/78",
+      "state": "closed",
+      "merged": true,
+      "reason": "Dependency bot update to GitHub Actions versions."
+    },
+    {
+      "number": 80,
+      "title": "Rewrite the README for people building or choosing Mermaid implementations",
+      "url": "https://github.com/adewale/trident/pull/80",
+      "state": "closed",
+      "merged": true,
+      "reason": "README rewrite, error guidance and tests for newly displayed leader facts. Existing data-verification machinery was extended for the newly introduced presentation."
+    },
+    {
+      "number": 81,
+      "title": "Release 0.2.1",
+      "url": "https://github.com/adewale/trident/pull/81",
+      "state": "closed",
+      "merged": true,
+      "reason": "Release version and changelog update with a matching version-string expectation."
+    },
+    {
+      "number": 84,
+      "title": "Add reproducible Trident logo with Inter Black",
+      "url": "https://github.com/adewale/trident/pull/84",
+      "state": "closed",
+      "merged": true,
+      "reason": "Brand assets, fonts and logo generation only."
+    },
+    {
+      "number": 100,
+      "title": "Bump the github-actions group with 2 updates",
+      "url": "https://github.com/adewale/trident/pull/100",
+      "state": "closed",
+      "merged": true,
+      "reason": "Dependency bot update to GitHub Actions versions."
+    },
+    {
+      "number": 101,
+      "title": "Remove redundant copies and repeated work from the harness",
+      "url": "https://github.com/adewale/trident/pull/101",
+      "state": "closed",
+      "merged": true,
+      "reason": "Performance refactor of non-test observer and harness implementation. No test, admission rule, scored population or evaluation method changed. The PR's equivalence runs validate that refactor."
+    },
+    {
+      "number": 103,
+      "title": "Move Playwright to 1.65.1 and Chromium 159",
+      "url": "https://github.com/adewale/trident/pull/103",
+      "state": "closed",
+      "merged": true,
+      "reason": "Updated Playwright/Chromium dependency pins. The PR reports investigating existing failures on several version pairs, but changes only package.json and bun.lock."
+    }
+  ],
+  "limitations": [
+    "Trident is itself a test harness. The entries include defects in its existing evaluator, corpus, outcome classification, test runner and evidence handling, as well as explicitly changed testing methods. The classification field identifies embedded changes and release-procedure changes.",
+    "Each PR is counted once. Some were stacked, split or superseded, so the entries are historical attempts and do not represent 67 independent effects. Notable overlaps include #5/#13/#16, #6/#13/#22, #68–#72, #74/#75/#76 and #93/#97/#98/#99.",
+    "The full inventories include generated data, archives and images. The evidence cites behavioral diffs or adopted test procedures, not line counts as evidence of effectiveness. GitHub omitted inline changes for the #12 test files and much of that large diff. The added newer-families test was fetched from its exact head, and the importer was compared at the PR base and head.",
+    "The audit inspected code, fixtures, PR metadata and exact-head check-run metadata. No rendering campaign or historical test run was replayed. A passing hosted check establishes its recorded job conclusion. A head with zero checks provides no hosted test result; locally reported campaign scores, runtimes and rerun counts remain attributed to the PR."
+  ]
+}

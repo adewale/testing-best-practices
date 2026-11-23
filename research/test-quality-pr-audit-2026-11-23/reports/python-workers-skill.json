@@ -1,0 +1,149 @@
+{
+  "repository": "adewale/python-workers-skill",
+  "total_prs": 14,
+  "pages_checked": {
+    "pulls": "GitHub REST pulls, state=all, per_page=100. Page 1 contained 14 PRs and page 2 was empty. All dates and authors were included.",
+    "changed_files": "Read each PR’s changed-file list, page 1 at per_page=100. All 14 lists ended before the page limit. 56 file entries in total, all with patch text.",
+    "state_counts": {
+      "merged": 10,
+      "closed_unmerged": 2,
+      "open": 2
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Fix documentation of jsnull",
+      "url": "https://github.com/adewale/python-workers-skill/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-double deletion within a documentation correction",
+      "weakness": "The published CPython testing example defined a separate fake object for JavaScript undefined. Pyodide delivers undefined as Python None, so tests using that fake can exercise an impossible branch.",
+      "attempted_remedy": "Delete the _Undefined fake and its JsUndefined type name from the testing example. Update the documented boundary helper to recognize None and the imported jsnull sentinel.",
+      "test_paths": [
+        "BEST_PRACTICES.md"
+      ],
+      "diff_evidence": "The hunk headed `class JsNull` removes `class _Undefined` and `_Undefined.__name__ = \"JsUndefined\"` immediately before the pytest-fixture instructions. The conversion table changes JS undefined to None.",
+      "transferable_rule": "Remove fake values a dependency cannot return. Use the same identity and value semantics the application receives from the dependency.",
+      "outcome_verification_caveat": "Merged. This changed the published test recipe. GitHub returned no check runs on the PR head. The later #11 runtime job independently observed that js.undefined is None."
+    },
+    {
+      "number": 2,
+      "title": "Remove more references to JsUndefined",
+      "url": "https://github.com/adewale/python-workers-skill/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to the installable skill’s pytest fixture",
+      "weakness": "The canonical testing guide still defined the invented JsUndefined value after #1 corrected the mirror. The fixture patched an uppercase JS_NULL attribute even as the wrapper examples changed to import jsnull.",
+      "attempted_remedy": "Delete the unused _Undefined type from the canonical example, explain that None stands for undefined and patch wrappers.jsnull with a falsy JsNull instance in both versions of the pytest example.",
+      "test_paths": [
+        "skills/python-workers/references/python-workers/patterns.md",
+        "BEST_PRACTICES.md"
+      ],
+      "diff_evidence": "In patterns.md, `class _Undefined` and its name override are deleted. Both `pyodide_fakes(monkeypatch)` excerpts change the patch target from `JS_NULL` to `jsnull` and identify `_is_missing` as the code being exercised.",
+      "transferable_rule": "Patch the symbol the production code reads and keep the distributed copy of a test recipe consistent with its human-readable mirror.",
+      "outcome_verification_caveat": "Merged. The fixture is a Markdown example. GitHub returned no check runs on this PR head. #11 later observed the null/undefined identities but did not execute these fixture snippets."
+    },
+    {
+      "number": 8,
+      "title": "Add install boundary CI check",
+      "url": "https://github.com/adewale/python-workers-skill/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "New verification of an existing packaging contract",
+      "weakness": "The repository declared its installable skill directories but had no automated check for a missing SKILL.md or accidental inclusion of tests, evals, research and generated files. The base tree contained tests/evals.json and no CI workflow.",
+      "attempted_remedy": "Add a CI check that resolves skill roots from the distribution metadata and fails when a directory or its SKILL.md is missing, or when disallowed repository-only artifacts occur in that root.",
+      "test_paths": [
+        "scripts/check_install_boundary.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": "`declared_skill_dirs()` reads package and marketplace entries. `bad_files()` walks each resolved root and `main()` returns 1 for findings such as tests, eval-runs, .DS_Store or bytecode. The workflow invokes the script on PRs and main pushes.",
+      "transferable_rule": "Validate a package at the install boundary selected by its published metadata. Include an explicit failure when no package directory is discovered.",
+      "outcome_verification_caveat": "Merged. GitHub shows the install-boundary job succeeded. The diff adds no tests for the checker itself. #11 later reports negative controls using a planted tests/x.py and .DS_Store.",
+      "verification_url": "https://github.com/adewale/python-workers-skill/actions/runs/27562597622/job/81478200026"
+    },
+    {
+      "number": 10,
+      "title": "Check skill examples: parse every code block and enforce last_verified in CI; check runtime claims in workerd by hand",
+      "url": "https://github.com/adewale/python-workers-skill/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated test audit and integration of #11",
+      "weakness": "CI checked packaging and lint. It could accept unparseable published code blocks and a verification date that predated content changes. The prose-only D1 eval also recommended a conversion that the runtime probe found would fail.",
+      "attempted_remedy": "Compile or parse supported examples under Python 3.12, report skipped languages and reject unknown ones. Check the verification date against content history, declare the skill stale, fix two broken examples and bring #11’s local workerd probe into the merged tree as a manual command.",
+      "test_paths": [
+        "scripts/check_code_blocks.py",
+        "scripts/check_last_verified.py",
+        ".github/workflows/install-boundary.yml",
+        "scripts/check_runtime_claims.py",
+        "tests/runtime/src/entry.py"
+      ],
+      "diff_evidence": "The parser enumerates tracked Markdown and routes Python, TOML, JSON and JSONC to parsers. The patch adds a missing comma in configuration.md and splits mixed Python/JSONC fences in both versions of the skill. The history check rejects a newer content change when status is verified and returns 2 on a shallow checkout. The existing CI job gets full history and two new steps.",
+      "transferable_rule": "Parse the examples people copy using the target language version. Validate a verification date against actual content changes and exercise runtime-dependent claims separately against the real dependency.",
+      "outcome_verification_caveat": "Merged. The final-head GitHub Actions log records 165 parsed blocks and the declared stale status. Its job did not run the workerd probe. Git history verifies that #11’s probe commit was folded in and the separate CI lane was subsequently removed. The D1 guidance and eval oracle stayed unresolved.",
+      "verification_url": "https://github.com/adewale/python-workers-skill/actions/runs/38053555368/job/114217361950"
+    },
+    {
+      "number": 11,
+      "title": "Test audit: check the skill's runtime claims in real workerd (finds stale D1 advice)",
+      "url": "https://github.com/adewale/python-workers-skill/pull/11",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated test audit, closed as a separate PR and incorporated into #10",
+      "weakness": "Existing checks did not execute the skill’s runtime claims. Eval 2 explicitly rewarded calling `.to_py()` on D1 results. The base tree held prose eval expectations without an executable grader.",
+      "attempted_remedy": "Start a local Worker under workerd with a D1 binding. Compare 12 returned observations against recorded values tied to specific documentation claims. Compare the complete key set so unexpected and missing observations fail.",
+      "test_paths": [
+        "tests/evals.json (existing oracle inspected, unchanged)",
+        "tests/runtime/src/entry.py",
+        "tests/runtime/wrangler.jsonc",
+        "scripts/check_runtime_claims.py",
+        ".github/workflows/runtime-claims.yml"
+      ],
+      "diff_evidence": "The probe creates a local table, reads its rows, attempts indexing and .to_py(), and writes and reads back None and jsnull. The checker expects a list, successful indexing and AttributeError on .to_py(). It records that both bindings read back as None. The PR adds a path-filtered runtime job.",
+      "transferable_rule": "Check an eval’s expected answer against the real dependency before grading it. Verify apparent mutation survivors against the dependency too, since the recommended and supposedly broken calls may be equivalent.",
+      "outcome_verification_caveat": "Closed without a GitHub merge on #11. The head hosted job nevertheless succeeded and logged all 12 observations, including five that contradicted the skill. The probe entered main through #10 as a manual check. The mutation comparisons are author-reported. Neither PR supplied a grader or repaired eval 2.",
+      "verification_url": "https://github.com/adewale/python-workers-skill/actions/runs/37110756297/job/111168034315"
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        3,
+        5,
+        6
+      ],
+      "reason": "Runtime documentation and wrapper guidance. #3 renumbered testing references while changing HTTP advice. These diffs preserved the testing approach."
+    },
+    {
+      "numbers": [
+        7
+      ],
+      "reason": "Skill installation metadata and documentation only. #8 subsequently checked the install boundary."
+    },
+    {
+      "numbers": [
+        9,
+        14
+      ],
+      "reason": "#9 adds a lint job and combines two equivalent branches in the boundary checker. #14 pins GitHub Actions and adds a policy linter for mutable action references."
+    },
+    {
+      "numbers": [
+        12,
+        13
+      ],
+      "reason": "Workflow scheduling and cancellation only."
+    },
+    {
+      "numbers": [
+        15
+      ],
+      "reason": "Dependabot updates to workflow dependencies only."
+    }
+  ],
+  "limitations": [
+    "Reviewed historical GitHub diffs, PR states, candidate head check runs and the hosted logs for #10 and #11. The suites and authors’ mutation experiments were not rerun for this audit.",
+    "#1 and #2 repair published test examples. #8 adds a gate for an existing packaging contract. #10 and #11 are distinct PR attempts with a shared runtime probe, so the probe is one implementation.",
+    "The #11 probe tests a hand-written Worker on the historical toolchain and compatibility date. Its result does not establish how every legacy Worker behaves."
+  ]
+}

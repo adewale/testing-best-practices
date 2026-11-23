@@ -1,0 +1,101 @@
+{
+  "repository": "adewale/embed.oshineye.dev",
+  "total_prs": 5,
+  "pages_checked": {
+    "source": "https://api.github.com/repos/adewale/embed.oshineye.dev/pulls?state=all&per_page=100&page=1",
+    "pull_request_pages": [
+      1
+    ],
+    "returned_prs": [
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "per_page": 100,
+    "author_or_date_filters": false,
+    "changed_files_reviewed_by_pr": {
+      "1": 32,
+      "2": 17,
+      "3": 11,
+      "4": 2,
+      "5": 5
+    },
+    "coverage": "Read every title and body. Each /pulls/{number}/files page contained the same number of files as the individual PR's changed_files count. Also inspected candidate test patches, PRs #1–3 commit inventories, the #3 closure comment, and the final-head check-runs and file trees of #2 and #3."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Fix iframe resize isolation and avatar identity boundaries without new CI",
+      "url": "https://github.com/adewale/embed.oshineye.dev/pull/2",
+      "state": "closed",
+      "merged": true,
+      "head_sha": "01267dad72339efc57c91a5a9ea9efdea62c9d0f",
+      "classification": "Merged test-quality work within a production fix",
+      "weakness": "Twenty-three Vitest tests checked for client-script strings in returned HTML. Six browser resize cases accepted any positive number. Old dark-theme checks could pass for a light response. Playwright also depended on somebody starting a Worker manually, and the existing Python tests had no package script.",
+      "attempted_remedy": "Merged the five audit commits from #3. Kept four browser tests of the real loader in default Playwright collection and made the 27 embed-behaviour cases opt-in. Added local Worker startup and a single command for TypeScript, Vitest and Python.",
+      "test_paths": [
+        "tests/app.test.ts",
+        "tests/e2e/embeds-render.spec.ts",
+        "tests/e2e/cloudflare-architecture-viz.spec.ts",
+        "tests/e2e/embed-behaviour.spec.ts",
+        "tests/e2e/loader.spec.ts",
+        "tests/identity.test.ts"
+      ],
+      "diff_evidence": [
+        "The final blobs of all six test files match #3. tests/app.test.ts removes source greps and checks the returned SVGs and dark HTML class. The two original browser spec files delete the resize tests that only required height > 0. tests/e2e/loader.spec.ts measures each of two different iframes against its own body.scrollHeight.",
+        "playwright.config.ts replaces the commented webServer with an active local wrangler dev when BASE_URL is unset. It skips embed-behaviour.spec.ts unless EMBED_BEHAVIOUR_CHECKS=1. package.json exposes test:e2e:behaviour and adds Python discovery to npm run check. Playwright runs separately from npm run check.",
+        "Earlier commits proposed hosted jobs, a screenshot-baseline workflow and a Stop hook. The final head has no .github/workflows files. Its committed test selection distinguishes normal loader coverage from optional client coverage."
+      ],
+      "transferable_rule": "Run the user's real entry point, and verify the replacement tests' collection in each advertised command. Disclose what still requires an opt-in run.",
+      "outcome": "GitHub records a merge on 2026-10-09. The PR author reports 117 Vitest and 10 Python passes, four loader passes at the reviewed head, and 56 browser tests collected by default versus 83 with the opt-in flag.",
+      "verification_caveat": "The passed counts are author-reported local runs. GitHub returned zero check runs for the final head. The 31 combined loader/behaviour passes the author cites predate the final collection change. The shared assertions are one repair adopted via #2."
+    },
+    {
+      "number": 3,
+      "title": "Test audit: browser tests for embed behaviour; fix loader resize and identity crash",
+      "url": "https://github.com/adewale/embed.oshineye.dev/pull/3",
+      "state": "closed",
+      "merged": false,
+      "head_sha": "00323bbbcaaf7d38d271410c48d42963ae45596e",
+      "classification": "Explicit test audit, closed unmerged and incorporated in #2",
+      "weakness": "The shipped HTML contained tokens such as .get('theme') and cursor: pointer even when the client ignored them. Old resize checks accepted any positive height. Two dark-theme tests searched for a colour shipped in both palettes, while a third accepted any diagram marker. Single-embed coverage missed interactions between two widgets.",
+      "attempted_remedy": "Deleted 23 Vitest source-text tests and six weak browser resize cases, rewrote the three theme checks and added browser behaviour and host-loader checks. Also added deterministic identity boundary examples and fixed two product defects exposed by the tests.",
+      "test_paths": [
+        "tests/app.test.ts",
+        "tests/e2e/embeds-render.spec.ts",
+        "tests/e2e/cloudflare-architecture-viz.spec.ts",
+        "tests/e2e/embed-behaviour.spec.ts",
+        "tests/e2e/loader.spec.ts",
+        "tests/identity.test.ts"
+      ],
+      "diff_evidence": [
+        "tests/app.test.ts replaces #1f2937 and data-mermaid-project checks with the actual dark and light SVGs or <html class=\"dark\">. tests/e2e/embed-behaviour.spec.ts checks computed palette colours, posted height against body.scrollHeight, and actual items visible after clicking a filter.",
+        "The timeline tests pin time to 2017 and require actual items in 2016 and in 2015 or earlier before checking visibility. tests/e2e/loader.spec.ts measures two differently sized frames, independently exercises source and origin checks, and intercepts WebSockets as well as HTTP.",
+        "tests/identity.test.ts supplies deterministic inputs for the minimum signed 32-bit hash. The browser also checks the displayed offline identity. docs/LESSONS_LEARNED.md replaces earlier guidance favoring implementation-string assertions."
+      ],
+      "transferable_rule": "Choose observable results that distinguish the correct and faulty behaviours. Give clock-based tests data on both sides of a boundary, and vary one condition at a time in negative tests.",
+      "outcome": "GitHub records #3 as closed unmerged on 2026-10-05. Its five commit hashes all appear in #2, which merged. The author reports the old suites missed 16 of 17 planted changes and the replacements detected all 17.",
+      "verification_caveat": "No independent mutation or browser run was performed in this audit. The author reports local Chromium runs, seven missing Linux screenshot baselines and a pre-existing TypeScript failure at this head. GitHub returned zero check runs for the final head.",
+      "relationship_source": "https://github.com/adewale/embed.oshineye.dev/pull/3#issuecomment-6002454813"
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "reason": "The architecture gallery PR adds Vitest, Playwright and seven Darwin screenshot baselines for the new feature, and adjusts one existing CSP expected value to the new policy. Commit 2d938549 expands checks written earlier on this same feature branch from a single gallery user to all registry entries. Commit 1be69d95 vendors generic guardrail instructions without wiring the described hooks. Neither establishes a repair to the pre-PR test suite or a new working repository gate."
+    },
+    {
+      "number": 4,
+      "reason": "Updates development dependencies and the lockfile. The Vitest dependency changed and existing tests were used for verification."
+    },
+    {
+      "number": 5,
+      "reason": "Changes the Mermaid postinstall patch mechanism and its documentation. The author's repeated-install and drift checks validate the installer and the diff changes no test files or test runner."
+    }
+  ],
+  "limitations": [
+    "This was a historical review of GitHub metadata and patches. Local run results are attributed to the PR authors. Binary screenshot baselines added with #1 were inventoried by filename."
+  ]
+}

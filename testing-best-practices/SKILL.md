@@ -53,6 +53,7 @@ Language/framework references:
 For property-based testing or coverage-guided fuzzing, also load the matching language reference: collection, discovery, and replay differ by engine. If the selected engine is not documented here, follow its project documentation rather than transferring another engine's behavior.
 
 Topical references by trigger:
+- Auditing, repairing, consolidating, or deleting existing tests → `references/test-audit.md`. Start with candidates; record contracts, expected-value provenance, decisions, and remaining proof before edits. Compare old and keeper tests against the same credible faults when moving contracts.
 - Writing/reviewing property tests, choosing a property, generator design, stateful/model-based testing, seeds and replay → `references/property-based-testing.md`
 - Coverage-guided targets or campaigns for exposed/custom parsers, native or unsafe decoders, crash-prone boundaries, or security tooling whose crash disables a check → `references/fuzzing.md`
 - Legacy/refactor safety → `references/characterization-testing.md`
@@ -164,6 +165,8 @@ Assert the invariant the API actually promises — no lost updates, a monotonic/
 
 ### Write mode
 
+Before adding a test, name the observable contract, a credible regression it catches, and why existing proof misses it. Extend an existing test or table when it covers the same contract; another layer needs a distinct risk. If the test requires exposing internals solely for access, look for a real production boundary first.
+
 1. Read adjacent tests/config and load the relevant language reference.
 2. Choose test tier from `references/test-types.md`.
 3. For bugs/new behavior, add the failing regression test first when feasible.
@@ -177,6 +180,8 @@ Assert the invariant the API actually promises — no lost updates, a monotonic/
 For transformations or complex generated output, use golden files with explicit review discipline; see `references/golden-file-testing.md`. For external APIs, prefer recorded real fixtures/cassettes or contract checks over live CI calls; see `references/vcr-cassettes.md`.
 
 ### Assess mode
+
+For a test-quality sweep, use `references/test-audit.md` to turn detection signals into evidence-backed retain/repair/consolidate/delete decisions. Search hits alone do not justify edits.
 
 Report evidence by severity and include positive observations. For generative tests, load the relevant language and topical references before recommending engine-specific changes. Check:
 
@@ -195,6 +200,8 @@ Report evidence by severity and include positive observations. For generative te
 12. **Suite shape**: count tests per tier; name the inverted pyramid/ice-cream cone (mostly E2E over a thin unit base) and the hourglass (unit + E2E with an empty integration middle). Recommend the smallest-tier home for each E2E case that has one — business rules move below the UI — while keeping a small golden-path/critical-journey E2E core.
 
 ### Upgrade mode
+
+When consolidating or deleting tests, use `references/test-audit.md`: name the keeper and preserve distinct assertions before removal. Record no-contract deletions explicitly; do not fabricate replacement tests.
 
 Prioritize by risk:
 

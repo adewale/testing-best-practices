@@ -1,0 +1,10 @@
+{
+  "repository": "adewale/wwwoshineye",
+  "total_prs": 0,
+  "pages_checked": [
+    "https://api.github.com/repos/adewale/wwwoshineye/pulls?state=all&per_page=100&page=1 returned an empty array. No author or date filters were applied."
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

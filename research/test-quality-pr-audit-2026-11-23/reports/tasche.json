@@ -1,0 +1,325 @@
+{
+  "repository": "adewale/tasche",
+  "total_prs": 18,
+  "pages_checked": 2,
+  "enumeration": {
+    "all_states": true,
+    "author_or_date_filter": false,
+    "pr_page_sizes": [
+      18,
+      0
+    ],
+    "graphql_total": 18,
+    "merged": 15,
+    "open": 3,
+    "closed_unmerged": 0,
+    "file_inventories": 18,
+    "file_entries": 292,
+    "method": "REST all-state PR listing, independently cross-checked with GraphQL. Read every title and body and compared every PR’s changed-file count with both the GraphQL inventory and REST files page. No file inventory required a second page. Relevant test patches were present with complete added and deleted line counts."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Use bm25() ranking with column weights for FTS5 search",
+      "url": "https://github.com/adewale/tasche/pull/2",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-07T22:13:36Z",
+      "classification": "Testing approach change within a search ranking feature",
+      "weakness": "The existing HTTP tests captured SQL text. Matching a ranking clause cannot establish valid SQLite syntax, relative ordering or visibility of other users’ articles.",
+      "remedy": "Added an in-memory SQLite FTS5 tier with contrasting title, excerpt and content matches, isolation and empty-result checks. Kept separate HTTP tests that inspect generated SQL.",
+      "test_paths": [
+        "tests/unit/test_search.py"
+      ],
+      "diff_evidence": [
+        "TestBm25SqliteIntegration seeds articles and asserts the first returned ID. Its _search and _search_raw helpers assemble their own SQL and the fixture creates its own tables and triggers. A change confined to the production query can therefore escape the ranking checks."
+      ],
+      "transferable_rule": "Execute the SQL that the application actually sends against the migration schema. Seed competing matches and assert their order.",
+      "outcome": "Merged. The head’s GitHub check failed with exit 2 just after merge. The archived log returns HTTP 410, so the failed step is unknown. #4 removed the SQLite examples and #15 replaced them with endpoint-driven checks.",
+      "diff_url": "https://github.com/adewale/tasche/pull/2/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/887c8e3f55d694e6c7dbc9ed6ed9f407a7987866",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/22808337892/job/66161044267",
+      "related_prs": [
+        4,
+        15
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Unify search into header, overhaul tagging UX, URL-driven library state",
+      "url": "https://github.com/adewale/tasche/pull/4",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-11T23:48:36Z",
+      "classification": "Explicit search suite repair within a feature rewrite, with lost integration coverage",
+      "weakness": "Search tests repeated handwritten SQL capture callbacks and sanitizer cases. An empty-query assertion could pass without observing a SELECT. Moving search to the articles endpoint also put existing ranking coverage at risk.",
+      "remedy": "Factored query recording into TrackingD1 helpers, separated endpoint response, SQL structure and filter composition cases, and removed duplicate sanitizer paths. The rewrite also deleted the SQLite ranking tier.",
+      "test_paths": [
+        "tests/unit/test_search.py",
+        "frontend/tests/e2e/smoke.spec.js"
+      ],
+      "diff_evidence": [
+        "The new _select_sql and _select_params raise AssertionError when no SELECT executes. New tests inspect returned tag arrays and the absence of raw tags_json. The same file deletes TestBm25SqliteIntegration and replaces the default-ranking check with containment of ORDER BY bm25(...) in captured SQL. Header E2E cases move to the new entry point."
+      ],
+      "transferable_rule": "Preserve behavioral checks through endpoint migrations. Removing duplicate assertions and preserving the real-engine test tier are separate decisions.",
+      "outcome": "Merged with a successful head check. The diff confirms the ranking regression in the suite, even with a green check. #15 later restores that tier on the new endpoint.",
+      "diff_url": "https://github.com/adewale/tasche/pull/4/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/9864938f5025bdcf07790319fb43f60d610dd633",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/22979790606/job/66716803060",
+      "related_prs": [
+        2,
+        15
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Fix audio truncation in multi-chunk TTS by re-muxing OGG streams",
+      "url": "https://github.com/adewale/tasche/pull/6",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-09T11:59:21Z",
+      "classification": "Explicit test-quality repairs embedded in a TTS bug fix",
+      "weakness": "Chunking and timing tests used the production sentence splitter or markdown stripper to derive expectations. Both sides could drop the same text. Existing checks also missed audio that ended after its first logical stream.",
+      "remedy": "Use known sentences and input-derived whitespace normalization as independent oracles. Inspect the stored multi-chunk audio and instrument individual response chunks.",
+      "test_paths": [
+        "tests/unit/test_property.py",
+        "tests/unit/test_tts.py"
+      ],
+      "diff_evidence": [
+        "test_preserves_all_sentences now compares the flattened result to five literal sentences. Two Hypothesis content-preservation tests compare normalized output with the original input. TestOggSingleStreamValidity inspects stored audio for one beginning and one end marker and monotonic granule positions."
+      ],
+      "transferable_rule": "Derive expectations from input or a format contract and inspect the final artifact that a consumer receives.",
+      "outcome": "Merged with a successful head check. These are in-process tests with synthetic audio and a test parser. #16 later replaced the exact chunk-count test introduced here.",
+      "diff_url": "https://github.com/adewale/tasche/pull/6/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/9154743150d52bcd93675aaab79ea7e0cb3f00ed",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/22852242371/job/66283369232",
+      "related_prs": [
+        16
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Add now-playing audio indicator with sound bars animation",
+      "url": "https://github.com/adewale/tasche/pull/8",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-09T21:05:48Z",
+      "classification": "Explicit component-test repairs within an audio indicator feature",
+      "weakness": "Hand-built signal objects and identity stubs for escaping and sanitization replaced behavior that could run in jsdom. Header tests could pass when the preference update function was called without changing state.",
+      "remedy": "Run real signals, preferences, formatting and sanitization. Use partial mocks at side-effect boundaries and reset signal state between header tests.",
+      "test_paths": [
+        "frontend/tests/unit/components/ArticleCard.test.jsx",
+        "frontend/tests/unit/components/Header.test.jsx",
+        "frontend/tests/unit/views/Library.test.jsx",
+        "frontend/tests/unit/views/Reader.test.jsx"
+      ],
+      "diff_evidence": [
+        "A Sepia click now asserts readerPrefs.value.theme === 'sepia' instead of a spy invocation. Reader deletes the identity DOMPurify.sanitize and escapeHtml stubs. Library retains the real state module while replacing addToast. The new sound-bar examples are separate feature coverage."
+      ],
+      "transferable_rule": "Exercise state transitions through user actions and keep working library behavior real when the test environment supports it.",
+      "outcome": "Merged with a successful head check. Some boundaries, including ArticleCard’s audio player, remain fakes. The unit results establish jsdom behavior.",
+      "diff_url": "https://github.com/adewale/tasche/pull/8/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/f71271ee3405e7475deea9825991e17e920fee90",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/22873931682/job/66360651943",
+      "related_prs": []
+    },
+    {
+      "number": 10,
+      "title": "Fix 80 audit issues across backend, frontend, and TTS modules",
+      "url": "https://github.com/adewale/tasche/pull/10",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-29T14:44:40Z",
+      "classification": "Explicit test audit and deletion within a broad codebase audit",
+      "weakness": "Some async tests observed HTTP success without checking the queued work. A health test patched the wrong import path, streak tests used the local calendar for UTC behavior, and URL tests still exercised retired helpers.",
+      "remedy": "Assert queue contents, patch the dependency at its lookup site, use UTC in the streak fixtures, and remove tests for the retired URL helpers while retaining coverage of the active operations.",
+      "test_paths": [
+        "tests/unit/test_articles.py",
+        "tests/unit/test_silent_bugs.py",
+        "tests/unit/test_health.py",
+        "tests/unit/test_entry.py",
+        "frontend/tests/unit/multiTagUrl.test.js"
+      ],
+      "diff_evidence": [
+        "test_articles now checks the queued article_processing message after duplicate reprocessing. test_silent_bugs verifies the TTS queue count and article_id. test_health changes articles.routes to src.articles.routes in its patch. multiTagUrl removes the parseTagsFromHash/buildTagHash examples and their cross-check while retaining parseLibraryParams/buildLibraryHash tests."
+      ],
+      "transferable_rule": "Assert the externally relevant effect of an accepted command. When retiring an interface, identify the surviving check for the supported interface.",
+      "outcome": "Merged with a successful head check. New regression tests for product changes and mechanical lint fixes are separate from the test audit.",
+      "diff_url": "https://github.com/adewale/tasche/pull/10/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/27efe45e3efad5408596ca9193c6aac67e15e8d9",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/23699007942/job/69039251488",
+      "related_prs": [
+        4
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Add mobile-first responsive design with bottom navigation",
+      "url": "https://github.com/adewale/tasche/pull/11",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-16T00:47:52Z",
+      "classification": "Explicit browser-test approach change within a responsive UI feature",
+      "weakness": "The Playwright matrix covered desktop Chromium. It lacked a mobile profile to expose an existing hamburger positioning problem and overflow across library views.",
+      "remedy": "Add a mobile Safari project using the iPhone 15 Pro Max profile and a dedicated suite covering pre-existing screens at 430×932.",
+      "test_paths": [
+        "frontend/playwright.config.js",
+        "frontend/tests/e2e/mobile.spec.js"
+      ],
+      "diff_evidence": [
+        "The project matches mobile.spec.js. The tests compare action and hamburger bounding boxes, check 44px touch targets and compare document scrollWidth with clientWidth across Library, Tags and Settings. The scope extends beyond the new header behavior."
+      ],
+      "transferable_rule": "When a reported layout failure is specific to a supported device class, exercise existing user flows on that profile and measure the failed constraint.",
+      "outcome": "Merged with a successful head check. Its make check target did not invoke Playwright. Execution of the new mobile suite or on physical hardware was not independently established.",
+      "diff_url": "https://github.com/adewale/tasche/pull/11/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/d4ffc9560e9417c6549ff3a8724693d9d4f63c0b",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/23123291094/job/67161291288",
+      "related_prs": []
+    },
+    {
+      "number": 12,
+      "title": "Migrate wrapper internals to CFBoundary",
+      "url": "https://github.com/adewale/tasche/pull/12",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Existing test fixture maintenance within an open dependency migration",
+      "weakness": "The Pyodide fixture coupled tests to four private globals in the app wrapper. After generic conversion moved into CFBoundary, the fake needed to reach the module that actually owns the runtime behavior.",
+      "remedy": "Replace manual per-global monkeypatches with the library’s scoped patch_pyodide_runtime helper and keep the existing JS conversion tests against the migrated boundary.",
+      "test_paths": [
+        "tests/unit/test_boundary_ffi.py"
+      ],
+      "diff_evidence": [
+        "pyodide_fakes previously wrote HAS_PYODIDE, JsProxy, js and to_js on wrappers_mod. The new fixture yields inside patch_pyodide_runtime with explicit JS module, proxy type, null sentinel and converter. Most other test edits are imports or renames."
+      ],
+      "transferable_rule": "For simulated runtimes, configure the dependency at its supported boundary and scope restoration to the fixture lifetime.",
+      "outcome": "Open with a successful head check. The tests still run under CPython with JS fakes. No real Pyodide run or improved defect-detection rate was established.",
+      "diff_url": "https://github.com/adewale/tasche/pull/12/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/95098ff51d941915450835d2c14dd022f4b8635f",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/24995092579/job/73189883683",
+      "related_prs": []
+    },
+    {
+      "number": 13,
+      "title": "Address 2026-06-12 security audit findings",
+      "url": "https://github.com/adewale/tasche/pull/13",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Open codebase audit with an explicit verification gap",
+      "weakness": "The existing Readability worker had no direct tests. Audio-range behavior had no end-to-end byte oracle, and the staging test harness could mask failed cleanup.",
+      "remedy": "Expose the existing extraction logic as a directly callable function, test it with real Readability and DOM parsing in CI, compare ranges to the original audio response, and make the harness check its cleanup outcome.",
+      "test_paths": [
+        "readability-worker/test/extract.test.js",
+        "readability-worker/src/extract.js",
+        "tests/e2e/test_integrations.py",
+        ".github/workflows/ci.yml",
+        "Makefile"
+      ],
+      "diff_evidence": [
+        "The Node suite checks the four-field extraction contract, known article text, removal of navigation/footer content, and empty/malformed documents. CI invokes npm test in readability-worker. TestAudioStreaming compares bounded, open-ended and suffix responses to exact slices of a full download. The staging recipes now propagate cleanup failures and check the restored response."
+      ],
+      "transferable_rule": "Test the parser at its own runtime boundary. When two views return the same resource, derive byte-range expectations from an independently fetched complete response.",
+      "outcome": "Open with a successful head check that includes the Node worker tests. Its workflow does not run staging E2E, so the real service range checks and cleanup remain unverified here.",
+      "diff_url": "https://github.com/adewale/tasche/pull/13/files",
+      "evidence_commit": "https://github.com/adewale/tasche/commit/25adab33d6f5a5991cda6bcf0e9fec3b1c1d7665",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/28469515911/job/84378014564",
+      "related_prs": []
+    },
+    {
+      "number": 15,
+      "title": "Record real D1 semantics, restore the SQLite search tier, automate verify-staging",
+      "url": "https://github.com/adewale/tasche/pull/15",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:46Z",
+      "classification": "Dedicated verification audit",
+      "weakness": "The mock reported one change for a no-match DELETE. Search tested SQL spelling after #4 removed FTS5 ranking cases. A smoke test duplicated its validator and accepted an error response. Audio tests converted real failures into skips.",
+      "remedy": "Record local D1 behavior, compare doubles with the recording, restore FTS5 tests through the actual endpoint, drive the smoke entry point, and distinguish unavailable capabilities from failures after opting in.",
+      "test_paths": [
+        "scripts/record-d1-semantics.mjs",
+        "tests/fixtures/d1_run_semantics.json",
+        "tests/conftest.py",
+        "tests/unit/test_mock_fidelity.py",
+        "tests/unit/test_search.py",
+        "tests/unit/test_tags.py",
+        "tests/unit/test_smoke.py",
+        "scripts/smoke-test.py",
+        "tests/e2e/conftest.py",
+        "frontend/tests/e2e/immersive-and-settings.spec.js"
+      ],
+      "diff_evidence": [
+        "Ten recorded D1 cases include a unique conflict and no-match writes at zero and an FTS-triggered article insert at three. The SQLite double replays all cases. Tag tests interleave a competing insert and assert 409 plus the surviving row.",
+        "The search suite seeds migrated SQLite, sends GET /api/articles?q=…, compares ordered IDs and exercises every sort. Production qualifies articles.title. The smoke tests call main and assert exit 1 for config errors. Playwright probes capability before running, then requires ready. The pytest E2E fixture fails an unreachable explicitly enabled target."
+      ],
+      "transferable_rule": "Calibrate fakes with recorded behavior, send requests through the production route and let an explicitly enabled check fail when the operation fails.",
+      "outcome": "Merged with a successful head check. A separate local SQLite query reproduced the unqualified title ambiguity and succeeded with articles.title. The PR’s old/new suite comparisons are author-reported. Hosted D1 and live staging were not verified. The final diff has no staging schedule despite earlier wording in the body.",
+      "diff_url": "https://github.com/adewale/tasche/pull/15/files",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/38052672287/job/114214825164",
+      "related_prs": [
+        2,
+        4,
+        16
+      ]
+    },
+    {
+      "number": 16,
+      "title": "Test audit: run stats SQL on real SQLite, fix two stats bugs, replace chunk-count pin",
+      "url": "https://github.com/adewale/tasche/pull/16",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:49Z",
+      "classification": "Dedicated test audit with two production fixes",
+      "weakness": "Canned stats rows selected by SQL substrings hid time-window and legacy-status bugs. A golden test pinned a 4,000-character input to three chunks. Arbitrary Unicode strings seldom exercised sentence boundaries.",
+      "remedy": "Run the stats endpoint against migration-backed SQLite, seed hand-counted rows, and replace redundant type and key checks with response values. Replace the exact chunk count with capacity, order and greedy packing invariants.",
+      "test_paths": [
+        "tests/sqlite_d1.py",
+        "tests/unit/test_stats.py",
+        "tests/unit/test_property.py",
+        "tests/unit/test_tts.py",
+        "src/stats/routes.py"
+      ],
+      "diff_evidence": [
+        "Stats tests seed both sides of 7- and 30-day cutoffs, mixed unread/reading rows, and a month with both saved and archived articles. The production diff aligns the timestamp separator and changes assignment to accumulation. The empty-library test compares the full expected dictionary.",
+        "TestChunkPackingProperties generates punctuated sentence lists and checks whether the next sentence could have fit. The explicit example ['Aa.', 'Bb.', 'Cc.'] at seven characters exercises exact fill. The golden regression retains the 1900-character default limit."
+      ],
+      "transferable_rule": "Seed real-engine tests at the boundary where a result changes. When deleting a pin, compare the old suite with and without that test, and choose some planted faults from the assertions being removed.",
+      "outcome": "Merged with a successful head check. A separate fixed-clock local SQLite comparison counted two rows with the old cutoff and one with the new format. The detailed mutation matrix and local D1 comparisons are author-reported. Wall-clock exposure remains near UTC midnight. Main still has separate SqliteD1 classes from #15 and #16.",
+      "diff_url": "https://github.com/adewale/tasche/pull/16/files",
+      "ci_url": "https://github.com/adewale/tasche/actions/runs/37087510494/job/114473715937",
+      "related_prs": [
+        6,
+        15
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        7,
+        9
+      ],
+      "reason": "Bookmarklet tagging added feature tests, the offline button changed an expected button count, and formatTime added two examples for its new Infinity behavior."
+    },
+    {
+      "numbers": [
+        3,
+        5
+      ],
+      "reason": "UI design audit and overflow styling. Their inventories contain no test changes."
+    },
+    {
+      "numbers": [
+        14,
+        17,
+        18
+      ],
+      "reason": "Ruff and dependency updates, and a workflow reference-pinning lint. No repair of existing application tests or substantive verification method."
+    }
+  ],
+  "limitations": [
+    "GitHub head check outcomes show workflow status. They do not independently establish every author-reported red/green run, mutation result or live-service claim. The full project suites were not rerun for this historical review.",
+    "Count related PRs as distinct attempts. The #2 / #4 / #15 search tier changes describe one history. #6 introduced the chunk-count pin removed by #16. #15 and #16 separately introduced SQLite-backed D1 test helpers."
+  ]
+}

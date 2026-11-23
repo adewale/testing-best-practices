@@ -1,0 +1,271 @@
+{
+  "repository": "adewale/bobbin",
+  "total_prs": 14,
+  "pages_checked": 2,
+  "enumeration": {
+    "url": "https://api.github.com/repos/adewale/bobbin/pulls?state=all&per_page=100&page=1",
+    "page_counts": [
+      14,
+      0
+    ],
+    "number_range": [
+      1,
+      14
+    ],
+    "state_counts": {
+      "open": 2,
+      "merged": 10,
+      "closed_unmerged": 2
+    },
+    "changed_file_inventories": 14,
+    "changed_file_entries": 178,
+    "method": "Reviewed every title, body and changed-file inventory, including open, closed, merged and bot PRs. Files returned for each PR matched GitHub's changed_files metadata, with 81 at the largest. Inspected relevant patches and retrieved final-head Actions job steps for each match."
+  },
+  "matching_prs": [
+    {
+      "number": 4,
+      "title": "Fix 2026-06 audit findings: pipeline correctness, security hardening, real CI verification",
+      "url": "https://github.com/adewale/bobbin/pull/4",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-13T09:37:17Z",
+      "classification": "audit with production fixes",
+      "weakness": "CI allowed Playwright failures and defaulted to production, where local fixture URLs could return 404. It installed only Chromium for a suite that also used WebKit. Workers and Node ran two of the same test files, and the D1 helper manually mirrored migrations.",
+      "remedy": "Made browser tests a required check on a locally seeded copy of the PR, installed both engines, made each suite own its files, derived the test schema from committed migrations, and strengthened existing E2E oracles.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "playwright.config.ts",
+        "e2e/layout-grid.spec.ts",
+        "e2e/smoke.spec.ts",
+        "e2e/visual.spec.ts",
+        "test/helpers/migrations.ts",
+        "vitest.config.ts",
+        "src/jobs/finalization.test.ts",
+        "src/routes/search-quality.test.ts"
+      ],
+      "diff_evidence": [
+        "Removed continue-on-error, changed the default base URL to localhost:9090, configured a Wrangler webServer, seeded D1 before Playwright, added a 200 check before the layout audit, and installed chromium webkit.",
+        "The migration helper replaces 25 explicit imports with a sorted migrations/*.sql glob, reads reset objects from sqlite_master and throws if migration discovery returns nothing. The Workers config excludes scripts/** and the HTML-parser property file already assigned to Node.",
+        "The optional visual suite replaces substring acceptance (including 'readable' and 'clear') with a first standalone yes/no token. The batch-loop regression exercises six chunks at batch size two and checks the reported total. A vector-only search result distinguishes bound search from its keyword fallback."
+      ],
+      "transferable_rule": "Make each required test exercise the candidate build and fail CI when it detects an error. Check the page identity and data before interpreting layout results, discover fixtures from their production source, and assign each suite one runner.",
+      "outcome": "Merged. GitHub reports success for typecheck, Workers, Node, browser installation, seeding and local E2E. The June status check still accepted empty pages returning 200, later addressed in #8/#7. The optional AI visual tier and author-reported red-first experiments have separate evidence requirements.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/4/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/27462898444/job/81179911794"
+    },
+    {
+      "number": 6,
+      "title": "Lease duplicate queue jobs atomically",
+      "url": "https://github.com/adewale/bobbin/pull/6",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "classification": "related testing approach, superseded production draft",
+      "weakness": "The existing duplicate-job test began with an already completed row, so it missed colliding claims and expiry orderings. The new command model checked queue metadata, leaving a gap between the test and the draft’s wider ownership guarantee.",
+      "remedy": "Added simultaneous claims and a generated D1 lifecycle model with stale owners and a controllable clock. A later review called out the remaining side-effect gap and the draft was superseded.",
+      "test_paths": [
+        "src/jobs/queue-handler.test.ts",
+        "src/jobs/queue-handler.ts",
+        "docs/lessons-learned.md"
+      ],
+      "diff_evidence": [
+        "The former suite covered a precompleted duplicate and separate successful and retryable deliveries. The patch calls two claims with Promise.all, exercises lease boundaries with fixed times, and checks actual SQLite queue rows after generated claim, complete, fail and elapse commands (up to 30 commands, 100 runs).",
+        "The command model calls claimQueueJob/completeQueueJob/failQueueJob and compares status, token and expiry. It never inspects downstream enrichment rows or provider calls from a resumed, expired owner."
+      ],
+      "transferable_rule": "Define the state and effects a concurrency test can observe. Exercise overlapping work at the business-effect boundary before attributing a full ownership guarantee to a passing queue-state model.",
+      "outcome": "Closed unmerged and superseded by #10. The recorded CI job passed. The PR explicitly identified downstream writes and provider side effects as outside this passing model.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/6/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/33345839717/job/99349672575"
+    },
+    {
+      "number": 7,
+      "title": "Test audit: exercise AI/Vectorize paths, isolate scale tests, and check layout CSS in the browser",
+      "url": "https://github.com/adewale/bobbin/pull/7",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:11Z",
+      "classification": "dedicated test audit, merged consolidation of #8",
+      "weakness": "Worker-pool bindings skipped production semantic paths, some scale fixtures used unreplayable randomness, and a property counted curated entities against a cap that only applies to non-entities. The CSS and fixture defects from #8 were folded into this PR.",
+      "remedy": "Bound stateful AI and vector-index fakes, added present/absent controls, seeded and isolated the heavy suite, and corrected the property while keeping its failing input. Adopted the browser-test replacement from #8.",
+      "test_paths": [
+        "src/semantic-bindings.test.ts",
+        "test/fakes/workers-ai.mjs",
+        "test/fakes/vectorize.mjs",
+        "test/setup/reset-fakes.ts",
+        "test/capability-guards.test.ts",
+        "src/jobs/finalization-scale.test.ts",
+        "src/services/entity-detection.test.ts",
+        "vitest.config.ts",
+        "e2e/layout-contracts.spec.ts"
+      ],
+      "diff_evidence": [
+        "The same query yields a vector-only chunk with bindings and loses it when they are absent. Out-of-year neighbors crowd out an eligible vector unless filtering happens before topK. The separate guard inventory checks referenced files and binding names; the functional tests exercise runtime behavior.",
+        "The scale fixture replaces Math.random and a random sort comparator with seed 0x5eed and Fisher–Yates. A serial workers-slow project runs it at default timeouts.",
+        "The old maxTopics assertion counted all topics. The new property counts non-entities, pins the original failing input as a fast-check example, and separately expects five keywords plus OpenAI and Anthropic. A distinct punctuation-tokenization regression was fixed in production.",
+        "All three #8 commits appear in this PR’s commit list. The final patches of all five #8 files match byte for byte, so the browser work represents one intervention."
+      ],
+      "transferable_rule": "Choose a positive case that can pass only through the optional capability and a negative case with it absent. Preserve a reduced counterexample while checking the property against the current product contract. Seed load fixtures to reproduce data-dependent failures.",
+      "outcome": "Merged. The GitHub job succeeded for serial scale tests, browser installation, seeding and E2E. The fakes model local behavior and the guard inventory checks references. #9 later added an actual D1 write-dispatch budget to the timing-based scale test.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/7/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/38057133464/job/114227800089"
+    },
+    {
+      "number": 8,
+      "title": "Test audit: check layout CSS in the browser and make E2E prove the fixture loaded",
+      "url": "https://github.com/adewale/bobbin/pull/8",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "classification": "dedicated test audit, closed after folding into #7",
+      "weakness": "Eighteen CSS source tests matched declaration order, tokens and selectors while overlooking overrides and phone rendering. Layout and smoke tests could pass on data-backed routes serving an empty archive or a zero-result search with HTTP 200.",
+      "remedy": "Deleted the CSS-source assertions and replaced them with 20 browser tests of geometry and computed style. Added data-backed landmarks, nonzero results and element-existence preconditions to existing E2E checks.",
+      "test_paths": [
+        "src/routes/real-data.test.ts",
+        "e2e/layout-contracts.spec.ts",
+        "e2e/layout-grid.spec.ts",
+        "e2e/smoke.spec.ts",
+        "playwright.config.ts"
+      ],
+      "diff_evidence": [
+        "The 110-line deleted suite read main.css and matched exact selector/declaration strings. The replacement measures rail.left >= body.right on desktop and phoneRail.top >= phoneBody.bottom on narrow screens, and checks computed styles on rendered elements.",
+        "The mobile table of contents must have count 1 before toBeHidden(). Data-backed pages require visible landmarks such as .latest-episode-panel and .episode-chunks. Search requires a positive result count and a visible .chunk-card.",
+        "The PR records paired controls: two harmless refactors caused two old false positives and zero new ones. Old/new suites caught 5/12 and 11/12 planted visual faults. On migrated but unseeded D1, 29/38 old checks passed versus 7/38 new checks, all seven on static pages. These experiments were author-reported."
+      ],
+      "transferable_rule": "Before retiring an implementation-coupled test, compare its replacement on a real defect, a harmless refactor, and an empty or missing fixture. Assert that an element exists before asserting hidden state when a missing element would also pass.",
+      "outcome": "Closed unmerged as a standalone PR. Its three commits and five final patches landed through merged #7. GitHub records a successful head-job browser installation and seeded E2E despite the body’s earlier Actions caveat. The mutation harness was uncommitted, and the replacement missed the help-tip stacking-order fault.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/8/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/37089285102/job/111105964728"
+    },
+    {
+      "number": 9,
+      "title": "Fix D1 batching and complete the Cloudflare tooling upgrade",
+      "url": "https://github.com/adewale/bobbin/pull/9",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-13T14:38:02Z",
+      "classification": "embedded test-quality repair in a tooling and production fix",
+      "weakness": "An existing test named for avoiding per-topic writes depended on elapsed time. Fast or slow machines could mask or mimic excess database work. The toolchain upgrade also removed the API that supplied the test pool’s remote-service fakes.",
+      "remedy": "Counted actual D1 write dispatches in the existing scale scenario, kept its data and elapsed limit, used stateful worker-service fakes with awaited cleanup, and seeded CI with the browser server’s local configuration.",
+      "test_paths": [
+        "src/jobs/finalization-scale.test.ts",
+        "src/jobs/pipeline-idf.test.ts",
+        "src/services/word-stats.test.ts",
+        "test/fakes/workers-ai.mjs",
+        "test/fakes/vectorize.mjs",
+        "test/setup/reset-fakes.ts",
+        "vitest.config.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "The scale test wraps prepared statement.run() and db.batch(), calls the real D1, and caps writes at 60 for its 200-chunk fixture. The 10-second assertion remains.",
+        "The batch helper regression counts handles prepared before each write, checks batches of [100, 50] and queries 150 persisted rows. The fakes switch to WorkerEntrypoint service bindings and retain state across RPC calls. CI seeds via wrangler.e2e.jsonc."
+      ],
+      "transferable_rule": "For an algorithmic database budget, count the operation the implementation can multiply and verify the persisted result. Treat timing as a separate observation.",
+      "outcome": "Merged. The head job’s Workers, serial scale, Node, fixture seed and browser steps passed. The added budget counts write dispatches and does not measure reads, billed cost or provider performance.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/9/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/38409667909/job/115338341701"
+    },
+    {
+      "number": 10,
+      "title": "Make queue completion terminal and LLM publication retry-safe",
+      "url": "https://github.com/adewale/bobbin/pull/10",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-13T13:16:44Z",
+      "classification": "embedded test-quality repair following the #6 review",
+      "weakness": "The existing LLM persistence contract covered a successful publish and read. Queue tests handled sequential duplicates. Neither checked preservation of user-visible publication after an interrupted replacement or competing completion.",
+      "remedy": "Extended the existing persistence test with rollback and replay checks. Added deterministic database interleavings and failure injection to observe stored output through the handler under the narrower retry-safe publication contract.",
+      "test_paths": [
+        "src/services/llm-ingest.test.ts",
+        "src/jobs/queue-handler.test.ts"
+      ],
+      "diff_evidence": [
+        "The existing persistence test passes an invalid evidence foreign key, checks the old boost remains, publishes the replacement twice and queries resulting run, candidate and evidence rows.",
+        "A SQLite trigger aborts episode-topic inserts. The handler test checks the old links survive, removes the failure, then checks two replays against the topic IDs for all chunks, including an unprocessed sibling. Separate tests arrange a completion immediately before UPSERT and a late failure after completion."
+      ],
+      "transferable_rule": "For replace-and-retry behavior, inject failure after previous state exists, inspect the actual durable result, and replay the same request twice. Make the contested ordering deterministic.",
+      "outcome": "Merged as the narrower successor to #6. The GitHub head job passed. These tests cover stored publication and terminal completion. The PR explicitly permits overlapping provider calls. The four baseline failures were reported by the author.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/10/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/37952755943/job/113895491619"
+    },
+    {
+      "number": 11,
+      "title": "Bump the enrichment version to 7 to re-enrich topics fused by the old tokenizer",
+      "url": "https://github.com/adewale/bobbin/pull/11",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "classification": "embedded test-quality repair in an open version bump",
+      "weakness": "The existing drain assertion evaluated enrichment_version < 5 even though version 6 was current and 7 was proposed. A version-5 or version-6 row could escape the assertion.",
+      "remedy": "Bound the current version into the existing backlog assertion and added an old-data scenario that follows a fused v6 topic from selection to re-enrichment, link cleanup and final deletion.",
+      "test_paths": [
+        "src/jobs/finalization.test.ts",
+        "src/jobs/enrichment-versioning.test.ts"
+      ],
+      "diff_evidence": [
+        "The existing SQL count changes from enrichment_version < 5 to enrichment_version < ? bound to CURRENT_ENRICHMENT_VERSION.",
+        "The separate migration scenario deliberately seeds version 6 with a known bad topic and existing links/audit rows. It checks version, persisted references and final orphan deletion; the historical value is intentional in that fixture."
+      ],
+      "transferable_rule": "Read the current contract from its production source in ongoing assertions. Give historical fixtures literal versions when the purpose is to reproduce data written by that release.",
+      "outcome": "Open and unmerged at the audit snapshot. GitHub reports the full head job passed. The two mutation controls and production prevalence estimates appear in the description as local experiments.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/11/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/38295035226/job/114963954272"
+    },
+    {
+      "number": 12,
+      "title": "ci: reduce fixture setup and use supported browser runners",
+      "url": "https://github.com/adewale/bobbin/pull/12",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-02T21:47:23Z",
+      "classification": "dedicated test-infrastructure repair",
+      "weakness": "The fixture spawned a Wrangler CLI process for every query or write group. The moving Ubuntu runner no longer supported the project’s locked Playwright release and blocked the browser tier.",
+      "remedy": "Reused one local D1 runtime with explicit cleanup, pinned the runner to Ubuntu 24.04, and canceled superseded PR validation.",
+      "test_paths": [
+        "scripts/seed-episode-rail-demo.mjs",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "The seed changes from execFileSync('npx', ['wrangler', 'd1', 'execute', ...]) per call to one getPlatformProxy({ remoteBindings: false }), db.prepare/db.batch and await dispose() in finally. The episode, chunk and relationship inserts remain in the seed.",
+        "CI replaces ubuntu-latest with ubuntu-24.04. GitHub job 125555476171 failed specifically at Install Playwright browsers after all three test tiers succeeded. The head job passed browser installation, seed and E2E."
+      ],
+      "transferable_rule": "Amortize fixture setup while comparing the seeded data across the change. Pair a locked browser toolchain with a supported runner and verify the browser tier actually executes.",
+      "outcome": "Merged. The previous failing and final passing hosted jobs are linked. The reported local seed reduction from 127.23 s to 2.85 s and semantic fixture comparison were author measurements.",
+      "diff_url": "https://github.com/adewale/bobbin/pull/12/files",
+      "ci_url": "https://github.com/adewale/bobbin/actions/runs/41527532614/job/125559007821",
+      "earlier_ci_url": "https://github.com/adewale/bobbin/actions/runs/41526500031/job/125555476171"
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        3
+      ],
+      "reason": "CSS-only interface polish and license metadata, respectively."
+    },
+    {
+      "numbers": [
+        2
+      ],
+      "reason": "New period and summary tests cover newly added behavior. Existing UI assertions track changed components and copy. The section-scoped glyph assertion accompanies a new visual feature."
+    },
+    {
+      "numbers": [
+        5,
+        14
+      ],
+      "reason": "Hono dependency and Actions pin bumps, respectively. Changed files contain version changes, with existing test execution reported as validation."
+    },
+    {
+      "numbers": [
+        13
+      ],
+      "reason": "Adds a workflow security-policy gate for action SHA pinning and Dependabot configuration. The pre-existing application tests and their CI validation behavior were outside the PR."
+    }
+  ],
+  "limitations": [
+    "#7 and #8 share one intervention. #6 is a related, superseded testing approach with an explicitly audited gap. #10 is its narrower successor. The audit does not treat every new regression test in the production changes as an independent test-quality repair.",
+    "Findings are historical diffs and GitHub job outcomes. Author-run timings, planted-fault counts and baseline red runs were not independently replayed. GitHub omitted the generated package-lock.json patch in #9; its full file list and relevant code, config and testing patches were available."
+  ]
+}

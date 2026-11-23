@@ -1,0 +1,11 @@
+{
+  "repository": "adewale/amp-by-example",
+  "total_prs": 0,
+  "pages_checked": 1,
+  "source": "https://api.github.com/repos/adewale/amp-by-example/pulls?state=all&per_page=100&page=1",
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": [
+    "The repository's all-state pull-request collection returned an empty first page. Upstream pull requests and commit-only changes are outside this review."
+  ]
+}

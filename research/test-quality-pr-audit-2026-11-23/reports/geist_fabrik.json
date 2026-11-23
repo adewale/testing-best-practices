@@ -1,0 +1,1151 @@
+{
+  "repository": "adewale/geist_fabrik",
+  "total_prs": 100,
+  "pages_checked": {
+    "pulls_all_state_rest": {
+      "pages": [
+        1,
+        2
+      ],
+      "items": [
+        100,
+        0
+      ],
+      "per_page": 100,
+      "source": "https://api.github.com/repos/adewale/geist_fabrik/pulls?state=all&per_page=100&page=1"
+    },
+    "changed_files": {
+      "graphql_inventory": "4 pages of 25 PRs with authoritative changedFiles totals",
+      "rest_file_pages": 112,
+      "total_file_changes": 2433,
+      "prs_with_multiple_file_pages": {
+        "64": 123,
+        "80": 202,
+        "84": 111,
+        "92": 308,
+        "97": 502
+      },
+      "verified": "Every REST file inventory matched its GraphQL changedFiles total."
+    }
+  },
+  "state_counts": {
+    "merged": 97,
+    "closed_unmerged": 1,
+    "open": 2
+  },
+  "screening": {
+    "date": "2026-11-23",
+    "method": "Screened all 100 titles, bodies and file inventories, including test changes in feature/release PRs, collection changes and test-methodology documents. Read candidate file patches, checked commit histories where the net diff or description was ambiguous, queried final-head check rollups for all PRs and inspected selected historical job logs. #78 is a confirmed issue, not a missing PR.",
+    "match_counts": {
+      "all": 42,
+      "merged": 40,
+      "closed_unmerged": 1,
+      "open": 1
+    },
+    "scope_counts": {
+      "targeted test or harness repair": 14,
+      "audit and methodology": 3,
+      "embedded behavioral or harness repair": 9,
+      "retrospective coverage or measurement": 5,
+      "suite or explicit test-quality audit": 11
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 4,
+      "title": "Claude/review open prs 011 cuke rf n xyjkr p tnygj2 jv",
+      "url": "https://github.com/adewale/geist_fabrik/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "test-harness repair",
+      "weakness": "Unit embedding tests loaded a model and could hang on downloads. Real behavior and fast structural checks shared a suite.",
+      "remedy": "Inject deterministic model fixtures into unit tests and move semantic behavior into timeout-bounded integration tests.",
+      "test_paths": [
+        "tests/unit/test_embeddings.py",
+        "tests/unit/conftest.py",
+        "tests/integration/test_embeddings_integration.py",
+        "tests/conftest.py"
+      ],
+      "diff_evidence": "Replaces model-backed unit fixtures, sets five-second unit timeouts and adds a 60-second real-model test comparing AI notes with cooking notes. The root pytest_configure nevertheless unconditionally installs its fake module.",
+      "transferable_rule": "Separate expensive dependency behavior from fast caller checks and assert the real lane actually reaches the dependency.",
+      "outcome": "Merged. #8 repaired the global hook, so the split in this PR alone did not deliver real-model validation.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/4/files"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Claude/review open prs 011 cuke rf n xyjkr p tnygj2 jv",
+      "url": "https://github.com/adewale/geist_fabrik/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit suite audit and partial implementation",
+      "weakness": "The added audit identified duplicated sample_notes fixtures, missing integration markers and no coverage measurement. The accompanying improvement plan also flagged the acceptance runner’s cost.",
+      "remedy": "Document the shortcomings and candidate fixes, add an example-geist integration suite and a local validation entry point.",
+      "test_paths": [
+        "docs/TEST_AUDIT.md",
+        "docs/TEST_IMPROVEMENTS.md",
+        "tests/integration/test_example_geists.py",
+        "scripts/validate.sh"
+      ],
+      "diff_evidence": "The audit and improvement plan were added as separate documents. The new integration tests verify list type and properties inside loops. validate.sh runs separate unit and integration commands.",
+      "transferable_rule": "Distinguish a written audit proposal from a landed check, and challenge positive interaction tests with empty output.",
+      "outcome": "Merged. The reports praise stub fidelity without comparing it with production. The loops survive empty results and become a documented target of #92. Proposed coverage and shared-fixture changes were not all in this PR.",
+      "scope": "audit and methodology",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/5/files"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Fix: Only use SentenceTransformer stub for unit tests, not integratio…",
+      "url": "https://github.com/adewale/geist_fabrik/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "direct fixture repair",
+      "weakness": "The global SentenceTransformer stub was injected even into tests labeled real, producing hash-based semantic scores.",
+      "remedy": "Avoid installing the stub for test invocations that could run the real-model lane.",
+      "test_paths": [
+        "tests/conftest.py"
+      ],
+      "diff_evidence": "pytest_configure reads markexpr and returns unless it contains 'not slow'. The previous hook injected the stub unconditionally.",
+      "transferable_rule": "Prove which implementation a fidelity test uses. Keep model selection independent of incidental command spelling.",
+      "outcome": "Merged. The substring-based solution reappears as a concrete weakness in #70 and is replaced with marker-driven constructor injection in #84.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/8/files"
+      ]
+    },
+    {
+      "number": 19,
+      "title": "fix: Resolve wiki-link targets to notes and fix double-bracketing in …",
+      "url": "https://github.com/adewale/geist_fabrik/pull/19",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded behavioral test repair",
+      "weakness": "A hub text check accepted 'Hubs: ' as a valid result even when fixture notes linked to a real hub. Representation-only checks could miss empty link resolution.",
+      "remedy": "Add a known-answer hub scenario with title-based links, nonempty Note objects and named expected results.",
+      "test_paths": [
+        "tests/unit/test_tracery.py",
+        "tests/unit/test_vault_context.py"
+      ],
+      "diff_evidence": "test_hubs_returns_actual_notes_not_empty requires len(hubs)>0 and 'Hub Note' among titles. A separate fixture requires both 'Central Hub' and 'Another Note'. The older general Tracery check still explicitly accepts 'Hubs: '.",
+      "transferable_rule": "Plant a known link target and assert its resolved identity so an empty traversal cannot satisfy the positive case.",
+      "outcome": "Merged. The new checks cover fixed vault fixtures. The broad text-level smoke remains permissive.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/19/files"
+      ]
+    },
+    {
+      "number": 28,
+      "title": "Claude/codebase audit 011 cuml yzc5 gdj vpo en d3161",
+      "url": "https://github.com/adewale/geist_fabrik/pull/28",
+      "state": "closed",
+      "merged": true,
+      "classification": "audit recommendations and embedded test repair",
+      "weakness": "The technical audit called out missing filtering properties, scale and end-to-end invoke checks. Existing invalid-module assertions could pass for any reason that yielded empty metadata.",
+      "remedy": "Record the audit recommendations and require the expected module failure identity in the existing metadata tests.",
+      "test_paths": [
+        "docs/audits/CODEBASE_AUDIT_TECHNICAL.md",
+        "tests/unit/test_metadata_system.py",
+        "tests/unit/test_tracery.py"
+      ],
+      "diff_evidence": "Tests now unpack failed_modules, require [] for success, 'bad_return' for an invalid result and 'runtime_error' for a raised exception. The Tracery test checks the named KeyError.",
+      "transferable_rule": "If processing can yield an empty result on both valid and failed paths, also assert the observed failure cause.",
+      "outcome": "Merged. The broader property, stress and invoke tests were recommendations in the audit, not implementations shown by these diffs.",
+      "scope": "audit and methodology",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/28/files"
+      ]
+    },
+    {
+      "number": 32,
+      "title": "refactor: Remove examples/geists directory and update all references",
+      "url": "https://github.com/adewale/geist_fabrik/pull/32",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded fixture repair",
+      "weakness": "The integrated suite loaded example copies rather than the actively bundled plugins. Removing the examples broke the suite.",
+      "remedy": "Repoint the integration executor and YAML loads at the packaged default sources.",
+      "test_paths": [
+        "tests/integration/test_example_geists.py",
+        "benchmarks/session_benchmark.py"
+      ],
+      "diff_evidence": "The executor fixture changes examples/geists/code to src/geistfabrik/default_geists/code. Tracery paths and the loadable count are updated. Commit 7f8f21024 explicitly identifies previously broken integration cases.",
+      "transferable_rule": "When fixtures mirror production assets, test the shipped source and centralize its lookup.",
+      "outcome": "Merged. #33 shows two unit modules still referenced the deleted path.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/32/files",
+        "https://github.com/adewale/geist_fabrik/commit/7f8f21024"
+      ]
+    },
+    {
+      "number": 33,
+      "title": "Investigate GitHub Actions Build Failure",
+      "url": "https://github.com/adewale/geist_fabrik/pull/33",
+      "state": "closed",
+      "merged": true,
+      "classification": "direct test repair",
+      "weakness": "Two suites still read example YAML files removed by #32, failing before their assertions.",
+      "remedy": "Change GEISTS_DIR and the per-test transformation YAML references to the shipped directory.",
+      "test_paths": [
+        "tests/unit/test_tracery_geists.py",
+        "tests/unit/test_transformation_suggester.py"
+      ],
+      "diff_evidence": "The former examples/geists/tracery root is replaced with src/geistfabrik/default_geists/tracery, including eleven repeated transformation_suggester.yaml paths.",
+      "transferable_rule": "Run all consumers after relocating fixture assets and use a shared path for repeated setup.",
+      "outcome": "Merged. The description attributes 51 failures to the old paths. No historical head check was retained in the queried rollup.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/33/files"
+      ]
+    },
+    {
+      "number": 38,
+      "title": "Claude/implement tracery vault spec 011 cu sk6 jtin pp6j83fmk ja k",
+      "url": "https://github.com/adewale/geist_fabrik/pull/38",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded oracle repair",
+      "weakness": "One Tracery test required two random expansions to yield distinct notes, although independent draws may legitimately repeat.",
+      "remedy": "Verify the prepopulated candidate pool and use a seeded behavioral example to exercise distinct hub outputs.",
+      "test_paths": [
+        "tests/unit/test_tracery.py",
+        "tests/unit/test_tracery_geists.py"
+      ],
+      "diff_evidence": "Replaces unconditional suggestion1_notes != suggestion2_notes with a populated three-note grammar and absence of unresolved $vault. A separate five-hub fixture checks two referenced hubs under a fixed seed.",
+      "transferable_rule": "Test a sampling contract with controlled candidates and randomness. Do not require independent random draws to differ unconditionally.",
+      "outcome": "Merged. Some checks bind to grammar internals or a single seed, so the example does not establish diversity for every invocation.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/38/files",
+        "https://github.com/adewale/geist_fabrik/commit/21d2132e8"
+      ]
+    },
+    {
+      "number": 39,
+      "title": "Claude/implement tracery vault spec 011 cu sk6 jtin pp6j83fmk ja k",
+      "url": "https://github.com/adewale/geist_fabrik/pull/39",
+      "state": "closed",
+      "merged": true,
+      "classification": "retrospective behavioral coverage",
+      "weakness": "A sample can legitimately pick the same orphan repeatedly, so checking sample diversity alone cannot establish that orphan detection classified the correct notes.",
+      "remedy": "Independently assert the full eligible set with positive and negative graph examples before inspecting what a suggestion references.",
+      "test_paths": [
+        "tests/unit/test_vault_context.py",
+        "tests/unit/test_tracery_geists.py"
+      ],
+      "diff_evidence": "Commit 9181d54e3 adds a vault with two isolated notes plus linked nodes. The test requires exactly {'orphan_one.md','orphan_two.md'} and excludes four connected notes. A consumer fixture checks the eligible set and emitted references separately.",
+      "transferable_rule": "For probabilistic selection, prove eligibility independently of the particular draw.",
+      "outcome": "Merged. The PR also changes orphan_connector's count from two to one. Coverage of that new count is ordinary feature coverage.",
+      "scope": "retrospective coverage or measurement",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/39/files",
+        "https://github.com/adewale/geist_fabrik/commit/9181d54e3d"
+      ]
+    },
+    {
+      "number": 41,
+      "title": "Removing unused constants and added tests for custom config",
+      "url": "https://github.com/adewale/geist_fabrik/pull/41",
+      "state": "closed",
+      "merged": true,
+      "classification": "retrospective coverage of existing behavior",
+      "weakness": "Existing SuggestionFilter custom settings lacked dedicated tests. No filtering implementation was introduced by this change.",
+      "remedy": "Exercise defaults, custom strategy ordering, disabling strategies and quality settings.",
+      "test_paths": [
+        "tests/unit/test_filtering.py"
+      ],
+      "diff_evidence": "Adds six tests around existing SuggestionFilter. A quality window of 100–200 is exercised with 9-, 150- and 300-character suggestions; filter_all must retain only the 150-character entry. Other tests inspect config keys or ordering.",
+      "transferable_rule": "For existing configuration knobs, include a caller-visible result that changes when the knob changes.",
+      "outcome": "Merged. This is a coverage backfill. Several cases inspect config storage rather than proving a filtering decision.",
+      "scope": "retrospective coverage or measurement",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/41/files"
+      ]
+    },
+    {
+      "number": 43,
+      "title": "refactor: Optimize date-collection and eliminate vault duplication",
+      "url": "https://github.com/adewale/geist_fabrik/pull/43",
+      "state": "closed",
+      "merged": true,
+      "classification": "retrospective integration coverage",
+      "weakness": "Date-collection had parser/unit coverage, while real sync, updates and mode transitions needed integration checks during a vault refactor.",
+      "remedy": "Add real on-disk journal fixtures and test sync, modification, deletion, queries and journal-to-ordinary transitions.",
+      "test_paths": [
+        "tests/integration/test_date_collection_integration.py",
+        "tests/integration/test_date_collection_edge_cases.py"
+      ],
+      "diff_evidence": "New tests sync a journal with three entries, verify exact virtual paths, then change or delete sources. Edge cases include H1/H3 nonmatches, whitespace and duplicate dates. #42 had introduced tests/unit/test_date_collection.py.",
+      "transferable_rule": "For a persistence feature, exercise the update and deletion lifecycle across real storage boundaries.",
+      "outcome": "Merged. This is an integration backfill bundled with a refactor and new configuration. #84 later repaired sleep-based timestamp assumptions in these tests.",
+      "scope": "retrospective coverage or measurement",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/43/files"
+      ]
+    },
+    {
+      "number": 44,
+      "title": "0.9.0",
+      "url": "https://github.com/adewale/geist_fabrik/pull/44",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded test audit and repair",
+      "weakness": "Skipped parity tests hid an L2-versus-cosine regression when the optional SQLite extension was unavailable.",
+      "remedy": "Probe extension loadability, fail required Linux CI when unavailable, and add independent known-vector cases across both backends.",
+      "test_paths": [
+        "tests/unit/test_vector_search_backends.py",
+        ".github/workflows/test.yml"
+      ],
+      "diff_evidence": "CI tests load sqlite_vec, execute SELECT vec_version(), and check orthogonal, identical and opposite vectors against known similarities. Commit 784f06c02 documents the skipped original tests.",
+      "transferable_rule": "Required optional-backend lanes must prove the dependency loaded. Use analytical known answers as well as backend parity.",
+      "outcome": "Merged. #83 later showed that preloading the extension in a fixture still masked production initialization problems.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/44/files",
+        "https://github.com/adewale/geist_fabrik/commit/784f06c02"
+      ]
+    },
+    {
+      "number": 47,
+      "title": "0.9.0- added support for comprehensive stats command",
+      "url": "https://github.com/adewale/geist_fabrik/pull/47",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded verification-method retrospective",
+      "weakness": "The stats implementation audit found missing cache fields, SQL/type mismatches and completion claims without executing relevant paths.",
+      "remedy": "Extend the maintained Python audit heuristics with real-data checks of SQLite storage types, warm-cache behavior, output formats and command execution.",
+      "test_paths": [
+        "specs/python_audit_heuristics.md",
+        "tests/unit/test_stats.py"
+      ],
+      "diff_evidence": "Commit 020e85c5c4 adds the audit method and NumPy/SQLite postmortem. The new stats fixture still uses three notes and optional-metric assertions such as 'key in metrics or metrics.get(key) is None', which also accept a missing key.",
+      "transferable_rule": "Trace time-of-write, storage type and warm readback on representative data. Count documented recommendations separately from executable checks.",
+      "outcome": "Merged. The guidance was a real retrospective. New stats tests were primarily feature coverage and did not force clustering; #50 addressed that specific gap.",
+      "scope": "audit and methodology",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/47/files",
+        "https://github.com/adewale/geist_fabrik/commit/020e85c5c4"
+      ]
+    },
+    {
+      "number": 50,
+      "title": "fix: Handle numpy types in JSON serialization + enable branch coverage",
+      "url": "https://github.com/adewale/geist_fabrik/pull/50",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded fixture and coverage repair",
+      "weakness": "Three-note fixtures could never reach clustering with min_cluster_size=5, hiding NumPy keys that failed serialization.",
+      "remedy": "Seed 15 embeddings across clusters, exercise cache retrieval, add direct JSON format tests, and enable branch measurement.",
+      "test_paths": [
+        "tests/unit/test_stats.py",
+        "pyproject.toml"
+      ],
+      "diff_evidence": "The cache case generates 15 notes and re-reads metrics. Direct tests supply int64 keys, nested scalar types and arrays, then parse the serialized JSON. The cluster assertions are guarded by n_clusters>0.",
+      "transferable_rule": "Cross a real branch threshold and include a direct known failing value. Require the expected intermediate state in a positive case.",
+      "outcome": "Merged. The fixture increases reachability but conditional cluster assertions can still pass without clustering. The TOML change enables measurement and only documents a possible fail-under threshold.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/50/files"
+      ]
+    },
+    {
+      "number": 53,
+      "title": "feat: Performance optimizations, helper functions, and comprehensive testing",
+      "url": "https://github.com/adewale/geist_fabrik/pull/53",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded verification-method improvement",
+      "weakness": "Session caching and query-cost assumptions had no durable work-count checks, and earlier optimization estimates lacked a matched measurement.",
+      "remedy": "Add counted database/cache work, migration checks and measured profiling for the optimization.",
+      "test_paths": [
+        "tests/unit/test_performance_regression.py",
+        "tests/unit/test_sqlite_persistence.py",
+        "scripts/profile_congruence_mirror.py"
+      ],
+      "diff_evidence": "Repeated vault_context.notes() calls must keep all_notes.call_count at one. Migration cases check absence/presence of idx_links_target_source across a v5-to-v6 migration. Other tests also pin returned list identity.",
+      "transferable_rule": "Verify the expensive work avoided and the result preserved. Object identity can accidentally become a public contract.",
+      "outcome": "Merged. This is retrospective performance verification within optimization work. #99 later removes an identity-based assumption from a related graph-cache test.",
+      "scope": "retrospective coverage or measurement",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/53/files"
+      ]
+    },
+    {
+      "number": 57,
+      "title": "feat: Add Obsidian deeplink support for virtual notes",
+      "url": "https://github.com/adewale/geist_fabrik/pull/57",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded round-trip coverage",
+      "weakness": "Existing split-stage checks could succeed while reconstruction lost heading form, subheadings or entry order.",
+      "remedy": "Add a split-to-virtual-notes-to-reconstructed-journal contract alongside the new deeplink tests.",
+      "test_paths": [
+        "tests/integration/test_date_collection_integration.py"
+      ],
+      "diff_evidence": "test_roundtrip_journal_to_virtual_notes_and_back asserts original date-heading spellings, text from all three entries, an H3 heading and chronological positions in reconstructed_body.",
+      "transferable_rule": "Use representative round trips to catch information lost between individually tested stages.",
+      "outcome": "Merged. The test constructs the reconstructed text and checks selected content. It is not a byte-for-byte export/import guarantee.",
+      "scope": "retrospective coverage or measurement",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/57/files"
+      ]
+    },
+    {
+      "number": 61,
+      "title": "feat: Add creation_burst and burst_evolution temporal geists",
+      "url": "https://github.com/adewale/geist_fabrik/pull/61",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded fixture isolation repair",
+      "weakness": "The shared FunctionRegistry leaked registrations across sequential tests. Code and Tracery counts were duplicated as fixed numbers in a consistency check.",
+      "remedy": "Clear the global registry around affected tests and remove duplicated numeric expectations.",
+      "test_paths": [
+        "tests/unit/test_creation_burst.py",
+        "tests/unit/test_burst_evolution.py",
+        "tests/unit/test_geist_count_consistency.py"
+      ],
+      "diff_evidence": "Autouse fixtures clear _GLOBAL_REGISTRY before yielding and after the test. The count test replaces ==40/9/49 with positivity and checks consistency with authoritative counts elsewhere. Commits ef89f4fc9 and 7bfabc788 isolate the changes.",
+      "transferable_rule": "Make ownership and teardown of global state explicit. Preserve an independent completeness check when deleting brittle counts.",
+      "outcome": "Merged. The fixtures were still duplicated across files until later consolidation. Positivity alone cannot certify a complete plugin inventory.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/61/files",
+        "https://github.com/adewale/geist_fabrik/commit/ef89f4fc9",
+        "https://github.com/adewale/geist_fabrik/commit/7bfabc788"
+      ]
+    },
+    {
+      "number": 62,
+      "title": "Claude/semantic neighbours links 011 c uv rd k bb h eu5 k6 aq qy f9s",
+      "url": "https://github.com/adewale/geist_fabrik/pull/62",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded assertion repair",
+      "weakness": "A semantically broken neighbor link passed because an existing positive test merely looked for '[[' anywhere in a suggestion.",
+      "remedy": "Parse every returned link, check balanced delimiters, match references to suggestion metadata, and exercise empty-vault behavior across plugins.",
+      "test_paths": [
+        "tests/integration/test_example_geists.py",
+        "tests/unit/test_tracery_geists.py",
+        "tests/unit/test_code_geists_empty_data.py",
+        "tests/unit/test_tracery_empty_data.py"
+      ],
+      "diff_evidence": "Replaces the single-bracket assertion with a regex requiring at least two links, equal opening/closing counts and equal note/link counts. A separate Tracery test asserts len(suggestions)>0. Direct plugin calls test empty-vault behavior.",
+      "transferable_rule": "Assert the structure and identity of outputs, and guard the positive case independently of checks inside loops.",
+      "outcome": "Merged. Some individual integration checks still only run inside a loop. #92 later addresses this suite-wide.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/62/files"
+      ]
+    },
+    {
+      "number": 66,
+      "title": "Claude/resolve pr 65 conflicts 011 c uzxpy qf gzjs bk6 c3c b3 t",
+      "url": "https://github.com/adewale/geist_fabrik/pull/66",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded source-level semantic gate",
+      "weakness": "Rendering links from a note title silently lost the source heading for virtual notes; ordinary-note output looked correct.",
+      "remedy": "Scan all bundled code plugins for known title-in-link constructions and direct nondeterministic sampling.",
+      "test_paths": [
+        "tests/unit/test_geist_architectural_constraints.py"
+      ],
+      "diff_evidence": "The test adds regexes for f-string, comprehension and concatenation forms that build links using .title. Another rejects direct random.sample. The same PR fixes multiple affected plugin implementations.",
+      "transferable_rule": "When a bug repeats across plugins, check the shared convention and retain a real special-case fixture for the behavior.",
+      "outcome": "Merged. This is a source-level rule with known spellings. It does not execute a plugin or prove that a link resolves; #68 supplies runtime fixtures. The type-hint style rule is incidental.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/66/files",
+        "https://github.com/adewale/geist_fabrik/commit/4f1d03cd4"
+      ]
+    },
+    {
+      "number": 68,
+      "title": "Review high-volume note creation day",
+      "url": "https://github.com/adewale/geist_fabrik/pull/68",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit fixture and test-strategy repair",
+      "weakness": "Journal fixtures originally used H1 dates instead of H2 and did not always meet the minimum sections needed to produce virtual notes. Ordinary notes hide broken heading links.",
+      "remedy": "Add reusable multi-journal fixtures and an all-plugin regression suite plus targeted creation-burst checks.",
+      "test_paths": [
+        "tests/fixtures/virtual_notes.py",
+        "tests/integration/test_virtual_notes_regression.py",
+        "tests/unit/test_creation_burst.py",
+        "tests/unit/GEIST_TESTING_TEMPLATE.md"
+      ],
+      "diff_evidence": "Commit 3fb84c25b changes the fixture to H2 headings and adds a second date entry. A unit case requires one suggestion, at least three virtual references and no duplicates. The integration loop skips exceptions or returns on no suggestions; the template recommends len(suggestions)>=0.",
+      "transferable_rule": "Assert the fixture reaches the special state, then require output before checking it. An iteration over no outputs cannot validate a fix.",
+      "outcome": "Merged. This records a mixed attempt. #80 corrected the template and #84 removed false-green skips.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/68/files",
+        "https://github.com/adewale/geist_fabrik/commit/3fb84c25b"
+      ]
+    },
+    {
+      "number": 69,
+      "title": "feat: Add web-safe validation for Claude Code for Web",
+      "url": "https://github.com/adewale/geist_fabrik/pull/69",
+      "state": "closed",
+      "merged": true,
+      "classification": "partial local-test harness repair",
+      "weakness": "Validation needed real model files or a network download, preventing fast tests on LFS-pointer-only checkouts.",
+      "remedy": "Add a local validation entry point intended to run the stub-based fast tests.",
+      "test_paths": [
+        "scripts/validate_web.sh",
+        "docs/VALIDATION_MODES.md"
+      ],
+      "diff_evidence": "The new script passes -m 'not slow' for integration, but invokes unit pytest without that selector. At the time that selector controlled whether the stub was installed.",
+      "transferable_rule": "Check the whole advertised entry point in the restricted environment, including every test command that selects its double.",
+      "outcome": "Merged as an attempted harness fix. #70 removes the duplicate script and fixes the omitted unit selection.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/69/files"
+      ]
+    },
+    {
+      "number": 70,
+      "title": "fix: Enable validation in environments without Git LFS models",
+      "url": "https://github.com/adewale/geist_fabrik/pull/70",
+      "state": "closed",
+      "merged": true,
+      "classification": "direct test-harness repair",
+      "weakness": "The local unit command omitted the marker expression that activated the stub and attempted to load tiny LFS pointers as model data.",
+      "remedy": "Add the fast selector to the canonical validation command and retire the duplicate web script.",
+      "test_paths": [
+        "scripts/validate.sh",
+        "scripts/validate_web.sh"
+      ],
+      "diff_evidence": "Changes the unit command from pytest tests/unit -v to pytest tests/unit -v -m 'not slow', while deleting the 72-line alternate script. Production embedding load also checks for pointer-size weights.",
+      "transferable_rule": "Use one test entry point and assert the active dependency mode, particularly when checkout assets may be placeholders.",
+      "outcome": "Merged. This fixed fast execution rather than verifying model fidelity. #84 later removes command-spelling dependence and #95 adds a fidelity check.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/70/files"
+      ]
+    },
+    {
+      "number": 71,
+      "title": "test: Add comprehensive unit tests for 34 remaining geists",
+      "url": "https://github.com/adewale/geist_fabrik/pull/71",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit test expansion and repair",
+      "weakness": "Most existing plugins had generic empty-data tests only. Some fixtures resembled pytest test functions, and generic shape checks could pass without proving content.",
+      "remedy": "Add dedicated fixtures and targeted behavior cases across 34 plugins, rename fixtures, and add journal-exclusion and branch cases.",
+      "test_paths": [
+        "tests/unit/test_pattern_finder.py",
+        "tests/unit/test_bridge_builder.py",
+        "tests/unit/test_temporal_drift.py",
+        "tests/unit/test_cluster_mirror.py"
+      ],
+      "diff_evidence": "The phrase fixture plants 'emergent behaviour patterns' and 'distributed consensus algorithms'. The output checks are inside if len(suggestions)>0; cluster_mirror can skip on no suggestions. Registry fixtures reset global state.",
+      "transferable_rule": "Backfill coverage for existing behavior with plantable cases, then require planted cases to produce output before checking its content.",
+      "outcome": "Merged. The sizable test-count gain was real as a file addition, but these specific conditional/skip paths are directly visible. Later suite audits repaired them.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/71/files"
+      ]
+    },
+    {
+      "number": 75,
+      "title": "Find and catalog technical debt markers",
+      "url": "https://github.com/adewale/geist_fabrik/pull/75",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded reactivation of expected failures",
+      "weakness": "Two journal-exclusion regressions were marked xfail with an untracked '#TBD' reason. Later regressions could remain accepted.",
+      "remedy": "Fix both affected plugins and remove their expected-failure markers.",
+      "test_paths": [
+        "tests/unit/test_complexity_mismatch.py",
+        "tests/unit/test_link_density_analyser.py"
+      ],
+      "diff_evidence": "The entire test-file diff is deletion of the same @pytest.mark.xfail decorator from the two existing excludes_geist_journal tests. The matching production changes exclude journal notes.",
+      "transferable_rule": "Remove expected-failure markers in the same change that restores the behavior they tracked.",
+      "outcome": "Merged. Two checks were reactivated. No head-check rollup survives for independently verifying their execution.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/75/files"
+      ]
+    },
+    {
+      "number": 76,
+      "title": "Plan Command pattern for CLI operations",
+      "url": "https://github.com/adewale/geist_fabrik/pull/76",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded test-discovery repair",
+      "weakness": "New application command module names matched pytest's test_*.py discovery convention, creating potential accidental import during broad source scans.",
+      "remedy": "Rename the two command modules to runner.py and batch_runner.py.",
+      "test_paths": [
+        "src/geistfabrik/commands/runner.py",
+        "src/geistfabrik/commands/batch_runner.py"
+      ],
+      "diff_evidence": "Commit 0937eede3 renames test_geist.py and test_all_geists.py inside the PR. The final inventory adds production runner modules defining TestCommand and TestAllCommand under the new names.",
+      "transferable_rule": "Keep production command modules outside test discovery patterns, and check collection through the supported entry point.",
+      "outcome": "Merged. This was an in-PR preventative harness repair. The commit describes potential import errors; no failing historical collection run was independently verified.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/76/files",
+        "https://github.com/adewale/geist_fabrik/commit/0937eede3"
+      ]
+    },
+    {
+      "number": 77,
+      "title": "Refactor stats module: extract metrics and formatting to dedicated modules",
+      "url": "https://github.com/adewale/geist_fabrik/pull/77",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded test-quality audit and repair",
+      "weakness": "Modifier tests finished with assert True when all 100 seeds missed the very behavior they claimed. A broad audit also identified untested modules and brittle timing checks.",
+      "remedy": "Make seed exhaustion a failure and add property-based suites for parsing, embeddings and config round trips.",
+      "test_paths": [
+        "docs/DEEP_AUDIT_REPORT.md",
+        "docs/audits/DEEP_AUDIT_2026_03_14_v2.md",
+        "tests/unit/test_transformation_suggester.py",
+        "tests/unit/test_property_parsing.py",
+        "tests/unit/test_property_embeddings.py",
+        "tests/unit/test_property_config.py"
+      ],
+      "diff_evidence": "Two terminal assert True fallbacks become explicit failures for missing capitalizeAll or chained modifiers. New tests cover round trips and scalar properties, though the original frontmatter property accepts body2==body or fm2 is None.",
+      "transferable_rule": "A bounded search that cannot find its target must fail. Independently scrutinize properties added by an audit.",
+      "outcome": "Merged. #83 later replaced weak parsing/embedding properties. The successful hosted head does not demonstrate every generated oracle could catch its intended defect.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (3 success)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/77/files"
+      ]
+    },
+    {
+      "number": 80,
+      "title": "Pre-1.0 quality pass: revive broken geists, fix the #78 timeout cliff, make spec verification actually verify",
+      "url": "https://github.com/adewale/geist_fabrik/pull/80",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit test and acceptance audit",
+      "weakness": "Green len(output)>=0 checks hid non-firing shipped geists. The acceptance checker trusted checked boxes and silently omitted malformed criteria.",
+      "remedy": "Add firing fixtures and nonempty/negative cases, fix the test-writing template, and execute parseable acceptance commands while surfacing manual cases.",
+      "test_paths": [
+        "tests/unit/GEIST_TESTING_TEMPLATE.md",
+        "tests/fixtures/helpers.py",
+        "tests/unit/test_builtin_metadata.py",
+        "tests/unit/test_claim_hypothesis_harvesters.py",
+        "scripts/check_phase_completion.py",
+        "specs/acceptance_criteria.md"
+      ],
+      "diff_evidence": "The template deletes its unconditional len>=0 sample. assert_valid_suggestions requires len>=min_count. A claim-rich vault must yield 'claimed' suggestions, while plain prose produces []. The gate removes counting a checkmark as success and fails on unparseable rows.",
+      "transferable_rule": "Separate fixture trigger, positive output and counterexample. An executable acceptance claim needs executed evidence and complete accounting of targets.",
+      "outcome": "Merged. #91, #92 and #94 show that introducing a helper and a command runner still left unused helpers, empty outputs and partial/deselected evidence.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (3 success)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/80/files"
+      ]
+    },
+    {
+      "number": 83,
+      "title": "Harden SQLite synchronization and transaction correctness",
+      "url": "https://github.com/adewale/geist_fabrik/pull/83",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit persistence and property-test audit",
+      "weakness": "Same-connection or fresh-state tests could not prove recovery, normalized vectors hid magnitude defects, and a 1,000-embedding test asserted only that a list was returned.",
+      "remedy": "Cross process/storage boundaries and compare with independent expectations; build a cheaper exact corpus that distinguishes sampling from full traversal.",
+      "test_paths": [
+        "tests/integration/test_journal_process_recovery.py",
+        "tests/integration/test_phase3b_regression.py",
+        "tests/unit/test_property_embeddings.py",
+        "tests/unit/test_property_parsing.py",
+        "tests/unit/test_property_vault_stateful.py",
+        "tests/unit/test_vector_search_backends.py"
+      ],
+      "diff_evidence": "The crash test requires a child exit code of 73, opens a separate observer and checks pending files and recovered DB state. Phase3B uses 503 notes, plants a phrase starting at index 500, asserts all paths were read and asserts the phrase surfaced. The cosine property compares non-unit vectors to a scalar math.fsum reference.",
+      "transferable_rule": "Match the observation boundary to the claim. Use an independent known answer just beyond the historical failure threshold.",
+      "outcome": "Merged. These diffs establish sensitivity to the named boundary errors. The PR's broader generated and stress-test claims were not replayed in this audit.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/83/files"
+      ]
+    },
+    {
+      "number": 84,
+      "title": "Harden runtime safety, persistence, and release artifacts",
+      "url": "https://github.com/adewale/geist_fabrik/pull/84",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit harness, skip and artifact audit",
+      "weakness": "A global embedding patch selected by command spelling hid loader/model packaging mistakes. Some tests skipped on unexpected empty outputs, missing fixtures or missing logs. Competing pytest configs changed collection.",
+      "remedy": "Select the stub at the constructor based on collected markers, consolidate pytest config, remove permissive skips, and verify the installed wheel with real offline weights.",
+      "test_paths": [
+        "tests/conftest.py",
+        "tests/unit/test_pytest_configuration.py",
+        "tests/unit/test_cluster_mirror.py",
+        "tests/integration/test_virtual_notes_regression.py",
+        "tests/artifact/test_wheel_artifact.py",
+        "scripts/installed_wheel_smoke.py",
+        "scripts/test_wheel.sh"
+      ],
+      "diff_evidence": "Removes pytest.ini, checks that pytestconfig.inipath is pyproject.toml, and replaces the no-clusters skip with designed inputs. An out-of-checkout smoke checks site-packages, rejects LFS pointer bytes, asserts a real SentenceTransformer and finite (3,384) embeddings.",
+      "transferable_rule": "Verify the distribution users install, including unconditional packaging preconditions. Make environmental skips explicit rather than swallowing behavioral failures.",
+      "outcome": "Merged. The then-current coverage threshold still combined statements and branches; #85 replaced it with a branch-only gate.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/84/files"
+      ]
+    },
+    {
+      "number": 85,
+      "title": "Harden project after cross-cutting audit",
+      "url": "https://github.com/adewale/geist_fabrik/pull/85",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit coverage, stateful and oracle audit",
+      "weakness": "Combined coverage mislabeled as branch coverage could hide untested branches. Membership-only parsing properties accepted extra/reordered output, and timed/performance checks did not necessarily measure work.",
+      "remedy": "Count actual branch destinations, strengthen generated assertions and stateful edits, and instrument SQL statements.",
+      "test_paths": [
+        "scripts/check_branch_coverage.py",
+        "tests/unit/test_branch_coverage_gate.py",
+        "tests/unit/test_property_parsing.py",
+        "tests/unit/test_property_vault_stateful.py",
+        "tests/unit/test_performance_regression.py"
+      ],
+      "diff_evidence": "The gate totals coverage.branch_stats() taken/possible destinations under src and self-tests a 40/100 counterexample. Properties compare exact sorted tags/ordered links, state-machine writes can preserve original mtime, and SQL trace checks replace estimated costs.",
+      "transferable_rule": "Measure the claimed quantity directly and compare complete observable results. Generate transitions that would defeat the old state-identity assumption.",
+      "outcome": "Merged. The reported 71.20% branch figure is PR evidence. The code and green head checks establish the gate that ran, not complete functional coverage.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/85/files"
+      ]
+    },
+    {
+      "number": 86,
+      "title": "Stabilize periodic SIGALRM cancellation test",
+      "url": "https://github.com/adewale/geist_fabrik/pull/86",
+      "state": "closed",
+      "merged": true,
+      "classification": "direct flaky-test repair",
+      "weakness": "A sleep of 90 ms did not guarantee an asynchronous alarm had arrived. A mutable counter could change after evaluating an assertion but before pytest printed it.",
+      "remedy": "Wait for the condition with a monotonic deadline and assert an immutable captured delivery flag while keeping timer-cancellation checks.",
+      "test_paths": [
+        "tests/unit/test_correctness_security.py"
+      ],
+      "diff_evidence": "The handler sets delivered=True. A loop waits until delivery or a one-second deadline under a separate two-second timeout, then snapshots delivered_in_time before asserting it.",
+      "transferable_rule": "Synchronize with the event under test and snapshot mutable asynchronous state before making assertions.",
+      "outcome": "Merged. GitHub job 103537526848 on macOS/Python 3.11 records the exact pre-fix failure, test_host_handler_can_cancel_its_periodic_alarm: assert 1 >= 1. The author's 500 repetitions were not independently replayed.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "SUCCESS (5 success)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/86/files",
+        "https://github.com/adewale/geist_fabrik/actions/runs/34687715575/job/103537526848"
+      ]
+    },
+    {
+      "number": 87,
+      "title": "Harden replay diagnostics and release contracts",
+      "url": "https://github.com/adewale/geist_fabrik/pull/87",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded temporal-oracle and release-verification repair",
+      "weakness": "Temporal tests accepted an empty list or inferred meaning from calendar dimensions. A package could also be tested then rebuilt for publication.",
+      "remedy": "Force positive semantic-drift fixtures and separate calendar-only negative controls. Promote tested artefacts through the tag workflow.",
+      "test_paths": [
+        "tests/unit/test_burst_evolution.py",
+        "tests/unit/test_session_drift.py",
+        "tests/unit/test_hermeneutic_instability.py",
+        "tests/unit/test_temporal_clustering_contracts.py",
+        "tests/unit/test_release_hardening_contracts.py",
+        ".github/workflows/test.yml"
+      ],
+      "diff_evidence": "Burst checks change from list/type and <=1 with a loop to exactly one suggestion. Session-drift tests plant different semantic snapshots and assert suggestions before comparing text. Calendar-only change must have zero semantic direction. The initial release workflow contract checks literal YAML text.",
+      "transferable_rule": "Use contrasted fixtures to distinguish causal signals, and verify promotion by observable artifact contents.",
+      "outcome": "Merged. #89 and #90 repaired two actual tag failures missed by the release contract. #94 replaced its literal-line checks.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/87/files"
+      ]
+    },
+    {
+      "number": 89,
+      "title": "Fix release artifact retention",
+      "url": "https://github.com/adewale/geist_fabrik/pull/89",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded incomplete release-test repair",
+      "weakness": "A hidden artifact path could pass the existing release test while the uploader silently matched no smoke-tested packages.",
+      "remedy": "Move smoke output to a visible directory and add regression assertions against the former hidden path.",
+      "test_paths": [
+        "tests/unit/test_release_hardening_contracts.py",
+        ".github/workflows/test.yml"
+      ],
+      "diff_evidence": "Adds three literal workflow assertions for the visible work directory, upload glob and absence of '.package-smoke'. The prior tag run 34784129143 independently reports failure.",
+      "transferable_rule": "Use the actual artifact staging and selection behavior as the release oracle. Checking a path literal only detects that one spelling.",
+      "outcome": "Merged. GitHub job 103796391157 confirms the hidden glob matched no files. The next tag run, 34784664265, also failed because the visible glob retained nested directories. #90 and #94 followed.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/89/files",
+        "https://github.com/adewale/geist_fabrik/actions/runs/34784129143/job/103796391157",
+        "https://github.com/adewale/geist_fabrik/actions/runs/34784664265/job/103798416838"
+      ]
+    },
+    {
+      "number": 90,
+      "title": "Flatten retained release artifacts",
+      "url": "https://github.com/adewale/geist_fabrik/pull/90",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded incomplete release-test repair",
+      "weakness": "Release artifacts retained the nested run.<id>/dist layout. The new visible-path assertions from #89 accepted that invalid archive.",
+      "remedy": "Stage the smoked wheel and source distribution in a flat directory and update the workflow regression check.",
+      "test_paths": [
+        "tests/unit/test_release_hardening_contracts.py",
+        ".github/workflows/test.yml"
+      ],
+      "diff_evidence": "Adds two cp commands into release-dist/ and switches the upload glob to release-dist/*. The regression insists those three strings appear in YAML; it does not inspect the contents produced by the commands.",
+      "transferable_rule": "Verify archive layout and byte identity by replaying the chain, including decoys and exact release inputs.",
+      "outcome": "Merged. GitHub job 103798416838 logs 'expected exactly one wheel in dist, found 0' before this change. #94 replaces the literal regression with a modeled upload/download dry run.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/90/files",
+        "https://github.com/adewale/geist_fabrik/actions/runs/34784664265/job/103798416838"
+      ]
+    },
+    {
+      "number": 91,
+      "title": "Enforce non-empty geist oracles, schedule unscheduled tiers, lint and dry-run workflows",
+      "url": "https://github.com/adewale/geist_fabrik/pull/91",
+      "state": "closed",
+      "merged": false,
+      "classification": "closed-unmerged explicit test audit",
+      "weakness": "Loop-only checks and zip comparisons admitted two empty lists, release checks asserted workflow strings and a determinism test was called idempotence.",
+      "remedy": "Attempt an AST loop-guard ratchet, add a real release dry run and a reparse property, and make determinism require nonempty output.",
+      "test_paths": [
+        "tests/unit/test_suggestion_loop_guards.py",
+        "tests/integration/test_example_geists.py",
+        "tests/unit/test_release_workflow_contract.py",
+        "tests/unit/test_property_parsing.py",
+        "scripts/check_phase_completion.py"
+      ],
+      "diff_evidence": "The final diff adds the 439-line AST meta-test, plus guard-detection examples; it replaces len/zip equality with assert suggestions1 followed by full text-list equality. It also adds the workflow dry run and parser round trip. The current head and commit 5ec9b9d3 show +6/−9 in the example integration file, not the wholesale earlier rewrite described in the PR body.",
+      "transferable_rule": "Prove a ratchet rejects known false greens, check its false positives against current code, and distinguish an obsolete proposal from what actually landed.",
+      "outcome": "Closed unmerged despite successful head checks. #92 supplied broader firing/hygiene gates. #94 carried forward the remaining fixes and excluded this meta-test after reporting 13 flags, mostly false positives.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/91/files",
+        "https://github.com/adewale/geist_fabrik/commit/5ec9b9d3beeb",
+        "https://github.com/adewale/geist_fabrik/pull/94"
+      ]
+    },
+    {
+      "number": 92,
+      "title": "Make the test suite able to fail, gate it, and fix the product bugs it found",
+      "url": "https://github.com/adewale/geist_fabrik/pull/92",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit portfolio test audit and deletion",
+      "weakness": "Positive tests looped over [], upper caps were never genuinely exceeded, mirrored test algorithms never invoked product code, swallowed errors looked successful, and empty-vault runs claimed unrelated acceptance criteria.",
+      "remedy": "Build dated real-vault fixtures that trigger each plugin. Require a Suggestion inside the plugin's own suggest path, flag unguarded/always-true tests, delete non-proving tests and require executed acceptance evidence.",
+      "test_paths": [
+        "tests/integration/test_example_geists.py",
+        "tests/unit/test_bridge_hunter.py",
+        "tests/unit/test_algorithmic_fixes.py",
+        "tests/plugins/geist_firing.py",
+        "tests/plugins/hygiene_scan.py",
+        "tests/plugins/selection_report.py",
+        "tests/unit/test_acceptance_verifier.py",
+        "tests/integration/test_scenarios.py"
+      ],
+      "diff_evidence": "122 test-tree files changed, including 17 removals. test_algorithmic_fixes.py deletes 196 lines comparing local algorithms. Bridge-hunter now requires exact path endpoints, note membership and an attained cap with distinct pairs. A pytester negative control fails a green run if a plugin never fires. Acceptance regressions reject zero-selected, partially deselected and skipped-only evidence. A daily invocation checks the written journal’s text and headings.",
+      "transferable_rule": "Check positive output, negative controls, and selection/execution on the actual product path. Retain one discriminating test per obligation and delete duplicated implementation proofs.",
+      "outcome": "Merged. Independent final-head test and package jobs passed; individual pre-fix controls are reported by the author. #94 still closed two vacuous integration checks, and #95 found unverified embedding-double fidelity.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/92/files"
+      ]
+    },
+    {
+      "number": 93,
+      "title": "Remove the sklearn optimisation benchmark scripts",
+      "url": "https://github.com/adewale/geist_fabrik/pull/93",
+      "state": "closed",
+      "merged": true,
+      "classification": "obsolete performance harness deletion",
+      "weakness": "Eight supposed optimization treatments executed the same code because no production path read the three environment flags.",
+      "remedy": "Delete the three obsolete study scripts and direct current performance work to live profiling and before/after benchmarks.",
+      "test_paths": [
+        "scripts/benchmark_config.py",
+        "scripts/benchmark_optimizations.py",
+        "scripts/analyze_benchmarks.py",
+        "docs/BENCHMARKING_GUIDE.md"
+      ],
+      "diff_evidence": "The deleted config enumerates GEIST_ASSUME_FINITE, GEIST_FAST_PATH and GEIST_VECTORIZE. The deleted runner mutates those flags over 8 configurations × 9 geists. Independently scanned all 90 Python source files under src/geistfabrik at the PR base: none contained the three flags.",
+      "transferable_rule": "Retire an experiment when its controls stop changing production work; retaining it creates persuasive but meaningless comparisons.",
+      "outcome": "Merged. This is a benchmark deletion. It is separate from deletion of pytest tests in #92.",
+      "scope": "targeted test or harness repair",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/93/files"
+      ]
+    },
+    {
+      "number": 94,
+      "title": "Run the unscheduled test tiers weekly, lint and dry-run workflows, fix a block-ref parse",
+      "url": "https://github.com/adewale/geist_fabrik/pull/94",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit merged follow-up to unmerged #91",
+      "weakness": "Literal workflow tests missed both real releases, a determinism test passed on two empty results, the real-model test expected stored shape from a semantic-only backend, and the parser’s 'idempotent' property only repeated a call.",
+      "remedy": "Model artifact upload/download semantics and execute staging shell steps, restore meaningful positive/negative integration oracles, and test reparsing rendered links. Run previously dormant tiers and ratchet manual claims.",
+      "test_paths": [
+        "tests/unit/test_release_workflow_contract.py",
+        "tests/unit/test_release_hardening_contracts.py",
+        "tests/integration/test_example_geists.py",
+        "tests/integration/test_embeddings_integration.py",
+        "tests/unit/test_property_parsing.py",
+        "tests/unit/test_acceptance_verifier.py",
+        ".github/workflows/scheduled-tiers.yml"
+      ],
+      "diff_evidence": "Removes a 15-line literal contract. A dry-run stages a wheel/sdist and decoy rebuilt wheel, executes release shell steps and verifies selected bytes/checksums. The real-model case distinguishes semantic dimension 384 from 387 float32 values in DB storage. A round-trip generator found the '[[Note #^id]]' trailing-space defect; empty-on-fixture hubs and nonempty determinism are asserted explicitly.",
+      "transferable_rule": "Exercise the real transformation around an external boundary, and model only unavailable external effects. Reproduce known failures and distinguish determinism from a true round trip.",
+      "outcome": "Merged. Head CI passed; the two original release job logs independently confirm missing artifacts and the nested-layout failure. The dry run models upload behavior. Weekly workflow 37308795011 on October 5 succeeded. #91’s separate AST ratchet did not land here.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/94/files",
+        "https://github.com/adewale/geist_fabrik/actions/runs/37308795011",
+        "https://github.com/adewale/geist_fabrik/actions/runs/34784129143/job/103796391157",
+        "https://github.com/adewale/geist_fabrik/actions/runs/34784664265/job/103798416838"
+      ]
+    },
+    {
+      "number": 95,
+      "title": "Test audit: check the embedding stub against the real model; reach the no-torch path",
+      "url": "https://github.com/adewale/geist_fabrik/pull/95",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit residual audit and double-fidelity repair",
+      "weakness": "The fast embedding stub had no shared test against real weights. A no-torch test patched GPU probes and never entered the missing-import branch.",
+      "remedy": "Run one contract through the same production wrapper for both real and stub encoders, and explicitly make import torch fail.",
+      "test_paths": [
+        "tests/integration/test_embedding_double_fidelity.py",
+        "tests/unit/test_gpu_acceleration.py",
+        "tests/README.md"
+      ],
+      "diff_evidence": "Both cases check float32 shapes, normalization, batch/single consistency, repeatability and same_topic>0.4>unrelated. The real case rejects the stub and pins CPU. The no-torch test uses patch.dict('sys.modules', {'torch': None}).",
+      "transferable_rule": "Validate doubles at a shared production boundary with independently justified known answers. A relative margin alone can pass on junk scores.",
+      "outcome": "Merged. The real instance is scheduled/manual. In the October 12 production-model job 114828019575, the GitHub log explicitly records test_encode_contract_matches_the_real_model[real] PASSED. The author's planted drift experiments were not replayed. The separate random unit-test model double remained outside this contract.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/95/files",
+        "https://github.com/adewale/geist_fabrik/actions/runs/38254231058/job/114828019575"
+      ]
+    },
+    {
+      "number": 96,
+      "title": "feat: automatic local topics and derived note tags",
+      "url": "https://github.com/adewale/geist_fabrik/pull/96",
+      "state": "open",
+      "merged": false,
+      "classification": "open embedded verification-method and harness repair",
+      "weakness": "The existing validation command could update its own dependency lock and then report success. Topic evaluation also needed protection against incomplete corpora, stale gold and tuning against seen outputs.",
+      "remedy": "Freeze dependency inputs and assert they survive validation. Add controlled failure cases for corpus receipts and preregister held-out source-only annotations.",
+      "test_paths": [
+        "scripts/validate.sh",
+        "tests/unit/test_dependency_validation.py",
+        "tests/unit/test_topic_corpus_benchmark.py",
+        "benchmarks/corpora/topic_policy_experiment.json",
+        ".github/workflows/topic-validation.yml"
+      ],
+      "diff_evidence": "Validation snapshots uv.lock, syncs --locked, runs --frozen and compares original bytes. A fake tool rewrites uv.lock, which must turn a passing control into a nonzero validator exit. Corpus tests distinguish complete empty rebuilds from incomplete/mismatched replay. The experiment file commits annotation hashes.",
+      "transferable_rule": "Freeze both evaluation inputs and labels before observing system outputs. A negative control should prove the harness refuses invalid evidence.",
+      "outcome": "Open, unmerged. The PR body called run 40252867577 queued. GitHub job 121348339118 subsequently failed in 'Evaluate frozen selected policy on held-out sources' with 'Frozen source-role diagnostic decision does not match its evidence'. Topics and canonical jobs passed. This was a same-vault, model-annotated holdout.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "No head-check rollup returned by GitHub.",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/96/files",
+        "https://github.com/adewale/geist_fabrik/actions/runs/40252867577/job/121348339118"
+      ]
+    },
+    {
+      "number": 97,
+      "title": "Detect rising and declining vocabulary; reuse similarity state",
+      "url": "https://github.com/adewale/geist_fabrik/pull/97",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded explicit test audits and deletion",
+      "weakness": "A cluster-label test banned the word 'categories' even in ordinary prose, neighbor performance tests did not prove recomputation was avoided, timing noise polluted correctness tests, and a checkpoint comparison could pass empty.",
+      "remedy": "Compare labels against a separately parsed body, use independent scalar scores with counted work, retire a duplicate timing check and require nonempty recovery/CLI evidence.",
+      "test_paths": [
+        "docs/SIMILARITY_PRIMITIVES_TEST_AUDIT.md",
+        "docs/WORD_BURST_TEST_AUDIT.md",
+        "tests/unit/test_cluster_labeling.py",
+        "tests/unit/test_phase2_return_scores.py",
+        "tests/unit/test_correctness_security.py",
+        "tests/unit/test_word_burst_integration.py"
+      ],
+      "diff_evidence": "test_cluster_labeling.py now includes 'The categories we choose…' as body prose and compares with _head_label_text. test_phase2_return_scores.py reads stored semantic vectors for a scalar oracle and requires nonempty results plus zero redundant calls. A fixed sleep awaiting kernel alarms is replaced by a controllable public timer API. The word-burst audit documents retiring a timer-only test; the PR also adds ordinary feature tests.",
+      "transferable_rule": "Use independent expected outputs and measure avoided work. Pair an empty or denied case with a positive control, and keep wall-clock variation out of correctness oracles.",
+      "outcome": "Merged. Head test and package checks passed. Archived audit/run reports are project evidence. The public/synthetic corpora and unscored reviewer packets do not establish usefulness to real vault owners.",
+      "scope": "suite or explicit test-quality audit",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/97/files"
+      ]
+    },
+    {
+      "number": 99,
+      "title": "perf: streamline parsing, graph traversal and geist execution",
+      "url": "https://github.com/adewale/geist_fabrik/pull/99",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded assertion and performance-test repair",
+      "weakness": "Caching tests asserted that repeated queries returned the identical mutable list object. This treated sharing caller-mutable state as required and did not show database work was avoided.",
+      "remedy": "Check the externally needed work bound, exact returned neighbors and isolation from caller mutation.",
+      "test_paths": [
+        "tests/unit/test_performance_regression.py",
+        "tests/integration/test_phase3b_regression.py"
+      ],
+      "diff_evidence": "test_backlinks_reuse_resolved_graph replaces 'result1 is result2' with an SQLite trace requiring zero statements on repeated traversal and the expected note path. Clearing result1 must not affect a fresh query. Parallel outgoing-link checks make the same mutability check.",
+      "transferable_rule": "Measure the work avoided and behavior callers observe. An optimization test should permit safe replacement implementations.",
+      "outcome": "Merged and head checks passed. These core regressions prove graph traversal behavior on the fixture; their result alone does not establish the performance claims for a whole session.",
+      "scope": "embedded behavioral or harness repair",
+      "hosted_head_checks": "SUCCESS (5 success, 1 skipped)",
+      "evidence_urls": [
+        "https://github.com/adewale/geist_fabrik/pull/99/files"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        3,
+        7,
+        9,
+        73,
+        98,
+        100,
+        101
+      ],
+      "reason": "CI cost, badges, cache fallback, static policy or dependency maintenance. #98 preserves the runtime test inventory. #100 enforces action pinning and #101 only bumps a dependency."
+    },
+    {
+      "numbers": [
+        6
+      ],
+      "reason": "Removes the costly, continue-on-error phase-completion invocation from CI and retains its local script. Commit 69a6918038 and docs/CI_STRATEGY_ANALYSIS.md explain the cost. This only changes when evidence is collected; later #80 and #92 repair what the checker actually proves."
+    },
+    {
+      "numbers": [
+        2,
+        64,
+        67,
+        82
+      ],
+      "reason": "Production cleanup, spelling, formatting or type-detail changes. #2 only adds a fixture type annotation; #82 is a Ruff upgrade."
+    },
+    {
+      "numbers": [
+        10,
+        11,
+        12,
+        17,
+        18,
+        20,
+        21,
+        23,
+        27,
+        29,
+        34,
+        35,
+        36,
+        37,
+        45,
+        46,
+        54,
+        56,
+        59,
+        63,
+        65,
+        74,
+        81,
+        88
+      ],
+      "reason": "Research, specifications, counts, product audits, historical measurements or release notes with no separate landed test repair. #34 specifies tests for an upcoming validation command. #63’s net diff is a reuse specification and ignore rule. #88 records lessons from #87; its release-contract tests were not changed."
+    },
+    {
+      "numbers": [
+        13,
+        14,
+        15,
+        16,
+        22,
+        24,
+        25,
+        26,
+        30,
+        31,
+        40,
+        42,
+        48,
+        51,
+        52,
+        55,
+        58,
+        60,
+        72,
+        79
+      ],
+      "reason": "Feature or product-fix regressions, configuration changes or assertion updates to new expected behavior. #15 adds loader/layout checks with the new CLI change. #22 records a product bug with example tests; #38 later repairs a sampling oracle. #26 covers the newly added geists. #30’s validation-guide postmortem concerns a mismatched mypy invocation. #72's existing Phase 3B diff updates comments; #79 adds reflective-lens feature tests and updates fixed counts."
+    },
+    {
+      "numbers": [
+        49
+      ],
+      "reason": "Deletes five unused duplicate example plugins under testdata. No test, active fixture consumer or verification harness was removed."
+    }
+  ],
+  "limitations": [
+    "The file inventories are complete, but GitHub omitted 11 nonzero-line patches: three uv.lock changes and eight large benchmark data/archive manifests in #96/#97. Another 140 entries had no line patch and zero additions/deletions, including binary or unchanged-content moves. Relevant test source patches cited above were available. Compressed benchmark receipts were not decoded.",
+    "GitHub did not return a retained head-check rollup for most early PRs or for open #96. A successful head rollup only describes the selected jobs. Where named, historical jobs and workload controls are distinguished from authors’ reported runs.",
+    "Historical suites and planted-fault campaigns were not re-executed. Proposed fixes, intra-PR intermediate repairs, retired tests, backfilled coverage, merged changes and later supersessions are labeled separately."
+  ]
+}

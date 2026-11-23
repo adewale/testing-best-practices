@@ -1,0 +1,420 @@
+{
+  "repository": "adewale/planet_cf",
+  "total_prs": 23,
+  "pages_checked": {
+    "method": "GitHub REST pulls collection with state=all and per_page=100, without date or author filters; all-paginated filename inventory for every PR, cross-checked against REST files.",
+    "page_counts": [
+      23,
+      0
+    ],
+    "pr_numbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "changed_files_per_pr": {
+      "1": 16,
+      "2": 3,
+      "3": 5,
+      "4": 16,
+      "5": 148,
+      "6": 11,
+      "7": 6,
+      "8": 2,
+      "9": 28,
+      "10": 2,
+      "11": 5,
+      "12": 2,
+      "13": 1,
+      "14": 33,
+      "15": 98,
+      "16": 5,
+      "17": 19,
+      "18": 7,
+      "19": 1,
+      "20": 1,
+      "21": 4,
+      "22": 2,
+      "23": 1
+    },
+    "coverage": "Read all 23 titles and bodies and all file inventories. PR #5 had 100 + 48 files on its two REST pages. Reviewed candidate test and workflow patches, including feature-titled PRs, and checked that additions and deletions in relevant test patches matched API totals. Reviewed PR commits, final head checks and available merge-commit checks for outcome context."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Add Palatino-style P favicon in Cloudflare orange",
+      "url": "https://github.com/adewale/planet_cf/pull/1",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-01-25T23:22:10Z",
+      "classification": "Test repair embedded in a favicon PR",
+      "weakness": "HTTP tests expected 400 for validation failures that render a 200 HTML error page. An unspecified metadata binding became a MagicMock, and feed validation in an integration test reached the network.",
+      "attempted_remedy": "Correct the existing error-page checks and give the optional binding its actual absent value. Temporarily skip the live-feed test pending an HTTP fixture.",
+      "test_paths": [
+        "tests/integration/test_http.py",
+        "tests/integration/test_search.py",
+        "tests/integration/test_search_accuracy.py",
+        ".github/workflows/check.yml"
+      ],
+      "diff_evidence": [
+        "test_http_search_requires_query now checks status 200 and the minimum-length message for missing, empty and one-character queries. The invalid-feed cases inspect their error messages as well as status.",
+        "The search fixture sets VERSION_METADATA = None. test_admin_add_feed_via_post gained an unconditional skip, and the coverage floor dropped from 80% to 60%."
+      ],
+      "transferable_rule": "Assert the response a user receives, including the error content when an HTML form returns 200. Represent absent optional bindings explicitly. A skipped network-dependent check needs a working replacement.",
+      "outcome": "Merged. GitHub records a successful head check and a failed merge-commit check with exit 127. The old job records lack step details. PR #4 later removed the feed-test skip.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/commit/7e413b0973dc92b9aa364ab551b4534dce4e107a",
+        "https://github.com/adewale/planet_cf/actions/runs/21340139446/job/61418195663",
+        "https://github.com/adewale/planet_cf/actions/runs/21341387234/job/61421286629"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Add logging best practices audit report",
+      "url": "https://github.com/adewale/planet_cf/pull/4",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-01-31T02:37:11Z",
+      "classification": "Test repair embedded in a logging audit",
+      "weakness": "The signed-in add-feed test had been skipped because validation fetched an external feed. Local integration setup lacked a seeded test administrator. Several UI assertions expected a JSON failure from endpoints that render HTML.",
+      "attempted_remedy": "Stub the outbound feed fetch and exercise the signed-in POST through the Worker. Seed a test-only administrator for local runs and update response expectations.",
+      "test_paths": [
+        "tests/integration/test_http.py",
+        "tests/integration/test_ui_buttons.py",
+        "tests/e2e/test_feed_workflow.py",
+        "tests/e2e/test_search_real.py",
+        "scripts/seed_admins.py"
+      ],
+      "diff_evidence": [
+        "test_admin_add_feed_via_post deletes the unconditional skip from #1, supplies fixed RSS XML via an AsyncMock for safe_http_fetch, and checks the 302 redirect to /admin.",
+        "The audit-log UI check switches from audit_log to entries. Other UI changes broaden accepted statuses, including 500 for some input errors. The E2E files add server-availability and rate-limit skips."
+      ],
+      "transferable_rule": "Mock the external HTTP boundary and keep the real request-to-response path. Check successful outcomes separately from error and unavailable-environment paths.",
+      "outcome": "Merged. Head and merge-commit checks succeeded. The available old job records contain no step detail, so the author's local test counts and E2E execution could not be confirmed.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/commit/593cd105fab263adaec2e8e73156751f41e3cd39",
+        "https://github.com/adewale/planet_cf/actions/runs/21537201137/job/62065137323",
+        "https://github.com/adewale/planet_cf/actions/runs/21537325730/job/62065469693"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Multi-instance deployment, theme system, and comprehensive test coverage",
+      "url": "https://github.com/adewale/planet_cf/pull/5",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-02-06T12:48:52Z",
+      "classification": "Test infrastructure repair embedded in multi-instance development",
+      "weakness": "E2E suites had separate URLs and cookie encoders, a module-scoped asynchronous client, fixed dates that aged out of retention, and permanently skipped search cases requiring indexed data.",
+      "attempted_remedy": "Centralize session and target configuration, seed deterministic entries inside the retention window, close each async client within its test, and enable previously skipped tests when their fixtures are present.",
+      "test_paths": [
+        "tests/e2e/conftest.py",
+        "tests/e2e/test_search_accuracy_real.py",
+        "tests/e2e/test_search_real.py",
+        "tests/e2e/test_feed_workflow.py",
+        "tests/integration/test_e2e_feed_to_homepage.py",
+        "scripts/seed_test_data.py",
+        ".github/workflows/e2e.yml"
+      ],
+      "diff_evidence": [
+        "Shared fixtures sign cookies with URL-safe Base64 and probe the configured host and port. Integration and E2E tests replace local copies of signing logic. test_search_accuracy_real changes its client to a function-scoped async context manager.",
+        "The seed script derives timestamps from the current date and refreshes published_at on conflict. The search precondition looks for the seeded result URL, which a page echoing the query alone cannot satisfy. The workflow runs pytest against test-planet."
+      ],
+      "transferable_rule": "Give integration tests one target and consistent authentication and resource lifetimes. Seed records inside the application's retention window, and identify expected results by data the application cannot merely echo.",
+      "outcome": "Merged. GitHub records successful head and merge check jobs, and a failed E2E job on the merge commit. Its retained annotation reports exit 1 with no step details. Conditional skips for missing data or services remained.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/commit/196a774e9270f96f30a9ef7c42185b0616c32eef",
+        "https://github.com/adewale/planet_cf/actions/runs/21751043188/job/62748799053",
+        "https://github.com/adewale/planet_cf/actions/runs/21751138278/job/62749125257",
+        "https://github.com/adewale/planet_cf/actions/runs/21751138291/job/62749125224"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Add FFI boundary tests and fix JsNull handling in _to_py_list",
+      "url": "https://github.com/adewale/planet_cf/pull/9",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-11T14:18:03Z",
+      "classification": "Explicit test-quality repair and suite audit",
+      "weakness": "CPython tests missed Worker-specific null and proxy conversions. A generated search string could appear by chance in SQL identifiers, causing a failure even when values were bound correctly.",
+      "attempted_remedy": "Add a second testing tier with a fake Pyodide runtime, correct the null conversion it exercises, revise the flaky property and inventory other weak tests for follow-up.",
+      "test_paths": [
+        "tests/unit/test_wrappers_ffi.py",
+        "tests/unit/test_properties.py",
+        "tests/unit/test_remaining_mitigations.py",
+        "audit-reports/test-quality.md",
+        "src/wrappers.py"
+      ],
+      "diff_evidence": [
+        "The new fake-runtime fixture enables the Pyodide path and supplies JsNull, JsUndefined and proxy fakes. TestToPyListFFI checks an empty list for a null-like value. The implementation adds a guard before attempting iteration.",
+        "test_user_input_never_in_sql replaces query not in result.sql with nonempty parameters and equality between placeholder and parameter counts. The audit separately recommends rewriting source inspection and deleting duplicated helper tests. Those recommendations are not implemented in this diff."
+      ],
+      "transferable_rule": "Drive the production conversion branch with distinct cross-runtime values. Give a property an invariant that accurately models the failure being tested. Placeholder counts alone do not establish which values were bound.",
+      "outcome": "Merged. The head and merge check jobs succeeded. The ten repeated Hypothesis runs were author-reported. Runtime behavior here was exercised with fakes, and the separate dead-letter configuration check still searches text.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/commit/879e6bb8d81f90e5d7fc1d7bbd662b9930de9bd7",
+        "https://github.com/adewale/planet_cf/actions/runs/22957160106/job/66637039661",
+        "https://github.com/adewale/planet_cf/actions/runs/22957161895/job/66637046151",
+        "https://github.com/adewale/planet_cf/actions/runs/22957161864/job/66637045966"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Add duplicate feed URL detection to _add_feed",
+      "url": "https://github.com/adewale/planet_cf/pull/12",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Test-double repair embedded in a duplicate-detection feature",
+      "weakness": "Two existing successful-add tests supplied the same result row to every database statement. Adding a duplicate lookup made an insertion result appear to be a pre-existing duplicate.",
+      "attempted_remedy": "Give the two existing happy paths distinct results for the lookup and insertion. Keep the new duplicate-response, redirect, audit and queue cases identifiable as feature coverage.",
+      "test_paths": [
+        "tests/unit/test_validate_and_add_feed.py"
+      ],
+      "diff_evidence": [
+        "test_successful_feed_addition and test_uses_extracted_title_when_not_provided replace TrackingD1([row]) with PerQueryTrackingD1 configured for an empty lookup and insert IDs 42 and 1, respectively. The helper selects its response by searching the SQL for a configured substring."
+      ],
+      "transferable_rule": "Where an operation both reads and writes, arrange distinct states for each step so a canned response cannot accidentally steer the wrong branch.",
+      "outcome": "Open. The PR head check passed. The double still depends on the SQL spelling and cannot prove which rows a real database would return or write.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/pull/12/files",
+        "https://github.com/adewale/planet_cf/actions/runs/24596705156/job/71927936491"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Migrate wrapper internals to CFBoundary",
+      "url": "https://github.com/adewale/planet_cf/pull/14",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Testing approach change embedded in a dependency migration",
+      "weakness": "The FFI test fixture enabled the simulated runtime by patching four private globals on the app's wrapper module. The boundary migration moved the active runtime into CFBoundary.",
+      "attempted_remedy": "Install the dependency's supported scoped fake runtime for the existing FFI suite. Remove redundant runtime-mode patches from null conversion tests.",
+      "test_paths": [
+        "tests/unit/test_boundary_ffi.py",
+        "tests/unit/test_main_helpers.py",
+        "tests/unit/test_safe_boundary.py",
+        "docs/TESTING.md"
+      ],
+      "diff_evidence": [
+        "The renamed FFI fixture replaces per-attribute patches for HAS_PYODIDE, js, to_js and JS_NULL with patch_pyodide_runtime configured with a fake JS module, proxy type, null sentinel and conversion function. The main-helper and boundary tests retain concrete null-result assertions."
+      ],
+      "transferable_rule": "When code delegates a runtime boundary to a dependency, configure the simulation at the boundary that actually performs conversion.",
+      "outcome": "Open. The PR head check passed. The tests run a simulated runtime. This entry covers the shared fixture change and does not count the suite-wide import renames as separate repairs.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/pull/14/files",
+        "https://github.com/adewale/planet_cf/actions/runs/24995902184/job/73192721655"
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Add consolidated re-audit report (2026-06-13)",
+      "url": "https://github.com/adewale/planet_cf/pull/15",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Explicit test-quality work within a six-domain re-audit",
+      "weakness": "Some properties passed without checking their claimed result. The queue timeout test mocked the component responsible for cancellation. Vitest imported a copy of the admin script outside the served assets, and CI omitted the JS suite.",
+      "attempted_remedy": "Replace vacuous checks with observable results, exercise actual timeout handling, and run tests against the served JS asset. Tighten the D1 double, add Vitest to CI and check reachability for configured E2E runs.",
+      "test_paths": [
+        "audit-reports/2026-06-13-re-audit.md",
+        "tests/unit/test_properties.py",
+        "tests/unit/test_route_dispatcher.py",
+        "tests/unit/test_queue_processing.py",
+        "tests/unit/test_observability.py",
+        "tests/conftest.py",
+        "tests/js/admin.test.js",
+        ".github/workflows/check.yml",
+        ".github/workflows/e2e.yml"
+      ],
+      "diff_evidence": [
+        "The missing-template test changes contextlib.suppress(TemplateNotFound) to pytest.raises(TemplateNotFound). Route tests inspect the matched path. An observability test captures the emitted record instead of swallowing exceptions.",
+        "The timeout test runs real asyncio.wait_for against a slow coroutine with a short timeout, then checks that the coroutine started and the message was retried without acknowledgement.",
+        "Admin JS tests import assets/static/admin.js and model fetch response ok/status. check.yml adds npm test. The E2E health probe is conditional on both credentials and URL. The shared D1 double checks placeholder arity but still models some results with SQL substrings."
+      ],
+      "transferable_rule": "Require the claimed exception, result or side effect. Exercise the real mechanism for timing and cancellation. Import the shipped asset in the suite and put that suite on the execution path.",
+      "outcome": "Open. The author reports 1,501 pytest passes and 27/27 Vitest locally. The final head check failed with exit 1 and has no retained step detail. The branch also suppresses two Hypothesis health checks globally and changes a source-text OPML test to require active-only export, opposite to the open #23 proposal.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/pull/15/files",
+        "https://github.com/adewale/planet_cf/actions/runs/28378817151/job/84075525386"
+      ]
+    },
+    {
+      "number": 17,
+      "title": "Make CI gates able to fail, run D1-backed tests on SQLite, fix auto-init on D1",
+      "url": "https://github.com/adewale/planet_cf/pull/17",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:33Z",
+      "classification": "Explicit test-audit repair incorporating the pilot from #18",
+      "weakness": "A dormant JS suite used incomplete fetch responses, HTTP tests admitted incorrect statuses, a costly generator failed under instrumentation, and an assertion-density target rewarded checks that did not constrain behavior. The D1-backed suite inherited the source-text weaknesses catalogued in #18.",
+      "attempted_remedy": "Run the repaired Vitest suite in CI and make check, tighten response and truncation assertions, and remove the assertion-count quota. Incorporate #18's migrated SQLite tests and auto-init fix. Make migration and secrets checks propagate failures.",
+      "test_paths": [
+        ".github/workflows/check.yml",
+        "Makefile",
+        "tests/js/admin.test.js",
+        "tests/integration/test_http.py",
+        "tests/unit/test_cache_purge.py",
+        "tests/unit/test_properties.py",
+        "docs/LESSONS_LEARNED.md",
+        "scripts/run_migrations.sh",
+        "tests/mocks/sqlite_d1.py",
+        "tests/unit/test_feed_recovery.py",
+        "tests/unit/test_migration_tracking.py",
+        "tests/unit/test_admin_operations.py",
+        "tests/unit/test_retention_policy.py"
+      ],
+      "diff_evidence": [
+        "The JS response helper models ok, status and json. Tests distinguish HTTP errors and successful DOM updates. check.yml and make check invoke Vitest. This branch continues to import ../../static/admin.js, the copy that open #15 changes.",
+        "Four cache-purge paths now require a 302 redirect to /admin. Unauthenticated admin tests require the 200 login form. The long-summary property uses bounded st.text, 50 derandomized examples and exact truncated output. The lessons document drops the numerical assertion quota.",
+        "The branch merge at a1401ad lists #18 head 7067508 as a parent. All seven #18 file patches are identical in #17's final diff. The proposed E2E deploy job was removed from the final PR."
+      ],
+      "transferable_rule": "Check that each gate runs the intended test and fails for a representative defect. Use exact behavioral outcomes and targeted, affordable generators. Verify preserved failure detection when replacing a suite.",
+      "outcome": "Merged. The merge-commit coverage and Vitest steps succeeded. The browser and Python E2E jobs were green with the steps that actually run their tests marked skipped. This does not verify a deployment of this revision. The SQLite work is shared with #18 and represents one implementation.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/commit/a1401adb835cf18c78d8ec23f9c6c56408e4ab73",
+        "https://github.com/adewale/planet_cf/actions/runs/38185420604/job/114606585431",
+        "https://github.com/adewale/planet_cf/actions/runs/38185420601/job/114606585352",
+        "https://github.com/adewale/planet_cf/actions/runs/38185420601/job/114606585218"
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Test audit pilot: run D1-backed tests on SQLite from migrations; fix auto-init on D1",
+      "url": "https://github.com/adewale/planet_cf/pull/18",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Explicit test-audit pilot folded into #17",
+      "weakness": "Source regexes and captured SQL fragments checked spelling while the D1 double ignored limits and discarded writes. Migration-name text could survive in comments. The first rewrite also lost two behaviors that the original tests caught.",
+      "attempted_remedy": "Run Worker queries against SQLite initialized from the migrations, assert persisted outcomes and compare fresh database initialization with the migrated schema. Restore the dropped checks and change auto-init to submit each schema statement separately.",
+      "test_paths": [
+        "tests/mocks/sqlite_d1.py",
+        "tests/unit/test_admin_operations.py",
+        "tests/unit/test_feed_recovery.py",
+        "tests/unit/test_migration_tracking.py",
+        "tests/unit/test_retention_policy.py",
+        "tests/integration/test_scheduler.py",
+        "src/main.py"
+      ],
+      "diff_evidence": [
+        "Admin tests seed a target and a bystander, then inspect persisted rows and the audit payload. Recovery uses limit 1, checks the normal and recovery queue messages, reset and untouched feeds, the event counter and the recovery log.",
+        "Migration tests compare recorded names to migration filenames and compare columns, defaults, unique constraints and foreign keys with a separately auto-initialized database. Retention checks the exact surviving entry IDs and deleted vector IDs.",
+        "SQLiteD1 enables foreign keys, sets a 100-parameter limit and models line-by-line D1 exec. The product fix uses prepare(statement).run() for each CREATE. Commit 7067508 restores entries_scanned and the recovery log and strengthens the schema comparison."
+      ],
+      "transferable_rule": "Seed both affected and unaffected rows. Check equivalent syntax and behavior-changing edits. Run the old tests and the rewrite against the same known defects so a larger total cannot hide a lost check.",
+      "outcome": "Closed without a separate GitHub merge. All three commits and seven file patches landed via merged #17. The pilot head passed unit, integration and coverage steps. The author reports the old suite caught 6/19 selected mutations, the first rewrite 13/19 and the final rewrite 19/19. Two old detections had been lost in the first rewrite. Those mutation runs and seven Miniflare probes were not independently replayed.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/commit/70675082540445b355f8f94bc26276200ad5c6f7",
+        "https://github.com/adewale/planet_cf/commit/a1401adb835cf18c78d8ec23f9c6c56408e4ab73",
+        "https://github.com/adewale/planet_cf/actions/runs/36934630857/job/110611885468"
+      ]
+    },
+    {
+      "number": 23,
+      "title": "Execute inactive-feed behavior against real SQLite queries",
+      "url": "https://github.com/adewale/planet_cf/pull/23",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Explicit continuation of the behavioral query-testing approach",
+      "weakness": "Five inactive-feed tests read src/main.py and matched SQL or comment text. An equivalent query could fail while an ineffective filter could pass. No test in that group observed the served feed content or the actual queue.",
+      "attempted_remedy": "Replace the five source checks with Worker render, export and scheduling tests against a migrated in-memory SQLite database seeded with one active and one inactive feed and one entry for each.",
+      "test_paths": [
+        "tests/unit/test_inactive_feed_display.py"
+      ],
+      "diff_evidence": [
+        "The tests call _generate_html for default, planet-python and planet-mozilla, parse _serve_atom and _serve_rss for exact entry titles, and parse _export_opml for the two feed URLs. With feed recovery disabled, _run_scheduler must enqueue exactly feed ID 1.",
+        "The file makes its own small SQLite D1 adapter and retains the existing static template/CSS checks. Open #15 separately proposes excluding inactive feeds from OPML, so the two branches encode different export requirements."
+      ],
+      "transferable_rule": "For database-backed visibility, test both sides of the boundary through the actual renderer or export, and observe the queue separately. Confirm the intended policy when concurrent work encodes different expectations.",
+      "outcome": "Open. GitHub records a successful head unit/integration coverage step. The author reports an equivalent predicate stayed green, deleting the scheduler filter failed, and four unrelated local observability failures also reproduced on the base. The controls and local suite were not independently rerun.",
+      "verification_urls": [
+        "https://github.com/adewale/planet_cf/pull/23/files",
+        "https://github.com/adewale/planet_cf/actions/runs/42316460362/job/128230137758"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        2
+      ],
+      "reason": "New RSS/Atom extraction regression cases and a capture helper for the description fallback. No prior test or cross-cutting approach repair."
+    },
+    {
+      "numbers": [
+        3
+      ],
+      "reason": "The styling PR also fixed is_healthy being dropped by a row converter and introduced a new data-conversion regression matrix. It added tests for return fields without revising existing tests or testing infrastructure."
+    },
+    {
+      "numbers": [
+        6,
+        8,
+        11,
+        13
+      ],
+      "reason": "Keyboard shortcuts, artwork, CSS positioning or README presentation. The changed-file inventories contain no test or testing-approach change."
+    },
+    {
+      "numbers": [
+        7
+      ],
+      "reason": "Unmerged generic Python Workers reference draft under docs/tmp. Its testing patterns document a sample strategy without auditing or changing this project's suite."
+    },
+    {
+      "numbers": [
+        10
+      ],
+      "reason": "Adds identifier and upsert regression cases to two files for existing application behavior. The additions retain SQL-substring expectations and do not repair existing tests."
+    },
+    {
+      "numbers": [
+        16
+      ],
+      "reason": "Ruff version and lint configuration. No application-test repair."
+    },
+    {
+      "numbers": [
+        19
+      ],
+      "reason": "Removes a duplicate invocation of seven migration tests from CI. The retained suite collects them unchanged. This is test scheduling only."
+    },
+    {
+      "numbers": [
+        20,
+        21,
+        22
+      ],
+      "reason": "E2E diagnostic artifact retention, immutable action references with a policy checker, and Dependabot action-version updates, respectively."
+    }
+  ],
+  "limitations": [
+    "Independent evidence consists of PR metadata, changed files, commits and GitHub check or step records. Local test counts, mutation outcomes and external-runtime observations are attributed to their authors. No suites or production services were run for this audit.",
+    "PR #5's large src/main.py patch, image assets and a few zero-diff template renames had no inline patch. Both file-list pages and all test-related patches were available. Older Actions check records have conclusions but empty step lists.",
+    "PR #18 and merged #17 are two PR records for shared work. #15 and #23 are independent open proposals with different OPML expectations."
+  ]
+}

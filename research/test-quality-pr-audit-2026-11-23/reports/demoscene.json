@@ -1,0 +1,79 @@
+{
+  "repository": "adewale/demoscene",
+  "total_prs": 3,
+  "pages_checked": {
+    "pulls": {
+      "state": "all",
+      "per_page": 100,
+      "page_1": 3,
+      "page_2": 0
+    },
+    "changed_files": {
+      "1": 12,
+      "2": 4,
+      "3": 1
+    },
+    "coverage": "All three titles, bodies and file inventories reviewed. File-list totals agree with each PR's changed_files count. Reviewed all text patches and both PNG deletion entries."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Add CI and a deploy gate, harden E2E and integration tests, honest coverage",
+      "url": "https://github.com/adewale/demoscene/pull/1",
+      "state": "closed",
+      "merged": true,
+      "weakness": "Two layout invariants passed when their selectors found zero elements. Two project-detail baselines lacked a comparison. Unit coverage omitted unimported source and counted fixtures. Remote deployment could start before local verification. The PR also incorporates all four integration-test files from #2.",
+      "attempted_remedy": "Assert a nonempty row/title selection before checking zero layout violations, remove both unused baselines, measure both suites over src/** with separate floors, and gate remote migrations behind test:fast. Include #2's migration and persisted-count repairs.",
+      "test_paths": [
+        "tests/e2e/app.spec.ts",
+        "tests/e2e/app.spec.ts-snapshots/project-detail-page-{chromium,mobile}-darwin.png",
+        "tests/unit/deploy-config.test.ts",
+        "vitest.unit.config.ts",
+        "vitest.worker.config.ts",
+        "package.json",
+        "tests/integration/{app.test.ts,queue-planner.test.ts,support/d1.ts}",
+        "tests/setup/raw-modules.d.ts"
+      ],
+      "diff_evidence": "The base tree had one E2E spec and it only compared feed-page.png. The patch deletes both project-detail PNGs, adds rows.length and titles.length > 0 before toEqual([]), sets unit floors to 44/48/44/40 and Worker floors to 84/92/84/68 (lines/functions/statements/branches). The deployment-script test checks the leading test:fast && sequence. The four #2 files have identical blob SHAs in both PRs.",
+      "transferable_rule": "Assert that expected subjects exist before asserting no violations. Cover all intended source files when reporting percentages. Reconcile snapshot files with live comparisons before retaining them.",
+      "outcome_verification": "Merged 2026-10-11. Final file inventory contains neither proposed workflow. The PR reports local fast checks, but no Actions run was returned for final head ffad18c. Linux screenshot comparison and WebKit mobile remained unverified."
+    },
+    {
+      "number": 2,
+      "title": "Test audit: apply every migration in integration suites, pin scheduled sync-run values",
+      "url": "https://github.com/adewale/demoscene/pull/2",
+      "state": "closed",
+      "merged": false,
+      "weakness": "Both Worker suites copied seven migrations and a list of tables, so later migrations could be skipped. The persisted scheduled-run check accepted any number of scanned accounts, a positive processed count and truthy timestamps. Equal planned/processed fixture values could conceal swapped fields.",
+      "attempted_remedy": "Use a shared D1 reset that discovers application views/tables and applies every migration in filename order. Use one failed owner and one rate-limited repository in separate fixtures to check exact planned, processed and deferred counts, summary values and checkpoint contents.",
+      "test_paths": [
+        "tests/integration/app.test.ts",
+        "tests/integration/queue-planner.test.ts",
+        "tests/integration/support/d1.ts",
+        "tests/setup/raw-modules.d.ts"
+      ],
+      "diff_evidence": "The patch removes named 0001–0007 imports from both suites. The helper loads ../../../migrations/*.sql, sorts entries and rejects an empty glob. The rewritten test checks planned owners = TEAM_MEMBERS.length and processed = length - 1. The deferred case expects 2 planned repositories, 1 processed, 1 deferred and the actual pending URL.",
+      "transferable_rule": "Use the deployment migration inventory for current-schema integration tests. Derive expected persisted values from the fixture and choose reachable data where commonly swapped counters differ.",
+      "outcome_verification": "Closed without merging directly. All four changed file blobs are identical in merged #1. The PR reports six of eight planted bugs newly detected, with an index deletion and constant-zero duration surviving. No Actions run was returned for head 686eaa2. This audit did not rerun the experiments. The helper still splits SQL statements on semicolons."
+    },
+    {
+      "number": 3,
+      "title": "Run unit and Worker tests once in the full verification command",
+      "url": "https://github.com/adewale/demoscene/pull/3",
+      "state": "open",
+      "merged": false,
+      "weakness": "test:full invoked unit and Worker tests through test:fast, then invoked the same suites a second time with coverage.",
+      "attempted_remedy": "Replace the nested fast command in test:full with format, lint and typecheck, run coverage once for both suites, then run E2E and the four audits. Preserve the fast edit/deploy command.",
+      "test_paths": [
+        "package.json"
+      ],
+      "diff_evidence": "One test:full script line changes. At head c0f590b, test:unit and coverage:unit use the same vitest.unit.config.ts, and test:worker and coverage:worker use vitest.worker.config.ts. Each coverage invocation adds --coverage.",
+      "transferable_rule": "Expand composed verification commands and remove duplicate suite invocations when configuration and test selection agree and the retained run exercises the intended behavior.",
+      "outcome_verification": "Open draft, head c0f590b. The PR reports passing coverage for 115 unit/component tests and 57 Worker tests. Browser tests and audit commands were not rerun locally, and no Actions run was returned for this head."
+    }
+  ],
+  "exclusions": [],
+  "limitations": [
+    "Runtime execution was not independently reproduced. GitHub states and final diff contents were checked directly. PRs #1 and #2 are separate attempts with overlapping code, so their shared repairs provide one implementation of those lessons."
+  ]
+}

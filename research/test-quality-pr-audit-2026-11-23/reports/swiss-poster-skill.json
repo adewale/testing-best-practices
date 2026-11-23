@@ -1,0 +1,248 @@
+{
+  "repository": "adewale/swiss-poster-skill",
+  "total_prs": 25,
+  "pages_checked": {
+    "source": "https://api.github.com/repos/adewale/swiss-poster-skill/pulls?state=all&per_page=100&page=1",
+    "pull_request_pages": [
+      {
+        "page": 1,
+        "count": 25
+      },
+      {
+        "page": 2,
+        "count": 0
+      }
+    ],
+    "states": {
+      "merged": 22,
+      "closed_unmerged": 1,
+      "open": 2
+    },
+    "coverage": "Reviewed titles, bodies and complete paginated GitHub changed-filename inventories for #1 through #25, 373 PR-file entries in total. The largest inventory, #15, matched GitHub's changed_files count of 223."
+  },
+  "matching_prs": [
+    {
+      "number": 6,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing approach adoption",
+      "weakness": "Repeating the skill evaluations depended on a separate workspace. A passing public example alone could not distinguish the skill's contribution from the model baseline.",
+      "attempted_remedy": "Committed a standalone harness manifest, paired with-skill and without-skill variants, a fixture, and distinct visible and withheld splits.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md",
+        "evals/fixtures/round3-poster/current.html"
+      ],
+      "diff_evidence": "The new manifest declares 22 cases and five ablations. Its run_protocol requires same-round pairing and review of saturated, flaky and non-discriminating cases. The tuning cases include six trigger/no-trigger examples. Withheld inputs are private references.",
+      "transferable_rule": "Compare the same task under matched baseline and treatment conditions. Keep tuning examples separate from scored holdouts and track missing inputs.",
+      "outcome_verification_caveat": "Merged. The PR reports six successful trigger cases and task preparation. The withheld prompts and scored ablation outputs were absent. GitHub returned no PR-triggered Actions run for the head.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/6/files"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Add anti-slop guidance and verify it with a MoQ poster",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Manual testing approach embedded in skill guidance",
+      "weakness": "Under the existing poster review rubric, a design could reach the overall threshold while exhibiting basic accessibility and composition defects.",
+      "attempted_remedy": "Revised the existing pre-ship acceptance checklist to require all eleven newly enumerated design and quality checks. Documented an external detector for the checks it can automate.",
+      "test_paths": [
+        "swiss-poster/references/prompting.md",
+        "posters/moq.html"
+      ],
+      "diff_evidence": "The checklist grew from 71 to 82 criteria and the pass rule changed from at least 60 to at least 70 plus all eleven new checks. Those include WCAG AA contrast and rejection of identical icon-card grids. The PR includes a poster for manual review.",
+      "transferable_rule": "If a single defect should block acceptance, give it an explicit required check so other passing criteria cannot compensate for it.",
+      "outcome_verification_caveat": "Merged. This changes a manual evaluation procedure shipped with the skill. The author reports that one demonstration poster passed an external browser audit. The diff contains no detector results, failing control, or repository CI integration.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/7/files"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluation assertion refactor",
+      "weakness": "Several separate keyword assertions for an existing poster-audit fixture provided narrow evidence about the wording of the response.",
+      "attempted_remedy": "Replaced three manifest-level contains_any assertions with one timed script assertion keyed to the case.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/oracles/fixture_oracle.py"
+      ],
+      "diff_evidence": "The script reads output.md, requires grid-cols-12 and searches three synonym groups for accent, HTML and mobile safety. The manifest invokes it for round3-fixture-poster-html-audit with a ten-second timeout. The script never reads the fixture HTML or renders the output.",
+      "transferable_rule": "Evaluate what the oracle actually observes. Moving token checks into a script centralizes them but does not establish a visual outcome.",
+      "outcome_verification_caveat": "Merged. The PR reports one saved-output smoke and 18 remaining leakage warnings. No failing control was demonstrated in the diff and GitHub returned no PR-triggered Actions run for the head.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/9/files"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation reporting approach",
+      "weakness": "Existing cases lacked consistent dimensions for examining which types of cases contributed to a combined result.",
+      "attempted_remedy": "Added machine-readable taxonomy for sliced benchmark reports across all existing cases.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "All 22 cases receive domain, difficulty and success_goals fields. The six trigger cases are split into three implicit and three negative-near-miss labels. Case prompts and assertions have no changed behavior.",
+      "transferable_rule": "Record diagnostic cohorts before aggregating benchmark results, including near misses that exercise a different failure mode.",
+      "outcome_verification_caveat": "Merged. The change makes sliced reporting possible. It includes no new report or evidence that a previously missed defect was detected. GitHub returned no PR-triggered Actions run for the head.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/11/files"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Add install boundary CI check",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing packaging contract brought under CI",
+      "weakness": "The declared installable skill directory had no automated boundary check alongside the repository's evals, research and build artifacts.",
+      "attempted_remedy": "Added a repository-tree check to the pull-request and main-push workflows.",
+      "test_paths": [
+        "scripts/check_install_boundary.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": "declared_skill_dirs reads package or marketplace metadata, then falls back to discovery. The script checks for SKILL.md and scans each declared directory for repo-only paths such as evals/, tests/, node_modules/ and bytecode, failing on violations.",
+      "transferable_rule": "When a package's installation boundary is contractual, validate the paths named by its installation metadata.",
+      "outcome_verification_caveat": "Merged. GitHub records the check passing on the proposed tree. The PR contains no planted invalid tree and the check inspects the source directories, so it does not establish the contents of a built package.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/14/files",
+        "https://github.com/adewale/swiss-poster-skill/actions/runs/27562603181/job/81478217107"
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Strengthen Swiss poster skill evidence and evals",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/15",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing assertions and evaluation methodology repaired inside a broader skill update",
+      "weakness": "Exact CSS and wording checks rejected valid alternatives, while compliant source text alone could pass despite unreadable, occluded or overflowing poster content.",
+      "attempted_remedy": "Relaxed specific implementation spellings, introduced browser-rendered artifact checks, and recorded targeted comparisons for guidance-removal experiments.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/oracles/rendered_poster_oracle.py",
+        "evals/oracles/flue_framework_oracle.py",
+        "evals/fixtures/round8-overlapped-critical-text/current.html",
+        "docs/pr/ablation-studies/ablation-summary.json",
+        "docs/pr/verification/VERIFICATION_REPORT-after-rebase-20260616.md"
+      ],
+      "diff_evidence": "The manifest replaces an exact leading-[0.85] requirement with five acceptable tight-leading forms. The rendered oracle compares normal and hidden renders, checks critical text bounds and pixel contrast, and reports horizontal overflow. The ablation report records the baseline and selected comparison case for each of 26 removals.",
+      "transferable_rule": "Accept equivalent implementations and test observable defects on the rendered artifact. Distinguish an inconclusive or saturated ablation from a detected regression.",
+      "outcome_verification_caveat": "Merged. The committed post-rebase report records six regressions, 16 saturated/no-drop and four inconclusive ablations. It also records four failing with-skill tune cases, one missing baseline output and no hidden-score run. The head's Actions run checked the install boundary only. #20 later exposed two defects in the rendered oracle.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/15/files",
+        "https://github.com/adewale/swiss-poster-skill/actions/runs/27623623398"
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Oracle self-tests, oracle classes, UNAVAILABLE on infra errors, and real-Chrome tests for the rendered poster oracle",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/18",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct audit of existing evaluation oracles and their execution",
+      "weakness": "Existing graders lacked automated positive and negative controls. Some graded house vocabulary as a visual outcome, while missing rendering infrastructure could look like an artifact failure.",
+      "attempted_remedy": "Added self-tests across eight script oracles, classified each grader, distinguished unavailable rendering from failed output, added manifest checks, and folded in #20's browser regression tests.",
+      "test_paths": [
+        "evals/oracles/selftest/cases.json",
+        "evals/oracles/selftest/run_selftests.py",
+        "evals/oracles/rendered_poster_oracle.py",
+        "evals/shared-benchmark.json",
+        "evals/tests/test_rendered_poster_oracle.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": "The runner invokes each grader using the harness CLI convention and checks exit status, failure-reason substring and reported oracle class. It rejects an oracle with no declared passing or failing fixture. One characterization case supplies mobile-safe alternate wording and expects the compliance grader to reject it. A nonexistent Chrome executable must yield UNAVAILABLE/exit 3. The workflow calls the runner with --skip-chrome.",
+      "transferable_rule": "Test each grader with good and defective inputs, assert the intended reason, and identify whether it measures the artifact or compliance with a prescribed technique. Make unavailable and skipped checks visible.",
+      "outcome_verification_caveat": "Merged. The final-head Actions log reports 21 passed, five Chrome skips, zero coverage problems and a validated 59-case, 26-ablation manifest. The final workflow leaves the ten browser regression tests manual. The pinned harness still records unavailable as not passed, and missing render-audit JSON still raises RuntimeError. #20 supplied the same browser repair.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/18/files",
+        "https://github.com/adewale/swiss-poster-skill/actions/runs/37919319112/job/113783145754",
+        "https://github.com/adewale/swiss-poster-skill/commit/8355af896564763f31ce9395ea8d51baa56eb080"
+      ]
+    },
+    {
+      "number": 20,
+      "title": "Test audit: rendered poster oracle against real Chrome; fail invisible critical text",
+      "url": "https://github.com/adewale/swiss-poster-skill/pull/20",
+      "state": "closed",
+      "merged": false,
+      "classification": "Direct audit and regression tests for a rendered grader, folded into #18",
+      "weakness": "The pixel oracle skipped all pixel checks at zero ink, so a white title on a white backing passed. A descendant with its own visible style could remain in the hidden reference rendering and cause a legible title to fail.",
+      "attempted_remedy": "Exercised the oracle in real Chrome on a known-good poster, single-defect variants and near misses. Moved the low-ink check outside the positive-ink guard and hid critical descendants in the reference rendering.",
+      "test_paths": [
+        "evals/tests/test_rendered_poster_oracle.py",
+        "evals/oracles/rendered_poster_oracle.py",
+        ".github/workflows/rendered-oracle.yml"
+      ],
+      "diff_evidence": "The good control checks that three roles and three pixel samples were inspected. assert_fails_only_on requires the intended reason on the target role and excludes failures on other roles. White-on-white must fail for too few visible text pixels, white on a separate dark backing must pass, and a visible descendant must pass. The production patch tests ink_ratio < 0.006 even when it is zero.",
+      "transferable_rule": "Exercise zero and empty measurement paths explicitly. Pair an independently predictable failure with a nearby valid case, and assert both the reason and affected element.",
+      "outcome_verification_caveat": "Closed unmerged as a standalone PR. Its final-head Actions log records ten passing Chrome tests in 35.375 seconds. GitHub commit 8355af8 includes its final head as a parent in merged #18. Its dedicated workflow did not land in that form. The local red/green and planted-fault results are author-reported. Hiding the element's own background can still count the box as ink.",
+      "sources": [
+        "https://github.com/adewale/swiss-poster-skill/pull/20/files",
+        "https://github.com/adewale/swiss-poster-skill/actions/runs/37106960154/job/111157259426",
+        "https://github.com/adewale/swiss-poster-skill/commit/8355af896564763f31ce9395ea8d51baa56eb080"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        13,
+        19,
+        21
+      ],
+      "reason": "Poster assets and render changes for individual examples. #5 repairs a stale renderer input, and #21 describes verifying the poster's source facts. Neither changes an existing repository test or reusable verification method."
+    },
+    {
+      "numbers": [
+        8,
+        12,
+        25
+      ],
+      "reason": "Harness version references or Dependabot action updates. #12 changes only the minimum version used with the taxonomy from #11."
+    },
+    {
+      "numbers": [
+        10,
+        16
+      ],
+      "reason": "Installation metadata or README clarification."
+    },
+    {
+      "numbers": [
+        17,
+        24
+      ],
+      "reason": "Ruff-driven tidy-up and an action-reference pinning linter. #17 expands regex flag spellings and reorders imports in grader files without repairing their assertions."
+    },
+    {
+      "numbers": [
+        22,
+        23
+      ],
+      "reason": "Duplicate-run or supersession CI trigger changes only."
+    }
+  ],
+  "limitations": [
+    "GitHub diffs, committed evidence, commit history and available PR-head run records were inspected. Browser or model evals and author-reported mutation experiments were not rerun during this audit.",
+    "#18 and #20 are two PRs for an overlapping repair. #6, #7, #11 and #14 document changes to how work is evaluated, including the manual rubric in #7. They are distinct from direct repairs to an existing executable grader."
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "repository": "adewale/olsen",
+  "total_prs": 16,
+  "pages_checked": [
+    {
+      "page": 1,
+      "per_page": 100,
+      "returned": 16
+    },
+    {
+      "page": 2,
+      "per_page": 100,
+      "returned": 0
+    }
+  ],
+  "coverage": {
+    "all_states": true,
+    "author_or_date_filter": false,
+    "merged": 12,
+    "closed_unmerged": 2,
+    "open": 2,
+    "enumeration_url": "https://api.github.com/repos/adewale/olsen/pulls?state=all&per_page=100&page=1",
+    "changed_file_counts_by_pr": {
+      "1": 12,
+      "2": 13,
+      "3": 1,
+      "4": 1,
+      "5": 4,
+      "6": 10,
+      "7": 42,
+      "8": 32,
+      "9": 6,
+      "10": 5,
+      "11": 20,
+      "12": 9,
+      "13": 1,
+      "14": 2,
+      "15": 5,
+      "16": 3
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Fix CI configuration and create minimal CLI",
+      "url": "https://github.com/adewale/olsen/pull/1",
+      "state": "closed",
+      "merged": false,
+      "head_sha": "78a3dbc9219bb7979f612d2ff4464ddcf4d54b32",
+      "classification": "Attempted CI and test repair, superseded",
+      "weakness": "CI pointed at the wrong package. The binding-specific brightness test depended on private DNG data and unavailable histogram helpers.",
+      "attempted_remedy": "Redirect CI to the internal packages and remove the blocked diagnostic. The proposed Make target also suppressed every test failure.",
+      "test_paths": [
+        "internal/indexer/raw_brightness_golibraw_test.go",
+        "Makefile",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "TestGolibrawBrightness used DecodeRaw and failed if brightness was below 1.0. Its function body was removed and replaced by explanatory comments.",
+        "The workflow changed from testing ./cmd/olsen/... to make test. Its recipe ran CGO_ENABLED=0 go test -v ./internal/... || true. The proposed CLI entry point was missing from the changed-file inventory."
+      ],
+      "transferable_rule": "Keep a required test command's exit status meaningful. Isolate an unavailable dependency and retain an executable check for binding-specific behavior where feasible.",
+      "outcome": "Closed unmerged. The head has no GitHub check runs or commit statuses. The test, Makefile and CI diffs are identical to those in merged PR #2.",
+      "verification_links": [
+        "https://github.com/adewale/olsen/pull/2"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Fix CI: Add missing CLI and correct all configuration",
+      "url": "https://github.com/adewale/olsen/pull/2",
+      "state": "closed",
+      "merged": true,
+      "head_sha": "3662e559faefd88d155afa83512303d369131015",
+      "classification": "CI and test repair with a false-green outcome",
+      "weakness": "The original CI path missed the intended tests. SQLite required CGO and the RAW diagnostic depended on private data and unavailable helpers.",
+      "attempted_remedy": "Supersede #1 with the missing CLI source, run the internal packages and remove the RAW brightness test. Keep CI green by allowing all test failures.",
+      "test_paths": [
+        "internal/indexer/raw_brightness_golibraw_test.go",
+        "Makefile",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "The test, Makefile and workflow patches match #1 exactly. The brightness assertion disappeared, and make test invoked CGO_ENABLED=0 go test -v ./internal/... || true.",
+        "The replacement added cmd/olsen/main.go, addressing the missing entry point. Its presence could satisfy a build while the test command still masked failures."
+      ],
+      "transferable_rule": "Separate unsupported cases from required coverage and verify that a deliberately failing required assertion makes CI fail.",
+      "outcome": "Merged. GitHub returned no checks or commit statuses for the final head. Merged #7 subsequently removed both blanket failure suppressions and ran the suite with CGO.",
+      "verification_links": [
+        "https://github.com/adewale/olsen/pull/1",
+        "https://github.com/adewale/olsen/pull/7"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Fix audit findings: correctness bugs, security, CI, and code quality",
+      "url": "https://github.com/adewale/olsen/pull/7",
+      "state": "closed",
+      "merged": true,
+      "head_sha": "bfd35fac8bdf92c3059a935274a967633e137add",
+      "classification": "Test repair embedded in a production audit",
+      "weakness": "CI could pass while tests failed. CLI tests required a prebuilt binary, facet tests could query a schema-less fallback, and heavy image tests made race runs costly.",
+      "attempted_remedy": "Restore failure propagation, exercise SQLite with CGO, run full and race-short suites, and build the executable under test in TestMain.",
+      "test_paths": [
+        "Makefile",
+        ".github/workflows/ci.yml",
+        "cmd/olsen/cli_integration_test.go",
+        "internal/query/facet_lifecycle_test.go",
+        "internal/query/camera_name_layers_test.go",
+        "internal/indexer/burst_test.go",
+        "internal/indexer/indexer_test.go"
+      ],
+      "diff_evidence": [
+        "The Makefile removed || true from test and test-ci. CI now runs CGO_ENABLED=1 go test -timeout 20m ./... followed by go test -race -short -timeout 20m ./....",
+        "TestMain builds a CLI binary into a temporary directory. The facet lifecycle fallback creates a schema, two historical diagnostic tests use t.Skip, and the costly burst test skips under -short."
+      ],
+      "transferable_rule": "Run required tests with production dependencies and propagate failure. Run expensive fixture cases in the full pass and budget a separate race pass.",
+      "outcome": "Merged. GitHub returned four successful final-head checks, including Test. The empty fallback could still skip behavioral coverage, and TestMain deferred cleanup before os.Exit. PR #11 repaired both.",
+      "verification_links": [
+        "https://github.com/adewale/olsen/actions/runs/27269372769/job/80534597628",
+        "https://github.com/adewale/olsen/pull/11"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Upgrade testing approach with 7 practices from testing-best-practices",
+      "url": "https://github.com/adewale/olsen/pull/8",
+      "state": "closed",
+      "merged": true,
+      "head_sha": "563b405de7fa3386286d0799de8fe64ff404ecb5",
+      "classification": "Explicit testing approach upgrade",
+      "weakness": "Example-based tests missed facet-count and click discrepancies, shared template execution polluted subsequent renders, and persisted NULL handling lacked a discriminating check.",
+      "attempted_remedy": "Add property, differential, HTTP, mutation and documentation checks, reuse fixture builders and isolate shared templates.",
+      "test_paths": [
+        "internal/query/facet_invariant_test.go",
+        "internal/query/url_mapper_property_test.go",
+        "internal/explorer/facet_disabled_test.go",
+        "internal/explorer/server_http_test.go",
+        "internal/database/database_test.go",
+        "internal/indexer/phash_property_test.go",
+        "internal/quality/resize_differential_test.go",
+        "cmd/olsen/doc_sync_test.go",
+        "internal/testsupport/builder.go",
+        ".github/workflows/mutation.yml"
+      ],
+      "diff_evidence": [
+        "TestFacetClickInvariant follows unselected facet URLs on generated corpora and compares the result total with the displayed count. TestYearFacetMatchesGoRecount independently recounts years. TestHammingDistanceProperties compares results with bits.OnesCount64(a ^ b).",
+        "executeGridForTest clones the shared templates before rendering. Database tests directly query IS NULL for empty persisted fields. The HTTP test reuses the returned ETag on a conditional request and requires status 304 and an empty body.",
+        "The documentation tests read CLI help to check documented commands and flags. TestResizeLibrariesAgree enforces SSIM >= 0.90 and a mean luminance difference <= 5.0. The description's 0.999 is an observed value."
+      ],
+      "transferable_rule": "Check user-visible invariants with an independent expected value. Isolate mutable test fixtures and use mutants to identify missing behavioral assertions.",
+      "outcome": "Merged. GitHub returned four passing final-head checks, including Test. The reported database mutation efficacy, local LibRaw results and measured resize similarity were not independently reproduced. Regular CI replayed the parser seeds at this point.",
+      "verification_links": [
+        "https://github.com/adewale/olsen/actions/runs/27301274774/job/80647432097",
+        "https://github.com/adewale/olsen/pull/10"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Fuzz URL parsing and preserve filter precision",
+      "url": "https://github.com/adewale/olsen/pull/10",
+      "state": "closed",
+      "merged": true,
+      "head_sha": "aba33afc5e4fe0379d16c468658b016ee35805ee",
+      "classification": "Explicit improvement to an existing fuzz test",
+      "weakness": "Routine CI replayed existing FuzzParsePath seeds. Active discovery was manual, and URL formatting silently rounded valid numeric filters.",
+      "attempted_remedy": "Run bounded, coverage-guided discovery in CI, preserve finite float precision and retain examples for the discovered aperture case, fractional focal lengths and non-finite inputs.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "Makefile",
+        "internal/query/url_mapper_property_test.go",
+        "internal/query/url_mapper.go"
+      ],
+      "diff_evidence": [
+        "CI invokes make test-fuzz FUZZTIME=10s. The Makefile sets the local default to 30s and invokes go test -fuzz FuzzParsePath.",
+        "A failed hosted run logged the round-trip invariant violation for aperture_max=.00000000000000000000000000000010, which rebuilt as /photos?aperture_max=0.0. The exact query was added as a seed and the serializer switched to lossless formatting."
+      ],
+      "transferable_rule": "Distinguish corpus replay from active generation. Run a bounded discovery job, check a semantic invariant and preserve each minimized counterexample.",
+      "outcome": "Merged. The earlier hosted job log records the failing input. The final-head job records the bounded fuzz step as successful. A fixed time budget samples inputs and cannot establish exhaustive coverage.",
+      "verification_links": [
+        "https://github.com/adewale/olsen/actions/runs/33342854956/job/99341502053",
+        "https://github.com/adewale/olsen/actions/runs/33345757355/job/99349435926"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Test audit: seed facet/engine tests, real-SQLite temporal counts and HTTP zero-result test, compile LibRaw tests in CI, DB smoke test",
+      "url": "https://github.com/adewale/olsen/pull/11",
+      "state": "closed",
+      "merged": true,
+      "head_sha": "458a875b9e2bb2b0b0cf444daeede1228be798f6",
+      "classification": "Explicit test audit, including the rebased work from #12",
+      "weakness": "Facet and engine tests could skip on absent local data or pass without exercising a transition. A color-removal check used the wrong expected count. RAW-tagged tests were never compiled by normal CI, and the CLI smoke check only exercised informational commands.",
+      "attempted_remedy": "Create deterministic SQLite fixtures, require state transitions and exact totals, compile tagged tests for both bindings and exercise the built CLI against a database. Incorporate #12's temporal, HTTP and test-deletion changes.",
+      "test_paths": [
+        "internal/query/fixture_test.go",
+        "internal/query/facet_state_machine_test.go",
+        "internal/query/facet_lifecycle_test.go",
+        "internal/query/engine_test.go",
+        "internal/query/facet_count_validation_test.go",
+        "internal/indexer/leica_m11_integration_test.go",
+        "cmd/olsen/cli_integration_test.go",
+        "internal/query/state_machine_integration_test.go",
+        "internal/explorer/server_http_test.go",
+        "Makefile",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "Two fixture helpers seed temporary SQLite databases. The state machine fails when a state family exercises zero transitions and obtains the year-only expected total from the unfiltered facet. The engine asserts six photos for ISO 100–400 and two for its compound query.",
+        "make vet-raw runs go vet for both build tags. Tests update GetThumbnail to the typed size, and the Leica fixture expects ISO 8000 and 1/200s. The built CLI indexes testdata/photos, runs verify and stats, and CI requires the exact output line Total photos: 4.",
+        "The CLI TestMain now returns from a helper before calling os.Exit, so deferred cleanup runs. All six test-file patches from #12 match byte-for-byte, and its four commit subjects appear in #11's rebased history."
+      ],
+      "transferable_rule": "Design fixtures that force each expected transition, fail loudly on absent required data and check a concrete result from the packaged executable. Compile supported optional configurations.",
+      "outcome": "Merged. GitHub recorded successful final-head steps for the database smoke test and compiling the RAW-tagged tests. The tagged gate only compiles and vets. Proposed per-PR mutation runs and score thresholds were dropped before merge.",
+      "verification_links": [
+        "https://github.com/adewale/olsen/actions/runs/37910193101/job/113753220117",
+        "https://github.com/adewale/olsen/actions/runs/37910193101/job/113753219907",
+        "https://github.com/adewale/olsen/pull/12"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Test audit: real-SQLite temporal filter counts, HTTP zero-result test, drop tests that cannot fail",
+      "url": "https://github.com/adewale/olsen/pull/12",
+      "state": "closed",
+      "merged": false,
+      "head_sha": "72e050df92394b5a52e90577a9e05d6325a241b3",
+      "classification": "Explicit test audit, closed and incorporated into #11",
+      "weakness": "SQL substring checks could miss binding or padding errors. A facet and its click path could agree while both dropped a filter. Several camera and HTTP examples only logged, skipped or exercised unreached routes.",
+      "attempted_remedy": "Replace SQL-shape assertions with fixture-derived SQLite counts and facet maps. Exercise valid empty-result pages through the real router, retain the actual multiword parser test and remove diagnostics with no behavioral checks.",
+      "test_paths": [
+        "internal/explorer/facet_404_test.go",
+        "internal/explorer/server_http_test.go",
+        "internal/query/camera_name_layers_test.go",
+        "internal/query/facet_counts_simple_test.go",
+        "internal/query/state_machine_integration_test.go",
+        "internal/query/where_clause_test.go",
+        "Makefile"
+      ],
+      "diff_evidence": [
+        "where_clause_test.go was removed. TestStateMachineIntegration requires exact totals of two for January, four for day 1, and two then six before and after removing the year filter. Under month=10 the expected nonzero year map is {2020:2, 2021:2, 2024:2}.",
+        "TestHTTPZeroResultQueryRendersEmptyState checks 200, empty-state text and zero thumbnails for two queries, plus a link preserving gray while switching to 2023. The old facet_404_test.go was removed.",
+        "Six camera diagnostics were removed and TestParsePathMultiWordCameraMake retained. The associated Make target and skip patterns were removed, with its lingering .PHONY entry cleaned up in #11."
+      ],
+      "transferable_rule": "Check exact fixture-derived results against the public boundary. When retiring a test, identify another assertion covering its contract or establish why it could never detect a defect.",
+      "outcome": "Closed unmerged as a standalone PR. Its final-head suite passed, and its six test patches match those in merged #11. The PR reports the full old query/explorer packages missed the unpadded day and zero-results-as-404 mutants. Other proposed mutations were already caught elsewhere. The mutation campaign was not independently rerun.",
+      "verification_links": [
+        "https://github.com/adewale/olsen/actions/runs/37091965771/job/111114017455",
+        "https://github.com/adewale/olsen/pull/11"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 3,
+      "reason": "gofmt change to cmd/olsen/main.go."
+    },
+    {
+      "number": 4,
+      "reason": "Changed a detail-page template to link metadata."
+    },
+    {
+      "number": 5,
+      "reason": "UI templates plus a Go version change in CI and go.mod."
+    },
+    {
+      "number": 6,
+      "reason": "Added tests for newly introduced safety limits. The indexer test diff adds 144 lines and modifies no existing assertions."
+    },
+    {
+      "number": 9,
+      "reason": "Ruff configuration and linting. The test-data generator only reordered imports."
+    },
+    {
+      "number": 13,
+      "reason": "Restricted Ruff push triggers. Test commands and assertions stayed the same."
+    },
+    {
+      "number": 14,
+      "reason": "CI branch filters and superseded-run cancellation."
+    },
+    {
+      "number": 15,
+      "reason": "Pinned GitHub Actions and added a workflow linter for immutable action references."
+    },
+    {
+      "number": 16,
+      "reason": "Dependabot version updates for GitHub Actions."
+    }
+  ],
+  "limitations": [
+    "Enumeration includes all 16 PR descriptions and complete changed-file inventories (166 PR/file entries). Patch review targeted candidate tests, runners and relevant supporting code.",
+    "No test suite or mutation campaign was run for this audit. Verification uses the historical patches, merge metadata and hosted check records identified per PR. #1/#2 and #12/#11 are separate PR attempts with overlapping work."
+  ]
+}

@@ -1,0 +1,476 @@
+{
+  "repository": "adewale/pythonbyexample",
+  "total_prs": 48,
+  "pages_checked": {
+    "pull_requests": [
+      {
+        "page": 1,
+        "count": 48
+      },
+      {
+        "page": 2,
+        "count": 0
+      }
+    ],
+    "per_page": 100,
+    "state": "all",
+    "date_filter": null,
+    "author_filter": null,
+    "states_observed": {
+      "open": 6,
+      "closed_unmerged": 15,
+      "merged": 27
+    },
+    "source": "https://api.github.com/repos/adewale/pythonbyexample/pulls?state=all&per_page=100&page=1",
+    "changed_file_inventory": "Retrieved complete paginated filename lists for all 48 PRs. All 1,123 per-PR filename entries reconcile with an independent GraphQL changedFiles count for each PR. GraphQL returned totalCount 48 and hasNextPage false.",
+    "triage": "Reviewed titles, descriptions and changed-file inventories. Fetched focused test, script and workflow patches for possible matches, including broad feature and maintenance PRs."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Marginalia: figures, contracts, and journey-section rendering",
+      "url": "https://github.com/adewale/pythonbyexample/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded test deletion and catalog validation",
+      "weakness": "A test required migration phrases and six example names to stay in a one-time investigation document. The catalog also lacked checks for generic unsupported-cell prose and long, unbreakable code.",
+      "attempted_remedy": "Delete the investigation-wording test when retiring the document. Check unsupported-cell prose and code across the catalog.",
+      "test_paths": [
+        "tests/test_markdown_migration_prereqs.py",
+        "tests/test_example_content.py"
+      ],
+      "diff_evidence": "Removed test_investigation_documents_program_and_cell_solution and its literal phrase and slug assertions. Added checks requiring overlap with at least two code identifiers in unsupported prose and flagging unbroken runs over 50 characters.",
+      "transferable_rule": "Retire assertions tied to a completed investigation. Give long-lived checks an observable regression to detect.",
+      "outcome_caveat": "The content checks use lexical overlap and line length as proxies. They cannot establish that readers understand a lesson or that every viewport fits.",
+      "verification": {
+        "pr_head": "5cbc4f0202d7a500400a4c957f87b10862486402",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/25699740301/job/75456847165"
+      }
+    },
+    {
+      "number": 2,
+      "title": "Add quality registries and validation scripts for example pages",
+      "url": "https://github.com/adewale/pythonbyexample/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing approach for existing example pages",
+      "weakness": "The previous verify target executed examples. It had no catalog-wide gate for whether pages demonstrated designated confusable concepts or both sides of a common mistake.",
+      "attempted_remedy": "Wire registry-driven content checks into make verify and exercise several invalid registry entries through the validator.",
+      "test_paths": [
+        "Makefile",
+        "scripts/check_registry_integrity.py",
+        "scripts/check_confusable_pairs.py",
+        "scripts/check_footgun_coverage.py",
+        "tests/test_quality_checks.py"
+      ],
+      "diff_evidence": "make verify gains quality-checks. CheckScriptSmokeTests checks CLI exit status for the shipped catalog. RegistryIntegrityTests supplies a temporary registry with an unknown owner or empty tokens and checks for exit 1 and the specific diagnostic.",
+      "transferable_rule": "Exercise a validator on a known-bad fixture and check its failure signal alongside its normal passing case.",
+      "outcome_caveat": "The negative fixtures cover registry integrity. The initial content checks still relied largely on token occurrence, a weakness addressed in #6.",
+      "verification": {
+        "pr_head": "ba148c32996133eaaac796c6bbeb312a2af9bd40",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/25623877054/job/75215332886"
+      }
+    },
+    {
+      "number": 3,
+      "title": "Hero collapse, section blocks, editor polish, rubric scores",
+      "url": "https://github.com/adewale/pythonbyexample/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation approach in a broader UI PR",
+      "weakness": "The existing figure-score registry covered example illustrations. Journey-section figures and example-page quality could go unreviewed without a missing review surfacing.",
+      "attempted_remedy": "Extend rubric coverage to all current section figures and example pages, then enforce that current content and score registries have matching keys.",
+      "test_paths": [
+        "tests/test_marginalia_geometry.py",
+        "src/marginalia.py"
+      ],
+      "diff_evidence": "Tests subtract score keys from live section titles and example slugs in both directions, check scores are in [0,10], and require nonempty commentary. The change to the existing h2 CSS assertion merely followed the UI change.",
+      "transferable_rule": "When every item requires a review, compare the review roster with the live inventory in both directions.",
+      "outcome_caveat": "These checks establish coverage and score shape. The recorded scores are heuristic baselines, and a populated registry does not validate its judgments.",
+      "verification": {
+        "pr_head": "4144ef2d62ec7f6397cde5f4d904949f3b085fda",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/25708757657/job/75484370846"
+      }
+    },
+    {
+      "number": 5,
+      "title": "Project-state housekeeping and diagram-grammar hardening",
+      "url": "https://github.com/adewale/pythonbyexample/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to an existing figure contract",
+      "weakness": "Counting accent shapes from emitted SVG confused gate lines with arrow shafts and missed traced paths. The existing geometry tests also owned a separate set of text-width estimates.",
+      "attempted_remedy": "Count logical accents where the drawing primitives know their role, retain an output-level check, and import shared text-width measurements.",
+      "test_paths": [
+        "tests/test_marginalia_geometry.py",
+        "src/marginalia_grammar.py"
+      ],
+      "diff_evidence": "One test paints every figure and rejects Canvas.accent_count() above one. Another rejects a zero counter if the emitted parts contain the emphasis colour. The test's CHAR_WIDTH table is removed.",
+      "transferable_rule": "When output loses the distinction a rule needs, check the semantic event and independently cross-check what was emitted.",
+      "outcome_caveat": "The emitted-colour backstop covers a false zero. It does not independently reconstruct every logical accent.",
+      "verification": {
+        "pr_head": "d6feef30d2c3b9842f2ccf068615b0da9a6a3832",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/27243735890/job/80453049315"
+      }
+    },
+    {
+      "number": 6,
+      "title": "Audit remediation: Worker security, content, and release gates",
+      "url": "https://github.com/adewale/pythonbyexample/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded audit of existing assertions, fixtures and quality gates",
+      "weakness": "The catalog execution test accepted any stdout string, so wrong answers passed. A duplicate migration catalog persisted after migration. Several content-gate smoke tests exercised only valid input.",
+      "attempted_remedy": "Compare deterministic stdout with expected_output, retire migration-only golden data, and give content validators known-bad cases.",
+      "test_paths": [
+        "tests/test_app.py",
+        "tests/test_quality_checks.py",
+        "tests/test_marginalia_geometry.py",
+        "tests/fixtures/golden_examples.py",
+        "scripts/check_example_migration_parity.py"
+      ],
+      "diff_evidence": "Replaced assertIsInstance(stdout.getvalue(), str) with equality against expected_output and exempted four environment-shaped programs. Removed the golden catalog and parity script. GateLogicCanFailTests demonstrates that 'async def' alone cannot satisfy a distinct 'def' requirement.",
+      "transferable_rule": "Trace the expected value to its source. An independent expectation catches wrong answers. A repeated execution can check determinism. Exercise validators with examples they must reject.",
+      "outcome_caveat": "At the PR head, 105 of 109 programs derived expected_output by executing the same code in CPython. The four with authored expected_output were exactly those exempted. The revised whole-program check can detect nondeterminism, but a consistently wrong answer still passes. Authored per-cell output comparisons remained separate.",
+      "supporting_urls": [
+        "https://github.com/adewale/pythonbyexample/blob/075a198fdd17295896448861380a9ac9f9bf2f77/src/example_loader.py#L148-L150",
+        "https://github.com/adewale/pythonbyexample/blob/075a198fdd17295896448861380a9ac9f9bf2f77/src/example_sources_data.py"
+      ],
+      "verification": {
+        "pr_head": "075a198fdd17295896448861380a9ac9f9bf2f77",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/29090320242/job/86353834274"
+      }
+    },
+    {
+      "number": 8,
+      "title": "Add learner tools, About page, and responsive search",
+      "url": "https://github.com/adewale/pythonbyexample/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to browser and generated-asset checks",
+      "weakness": "The browser check defaulted to a layout prototype and waited for full editor startup. It could miss stalled enhancement on a real example. The generated-file check also rejected intentionally staged output.",
+      "attempted_remedy": "Use an actual example as the browser's default target, exercise the native fallback while optional scripts are pending, and distinguish staged changes from untracked generated output.",
+      "test_paths": [
+        "scripts/check_browser_layout.mjs",
+        "Makefile"
+      ],
+      "diff_evidence": "The default target changes from /layout-options/mobile-run-first to /examples/values. The check holds editor CDN requests and inspects restored textarea content and height before CodeMirror starts. The Makefile replaces a blanket porcelain-status check with git ls-files --others alongside its existing git diff.",
+      "transferable_rule": "Exercise the shipped route in both enhanced and dependency-stalled states. Make generated-file checks distinguish an intentional staged update from drift.",
+      "outcome_caveat": "The browser scenario uses a local Worker with controlled requests. The revised untracked-files check cannot by itself detect edits to tracked fingerprinted files outside the paths explicitly checked by git diff.",
+      "verification": {
+        "pr_head": "29e0c1ae50c10fa38640b7b371fe014333e9931a",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/29106200205/job/86407178396"
+      }
+    },
+    {
+      "number": 9,
+      "title": "Harden runner security, accessibility, and release checks",
+      "url": "https://github.com/adewale/pythonbyexample/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to source-string tests and permissive fixtures",
+      "weakness": "Browser tests searched for particular JavaScript expressions. The positive social-card fixture wrote the four bytes 'jpeg', and the verifier accepted corrupt images if their names and provenance looked right.",
+      "attempted_remedy": "Remove source checks for sharing, decoding and theme implementation details, assert server fallbacks and live browser behavior, and decode the actual image bytes.",
+      "test_paths": [
+        "tests/test_app.py",
+        "scripts/check_browser_layout.mjs",
+        "tests/test_social_cards.py",
+        "scripts/build_social_cards.py"
+      ],
+      "diff_evidence": "Removed assertions for the exact atob/btoa expressions and highlighter/theme strings. Browser checks now exercise theme changes and sharing bounds. The passing image fixture is an actual 1200×630 JPEG, with negative cases for junk, truncation and a valid 1×1 JPEG.",
+      "transferable_rule": "Use realistic positive fixtures and malformed but plausible counterexamples. Exercise the observable UI behavior instead of the spelling of its implementation.",
+      "outcome_caveat": "The image checks establish decodability and dimensions. Visual composition and every browser rendering remain separate questions.",
+      "verification": {
+        "pr_head": "730d0e33cf9ec3dfe7876db82cb45605498d544f",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/29112562780/job/86428154001"
+      }
+    },
+    {
+      "number": 13,
+      "title": "Property-test Markdown frontmatter parsing",
+      "url": "https://github.com/adewale/pythonbyexample/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated property-testing upgrade",
+      "weakness": "Fixed examples exercised the TOML/Markdown parser without systematically varying escaped metadata, Unicode, Markdown contents and frontmatter height.",
+      "attempted_remedy": "Generate valid structured metadata independently of arbitrary Markdown bodies. Compare the production parser with the generated expectations and keep an explicit delimiter regression.",
+      "test_paths": [
+        "tests/test_parser_properties.py"
+      ],
+      "diff_evidence": "@given generates up to six extra metadata fields. @example includes quotes, a backslash and a later Markdown +++ line. The property separately asserts exact metadata, body and starting line len(frontmatter_lines) + 3.",
+      "transferable_rule": "Generate valid structured inputs from an expected model, vary adjacent grammars independently, and assert both sides of the boundary.",
+      "outcome_caveat": "The author reports 5,000 generated examples and two killed parser mutations. The hosted Verify result corroborates the ordinary passing suite. The property focuses on valid frontmatter.",
+      "verification": {
+        "pr_head": "df6fb8c813bfe666f9baea2bc3dd7f06e3c7813e",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/35887531208/job/107271383903"
+      }
+    },
+    {
+      "number": 15,
+      "title": "Lock production Python packages and refresh dependencies",
+      "url": "https://github.com/adewale/pythonbyexample/pull/15",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to test/production parity and brittle version assertions",
+      "weakness": "Passing tests used package versions that could differ from deployment. A hard-coded Wrangler version also made valid pinned upgrades fail the toolchain test.",
+      "attempted_remedy": "Compare deployment and test lockfiles by package and version, enforce deployment-lock stability after dependency sync, and assert a consistent exact pin across npm manifests.",
+      "test_paths": [
+        "tests/test_dependency_locks.py",
+        "tests/test_app.py",
+        ".github/workflows/verify.yml",
+        "Makefile"
+      ],
+      "diff_evidence": "The new test requires a nonempty production package list and reports every missing or different uv.lock version. A literal 4.137.0 assertion becomes an exact-version pattern and equality with both the lockfile root and resolved Wrangler version.",
+      "transferable_rule": "Assert the invariant behind a pin and compare the packages actually tested with the versions selected for deployment.",
+      "outcome_caveat": "Lockfile equality establishes dependency-version parity. Platform behavior still needs runtime coverage.",
+      "verification": {
+        "pr_head": "467b405d32b225f989a2e28ca2f84cbe36b8e7d3",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/35970144301/job/107537688109"
+      }
+    },
+    {
+      "number": 17,
+      "title": "Bound the Turnstile retry loop and prove the production secret",
+      "url": "https://github.com/adewale/pythonbyexample/pull/17",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded repair to an existing deployment smoke and browser scenario",
+      "weakness": "The existing deploy smoke bypassed a provider integration, so its success gave no signal about configuration failures. The browser's successful retry case missed repeated rejection.",
+      "attempted_remedy": "Add a deployment probe that distinguishes provider outcomes and a bounded browser scenario for persistent rejection.",
+      "test_paths": [
+        "scripts/smoke_deployment.py",
+        "tests/test_smoke_deployment.py",
+        "scripts/check_browser_layout.mjs"
+      ],
+      "diff_evidence": "test_bad_secret_fails_smoke_even_though_bypassed_runs_pass makes the earlier false green explicit. The browser fixture caps a regressed loop and requires one challenge per Run, a terminal failure message and a cleared busy state.",
+      "transferable_rule": "Pair bypassed smoke checks with a narrowly scoped check of the dependency they skip. Bound failure simulations and assert terminal state.",
+      "outcome_caveat": "The credential probe depends on deployment configuration. The author notes that it cannot establish site-key pairing or permitted production hostnames.",
+      "verification": {
+        "pr_head": "544395ab219f2dd7cb85395c32c7136d53b259dd",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/36233799285/job/108381780745"
+      }
+    },
+    {
+      "number": 19,
+      "title": "Draw figures from their cells, paint them with theme tokens, and check figure content",
+      "url": "https://github.com/adewale/pythonbyexample/pull/19",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded expansion of existing diagram contracts",
+      "weakness": "Geometry-only figure checks let labels diverge from their teaching examples. A bytes diagram had doubled escapes and values absent from the page.",
+      "attempted_remedy": "Run figure-content checks against the rendered labels and the attached example source. Also add a minimum-arrow-length contract.",
+      "test_paths": [
+        "tests/test_marginalia_geometry.py",
+        "tests/test_app.py"
+      ],
+      "diff_evidence": "FigureContentContract rejects doubled backslashes in all rendered text. It unescapes labels on each attachment and requires labels containing backslashes to occur in that slug's Markdown. A separate contract checks recorded arrow lengths against ARROW_MIN.",
+      "transferable_rule": "Test the meaning of displayed data against its source as well as testing its geometry.",
+      "outcome_caveat": "The source-faithfulness rule covers escape-bearing labels. This PR also introduced literal CSS assertions that #28 later replaced.",
+      "verification": {
+        "pr_head": "63579cb5d8cf2fe4fed14c93f726706225843d54",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/38139850744/job/114471276433"
+      }
+    },
+    {
+      "number": 20,
+      "title": "Measure rendered styles in the browser, smoke-test deploys, warn before waivers expire",
+      "url": "https://github.com/adewale/pythonbyexample/pull/20",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated test-quality audit and deletion",
+      "weakness": "CSS/JS substring assertions overfit implementation spelling and missed rendered regressions. A pathname sampled after 50 ms could miss an attempted navigation. Migration tests required literal spec phrases and their word order.",
+      "attempted_remedy": "Replace source-text checks with computed styles, browser interactions and navigation events. Remove completed migration-wording checks and keep the live contributor command contract.",
+      "test_paths": [
+        "tests/test_app.py",
+        "tests/test_markdown_migration_prereqs.py",
+        "scripts/check_browser_layout.mjs",
+        "Makefile"
+      ],
+      "diff_evidence": "The browser forces :active and reads computed transforms, measures contrast in both themes, and counts navigate events. Deleted wording checks include comparing spec.index('Red') with spec.index('Green'). Post-deploy smoke also became part of manual deployment.",
+      "transferable_rule": "Observe a real user action or rendering result at the layer that can see it. Delete process-wording assertions once their behavior is covered elsewhere.",
+      "outcome_caveat": "Hosted Verify exercised a local Worker. The deployment smoke requires an actual release. Two figure CSS-text checks from #19 were retained and then removed in #28.",
+      "verification": {
+        "pr_head": "8eb6500a37ffaf249bf63db21fc4d7ce33e6ef5d",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/38144606308/job/114485225954"
+      }
+    },
+    {
+      "number": 23,
+      "title": "Verify request limits and Turnstile behavior through runtime boundaries",
+      "url": "https://github.com/adewale/pythonbyexample/pull/23",
+      "state": "open",
+      "merged": false,
+      "classification": "Dedicated test replacement, open",
+      "weakness": "Body-limit checks merely looked for argument and comparison text in source. A Turnstile keyword list could pass even if the configured behavior was disconnected.",
+      "attempted_remedy": "Exercise the bridge and the Worker's cap forwarding. Remove the redundant keyword checklist while retaining real policy and session tests.",
+      "test_paths": [
+        "tests/test_app.py",
+        "tests/test_main_observability.py",
+        "tests/test_worker_asgi_bridge_scope.py"
+      ],
+      "diff_evidence": "Deleted test_bridge_has_pre_asgi_body_cap_hook. Its new test asserts a 413 and that the application never ran. Another test records forwarding from three Worker request paths. The keyword checklist is removed while assertions against the actual policy remain.",
+      "transferable_rule": "Verify enforcement and forwarding through executable boundaries and retain focused configuration assertions where the value is itself the contract.",
+      "outcome_caveat": "The PR was open. The final diff adds an oversized fake request and verifies cap forwarding with doubles. The PR description's broader boundary matrix cannot be credited as newly added from this diff.",
+      "verification": {
+        "pr_head": "3fece41e4ac9c203b13283dd18ffdd38e1863e3c",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/42314653205/job/128224203678"
+      }
+    },
+    {
+      "number": 28,
+      "title": "Replace figure CSS-text tests with rendered color contracts",
+      "url": "https://github.com/adewale/pythonbyexample/pull/28",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated replacement of two existing CSS-text tests",
+      "weakness": "A token substring could match a longer token and accept a missing colour. Literal declaration strings also rejected equivalent CSS colour notation.",
+      "attempted_remedy": "Delete the two source-text figure palette tests and compare resolved tokens, actual SVG paint and light/dark contrast in the browser.",
+      "test_paths": [
+        "tests/test_app.py",
+        "tests/test_marginalia_geometry.py",
+        "scripts/check_browser_layout.mjs",
+        "scripts/figure_theme_contract.mjs"
+      ],
+      "diff_evidence": "Removed test_dark_mode_recolours_marginalia_figures_through_tokens and test_site_css_defines_every_token_in_both_schemes. Browser code imports the grammar palettes, resolves CSS values with getComputedStyle, checks painted strokes/fills against those palettes, and verifies contrast and transparent backgrounds.",
+      "transferable_rule": "Validate semantic equivalence by pairing a change that should pass with a fault that must fail. Inspect the consumer's resolved value.",
+      "outcome_caveat": "The author reports a missing dark accent failed and an equivalent RGB spelling passed on the values page. The targeted probe sampled one figure with 13 painted attributes.",
+      "verification": {
+        "pr_head": "c6a273bb52d3285656a34e7cf5e1007c7a949d3b",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/43626432719/job/132543180054"
+      }
+    },
+    {
+      "number": 44,
+      "title": "Show the prose readers were missing, fix the run loop, and stop loading third-party scripts",
+      "url": "https://github.com/adewale/pythonbyexample/pull/44",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded whole-project verification upgrade",
+      "weakness": "The catalog passed under host CPython without running its programs through the learner-facing Worker. Parsed introductions could disappear during rendering. Rubric scores could improve simply by adding print calls or familiar names.",
+      "attempted_remedy": "Add a catalog-wide Worker/output check to make verify, check rendered introductions, and test that superficial tokens cannot inflate rubric scores.",
+      "test_paths": [
+        "Makefile",
+        "scripts/check_runtime_examples.py",
+        "tests/test_runner_and_http.py",
+        "tests/test_quality_checks.py",
+        "scripts/check_browser_layout.mjs"
+      ],
+      "diff_evidence": "Each program is posted through the local Worker and the rendered output panel is compared with expected_output after trimming trailing newlines. For explicitly limited programs, the gate checks the displayed explanation. A scorer test compares identical arithmetic with and without superficial signals.",
+      "transferable_rule": "Run representative artifacts end to end on the runtime users receive. State what an unsupported case should show and test that cosmetic tokens cannot raise a score.",
+      "outcome_caveat": "At the head, 106 of 110 programs used host CPython to generate expected_output. Comparing the Worker with a different runtime checks parity. Four authored-output programs took the explicit sandbox-limit branch. Hosted Verify passed. The author reports 110/110 cases and says individual fix reverts were not all tried.",
+      "supporting_urls": [
+        "https://github.com/adewale/pythonbyexample/blob/cb8b029a95e4dd6e2b1aee24e1d28884e0b4d5f3/src/example_loader.py#L150-L152",
+        "https://github.com/adewale/pythonbyexample/blob/cb8b029a95e4dd6e2b1aee24e1d28884e0b4d5f3/src/example_sources_data.py"
+      ],
+      "verification": {
+        "pr_head": "cb8b029a95e4dd6e2b1aee24e1d28884e0b4d5f3",
+        "hosted_check": "verify",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/pythonbyexample/actions/runs/43626737364/job/132544172494"
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        16,
+        21,
+        22,
+        24,
+        25,
+        26,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        43,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "reason": "Dependency or GitHub Action version bumps only. This includes Hypothesis bumps where only uv.lock changed."
+    },
+    {
+      "numbers": [
+        27,
+        42
+      ],
+      "reason": "Wrangler security updates changed package.json and package-lock.json. The verification approach stayed the same."
+    },
+    {
+      "numbers": [
+        4
+      ],
+      "reason": "Footer link, CSS and asset manifest."
+    },
+    {
+      "numbers": [
+        7
+      ],
+      "reason": "Search ranking checks accompanied the first implementation of search, and banner-anchor changes followed newly supported positions. The patch shows ordinary feature coverage."
+    },
+    {
+      "numbers": [
+        10,
+        11
+      ],
+      "reason": "Privacy-route coverage and deployment preflight in #10, then configuration assertions for disabled preview URLs in #11. Both followed changed product or deployment requirements."
+    },
+    {
+      "numbers": [
+        12,
+        41
+      ],
+      "reason": "Ruff formatting/rule updates and workflow action-pinning static lint, respectively."
+    },
+    {
+      "numbers": [
+        14
+      ],
+      "reason": "Closed unmerged. The two property-testing commits 4897be1 and 2011c09 were shared with #13. Its sole additional commit 4b6c21f only bumped Wrangler and the corresponding literal version pin. Counted the property work once under #13.",
+      "url": "https://github.com/adewale/pythonbyexample/pull/14"
+    }
+  ],
+  "limitations": [
+    "Outcome evidence consists of final PR diffs and hosted check records on the named PR heads. Local mutation results and counts quoted from PR authors were not independently rerun.",
+    "GitHub's checks API corroborated the hosted Verify job conclusions. The #44 run lists a successful local Worker startup and Verify step. Its per-example run count comes from the author. Production deployments and credentials were outside this review."
+  ]
+}

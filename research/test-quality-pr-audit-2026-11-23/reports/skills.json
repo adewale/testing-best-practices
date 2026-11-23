@@ -1,0 +1,15 @@
+{
+  "repository": "adewale/skills",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/skills/pulls?state=all&per_page=100&page=1",
+      "count": 0,
+      "exhausted": true
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": [],
+  "verification": "GitHub GraphQL independently returned repository.pullRequests.totalCount = 0 for adewale/skills. The count covers PRs targeting this fork."
+}

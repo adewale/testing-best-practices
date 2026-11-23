@@ -1,0 +1,93 @@
+{
+  "repository": "adewale/cf-workers-design-system",
+  "total_prs": 4,
+  "pages_checked": 2,
+  "enumeration": {
+    "url": "https://api.github.com/repos/adewale/cf-workers-design-system/pulls?state=all&per_page=100&page=1",
+    "page_sizes": [
+      4,
+      0
+    ],
+    "all_titles_and_bodies_reviewed": true,
+    "changed_file_pages": "Complete GitHub REST /pulls/{number}/files inventories on one page per PR. File counts for #1 through #4 were 7, 5, 3 and 1. Both candidate diffs and the two workflow-only changes were inspected."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Validate built documents against their schemas and test the built site in workerd, gating deploy on both",
+      "url": "https://github.com/adewale/cf-workers-design-system/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit verification audit and consolidation of #2",
+      "weakness": "The site published schemas for its manifest and agent index. The build-and-deploy workflow never checked the generated documents against those schemas or exercised them through the Worker.",
+      "attempted_remedy": "Validate both built JSON documents against the published schemas, fold in #2’s nine Worker tests, and run both checks between building and publishing in the existing deploy job. The final commit removed #2’s standalone PR test workflow.",
+      "test_paths": [
+        "scripts/validate-schemas.mjs",
+        "test/worker.test.mjs",
+        ".github/workflows/deploy.yml",
+        "package.json"
+      ],
+      "diff_evidence": [
+        "scripts/validate-schemas.mjs:16–46 pairs dist/manifest.json and dist/agent-index.json with their respective schemas, compiles each with strict Ajv 2020 and allErrors, and exits nonzero for missing or invalid documents.",
+        ".github/workflows/deploy.yml adds npm test and npm run validate:schemas immediately before npx wrangler deploy. In package.json the direct npm run deploy script adds only schema validation, so the Worker test gate applies to the workflow.",
+        "GitHub’s PR commit inventory contains #2’s 807c4a5, the folding merge 430582d, the deploy gate b9e320e, and the test-workflow removal 7c8efa0. test/worker.test.mjs has the same blob on both PR heads."
+      ],
+      "transferable_rule": "Validate built artifacts against published consumer contracts and exercise cross-file behavior at runtime. When consolidating checks, name which events and entry points still execute each one.",
+      "outcome": "Merged 2026-10-11. On the merge commit’s push workflow, both the Worker test step and the schema step succeeded. The subsequent Wrangler deployment failed. The two checks had no automatic PR trigger in the merged version.",
+      "outcome_evidence": [
+        "https://github.com/adewale/cf-workers-design-system/actions/runs/38185401096/job/114606525541",
+        "https://github.com/adewale/cf-workers-design-system/pull/1/commits"
+      ],
+      "verification_caveat": "CI confirms step outcomes. The nine-mutant score comes from the author of #2 and is the same experiment, not a second independent result."
+    },
+    {
+      "number": 2,
+      "title": "Test audit: test the built site through the real Worker in workerd",
+      "url": "https://github.com/adewale/cf-workers-design-system/pull/2",
+      "state": "closed",
+      "merged": false,
+      "classification": "Explicit audit of a missing runtime test tier",
+      "weakness": "The base tree had only a build-and-deploy workflow, no test script, and no test files. A defect in routing, asset rewrites, negotiation, or a published digest could leave the build green. In the author’s initial test, following redirects made the /index.html negotiation check pass via the / handler.",
+      "attempted_remedy": "Add nine Node tests against the built Worker and its real Static Assets layer in workerd. Disable automatic redirects in the GET helper and add a PR/push/manual test workflow.",
+      "test_paths": [
+        "test/worker.test.mjs",
+        ".github/workflows/test.yml",
+        "package.json"
+      ],
+      "diff_evidence": [
+        "test/worker.test.mjs:17–39 requires a built manifest, starts Wrangler on a random port with persistence disabled, disposes it afterward, and sets redirect: 'manual' on requests.",
+        "Lines 42–80 derive routes from the served manifest, agent index and examples, require nonempty entries/resources, check each route’s own status, and compare alias responses with canonical source text.",
+        "Lines 89–125 request both / and /index.html, assert 200 and site.md for negotiated Markdown, verify Vary: Accept, and include an off-root negative control. Lines 156–165 recompute SHA-256 from the served skill text and compare it with the advertised digest.",
+        ".github/workflows/test.yml:26–33 installs dependencies, builds, then executes npm test. The baseline package.json and sole workflow at 1cf1d05 contained no test step."
+      ],
+      "transferable_rule": "Test each advertised HTTP route’s own response with redirect following disabled when direct service is promised. Use a real runtime for rewrite behavior. For a hand-planted behavioral defect, check which assertion failed before counting a nonzero process exit as detection.",
+      "outcome": "Closed without a GitHub merge of this PR. Its head commit and exact test file entered the default branch through #1. A PR workflow on 807c4a5 built the site and passed the Worker test step.",
+      "outcome_evidence": [
+        "https://github.com/adewale/cf-workers-design-system/actions/runs/37108248307/job/111160891183",
+        "https://github.com/adewale/cf-workers-design-system/pull/1/commits"
+      ],
+      "verification_caveat": "The author reported 9/9 hand-planted bugs detected after correcting two malformed mutations that caused startup errors, and after disabling redirect following for a surviving /index.html mutation. The available passing CI run verifies the baseline suite only. The mutation campaign was not independently rerun."
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 3,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/cf-workers-design-system/pull/3",
+      "state": "closed",
+      "merged": true,
+      "reason": "Pins GitHub Actions and adds a zizmor check for mutable workflow references. Its documented probes validate the new supply-chain policy. The diff changes workflow/dependency configuration and leaves application tests and their execution intact."
+    },
+    {
+      "number": 4,
+      "title": "Bump the github-actions group with 2 updates",
+      "url": "https://github.com/adewale/cf-workers-design-system/pull/4",
+      "state": "open",
+      "merged": false,
+      "reason": "Dependabot updates only the two pinned checkout/setup-node versions in deploy.yml. Mentions of tests occur in copied upstream release notes."
+    }
+  ],
+  "limitations": [
+    "The two matches overlap. Count the Worker suite and its mutation campaign once when aggregating evidence."
+  ]
+}

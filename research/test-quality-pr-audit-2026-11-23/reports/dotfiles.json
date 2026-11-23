@@ -1,0 +1,14 @@
+{
+  "repository": "adewale/dotfiles",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/dotfiles/pulls?state=all&per_page=100&page=1",
+      "returned": 0,
+      "evidence": "GitHub returned an empty array on the first page with all states and no date or author filters."
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

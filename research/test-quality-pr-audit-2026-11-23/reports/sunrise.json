@@ -1,0 +1,182 @@
+{
+  "repository": "adewale/sunrise",
+  "total_prs": 9,
+  "pages_checked": {
+    "pull_requests": "GitHub REST state=all, per_page=100. Page 1 returned #9 through #1 and page 2 returned zero. No author or date filter.",
+    "changed_files": "Full paginated filename inventory cross-checked against REST files for each PR. All 110 file entries fit within one 100-entry page per PR.",
+    "changed_files_by_pr": {
+      "1": 51,
+      "2": 10,
+      "3": 14,
+      "4": 18,
+      "5": 6,
+      "6": 6,
+      "7": 1,
+      "8": 3,
+      "9": 1
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Adopt Vite-backed Inertia runtime",
+      "url": "https://github.com/adewale/sunrise/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in a runtime migration",
+      "weakness": "The Node test double interpreted SQL with regular expressions. Browser smoke tests injected server-rendered HTML with page.setContent, and route tests searched the client bundle for strings such as history.pushState. These checks could pass with a broken SQL predicate or a client that failed to hydrate.",
+      "attempted_remedy": "Remove the hand-written D1 double, run existing routes against migrations in workerd, and drive Chromium through a built Vite preview. Observe navigation, document loads and the theme control after a page change.",
+      "test_paths": [
+        "test/memory-db.ts",
+        "test/setup.workers.ts",
+        "test/contract.test.ts",
+        "test/app.test.ts",
+        "test/playwright-smoke.test.ts",
+        "test/e2e-navigation.test.ts",
+        "vitest.config.ts"
+      ],
+      "diff_evidence": [
+        "The PR deletes the 83-line SQL interpreter. setup.workers.ts resets the bindings and applies D1 migrations. Existing route tests replace app.request with SELF.fetch.",
+        "app.test.ts removes the client-source search for X-Inertia and history.pushState. The browser navigation test clicks Settings, checks the surviving window marker and document request count, then toggles the theme on the new view."
+      ],
+      "transferable_rule": "Exercise the production engine where it enforces the contract, and make the browser perform the interaction that can break.",
+      "outcome": "Merged. The PR lists npm run ship-check. GitHub returned zero check runs for PR head 18743f8. The runtime under test was local workerd and Chromium."
+    },
+    {
+      "number": 2,
+      "title": "Make discovery deduplication deterministic",
+      "url": "https://github.com/adewale/sunrise/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in a discovery change",
+      "weakness": "Properties on helpers without production callers missed the live deduplicator. Permutation invariance, uniqueness and idempotence also admitted a deterministic wrong winner. A clean runner could fail before executing browser tests.",
+      "attempted_remedy": "Generate duplicate records for production dedupeChanges and assert the preferred record in both input orders using explicit source pairs, recency and malformed dates. Exercise the Vite port parser against colorized output and install Chromium in CI.",
+      "test_paths": [
+        "test/scanner.test.ts",
+        "test/classifier.test.ts",
+        "test/preview-port.test.ts",
+        "test/browser-globalSetup.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "test/scanner.test.ts compares dedupeChanges([newer, older]) and the reverse order to an independently chosen winner even when the less specific source is newer. Distinct subjects include 1960, 1970 and an invalid date.",
+        "The workflow runs npm ci, installs Chromium with its system dependencies and runs verify. The preview test expects port 4173 from an ANSI-colored Vite banner."
+      ],
+      "transferable_rule": "Pair algebraic properties with examples of the externally specified winner and confirm that the function under test serves a production caller.",
+      "outcome": "Merged. The GitHub head job passed npm ci, Chromium installation and npm run verify. The reported deaths of the least-specific and oldest-first mutations were local experiments.",
+      "verification_url": "https://github.com/adewale/sunrise/actions/runs/37869610605/job/113624415277"
+    },
+    {
+      "number": 3,
+      "title": "Add a People panel for threads waiting on or for other people",
+      "url": "https://github.com/adewale/sunrise/pull/3",
+      "state": "open",
+      "merged": false,
+      "classification": "Test-quality repair embedded in an open feature PR",
+      "weakness": "The existing ETag test used an empty notification list, counted calls and checked noChange. It left the fate of existing cards unobserved when a separate source changed.",
+      "attempted_remedy": "Extend scanner scenarios through two discovery passes and read the stored cards. Exercise retention across independent sources and repositories, along with deletion when an item actually disappears.",
+      "test_paths": [
+        "test/scanner.test.ts"
+      ],
+      "diff_evidence": [
+        "The previous calls > 1 assertion used an empty response. One new scenario expects both ‘My open PR’ and ‘Second mention’ after another endpoint changes. Another expects an initially present review card to disappear.",
+        "A two-repository scenario expects the exact workflow-failure repository list ['ade/a', 'ade/b']. PR #3 removes conditional requests, so the differential fixtures answer 304 only if an older implementation still sends the header. The People panel tests are separate feature coverage."
+      ],
+      "transferable_rule": "Test reconciliation with independently changing sources. Assert both the retained and removed records from storage after the second scan.",
+      "outcome": "Open. The separate scanner repair is commit 3f0dcde. GitHub returned zero check runs for that head. PR #5 describes a separate local probe on this branch."
+    },
+    {
+      "number": 4,
+      "title": "Preserve incomplete GitHub snapshots and repair cost-neutral discovery verification",
+      "url": "https://github.com/adewale/sunrise/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit verification repair alongside snapshot reconciliation",
+      "weakness": "Checking that an array did not contain every stale kind could pass when only one kind disappeared. Empty ETag fixtures and aggregate counts also missed cross-repository deletion, incomplete-to-complete recovery and queued IDs pointing to absent database rows.",
+      "attempted_remedy": "Assert the exact surviving IDs after mixed complete, partial, cached and unscanned sources. Drive a partial-to-complete recovery, consume the queued messages, compare their change IDs to the persisted row and check both runs' processed counts. Incorporate the queue, cron, expiry and retry audit from #5.",
+      "test_paths": [
+        "test/scanner.test.ts",
+        "test/queue.test.ts",
+        "test/queue-roundtrip.test.ts",
+        "test/scheduled.test.ts",
+        "test/session.test.ts",
+        "test/db.test.ts",
+        "test/manual-labels.test.ts",
+        "test/version-sync.test.ts",
+        "vitest.config.ts",
+        "scripts/ship-check.mjs"
+      ],
+      "diff_evidence": [
+        "The scanner test replaces not.toEqual(arrayContaining(...)) with the exact survivor list cached-alert, keep-mention, old-assigned and unscanned-alert. The recovery test asserts that the same persisted change ID is queued twice and that both scans finish at [1, 1].",
+        "PR history contains both #5 commits. The final diff uses virtual retry timers and places pure retry/version tests in the existing Node project. The round-trip fixture uses two messages, below the production ten-message chunk boundary."
+      ],
+      "transferable_rule": "Express destructive reconciliation as an exact survivor set and verify downstream IDs against durable state. A smaller fixture should still cross any boundary it claims to protect.",
+      "outcome": "Merged. The head GitHub job passed Chromium installation and npm run verify. The final two-message round trip covers loss or duplication within one producer batch. It does not reproduce #5's twelve-message, second-batch check.",
+      "verification_url": "https://github.com/adewale/sunrise/actions/runs/37873543919/job/113636774840"
+    },
+    {
+      "number": 5,
+      "title": "Test audit: make queue, cron, session and D1-retry tests catch real bugs",
+      "url": "https://github.com/adewale/sunrise/pull/5",
+      "state": "closed",
+      "merged": false,
+      "classification": "Explicit test audit, closed and incorporated into #4",
+      "weakness": "The queue acknowledgment loop succeeded on an empty list, the cron fixture had one session, and happy paths missed expired sessions, retry classification and failures inside a mixed queue batch. A fixture inventory test pinned 50 rows and keys.",
+      "attempted_remedy": "Compare queued and acknowledged IDs to persisted changes, run a failing message beside a successful one, seed competing sessions, check route and database effects of expiry, exercise the retry budget, and delete the template inventory assertion.",
+      "test_paths": [
+        "test/queue-roundtrip.test.ts",
+        "test/queue.test.ts",
+        "test/scheduled.test.ts",
+        "test/session.test.ts",
+        "test/db.test.ts",
+        "test/manual-labels.test.ts"
+      ],
+      "diff_evidence": [
+        "The twelve-notification round trip stubs delivery during manual replay to avoid a second consumer. It compares exact acknowledgment IDs and queue payload IDs to persisted rows. The mixed batch retries only 'bad', acknowledges only 'good' and records a failed D1 change.",
+        "Cron now seeds an older owner, newer mixed-case owner and still-newer other user. The authorization-header set must contain only the selected owner's token. An expired POST /refresh must leave zero scan rows.",
+        "The retry tests check transient recovery, permanent errors on the first call and the final error at exhaustion. The deleted test asserted the template length, generated candidate IDs and a property list."
+      ],
+      "transferable_rule": "Give each plausible wrong selection a distinct observable result. Feed a real handler a mixed-success batch, assert exact outcomes per item, and remove fixture inventory checks with no consumer contract.",
+      "outcome": "Closed unmerged as a PR. Both commits a4d3550 and 1269c47 appear in merged #4. The author reports the committed test cases detected 9/9 planted faults versus 1/9 before. The headline 10/10 counts an ETag probe absent from this PR's diff. The head has zero GitHub check runs.",
+      "verification_url": "https://github.com/adewale/sunrise/pull/5#issuecomment-6002448320"
+    },
+    {
+      "number": 7,
+      "title": "ci: use supported Ubuntu for locked Playwright",
+      "url": "https://github.com/adewale/sunrise/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Repair of the existing browser-test environment",
+      "weakness": "The verify job followed ubuntu-latest while the repository locked Playwright and playwright-core to 1.59.1. The PR identifies the move to Ubuntu 26.04 as unsupported by that version.",
+      "attempted_remedy": "Pin verify to the supported Ubuntu 24.04 image so the existing Chromium install and suite can execute.",
+      "test_paths": [
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "The sole changed line replaces runs-on: ubuntu-latest with runs-on: ubuntu-24.04. The head lockfile records Playwright 1.59.1. The head job completed both Chromium installation and npm run verify."
+      ],
+      "transferable_rule": "When a browser gate depends on a supported host image, verify the locked browser tool and runner together.",
+      "outcome": "Merged. GitHub confirms success on the pinned head. The earlier base commit had also passed when it ran, so the head results establish operation on Ubuntu 24.04 without independently demonstrating a prior 26.04 failure.",
+      "verification_url": "https://github.com/adewale/sunrise/actions/runs/41527646237/job/125559401270"
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 6,
+      "reason": "Toolchain maintenance. Existing Workers setup and Vitest configuration switch import paths from the deprecated pool to the maintained plugin. Assertions and lanes are identical."
+    },
+    {
+      "number": 8,
+      "reason": "Adds a workflow lint policy for immutable GitHub Action references and grouped update scheduling."
+    },
+    {
+      "number": 9,
+      "reason": "Dependabot advances the two action SHAs in the CI workflow."
+    }
+  ],
+  "limitations": [
+    "Reviewed titles, bodies, file inventories, relevant changed-file patches, and GitHub check records. No test suite or mutation campaign was rerun for this audit.",
+    "GitHub omitted hunks for #6's package-lock.json and generated worker-configuration.d.ts. Both were present in the full inventory. All nine PRs had complete inventories, and the test and configuration patches cited here were available.",
+    "#4 and #5 share commits. Their PRs represent separate attempts with overlapping repairs. The twelve- and two-message tests cover different producer chunk behavior, and neither fixture exercises the external 100-message platform limit."
+  ]
+}

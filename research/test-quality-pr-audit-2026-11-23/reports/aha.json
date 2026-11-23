@@ -1,0 +1,649 @@
+{
+  "repository": "adewale/aha",
+  "audited_on": "2026-11-23",
+  "total_prs": 26,
+  "pages_checked": 2,
+  "pagination": {
+    "collection_url": "https://api.github.com/repos/adewale/aha/pulls?state=all&per_page=100&page=1",
+    "pulls_per_page": [
+      26,
+      0
+    ],
+    "states": {
+      "open": 4,
+      "closed_unmerged": 1,
+      "merged": 21
+    },
+    "filters": "All dates, states, base branches and authors.",
+    "changed_file_pages": 30,
+    "changed_file_entries": 1023,
+    "multipage_file_inventories": {
+      "2": 122,
+      "13": 125,
+      "14": 115,
+      "16": 188
+    },
+    "notes": "Screened all 26 PR titles and bodies and all changed-file inventories. Read targeted test, fixture, workflow and runner diffs and relevant commit messages. Five large added files had no inline patch: the new architecture HTML in #4 and four vendored sample JSONL fixtures in #8; the relevant test-code patches were available."
+  },
+  "scope": "Includes an existing test-suite or harness weakness repaired within a larger feature PR when the diff or commit history identifies a specific test failure mode. On-branch repairs are identified. Scheduling-only cost reductions are recorded among exclusions.",
+  "matching_prs": [
+    {
+      "number": 22,
+      "title": "Verification and test audit: require all MCP conformance legs, bidirectional fuzz guard, strict corpora, and stronger append-only, ambient-time and depot no-delete gates",
+      "url": "https://github.com/adewale/aha/pull/22",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:08Z",
+      "author": "adewale",
+      "classification": "suite audit",
+      "weakness": "CI could silently skip conformance languages or reference servers, vendored corpus tests could skip missing data, and the fuzz-list check missed absent targets or the right name in the wrong package. A wall-time bound could time out while a file-backed fuzz case was finishing.",
+      "remedy": "Installed locked conformance prerequisites and made all eight legs mandatory in CI. Five named corpus tests now fail on missing or empty inputs. Checked fuzz targets against commands in both directions by package and target and added pass/fail examples. Bounded the archive round-trip to 300 iterations by default. Incorporated #23’s three checks. Cleared the Go test cache for manual mutation runs and added controls to restrict their scope.",
+      "evidence": [
+        {
+          "path": "scripts/verify.sh",
+          "detail": "Mandatory mode turns a missing MCP leg into failure. The same diff replaces the archive fuzz deadline with a single-worker iteration budget.",
+          "url": "https://github.com/adewale/aha/blob/4c5fb1d1484b2d503be4b1e4210c4bb17d79c7fb/scripts/verify.sh#L178"
+        },
+        {
+          "path": "internal/adapters/codex_native_test.go",
+          "detail": "The vendored Codex corpus must contain usable files.",
+          "url": "https://github.com/adewale/aha/blob/4c5fb1d1484b2d503be4b1e4210c4bb17d79c7fb/internal/adapters/codex_native_test.go#L131"
+        },
+        {
+          "path": "internal/testquality/infrastructure_isolation_test.go",
+          "detail": "Exercises the inventory checker, including missing and mismatched entries.",
+          "url": "https://github.com/adewale/aha/blob/4c5fb1d1484b2d503be4b1e4210c4bb17d79c7fb/internal/testquality/infrastructure_isolation_test.go#L160"
+        },
+        {
+          "path": "internal/testquality/verify_mutation_test.go",
+          "detail": "Verifies the order of cache clearing and the narrowed package list using recorded tool calls.",
+          "url": "https://github.com/adewale/aha/blob/4c5fb1d1484b2d503be4b1e4210c4bb17d79c7fb/internal/testquality/verify_mutation_test.go#L61"
+        }
+      ],
+      "transferable_rule": "Give a required suite an explicit failure path when its prerequisites or corpus disappear. Reconcile the target inventory in both directions and include wrong-package cases. Choose an iteration budget when completion cost makes a time budget flaky.",
+      "independently_reproduced": false,
+      "verification": "The successful hosted job records Python, TypeScript and Go conformance, the Code Mode workflow, three reference-server subtests with zero skipped, and the 300-iteration archive fuzz command. The author's deliberate fault injections were not repeated in this audit. Both overlapping fuzz guards remained in the PR.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/38141421682",
+      "related_prs": [
+        21,
+        23
+      ],
+      "verified_job_url": "https://github.com/adewale/aha/actions/runs/38141421682/job/114475906546"
+    },
+    {
+      "number": 23,
+      "title": "Test audit: give the append-only, ambient-time and depot no-delete gates teeth",
+      "url": "https://github.com/adewale/aha/pull/23",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "classification": "suite audit, folded into #22",
+      "weakness": "Only entries had a real append-only trigger test, the ambient-time scanner missed package-level expressions and several APIs, and the depot no-delete check covered three named files and trusted any line mentioning tmpDir.",
+      "remedy": "Seeded all seven append-only tables, compared tested tables against live SQLite trigger metadata, attempted UPDATE and DELETE, required the specific rejection and checked row counts. Expanded AST scans, included passing and failing snippets, walked every production Go file in the depot package and keyed allowed removals by argument.",
+      "evidence": [
+        {
+          "path": "internal/corpus/schema_constraints_test.go",
+          "detail": "Checks schema coverage against an independent case list before trials on real rows.",
+          "url": "https://github.com/adewale/aha/blob/31bfbd2f7fc436b5d313247a732f97f30ddcdc23/internal/corpus/schema_constraints_test.go#L80"
+        },
+        {
+          "path": "internal/testquality/cbc_debt_test.go",
+          "detail": "Examples include calls, function values, imports and controls.",
+          "url": "https://github.com/adewale/aha/blob/31bfbd2f7fc436b5d313247a732f97f30ddcdc23/internal/testquality/cbc_debt_test.go#L34"
+        },
+        {
+          "path": "internal/testquality/depot_v2_guard_test.go",
+          "detail": "Exercises known-bad and known-good source forms, including alternate delete selectors and temporary-directory exceptions.",
+          "url": "https://github.com/adewale/aha/blob/31bfbd2f7fc436b5d313247a732f97f30ddcdc23/internal/testquality/depot_v2_guard_test.go#L63"
+        }
+      ],
+      "transferable_rule": "Seed rows that can actually be mutated and reconcile expected tables against the live schema. When replacing a static guard, test violations the old guard caught as well as those it missed.",
+      "independently_reproduced": false,
+      "verification": "The author reports the old suite caught 1 of 12 planted changes and the revised suite caught 12 of 12. This audit confirmed the three-file diff and later successful exact-head CI, but did not rerun the plants. The branch closed unmerged; its work landed in #22. The fake S3 service, TypeScript focus/skip scanner and a fixture-only hash golden were documented follow-ups, not fixes.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/37090755406",
+      "related_prs": [
+        22
+      ]
+    },
+    {
+      "number": 21,
+      "title": "Run every native fuzz target in CI",
+      "url": "https://github.com/adewale/aha/pull/21",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-08T08:49:51Z",
+      "author": "adewale",
+      "classification": "suite audit",
+      "weakness": "Normal Go test execution replayed seeds for all native fuzz targets, while the CI discovery commands omitted three of the eight defined targets.",
+      "remedy": "Added bounded discovery for snapshot manifest decoding, CAS reader verification and redaction. An AST inventory requires a matching package and target command for each native fuzz function.",
+      "evidence": [
+        {
+          "path": "scripts/verify.sh",
+          "detail": "Adds the three missing bounded fuzz commands.",
+          "url": "https://github.com/adewale/aha/blob/655df006d8c5f76eedc44af5364a5339cfdb8170/scripts/verify.sh#L102"
+        },
+        {
+          "path": "internal/testquality/fuzz_inventory_test.go",
+          "detail": "Scans test functions and checks package/target commands.",
+          "url": "https://github.com/adewale/aha/blob/655df006d8c5f76eedc44af5364a5339cfdb8170/internal/testquality/fuzz_inventory_test.go#L13"
+        }
+      ],
+      "transferable_rule": "Check the source inventory against the CI commands. Seed replay and coverage-guided discovery exercise different failure modes.",
+      "independently_reproduced": false,
+      "verification": "The author reports that the new guard named the three omissions on the base. Exact-head hosted CI succeeded. This review did not repeat the base mutation or assess fuzzing effectiveness.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/33345757451",
+      "related_prs": [
+        14,
+        22
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Add source version audit to track adapter fixture coverage",
+      "url": "https://github.com/adewale/aha/pull/18",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "classification": "fixture and test audit",
+      "weakness": "The fixture audit conflated identically spelled keys across producers. For example, Pi’s version indicates schema revision and Claude Code’s indicates the producer release. Coverage had no release-band inventory, and one producer’s case could satisfy another’s.",
+      "remedy": "Keyed classifications by producer plus key path. Generated and checked fixture inventories and version bands. Added tests for cross-producer lookups, hand-edited generated files, extra or missing fixtures and order invariance.",
+      "evidence": [
+        {
+          "path": "internal/adapters/keypath_coverage_test.go",
+          "detail": "Confirms that a match for Pi cannot justify another producer's field.",
+          "url": "https://github.com/adewale/aha/blob/ad558120ce576d091e77b46e199d07f8aa0df9e8/internal/adapters/keypath_coverage_test.go#L79"
+        },
+        {
+          "path": "internal/adapters/source_version_audit_gate_test.go",
+          "detail": "A deliberately edited generated audit must be detected.",
+          "url": "https://github.com/adewale/aha/blob/ad558120ce576d091e77b46e199d07f8aa0df9e8/internal/adapters/source_version_audit_gate_test.go#L52"
+        },
+        {
+          "path": "internal/adapters/fixtureaudit/fixtures_test.go",
+          "detail": "Checks the deletion direction in the fixture inventory.",
+          "url": "https://github.com/adewale/aha/blob/ad558120ce576d091e77b46e199d07f8aa0df9e8/internal/adapters/fixtureaudit/fixtures_test.go#L85"
+        }
+      ],
+      "transferable_rule": "Scope fixture coverage to the producer, version and meaning of a field. Check both missing observations and claims unsupported by the fixtures.",
+      "independently_reproduced": false,
+      "verification": "The proposed change and successful PR-head CI were verified. The PR is open and this review did not rerun its mutation cases. Its bands describe committed samples; they do not establish producer-version support.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/30167280783",
+      "related_prs": [
+        8
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Harden R2 publication, corpus rebuild, progress, and error boundaries",
+      "url": "https://github.com/adewale/aha/pull/14",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-11T20:05:43Z",
+      "author": "adewale",
+      "classification": "test infrastructure fixes in a product PR",
+      "weakness": "Verification built into shared temporary paths, some tests could read ambient config or write repository docs, and the fuzz script referred to two obsolete depot targets. MCP clients could use fallback inputs outside the intended fixture.",
+      "remedy": "Created private per-run workspaces, required the MCP clients to attest their test root, isolated mutating CLI invocations and moved generated-doc writes into explicit commands. Switched to the actual depot fuzz functions and checked named targets against source.",
+      "evidence": [
+        {
+          "path": "scripts/verify.sh",
+          "detail": "Runs verification in isolated directories and replaces the two obsolete depot fuzz arguments.",
+          "url": "https://github.com/adewale/aha/blob/c3d9a1add1d6f8c9bf83b1617165a2a9766cc73c/scripts/verify.sh#L47"
+        },
+        {
+          "path": "internal/testquality/infrastructure_isolation_test.go",
+          "detail": "Also checks the private workspace, attestation and explicit generation contracts.",
+          "url": "https://github.com/adewale/aha/blob/c3d9a1add1d6f8c9bf83b1617165a2a9766cc73c/internal/testquality/infrastructure_isolation_test.go#L35"
+        },
+        {
+          "path": "internal/testquality/cli_test_isolation_test.go",
+          "detail": "Checks that mutating test invocations specify the fixture config.",
+          "url": "https://github.com/adewale/aha/blob/c3d9a1add1d6f8c9bf83b1617165a2a9766cc73c/internal/testquality/cli_test_isolation_test.go#L14"
+        }
+      ],
+      "transferable_rule": "Build the binary and fixtures for the run, scope child processes to them and keep ordinary tests read-only. Cross-check scheduled fuzz targets against definitions.",
+      "independently_reproduced": false,
+      "verification": "The diff and successful PR-head CI were checked. The live R2 smoke outcome is author-reported. This review did not reproduce it or test credential isolation.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/29165715710",
+      "related_prs": [
+        9,
+        21,
+        22
+      ]
+    },
+    {
+      "number": 8,
+      "title": "feat: MCP server, depot lifecycle, adapter rigor, and redaction v1.1",
+      "url": "https://github.com/adewale/aha/pull/8",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-04T19:14:24Z",
+      "author": "adewale",
+      "classification": "adapter and oracle audits in a product PR",
+      "weakness": "Handwritten adapter fixtures missed shapes present in producer samples. Mutation testing identified untested parser branches. The sampled Pi sessions contained no compaction examples, leaving a differential check unable to exercise that logic.",
+      "remedy": "Added an inventory of observed fields and explicit handling decisions, published sample corpora plus narrowly targeted synthetic edge cases, and added four tests for surviving parser/precedence mutations. Compared the production live-context query with a separately implemented reference over real and synthetic inputs.",
+      "evidence": [
+        {
+          "path": "internal/adapters/keypath_coverage_test.go",
+          "detail": "Checks that fields promised by the inventory occur in fixtures.",
+          "url": "https://github.com/adewale/aha/blob/ce08ec785fcca013d7b1ed2e20bfdd2fb6b2d879/internal/adapters/keypath_coverage_test.go#L45"
+        },
+        {
+          "path": "internal/adapters/mutation_survivor_test.go",
+          "detail": "Targets a concrete surviving branch mutation.",
+          "url": "https://github.com/adewale/aha/blob/ce08ec785fcca013d7b1ed2e20bfdd2fb6b2d879/internal/adapters/mutation_survivor_test.go#L43"
+        },
+        {
+          "path": "internal/corpus/live_context_differential_test.go",
+          "detail": "Adds compaction and custom-entry cases omitted from the sampled sessions.",
+          "url": "https://github.com/adewale/aha/blob/ce08ec785fcca013d7b1ed2e20bfdd2fb6b2d879/internal/corpus/live_context_differential_test.go#L260"
+        }
+      ],
+      "transferable_rule": "Inspect what the corpus actually contains. Pair real samples with targeted synthetic cases for absent branches and distinguish a reference derived from a spec from the upstream implementation.",
+      "independently_reproduced": false,
+      "verification": "Commit b46965a reports four tests targeting 14 observed surviving mutants; it did not claim to eliminate all survivors. The reference is a separate Go reading of Pi’s spec, not an upstream runtime oracle. The changes and successful hosted CI were checked; mutants were not rerun.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/26973631705",
+      "related_prs": [
+        7,
+        18,
+        22
+      ],
+      "commit_urls": [
+        "https://github.com/adewale/aha/commit/b46965ad466c83850abe3e98adb5f2887343f058",
+        "https://github.com/adewale/aha/commit/dd46ad175f978ac1e772164948a387699ae063b2"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Add OpenCode adapter and fix Codex modern-rollout parsing, with a read-only smoketest and all-agent fixtures",
+      "url": "https://github.com/adewale/aha/pull/7",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-04T12:49:13Z",
+      "author": "adewale",
+      "classification": "upgrade to adapter fixtures and smoke testing",
+      "weakness": "The original smoke check on this branch could report inconclusive retrieval even when a source yielded no indexed messages. The shared fixtures had missed an already supported Codex format that produced entries with no searchable text.",
+      "remedy": "Measured discoveries, extracted messages and indexed rows separately. Failed when a nonempty source produced no messages or when messages yielded no search rows. Added a modern-format Codex fixture and source-specific needles run through discovery, snapshot, ingest, search and read.",
+      "evidence": [
+        {
+          "path": "scripts/smoketest.sh",
+          "detail": "Checks production status counts and fails on zero extraction/zero searchable rows.",
+          "url": "https://github.com/adewale/aha/blob/bd1a374aebc21e803891d758f1ffd71edb7b3ccd/scripts/smoketest.sh#L248"
+        },
+        {
+          "path": "internal/corpus/e2e_all_sources_test.go",
+          "detail": "Checks per-source needles survive search and read across the whole pipeline.",
+          "url": "https://github.com/adewale/aha/blob/bd1a374aebc21e803891d758f1ffd71edb7b3ccd/internal/corpus/e2e_all_sources_test.go#L25"
+        },
+        {
+          "path": "internal/adapters/adapter_fixture_test.go",
+          "detail": "Adds the modern Codex nested payload to the adapter fixture suite.",
+          "url": "https://github.com/adewale/aha/blob/bd1a374aebc21e803891d758f1ffd71edb7b3ccd/internal/adapters/adapter_fixture_test.go#L74"
+        }
+      ],
+      "transferable_rule": "Require useful output for a known nonempty fixture. Separate a broken pipeline from an arbitrary search term failing to match.",
+      "independently_reproduced": false,
+      "verification": "The PR reports a real 77-entry Codex session produced 12 messages after previously yielding zero. The implementation and successful hosted CI were checked; the author's real history was not accessed. The committed fixtures were synthetic.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/26952544901",
+      "related_prs": [
+        8
+      ],
+      "commit_urls": [
+        "https://github.com/adewale/aha/commit/1ae8c67bd128ada8c46dd8670ad60b85c8a9b7f9"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "MCP server, code-mode TS client, and hardened dashboard — six-SDK conformance",
+      "url": "https://github.com/adewale/aha/pull/3",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-01T13:34:08Z",
+      "author": "adewale",
+      "classification": "audit of an earlier verification approach on the same branch",
+      "weakness": "A client and server checked against one another shared an incorrect framing assumption. Their loopback and manual binary smoke passed even though a real MCP client could not decode the messages. The initial conformance harness also failed cleanup in nested full/CI mode.",
+      "remedy": "Drove the server with independent official SDKs and the TypeScript client against reference servers. Compared SDK and direct dispatch on a shared backend. Fixed the nested cleanup trap to clear after its first use.",
+      "evidence": [
+        {
+          "path": "clients/typescript/test/stdio.conformance.test.ts",
+          "detail": "The TypeScript client exercises independent Python, TypeScript and Go reference servers.",
+          "url": "https://github.com/adewale/aha/blob/46feb3c93c298de41f1e1feb24ea1d3c998d1503/clients/typescript/test/stdio.conformance.test.ts#L54"
+        },
+        {
+          "path": "internal/mcp/tools_test.go",
+          "detail": "Eight cases go through both dispatch paths against one shared backend.",
+          "url": "https://github.com/adewale/aha/blob/46feb3c93c298de41f1e1feb24ea1d3c998d1503/internal/mcp/tools_test.go#L328"
+        },
+        {
+          "path": "scripts/mcp-conformance/client_against_aha.py",
+          "detail": "An official SDK client drives the actual subprocess.",
+          "url": "https://github.com/adewale/aha/blob/46feb3c93c298de41f1e1feb24ea1d3c998d1503/scripts/mcp-conformance/client_against_aha.py#L4"
+        }
+      ],
+      "transferable_rule": "Test wire compatibility with an independently maintained peer in each direction, then exercise the exact full-suite entry point used by CI.",
+      "independently_reproduced": false,
+      "verification": "Commit 91108eb records the self-consistent framing failure. The independent-peer checks were still optional at this point; #22 later made them mandatory in CI. The diff and successful PR-head aggregate CI were checked; the old clients were not rerun.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/26758096192",
+      "related_prs": [
+        9,
+        14,
+        22
+      ],
+      "commit_urls": [
+        "https://github.com/adewale/aha/commit/91108eb37761222e1bc754c47155456963cfcb9a",
+        "https://github.com/adewale/aha/commit/1247dd0dd9a490f601058c29ed395658fad98fea"
+      ]
+    },
+    {
+      "number": 13,
+      "title": "Depot v2: content-addressed snapshots replace full-history bundles (O(delta) push/pull)",
+      "url": "https://github.com/adewale/aha/pull/13",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-12T07:06:02Z",
+      "author": "adewale",
+      "classification": "replacement and audit of storage tests in a product PR",
+      "weakness": "Retiring the v1 store removed its shared driver contract. A local-only failure sweep missed the conditional-write path, and an early CAS fuzz oracle conflated compressed bytes with logical content. Existing architecture drift tests also missed a stale command total and omitted package cards.",
+      "remedy": "Replaced the v1 contract with a side-by-side local/fake-R2 scenario, injected failures across operation/request boundaries and checked state after retry, kept a valid alternative encoding as a fuzz seed, and verified decoded contents independently. Added command and package-card assertions sourced from their real registries.",
+      "evidence": [
+        {
+          "path": "internal/depot/differential_test.go",
+          "detail": "Explicit successor to the deleted v1 contract test.",
+          "url": "https://github.com/adewale/aha/blob/8e834405cc6d2a495350db8384e1bf7f56ab0138/internal/depot/differential_test.go#L21"
+        },
+        {
+          "path": "internal/depot/fault_injection_r2_test.go",
+          "detail": "Exercises partial failure on the fake-backed R2 driver and checks retry convergence.",
+          "url": "https://github.com/adewale/aha/blob/8e834405cc6d2a495350db8384e1bf7f56ab0138/internal/depot/fault_injection_r2_test.go#L88"
+        },
+        {
+          "path": "internal/cas/cas_fuzz_test.go",
+          "detail": "Uses a second decompression to validate successful reads.",
+          "url": "https://github.com/adewale/aha/blob/8e834405cc6d2a495350db8384e1bf7f56ab0138/internal/cas/cas_fuzz_test.go#L22"
+        },
+        {
+          "path": "internal/cli/architecture_html_drift_test.go",
+          "detail": "Extends existing drift checks to the registry and map cards.",
+          "url": "https://github.com/adewale/aha/blob/8e834405cc6d2a495350db8384e1bf7f56ab0138/internal/cli/architecture_html_drift_test.go#L106"
+        }
+      ],
+      "transferable_rule": "Map retired tests to the behaviors the replacement must preserve. To test retries, fail each durable boundary and compare observable state with a fault-free run. Compare decoded content when several encodings are valid.",
+      "independently_reproduced": false,
+      "verification": "The authors report a publication-order bug caught by the fault sweep and a counterexample to the original fuzz oracle. The diffs and successful hosted CI were checked, but the before/after faults were not repeated. Fake R2 evidence does not certify live R2.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/27297787484",
+      "related_prs": [
+        14,
+        21
+      ],
+      "commit_urls": [
+        "https://github.com/adewale/aha/commit/0fa44b2413d418d42c40cbeb807c4d18244afb7b",
+        "https://github.com/adewale/aha/commit/8e834405cc6d2a495350db8384e1bf7f56ab0138"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "feat: add error-cluster analysis for skill discovery",
+      "url": "https://github.com/adewale/aha/pull/9",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-04T22:02:24Z",
+      "author": "adewale",
+      "classification": "verification fixes in a feature PR",
+      "weakness": "The MCP verification command reused existing /tmp binaries without checking whether they came from the current checkout. Missing tsc also bypassed runnable Node tests, and an existing schema drift check read only schema.go.",
+      "remedy": "Built the executables from current source for every conformance run, separated compiler and runtime availability, and discovered table declarations across the corpus package.",
+      "evidence": [
+        {
+          "path": "scripts/verify.sh",
+          "detail": "Replaces executable-exists reuse; the same diff removes the early exit that suppressed Node tests.",
+          "url": "https://github.com/adewale/aha/blob/84519b07e9dbc7ffd71d7b34f2ba0d7c94b77da4/scripts/verify.sh#L124"
+        },
+        {
+          "path": "internal/cli/architecture_html_drift_test.go",
+          "detail": "Walks production files containing schema declarations instead of a single hardcoded file.",
+          "url": "https://github.com/adewale/aha/blob/84519b07e9dbc7ffd71d7b34f2ba0d7c94b77da4/internal/cli/architecture_html_drift_test.go#L213"
+        }
+      ],
+      "transferable_rule": "Check the artifact you just built, run independent legs whenever their own prerequisites exist, and discover the entire scope a drift check claims to cover.",
+      "independently_reproduced": false,
+      "verification": "The diff and green PR-head CI were verified. The shared filenames themselves were subsequently isolated by #14. No stale-binary demonstration was rerun.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/26982109462",
+      "related_prs": [
+        14,
+        16
+      ]
+    },
+    {
+      "number": 16,
+      "title": "Define aha 0.2 Archive/Workspace lifecycle and compatibility boundaries",
+      "url": "https://github.com/adewale/aha/pull/16",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-13T00:31:12Z",
+      "author": "adewale",
+      "classification": "CI completeness fixes in a lifecycle feature PR",
+      "weakness": "Full verification could pass with the TypeScript compiler or Node runtime absent, and previously compiled only production code for Windows, leaving its platform-specific test code unchecked.",
+      "remedy": "Required Node and the locked TypeScript toolchain, installed them in the existing CI job, ran typecheck and runtime tests, and cross-compiled two Windows test binaries. Also added a pinned previous-version executable round trip for archive compatibility.",
+      "evidence": [
+        {
+          "path": "scripts/verify.sh",
+          "detail": "Mandatory TypeScript step fails when the toolchain is missing. The diff adds Windows test compilation.",
+          "url": "https://github.com/adewale/aha/blob/748af25b4b2bbb37fe55bd1cea7001a8ef7791c0/scripts/verify.sh#L121"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "detail": "Installs the locked CI toolchain.",
+          "url": "https://github.com/adewale/aha/blob/748af25b4b2bbb37fe55bd1cea7001a8ef7791c0/.github/workflows/ci.yml#L23"
+        },
+        {
+          "path": "scripts/compat-n-minus-one.sh",
+          "detail": "The previous writer publishes data, the current reader verifies it and a fenced old writer must leave the current archive unchanged.",
+          "url": "https://github.com/adewale/aha/blob/748af25b4b2bbb37fe55bd1cea7001a8ef7791c0/scripts/compat-n-minus-one.sh#L44"
+        }
+      ],
+      "transferable_rule": "Make mandatory language checks fail when their tools are missing. Treat cross-compilation as compile coverage and use a real previous binary to test data compatibility.",
+      "independently_reproduced": false,
+      "verification": "The diff and successful hosted CI were checked. Windows tests were compiled on a different host; that does not establish a Windows runtime pass. Optional MCP conformance legs still existed until #22.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/29213927239",
+      "related_prs": [
+        9,
+        22
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Make depot pull preflight side-effect free",
+      "url": "https://github.com/adewale/aha/pull/15",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-11T22:40:20Z",
+      "author": "adewale",
+      "classification": "flaky fuzz runner fix in a product PR",
+      "weakness": "The archive round-trip fuzz target performs real compressed-file I/O. Multiple workers on constrained hosts could time out in teardown after the wall-clock fuzz budget expired.",
+      "remedy": "Set this target alone to -parallel=1, keeping its inputs, assertions and wall-time budget. #22 records that a subsequent CI run still timed out and switches the target to a fixed operation count.",
+      "evidence": [
+        {
+          "path": "scripts/verify.sh",
+          "detail": "Scopes worker serialization to the filesystem-heavy FuzzWalkBundleRoundTrip target.",
+          "url": "https://github.com/adewale/aha/blob/539f2e0fd83ec3f935d0cc11c20f7dede264ea5b/scripts/verify.sh#L103"
+        }
+      ],
+      "transferable_rule": "Constrain concurrency on resource-heavy fuzz cases and record whether that fixes the flake. A later recurrence matters when evaluating the first remedy.",
+      "independently_reproduced": false,
+      "verification": "The configuration change and green PR-head CI were verified. A later PR explicitly reports the wall-time flake recurred, so this is an attempted mitigation, not evidence of elimination.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/29169054881",
+      "related_prs": [
+        22
+      ],
+      "commit_urls": [
+        "https://github.com/adewale/aha/commit/539f2e0fd83ec3f935d0cc11c20f7dede264ea5b"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Improve serve dashboard and pattern intervention docs",
+      "url": "https://github.com/adewale/aha/pull/11",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-09T13:01:27Z",
+      "author": "adewale",
+      "classification": "property and integration-test audit within a feature branch",
+      "weakness": "The feature branch's unit tests populated derived rows directly and bypassed the real ingest hook. The episode property omitted important outcomes, and a proposed equivalence between a resolved episode and a set resolution timestamp was false when input timestamps were absent.",
+      "remedy": "Exercised a two-stage real ingest where a later success resolves a previously abandoned episode. Added one-way timestamp and ordered-path properties that allow legal missing timestamps.",
+      "evidence": [
+        {
+          "path": "internal/corpus/ingest_failure_episodes_test.go",
+          "detail": "Processes first and resumed source captures through the ingest path.",
+          "url": "https://github.com/adewale/aha/blob/11e973a59da4b765d2262dd37cb8296279e21cb1/internal/corpus/ingest_failure_episodes_test.go#L93"
+        },
+        {
+          "path": "internal/corpus/episodes_test.go",
+          "detail": "Keeps the timestamp implication conditional and checks ordering only when both timestamps are available.",
+          "url": "https://github.com/adewale/aha/blob/11e973a59da4b765d2262dd37cb8296279e21cb1/internal/corpus/episodes_test.go#L392"
+        }
+      ],
+      "transferable_rule": "Test through the production writer when fixture seeding bypasses it. Generate missing fields and write only the direction of implication the contract guarantees.",
+      "independently_reproduced": false,
+      "verification": "Commit 3d4d2d0 documents the earlier property and the flagging of stale resolved state; the diff and hosted CI success were checked. This was an audit of tests written earlier on the same feature branch.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/27207623433",
+      "related_prs": [],
+      "commit_urls": [
+        "https://github.com/adewale/aha/commit/3d4d2d0a866c39cf14e24a6fd0d50d1d624da23f"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Clarify aha usage workflow in README",
+      "url": "https://github.com/adewale/aha/pull/12",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-09T13:39:55Z",
+      "author": "adewale",
+      "classification": "existing documentation-test change",
+      "weakness": "The README check required every registered CLI command to appear there, even though the README was changing into a short workflow guide. Simply dropping the loop would have removed exhaustive documentation coverage.",
+      "remedy": "Moved registry-wide enumeration to the dedicated command inventory and retained targeted checks for daily commands, privacy guidance and links in the README.",
+      "evidence": [
+        {
+          "path": "internal/cli/docs_test.go",
+          "detail": "The README subset and full inventory now have separate assertions.",
+          "url": "https://github.com/adewale/aha/blob/341292e6dac79abf787fa8c0c9d009e9627f6217/internal/cli/docs_test.go#L82"
+        }
+      ],
+      "transferable_rule": "Put each completeness assertion on the artifact that owns it. Move a useful contract intact when its old placement blocks valid documentation changes.",
+      "independently_reproduced": false,
+      "verification": "The diff and successful PR-head CI were checked. The test still uses string inclusion, so it is evidence of command mentions, not runnable or accurate examples.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/27209916134",
+      "related_prs": []
+    },
+    {
+      "number": 2,
+      "title": "Harden aha corpus/depot performance and correctness",
+      "url": "https://github.com/adewale/aha/pull/2",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-05-25T20:30:09Z",
+      "author": "adewale",
+      "classification": "performance-test audit in a larger hardening PR",
+      "weakness": "Timing benchmarks and profiles could expose slowdown but could not by themselves assert that metadata-only status performs no payload fetches or that indexed lookups use the intended access plan.",
+      "remedy": "Audited the smallest effective test for each claim. Added a counting depot fake, duplicate-reference properties and small SQLite query-plan checks alongside benchmarks. The status test requires exactly one list and zero fetches.",
+      "evidence": [
+        {
+          "path": "internal/cli/depot_status_property_test.go",
+          "detail": "Asserts an exact list/fetch budget.",
+          "url": "https://github.com/adewale/aha/blob/f2b63e4a85d4a6ea5abc7e02d030c6400e81b798/internal/cli/depot_status_property_test.go#L47"
+        },
+        {
+          "path": "internal/depot/r2_fake_test.go",
+          "detail": "Counts requests and transferred bytes for distinct verification modes.",
+          "url": "https://github.com/adewale/aha/blob/f2b63e4a85d4a6ea5abc7e02d030c6400e81b798/internal/depot/r2_fake_test.go#L87"
+        },
+        {
+          "path": "docs/performance-scalability-plan.md",
+          "detail": "Documents which claim a benchmark, fake counter or tiny SQLite plan test can establish.",
+          "url": "https://github.com/adewale/aha/blob/f2b63e4a85d4a6ea5abc7e02d030c6400e81b798/docs/performance-scalability-plan.md#L46"
+        }
+      ],
+      "transferable_rule": "Turn an algorithmic claim into observable work counts or access plans. Reserve timings and profiles for measuring cost after the invariant is checked.",
+      "independently_reproduced": false,
+      "verification": "Commit 5ecf85d explicitly audits the test layers. The diffs and successful PR-head CI were checked; timing baselines and performance improvements were not reproduced.",
+      "hosted_ci_url": "https://github.com/adewale/aha/actions/runs/26418460120",
+      "related_prs": [],
+      "commit_urls": [
+        "https://github.com/adewale/aha/commit/5ecf85da1b95bc4df8154f4446a21ac3bda71743"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 28,
+      "title": "build(deps): bump the github-actions group with 5 updates",
+      "url": "https://github.com/adewale/aha/pull/28",
+      "reason": "Dependabot action-version upgrades; upstream changelog test work belongs to the dependency repositories."
+    },
+    {
+      "number": 27,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/aha/pull/27",
+      "reason": "Pins action references and adds a workflow supply-chain check; existing checking commands are preserved."
+    },
+    {
+      "number": 26,
+      "title": "ci: avoid duplicate and superseded validation",
+      "url": "https://github.com/adewale/aha/pull/26",
+      "reason": "Merged scheduling-only change to avoid duplicate/superseded workflow runs. It does not repair, replace or delete a test or change the contract a run verifies."
+    },
+    {
+      "number": 25,
+      "title": "Avoid duplicate CI runs on pull request branches",
+      "url": "https://github.com/adewale/aha/pull/25",
+      "reason": "Open scheduling-only proposal to avoid duplicate push and PR runs. It intentionally keeps job commands and assertions intact. Related to merged #26."
+    },
+    {
+      "number": 24,
+      "title": "chore: patch auxiliary tooling security dependencies",
+      "url": "https://github.com/adewale/aha/pull/24",
+      "reason": "Patches dependencies of the test tooling; no change to the behavior the suite verifies or how it runs."
+    },
+    {
+      "number": 20,
+      "title": "Upgrade Ruff to 0.16.0",
+      "url": "https://github.com/adewale/aha/pull/20",
+      "reason": "Ruff upgrade and linting of test tools. Its changes to conformance scripts are import ordering and formatting; runtime assertions remain the same."
+    },
+    {
+      "number": 19,
+      "title": "Trajectory interop spec: importer and exporter design",
+      "url": "https://github.com/adewale/aha/pull/19",
+      "reason": "Specification for a new interoperability format. It proposes a test strategy for that future feature, without changing an existing suite."
+    },
+    {
+      "number": 6,
+      "title": "Add depot selection lifecycle and harden depot verification",
+      "url": "https://github.com/adewale/aha/pull/6",
+      "reason": "Adds depot selection and fixes quick verification of degraded depots. The new orphan-object, configuration and remote error regressions accompany the behavior changes; no separate test or harness repair was identified."
+    },
+    {
+      "number": 5,
+      "title": "Add agent implementation-principle docs (CLAUDE.md + agents.md) with enforcing test",
+      "url": "https://github.com/adewale/aha/pull/5",
+      "reason": "Adds agent-instruction documents and their first wording/import test."
+    },
+    {
+      "number": 4,
+      "title": "Refine interactive architecture aesthetics",
+      "url": "https://github.com/adewale/aha/pull/4",
+      "reason": "Adds an architecture explorer and its first source-derived checks. Those checks caught inaccurate numbers in the new page; there is no prior explorer test being repaired. The later suite repairs appear in #9 and #13."
+    },
+    {
+      "number": 1,
+      "title": "Implement R2 snapshot depot aggregation",
+      "url": "https://github.com/adewale/aha/pull/1",
+      "reason": "Adds the depot and associated contract/property tests. Existing checks change with the new network-capable depot and removed product flags."
+    }
+  ],
+  "limitations": [
+    "GitHub metadata establishes merge and CI status. This review did not rerun historical tests, mutations or live service checks.",
+    "A passing hosted workflow alone does not establish mutation sensitivity, execution of optional legs, fixture fidelity, or flake elimination. The #22 job log was inspected for the named conformance legs and fuzz command.",
+    "The three guard changes in closed #23 landed through #22. The newly scheduled fuzz targets in #21 are already in #22's base. PRs count separate attempts, not independent resulting changes."
+  ]
+}

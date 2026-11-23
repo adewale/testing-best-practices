@@ -1,0 +1,62 @@
+{
+  "repository": "adewale/lempicka",
+  "total_prs": 2,
+  "pages_checked": "GitHub REST pulls, state=all, per_page=100. Page 1 returned #2 and #1, page 2 returned zero. All titles and bodies reviewed. Each files endpoint fit one 100-file page, with 4 files for #2 and 14 for #1 matching GitHub’s changed_files counts. Relevant patches and the base smoke test were inspected.",
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Make prompt scripts fail loudly and use the shipped prompt",
+      "url": "https://github.com/adewale/lempicka/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit audit of prompt experiments and an existing Worker test",
+      "weakness": "Several scripts caught failed requests and returned a successful process status. Current-production comparisons used copied prompts that had drifted. The Worker test accepted any 64-character hex model version and any prompt containing “Lempicka”.",
+      "attempted_remedy": "Propagate a nonzero status from failed requests, share the shipped model and prompt with current-production comparisons, and compare the observed outbound request against both exact values. The historical v3 experiment keeps its baseline and throws when an edit misses its anchor.",
+      "test_paths": [
+        "test/compare-prompts-v2.js",
+        "test/compare-prompts.js",
+        "test/test-gender-prompt.js",
+        "test/test-glasses-prompt-v2.js",
+        "test/test-glasses-prompt.js",
+        "test/test-iteration2.js",
+        "test/test-prompts.js",
+        "test/test-replicate-direct.js",
+        "test/test.js",
+        "test/worker.test.js"
+      ],
+      "diff_evidence": [
+        "test/test-prompts.js checks !response.ok as well as result.error, falls back to HTTP status text and sets process.exitCode to 1 if a result has an error. test/compare-prompts-v2.js adds a nonzero exit to its top-level rejection handler.",
+        "test/test-glasses-prompt-v2.js introduces edit(prompt, anchor, replacement), which checks includes(anchor) before replace. test/test-gender-prompt.js and test/test-glasses-prompt.js use LEMPICKA_PROMPT imported from src/prompt.js for their production baselines.",
+        "test/worker.test.js replaces two regex checks with assert.equal comparisons against NANO_BANANA_VERSION and LEMPICKA_PROMPT in the body captured from the running Worker."
+      ],
+      "transferable_rule": "Drive experiment scripts through a failing HTTP response with the provider’s actual error shape and assert their process exit status. Capture the outbound request to verify that it sends the shipped configuration. Guard variant construction against silent no-op replacements.",
+      "outcome": "Merged October 11, 2026. The author reports that, under a stub returning HTTP 401, eight of nine scripts originally exited zero and all nine exited nonzero after the change. The author also reports that changing the outbound prompt or model made the Worker test fail. GitHub returned zero check runs for the head commit. The audit inspected the diff and did not repeat the local runs or assess generated image quality."
+    },
+    {
+      "number": 2,
+      "title": "Test audit: add hermetic workerd tests for the Worker",
+      "url": "https://github.com/adewale/lempicka/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit audit and improvement of the Worker testing approach",
+      "weakness": "The existing npm test posted a JPEG as JSON to a running Worker, which invoked a paid external service. It logged the output URL and had no checks for multipart byte encoding, gallery state, upstream error mapping or which validation branch rejected a malformed request.",
+      "attempted_remedy": "Add a local workerd suite using Miniflare and local KV. Replace only outbound Replicate HTTP, observe request bodies and headers, and test stored data and route responses. Add npm run test:worker while retaining the live smoke command.",
+      "test_paths": [
+        "test/test.js",
+        "test/worker.test.js"
+      ],
+      "diff_evidence": [
+        "At the PR base, test/test.js fetched WORKER_URL (default localhost:8787), checked result.error and printed result.output. package.json adds the test:worker script and pins Miniflare.",
+        "test/worker.test.js loads src/index.js with ESModule and Text rules, binds GALLERY, captures outboundService requests and clears the feed before each test. It checks authorization on both create and poll requests.",
+        "A PNG fixture includes bytes 0x80 and 0xff and its data URI is compared against Buffer-generated base64. The suite asserts the order of ten retained entries and checks 54- and 56-minute entries on opposite sides of the 55-minute limit.",
+        "The multipart helper serializes FormData through a Request. Three HTTP 400 cases assert the expected error body and an empty outbound-call list. Error-path tests assert 502 or 500 and an empty feed."
+      ],
+      "transferable_rule": "Run service orchestration in its real local runtime and stub the paid boundary. For failures sharing an HTTP status, assert the branch-specific reason and absence of downstream effects. Exercise boundaries with discriminating fixtures and a separate expected-value calculation.",
+      "outcome": "Merged October 3, 2026. The author reports 15 tests passing locally and the suite failing on each of ten planted bugs. GitHub returned zero check runs for the head commit. The reported local results were not independently rerun. The Replicate success fixture was derived from documentation and had no recorded live success response."
+    }
+  ],
+  "exclusions": [],
+  "limitations": [
+    "Both matches are merged. Runtime and mutation results cited in the outcomes come from the PR authors' local checks. Outcome reporting also uses GitHub’s merge record and head check-run inventory."
+  ]
+}

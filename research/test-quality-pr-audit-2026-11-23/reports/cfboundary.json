@@ -1,0 +1,116 @@
+{
+  "repository": "adewale/cfboundary",
+  "total_prs": 7,
+  "pages_checked": {
+    "pulls": [
+      {
+        "page": 1,
+        "count": 7
+      },
+      {
+        "page": 2,
+        "count": 0
+      }
+    ],
+    "query": "state=all&per_page=100; no author or date restriction",
+    "changed_files_per_pr": {
+      "1": 11,
+      "2": 21,
+      "3": 7,
+      "4": 1,
+      "5": 1,
+      "6": 4,
+      "7": 2
+    },
+    "file_pagination": "One page per PR at 100 files per page. Every PR title, body and complete file inventory was screened. All test and workflow patches used in the findings were present."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Test the FFI boundary in real Pyodide, make the fakes match it, and close untested boundary contracts",
+      "url": "https://github.com/adewale/cfboundary/pull/2",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:17Z",
+      "classification": "Dedicated test audit and testing approach change",
+      "weakness": "CPython conversion doubles could pass while producing different exceptions, object shapes and null semantics from the supported JavaScript runtime. A fake that rejected a real converter argument even sustained a retry in the production adapter. The coverage gate counted the doubles.",
+      "attempted_remedy": "Run the checkout inside pinned Pyodide 0.28.3 under Node. Exercise conversions, missing values, exceptions, byte buffers and streams in the existing CI job. Delete the legacy-fake test and the production retry it required. Run the fake contract repairs from PR 3 alongside this tier.",
+      "test_paths": [
+        "tests/pyodide/real_runtime_checks.py",
+        "tests/pyodide/run_real_pyodide.test.mjs",
+        "tests/pyodide/package.json",
+        "tests/test_conversion_edges.py",
+        "tests/test_runtime_config.py",
+        "tests/conftest.py"
+      ],
+      "diff_evidence": [
+        "The runner mounts the repository into Pyodide, discovers check_* functions, awaits asynchronous checks, and fails below ten discovered checks. The runtime check verifies the import path and identity of the bound Pyodide implementation.",
+        "The real test observes both the presence of the converted k key and its disappearance from JSON when its Python value is None. A separate case checks that an opaque value raises Pyodide ConversionError. Core to_js now calls the converter once with create_pyproxies=False. The override test records the call count and the propagated error.",
+        "pyproject.toml removes cfboundary/testing/fakes.py from the coverage denominator. tests/conftest.py establishes a reproducible 100-example Hypothesis profile and a separate 5,000-example profile. .github/workflows/ci.yml runs the Node tests alongside pytest."
+      ],
+      "transferable_rule": "When production code accommodates a behavior seen only in a double, run a small set of cases against the pinned dependency and check caller-visible results. Make custom discovery fail on an empty or unexpectedly small suite.",
+      "outcome_verification": "The final PR-head Actions job at ac1dc9b logged 27 pytest passes, 5 skips and 100% measured coverage. Node logged 13 passing cases, comprising 12 runtime checks and one discovery guard.",
+      "verification_url": "https://github.com/adewale/cfboundary/actions/runs/38054186016/job/114219158618",
+      "caveat": "The runtime tier uses npm Pyodide on Node. A deployed Worker and D1, R2 and KV bindings were outside this run. The five live E2E tests require a deployed URL. The reported 100% uses a changed denominator.",
+      "relationship": "PR 2 commit 2ca62ed56 lists the final PR 3 head 8cd886977 as its second parent. The duplicate contract changes are described under PR 3."
+    },
+    {
+      "number": 3,
+      "title": "Test audit: make the Pyodide fakes match real Pyodide and close untested boundary contracts",
+      "url": "https://github.com/adewale/cfboundary/pull/3",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated test audit, assertion repairs and deletions",
+      "weakness": "An idempotence check let wrong normalizations pass, the JSON generator omitted integer keys, and a scalar tested the depth guard without needing recursion. The identity fake made a conversion matrix assertion tautological. All fake nulls also triggered a type-name fallback. Stream cleanup after read errors was untested, and the manual Worker test expected an obsolete field.",
+      "attempted_remedy": "Strengthen the conversion and cleanup assertions, give each null-detection path a discriminating fixture, fix the shipped doubles, remove redundant tests and repair the manual endpoint assertion.",
+      "test_paths": [
+        "tests/test_core.py",
+        "tests/test_ffi_matrix.py",
+        "tests/test_fake_fidelity.py",
+        "tests/test_surface_polish.py",
+        "tests/e2e/test_live_worker.py"
+      ],
+      "diff_evidence": [
+        "tests/test_surface_polish.py replaces to_py(to_py(v)) == to_py(v) with to_py(v) == v, adds an explicit nested integer-key example and uses object identity for d1_null's preservation contract. It removes callable-only checks for functions already imported and tested.",
+        "tests/test_ffi_matrix.py deletes test_conversion_matrix, which asserted to_js(x) == x under an identity fake, and passes object() as the fake null so a type named JsNull cannot satisfy the test. The PR body maps removed cases to surviving tests and representative faults.",
+        "tests/test_core.py adds self-referential list and proxy cases with a bounded depth, checks size zero and JS null separately, and uses a throwing reader to verify error propagation and lock release. The base suite's test_conversion_edges.py used a scalar at MAX_CONVERSION_DEPTH, which would also succeed with the bound disabled.",
+        "cfboundary/testing/fakes.py and tests/test_fake_fidelity.py change missing attributes from KeyError to AttributeError, exercise getattr defaults and uninitialized proxy lookup, and fix jsnull truthiness. tests/e2e/test_live_worker.py replaces the eval_blocked substring with parsed JSON equality. The Worker at this PR head returns pyodide_runtime from /compat."
+      ],
+      "transferable_rule": "Use the strongest specified property on its valid input domain and give the generator an example that breaks plausible faulty implementations. Choose fixtures that isolate fallback branches. For each deleted test, name the surviving test that detects its former fault. Check cleanup after an injected failure.",
+      "outcome_verification": "The final PR-head Actions job at 8cd8869 logged 28 pytest passes, 5 skips and 100% measured coverage. The PR was closed without a direct merge. GitHub's commit comparison and the parents of PR 2's integration commit confirm that its full head became part of merged PR 2.",
+      "verification_url": "https://github.com/adewale/cfboundary/actions/runs/37094034652/job/111120167890",
+      "caveat": "The old suite catching 4 of 16 planted faults and the revised suite catching all 16 are author-reported experiments. The PR describes serving the real handler's locally generated response to exercise /compat. Its CI did not contact a deployed Worker. Current GitHub history returned 64 workflow runs and none named Live E2E."
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1
+      ],
+      "reason": "The Ruff migration changed imports, a lint comment and whitespace in tests. Test assertions and contracts were preserved."
+    },
+    {
+      "numbers": [
+        4,
+        5
+      ],
+      "reason": "Adjacent CI-cost work. PR 4 (open) filters branch pushes while retaining tag pushes. PR 5 (merged) filters branch pushes and cancels superseded PR runs. Their diffs change workflow scheduling only."
+    },
+    {
+      "numbers": [
+        6
+      ],
+      "reason": "Action pinning, its supply-chain policy check and Dependabot setup changed workflow infrastructure."
+    },
+    {
+      "numbers": [
+        7
+      ],
+      "reason": "Dependabot updates three action versions across two workflows. Test-related text in the body quotes upstream release notes."
+    }
+  ],
+  "limitations": [
+    "The two matching PRs overlap through a verified merge commit. Count both review attempts and attribute the shared test repairs once.",
+    "The audit inspected GitHub diffs, the original scalar test, the actual Worker response construction and final-head CI logs. It did not independently rerun the mutation experiments or contact a live Worker."
+  ]
+}

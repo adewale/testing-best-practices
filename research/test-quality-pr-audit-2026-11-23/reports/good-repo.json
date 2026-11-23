@@ -1,0 +1,144 @@
+{
+  "repository": "adewale/good-repo",
+  "total_prs": 16,
+  "pages_checked": {
+    "pull_requests": "GET /repos/adewale/good-repo/pulls?state=all&per_page=100 returned 16 on page 1 and 0 on page 2. Examined titles and bodies for #1–16, including 13 merged and 3 open.",
+    "changed_files": "Checked page 1 at 100 files per page for each of the 16 PRs. All 51 file entries had patches. Largest inventory contained 10 files."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/good-repo/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing assertions strengthened within a benchmark rollout",
+      "weakness": "The tiny-experiment case could pass its proportionality check on generic words such as 'do not' and its basics check on a single word such as 'topics'.",
+      "attempted_remedy": "Tightened the existing case and added paired with-skill/without-skill evaluation with public tuning and reserved evaluation cases.",
+      "test_paths": [
+        "evals/evals.json",
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md"
+      ],
+      "diff_evidence": "Case 8 removed standalone 'do not' and 'not necessary', changed an any-of check to require README, status and license, and added a regex connecting a deferral to a named governance artifact. The new manifest defines 23 cases and five optional ablations.",
+      "transferable_rule": "Check the decision and the object it applies to. Compare against a baseline and reserve unseen cases when assessing added value.",
+      "outcome_caveat": "The head's validate job passed. The author reported 8/8 trigger checks. Hidden prompts are placeholders and the PR gives no scored ablation results. The tighter assertions still depend on wording.",
+      "check_url": "https://github.com/adewale/good-repo/actions/runs/27212232509/job/80344119101"
+    },
+    {
+      "number": 3,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/good-repo/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing fixture evaluation and grading",
+      "weakness": "The private-spike case's classification assertion accepted any single keyword such as 'private'.",
+      "attempted_remedy": "Replaced that standalone assertion with a case-specific script evaluating multiple conditions in the saved response.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-harness.md"
+      ],
+      "diff_evidence": "The manifest removes classifies-private-spike and adds fixture-script-oracle with a ten-second timeout and expected exit code 0. The script reads output.md, requires a term from each of two groups and rejects a regex matching compulsory release artifacts. Two checks overlap the manifest's remaining text assertions.",
+      "transferable_rule": "Check a fixture response against distinct required and forbidden behaviors. A script that wraps keywords still needs evidence that it distinguishes good answers from bad ones.",
+      "outcome_caveat": "The head's validate job passed. The author reported one successful saved fixture output and 26 remaining nonfatal leakage warnings. The script grades text and does not inspect the fixture repository or demonstrate semantic correctness.",
+      "check_url": "https://github.com/adewale/good-repo/actions/runs/27314916636/job/80693266032"
+    },
+    {
+      "number": 5,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/good-repo/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluation reporting",
+      "weakness": "Existing case records lacked structured labels for comparing performance by difficulty, objective or trigger type.",
+      "attempted_remedy": "Added dimensions to all 23 existing benchmark cases for downstream slice reports.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The diff adds domain, difficulty and success_goals to 23 cases, plus trigger_type to eight trigger cases. The values distinguish implicit triggers from negative near misses. Prompts and pass criteria are unchanged.",
+      "transferable_rule": "Label existing cases by the decisions and difficulty levels that maintainers need to compare.",
+      "outcome_caveat": "The head's validate job passed. The PR shows metadata preparation, with no generated slice report or change in model performance.",
+      "check_url": "https://github.com/adewale/good-repo/actions/runs/27369523328/job/80877789844"
+    },
+    {
+      "number": 8,
+      "title": "Add install boundary CI check",
+      "url": "https://github.com/adewale/good-repo/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing packaging verification extended to the declared install paths",
+      "weakness": "CI already tested a deliberately malformed fixture. The previous packaging PR recorded a manual npm pack check, leaving the repository's actual install directories without this automated boundary check.",
+      "attempted_remedy": "Added a PR and main-branch check that reads installable skill directories from package and marketplace declarations and scans them for development artifacts.",
+      "test_paths": [
+        ".github/workflows/install-boundary.yml",
+        "scripts/check_install_boundary.py"
+      ],
+      "diff_evidence": "The new script requires SKILL.md and returns 1 for paths containing evals, tests, __pycache__ and other named artifacts. The base evals/run_fixture_tests.py contained a skill-layout-bad fixture. The new workflow runs against the checkout.",
+      "transferable_rule": "Complement synthetic packaging fixtures with a check of the paths consumers actually install.",
+      "outcome_caveat": "Both validate and install-boundary succeeded on the PR head. This job checks directories in the checkout. It does not inspect the built npm archive, and the changed files include no failing example for the new scanner.",
+      "check_url": "https://github.com/adewale/good-repo/actions/runs/27562586746/job/81478160067"
+    },
+    {
+      "number": 11,
+      "title": "Gate the harness manifest in CI and name it the eval of record",
+      "url": "https://github.com/adewale/good-repo/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit verification audit",
+      "weakness": "CI omitted checks for prompt leakage and stale ablations. Trigger outcomes were implicit, judge-only hidden cases lacked gating flags, and two grading paths accepted new cases. The Markdown link check discarded fragments and scanned code examples.",
+      "attempted_remedy": "Designated a single benchmark for new cases, froze the legacy grader for reproduction, added model-free CI gates, and replaced the inline link regex with a Markdown-aware fragment checker.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/README.md",
+        "evals/shared-harness.md",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "Eight trigger cases receive explicit booleans, two hidden judges receive gate=true, and harness 0.6.0 runs validate --strict-leakage --check-ablations and audit-manifest --fail-on-blockers. The old split('#',1) regex gives way to offline lychee --include-fragments.",
+      "transferable_rule": "Make expected outcomes and the authoritative grader explicit. Run inexpensive validity checks continuously and keep historical grading paths only where reproduction requires them.",
+      "outcome_caveat": "GitHub's validate job records success for both the fence-aware link step and the model-free harness step. The author reports 37 leaked keyword values on a scratch migration of ten cases. The legacy cases were frozen and neither the model-free job nor this audit scored hidden responses.",
+      "check_url": "https://github.com/adewale/good-repo/actions/runs/36352313100/job/114473708311"
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        2,
+        6,
+        16
+      ],
+      "reason": "Harness version references or third-party action versions alone."
+    },
+    {
+      "numbers": [
+        4,
+        7,
+        9
+      ],
+      "reason": "Compatibility metadata, a production package allowlist and README edits. #7 reports a manual pack check only."
+    },
+    {
+      "numbers": [
+        10,
+        15
+      ],
+      "reason": "Ruff style changes and a security lint for immutable action references. #10 spells out existing regex flags without changing the oracle."
+    },
+    {
+      "numbers": [
+        12,
+        14
+      ],
+      "reason": "Workflow trigger or cancellation changes only."
+    },
+    {
+      "numbers": [
+        13
+      ],
+      "reason": "Two new judge cases accompany new CI rollout guidance in the skill. Existing cases, graders and the repository's testing approach were unchanged. The author says the additions were not model-scored."
+    }
+  ],
+  "limitations": [
+    "Historical diff and CI metadata review. I did not run the model evaluations or independently reproduce the authors' local red/green probes. Only archived CI job summaries were available for #1, #3, #5 and #8."
+  ]
+}

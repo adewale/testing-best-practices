@@ -1,0 +1,317 @@
+{
+  "repository": "adewale/good-pr",
+  "total_prs": 19,
+  "pages_checked": 2,
+  "enumeration": {
+    "as_of": "2026-11-23",
+    "source": "https://api.github.com/repos/adewale/good-pr/pulls?state=all&per_page=100&page=1",
+    "page_counts": [
+      19,
+      0
+    ],
+    "states": {
+      "open": 4,
+      "closed_unmerged": 0,
+      "merged": 15
+    },
+    "method": "Unfiltered REST enumeration, all titles and bodies, fully paginated changed-filename lists and patches from all 19 PRs.",
+    "changed_file_counts": {
+      "1": 1,
+      "2": 7,
+      "3": 2,
+      "4": 3,
+      "5": 3,
+      "6": 1,
+      "7": 1,
+      "8": 1,
+      "9": 6,
+      "10": 2,
+      "11": 31,
+      "12": 37,
+      "13": 11,
+      "14": 6,
+      "17": 1,
+      "18": 8,
+      "19": 2,
+      "20": 4,
+      "21": 2
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/good-pr/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing approach established",
+      "weakness": "The repository lacked a self-contained way to compare its review skill with a no-skill control or examine cases that both arms pass.",
+      "attempted_remedy": "Introduce paired evaluation arms, public tuning cases, private split placeholders and a review of saturated or non-discriminating cases. Include a realistic review fixture about a refund test.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/fixtures/round3-refund-mocks/diff.patch",
+        "evals/shared-harness.md"
+      ],
+      "diff_evidence": "The 20-case manifest declares with_skill and without_skill, five optional ablations and review of saturated, flaky and non-discriminating cases. The refund fixture mocks the gateway, database and queue and asserts only a call count. Its grader asks for observable refund state and evidence that the old behavior fails.",
+      "transferable_rule": "Evaluate the same task against a control. Include a realistic fixture where a superficial answer can pass and check whether the evaluation distinguishes the two.",
+      "outcome_caveat": "Merged. The author reports six passing trigger cases. The private prompts and ablation results were absent, and the PR head has no GitHub check-run record. The mock-only refund test is a teaching fixture, not a repaired production test.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/2/files",
+        "https://github.com/adewale/good-pr/blob/82e347a0aaa65bdff1ea2cc2db9c95f08cdeacf6/evals/shared-benchmark.json"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/good-pr/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluation assertion upgrade attempt",
+      "weakness": "Phrase matching could reward stock words in a review of the mock-only refund fixture without showing that the answer genuinely identifies the problem.",
+      "attempted_remedy": "Add a repository-owned script grader to the existing fixture case and document optional qualitative judging.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The manifest adds fixture-script-oracle to round3-fixture-refund-mock-pr. The script reads output.md, case-folds it and requires one phrase from each of three groups. A comparison with the earlier manifest found that all three phrase lists exactly duplicate the existing contains_any checks.",
+      "transferable_rule": "Compare a proposed oracle with the existing assertions. An additional grader should reject a plausible bad output the existing checks accept.",
+      "outcome_caveat": "Merged. The author reports one stored output passing and 11 remaining leakage warnings. There is no independent semantic check in the added script, and the head has no recorded GitHub check run.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/4/files",
+        "https://github.com/adewale/good-pr/blob/3ed5a6ffea0ff6ac8acce89d0c2be5d25625212a/evals/oracles/fixture_oracle.py"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/good-pr/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing approach for reporting",
+      "weakness": "The existing evaluation cases lacked structured labels to distinguish performance by difficulty, goal and expected trigger behavior in slice reports.",
+      "attempted_remedy": "Classify existing cases so the shared harness can report those breakdowns.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The patch adds domain, difficulty and success_goals to 20 cases and trigger_type to six trigger cases. The prompts, expectations and assertions are unchanged.",
+      "transferable_rule": "Label cases by a failure-relevant characteristic before interpreting a suite-wide pass rate. Report results for the groups as well as the aggregate.",
+      "outcome_caveat": "Merged. This changes reporting metadata. No slice results or change in defect detection were demonstrated in the PR.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/6/files",
+        "https://github.com/adewale/good-pr/blob/93ab8382a7050bbca273e05aee1d42b1445a390f/evals/shared-benchmark.json"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Add trace-backed process assertions",
+      "url": "https://github.com/adewale/good-pr/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluation control and trace assertions",
+      "weakness": "Final-answer checks could pass even if the no-skill control read the skill or the with-skill arm never loaded it.",
+      "attempted_remedy": "Add variant-specific invocation assertions and trace-based resource budgets to an existing case.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "pos-security-meaningless-test now requires skill_invoked=true for with_skill and false for without_skill, plus caps of 12 commands, 90 seconds and 100,000 tokens for both arms.",
+      "transferable_rule": "Check from the execution trace that the treatment reached the test subject and the control stayed isolated before comparing outputs.",
+      "outcome_caveat": "Merged. The PR describes leakage before runner isolation and passing Pi and Codex runs after it. This diff contains the assertions for one case. The runner isolation change and run traces are outside this PR, and its head has no check-run record.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/8/files",
+        "https://github.com/adewale/good-pr/blob/ba132670222af87a71bc9fc6530187b3db7dd896/evals/shared-benchmark.json"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Add visual evidence provenance guidance, verified by ablation evals",
+      "url": "https://github.com/adewale/good-pr/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Comparative evaluation embedded in a guidance change",
+      "weakness": "A passing example with the full skill could not attribute improved advice to the new guidance or detect over-prescription for an ordinary UI change.",
+      "attempted_remedy": "Pair a renderer case with an ordinary-UI negative control and measure what happens when the new provenance guidance is removed.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The patch adds pos-renderer-evidence-provenance with three objective assertion groups, neg-ordinary-ui-no-artifact-demand with acceptance and forbidden-demand assertions, and a no-evidence-provenance ablation entry bound to the renderer case.",
+      "transferable_rule": "Test the intended case and an adjacent case where the rule should stay silent. Removing the relevant component should make the intended-case test fail.",
+      "outcome_caveat": "Merged. The PR reports all three positive assertions failed on every ablated sample and passed with guidance present. No raw runs or physical ablation transform are in the changed-file inventory. The forbidden-term regex was broad enough to reject a mere mention, which #11 narrowed.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/9/files",
+        "https://github.com/adewale/good-pr/blob/05a80739f4a1dc2742d32eb81fef33739dd9c386/evals/shared-benchmark.json"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Add install boundary CI check",
+      "url": "https://github.com/adewale/good-pr/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing approach for the installable package",
+      "weakness": "The existing package could ship repository-only evaluation or build files without an automated check of its declared skill directory.",
+      "attempted_remedy": "Add a CI check that resolves the declared installation directories, verifies SKILL.md and rejects repository-only directories and files.",
+      "test_paths": [
+        "scripts/check_install_boundary.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": "declared_skill_dirs reads the package and marketplace entry points. bad_files walks those directories and flags paths containing evals, tests or __pycache__ and compiled bytecode. The workflow invokes the checker on pull requests and pushes to main.",
+      "transferable_rule": "Check the contents of the declared distribution boundary so test fixtures and repository-only material do not reach users.",
+      "outcome_caveat": "Merged. GitHub records a successful install-boundary check. The diff contains no automated negative fixture for the checker and examines the source directory rather than an installed package.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/10/files",
+        "https://github.com/adewale/good-pr/blob/5db248b55c1b59cf3f066b79fb301fe99cf8cb81/scripts/check_install_boundary.py",
+        "https://github.com/adewale/good-pr/actions/runs/27562583373/job/81478148851"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Teach durable visual evidence and add mechanical PR lint",
+      "url": "https://github.com/adewale/good-pr/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluation repair embedded in a feature PR",
+      "weakness": "The ordinary-UI grader could penalize an answer simply for mentioning an artifact term, and valid alternative wording could fail. Earlier comparative results were difficult for a reviewer to regrade independently.",
+      "attempted_remedy": "Narrow the existing negative regex, accept equivalent phrasing, exercise graders with paired examples, freeze the old skill and add replayable per-output scoring and artifact verification.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/visual-evidence-benchmark.json",
+        "tests/test_eval_assertions.py",
+        "tests/test_eval_evidence.py",
+        "scripts/build_eval_evidence.py",
+        "evals/results/visual-evidence-gpt-5.4-outputs.jsonl"
+      ],
+      "diff_evidence": "The old no-artifact-overdemand regex matched bare phrases such as 'regeneration command'. The new pattern looks for a demand. test_eval_assertions exercises negation, positive controls and equivalent wording. test_eval_evidence changes a score or inventory hash and expects rejection. The PR commits a nine-case, three-arm output archive.",
+      "transferable_rule": "Exercise automated graders with correct paraphrases and nearly identical wrong answers. Keep the outputs and scoring rules so another reviewer can recalculate the result.",
+      "outcome_caveat": "Merged. Independent rescoring of the 81 distinct archived outputs matched all 252 objective assertion decisions and the reported means (82.72% new, 65.12% old, 54.01% no skill). These are visible tune cases and source revisions were annotated after execution. The shared-manifest path test introduced here was later replaced in #14.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/11/files",
+        "https://github.com/adewale/good-pr/blob/a500f635b600316769451a4c09e0af61fdbab4c1/evals/shared-benchmark.json",
+        "https://github.com/adewale/good-pr/actions/runs/29660560908/job/88122391564"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Add Claude-model reproduction of PR #11 visual-evidence eval",
+      "url": "https://github.com/adewale/good-pr/pull/12",
+      "state": "open",
+      "merged": false,
+      "classification": "Cross-model reproduction of an existing evaluation",
+      "weakness": "The comparison used one model backend. Its response to the same intervention on other models had not been measured.",
+      "attempted_remedy": "Run the same nine visible cases with no skill, a frozen baseline and a candidate skill using three Claude models, with three repetitions per arm.",
+      "test_paths": [
+        "evals/reproductions/2026-07-17-claude/run_model.sh",
+        "evals/reproductions/2026-07-17-claude/aggregate.py",
+        "evals/reproductions/2026-07-17-claude/README.md",
+        "evals/reproductions/2026-07-17-claude/opus-4-8/aggregate.json"
+      ],
+      "diff_evidence": "The branch adds a parameterized runner, aggregator and three model-specific aggregates. Each aggregate has 27 records per arm. Both Sonnet and Opus list neg-ordinary-ui-no-artifact-demand as a case that regressed against the frozen baseline. Much of the rest of the branch is inherited from an earlier #11 revision.",
+      "transferable_rule": "Repeat a benchmark on another backend while holding tasks and controls fixed. Retain run-level evidence to permit independent grading.",
+      "outcome_caveat": "Open. The model-specific aggregates and README cover three models, beyond the Opus-only PR description. The Claude output text and per-run score matrices are absent, and the aggregator bypasses the trace-based invocation check. It targets f032eeb, an earlier #11 revision, and uses visible tune cases.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/12/files",
+        "https://github.com/adewale/good-pr/blob/efaa0f6eb8598e7cfd747db23cf1822abe4e8350/evals/reproductions/2026-07-17-claude/run_model.sh",
+        "https://github.com/adewale/good-pr/actions/runs/29641785251/job/88073387117"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Point the with-skill arm at the real skill and gate on the pinned harness",
+      "url": "https://github.com/adewale/good-pr/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit portfolio test audit and replacement of a false-green test",
+      "weakness": "The path test reimplemented the harness's path rules incorrectly. It passed while the shared manifest mounted a nonexistent skill file, and two unusable ablations escaped detection.",
+      "attempted_remedy": "Delete the manifest-relative path test, run the real harness prepare command in regression tests, repair shared skill paths and stale ablations, and run pinned model-free validation in CI.",
+      "test_paths": [
+        "tests/test_eval_assertions.py",
+        "evals/shared-benchmark.json",
+        "evals/ablations/no-template.patch",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": "HarnessPrepareTests reads the emitted task rows, checks the exact with-skill and old-skill paths and that materialized ablations point to existing files under the temporary ablation directory. Shared paths change from ../skills/good-pr/SKILL.md to skills/good-pr/SKILL.md. CI runs harness 0.6.0 validate --strict-leakage --check-ablations and audit-manifest --fail-on-blockers.",
+      "transferable_rule": "When a dependency interprets configuration, run its real entry point and inspect its output. For every experimental arm, verify the expected inputs exist and resolve to the intended files.",
+      "outcome_caveat": "Merged. GitHub job steps independently show passing regression tests, the pinned harness gate and proof verification. The author documented failures against the old manifest. This verifies preparation and archive integrity, not a new model outcome. The no-skill check uses all() and would pass if that arm emitted zero rows.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/14/files",
+        "https://github.com/adewale/good-pr/blob/12b91d20ae93b35a0e599743a8a85882eb2690cd/tests/test_eval_assertions.py",
+        "https://github.com/adewale/good-pr/actions/runs/36352091344/job/114473701913"
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Check retired-tool callers and scope PR verification claims",
+      "url": "https://github.com/adewale/good-pr/pull/18",
+      "state": "open",
+      "merged": false,
+      "classification": "Repair of an existing evaluation evidence check",
+      "weakness": "CI treated byte equality between the current skill and a historical model run as an archive-integrity invariant. A later skill edit could fail verification of a valid archive, and a passing archive check could be mistaken for evaluation of the new head.",
+      "attempted_remedy": "Use verify --historical in CI, retain strict current-tree and clean-tree checks by default, and add regression tests for both modes and corrupt evidence.",
+      "test_paths": [
+        "tests/test_eval_evidence.py",
+        "scripts/build_eval_evidence.py",
+        ".github/workflows/install-boundary.yml",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The new tests simulate a changed HEAD skill tree, fail if historical mode consults HEAD, check the archive-scope message and inject a bad hash to require rejection. The historical code path still checks the annotated and baseline trees and regrades the recorded outputs.",
+      "transferable_rule": "Verify historical evidence against its recorded revision. Use a separate check to establish current-head behavior, and retain a corruption test for the archive verifier.",
+      "outcome_caveat": "Open. GitHub job steps show the regression suite, pinned harness gate and archived proof verification succeeded. The archived runs remain tied to the earlier revision, and the added guidance scenarios have no new model comparison.",
+      "sources": [
+        "https://github.com/adewale/good-pr/pull/18/files",
+        "https://github.com/adewale/good-pr/blob/e80c8a31b2519912d839a6ae6cf6b0eab974a3d6/tests/test_eval_evidence.py",
+        "https://github.com/adewale/good-pr/actions/runs/41275785585/job/124757570194"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Add npm packaging for npx skills install support",
+      "reason": "README installation instructions only."
+    },
+    {
+      "number": 3,
+      "title": "Update skill eval harness reference to v0.2.0",
+      "reason": "Harness version and install-reference bump only."
+    },
+    {
+      "number": 5,
+      "title": "Add multi-agent skill support metadata",
+      "reason": "Agent compatibility and package metadata only."
+    },
+    {
+      "number": 7,
+      "title": "Bump eval harness to v0.4.0",
+      "reason": "Minimum harness version bump only."
+    },
+    {
+      "number": 13,
+      "title": "Upgrade Ruff to 0.16.0",
+      "reason": "Ruff adoption and lint-only changes. The five test-file diffs each remove a blank line."
+    },
+    {
+      "number": 17,
+      "title": "Avoid duplicate lint runs on pull request branches",
+      "reason": "Changes branch/tag scheduling for Ruff only."
+    },
+    {
+      "number": 19,
+      "title": "ci: avoid duplicate and superseded validation",
+      "reason": "Restricts push validation and cancels superseded runs. Test commands and assertions are unchanged."
+    },
+    {
+      "number": 20,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "reason": "Pins action dependencies and adds a supply-chain policy scanner. The test behavior is unchanged."
+    },
+    {
+      "number": 21,
+      "title": "Bump the github-actions group with 3 updates",
+      "reason": "Dependabot action version updates only."
+    }
+  ],
+  "limitations": [
+    "Historical diff and check-run audit. No model was rerun. Where indicated, archived outputs were independently regraded or aggregates inspected.",
+    "GitHub omitted patches for the large archived outputs and public PR corpus in #11 and #12, and the frozen baseline readiness script in #11. Complete changed-filename inventories were obtained for both PRs. The #11 archived outputs were read directly at the PR head for rescoring. The large corpus and the frozen script were not needed for the listed test findings.",
+    "The benchmark PRs use visible tuning cases. Suite pass rates, merged status and archive integrity alone cannot establish generalization to unseen cases."
+  ]
+}

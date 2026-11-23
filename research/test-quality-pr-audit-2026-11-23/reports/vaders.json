@@ -1,0 +1,642 @@
+{
+  "repository": "adewale/vaders",
+  "repository_url": "https://github.com/adewale/vaders",
+  "total_prs": 17,
+  "pages_checked": {
+    "snapshot_utc": "2026-11-23",
+    "scope": "All states, dates and authors. Every PR title, body and changed-file inventory screened.",
+    "pulls_collection": "https://api.github.com/repos/adewale/vaders/pulls?state=all&per_page=100&page=1",
+    "page_sizes": [
+      17,
+      0
+    ],
+    "states": {
+      "merged": 15,
+      "open": 2,
+      "closed_unmerged": 0
+    },
+    "changed_file_inventory": "Fetched the paginated filename list and REST file records for each of the 17 PRs. All 243 paths agree between endpoints and every count matches the individual PR's changed_files value. Each file list fit on one 100-entry page.",
+    "patch_coverage": "Inspected candidate code and verification diffs. Every nonempty patch contained the expected changed-line counts. The six absent patches are identified under limitations.",
+    "verification": "Checked final head check-run metadata on all 17 PRs. For selected PRs, checked the historical workflow definitions, commit-level changes and main-push job outcomes. Examined browser job logs for #10, #11, #12 and #15.",
+    "file_inventory_key": "The file_inventories object maps each PR number to the complete final changed-path list."
+  },
+  "match_counts": {
+    "all": 10,
+    "merged": 9,
+    "open": 1,
+    "closed_unmerged": 0
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Remove Enhanced Mode feature",
+      "url": "https://github.com/adewale/vaders/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Verification approach within a feature removal",
+      "weakness": "Three client test files existed on the base revision with no GitHub Actions workflow. The input tests passed partial event literals to an API typed for OpenTUI KeyEvent.",
+      "remedy": "Run the existing client suite on pushes and pull requests. Consolidate the partial key-event fixtures so the test file typechecks.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "client/src/input.test.ts"
+      ],
+      "diff_evidence": "The new workflow typechecks the client and Worker, then runs `cd client && bun test`. A shared mockKeyEvent supplies default name, sequence and modifier fields for the existing input assertions. The intermediate CI run failed and the final commit records the KeyEvent fixture repair.",
+      "transferable_rule": "When putting an existing suite into CI, verify its fixtures compile under the same types as the production entry point.",
+      "verification_caveat": "The final PR and main build and test jobs passed. The helper uses an `unknown` cast and exercises normalization only. This PR's test command covered the client.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/1/files",
+        "https://github.com/adewale/vaders/commit/3254c3f1f881dc896383c7d90bdca26a9003aec4",
+        "https://github.com/adewale/vaders/actions/runs/21331258786",
+        "https://github.com/adewale/vaders/actions/runs/21332461438"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Add comprehensive multiplayer test suite",
+      "url": "https://github.com/adewale/vaders/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated test-suite introduction and audit",
+      "weakness": "The existing multiplayer Worker had no Worker test files. In the first revision of its new suite, the destroyed-barrier test called getBullets and stopped without asserting either the shot's passage or the barrier's health.",
+      "remedy": "Add Vitest coverage for the existing multiplayer system, then repair the assertion during an audit of the suite. Add four-player, disconnect and boundary cases discovered during that review.",
+      "test_paths": [
+        "worker/src/game/reducer.test.ts",
+        "worker/src/GameRoom.test.ts",
+        "worker/src/Matchmaker.test.ts",
+        "worker/vitest.config.ts"
+      ],
+      "diff_evidence": "Commit 6765518 changes a comment-only postcondition into three observations. Shot b1 must still exist, must have moved to LAYOUT.BARRIER_Y, and the destroyed segment must remain at zero health. The final Worker package defines `vitest run`.",
+      "transferable_rule": "For a no-op or pass-through rule, assert both the preserved object and the observable effect that must still occur.",
+      "verification_caveat": "The final head and merged-main checks passed. The workflow ran only the client unit suite and typechecked the Worker. The new Vitest configuration also hard-coded a machine-specific path to the Cloudflare mock. Hosted execution of the new Worker cases is unverified.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/3/files",
+        "https://github.com/adewale/vaders/commit/6765518bdbf7aed7888725f7f3866844ce49331b",
+        "https://github.com/adewale/vaders/blob/a29ee7eca829c5e28847233be6b4b49248b8a76a/.github/workflows/ci.yml",
+        "https://github.com/adewale/vaders/actions/runs/21339784402"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Add visual enhancement animation system",
+      "url": "https://github.com/adewale/vaders/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing collision-test repair within a feature PR",
+      "weakness": "Generic collision tests encoded internal offsets and distance thresholds. Those expectations allowed hits outside visible sprites and missed hits on the visible right edge. The PR's lessons also describe tests passing while asserting the known defect.",
+      "remedy": "Remove tests of the retired generic helper and exercise player, alien and barrier boundaries through the reducer using the rendered geometry as the expected contract.",
+      "test_paths": [
+        "shared/types.test.ts",
+        "worker/src/game/reducer.test.ts",
+        "worker/src/test-utils.ts",
+        "Lessons_learned.md"
+      ],
+      "diff_evidence": "For an alien starting at column 50, the new table expects column 49 to miss, 50 and 54 to hit, and 55 to miss. For a barrier at 50, column 54 now hits the segment with offset 2, consistent with two rendered cells per segment. The old helper suite included assertions derived from its own horizontal distance formula.",
+      "transferable_rule": "Build boundary cases from the consumer-visible coordinates and include adjacent hits and misses.",
+      "verification_caveat": "The head and main checks passed. At this revision CI executed the client unit suite and only typechecked the Worker, so it did not attest to execution of the new reducer tests. This PR also introduced copied-render and source-text TUI suites later removed in #12.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/4/files",
+        "https://github.com/adewale/vaders/commit/8de97b0eeaa4994054d79f0798b71ab7ae52e625",
+        "https://github.com/adewale/vaders/blob/a03d87b283140b9a5832e544eb6d919635b38bfc/.github/workflows/ci.yml",
+        "https://github.com/adewale/vaders/actions/runs/21537067677"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Add gradient text, braille spinner, and TDD skill with terminal capability gating",
+      "url": "https://github.com/adewale/vaders/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing test cleanup and flake repair within a feature PR",
+      "weakness": "A terminal-size test compared numeric literals to themselves. Terminal fixtures left host variables in scope and a particle-pool test sampled before delayed origins had finished spawning.",
+      "remedy": "Delete the literal self-comparisons, isolate terminal detection inputs, and test for an empty pool after the last possible particle expiry.",
+      "test_paths": [
+        "client/src/terminal/compatibility.test.ts",
+        "client/src/terminal/cross-terminal.test.ts",
+        "client/src/animation/confetti.test.ts"
+      ],
+      "diff_evidence": "The diff removes `expect(120).toBe(120)` and its 36-row counterpart. The terminal fixture saves, clears and restores the 12 detection variables. The confetti test advances 110 logical ticks instead of 60 and requires exactly zero active particles, replacing the old less-than-capacity assertion.",
+      "transferable_rule": "Remove assertions independent of production behavior. Model fixture lifetimes and advance the system clock far enough to observe the contract's exact end state.",
+      "verification_caveat": "The PR and main checks passed with client, Worker and shared suites configured. Simulated terminal environments establish capability-selection behavior. Physical terminal behavior was outside these tests.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/6/files",
+        "https://github.com/adewale/vaders/commit/8f23b04a0d3978ed91df03df072fa0a4ae58d7be",
+        "https://github.com/adewale/vaders/commit/95355fd385b83c44295a7fd93d9af3a539d39d4f",
+        "https://github.com/adewale/vaders/actions/runs/22206941330"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Add difficulty curve explorer tool for game balance tuning",
+      "url": "https://github.com/adewale/vaders/pull/7",
+      "state": "open",
+      "merged": false,
+      "classification": "Existing simulation-oracle repair within an open feature PR",
+      "weakness": "An end-to-end shooting test built and injected the alien formation itself, then accepted any nonempty result. That setup could supply the very production outcome the test claimed to observe.",
+      "remedy": "Move wave spawning under the real reducer and let the test drive that reducer through the transition. Require the expected formation size and lifecycle. A separate review commit also replaces a stale count of built-in configurations with their identities and validates each.",
+      "test_paths": [
+        "worker/src/game/alien-shooting-proof.test.ts",
+        "worker/src/game/full-game-loop.test.ts",
+        "worker/src/sim/sim.test.ts"
+      ],
+      "diff_evidence": "The old proof called createAlienFormation, changed each alien's entering flag, and pushed the result into state.entities. The new proof removes those operations and checks rows times columns. The complete-wave test also checks that barriers survive, alien identifiers are unique, and the following wave reaches playing. Commit 773c6ff lists the seven configuration names.",
+      "transferable_rule": "Let the production transition create the state under test. A simulation that inserts its own expected state can pass when the real transition is missing.",
+      "verification_caveat": "Open as of 2026-11-23. GitHub's head job failed at Lint & format check. The Worker and other test steps were skipped, so this head has no hosted execution result for the proposed repairs.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/7/files",
+        "https://github.com/adewale/vaders/commit/f4ed446b36aaf6701af1122d6d8fd90cf32bc724",
+        "https://github.com/adewale/vaders/commit/773c6ff73e64f599f2287a797cf1b8082e47d853",
+        "https://github.com/adewale/vaders/actions/runs/27286687493/job/80595748302"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Fix audit findings: reconnect watchdog, DO alarm contention, state-machine guards, registry bounding (v1.2.0)",
+      "url": "https://github.com/adewale/vaders/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing property-test oracle repair within a system audit",
+      "weakness": "The menu-sound property counted eligible key events and did not track the selected item or join mode. A valid sequence entered room-code entry, where navigation should be silent, and failed the test against correct behavior.",
+      "remedy": "Model selectedIndex and joinMode, assert the full ordered sound trace, and retain the minimized CI example as a deterministic regression. A related reconnect test mounts the real connection hook and exercises both recovery and a genuinely silent socket.",
+      "test_paths": [
+        "web/src/components/LaunchScreen.test.tsx",
+        "web/src/connection-reconnect.test.tsx"
+      ],
+      "diff_evidence": "For `2, ArrowDown, Enter, ArrowUp`, the pinned regression expects `[select, navigate, select]`. The generated property compares the ordered event kinds, replacing a length comparison. The reconnect tests use a controlled WebSocket and fake timers with renderHook.",
+      "transferable_rule": "When an input changes modes, derive the expected trace from the externally visible protocol. Keep the reduced counterexample alongside the generated property.",
+      "verification_caveat": "The PR head's test, build and spritesheet checks passed. Main's browser E2E job failed at its test step. Historical logs have expired for that job, so the specific browser failure is unverified. The reconnect fixture uses simulated sockets and time.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/9/files",
+        "https://github.com/adewale/vaders/actions/runs/27297764100/job/80634969998",
+        "https://github.com/adewale/vaders/actions/runs/27301430845/job/80648219567"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Shrink multiplayer state-machine journeys",
+      "url": "https://github.com/adewale/vaders/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated state-machine test audit and repair",
+      "weakness": "Manual array execution hid command preconditions from fast-check's shrinker. The expected model copied observed status or readiness, allowing a dropped command or deletion of an occupied lobby to become the expected result. Short tick steps rarely reached gameplay.",
+      "remedy": "Use command-aware shrinking, compute key postconditions before updating the model, add reachability controls, and read actual broadcast state for movement and shots.",
+      "test_paths": [
+        "worker/src/state-machine.pbt.test.ts",
+        "Lessons_learned.md"
+      ],
+      "diff_evidence": "`fc.commands` and `fc.asyncModelRun` replace an array runner. A parameterized test suppresses each of ready, unready, start_solo, forfeit and leave and requires rejection. Another injects occupied-lobby deletion. A 90-tick command reaches gameplay and the test checks player position and shot tick in the last sync broadcast.",
+      "transferable_rule": "Keep expected state independent of the system under test. Prove the harness reaches important states and rejects deliberately dropped valid operations.",
+      "verification_caveat": "The PR test job passed and PR browser E2E was skipped. The main browser job subsequently failed before any scenario ran because Wrangler's assets directory was missing. The state-machine suite uses sequential mocked Durable Objects, which limits runtime and concurrency claims.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/10/files",
+        "https://github.com/adewale/vaders/commit/2d0dc0d750e6895d187319cf9e0916b1c0e2e9f6",
+        "https://github.com/adewale/vaders/actions/runs/37869613335/job/113624423472",
+        "https://github.com/adewale/vaders/actions/runs/37869786679/job/113625293637"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Repair existing verification without expanding CI",
+      "url": "https://github.com/adewale/vaders/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated verification-policy and browser-suite repair",
+      "weakness": "The assertion-density script gave each fast-check assertion triple weight and offered a numerical failure threshold. The browser job installed Chromium but selected every configured browser. Existing client-core property tests also failed independent typechecking.",
+      "remedy": "Retain plain assertion counts as an informational inventory, remove the threshold and weighting, fix the client-core types, and select Chromium in the existing main browser job.",
+      "test_paths": [
+        "scripts/audit-assertion-density.mjs",
+        ".github/workflows/ci.yml",
+        "client-core/src/animation/interpolation.property.test.ts",
+        "client-core/package.json",
+        "Lessons_learned.md"
+      ],
+      "diff_evidence": "The script removes `--fail-under` and counts each `fc.assert` once. The E2E command adds `--project=chromium`. Two literal-set declarations become `Set<string>` and client-core declares Bun test types. Earlier commits added a workerd runtime suite, larger property timeouts and a lexical blocker with a baseline. The final commit removes those additions. The lessons give an example where the blocker matched matcher-like text inside a precise equality.",
+      "transferable_rule": "Assess what an assertion can distinguish. Keep syntax counts descriptive and make browser selection agree with the binaries installed by the job.",
+      "verification_caveat": "Merged 24 seconds after #12. Its PR browser job was skipped. The combined main job ran Chromium and recorded 26 passes and four skips. This validates the selected browser lane. The earlier workerd tests and lexical blocker did not ship.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/11/files",
+        "https://github.com/adewale/vaders/commit/a317b12220120f4487a22584a5559a282373134e",
+        "https://github.com/adewale/vaders/commit/9eb2e7b4dd6c2371201669a85a95ffaca03f9dfc",
+        "https://github.com/adewale/vaders/commit/994643088b32201175175f5ab62e0340af3929ec",
+        "https://github.com/adewale/vaders/actions/runs/37900423360/job/113721985153"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Fix TUI colour inputs and repair local E2E startup",
+      "url": "https://github.com/adewale/vaders/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "Pilot, dedicated rendering-test and local E2E repair",
+      "weakness": "TUI tests searched App.tsx or executed a copied render switch. The color property required an `ansi256:N` spelling even though OpenTUI parsed it as magenta. A widened type made the status-exhaustiveness check unable to detect omissions. A skipped rectangle-texture test covered a removed effect, and clean E2E checkouts could not start Wrangler.",
+      "remedy": "Delete the three source/copied TUI suites and the obsolete skipped case. Mount the real App in OpenTUI for an explicit review check, verify actual parser output for generated colors, preserve literal status types, and create Wrangler's assets directory before starting the two local servers.",
+      "test_paths": [
+        "client/src/App.test.ts",
+        "client/src/render-sequence.test.ts",
+        "client/src/render-trace.test.ts",
+        "client/src/App.render-check.tsx",
+        "client/src/terminal/color-conversion.property.test.ts",
+        "shared/state-defaults.ts",
+        "web/src/acceptance.test.ts",
+        "web/playwright.config.ts",
+        "docs/pr12-evidence/receipt.json"
+      ],
+      "diff_evidence": "The replacement uses createRoot and captureCharFrame, checks each of seven statuses against its screen marker and drives transitions. The property compares `parseColor(convertColorForTerminal(hex, caps)).toInts()` with the requested RGB and checks for warnings. The status registry uses `as const satisfies readonly GameStatus[]`. Playwright starts Wrangler after `mkdir -p dist`, disables server reuse in CI, and selects a strict Vite port. The committed native-buffer receipt records yellow, cyan and orange all rendering magenta on base and their requested colors after the fix. Both PNG SHA-256 values match the committed receipt.",
+      "transferable_rule": "Test the consuming parser or renderer with discriminating outputs, delete superseded cases, and run a negative control for any claimed exhaustive check. Keep the cost and scope of the replacement explicit.",
+      "verification_caveat": "PR E2E was skipped. On #12's own main merge, Chromium reached the suite and 26 tests passed. The all-browser job still failed with 46 failures and ten skips because Firefox/WebKit executables were absent. After #11 selected Chromium, main passed 26 with four skips. The 11 native render checks are manual, mock the network and audio hooks, and sample settled frames. The stored images and hashes verify the recorded fixture, and physical terminal output and deployed static assets remain untested.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/12/files",
+        "https://github.com/adewale/vaders/blob/cc036dfe735faf31a0a8619b8a4c2c7d604019c7/docs/pr12-evidence/receipt.json",
+        "https://github.com/adewale/vaders/commit/a3147df8262a9e3e55916dd68f3a3d275c8a3f2c",
+        "https://github.com/adewale/vaders/actions/runs/37900386807/job/113721851000",
+        "https://github.com/adewale/vaders/actions/runs/37900423360/job/113721985153"
+      ]
+    },
+    {
+      "number": 15,
+      "title": "ci: cancel stale PR checks and pin supported browser runners",
+      "url": "https://github.com/adewale/vaders/pull/15",
+      "state": "closed",
+      "merged": true,
+      "classification": "Browser-test runtime compatibility within CI maintenance",
+      "weakness": "The main-only E2E job tracked ubuntu-latest while the lockfile fixed Playwright at 1.59.1. A hosted-image migration could move the job outside its supported OS set.",
+      "remedy": "Pin the existing browser job to Ubuntu 24.04 so it runs with a supported image. The separate cancellation setting is incidental to the match.",
+      "test_paths": [
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "Only e2e-web's runner changes from `ubuntu-latest` to `ubuntu-24.04`. The dependency lock at the PR head resolves @playwright/test, playwright and playwright-core to 1.59.1. The existing browser install, invocation and push-to-main trigger stay in place.",
+      "transferable_rule": "Match the hosted image to the locked browser toolchain and verify the actual job on its triggering event.",
+      "verification_caveat": "The PR browser job was skipped. The merged-main E2E job recorded 26 Chromium passes and four skips. The previous main run had also passed. Failure on an Ubuntu 26.04 runner is unverified.",
+      "evidence_urls": [
+        "https://github.com/adewale/vaders/pull/15/files",
+        "https://github.com/adewale/vaders/commit/c6b06ae3a8fb3bdb187e0bc0141eaaab7b7c3b47",
+        "https://github.com/adewale/vaders/actions/runs/41531608869/job/125576298963",
+        "https://github.com/adewale/vaders/actions/runs/37951628976"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 2,
+      "title": "Fix keyboard skating and improve Apple Terminal experience",
+      "url": "https://github.com/adewale/vaders/pull/2",
+      "state": "closed",
+      "merged": true,
+      "reason": "Changes input handling, diagnostics and terminal color conversion. It introduced the ansi256 format later covered by #12, with no test or verification changes in this PR."
+    },
+    {
+      "number": 5,
+      "title": "Document server architecture and functionality",
+      "url": "https://github.com/adewale/vaders/pull/5",
+      "state": "closed",
+      "merged": true,
+      "reason": "Architecture and specification documentation. The added directory layout mentions test files, with no proposed or implemented test repair."
+    },
+    {
+      "number": 8,
+      "title": "Balance co-op lives, wipe timings, and grid sizes",
+      "url": "https://github.com/adewale/vaders/pull/8",
+      "state": "closed",
+      "merged": true,
+      "reason": "The final five-file delta updates balance documentation and launcher help. The described gameplay changes yield no test-quality change in the PR diff."
+    },
+    {
+      "number": 13,
+      "title": "chore: patch vulnerable development tooling",
+      "url": "https://github.com/adewale/vaders/pull/13",
+      "state": "closed",
+      "merged": true,
+      "reason": "Updates development dependencies and the lockfile to address advisories. Existing suites serve as compatibility checks. Test behavior and selection do not change."
+    },
+    {
+      "number": 14,
+      "title": "Patch OpenTUI runtime dependencies on compatible release lines",
+      "url": "https://github.com/adewale/vaders/pull/14",
+      "state": "closed",
+      "merged": true,
+      "reason": "Patches runtime dependencies and documents the required Bun version. Ad hoc compatibility probes are described in the PR body. The committed files contain no test or harness changes."
+    },
+    {
+      "number": 16,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/vaders/pull/16",
+      "state": "closed",
+      "merged": true,
+      "reason": "Pins action versions and adds a zizmor linter for immutable workflow references. Its subject is workflow security policy. Application test behavior is outside the diff."
+    },
+    {
+      "number": 17,
+      "title": "Bump the github-actions group with 3 updates",
+      "url": "https://github.com/adewale/vaders/pull/17",
+      "state": "open",
+      "merged": false,
+      "reason": "Open Dependabot group update to three GitHub Actions. The workflow changes are version references."
+    }
+  ],
+  "related_attempts": [
+    {
+      "number": 10,
+      "head_sha": "2d0dc0d750e6895d187319cf9e0916b1c0e2e9f6",
+      "merged_at": "2026-10-09T01:26:30Z",
+      "main_browser_result": "Wrangler failed at startup because assets.directory did not exist. No scenario started.",
+      "source": "https://github.com/adewale/vaders/actions/runs/37869786679/job/113625293637"
+    },
+    {
+      "number": 12,
+      "head_sha": "cc036dfe735faf31a0a8619b8a4c2c7d604019c7",
+      "merged_at": "2026-10-09T07:40:33Z",
+      "main_browser_result": "The startup repair let Chromium run. The unfiltered browser invocation produced 26 passes, 46 failures and ten skips. The Firefox and WebKit binaries were absent.",
+      "source": "https://github.com/adewale/vaders/actions/runs/37900386807/job/113721851000"
+    },
+    {
+      "number": 11,
+      "head_sha": "994643088b32201175175f5ab62e0340af3929ec",
+      "merged_at": "2026-10-09T07:40:57Z",
+      "main_browser_result": "The combined changes selected the installed Chromium browser. GitHub recorded 26 passes and four skips.",
+      "source": "https://github.com/adewale/vaders/actions/runs/37900423360/job/113721985153"
+    }
+  ],
+  "limitations": [
+    "The audit reviewed source and hosted outcomes. It did not rerun the application, tests or experiments. Reported local repeat counts have no independent execution record here. Historical logs for #7 and #9's failed jobs returned HTTP 410. Their job and step outcomes remain available.",
+    "GitHub omitted patches for the two #7 generated simulation datasets, #12's two binary PNGs and removed generated Playwright HTML report, and #13's lockfile. None are test source. For #12 the committed PNG bytes were independently hashed against the receipt.",
+    "The PRs' current merge records govern state. The October descriptions of #11 and #12 describe an earlier stage of review. Main browser jobs ran against the respective merge SHAs."
+  ],
+  "file_inventories": {
+    "1": [
+      ".github/workflows/ci.yml",
+      "CLAUDE.md",
+      "client/src/components/GameScreen.tsx",
+      "client/src/components/LaunchScreen.tsx",
+      "client/src/effects.ts",
+      "client/src/hooks/useGameConnection.ts",
+      "client/src/input.test.ts",
+      "shared/protocol.ts",
+      "shared/types.ts",
+      "worker/src/GameRoom.ts",
+      "worker/src/game/modes.ts",
+      "worker/src/game/reducer.ts"
+    ],
+    "2": [
+      "client/src/input.ts",
+      "client/src/sprites.ts",
+      "client/src/startup.ts",
+      "client/src/terminal/compatibility.ts"
+    ],
+    "3": [
+      "bun.lock",
+      "worker/package.json",
+      "worker/src/GameRoom.test.ts",
+      "worker/src/Matchmaker.test.ts",
+      "worker/src/game/reducer.test.ts",
+      "worker/src/game/scaling.test.ts",
+      "worker/src/mocks/cloudflare-workers.ts",
+      "worker/src/test-utils.ts",
+      "worker/vitest.config.ts"
+    ],
+    "4": [
+      "CLAUDE.md",
+      "Lessons_learned.md",
+      "client/package.json",
+      "client/src/App.test.ts",
+      "client/src/App.tsx",
+      "client/src/animation/confetti.test.ts",
+      "client/src/animation/confetti.ts",
+      "client/src/animation/easing.test.ts",
+      "client/src/animation/easing.ts",
+      "client/src/animation/entrance.test.ts",
+      "client/src/animation/entrance.ts",
+      "client/src/animation/index.ts",
+      "client/src/animation/interpolation.test.ts",
+      "client/src/animation/interpolation.ts",
+      "client/src/animation/temporal-dependencies.test.ts",
+      "client/src/animation/wipe.test.ts",
+      "client/src/animation/wipe.ts",
+      "client/src/audio/sounds.test.ts",
+      "client/src/components/GameOverScreen.test.ts",
+      "client/src/components/GameScreen.test.ts",
+      "client/src/components/GameScreen.tsx",
+      "client/src/components/LobbyScreen.test.ts",
+      "client/src/effects.ts",
+      "client/src/hooks/index.ts",
+      "client/src/hooks/useEntranceAnimation.ts",
+      "client/src/hooks/useInterpolation.ts",
+      "client/src/input.ts",
+      "client/src/observer.ts",
+      "client/src/render-log-analyzer.ts",
+      "client/src/render-sequence.test.ts",
+      "client/src/render-trace.test.ts",
+      "shared/protocol.ts",
+      "shared/state-defaults.test.ts",
+      "shared/state-defaults.ts",
+      "shared/timing-compatibility.test.ts",
+      "shared/types.test.ts",
+      "shared/types.ts",
+      "specs/vaders-spec.md",
+      "worker/src/GameRoom.test.ts",
+      "worker/src/GameRoom.ts",
+      "worker/src/game/alien-shooting-proof.test.ts",
+      "worker/src/game/reducer.test.ts",
+      "worker/src/game/reducer.ts",
+      "worker/src/integration.test.ts",
+      "worker/src/test-utils.ts",
+      "worker/tsconfig.json"
+    ],
+    "5": [
+      "CLAUDE.md",
+      "Lessons_learned.md",
+      "docs/server-architecture.md",
+      "specs/vaders-spec.md"
+    ],
+    "6": [
+      ".claude/skills/tdd/SKILL.md",
+      ".claude/skills/tdd/deep-modules.md",
+      ".claude/skills/tdd/interface-design.md",
+      ".claude/skills/tdd/mocking.md",
+      ".claude/skills/tdd/refactoring.md",
+      ".claude/skills/tdd/tests.md",
+      "client/src/App.test.ts",
+      "client/src/App.tsx",
+      "client/src/animation/confetti.test.ts",
+      "client/src/animation/dissolve.test.ts",
+      "client/src/animation/dissolve.ts",
+      "client/src/animation/index.ts",
+      "client/src/animation/waveBorder.test.ts",
+      "client/src/animation/waveBorder.ts",
+      "client/src/animation/wipe.ts",
+      "client/src/audio/MusicManager.test.ts",
+      "client/src/audio/MusicManager.ts",
+      "client/src/components/GameScreen.tsx",
+      "client/src/components/GradientText.tsx",
+      "client/src/components/LaunchScreen.tsx",
+      "client/src/components/Logo.tsx",
+      "client/src/components/Spinner.tsx",
+      "client/src/components/WaveAnnounce.tsx",
+      "client/src/digitFont.test.ts",
+      "client/src/digitFont.ts",
+      "client/src/gradient.test.ts",
+      "client/src/gradient.ts",
+      "client/src/hooks/useDissolveEffects.test.ts",
+      "client/src/hooks/useDissolveEffects.ts",
+      "client/src/hooks/useGameAudio.test.ts",
+      "client/src/hooks/useGameAudio.ts",
+      "client/src/hooks/useGameConnection.ts",
+      "client/src/render-sequence.test.ts",
+      "client/src/render-trace.test.ts",
+      "client/src/sprites.test.ts",
+      "client/src/sprites.ts",
+      "client/src/terminal/compatibility.test.ts",
+      "client/src/terminal/compatibility.ts",
+      "client/src/terminal/cross-terminal.test.ts",
+      "client/src/terminal/index.ts",
+      "shared/timing-compatibility.test.ts",
+      "shared/types.ts",
+      "worker/src/GameRoom.test.ts",
+      "worker/src/game/alien-shooting-proof.test.ts",
+      "worker/src/game/full-game-loop.test.ts",
+      "worker/src/integration.test.ts"
+    ],
+    "7": [
+      "shared/state-defaults.test.ts",
+      "shared/state-defaults.ts",
+      "shared/types.test.ts",
+      "shared/types.ts",
+      "specs/difficulty-tuning-spec.md",
+      "tools/difficulty-curve.html",
+      "tools/difficulty-report-lib.js",
+      "tools/difficulty-report-test.js",
+      "tools/difficulty-report.html",
+      "tools/sample-data/ship-v1-vs-v2.results.json",
+      "tools/sample-data/ship-v2.1-vs-v2.2.results.json",
+      "web/src/gamestate-field-surface.contract.test.ts",
+      "worker/package.json",
+      "worker/src/GameRoom.test.ts",
+      "worker/src/GameRoom.ts",
+      "worker/src/env.ts",
+      "worker/src/game/alien-shooting-proof.test.ts",
+      "worker/src/game/full-game-loop.test.ts",
+      "worker/src/game/reducer.test.ts",
+      "worker/src/game/reducer.ts",
+      "worker/src/game/scaling.test.ts",
+      "worker/src/game/scaling.ts",
+      "worker/src/sim/bot.ts",
+      "worker/src/sim/cli.ts",
+      "worker/src/sim/configs/classic-ramp.json",
+      "worker/src/sim/configs/easier-multi.json",
+      "worker/src/sim/configs/flat.json",
+      "worker/src/sim/configs/ship-v1.json",
+      "worker/src/sim/configs/ship-v2.1.json",
+      "worker/src/sim/configs/ship-v2.2.json",
+      "worker/src/sim/configs/ship-v2.json",
+      "worker/src/sim/experiment.ts",
+      "worker/src/sim/report.ts",
+      "worker/src/sim/runner.ts",
+      "worker/src/sim/sim.test.ts",
+      "worker/wrangler.jsonc"
+    ],
+    "8": [
+      "CLAUDE.md",
+      "Lessons_learned.md",
+      "README.md",
+      "bin/vaders.ts",
+      "docs/server-architecture.md"
+    ],
+    "9": [
+      "CHANGELOG.md",
+      "Lessons_learned.md",
+      "README.md",
+      "client-core/src/connection/liveness.test.ts",
+      "client-core/src/connection/liveness.ts",
+      "client-core/src/connection/useGameConnection.ts",
+      "client/src/App.serverUrl.test.ts",
+      "client/src/App.tsx",
+      "client/src/audio/MusicManager.ts",
+      "client/src/audio/audioPlayers.test.ts",
+      "client/src/audio/audioPlayers.ts",
+      "client/src/serverUrl.ts",
+      "client/src/startup.test.ts",
+      "client/src/startup.ts",
+      "docs/TODO.md",
+      "package.json",
+      "shared/protocol.ts",
+      "shared/tui-compat.contract.test.ts",
+      "shared/types.test.ts",
+      "shared/types.ts",
+      "web/src/api/roomApi.test.ts",
+      "web/src/api/roomApi.ts",
+      "web/src/components/LaunchScreen.test.tsx",
+      "web/src/components/PlayerDepartureNotice.test.tsx",
+      "web/src/components/PlayerDepartureNotice.tsx",
+      "web/src/connection-message-diagnostics.test.tsx",
+      "web/src/connection-reconnect.test.tsx",
+      "worker/src/GameRoom.test.ts",
+      "worker/src/GameRoom.ts",
+      "worker/src/Matchmaker.test.ts",
+      "worker/src/Matchmaker.ts",
+      "worker/src/env.ts",
+      "worker/src/game/reducer.test.ts",
+      "worker/src/game/reducer.ts",
+      "worker/src/index.ts",
+      "worker/src/integration.test.ts",
+      "worker/src/logger.test.ts",
+      "worker/src/logger.ts",
+      "worker/src/mocks/cloudflare-workers.ts",
+      "worker/src/room-creation.pbt.test.ts",
+      "worker/src/room-joining.pbt.test.ts",
+      "worker/src/state-machine.pbt.test.ts"
+    ],
+    "10": [
+      "Lessons_learned.md",
+      "worker/src/state-machine.pbt.test.ts"
+    ],
+    "11": [
+      ".github/workflows/ci.yml",
+      "CHANGELOG.md",
+      "Lessons_learned.md",
+      "bun.lock",
+      "client-core/package.json",
+      "client-core/src/animation/interpolation.property.test.ts",
+      "scripts/audit-assertion-density.mjs"
+    ],
+    "12": [
+      "CLAUDE.md",
+      "Lessons_learned.md",
+      "client/src/App.render-check.tsx",
+      "client/src/App.test.ts",
+      "client/src/render-sequence.test.ts",
+      "client/src/render-trace.test.ts",
+      "client/src/terminal/color-conversion.property.test.ts",
+      "client/src/terminal/compatibility.ts",
+      "docs/pr12-evidence/after.png",
+      "docs/pr12-evidence/after.svg",
+      "docs/pr12-evidence/before.png",
+      "docs/pr12-evidence/before.svg",
+      "docs/pr12-evidence/receipt.json",
+      "shared/state-defaults.ts",
+      "specs/web-frontend-spec.md",
+      "web/playwright-report/index.html",
+      "web/playwright.config.ts",
+      "web/src/acceptance.test.ts"
+    ],
+    "13": [
+      "bun.lock",
+      "package.json",
+      "web/package.json",
+      "worker/package.json"
+    ],
+    "14": [
+      "README.md",
+      "bun.lock",
+      "package.json"
+    ],
+    "15": [
+      ".github/workflows/ci.yml"
+    ],
+    "16": [
+      ".github/dependabot.yml",
+      ".github/workflows/action-pinning.yml",
+      ".github/workflows/ci.yml"
+    ],
+    "17": [
+      ".github/workflows/ci.yml"
+    ]
+  }
+}

@@ -1,0 +1,1197 @@
+{
+  "repository": "adewale/keyboardia",
+  "repository_url": "https://github.com/adewale/keyboardia",
+  "total_prs": 118,
+  "pages_checked": {
+    "enumerated_on_utc": "2026-11-23",
+    "population": "All PRs in OPEN, CLOSED, MERGED states, with no date or author filter.",
+    "metadata": "GitHub GraphQL, created-order ascending, 4 pages of 35/35/35/13; final hasNextPage=false, totalCount=118.",
+    "states": {
+      "merged": 103,
+      "closed": 5,
+      "open": 10
+    },
+    "file_inventory": "12 pages of PRs (10 per page, final 8) requested their first 100 file paths. 27 additional 100-file cursor pages exhausted all nested connections. 5,007 changed-file entries.",
+    "multi_page_file_inventories": {
+      "15": 2,
+      "34": 2,
+      "40": 2,
+      "45": 2,
+      "47": 3,
+      "53": 2,
+      "54": 2,
+      "62": 2,
+      "68": 4,
+      "87": 2,
+      "88": 11,
+      "95": 3,
+      "100": 2,
+      "116": 2
+    },
+    "cross_check": "Fetched all 118 GitHub pull head refs. For each PR selected the Git comparison base whose changed-path set exactly matched the complete API inventory. Every set matched, including 1,074 paths on #88.",
+    "head_checks": "GitHub last-commit statusCheckRollup fetched on all 118 PRs and matched every recorded head SHA. Exact-head check-run listings also inspected for #27, #51, #52, #104, #123, #126, #127, #130, #134."
+  },
+  "match_counts": {
+    "all": 59,
+    "by_classification": {
+      "proposal": 2,
+      "explicit": 18,
+      "embedded": 31,
+      "approach": 8
+    },
+    "merged": 50,
+    "closed_unmerged": 4,
+    "open": 5
+  },
+  "classification_guide": {
+    "explicit": "Test-quality correction or audit is a main purpose.",
+    "embedded": "A separate, evidenced repair inside a broader change.",
+    "approach": "A substantive verification method addresses a demonstrated gap in existing practice.",
+    "proposal": "Specific test or evaluation repair detailed in documentation without executing it."
+  },
+  "matching_prs": [
+    {
+      "number": 27,
+      "title": "docs: Add Mutation-Invariant Mismatch bug pattern (#13)",
+      "url": "https://github.com/adewale/keyboardia/pull/27",
+      "state": "closed",
+      "merged": true,
+      "classification": "proposal",
+      "weakness": "The Worker and its mock both shortened fixed-length step arrays, so agreement between them concealed an invariant violation.",
+      "remedy": "Document a failing test and repair plan for both implementations.",
+      "test_paths": [
+        "specs/research/STEP-ARRAY-INVARIANT-BUG.md",
+        "docs/BUG-PATTERNS.md"
+      ],
+      "diff_evidence": "The proposed regression runs validateStateInvariants on state after changing step count and requires 128 slots. The document identifies the corresponding mock resize.",
+      "transferable_rule": "Use an independent invariant when a double can repeat the production mistake.",
+      "verification_caveat": "GitHub head check rollup FAILURE at 3a930944. GitHub lists E2E Tests as failed. Only documents changed. The proposed regression was not executed by this PR."
+    },
+    {
+      "number": 30,
+      "title": "Identify property-based testing opportunities in Keyboardia",
+      "url": "https://github.com/adewale/keyboardia/pull/30",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "The skipped browser reorder suite left the reducer operation uncovered in CI, and example cases barely exercised mutation sequences.",
+      "remedy": "Add reducer-level reorder cases and generated and model-based invariants.",
+      "test_paths": [
+        "app/src/state/grid.test.ts",
+        "app/src/sync/mutation-tracker.model.test.ts",
+        "app/src/test/arbitraries.ts"
+      ],
+      "diff_evidence": "grid.test.ts compares actual ordered track IDs after moving tracks forward and backward. The state-machine suite generates operations against a reference model.",
+      "transferable_rule": "Put deterministic core invariants in an always-run layer and retain a separate wiring check.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 0b23083c. The reducer cases do not establish browser pointer or drag behavior."
+    },
+    {
+      "number": 31,
+      "title": "Review & improve Playwright E2E tests with modern best practices",
+      "url": "https://github.com/adewale/keyboardia/pull/31",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "E2E tests used fixed sleeps and blanket timing-related CI skips.",
+      "remedy": "Add readiness helpers, fixtures and locator assertions, then restore selected skipped checks.",
+      "test_paths": [
+        "app/e2e/global-setup.ts",
+        "app/e2e/playback.spec.ts",
+        "app/e2e/core.spec.ts"
+      ],
+      "diff_evidence": "The playback diff removes its file-level CI skip. Core waits for application readiness and checks rendered states after drag operations.",
+      "transferable_rule": "Wait for the application state under test and keep fixture setup explicit.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 61b38bbe. The PR retained some environment-specific skips."
+    },
+    {
+      "number": 35,
+      "title": "fix: Remove setPointerCapture breaking drag-to-paint + add test suite",
+      "url": "https://github.com/adewale/keyboardia/pull/35",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "The shared active-step assertion tried two unavailable ARIA attributes before the class that actually encoded step state. A long synthetic drag also conflated event delivery with editing logic.",
+      "remedy": "Simplify the page-object oracle and add diagnostic drag coverage.",
+      "test_paths": [
+        "app/e2e/pages/sequencer.page.ts",
+        "app/e2e/drag-to-paint.spec.ts"
+      ],
+      "diff_evidence": "expectStepActive replaces two chained caught ARIA matchers with toHaveClass(/active/). The long-drag case records the Playwright limitation.",
+      "transferable_rule": "Use one asserted state contract and distinguish input-driver limitations from a product defect.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 930ded5c. One 16-step drag was explicitly skipped."
+    },
+    {
+      "number": 36,
+      "title": "refactor: Code deduplication, component extraction, and E2E test fixes",
+      "url": "https://github.com/adewale/keyboardia/pull/36",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Many browser scenarios were skipped, including drag and keyboard cases, and some only encountered unavailable UI or unsupported synthetic input.",
+      "remedy": "Delete skipped browser cases, move verifiable behavior into unit tests, and change browser coverage.",
+      "test_paths": [
+        "app/e2e/drag-to-paint.spec.ts",
+        "app/e2e/instrument-audio.spec.ts",
+        "app/src/components/keyboard-handlers.test.ts",
+        "app/playwright.config.ts"
+      ],
+      "diff_evidence": "The skipped 16-step drag is deleted. Keyboard tests exercise real reducer state transitions. Firefox is removed from the project matrix.",
+      "transferable_rule": "Before removing a test, identify the behavior its replacement actually observes.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at e8aa63c8. Firefox coverage was dropped. Some replacement tests later proved too indirect, including copied mobile logic addressed in later audits."
+    },
+    {
+      "number": 37,
+      "title": "feat: Mobile interface simplification (portrait + landscape modes)",
+      "url": "https://github.com/adewale/keyboardia/pull/37",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Mobile smoke setup could inspect a hidden header first, and rotation waited a fixed 150 ms.",
+      "remedy": "Check layout-specific visibility and wait for the rendered orientation.",
+      "test_paths": [
+        "app/e2e/global-setup.ts",
+        "app/e2e/mobile-orientation.spec.ts"
+      ],
+      "diff_evidence": "Commit a0bc0c39 replaces the combined first() lookup with separate header visibility checks, and replaces the sleep with visible portrait header and data-orientation checks.",
+      "transferable_rule": "Poll the state that identifies the new viewport instead of assuming DOM order or a debounce duration.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 207d57c2."
+    },
+    {
+      "number": 38,
+      "title": "test: Add PBT + integration tests for pattern reversal p-lock preserv…",
+      "url": "https://github.com/adewale/keyboardia/pull/38",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Existing rotate/invert suites checked parameter locks, but reverse/mirror coverage could miss lost or misplaced locks.",
+      "remedy": "Extend generated transforms and client/server fixtures with lock-bearing patterns.",
+      "test_paths": [
+        "app/src/utils/patternOps.property.test.ts",
+        "app/test/integration/pattern-ops-sync.test.ts"
+      ],
+      "diff_evidence": "Generated steps carry correlated optional locks. Reverse/mirror decisions compare positions and values, and client/server tests compare parameterLocks slices.",
+      "transferable_rule": "Generate payloads correlated to their keys and verify they move together through every sibling operation.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 232a3a57. The integration file uses the client/server simulation available at that revision."
+    },
+    {
+      "number": 40,
+      "title": "feat: Add 5 new instruments + fix silent failure bugs",
+      "url": "https://github.com/adewale/keyboardia/pull/40",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "The catalog could route a named instrument even when its default scheduled pitch fell outside playableRange or loudness layers were reversed.",
+      "remedy": "Validate catalog-wide scheduler/manifest compatibility and measured layer levels.",
+      "test_paths": [
+        "app/src/audio/instrument-routing.test.ts",
+        "app/scripts/validate-playable-ranges.ts",
+        "app/scripts/validate-velocity-layers.ts"
+      ],
+      "diff_evidence": "The new validator uses SCHEDULER_BASE_MIDI_NOTE against manifest ranges, and the layer script measures RMS with ffmpeg. Existing routing tests gain base-note checks.",
+      "transferable_rule": "Verify the runtime's normal input against real assets and measure a consequence of each configuration.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at d708155f."
+    },
+    {
+      "number": 41,
+      "title": "feat: Implement Observability 2.0 wide events",
+      "url": "https://github.com/adewale/keyboardia/pull/41",
+      "state": "closed",
+      "merged": true,
+      "classification": "approach",
+      "weakness": "Existing browser tests targeted a Vite URL, with no runner that owned the complete local Workers backend.",
+      "remedy": "Allow a supplied base URL and run existing Playwright specs against a locally started Wrangler backend.",
+      "test_paths": [
+        "app/playwright.config.ts",
+        "app/scripts/test-e2e-full-stack.ts"
+      ],
+      "diff_evidence": "The runner polls Wrangler readiness and fails its startup deadline. The Playwright config accepts PLAYWRIGHT_BASE_URL.",
+      "transferable_rule": "Exercise an existing browser suite against the same backend implementation that handles user requests.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 59947b1a."
+    },
+    {
+      "number": 43,
+      "title": "Add solo track filtering to PitchOverview component",
+      "url": "https://github.com/adewale/keyboardia/pull/43",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Workers-pool tests depended on forbidden host filesystem access, and reorder fixtures still used obsolete fromIndex inputs.",
+      "remedy": "Pass CSS through a test binding and send real track IDs to the reorder contract.",
+      "test_paths": [
+        "app/test/integration/published-session-ux.test.ts",
+        "app/test/integration/vitest.config.ts",
+        "app/test/integration/mobile-ui-functionality.test.ts"
+      ],
+      "diff_evidence": "Configuration reads CSS before the sandbox starts. Tests consume env-bound text and replace a negative index with an unknown track ID.",
+      "transferable_rule": "Give sandboxed tests their inputs through supported interfaces and exercise the current public request shape.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at cf351f17. The new solo-track product tests are incidental to these separate repairs."
+    },
+    {
+      "number": 45,
+      "title": "Audio engine review: fix 7 + 9 findings, per-track refactor, hook hardening",
+      "url": "https://github.com/adewale/keyboardia/pull/45",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A staging meter test could pass without observing a signal, and two tracks could appear healthy while sharing one meter.",
+      "remedy": "Require actual nonzero staging meter samples and prove independence of two browser-observed channels.",
+      "test_paths": [
+        "app/e2e/staging/vu-meters.spec.ts",
+        "app/e2e/per-track-advanced-meters.spec.ts",
+        "app/src/audio/mock-fidelity.test.ts"
+      ],
+      "diff_evidence": "The staging assertion requires nonzero samples. The new two-pattern test requires both tracks to animate and absolute Pearson correlation below 0.9. A separate contract checks audio mocks against production APIs.",
+      "transferable_rule": "Use distinguishable stimuli when multiple outputs might secretly be the same signal.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 5ffecc4f. The staging suite is explicitly gated and the aggregate check does not establish staging execution."
+    },
+    {
+      "number": 46,
+      "title": "fix: integrate TrackDrawer into landscape mobile mode",
+      "url": "https://github.com/adewale/keyboardia/pull/46",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A test asserted the visible defect as correct behavior by requiring the landscape track drawer to stay hidden.",
+      "remedy": "Reverse the oracle and exercise controls and the drawer's open/close transitions.",
+      "test_paths": [
+        "app/e2e/mobile-orientation.spec.ts",
+        "app/src/components/TrackDrawer.test.tsx"
+      ],
+      "diff_evidence": "The diff removes not.toBeVisible() on .track-drawer and checks visible Copy controls, tap-to-open, and repeated-tap behavior.",
+      "transferable_rule": "Test the intended user action and its visible consequence, including a regression that fails on the old behavior.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at b9093e94."
+    },
+    {
+      "number": 47,
+      "title": "docs: add June 2026 sample & audio pipeline audit",
+      "url": "https://github.com/adewale/keyboardia/pull/47",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Manifest and routing checks could miss wrong sounding pitches, clipped samples and a scheduler time lost at the engine boundary.",
+      "remedy": "Add decoded-asset inspections and direct engine-to-instrument forwarding assertions.",
+      "test_paths": [
+        "app/scripts/validate-acoustic-pitch.py",
+        "app/scripts/validate-audio-defects.py",
+        "app/src/audio/engine-sampled-passthrough.test.ts"
+      ],
+      "diff_evidence": "The scripts decode files with ffmpeg, estimate measured pitch and detect signal defects. The regression asserts playNote receives scheduled time previously hard-coded to zero.",
+      "transferable_rule": "Inspect delivered media and capture values at the runtime handoff that must preserve them.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at d258354e. The Python tools explicitly describe themselves as developer checks outside CI."
+    },
+    {
+      "number": 48,
+      "title": "Post-merge cleanup: stale docs, orphaned canary, sync preview API, test hardening",
+      "url": "https://github.com/adewale/keyboardia/pull/48",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A fixed decimal precision made a property of floating-point sums flaky, and visual snapshots were absent for Linux.",
+      "remedy": "Use a scale-dependent rounding bound and supply Linux Playwright baselines.",
+      "test_paths": [
+        "app/src/audio/metrics/percentile.property.test.ts"
+      ],
+      "diff_evidence": "The reversal property changes to abs(mean(values) - mean(reversed)) <= 4 * Number.EPSILON * sumAbs, replacing toBeCloseTo(..., 10).",
+      "transferable_rule": "Make numeric tolerances track the scale and operation that produce roundoff.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at daabb137."
+    },
+    {
+      "number": 49,
+      "title": "Fix silent Sub Bass and harden audio regressions",
+      "url": "https://github.com/adewale/keyboardia/pull/49",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A successful scheduler call could still produce silence, and a broad range audit could mask failed or skipped voices.",
+      "remedy": "Check actual per-instrument browser audio, emit range skips and bound session size.",
+      "test_paths": [
+        "app/e2e/all-instruments-master-output.spec.ts",
+        "app/e2e/instrument-range-session.spec.ts",
+        "app/src/audio/scheduler-instrument-matrix.test.ts"
+      ],
+      "diff_evidence": "The range suite records skipped notes and requires live masterPeak. The all-instruments suite checks track and master analyser output with one target sounding.",
+      "transferable_rule": "Assert the output where the user receives it, and isolate each source so another source cannot satisfy the check.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at adf77a9e."
+    },
+    {
+      "number": 50,
+      "title": "Adopt Durable Object eviction test helpers; fix two hibernation-recovery bugs",
+      "url": "https://github.com/adewale/keyboardia/pull/50",
+      "state": "closed",
+      "merged": true,
+      "classification": "approach",
+      "weakness": "The integration harness could exercise normal mutations but could not induce real Durable Object eviction and hibernation recovery.",
+      "remedy": "Upgrade the Workers test harness and cover real sockets, storage restoration and seeded state transitions.",
+      "test_paths": [
+        "app/test/integration/eviction-recovery.test.ts",
+        "app/test/integration/state-machine-fuzz.test.ts",
+        "app/test/integration/vitest.config.ts"
+      ],
+      "diff_evidence": "A test persists a real WebSocket mutation then evicts the object. Other cases assert the KV lag, authoritative HTTP read and eventual disconnect convergence.",
+      "transferable_rule": "Drive lifecycle transitions in the runtime and assert the documented durability boundary.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 9ba68ecf."
+    },
+    {
+      "number": 51,
+      "title": "Add full sampled-instrument quality audit tooling",
+      "url": "https://github.com/adewale/keyboardia/pull/51",
+      "state": "closed",
+      "merged": false,
+      "classification": "explicit",
+      "weakness": "The existing independent sample validators and advisory browser suite could miss codec failures, and old waivers could remain valid indefinitely.",
+      "remedy": "Unify validation and make actual Chromium decoding and stale-waiver checks blocking.",
+      "test_paths": [
+        "app/e2e/sample-browser-decode.spec.ts",
+        "app/scripts/validate-sample-quality.ts",
+        "app/test/sample-quality-core.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The browser test calls decodeAudioData per referenced file. The validator tracks scoped findings and stale waivers, and the blocking Instrument Validation job runs it.",
+      "transferable_rule": "Treat decodability as a consumer contract and require evidence that each exception still applies.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at ad7f45bd. Closed unmerged. A related approach appears in #53."
+    },
+    {
+      "number": 52,
+      "title": "Add license-first Sample Lab workflow",
+      "url": "https://github.com/adewale/keyboardia/pull/52",
+      "state": "closed",
+      "merged": false,
+      "classification": "approach",
+      "weakness": "The existing listening page disclosed sources before voting, mismatched reference pitch and did not retain decisions.",
+      "remedy": "Build a blind, randomized comparison with common target pitch, level matching, recorded choices and separate objective gates.",
+      "test_paths": [
+        "app/scripts/sample-lab-core.ts",
+        "app/scripts/sample-lab.ts",
+        "app/test/sample-lab-core.test.ts"
+      ],
+      "diff_evidence": "The core validates declared root pitch and audit inputs. The generated lab applies active-RMS gain and delayed identity reveal.",
+      "transferable_rule": "For a subjective comparison, control pitch and level, blind identity and record the choice before revealing it.",
+      "verification_caveat": "No GitHub head check rollup at df11ad21. Closed unmerged with no head check rollup. Listening and Chromium results in the PR are author-reported."
+    },
+    {
+      "number": 53,
+      "title": "Replace legacy sample processing with Pipeline v2",
+      "url": "https://github.com/adewale/keyboardia/pull/53",
+      "state": "closed",
+      "merged": true,
+      "classification": "approach",
+      "weakness": "The legacy sample pipeline could act on unbound evidence and simulated results without proving the exact encoded bytes worked in supported browsers.",
+      "remedy": "Bind evidence to promoted bytes, preserve negative controls, and add a real encode-to-decode boundary contract.",
+      "test_paths": [
+        "app/test/sample-pipeline-real-contract.test.ts",
+        "app/test/sample-pipeline-evidence.test.ts",
+        "app/test/sample-pipeline-full.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "A committed WAV is encoded by real ffmpeg and the exact output is decoded in Chromium and WebKit. Evidence tests cover missing roots, velocity gaps, orphan deliveries and stale evidence.",
+      "transferable_rule": "Keep a real end-to-end contract alongside cheap checks and bind its evidence to the artifact it certifies.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 08162997. Includes work related to closed #51 and #52. The real-contract suite is conditional outside its designated lane."
+    },
+    {
+      "number": 54,
+      "title": "Complete sampled-instrument evaluation and harden the pipeline",
+      "url": "https://github.com/adewale/keyboardia/pull/54",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Pipeline measurements and listening records needed to distinguish a mechanical pass from human approval and to reject absent browser evidence.",
+      "remedy": "Validate the decision ledger against exact artifacts and add negative tests around incomplete gate summaries.",
+      "test_paths": [
+        "app/test/sample-pipeline-baselines.test.ts",
+        "app/test/sample-pipeline-decisions.test.ts",
+        "app/test/sample-pipeline-full.test.ts"
+      ],
+      "diff_evidence": "The full-pipeline test makes missing Chromium/WebKit summary gates fail. Decision tests bind ten human rejections to candidate hashes and preserve unresolved findings.",
+      "transferable_rule": "Require each decision to identify its measured artifact and preserve the limits of what each type of evidence proves.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 12a5ce8c. The PR disclosed bypassing a local real-backend smoke after a stale fixture failure."
+    },
+    {
+      "number": 55,
+      "title": "Fix note dynamics, synth release tails, and tempo sync",
+      "url": "https://github.com/adewale/keyboardia/pull/55",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "The scheduler matrix expected the shared track fader to receive the per-note lock, encoding the double-attenuation bug. Parameter inspection also missed release-tail silence.",
+      "remedy": "Correct the existing oracle and measure the emitted PCM after note-off.",
+      "test_paths": [
+        "app/src/audio/scheduler-instrument-matrix.test.ts",
+        "app/src/audio/scheduler-volume-routing.test.ts",
+        "app/src/audio/synth-envelope.render.test.ts"
+      ],
+      "diff_evidence": "The old trackVolume × lock expectation becomes no shared-fader call. A native offline renderer requires audible early-tail RMS and later decay.",
+      "transferable_rule": "Independently verify signal routing and its audible consequence.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 8e3b185e. The native renderer used an availability skip at this revision, a pattern subsequently addressed in #122."
+    },
+    {
+      "number": 62,
+      "title": "Add accessible icons and harden session workflows",
+      "url": "https://github.com/adewale/keyboardia/pull/62",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Browser accessibility checks could log an issue, select zero controls, or complete without exercising the interaction.",
+      "remedy": "Make computed names and actual keyboard actions blocking and run fixture-compatible cases on the appropriate backend.",
+      "test_paths": [
+        "app/e2e/accessibility.spec.ts",
+        "app/e2e/keyboard.spec.ts",
+        "app/e2e/plock-editor.spec.ts"
+      ],
+      "diff_evidence": "The visible button/link test asserts a nonempty population and accessible names. Keyboard tests observe real focus and step actions, and p-lock editor coverage runs in the mock lane where possible.",
+      "transferable_rule": "Prove meaningful inputs were discovered and assert the visible result of user input before granting a pass.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 6f7d61d9."
+    },
+    {
+      "number": 64,
+      "title": "Implement stateless MCP rhythm slice",
+      "url": "https://github.com/adewale/keyboardia/pull/64",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "The new onboarding journey initially accepted an HTML app shell as proof that agent edits had persisted.",
+      "remedy": "Replace the shell marker with a read of authoritative stored session state.",
+      "test_paths": [
+        "app/test/integration/mcp-journeys.test.ts"
+      ],
+      "diff_evidence": "In commit b7fb4a66, GET of /s/:id and id=\"root\" become GET /api/sessions/:id and assertions on tempo, track ID and active step positions.",
+      "transferable_rule": "After a write, read back the values whose persistence the journey claims.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at b7fb4a66. This repair followed an earlier commit on the same PR and is visible in its commit history."
+    },
+    {
+      "number": 65,
+      "title": "Replace drifting test doubles with production-boundary tests",
+      "url": "https://github.com/adewale/keyboardia/pull/65",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Tests of a parallel Durable Object implementation and random chaos stubs could stay green while the real collaboration path broke.",
+      "remedy": "Remove those parallel implementations and exercise real Workers, sockets and the production client with controlled faults.",
+      "test_paths": [
+        "app/src/worker/mock-durable-object.test.ts",
+        "app/test/chaos/chaos.test.ts",
+        "app/test/integration/collaboration-contract.test.ts",
+        "app/test/integration/mobile-ui-functionality.test.ts"
+      ],
+      "diff_evidence": "Deletes the fake's connection-count assertions, random drop-rate bins, and a mobile test adding constants. The replacement imports SELF and evictDurableObject and checks the real upgrade and snapshot protocol.",
+      "transferable_rule": "Keep the production state machine in the test and inject only the boundary failures you need.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 67aa1ec1."
+    },
+    {
+      "number": 67,
+      "title": "Add a runnable deployment smoke for the stateless MCP endpoint",
+      "url": "https://github.com/adewale/keyboardia/pull/67",
+      "state": "closed",
+      "merged": true,
+      "classification": "approach",
+      "weakness": "Local SELF-based onboarding tests could not show that a deployed endpoint completed the documented journey.",
+      "remedy": "Add a runnable smoke against an explicit deployment using the official client and process failure on unmet checks.",
+      "test_paths": [
+        "app/scripts/mcp-smoke.ts"
+      ],
+      "diff_evidence": "The script drives a deployed session through discovery, read/edit/read and persisted session checks and throws for failed assertions.",
+      "transferable_rule": "Keep an opt-in, narrowly scoped real-deployment contract when an in-process test cannot observe deployment wiring.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 6565a13b. This review verified the smoke implementation without running it against a deployment."
+    },
+    {
+      "number": 68,
+      "title": "test: replace tests that could not fail, and gate the patterns that let them in",
+      "url": "https://github.com/adewale/keyboardia/pull/68",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Tested facades were unreachable from production, reducer paths delegated to the same mutation function, empty discovery could prove 0 equals 0, and some specs had no executable tests.",
+      "remedy": "Replace copied or vacuous checks, require witnessed changes, delete uncollected duplicates, and gate recurrence.",
+      "test_paths": [
+        "docs/TEST-AUDIT-2026-07.md",
+        "app/test/unit/reducer-mutation-equivalence.test.ts",
+        "app/test/unit/sync-layer-coverage.test.ts",
+        "app/e2e/last-cell-flicker.spec.ts",
+        "app/scripts/check-unrun-tests.ts",
+        "app/test/unit/test-quality-analyzers.test.ts"
+      ],
+      "diff_evidence": "The reducer cases require a state change. An empty browser spec is deleted, and analyzer fixtures explicitly cover single-line and parameterized tests with zero assertions. The audit maps deleted claims to live owners.",
+      "transferable_rule": "Break the production behavior named by a test. Require an observed failure or replace the test with one that distinguishes the defect.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 65692cad. The PR reports targeted fault injections. The audit did not rerun those injections."
+    },
+    {
+      "number": 69,
+      "title": "Publish Keyboardia Agent Skill discovery and MCP safeguards",
+      "url": "https://github.com/adewale/keyboardia/pull/69",
+      "state": "closed",
+      "merged": true,
+      "classification": "approach",
+      "weakness": "The pre-existing deployment journey could pass while Cloudflare's well-known skill-discovery route returned 404. A successful tool exchange alone did not prove the catalog and referenced skill were available.",
+      "remedy": "Add an independent deployment smoke for the served catalog, redirect policy, MIME and exact bytes before accepting the MCP journey.",
+      "test_paths": [
+        "app/scripts/agent-skills-smoke.ts",
+        "app/scripts/deploy-production.ts",
+        "app/test/same-origin-redirects.test.ts"
+      ],
+      "diff_evidence": "The smoke calculates a SHA-256 digest of the served skill and compares it with the catalog. Tests cover bounded redirects and the deployment script invokes the discovery smoke before the MCP smoke.",
+      "transferable_rule": "When a dependency is discovered by URL, fetch the deployed artifact through the discovery route and validate its identity.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at b87c72ec. This is a deployed protocol verification change. The follow-up #83 separately evaluates agent behavior."
+    },
+    {
+      "number": 70,
+      "title": "Fix session contracts and enforce Worker E2E coverage",
+      "url": "https://github.com/adewale/keyboardia/pull/70",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Manual real-Worker E2E selection and silent returns/skips could yield a green job without exercising collaboration. The runner could also stop draining backend output.",
+      "remedy": "Declare Worker-only ownership, fail required prerequisites and validate the result inventory.",
+      "test_paths": [
+        "app/e2e/worker-required-files.txt",
+        "app/e2e/multiplayer.spec.ts",
+        "app/e2e/test-utils.ts",
+        "app/scripts/test-e2e-full-stack.ts",
+        "app/test/e2e-full-stack-args.test.ts"
+      ],
+      "diff_evidence": "The required-files manifest selects Worker-owned specs. Helpers enforce the expected backend, and the full-stack runner runs Playwright asynchronously while the Worker emits logs.",
+      "transferable_rule": "Make the required runtime, collected cases and outcome of the chosen lane observable.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at dbf9abe5."
+    },
+    {
+      "number": 71,
+      "title": "Type-check the rest of scripts/, and fix what that surfaced",
+      "url": "https://github.com/adewale/keyboardia/pull/71",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Most verification scripts were outside TypeScript checking, and the existing manifest validator advertised --fix while returning success without fixing anything.",
+      "remedy": "Include the scripts in build checking and make the unsupported validator operation fail explicitly.",
+      "test_paths": [
+        "app/scripts/validate-manifests.ts",
+        "app/src/utils/validate-manifests-cli.test.ts",
+        "app/scripts/verify-midi.ts"
+      ],
+      "diff_evidence": "The new CLI test executes the validator with --fix and requires exit 2 and a clear unchanged-files diagnostic. The MIDI verifier drops its weaker local event type.",
+      "transferable_rule": "Exercise the actual verification command's failure mode when an advertised operation cannot succeed.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at c6824e2c. The PR separately identifies an unresolved detector heuristic. A successful build does not establish that heuristic works."
+    },
+    {
+      "number": 73,
+      "title": "Add agent session lifecycle, analysis, and MIDI export tools",
+      "url": "https://github.com/adewale/keyboardia/pull/73",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Browser suites navigated to a production UUID and depended on pre-seeded content. Keyboard focus tests assumed the same traversal gesture in different engines.",
+      "remedy": "Create a populated session on the backend under test and issue the engine's full-control tab gesture.",
+      "test_paths": [
+        "app/e2e/test-utils.ts",
+        "app/e2e/accessibility.spec.ts",
+        "app/e2e/global-setup.ts",
+        "app/e2e/keyboard.spec.ts"
+      ],
+      "diff_evidence": "createPopulatedSessionWithRetry constructs known tracks and steps per run. Existing accessibility specs use it and pressKeyboardTab sends Alt with Tab on WebKit.",
+      "transferable_rule": "Own the fixture on the active backend and reach user state via that platform's real input behavior.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at c8de1f27."
+    },
+    {
+      "number": 76,
+      "title": "Prewarm MCP-added sampled instruments during playback",
+      "url": "https://github.com/adewale/keyboardia/pull/76",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Tests around picker-based preload could pass while a sampled track introduced through another client never sounded during playback.",
+      "remedy": "Expand the existing prewarm hook suite and drive a real MCP-to-browser audio journey.",
+      "test_paths": [
+        "app/src/audio/useTrackPrewarm.test.tsx",
+        "app/e2e/mcp-sampled-instrument-lifecycle.spec.ts"
+      ],
+      "diff_evidence": "The old skip-prewarm assumption for non-Tone tracks is narrowed. The browser spec checks instrument fetch/decode/readiness and per-track audible output without restarting playback.",
+      "transferable_rule": "For behavior shared across entry points, verify a second entry point at the common runtime boundary.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 202bb6a0."
+    },
+    {
+      "number": 79,
+      "title": "Refactor runtime boundaries around Worker and browser adapters",
+      "url": "https://github.com/adewale/keyboardia/pull/79",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Source and architecture checks could overlook indirect imports, comments mistaken for imports, or a corrupt browser-worker MIDI export.",
+      "remedy": "Use a syntax-aware transitive runtime scanner with adversarial fixtures and validate a real browser-downloaded MIDI artifact.",
+      "test_paths": [
+        "app/test/runtime-boundary-scanner.test.ts",
+        "app/test/runtime-boundary-scanner.ts",
+        "app/e2e/midi-export-download.spec.ts"
+      ],
+      "diff_evidence": "Scanner tests distinguish executable imports from comments and strings and exercise unresolved/transitive edges. Browser coverage awaits download and inspects MIDI bytes.",
+      "transferable_rule": "Validate the executable dependency graph and the delivered output, including representative ways the check could be fooled.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 15ab5040."
+    },
+    {
+      "number": 80,
+      "title": "feat: change a track's instrument from the browser, WebSocket, and MCP (#63)",
+      "url": "https://github.com/adewale/keyboardia/pull/80",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "The instrument-change browser fixture used 64 slots for a 128-slot production contract and its initial checks missed focus restoration and viewport clipping.",
+      "remedy": "Repair fixture dimensions and add observable focus, rotation and geometry assertions during the PR's audit.",
+      "test_paths": [
+        "app/e2e/change-instrument.spec.ts",
+        "app/src/components/TrackRow.change-instrument.test.tsx"
+      ],
+      "diff_evidence": "Commit 6b1beb73 changes 64-element step arrays to 128 and measures picker bounds against the track viewport after scrolling, then checks the returned focus after interaction.",
+      "transferable_rule": "Feed integration tests valid production-shaped state and assert the user-visible boundaries that ordinary success misses.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 6b1beb73. The fixture correction is visible in the PR's intermediate-to-final diff."
+    },
+    {
+      "number": 81,
+      "title": "fix: enforce MCP transport and eval invariants",
+      "url": "https://github.com/adewale/keyboardia/pull/81",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "The deployment smoke skipped browser preflight, and the evaluation scorer rewarded no-ops, existing work and collateral changes.",
+      "remedy": "Exercise cross-origin preflight and score requested state deltas against explicit new/existing baseline tracks.",
+      "test_paths": [
+        "app/scripts/mcp-smoke.ts",
+        "app/src/worker/mcp-evals.test.ts",
+        "app/test/integration/mcp-journeys.test.ts"
+      ],
+      "diff_evidence": "The smoke checks OPTIONS for 204 and expected CORS headers. Eval tests require hard failure for erasing a collaborator or submitting duplicate scattershot guesses.",
+      "transferable_rule": "Use negative controls that would score well by accident and preserve unrelated baseline state.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 6b2eef5e."
+    },
+    {
+      "number": 82,
+      "title": "Harden and publish Keyboardia MCP directory metadata",
+      "url": "https://github.com/adewale/keyboardia/pull/82",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "String-based workflow policy tests could approve shell code that failed when it actually validated a publication artifact.",
+      "remedy": "Run the workflow's exact verification shell against approved and surplus-file fixtures.",
+      "test_paths": [
+        "app/test/mcp-registry-publication.test.ts",
+        ".github/workflows/publish-mcp-registry.yml"
+      ],
+      "diff_evidence": "Commit 070f29de extracts the workflow step, asserts it is present, executes it with bash in a temporary directory containing server.json, then checks rejection with an extra file.",
+      "transferable_rule": "Execute the shipped verifier against positive and negative artifacts when text assertions cannot establish its behavior.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 05c59912. The same-PR repair is traceable to commit 070f29de."
+    },
+    {
+      "number": 83,
+      "title": "Add source-bound evaluation infrastructure for the Keyboardia Agent Skill",
+      "url": "https://github.com/adewale/keyboardia/pull/83",
+      "state": "closed",
+      "merged": true,
+      "classification": "approach",
+      "weakness": "Existing conformance tests proved that the skill was published, without demonstrating that an agent discovered it, followed its guidance and preserved the requested edit.",
+      "remedy": "Add paired evaluations, independent journey oracles, and receipts bound to actual prompts and harness inputs.",
+      "test_paths": [
+        "app/test/autonomous-discovery.test.ts",
+        "app/test/eval-receipt.test.ts",
+        "app/test/eval-adapter-contract.test.ts",
+        "evals/verify-execution-receipt.mjs"
+      ],
+      "diff_evidence": "The discovery oracle tests one correlated origin-to-digest-to-read/edit/read trace, and receipt tests bind resolved prompt bytes and inputs. Separate adapters allow deterministic offline plumbing tests.",
+      "transferable_rule": "Keep protocol conformance, application outcome and agent efficacy as distinct claims with evidence for each.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at a2bac248. Offline stubs establish harness plumbing. The PR did not establish live model efficacy."
+    },
+    {
+      "number": 84,
+      "title": "Add an executable Sonnet v11 evaluation handoff",
+      "url": "https://github.com/adewale/keyboardia/pull/84",
+      "state": "open",
+      "merged": false,
+      "classification": "proposal",
+      "weakness": "The prior evaluation handoff left repeated measurements, external harness bytes, provider failures and prepared task identities open to inconsistent interpretation.",
+      "remedy": "Publish an exact executable protocol for a frozen benchmark and mark the old runbook historical.",
+      "test_paths": [
+        "specs/EVAL-SONNET-V11-HANDOFF.md",
+        "specs/EVAL-SONNET-FIRST-2026-07-29.md"
+      ],
+      "diff_evidence": "The handoff pins source, harness and task hashes, distinguishes eight independent prompts from 48 repeated calls and excludes failed or incomplete provider observations.",
+      "transferable_rule": "Freeze experimental inputs and distinguish the independent sampling unit from repeated calls.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at cbe8a56a. Documentation-only protocol. No new model outcomes were collected by this PR."
+    },
+    {
+      "number": 88,
+      "title": "Implement evidence-backed sound-quality parity plan",
+      "url": "https://github.com/adewale/keyboardia/pull/88",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A successful decode or audible meter could miss late encoded onsets and distinguish neither overload nor which stage changed the heard mix.",
+      "remedy": "Measure onset from decoded browser samples and capture synchronized PCM from multiple stages of the actual graph.",
+      "test_paths": [
+        "app/e2e/sample-browser-decode.spec.ts",
+        "app/e2e/capture-session.spec.ts"
+      ],
+      "diff_evidence": "The decoder walks actual frames to measure leadingSilenceMs and compares against calibration. The capture test records pre-compressor, post-makeup and heard-output PCM.",
+      "transferable_rule": "Validate the decoded delivered asset and compare synchronized signals at meaningful boundaries.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 0d1834fe. Objective checks do not independently verify subjective sound preference."
+    },
+    {
+      "number": 94,
+      "title": "refactor: consolidate Stack A component CSS with identity gate",
+      "url": "https://github.com/adewale/keyboardia/pull/94",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A focused CSS catalogue could pass with a different cascade from production, while a real-audio browser test had no supported WebKit disposition.",
+      "remedy": "Compare base and candidate under production stylesheet ordering and record unsupported WebKit execution explicitly.",
+      "test_paths": [
+        "app/identity/stack-a-identity.spec.ts",
+        "app/identity/stack-a-mobile-behavior.spec.ts",
+        "app/e2e/multiplayer.spec.ts"
+      ],
+      "diff_evidence": "The identity suite takes screenshots and computed contracts of both revisions. The multiplayer pan case limits the unsupported WebKit path and remains gating in Chromium.",
+      "transferable_rule": "A differential harness must reproduce production ordering and expose unsupported environments explicitly.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 719d0f1c. The full-app identity approach was subsequently reconsidered in #130."
+    },
+    {
+      "number": 95,
+      "title": "feat: complete flat Stack B dropdown pilot and restore focus ownership",
+      "url": "https://github.com/adewale/keyboardia/pull/95",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Whole-screen identity checks could not describe which differences were intentional, or detect lost focus amid an approved dropdown redesign.",
+      "remedy": "Define allowed token and pixel regions, retain geometry outside them, and test focus after dismissal.",
+      "test_paths": [
+        "app/identity/stack-b-visual.spec.ts",
+        "app/identity/stack-a-mobile-behavior.spec.ts",
+        "app/scripts/verify-stack-b-evidence.mjs"
+      ],
+      "diff_evidence": "The differential suite checks for geometry changes and pixels outside approved regions. Existing mobile behavior tests now require the trigger to regain focus.",
+      "transferable_rule": "Describe allowed changes narrowly and keep separate interaction assertions for behavior pixels cannot establish.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 96d9a29c. The immutable migration evidence and full-app checks were revisited in #130."
+    },
+    {
+      "number": 96,
+      "title": "Add WAL-Reset learnings and bounded correctness test lanes",
+      "url": "https://github.com/adewale/keyboardia/pull/96",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Example-based scheduling and sync tests missed overlapping mutations, rewound sequence numbers and dropped or duplicated audio onsets. Full-page load waits also made browser readiness fragile.",
+      "remedy": "Generate replayable schedules, compare observed concurrency and rendered audio to independent invariants, and wait only for the navigation milestone that is needed.",
+      "test_paths": [
+        "app/src/audio/scheduler-mutation-race.test.ts",
+        "app/src/audio/session-render-conservation.render.test.ts",
+        "app/test/integration/overlap-fuzz.test.ts",
+        "app/test/browser-context.test.ts"
+      ],
+      "diff_evidence": "The offline render requires every scheduled kick to be audible exactly once and on time. The overlap test checks client convergence, and the browser-context regression checks DOMContentLoaded plus explicit caller overrides.",
+      "transferable_rule": "For concurrency, vary the schedule and assert conservation and convergence at observable boundaries.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 228656bc."
+    },
+    {
+      "number": 98,
+      "title": "Phase 44: Per-voice velocity lowpass and mobile audio fixes",
+      "url": "https://github.com/adewale/keyboardia/pull/98",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Three mock E2E result contracts could drift from actual collection. A velocity analyzer inferred layers from filenames and could miss layers declared in manifests.",
+      "remedy": "Bind the affected CI disposition counts to collection and measure declared zones.",
+      "test_paths": [
+        "app/scripts/check-e2e-inventories.mjs",
+        "app/test/velocity-analysis-contract.test.ts",
+        "app/e2e/capture-session.spec.ts"
+      ],
+      "diff_evidence": "The inventory checker reads passed/skipped contracts from workflow commands. A test covers finger-bass and steel-drums layer files with no identifying suffix, and browser capture watches first-use timing.",
+      "transferable_rule": "Derive test membership and sample populations from their authoritative collectors and manifests.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 2a69b820."
+    },
+    {
+      "number": 99,
+      "title": "fix: classify site-wide text and feature colour roles",
+      "url": "https://github.com/adewale/keyboardia/pull/99",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "The accessibility contrast suite sampled a few benign hard-coded palette pairs and did not cover hovered, muted or feature-colored text in real views.",
+      "remedy": "Expand contrast checks over classified roles and measure actual computed colors and states in a browser.",
+      "test_paths": [
+        "app/src/components/accessibility-contrast.test.ts",
+        "app/identity/site-color-safety.spec.ts",
+        "app/identity/stack-b-visual.spec.ts"
+      ],
+      "diff_evidence": "A former primary-on-primary check now iterates classified feature text against the lightest hovered neutral surface with a 4.5 threshold. The new browser checks inspect landing copy and the action at rest and hover.",
+      "transferable_rule": "Choose the worst supported composited background and verify the actual rendered state.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 1e65d084."
+    },
+    {
+      "number": 100,
+      "title": "audio: remediate instrument defects and add objective quality gates",
+      "url": "https://github.com/adewale/keyboardia/pull/100",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A successful dispatch or aggregate bus signal could conceal a silent individual instrument, and stored quality receipts needed binding to actual output and revision.",
+      "remedy": "Isolate track and master taps per instrument, trap forged or missing PCM evidence, and pin measurement provenance.",
+      "test_paths": [
+        "app/e2e/all-instruments-master-output.spec.ts",
+        "app/test/instrument-quality-live-receipt.test.ts",
+        "app/test/instrument-quality-matrix.test.ts",
+        "app/e2e/sample-browser-decode.spec.ts"
+      ],
+      "diff_evidence": "The all-instruments test measures isolated track/masterGain taps. Receipt tests mark either silent tap as routing silence, and the decode report requires a full subject commit.",
+      "transferable_rule": "Record a signal specific to each unit and tie the evidence to the measured revision and artifact.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at b740a3a5."
+    },
+    {
+      "number": 101,
+      "title": "Complete the property-based testing program",
+      "url": "https://github.com/adewale/keyboardia/pull/101",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "A generator could exercise a transition without proving its oracle noticed broken behavior, and an ephemeral failing seed did not preserve the minimal schedule.",
+      "remedy": "Use shrinkable operations, replay stored counterexamples first, promote minimized failures and check subject-specific negative controls.",
+      "test_paths": [
+        "app/src/test/pbt-failure.ts",
+        "app/test/integration/overlap-fuzz.test.ts",
+        "app/test/unit/promote-pbt-counterexamples.test.ts",
+        "app/src/worker/validation.property.test.ts"
+      ],
+      "diff_evidence": "The failure helper emits a structured minimized case. Promotion tests parse runner-prefixed markers and deduplicate examples. The suite also retains the validateSessionState([]) counterexample.",
+      "transferable_rule": "Break each oracle's production property and keep the minimized counterexample as a durable input.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at c74b19ae. Mutation and soak results are reported in the PR. The underlying campaigns were not repeated here."
+    },
+    {
+      "number": 102,
+      "title": "audio: improve generated voices with objective quality gates",
+      "url": "https://github.com/adewale/keyboardia/pull/102",
+      "state": "open",
+      "merged": false,
+      "classification": "embedded",
+      "weakness": "The initial browser audit counted generated voices without distinguishing defective PCM, and wall-clock throughput was measured under competing Playwright loads.",
+      "remedy": "Add seeded serialized renders, behavioral thresholds with a known bad baseline, and an isolated performance run.",
+      "test_paths": [
+        "app/e2e/generated-instrument-quality.spec.ts",
+        "app/src/test/generated-instrument-quality-gates.test.ts",
+        "app/src/test/generated-instrument-quality-gates.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The gates have a test that rejects the frozen baseline previously accepted by count alone. The browser harness records revision/harness identity and checks actual generated signal properties.",
+      "transferable_rule": "Include a known-bad workload and isolate the environment for a timing assertion.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 396a6f7c. Open PR. Much of the hurdle repair is isolated in follow-up commit 5fa64578."
+    },
+    {
+      "number": 104,
+      "title": "Fix homepage example remix flow across environments",
+      "url": "https://github.com/adewale/keyboardia/pull/104",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "A local homepage remix fixture covered one implicit starter, so normal public example links could fail without a browser test catching it.",
+      "remedy": "Own a complete local example catalog, compare its IDs to the product inventory and exercise remix through browser navigation.",
+      "test_paths": [
+        "app/src/data/local-example-session-fixtures.test.ts",
+        "app/e2e/homepage-remix.spec.ts",
+        "app/e2e/global-setup.ts"
+      ],
+      "diff_evidence": "The fixture test compares lengths and requires each homepage example to resolve. The browser creates a copy, verifies navigation and exercises loading/error states.",
+      "transferable_rule": "Bind fixture coverage to the actual catalog and drive the boundary the user clicks.",
+      "verification_caveat": "GitHub head check rollup FAILURE at 795f7771. GitHub lists E2E Tests (real backend) as failed. Merged despite a failing exact-head aggregate. The PR describes local real-backend instability."
+    },
+    {
+      "number": 108,
+      "title": "refactor(audio): centralize resolved note dispatch",
+      "url": "https://github.com/adewale/keyboardia/pull/108",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "An obsolete receive-lateness implementation remained tested after scheduling policy moved, so passing tests could lend credibility to unreachable code.",
+      "remedy": "Delete the superseded helper and its suite and test the central policy plus its real dispatch path.",
+      "test_paths": [
+        "app/src/audio/scheduler-worklet-lateness.test.ts",
+        "app/src/audio/lateness-policy.test.ts",
+        "app/src/audio/note-dispatcher.test.ts"
+      ],
+      "diff_evidence": "The old get-lateness cases are deleted with the old module. The new policy distinguishes on-time, clamped and dropped results while dispatcher tests cover renderer selection.",
+      "transferable_rule": "Move the regression to the production owner and remove tests that keep an unreachable implementation alive.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 13297479."
+    },
+    {
+      "number": 113,
+      "title": "docs(audio): record timing architecture evidence",
+      "url": "https://github.com/adewale/keyboardia/pull/113",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "The local pre-push browser contract still expected stale skip counts and disagreed with CI for the same suites.",
+      "remedy": "Repair the Chromium and WebKit result dispositions in the existing hook.",
+      "test_paths": [
+        "app/.husky/pre-push"
+      ],
+      "diff_evidence": "The hook replaces the old skip totals 19/53 with 24/57 while enforcing the documented 209 Chromium and 162 WebKit passes.",
+      "transferable_rule": "Make the expected lane dispositions agree across local and hosted gates.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at d99c739c. This was a numeric repair. #117 subsequently centralized the source of truth."
+    },
+    {
+      "number": 116,
+      "title": "Add envelope v2 runtime correctness foundation",
+      "url": "https://github.com/adewale/keyboardia/pull/116",
+      "state": "closed",
+      "merged": true,
+      "classification": "embedded",
+      "weakness": "Call or metadata checks could not prove a real Tone instrument rendered the authored release duration, particularly zero and early note-off.",
+      "remedy": "Add a real Chromium OfflineAudioContext path and assert observed envelope energy across time windows.",
+      "test_paths": [
+        "app/e2e/tone-envelope-release.spec.ts",
+        "app/e2e/tone-offline-harness.ts",
+        "app/test/instrument-quality-live-receipt.test.ts"
+      ],
+      "diff_evidence": "The browser measures held, early-tail and post-release RMS on 300 ms and zero releases. The receipt test also checks finite sample dispatch duration and argument layout.",
+      "transferable_rule": "For an audio timing claim, verify the measured envelope in the renderer that produces it.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at fd013f21. The browser test explicitly runs in the Chromium mock-backed lane."
+    },
+    {
+      "number": 117,
+      "title": "Simplify test verification and strengthen correctness contracts",
+      "url": "https://github.com/adewale/keyboardia/pull/117",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Weak and duplicate browser tests, duplicated totals and phase-sensitive PCM windows could each create misleading verification.",
+      "remedy": "Remove 17 weak/duplicate cases, strengthen public-boundary oracles and collect exact test identities. Align PCM windows to the acknowledged frame range.",
+      "test_paths": [
+        "app/e2e/multiplayer.spec.ts",
+        "app/e2e/mock-publish-contract.spec.ts",
+        "app/e2e/capture-session.spec.ts",
+        "app/test/playwright-contract-identities.test.ts",
+        "app/test/verification-impact-selection.test.ts"
+      ],
+      "diff_evidence": "A negative control substitutes a test identity at constant count. Publishing checks now observe read-only state with usable transport, and PCM capture rejects a repeat probe outside the acknowledged range.",
+      "transferable_rule": "Keep the distinct failure signal, assert it at its observable boundary, and detect same-count substitution.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 3e7b2ad5."
+    },
+    {
+      "number": 122,
+      "title": "Close fail-open verification paths and reduce repeated test work",
+      "url": "https://github.com/adewale/keyboardia/pull/122",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "Required jobs could pass after native audio import failure, on an empty receipt inventory, or against an unintended backend. Negative tests repeated an expensive PCM build.",
+      "remedy": "Fail on missing evidence or native audio, isolate required test lanes, reuse an authentic PCM fixture and expose retry reasons.",
+      "test_paths": [
+        "app/src/audio/session-render.render.test.ts",
+        "app/scripts/test-quality-analyzers.ts",
+        "app/test/instrument-quality-matrix.test.ts",
+        "app/e2e/test-utils.ts",
+        "app/test/e2e-test-utils.test.ts",
+        "evals/verify-receipts.mjs"
+      ],
+      "diff_evidence": "The analyzer identifies dynamic import failures converted to skips. API helper tests require a first 5xx to fail and annotate bounded transport/429 retries. Matrix tamper checks reuse one report.",
+      "transferable_rule": "A required lane must fail if its subject cannot load. Keep retries visible and isolate each tamper on a genuine fixture.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 4bac9458. Overlaps the distinct closed attempts in #123 and #126. Count each PR as an attempt, not as an independent fix."
+    },
+    {
+      "number": 123,
+      "title": "Split heavy suites out of test:unit, fix render-test polling, lower unit timeout, add AGENTS.md",
+      "url": "https://github.com/adewale/keyboardia/pull/123",
+      "state": "closed",
+      "merged": false,
+      "classification": "explicit",
+      "weakness": "Native renders ran twice, one render missed the dedicated glob, and fixed 20–30 second polling deadlines could allow partial loads or needlessly delay a failure.",
+      "remedy": "Separate product/render/tooling lanes and replace elapsed-time polling with readiness or terminal loader completion.",
+      "test_paths": [
+        "app/vitest.config.ts",
+        "app/src/audio/session-render.render.test.ts",
+        "app/src/audio/instrument-range-render.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The instrument-range test waits on waitForBackgroundLoad(), then requires the number of loaded roots. The explicit lane captures the render file outside the *.render.test.ts glob.",
+      "transferable_rule": "Bind waits to actual completion, then assert the result, and give each expensive suite one execution owner.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 7491a5ef. Closed unmerged. Compare the merged approach in #122. This proposal also removed optional coverage settings that #122 retained."
+    },
+    {
+      "number": 124,
+      "title": "fix: hash complete synchronized state and strengthen test contracts",
+      "url": "https://github.com/adewale/keyboardia/pull/124",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit",
+      "weakness": "A manually named hash-completeness test omitted fields, unused fakes tested themselves, and a scrollbar check logged and returned when its prerequisite was absent.",
+      "remedy": "Validate field dispositions against the schema, exercise real Worker and client hash behavior, discover audio doubles, and fail missing layout prerequisites.",
+      "test_paths": [
+        "app/test/unit/canonical-hash-completeness.test.ts",
+        "app/src/shared/canonical-hash.completeness.test.ts",
+        "app/test/integration/collaboration-contract.test.ts",
+        "app/src/audio/mock-fidelity.test.ts",
+        "app/e2e/scrollbar.spec.ts"
+      ],
+      "diff_evidence": "The hand-listed suite is removed. Its replacement iterates track/session field contracts and tests legacy shapes. Scrollbar testing now requires overflow and geometry, and audio mock discovery rejects unevaluable doubles.",
+      "transferable_rule": "Bind completeness to the authoritative schema and fail the setup when the asserted condition cannot be observed.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 6896a72e."
+    },
+    {
+      "number": 126,
+      "title": "Test audit: share one PCM matrix fixture across the tamper tests and close three blind spots",
+      "url": "https://github.com/adewale/keyboardia/pull/126",
+      "state": "closed",
+      "merged": false,
+      "classification": "explicit",
+      "weakness": "Repeated PCM fixtures were expensive, both halves of a disjunctive gate were true together, replay checked only a hash, and some defect thresholds had no negative cases.",
+      "remedy": "Build one authentic report, clone it per tamper, test fatal-only and gap-only variants, then vary replay geometry and gate metrics independently.",
+      "test_paths": [
+        "app/test/instrument-quality-matrix.test.ts"
+      ],
+      "diff_evidence": "One kick report is built in beforeAll. Tests perturb hash, channels and frames separately, and tamper with DC, peak, flat-top and silence metrics without matching findings.",
+      "transferable_rule": "For each independent condition, use an otherwise valid fixture that makes only that condition decisive.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 62a36346. Closed unmerged. The PR reports 8/14 versus 14/14 planted defects and 87.9 s versus 45.3 s locally. Those measurements were not independently reproduced."
+    },
+    {
+      "number": 127,
+      "title": "feat: piano roll editor dock, with spec, mocks and a first implementation",
+      "url": "https://github.com/adewale/keyboardia/pull/127",
+      "state": "open",
+      "merged": false,
+      "classification": "embedded",
+      "weakness": "The piano-roll test located a grid cell while smooth scrolling was still underway, so a test click could land on an adjacent pitch row.",
+      "remedy": "Set the editor scroll position immediately and wait for stable geometry before computing the click coordinates.",
+      "test_paths": [
+        "app/e2e/piano-roll-dock.spec.ts"
+      ],
+      "diff_evidence": "Commit bc87b4f4 changes a single boundingBox sample to expect.poll over consecutive equal x/y coordinates after an instant scroll.",
+      "transferable_rule": "When input uses coordinates, wait for rendered geometry to settle before acting.",
+      "verification_caveat": "GitHub head check rollup FAILURE at 88941add. GitHub lists Stack A Identity as failed. Open PR. The broader redesign's identity gate was reported red in its description."
+    },
+    {
+      "number": 130,
+      "title": "Retire full-app identity freezes and preserve historical Stack B evidence",
+      "url": "https://github.com/adewale/keyboardia/pull/130",
+      "state": "open",
+      "merged": false,
+      "classification": "explicit",
+      "weakness": "Full-app pixel identity froze a one-time migration indefinitely, while the historical packet verifier compared against moving current files.",
+      "remedy": "Retire full-app identity fixtures, retain component and current behavior checks, and validate historical artifacts against their recorded revision.",
+      "test_paths": [
+        "app/identity/stack-a-identity.spec.ts",
+        "app/identity/stack-b-visual.spec.ts",
+        "app/scripts/verify-stack-b-evidence.mjs"
+      ],
+      "diff_evidence": "The diff removes captureFullApp and reads the historical inventory with git show at manifest.headRevision. It checks ancestry and waits for actual opening animations before component captures.",
+      "transferable_rule": "Give a migration guard an end condition and validate historical evidence against the immutable subject it measured.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at d4087f94. Open PR. Full-page regression coverage would use the looser existing visual suite."
+    },
+    {
+      "number": 131,
+      "title": "ci: pin browser gates to supported Ubuntu runners",
+      "url": "https://github.com/adewale/keyboardia/pull/131",
+      "state": "closed",
+      "merged": true,
+      "classification": "approach",
+      "weakness": "The floating Ubuntu runner image moved beyond the browser version Playwright supported, preventing the existing browser assertions from running.",
+      "remedy": "Pin the affected workflow environment to Ubuntu 24.04.",
+      "test_paths": [
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The workflow replaces ubuntu-latest with ubuntu-24.04 throughout, including functional, identity and visual lanes, without introducing a new skip.",
+      "transferable_rule": "Restore execution of an unchanged browser contract by pinning a supported runner image.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 52a92365. The earlier unsupported-browser error is described in the PR."
+    },
+    {
+      "number": 134,
+      "title": "Execute sync contracts and revalidate sample waivers by behavior",
+      "url": "https://github.com/adewale/keyboardia/pull/134",
+      "state": "open",
+      "merged": false,
+      "classification": "explicit",
+      "weakness": "Sync verification scraped implementation syntax, and sample waivers invalidated on evaluator-source changes even when observations stayed identical.",
+      "remedy": "Execute actual client/hook/Worker contracts and revalidate historical sample observations with the current decoder and auditor.",
+      "test_paths": [
+        "app/scripts/validate-sync-checklist.ts",
+        "app/src/sync/dedicated-sync-senders.test.ts",
+        "app/test/integration/collaboration-contract.test.ts",
+        "app/test/sample-quality-baseline.test.ts",
+        "app/test/instrument-quality-audit.test.ts"
+      ],
+      "diff_evidence": "The Worker matrix executes each classified mutation through a collaborator socket. Baseline tests permit unchanged fresh measurements after evaluator serialization changes and require review when a formerly waived finding disappears.",
+      "transferable_rule": "Tie a behavioral exception to its evidence and inputs, and verify protocol support through an actual participant.",
+      "verification_caveat": "GitHub head check rollup SUCCESS at 8cb7c89b. Open PR."
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        9,
+        10,
+        12,
+        16,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        29,
+        32,
+        58,
+        60,
+        61,
+        74,
+        86,
+        89,
+        90,
+        105,
+        129
+      ],
+      "reason": "Specifications, research, documentation, design or licensing. #3 analyzes musical surface area. #74 and #105 retrospectively document earlier landed work whose substantive test changes are counted at their originating PRs."
+    },
+    {
+      "numbers": [
+        6,
+        8,
+        15,
+        17,
+        18,
+        28,
+        33,
+        34,
+        42,
+        59,
+        85,
+        87,
+        107,
+        109,
+        110,
+        111,
+        112
+      ],
+      "reason": "Product implementation, ordinary new-feature coverage, or routine expectation/fixture updates to the changed product. #15/#17 add synthesis and routing coverage; #34 adds social preview coverage; #87 retains earlier verification work on rebase and adds envelope-authoring feature checks. The audio refactors here update their new owners without a separate test-quality repair. #108 is counted for specifically deleting tested-but-unreachable policy."
+    },
+    {
+      "numbers": [
+        11,
+        13,
+        14,
+        44,
+        56,
+        57,
+        72,
+        91,
+        103,
+        114,
+        128,
+        132,
+        133
+      ],
+      "reason": "Standard initial CI enablement (#11), lint/warnings, runtime/dependency/version changes, or workflow supply-chain pinning. #128 changes the transitive dependency version asserted by an existing eval test; #133 is an open dependency bot update. No distinct test-oracle repair was identified."
+    }
+  ],
+  "limitations": [
+    "The historical study inspected PR metadata, all changed-file inventories and plausible test/tooling diffs, including selected same-PR intermediate commits. Large binary media and visual snapshot contents were not interpreted as evidence of test effectiveness.",
+    "Outcome labels are GitHub aggregate status for the recorded head as of enumeration. Per-test, performance, mutation, listening and deployment outcomes reported by authors were not independently rerun. An aggregate pass can include skipped, conditional or advisory lanes.",
+    "Entries count PR attempts, not independent fixes. Especially distinguish the related #51/#52/#53 sample work and #123/#126/#122 verification changes. The two documentation proposals are labeled separately from executable work."
+  ]
+}

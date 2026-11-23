@@ -1,0 +1,548 @@
+{
+  "repository": "adewale/anti-slop-writing",
+  "total_prs": 29,
+  "pages_checked": 2,
+  "enumeration": {
+    "endpoint": "https://api.github.com/repos/adewale/anti-slop-writing/pulls?state=all&per_page=100&page=1",
+    "page_counts": [
+      29,
+      0
+    ],
+    "numbers": "1–29",
+    "state_counts": {
+      "merged": 24,
+      "closed_unmerged": 5,
+      "open": 0
+    },
+    "method": "Enumerated all PRs without author/date filters, checked titles and bodies, requested complete changed-file inventories and patches for all 29, and inspected pertinent hunks and result artifacts. Queried head workflow runs separately for every match.",
+    "changed_file_entries": 1235
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Harden the hillclimb loop: held-out gate, statistical CI, runner, and scored baseline",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/2",
+      "state": "closed",
+      "merged": true,
+      "scope": "Evaluation-method repair",
+      "weakness": "The existing loop could tune against the same cases used for acceptance. Binary scores and anecdotal changes hid noise and ceiling effects.",
+      "remedy": "Label tune and holdout cases, validate the splits, record per-case scores and evaluate paired changes with a bootstrap interval and sign-flip test. Add near-miss trigger negatives and graded rewrite dimensions.",
+      "test_paths": [
+        "scripts/score_delta.py",
+        "scripts/validate.py",
+        "evals/rewrite-evals.json",
+        "evals/results/2026-05-29-baseline.md"
+      ],
+      "diff_evidence": "validate_eval_file enforces at least two holdouts per suite. The new gate rejects zero-crossing intervals and nonsignificant sign flips. The recorded baseline has 115/115 binary assertions, while the finance rewrite’s length-control score is 1/5.",
+      "transferable_rule": "Keep development cases separate from evaluation cases, and add a more discriminating measure when both arms max out the existing check.",
+      "outcome": "The method merged. The baseline already saturated the binary suite.",
+      "verification_caveat": "The original gate also accepted significant negative deltas. #20 identifies the defect and #19 lands the fix.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/a7f58c6849a60abcabdb7fb1d647712ddecff0a0/scripts/score_delta.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/26687078558"
+      }
+    },
+    {
+      "number": 3,
+      "title": "Add emphasis-source and syntax-relation tests to anti-slop detectors",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/3",
+      "state": "closed",
+      "merged": true,
+      "scope": "Evaluation-method repair inside a feature PR",
+      "weakness": "A comparison between two writing rules could reveal the rule to its judge, and a one-off stylistic result could be ordinary trial variation.",
+      "remedy": "Document a blind A/B protocol with randomized labels, separate writer and scorer roles and repeated trials for variable behavior. Add a scored holdout regression check.",
+      "test_paths": [
+        "evals/blinded-eval-harness.md",
+        "evals/results/2026-05-28-emphasis-source-procedural/scores.jsonl",
+        "evals/results/2026-05-30-holdout-regression-check/gate-output.txt"
+      ],
+      "diff_evidence": "The protocol withholds assertions from the writer and the rule-to-label key from the scorer. The checked-in holdout gate output records 10 pairs, delta 0, interval [0,0], p=1.",
+      "transferable_rule": "Blind the scorer to the variant, and measure repeated behavior when a single example changes verdict across runs.",
+      "outcome": "The procedure merged. The recorded holdout result detected no score change.",
+      "verification_caveat": "The original ceiling leaves no room to demonstrate improvement, and a documented role boundary does not itself enforce isolation.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/6e4ac775bfae6267bcd51750d34a2a0907d0505c/evals/blinded-eval-harness.md",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/26689962723"
+      }
+    },
+    {
+      "number": 4,
+      "title": "Add detectors for copula displacement, hedged symmetry, outline conclusions, and em-dash clusters",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/4",
+      "state": "closed",
+      "merged": false,
+      "scope": "Secondary test-quality work inside a detector PR",
+      "weakness": "The same agent produced the initial smoke-run answers and graded them. Shared wording between instructions and assertions offered an easy pass.",
+      "remedy": "Have a separate cold grader rescore the verdict-sensitive assertions using only responses and assertions. Add a meta-case requiring contemporary corpus evidence before changing a dated word detector.",
+      "test_paths": [
+        "evals/results/2026-05-27-smoke-run.md",
+        "evals/meta-evals.json"
+      ],
+      "diff_evidence": "The changed smoke record specifies withholding the rule and previous verdict, failing an answer that only echoes the assertion, and reports 30/30 rescored assertions. The new word-list-drift case requires profiling before adding or removing words.",
+      "transferable_rule": "When generated answers are self-graded, rescore representative outputs with a reader who cannot see either the original verdict or the feature instructions.",
+      "outcome": "The PR closed unmerged. It records agreement in the rescored subset.",
+      "verification_caveat": "The recorded graders came from the same model family. No pull-request workflow run appeared for this head in the queried endpoint. New feature examples alone are excluded from this finding.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/246873a9d19e29931f646cdd84c9f5ae12a11b92/evals/results/2026-05-27-smoke-run.md",
+      "head_ci": null
+    },
+    {
+      "number": 5,
+      "title": "Add ask-author verdict, Rewrite check, and both-sides Staccato test",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/5",
+      "state": "closed",
+      "merged": true,
+      "scope": "Test-quality repair inside a feature PR",
+      "weakness": "Synthetic prompts told the writer which rule to apply. Both arms scored 7/8 and repeated tuning on one post offered no generalization check.",
+      "remedy": "Use source passages for the rewrite cases, add earned-rhetoric adversarial cases from another essay, and explicitly test the risk of fitting a single source.",
+      "test_paths": [
+        "evals/rewrite-evals.json",
+        "evals/meta-evals.json",
+        "evals/results/2026-05-27-rewrite-self-check.md",
+        "evals/results/2026-05-30-rebaseline.md"
+      ],
+      "diff_evidence": "The failed-run record identifies embedded answers and the 7/8 tie. New meta-evals single-source-overfitting and earned-rhetoric-false-positive-rate require held-out text and case-level reasoning. The later rebaseline distinguishes 10 overlapping cases from five new ones.",
+      "transferable_rule": "Use the uncoached user task as input, validate on a different source, and distinguish existing paired cases from newly added coverage.",
+      "outcome": "The merged PR’s rebaseline records 45/45 binary assertions on 15 holdout cases.",
+      "verification_caveat": "The ten shared cases were already at ceiling. At least one new source-based prompt still explicitly calls out the detectors, so prompting was not fully neutral.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/81c56009ac1d61a9db459adb156df6522828d938/evals/rewrite-evals.json",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/26690383835"
+      }
+    },
+    {
+      "number": 6,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/6",
+      "state": "closed",
+      "merged": true,
+      "scope": "Benchmark infrastructure and study design",
+      "weakness": "The preceding evaluation setup lacked a self-contained shared manifest for a paired with-skill/no-skill comparison and a separately withheld corpus.",
+      "remedy": "Add a standalone benchmark manifest, explicit arm and split definitions, fixture files, optional ablation variants, and private prompt/answer references.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md",
+        "evals/holdback/.gitignore",
+        "evals/fixtures/round3-mechanism-copy/input.md"
+      ],
+      "diff_evidence": "The manifest pairs with_skill and without_skill, distinguishes holdout from holdback, and separates prompt_ref from answer_ref for holdback-human-essay-antithesis-01. The runbook restricts --allow-missing-prompts to planning.",
+      "transferable_rule": "Publish a repeatable comparison contract while keeping the private test input and answer key out of the development corpus.",
+      "outcome": "The harness integration merged.",
+      "verification_caveat": "The public diff contains placeholders for the private inputs. Declaring arms and ablations does not establish an observed treatment effect.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/954b2ed39f518581b7b4289d888e6fd379156535/evals/shared-benchmark.json",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/27212223453"
+      }
+    },
+    {
+      "number": 8,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/8",
+      "state": "closed",
+      "merged": true,
+      "scope": "Existing fixture-oracle upgrade attempt",
+      "weakness": "The existing mechanism-rewrite case depended on string and regex checks plus a qualitative judge. A repeatable fixture-specific scorer was missing.",
+      "remedy": "Add and wire a deterministic executable oracle for the existing case.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The new fixture-script-oracle runs on round3-fixture-mechanism-copy, requires exit 0, and checks for HMAC, retry receipt, and forbidden launch-copy wording. The first implementation still uses case-folded substrings and a regex with bare unlock.",
+      "transferable_rule": "Challenge a deterministic scorer with an answer that merely repeats the input’s keywords before relying on it to measure a transformation.",
+      "outcome": "The scorer merged. #20 later demonstrates the missed inflection, and #26 adds an explicit keyword-stuffing regression.",
+      "verification_caveat": "The added scorer still duplicated literal checks. Only one existing output was reported as exercised in this PR.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/866de815b542994aac481885ca3c02e9379760eb/evals/oracles/fixture_oracle.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/27314892804"
+      }
+    },
+    {
+      "number": 10,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/10",
+      "state": "closed",
+      "merged": true,
+      "scope": "Secondary benchmark reporting improvement",
+      "weakness": "Aggregate benchmark results lacked explicit subgroup labels to separate difficult tasks and near-miss trigger behavior.",
+      "remedy": "Annotate existing cases for trace-aware subgroup reporting.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The diff adds domain, difficulty and success_goals to 18 cases. Five trigger cases receive trigger_type values including implicit and negative-near-miss.",
+      "transferable_rule": "Preserve interpretable scenario labels so a passing aggregate can be checked against the near-miss and higher-difficulty subsets.",
+      "outcome": "The metadata change merged.",
+      "verification_caveat": "This is a reporting improvement only. It adds no new assertion or observed change in behavior.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/2e17ed5da3a7b0b4d8bacaa5a4cdb9c7201ba5fb/evals/shared-benchmark.json",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/27369506602"
+      }
+    },
+    {
+      "number": 12,
+      "title": "Add tweet eval case, parataxis hillclimb, and reference-anchor test kind",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/12",
+      "state": "closed",
+      "merged": true,
+      "scope": "Regression-test design and diagnosis",
+      "weakness": "Sentence-sized cases could not expose prose repetition across a whole document, and no stable, reviewable best-known rewrite was available for comparison.",
+      "remedy": "Add a full-document fixture and reference rewrite, graded scorecard and a documented regression floor. Validate referenced files and normalized scores.",
+      "test_paths": [
+        "evals/rewrite-evals.json",
+        "scripts/validate.py",
+        "docs/reference-anchor-tests.md",
+        "evals/results/2026-06-13-parataxis-hillclimb/README.md"
+      ],
+      "diff_evidence": "tweet-best-rewrite-anchor records reference_score and reference_graded_score of 1.0. validate_reference_anchor checks that original, best_rewrite, human_review and scorecard exist, and both scores are in [0,1]. The experiment report identifies the sentence-case mismatch and a rejected rule.",
+      "transferable_rule": "Match fixture scope to the failure and preserve a reviewable reference output as a regression floor. Keep public reference cases out of independent holdout claims.",
+      "outcome": "The reference test merged. #26 later moves this exact anchor into open-book coverage after finding its input was already public tuning material.",
+      "verification_caveat": "The validator checks the reference’s integrity. A fresh rating still requires running and judging a candidate output.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/151d5927d5404396bb3d650766115d3e868d1067/evals/rewrite-evals.json",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/27464728987"
+      }
+    },
+    {
+      "number": 13,
+      "title": "Stop-slop ablation: reject two borrowed ideas, add equivalence/saturation tooling and eval coverage",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/13",
+      "state": "closed",
+      "merged": true,
+      "scope": "Statistical gate and suite-sensitivity repair",
+      "weakness": "A failed superiority test could be read as equivalence. A zero delta could also result from every variant receiving the maximum score.",
+      "remedy": "Add a separately reported equivalence test with a prespecified margin, a per-case saturation diagnostic, and false-positive boundary controls.",
+      "test_paths": [
+        "scripts/score_delta.py",
+        "scripts/saturation_index.py",
+        "evals/results/2026-06-14-stop-slop-ablation/round2/scores-condA.jsonl",
+        "evals/results/2026-06-14-stop-slop-ablation/round2/scores-condB.jsonl"
+      ],
+      "diff_evidence": "--sesoi uses the (1−2α) interval and requires both bounds to fall strictly within the margin. The saturation script compares within-case spread against the ceiling. Comparing the two committed score files yields 18/18 identical paired scores and 4/6 cases flat at 1.0.",
+      "transferable_rule": "Distinguish failure to detect an improvement from practical equivalence. Inspect score spread before interpreting a null result.",
+      "outcome": "The new diagnostics merged and the proposed writing rules were rejected.",
+      "verification_caveat": "These numbers describe the tested cases and models. They do not establish that the rules have zero effect on other work.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/3d165814da67dbe8af6f7be86890500fa24d1918/scripts/score_delta.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/27508116392"
+      }
+    },
+    {
+      "number": 17,
+      "title": "Add eval coverage for hollow modifiers and self-planted strawmen",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/17",
+      "state": "closed",
+      "merged": false,
+      "scope": "Existing-suite gap audit and unmerged coverage attempt",
+      "weakness": "Passage-only contrast tests could not tell who introduced an objection. A blanket ban on words like ‘actual’ could also pass the targeted examples.",
+      "remedy": "Pair a user message with its reply, grade deletion fidelity, and add positive controls where the same words or negation are warranted.",
+      "test_paths": [
+        "evals/evals.json",
+        "evals/rewrite-evals.json",
+        "evals/adversarial.json",
+        "evals/meta-evals.json",
+        "evals/results/2026-08-04-invented-contrast/RESULTS.md"
+      ],
+      "diff_evidence": "suite-scope-document-vs-dialogue requires context outside the edited passage. substantive-actual-measured-vs-advertised keeps ‘actual’ when measured p99 is compared with a quoted value. The results record four of five probed cases at the binary ceiling.",
+      "transferable_rule": "Vary the decisive context while keeping surface wording similar. Include a near miss that exposes a blanket rule.",
+      "outcome": "Closed unmerged. The coverage-only port #28 later adopted all eight behavioral cases.",
+      "verification_caveat": "The historical examples share a source family. The observed baseline ceiling and the port do not establish a treatment effect.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/3aa3f72dcabac82873c1ecb0d972e397198d5462/evals/evals.json",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/32569989313"
+      }
+    },
+    {
+      "number": 18,
+      "title": "Ship a coined-compound-label detector after a pre-registered, powered re-run",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/18",
+      "state": "closed",
+      "merged": false,
+      "scope": "Repair of a contaminated evaluation inside an unmerged feature PR",
+      "weakness": "An early study used verdict lines as scores, permitted one trial to see another’s output, and rewarded candidate-specific vocabulary on a transfer check.",
+      "remedy": "Regrade with shuffled opaque IDs, freeze a prospective rerun design, and audit writer and judge traces for isolation and completeness before accepting their outputs.",
+      "test_paths": [
+        "evals/results/2026-09-05-astra-compound-labels/regrade/build_batches.py",
+        "evals/results/2026-09-23-coined-label-rerun/audit.py",
+        "evals/results/2026-09-23-coined-label-rerun/audit_judges.py",
+        "evals/results/2026-09-23-coined-label-rerun/results/summary.md"
+      ],
+      "diff_evidence": "The regrade builder shuffles across arms and writes a separate key. audit.py checks reads, shared-directory exposure and the output slot. audit_judges.py checks all expected assertion indexes, graded dimensions, and permitted tool use.",
+      "transferable_rule": "Audit what the writer and scorer actually saw. Repeated runs on one example cannot substitute for independent transfer examples.",
+      "outcome": "The recorded narrow rerun passed its own gates. The PR closed unmerged, and the later #27 candidate study left the proposed detector out.",
+      "verification_caveat": "The rerun repeatedly sampled two discriminating paragraphs and had a flawed safety-control sentence. It did not establish generalization of the proposed rule.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/353517d899e704b71a9ad874001b9fc1ea2e9b5a/evals/results/2026-09-05-astra-compound-labels/regrade/build_batches.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/35987679013"
+      }
+    },
+    {
+      "number": 19,
+      "title": "Replicate the earned-antithesis finding, enforce skills-ref in CI, and unit-test the eval tooling (fixes three tooling bugs)",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/19",
+      "state": "closed",
+      "merged": true,
+      "scope": "Merged test audit and replication-gate repair (incorporates #20)",
+      "weakness": "The same validators, outcome gate and fixture scorer identified in #20 were untested on bad inputs. Earned-rhetoric verdicts also lacked an opposing control, and CI could skip an unavailable validator.",
+      "remedy": "Merge the #20 tests and fixes. Add six earned cases and two decorative controls, checked-in passing/failing example outputs, and an enforced validator and example grader in CI.",
+      "test_paths": [
+        "tests/test_score_delta.py",
+        "tests/test_run_evals.py",
+        "tests/test_fixture_oracle.py",
+        "evals/assertion-examples.json",
+        "scripts/check_assertion_examples.py",
+        ".github/workflows/validate.yml"
+      ],
+      "diff_evidence": "All six tests/test_*.py patches are identical to #20, with 46 test methods. check_assertion_examples.py invokes the actual harness assertion_result and fails when a designated bad output passes all gates. validate.yml runs that grader and unittest discovery.",
+      "transferable_rule": "Verify a grader using known-good, known-bad and plausible near-miss submissions through the grader that runs in CI. Fail CI if a required test dependency is absent.",
+      "outcome": "Merged. The queried head’s Validate workflow passed with the unit suite in its configuration.",
+      "verification_caveat": "Count the inherited fixes once across #19 and #20. The example grader proves discrimination of the supplied outputs. It did not perform model-based replication.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/3115b6ae3d33c7239b31dfee39637681f57f11cc/tests/test_score_delta.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/38053573708"
+      }
+    },
+    {
+      "number": 20,
+      "title": "Test audit: unit-test the eval gate, grader, oracle and validators; fix three tooling bugs",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/20",
+      "state": "closed",
+      "merged": false,
+      "scope": "Explicit test-suite audit, original unmerged PR incorporated into #19",
+      "weakness": "CI ran validators only on a clean tree. A significant regression exited 0, an unmatched input silently disappeared when another judgment file existed, and ‘unlocks’ passed the fixture oracle.",
+      "remedy": "Test the public CLI with known outcomes, mirror improvement and regression inputs, inject one invalid condition into a clean copy, exercise hand-derived scores, and grade fixture-based good/bad/near-miss outputs. Fix all three defects.",
+      "test_paths": [
+        "tests/test_score_delta.py",
+        "tests/test_run_evals.py",
+        "tests/test_fixture_oracle.py",
+        "tests/test_validate.py",
+        "tests/test_check_install_boundary.py",
+        "scripts/score_delta.py",
+        "scripts/run_evals.py",
+        "evals/oracles/fixture_oracle.py"
+      ],
+      "diff_evidence": "The reversed grade→join→gate round trip must exit 1, while the forward run must exit 0. The CLI now rejects each unmatched path independently and prioritizes an existing literal run[1].jsonl. The oracle now covers unlock(s|ed|ing)?. Clean-copy tests remove a split or add a forbidden nested artifact and check the failure.",
+      "transferable_rule": "For directional gates, test the mirror-image failure. For aggregators, mix valid and missing inputs. Keep validator negatives as committed tests and seed oracle fixtures from the real defect.",
+      "outcome": "The original PR closed without a GitHub merge. Its Tests workflow passed, and the full six-file test patch later merged via #19. The PR’s mutation table reports 0/25 old versus 22/25 new kills.",
+      "verification_caveat": "The mutation experiment was not rerun here. Three mutants survive in the author’s table: CI overlap, equivalence interval level, and ignored --ceiling. Verbatim fact echo was recorded as a separate unresolved lead.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/f7d71c2c514f210d3448f92e14bc9ff2f529e4f4/tests/test_score_delta.py",
+      "head_ci": {
+        "name": "Tests",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/37106255668"
+      }
+    },
+    {
+      "number": 22,
+      "title": "Add maintenance-history examples for the non-invention rule",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/22",
+      "state": "closed",
+      "merged": true,
+      "scope": "Targeted coverage of an existing rule",
+      "weakness": "The existing non-invention rule lacked a maintenance-history case distinguishing an unsupported causal explanation from an explicitly documented one.",
+      "remedy": "Add two synthetic tune cases with contrasting source evidence, plus a worked example.",
+      "test_paths": [
+        "evals/evals.json",
+        "evals/cases.md"
+      ],
+      "diff_evidence": "maintenance-history-evidence requires the dated trigger overlap and separates local lint on e5 from pending CI on f6. maintenance-earned-cause keeps a cause explicitly documented in incident INC-31.",
+      "transferable_rule": "Pair a case that must reject unsupported causality with a case that must preserve sourced causality.",
+      "outcome": "The examples and cases merged.",
+      "verification_caveat": "These are new regression examples for existing behavior. Both are tuning inputs, with no independent holdout or in-PR performance comparison.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/8053162444e1ae15e3b0b6b0424e935c0ed38f9d/evals/evals.json",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/43577008532"
+      }
+    },
+    {
+      "number": 26,
+      "title": "Repair eval validity and retract the statistical proof claim",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/26",
+      "state": "closed",
+      "merged": true,
+      "scope": "Explicit evaluation-validity audit and false-positive gate repair",
+      "weakness": "A version-specific ‘Rewrite check’ label inflated an improvement claim. Copied public material leaked across splits, repeated examples inflated sample size, incomplete scoring could pass, and keywords alone could satisfy the fixture oracle.",
+      "remedy": "Remove the template-specific scoring requirement, separate writer/judge worklists, require complete slot coverage and matched fact pairs, cluster repeated evidence, quarantine a public anchor, and tighten oracle and leakage checks.",
+      "test_paths": [
+        "tests/test_run_evals.py",
+        "tests/test_score_delta.py",
+        "tests/test_validate.py",
+        "tests/test_fixture_oracle.py",
+        "evals/ablations/open-book-reference-anchors.json",
+        "evals/results/2026-11-13-review-reproduction/output.txt",
+        "evals/results/2026-11-14-subscription-baseline/run-summary.json"
+      ],
+      "diff_evidence": "Tests reject two clusters inflated by repeated trials, missing or duplicate observations, a copied eight-word sequence, and the bare string ‘HMAC retry receipt’. The former holdout tweet moves to an open-book tune fixture. The reproduction artifact gives p≈0.126 over 42 corrected cases and p≈0.245 over seven equally weighted families.",
+      "transferable_rule": "Grade the requested outcome without version-specific formatting cues. Check frozen worklist completeness and score independent source families. Retain leaked cases as openly labeled regression fixtures.",
+      "outcome": "Merged with the proof claim withdrawn. The published baseline summary records 804 apply outputs and 1,608 judgments. Its joint improvement criterion failed.",
+      "verification_caveat": "The public suite, residual output length differences and disagreement on fidelity limit inference. Archived reproduction output and CI were inspected without rerunning model calls or unpacking the raw archive.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/587bfd34dfdeda8da2504789fbb0c0b9c82d7c1f/tests/test_run_evals.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/43576221571"
+      }
+    },
+    {
+      "number": 27,
+      "title": "Publish candidate screens and controlled activation; no doctrine promotion",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/27",
+      "state": "closed",
+      "merged": true,
+      "scope": "Measurement repair for activation and candidate evaluation",
+      "weakness": "Prompt labels and model self-report did not establish that a skill loaded. A pilot showed startup restrictions could drift at runtime. Multiple trials and fact twins on one scaffold could be counted as independent evidence.",
+      "remedy": "Check actual instruction-body delivery in client traces, quarantine pre-guard runs, enforce allowed-tool decisions, preserve unsuccessful trials, and cluster candidate comparisons by source family.",
+      "test_paths": [
+        "tests/test_live_activation.py",
+        "tests/test_activation_guard.py",
+        "tests/test_candidate_studies.py",
+        "evals/results/2026-11-14-live-activation/rates.json",
+        "evals/results/2026-11-14-candidate-studies/guard-results.json"
+      ],
+      "diff_evidence": "Test cases reject partial or failed reads, advertisement, and a final answer quoting the skill as activation. Candidate studies reject duplicate trials and prevent fact twins from multiplying a target family. Recounting rates.json yields 174 valid sessions, sensitivity 7/12 for each client and specificity 16/17 (Pi), 17/17 (Claude). Five of 64 recorded guard results fail.",
+      "transferable_rule": "Measure a trace of the event you claim, including convincing false positives. Quarantine contaminated measurements and keep the actual unit of replication explicit.",
+      "outcome": "Merged with neither candidate promoted. Committed tables and per-query rates distinguish measurement from adoption.",
+      "verification_caveat": "The activation numbers apply to the controlled configurations’ first turn. The target panels have one source scaffold each.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/d52d1e5f57696f1035c1fbd4b1d11997955c3d36/tests/test_live_activation.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/43589635331"
+      }
+    },
+    {
+      "number": 28,
+      "title": "Port Twitter regression coverage without adding doctrine",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/28",
+      "state": "closed",
+      "merged": true,
+      "scope": "Port and isolation of existing regression coverage",
+      "weakness": "Useful cases from closed #17 could be lost or blended into a frozen benchmark. Missing, blank and deliberately empty fact metadata needed different treatment.",
+      "remedy": "Move eight cases to a dedicated file, preserve behavioral fields and original splits, declare source provenance, and add positive and negative schema controls.",
+      "test_paths": [
+        "evals/twitter-evals.json",
+        "scripts/validate.py",
+        "tests/test_validate.py"
+      ],
+      "diff_evidence": "A head-to-head comparison of the files in #17 and #28 found all eight IDs, prompts, expected outputs, assertions, rubrics/dimensions and splits identical. The validator requires at least eight cases and three holdouts. Unit tests reject missing facts and [\" \"] but accept [].",
+      "transferable_rule": "Preserve the original cases and their exposure history when migrating test data. Distinguish a valid empty value from invalid, missing input.",
+      "outcome": "The port merged with five tune and three historical holdout cases.",
+      "verification_caveat": "These eight syntheses share one source family and were already public. #17 and #28 are linked attempts, not independent replications.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/d293d62ca711dc7e1a1c72cb72a07200c9c9c1bb/evals/twitter-evals.json",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/43585270708"
+      }
+    },
+    {
+      "number": 29,
+      "title": "Audit rewrite-only extraction; stop before writing judgments",
+      "url": "https://github.com/adewale/anti-slop-writing/pull/29",
+      "state": "closed",
+      "merged": true,
+      "scope": "Explicit audit of a derived test input and stop-before-scoring decision",
+      "weakness": "An extractor could silently remove qualifications, append an unrelated remembered line, or drop an empty deliverable before evaluating rewrite quality. Selective retries could bias the sample.",
+      "remedy": "Freeze source slots and prompts, preserve empty outputs, independently audit each extraction, block the scoring stage on any flag, and assemble a blind instrument-review packet.",
+      "test_paths": [
+        "tests/test_rewrite_rejudge.py",
+        "tests/test_deliverable_views.py",
+        "tests/test_review_rewrite_rejudge.py",
+        "evals/results/2026-11-14-rewrite-only-rejudge/checkpoint.json"
+      ],
+      "diff_evidence": "Tests require that failed or missing audits block judging without re-extraction, empty deliverables remain scoreable, a case exclusion counts all six dropped outputs, and changed prompts or baselines are refused. The checkpoint JSON records 444 extractions audited, 93 flagged and zero writing judgments.",
+      "transferable_rule": "Test the transformation between a captured output and what the judge sees. Preserve missingness and abstain when instrument checks fail.",
+      "outcome": "Merged at a blocked checkpoint. The planned downstream writing judgments did not run.",
+      "verification_caveat": "The flags are model assessments pending human review. The checkpoint supplies no estimate of writing quality or failure prevalence.",
+      "evidence_url": "https://github.com/adewale/anti-slop-writing/blob/1198fa5e6840b4ef08e36fdf6650b7067150302b/tests/test_rewrite_rejudge.py",
+      "head_ci": {
+        "name": "Validate",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/anti-slop-writing/actions/runs/43651445986"
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Apply anti-slop pass to Doctrine snapshot",
+      "reason": "README wording edit only."
+    },
+    {
+      "number": 7,
+      "title": "Update skill eval harness reference to v0.2.0",
+      "reason": "Only changes shared harness version and install references."
+    },
+    {
+      "number": 9,
+      "title": "Add multi-agent skill support metadata",
+      "reason": "Agent compatibility and package metadata, with no suite change."
+    },
+    {
+      "number": 11,
+      "title": "Bump eval harness to v0.4.0",
+      "reason": "Changes only the harness minimum from 0.3.0 to 0.4.0."
+    },
+    {
+      "number": 14,
+      "title": "Add install boundary CI check",
+      "reason": "Introduces an install-package boundary check. The diff contains no audit, invalid fixture or repair of an existing test. #20 later audits this validator’s behavior."
+    },
+    {
+      "number": 15,
+      "title": "Refresh README eval metadata",
+      "reason": "README file listings and counts only."
+    },
+    {
+      "number": 16,
+      "title": "Upgrade Ruff to 0.16.0",
+      "reason": "Pins Ruff and applies lint-driven cleanup to evaluation tooling. The score_delta change removes redundant int(round(...)), without changing an acceptance test."
+    },
+    {
+      "number": 21,
+      "title": "Avoid duplicate CI runs on pull request branches",
+      "reason": "Closed trigger-only attempt to avoid duplicate push and pull-request runs. The validation jobs and assertions are unchanged."
+    },
+    {
+      "number": 23,
+      "title": "ci: avoid duplicate and superseded validation",
+      "reason": "Merged scheduling change that limits branch-push CI and cancels superseded runs. It changes when the same validations run."
+    },
+    {
+      "number": 24,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "reason": "Action pinning and supply-chain policy. The new zizmor workflow enforces dependency references, with no existing suite or scorer repair."
+    },
+    {
+      "number": 25,
+      "title": "Bump the github-actions group with 3 updates",
+      "reason": "Dependency bot grouped workflow action updates only."
+    }
+  ],
+  "limitations": [
+    "GitHub returned a complete file list for each PR. Of 1,235 changed-file entries, GitHub omitted 51 textual patches, all under evals/results/ (#18: 4 of 343 files, #26: 25 of 200, #27: 16 of 179, #29: 6 of 54). This includes large or binary archived evidence. Findings cite available implementation, test, and result content.",
+    "GitHub workflow results are independent of PR prose. A successful workflow shows that particular check passed on the recorded head. Model runs, mutation experiments and raw-archive replay were not rerun in this audit.",
+    "#19 includes #20’s six test modules unchanged. #28 preserves #17’s eight behavioral cases. These are distinct PRs carrying overlapping evidence. Secondary reporting (#10) and targeted regression coverage (#22) are separately labeled."
+  ]
+}

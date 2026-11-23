@@ -1,0 +1,37 @@
+{
+  "repository": "adewale/cf-advisor-skill",
+  "archived": true,
+  "total_prs": 2,
+  "pages_checked": 2,
+  "enumeration": {
+    "url": "https://api.github.com/repos/adewale/cf-advisor-skill/pulls?state=all&per_page=100&page=1",
+    "page_sizes": [
+      2,
+      0
+    ],
+    "states": "all",
+    "author_or_date_filters": false,
+    "all_titles_and_bodies_reviewed": true,
+    "changed_file_pages": "Both PRs changed only README.md. Both single-page file inventories and their complete patches were inspected."
+  },
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 2,
+      "title": "Mark the skill unmaintained and point to cfdoctor",
+      "url": "https://github.com/adewale/cf-advisor-skill/pull/2",
+      "state": "open",
+      "merged": false,
+      "reason": "The PR cites a verification audit, but the seven added README lines solely label the skill unmaintained, disclose the absence of checks and refer readers to cfdoctor. It proposes no changes to tests, evals or test execution."
+    },
+    {
+      "number": 1,
+      "title": "Add normal Claude (web/mobile) usage instructions",
+      "url": "https://github.com/adewale/cf-advisor-skill/pull/1",
+      "state": "closed",
+      "merged": true,
+      "reason": "The eleven added README lines describe packaging the skill as a ZIP and uploading it to Claude. They are end-user instructions."
+    }
+  ],
+  "limitations": []
+}

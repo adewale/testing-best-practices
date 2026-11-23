@@ -1,0 +1,138 @@
+{
+  "repository": "adewale/python-workers-issues",
+  "total_prs": 7,
+  "pages_checked": {
+    "endpoint": "https://api.github.com/repos/adewale/python-workers-issues/pulls?state=all&per_page=100",
+    "pr_counts_by_page": [
+      7,
+      0
+    ],
+    "changed_file_counts_by_pr": {
+      "1": 1,
+      "2": 21,
+      "3": 10,
+      "4": 9,
+      "5": 2,
+      "6": 4,
+      "7": 2
+    },
+    "file_inventory": "Each pull's complete files endpoint fit on one 100-file page and matched its reported changed_files count."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Upgrade Ruff to 0.16.0 and make Workers CI reliable",
+      "url": "https://github.com/adewale/python-workers-issues/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing integration suite repaired within a Ruff upgrade",
+      "weakness": "The header tests depended on public httpbin availability and trusted the Worker's response about which requests arrived. Echo-service errors could obscure a known httpx header defect. The dev-server fixture terminated its parent process alone.",
+      "attempted_remedy": "Run the existing Worker clients against a real loopback HTTP server during tests. Check received requests before classifying an expected failure, surface upstream HTTP errors, and terminate the dev server's process group.",
+      "test_paths": [
+        "tests/conftest.py",
+        "tests/test_examples.py"
+      ],
+      "diff_evidence": [
+        "header_echo_server starts ThreadingHTTPServer on an ephemeral loopback port, records received headers and supplies the URL to the Worker with ECHO_URL. The process fixture starts a new session and signals its process group.",
+        "test_3_httpx_headers checks for two requests carrying the literal X-Custom value before its existing expected failure. test_5_sync_http_libraries checks two recorded requests and their User-Agent and X-Custom values. The latter still reads its expected values from result['headers_sent'].",
+        "3-httpx-headers/src/entry.py adds HTTP status checks for both httpx and js.fetch. 5-sync-http-libraries/src/entry.py accepts the same echo destination override."
+      ],
+      "transferable_rule": "Exercise a real protocol against a controlled peer. Observe receipt at that peer and verify setup before treating a failure as the known defect.",
+      "outcome": "Merged on 2026-10-09. The PR job log records 2 passed, 3 skipped and 1 xfailed. The post-merge test step succeeded. The deployed R2 cases were skipped. Request count and matching headers alone cannot identify the library that emitted each request.",
+      "verification_urls": [
+        "https://github.com/adewale/python-workers-issues/actions/runs/37918858835/job/113781634934",
+        "https://github.com/adewale/python-workers-issues/actions/runs/37919064552/job/113782306480"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Strict known-bug tests, issue 2 byte oracle, issue 4 fastapi<0.142 pin, pre-commit hooks in CI",
+      "url": "https://github.com/adewale/python-workers-issues/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit audit and strengthening of existing regression and known-bug tests",
+      "weakness": "Imperative xfails allowed an upstream fix to go unnoticed and could excuse recurrence of a resolved truncation bug. Size checks and a repeating seed missed equal-length corruption. Blocking startup reads could defeat a timeout on a silent subprocess.",
+      "attempted_remedy": "Make recurrence of resolved issue 2 fail normally and unexpected passes of active issues fail the suite. Verify the contents of both ordinary and streaming reads, and enforce the fixture's startup deadline while draining server output.",
+      "test_paths": [
+        "tests/test_examples.py",
+        "tests/conftest.py"
+      ],
+      "diff_evidence": [
+        "active_issue sets xfail(strict=True, raises=PlatformBugReproduced) for issues 3, 4a and 4b. test_2_fastapi_r2_streaming replaces its truncation xfail with a plain assertion. The dev-server fixture now starts for xfail-marked tests.",
+        "2-fastapi-r2-streaming/src/app.py seeds 32,768 position-encoded big-endian words. test_2 checks the first misplaced word in both /read and /stream after checking length.",
+        "tests/conftest.py drains output on a thread, reads a queue to a monotonic deadline, reports early EOF with the return code, and flags XPASS(strict) in the test summary."
+      ],
+      "transferable_rule": "Make a known-bug test distinguish reproduction, an unexpected fix, and unrelated failures. For binary integrity, use a payload whose positions are distinguishable and check content after transport.",
+      "outcome": "Merged on 2026-10-11. The PR job log records 2 passed, 3 skipped and 1 xfailed. Post-merge CI also passed. Deployment-only tests 4a, 4b and 4c were skipped, leaving the new strict expectations for 4a and 4b unexercised there. PR #4 contributed the /read check. The merged change added /stream coverage and retained PR #2's HTTP fixture.",
+      "verification_urls": [
+        "https://github.com/adewale/python-workers-issues/actions/runs/38054190899/job/114219173066",
+        "https://github.com/adewale/python-workers-issues/actions/runs/38185374693/job/114606443358",
+        "https://github.com/adewale/python-workers-issues/commit/bb85ace9"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Test audit: unbreak main (pin fastapi below 0.142), byte-level issue 2 oracle, wire-level issue 5 oracle",
+      "url": "https://github.com/adewale/python-workers-issues/pull/4",
+      "state": "closed",
+      "merged": false,
+      "classification": "Explicit test audit, closed with part of the attempt incorporated in PR #3",
+      "weakness": "The 128 KiB read assertion accepted same-length corruption. The repeated 256-byte seed also made whole reordered chunks indistinguishable. The synchronous HTTP test compared values reported by the Worker with expectations from the same response.",
+      "attempted_remedy": "Use position-encoded binary data, compare every word of the read, and verify literal headers and client-tagged request counts at a test-owned echo server.",
+      "test_paths": [
+        "tests/test_examples.py",
+        "tests/echo_server.py"
+      ],
+      "diff_evidence": [
+        "2-fastapi-r2-streaming/src/worker.py replaces bytes(range(256)) * 512 with 32,768 indexed words. test_2_fastapi_r2_streaming checks the first misplaced word after /read. The /stream byte check arrived in #3.",
+        "tests/echo_server.py records each incoming request's query and headers. test_5_sync_http_libraries expects exactly the two tags requests and urllib3, compares the received values against literals, and exercises the default live HTTPS path."
+      ],
+      "transferable_rule": "Design payloads that expose plausible corruption and source expected results independently of the implementation. Challenge the old and revised tests with the same deliberately introduced faults.",
+      "outcome": "GitHub records this PR as closed without merging it directly. Its head CI log records 2 passed, 3 skipped and 1 xfailed. The PR author reports old-vs-new checks against planted faults, including reordered chunks and a missing client request. Those experiments were not rerun. Commit bb85ace9 brought this branch into #3, which retained the byte checks and adopted #2's HTTP approach. The proposed HTTP tags were assigned by the Worker and could not independently establish the library's identity.",
+      "verification_urls": [
+        "https://github.com/adewale/python-workers-issues/actions/runs/37095196988/job/111123584914",
+        "https://github.com/adewale/python-workers-issues/commit/bb85ace9",
+        "https://github.com/adewale/python-workers-issues/pull/3"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Capture runtime and HTTP testing lessons from the Ruff rollout",
+      "url": "https://github.com/adewale/python-workers-issues/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit testing guidance and audit retrospective, documentation only",
+      "weakness": "The existing write-up did not explain which header behavior CI observed, how a dependency or startup failure could obscure it, or which deployment paths the green suite skipped.",
+      "attempted_remedy": "Record the HTTP evidence, runtime versions and coverage gaps behind PR #2. Link the dated findings and reusable guidance from the README.",
+      "test_paths": [],
+      "diff_evidence": [
+        "LESSONS_LEARNED.md adds sections 7 and 8. They specify receipt of real requests at a controlled echo service, checking control paths before a known-bug xfail, comparing base and head, and reporting skipped deployment cases and missing negative controls.",
+        "README.md links the testing lessons. The PR changes two documentation files. The executable fixture and assertion changes belong to #2."
+      ],
+      "transferable_rule": "When documenting a green integration run, state the behavior observed, the tested environment, the skipped paths, and any fault-detection checks that were actually performed.",
+      "outcome": "Merged on 2026-10-09. CI for the unchanged suite records 2 passed, 3 skipped and 1 xfailed. This is a guidance contribution linked to #2, with no second implementation of the fixes.",
+      "verification_urls": [
+        "https://github.com/adewale/python-workers-issues/actions/runs/37947281769/job/113876720474",
+        "https://github.com/adewale/python-workers-issues/pull/2"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "reason": "Product dependency fix only. The sole change adds workers-runtime-sdk>=1.1.1 to the streaming example's pyproject.toml. It did not strengthen its existing regression assertion."
+    },
+    {
+      "number": 6,
+      "reason": "Pinned GitHub Actions and added an immutable-reference policy check. The diff changes workflow and dependency-update configuration with no repair to the existing test suite or its approach."
+    },
+    {
+      "number": 7,
+      "reason": "Open Dependabot group bump. Both changed workflow files update action revisions only."
+    }
+  ],
+  "limitations": [
+    "All seven PR titles, bodies and file inventories were screened across states, authors and dates. The linked job outcomes were inspected without rerunning the Workers or deploying to Cloudflare.",
+    "The three implementation PRs overlap. PR #5 documents #2's work. Treat them as separate historical PRs without counting each as an independent shipped repair."
+  ]
+}

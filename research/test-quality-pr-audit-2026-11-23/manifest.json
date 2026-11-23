@@ -1,0 +1,1430 @@
+{
+  "audited_on": "2026-11-23",
+  "owner": "adewale",
+  "inventory_cross_check": "Authenticated GitHub connector owner-affiliation list and gh repo list adewale --limit 1000 returned identical sets of 92 names.",
+  "target_base_sha": "bd48fe3edf05e2c8371aa517557fe530c1a1cf65",
+  "agent_model_requested_per_repository": "gpt-6.2-astra",
+  "reasoning_effort_requested": "max",
+  "states": [
+    "open",
+    "closed_unmerged",
+    "merged"
+  ],
+  "author_or_date_filter": false,
+  "complete": true,
+  "totals": {
+    "inventory_repositories": 92,
+    "audited_repositories": 92,
+    "public_repositories": 86,
+    "private_repositories": 6,
+    "public_prs_screened": 1703,
+    "private_prs_screened": 31,
+    "public_matching_prs": 739,
+    "private_matching_prs": 21
+  },
+  "private_evidence": "Retained locally; no private repository identifiers or PR details are published here.",
+  "repositories": [
+    {
+      "repository": "adewale/acnpov",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/acnpov.json"
+    },
+    {
+      "repository": "adewale/adewale",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [],
+      "report": "reports/adewale.json"
+    },
+    {
+      "repository": "adewale/adewale.github.io",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/adewale.github.io.json"
+    },
+    {
+      "repository": "adewale/agentic-mermaid",
+      "archived": false,
+      "total_prs": 491,
+      "matching_prs": [
+        5,
+        16,
+        19,
+        22,
+        23,
+        40,
+        49,
+        51,
+        52,
+        53,
+        54,
+        57,
+        58,
+        59,
+        63,
+        67,
+        69,
+        79,
+        86,
+        91,
+        96,
+        105,
+        108,
+        112,
+        126,
+        141,
+        149,
+        153,
+        162,
+        167,
+        169,
+        176,
+        182,
+        185,
+        187,
+        188,
+        189,
+        190,
+        193,
+        194,
+        201,
+        205,
+        208,
+        219,
+        228,
+        232,
+        236,
+        238,
+        239,
+        240,
+        242,
+        243,
+        244,
+        246,
+        251,
+        255,
+        267,
+        268,
+        277,
+        278,
+        281,
+        335,
+        339,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        352,
+        353,
+        354,
+        357,
+        358,
+        359,
+        360,
+        361,
+        369,
+        370,
+        375,
+        380,
+        399,
+        413,
+        415,
+        420,
+        421,
+        424,
+        426,
+        428,
+        429,
+        457,
+        459,
+        463,
+        464,
+        480,
+        482,
+        487,
+        490,
+        493,
+        498,
+        500,
+        506,
+        508,
+        516,
+        519,
+        521,
+        525,
+        527,
+        530,
+        553,
+        555,
+        569,
+        577,
+        582,
+        592,
+        595,
+        605,
+        611,
+        621
+      ],
+      "report": "reports/agentic-mermaid.json"
+    },
+    {
+      "repository": "adewale/aha",
+      "archived": false,
+      "total_prs": 26,
+      "matching_prs": [
+        22,
+        23,
+        21,
+        18,
+        14,
+        8,
+        7,
+        3,
+        13,
+        9,
+        16,
+        15,
+        11,
+        12,
+        2
+      ],
+      "report": "reports/aha.json"
+    },
+    {
+      "repository": "adewale/amp-by-example",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/amp-by-example.json"
+    },
+    {
+      "repository": "adewale/amphtml",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/amphtml.json"
+    },
+    {
+      "repository": "adewale/anti-slop-writing",
+      "archived": false,
+      "total_prs": 29,
+      "matching_prs": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        18,
+        19,
+        20,
+        22,
+        26,
+        27,
+        28,
+        29
+      ],
+      "report": "reports/anti-slop-writing.json"
+    },
+    {
+      "repository": "adewale/atlas",
+      "archived": false,
+      "total_prs": 46,
+      "matching_prs": [
+        46,
+        41,
+        38,
+        37,
+        36,
+        33,
+        32,
+        31,
+        30,
+        28,
+        21,
+        18,
+        11,
+        10,
+        7,
+        6,
+        2
+      ],
+      "report": "reports/atlas.json"
+    },
+    {
+      "repository": "adewale/audit-skill",
+      "archived": false,
+      "total_prs": 17,
+      "matching_prs": [
+        10,
+        11,
+        17,
+        3,
+        1,
+        5,
+        8
+      ],
+      "report": "reports/audit-skill.json"
+    },
+    {
+      "repository": "adewale/awesome-claude-skills",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/awesome-claude-skills.json"
+    },
+    {
+      "repository": "adewale/AxmlParserPY",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/AxmlParserPY.json"
+    },
+    {
+      "repository": "adewale/bobbin",
+      "archived": false,
+      "total_prs": 14,
+      "matching_prs": [
+        4,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "report": "reports/bobbin.json"
+    },
+    {
+      "repository": "adewale/Buzz-Chat-Bot",
+      "archived": false,
+      "total_prs": 2,
+      "matching_prs": [
+        1,
+        2
+      ],
+      "report": "reports/Buzz-Chat-Bot.json"
+    },
+    {
+      "repository": "adewale/buzzsearchengine",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [],
+      "report": "reports/buzzsearchengine.json"
+    },
+    {
+      "repository": "adewale/BuzzWatching",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/BuzzWatching.json"
+    },
+    {
+      "repository": "adewale/cf-advisor-skill",
+      "archived": true,
+      "total_prs": 2,
+      "matching_prs": [],
+      "report": "reports/cf-advisor-skill.json"
+    },
+    {
+      "repository": "adewale/cf-workers-design-system",
+      "archived": false,
+      "total_prs": 4,
+      "matching_prs": [
+        1,
+        2
+      ],
+      "report": "reports/cf-workers-design-system.json"
+    },
+    {
+      "repository": "adewale/cfboundary",
+      "archived": false,
+      "total_prs": 7,
+      "matching_prs": [
+        2,
+        3
+      ],
+      "report": "reports/cfboundary.json"
+    },
+    {
+      "repository": "adewale/cfdoctor",
+      "archived": false,
+      "total_prs": 34,
+      "matching_prs": [
+        1,
+        3,
+        6,
+        7,
+        9,
+        11,
+        12,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22,
+        24,
+        26,
+        27,
+        28,
+        30,
+        36
+      ],
+      "report": "reports/cfdoctor.json"
+    },
+    {
+      "repository": "adewale/claude-history-explorer",
+      "archived": false,
+      "total_prs": 15,
+      "matching_prs": [
+        15,
+        14,
+        13,
+        11,
+        10,
+        9,
+        3
+      ],
+      "report": "reports/claude-history-explorer.json"
+    },
+    {
+      "repository": "adewale/codekata",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/codekata.json"
+    },
+    {
+      "repository": "adewale/cq-challenge-markup",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/cq-challenge-markup.json"
+    },
+    {
+      "repository": "adewale/demoscene",
+      "archived": false,
+      "total_prs": 3,
+      "matching_prs": [
+        1,
+        2,
+        3
+      ],
+      "report": "reports/demoscene.json"
+    },
+    {
+      "repository": "adewale/dotfiles",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/dotfiles.json"
+    },
+    {
+      "repository": "adewale/embed.oshineye.dev",
+      "archived": false,
+      "total_prs": 5,
+      "matching_prs": [
+        2,
+        3
+      ],
+      "report": "reports/embed.oshineye.dev.json"
+    },
+    {
+      "repository": "adewale/feedvalidator",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/feedvalidator.json"
+    },
+    {
+      "repository": "adewale/fibonacci_durable_object",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [
+        1
+      ],
+      "report": "reports/fibonacci_durable_object.json"
+    },
+    {
+      "repository": "adewale/flux-search",
+      "archived": false,
+      "total_prs": 33,
+      "matching_prs": [
+        7,
+        17,
+        18,
+        24,
+        26,
+        27,
+        30,
+        33
+      ],
+      "report": "reports/flux-search.json"
+    },
+    {
+      "repository": "adewale/gae-contactswhovefaved",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/gae-contactswhovefaved.json"
+    },
+    {
+      "repository": "adewale/gaetestbed",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/gaetestbed.json"
+    },
+    {
+      "repository": "adewale/garten",
+      "archived": false,
+      "total_prs": 9,
+      "matching_prs": [
+        1,
+        2,
+        3,
+        4,
+        7
+      ],
+      "report": "reports/garten.json"
+    },
+    {
+      "repository": "adewale/geist_fabrik",
+      "archived": false,
+      "total_prs": 100,
+      "matching_prs": [
+        4,
+        5,
+        8,
+        19,
+        28,
+        32,
+        33,
+        38,
+        39,
+        41,
+        43,
+        44,
+        47,
+        50,
+        53,
+        57,
+        61,
+        62,
+        66,
+        68,
+        69,
+        70,
+        71,
+        75,
+        76,
+        77,
+        80,
+        83,
+        84,
+        85,
+        86,
+        87,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        99
+      ],
+      "report": "reports/geist_fabrik.json"
+    },
+    {
+      "repository": "adewale/good-pr",
+      "archived": false,
+      "total_prs": 19,
+      "matching_prs": [
+        2,
+        4,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        18
+      ],
+      "report": "reports/good-pr.json"
+    },
+    {
+      "repository": "adewale/good-readme",
+      "archived": false,
+      "total_prs": 16,
+      "matching_prs": [
+        2,
+        4,
+        6,
+        10,
+        11
+      ],
+      "report": "reports/good-readme.json"
+    },
+    {
+      "repository": "adewale/good-repo",
+      "archived": false,
+      "total_prs": 16,
+      "matching_prs": [
+        1,
+        3,
+        5,
+        8,
+        11
+      ],
+      "report": "reports/good-repo.json"
+    },
+    {
+      "repository": "adewale/grpc-common",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/grpc-common.json"
+    },
+    {
+      "repository": "adewale/grpc-java",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/grpc-java.json"
+    },
+    {
+      "repository": "adewale/guardrails-skill",
+      "archived": false,
+      "total_prs": 18,
+      "matching_prs": [
+        4,
+        6,
+        8,
+        10,
+        13,
+        14
+      ],
+      "report": "reports/guardrails-skill.json"
+    },
+    {
+      "repository": "adewale/hallmark",
+      "archived": false,
+      "total_prs": 4,
+      "matching_prs": [
+        1,
+        2
+      ],
+      "report": "reports/hallmark.json"
+    },
+    {
+      "repository": "adewale/keyboardia",
+      "archived": false,
+      "total_prs": 118,
+      "matching_prs": [
+        27,
+        30,
+        31,
+        35,
+        36,
+        37,
+        38,
+        40,
+        41,
+        43,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        62,
+        64,
+        65,
+        67,
+        68,
+        69,
+        70,
+        71,
+        73,
+        76,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        88,
+        94,
+        95,
+        96,
+        98,
+        99,
+        100,
+        101,
+        102,
+        104,
+        108,
+        113,
+        116,
+        117,
+        122,
+        123,
+        124,
+        126,
+        127,
+        130,
+        131,
+        134
+      ],
+      "report": "reports/keyboardia.json"
+    },
+    {
+      "repository": "adewale/lempicka",
+      "archived": false,
+      "total_prs": 2,
+      "matching_prs": [
+        1,
+        2
+      ],
+      "report": "reports/lempicka.json"
+    },
+    {
+      "repository": "adewale/livecore",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [],
+      "report": "reports/livecore.json"
+    },
+    {
+      "repository": "adewale/MaintainerBot",
+      "archived": false,
+      "total_prs": 10,
+      "matching_prs": [
+        2,
+        3,
+        6,
+        7,
+        8
+      ],
+      "report": "reports/MaintainerBot.json"
+    },
+    {
+      "repository": "adewale/next-starter-template",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/next-starter-template.json"
+    },
+    {
+      "repository": "adewale/oauthstarter",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/oauthstarter.json"
+    },
+    {
+      "repository": "adewale/oembed",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/oembed.json"
+    },
+    {
+      "repository": "adewale/olsen",
+      "archived": false,
+      "total_prs": 16,
+      "matching_prs": [
+        1,
+        2,
+        7,
+        8,
+        10,
+        11,
+        12
+      ],
+      "report": "reports/olsen.json"
+    },
+    {
+      "repository": "adewale/oshineye-dev",
+      "archived": false,
+      "total_prs": 34,
+      "matching_prs": [
+        3,
+        4,
+        12,
+        13,
+        19,
+        21,
+        25,
+        30,
+        31,
+        34,
+        35
+      ],
+      "report": "reports/oshineye-dev.json"
+    },
+    {
+      "repository": "adewale/par",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/par.json"
+    },
+    {
+      "repository": "adewale/pda",
+      "archived": false,
+      "total_prs": 67,
+      "matching_prs": [
+        6,
+        7,
+        9,
+        12,
+        14,
+        16,
+        21,
+        24,
+        26,
+        29,
+        30,
+        32,
+        35,
+        36,
+        38,
+        40,
+        41,
+        45,
+        46,
+        49,
+        52,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        62,
+        65,
+        67,
+        69,
+        70,
+        75,
+        77
+      ],
+      "report": "reports/pda.json"
+    },
+    {
+      "repository": "adewale/pi-comfort",
+      "archived": false,
+      "total_prs": 2,
+      "matching_prs": [
+        1,
+        2
+      ],
+      "report": "reports/pi-comfort.json"
+    },
+    {
+      "repository": "adewale/pi-dynamic-workflows",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [],
+      "report": "reports/pi-dynamic-workflows.json"
+    },
+    {
+      "repository": "adewale/planet_cf",
+      "archived": false,
+      "total_prs": 23,
+      "matching_prs": [
+        1,
+        4,
+        5,
+        9,
+        12,
+        14,
+        15,
+        17,
+        18,
+        23
+      ],
+      "report": "reports/planet_cf.json"
+    },
+    {
+      "repository": "adewale/print-with-poppy",
+      "archived": false,
+      "total_prs": 2,
+      "matching_prs": [],
+      "report": "reports/print-with-poppy.json"
+    },
+    {
+      "repository": "adewale/python-workers-examples",
+      "archived": false,
+      "total_prs": 4,
+      "matching_prs": [
+        2,
+        3
+      ],
+      "report": "reports/python-workers-examples.json"
+    },
+    {
+      "repository": "adewale/python-workers-issues",
+      "archived": false,
+      "total_prs": 7,
+      "matching_prs": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "report": "reports/python-workers-issues.json"
+    },
+    {
+      "repository": "adewale/python-workers-skill",
+      "archived": false,
+      "total_prs": 14,
+      "matching_prs": [
+        1,
+        2,
+        8,
+        10,
+        11
+      ],
+      "report": "reports/python-workers-skill.json"
+    },
+    {
+      "repository": "adewale/pythonbyexample",
+      "archived": false,
+      "total_prs": 48,
+      "matching_prs": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8,
+        9,
+        13,
+        15,
+        17,
+        19,
+        20,
+        23,
+        28,
+        44
+      ],
+      "report": "reports/pythonbyexample.json"
+    },
+    {
+      "repository": "adewale/qc",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/qc.json"
+    },
+    {
+      "repository": "adewale/rayner",
+      "archived": false,
+      "total_prs": 92,
+      "matching_prs": [
+        1,
+        2,
+        10,
+        11,
+        13,
+        14,
+        17,
+        18,
+        19,
+        24,
+        25,
+        27,
+        28,
+        30,
+        31,
+        32,
+        33,
+        34,
+        36,
+        38,
+        39,
+        41,
+        42,
+        44,
+        45,
+        49,
+        50,
+        53,
+        54,
+        60,
+        62,
+        63,
+        65,
+        66,
+        69,
+        75,
+        76,
+        80,
+        82,
+        83,
+        85,
+        87,
+        89,
+        91,
+        92,
+        97,
+        100,
+        103,
+        106,
+        107,
+        108,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115
+      ],
+      "report": "reports/rayner.json"
+    },
+    {
+      "repository": "adewale/rogue_planet",
+      "archived": false,
+      "total_prs": 20,
+      "matching_prs": [
+        2,
+        3,
+        4,
+        6,
+        7,
+        9,
+        10,
+        12,
+        13,
+        14
+      ],
+      "report": "reports/rogue_planet.json"
+    },
+    {
+      "repository": "adewale/scna-randori",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/scna-randori.json"
+    },
+    {
+      "repository": "adewale/skill-eval-harness",
+      "archived": false,
+      "total_prs": 89,
+      "matching_prs": [
+        4,
+        5,
+        7,
+        8,
+        9,
+        17,
+        19,
+        20,
+        22,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        33,
+        34,
+        35,
+        36,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        46,
+        47,
+        51,
+        53,
+        57,
+        58,
+        61,
+        62,
+        63,
+        65,
+        67,
+        68,
+        69,
+        71,
+        72,
+        78,
+        79,
+        81,
+        82,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        100,
+        102,
+        106
+      ],
+      "report": "reports/skill-eval-harness.json"
+    },
+    {
+      "repository": "adewale/skills",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/skills.json"
+    },
+    {
+      "repository": "adewale/skill_scanner",
+      "archived": false,
+      "total_prs": 14,
+      "matching_prs": [
+        2,
+        4,
+        12,
+        13,
+        14
+      ],
+      "report": "reports/skill_scanner.json"
+    },
+    {
+      "repository": "adewale/slide-maker",
+      "archived": false,
+      "total_prs": 18,
+      "matching_prs": [
+        2,
+        3,
+        5,
+        7,
+        11,
+        12,
+        14,
+        16
+      ],
+      "report": "reports/slide-maker.json"
+    },
+    {
+      "repository": "adewale/small-app-gardener",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [],
+      "report": "reports/small-app-gardener.json"
+    },
+    {
+      "repository": "adewale/speakerconf.github.io",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/speakerconf.github.io.json"
+    },
+    {
+      "repository": "adewale/streamer",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/streamer.json"
+    },
+    {
+      "repository": "adewale/sunrise",
+      "archived": false,
+      "total_prs": 9,
+      "matching_prs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+      ],
+      "report": "reports/sunrise.json"
+    },
+    {
+      "repository": "adewale/sunrise-deploy",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [],
+      "report": "reports/sunrise-deploy.json"
+    },
+    {
+      "repository": "adewale/swiss-poster-skill",
+      "archived": false,
+      "total_prs": 25,
+      "matching_prs": [
+        6,
+        7,
+        9,
+        11,
+        14,
+        15,
+        18,
+        20
+      ],
+      "report": "reports/swiss-poster-skill.json"
+    },
+    {
+      "repository": "adewale/tasche",
+      "archived": false,
+      "total_prs": 18,
+      "matching_prs": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16
+      ],
+      "report": "reports/tasche.json"
+    },
+    {
+      "repository": "adewale/testing-best-practices",
+      "archived": false,
+      "total_prs": 34,
+      "matching_prs": [
+        4,
+        6,
+        8,
+        9,
+        10,
+        15,
+        17,
+        18,
+        24,
+        25,
+        26,
+        27,
+        28,
+        31,
+        33,
+        34,
+        39,
+        40
+      ],
+      "report": "reports/testing-best-practices.json"
+    },
+    {
+      "repository": "adewale/tonejs-skill",
+      "archived": false,
+      "total_prs": 2,
+      "matching_prs": [],
+      "report": "reports/tonejs-skill.json"
+    },
+    {
+      "repository": "adewale/tools",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/tools.json"
+    },
+    {
+      "repository": "adewale/trident",
+      "archived": false,
+      "total_prs": 85,
+      "matching_prs": [
+        1,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        21,
+        22,
+        23,
+        24,
+        27,
+        29,
+        36,
+        37,
+        39,
+        40,
+        42,
+        45,
+        46,
+        48,
+        49,
+        50,
+        51,
+        53,
+        54,
+        56,
+        57,
+        58,
+        59,
+        61,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        79,
+        82,
+        83,
+        86,
+        88,
+        89,
+        90,
+        92,
+        93,
+        94,
+        96,
+        97,
+        98,
+        99,
+        102,
+        104,
+        105
+      ],
+      "report": "reports/trident.json"
+    },
+    {
+      "repository": "adewale/vaders",
+      "archived": false,
+      "total_prs": 17,
+      "matching_prs": [
+        1,
+        3,
+        4,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        15
+      ],
+      "report": "reports/vaders.json"
+    },
+    {
+      "repository": "adewale/venus",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/venus.json"
+    },
+    {
+      "repository": "adewale/visivotab",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [
+        1
+      ],
+      "report": "reports/visivotab.json"
+    },
+    {
+      "repository": "adewale/web2kindle",
+      "archived": false,
+      "total_prs": 2,
+      "matching_prs": [
+        1,
+        2
+      ],
+      "report": "reports/web2kindle.json"
+    },
+    {
+      "repository": "adewale/who-to-bother-at-on-x",
+      "archived": false,
+      "total_prs": 1,
+      "matching_prs": [],
+      "report": "reports/who-to-bother-at-on-x.json"
+    },
+    {
+      "repository": "adewale/wwwoshineye",
+      "archived": false,
+      "total_prs": 0,
+      "matching_prs": [],
+      "report": "reports/wwwoshineye.json"
+    },
+    {
+      "repository": "adewale/xampler",
+      "archived": false,
+      "total_prs": 5,
+      "matching_prs": [
+        2,
+        3
+      ],
+      "report": "reports/xampler.json"
+    },
+    {
+      "repository": "adewale/yaket",
+      "archived": false,
+      "total_prs": 7,
+      "matching_prs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "report": "reports/yaket.json"
+    }
+  ],
+  "catalogue_adjustments": [
+    {
+      "repository": "adewale/audit-skill",
+      "number": 14,
+      "reason": "Scheduling/cancellation cost only; kept as adjacent context."
+    },
+    {
+      "repository": "adewale/bobbin",
+      "number": 6,
+      "reason": "Superseded production experiment; later repairs are catalogued separately."
+    }
+  ]
+}

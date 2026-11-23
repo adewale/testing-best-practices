@@ -1,0 +1,278 @@
+{
+  "repository": "adewale/flux-search",
+  "total_prs": 33,
+  "pages_checked": {
+    "scope": "GitHub REST pull request list, all states, all dates and all authors",
+    "per_page": 100,
+    "pages": [
+      {
+        "page": 1,
+        "count": 33
+      },
+      {
+        "page": 2,
+        "count": 0
+      }
+    ],
+    "states": {
+      "open": 2,
+      "merged": 20,
+      "closed_unmerged": 11
+    },
+    "changed_file_inventories": 33,
+    "changed_file_entries": 265,
+    "candidate_and_adjacent_diffs_checked": [
+      1,
+      2,
+      3,
+      7,
+      17,
+      18,
+      24,
+      26,
+      27,
+      28,
+      30,
+      32,
+      33
+    ],
+    "collection_url": "https://api.github.com/repos/adewale/flux-search/pulls?state=all&per_page=100&page=1"
+  },
+  "matching_prs": [
+    {
+      "number": 7,
+      "title": "Fix codebase-audit findings: response contract, fresh-clone tests, issue-page escaping, design-token drift",
+      "url": "https://github.com/adewale/flux-search/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test repair within a broader product and documentation audit",
+      "weakness": "The gold topic suite opened gitignored data/processed during collection. A fresh checkout lacked its inputs, while a separate CI preprocessing step hid the dependency. Existing search checks also missed inconsistent response shapes across route branches.",
+      "attempted_remedy": "Build the gold fixture from committed HTML with the production crawler and normalizer. Exercise the search handler on seeded SQLite/FTS5 across issue, filter and text paths.",
+      "test_paths": [
+        "test/issue-topic-gold.test.ts",
+        "test/corpus-helpers.ts",
+        "test/helpers-d1.ts",
+        "test/response-contract.test.ts",
+        "test/normalizer-structure.test.ts"
+      ],
+      "diff_evidence": "The old readdirSync(\"data/processed\") loop is removed. loadCorpusIssuesByNumber reads sorted data/raw/*.html and caches normalizePage results. enableFts installs the FTS5 table and sync triggers. Route tests check field names and results from combined issue/section/year filters. A fixed example also retains the CI-discovered quote-stripping counterexample.",
+      "transferable_rule": "Build required inputs from committed fixtures and check whether the ordinary checkout command collects the expected cases. Use the same public handler for contract comparisons across branches. Preserve a shrunk failing property input as a named regression.",
+      "outcome_caveat": "GitHub records a merge and a successful exact-head test job. That job still ran corpus:process first, so the fresh-checkout result and the reported 25 recovered gold tests are author-reported. The source diff independently establishes the fixture change.",
+      "files_url": "https://github.com/adewale/flux-search/pull/7/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/27435063610/job/81094786328"
+    },
+    {
+      "number": 17,
+      "title": "Stabilize live API tests in CI",
+      "url": "https://github.com/adewale/flux-search/pull/17",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit mitigation for flaky test execution",
+      "weakness": "Nine live API test files competed for one deployed Worker. The PR attributes 15 timeouts in five files to this contention, under a five-second default deadline.",
+      "attempted_remedy": "Serialize Vitest file workers in CI and extend the CI test deadline to 15 seconds while retaining the five-second local deadline.",
+      "test_paths": [
+        "vitest.config.ts"
+      ],
+      "diff_evidence": "The sole edited file adds maxWorkers: isCI ? 1 : undefined and testTimeout: isCI ? 15_000 : 5_000. The test suite still calls the shared deployment.",
+      "transferable_rule": "Record when serialization and longer timeouts are a temporary response to shared-endpoint contention. Tie version-specific assertions to the checkout and use explicit deployment checks for remote behavior.",
+      "outcome_caveat": "GitHub records a merge and a successful exact-head CI job. One pass cannot establish a lower long-term flake rate. Merged #26 later removed the CI-specific worker limit and the default dependency on production.",
+      "files_url": "https://github.com/adewale/flux-search/pull/17/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/29664244479/job/88131902362"
+    },
+    {
+      "number": 18,
+      "title": "Fix browser races and stabilize visual regression tests",
+      "url": "https://github.com/adewale/flux-search/pull/18",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit test stabilization embedded in browser race fixes",
+      "weakness": "Browser journeys waited fixed intervals, swallowed selector/click failures and sometimes compared only result counts. Screenshots used changing API data. The mobile project changed viewport size without enabling touch emulation.",
+      "attempted_remedy": "Wait for observable state, compare result links, force stale response order with controlled requests, freeze screenshot inputs, and enable mobile/touch emulation. Remove the redundant landing visual case and two orphaned landing baselines.",
+      "test_paths": [
+        "e2e/dismiss-widget.spec.ts",
+        "e2e/user-journeys.spec.ts",
+        "e2e/search-races.spec.ts",
+        "e2e/visual-api-fixtures.ts",
+        "e2e/visual-regression.spec.ts",
+        "playwright.config.ts"
+      ],
+      "diff_evidence": "A three-second sleep before the empty-state screenshot becomes checks for the empty message, zero result cards and hidden loading. Catch-and-ignore handling is removed from quote visibility and the second dismissal. Race cases release the newer search before the older one and check the newer title remains. The visual suite intercepts known search and issue responses with five committed JSON fixtures.",
+      "transferable_rule": "Drive request completion order explicitly, assert content identity and wait for user-visible state. Freeze volatile content for pixel comparisons and configure input capabilities for device-specific behavior.",
+      "outcome_caveat": "GitHub records a merge and successful exact-head CI. The preview browser suite and three repeated visual and race runs are PR-reported. The API inventory identifies the changed binary snapshots but this review did not independently compare their pixels.",
+      "files_url": "https://github.com/adewale/flux-search/pull/18/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/29667210441/job/88139633167"
+    },
+    {
+      "number": 24,
+      "title": "Lease pipeline job claims atomically",
+      "url": "https://github.com/adewale/flux-search/pull/24",
+      "state": "closed",
+      "merged": false,
+      "classification": "Testing-method change in an unmerged queue repair",
+      "weakness": "A serial claim/succeed example and terminal job flags gave little evidence about overlapping owners, lost responses or downstream writes. Even the proposed checkpoint tests missed a change of owner between validation and the next write.",
+      "attempted_remedy": "Extend the existing pipeline suites with a command model checked against persisted SQLite state, controlled time and ownership transitions, and a double that commits a write before reporting a connection loss.",
+      "test_paths": [
+        "test/pipeline-jobs.test.ts",
+        "test/enrichment-queue.test.ts",
+        "test/topic-queries.test.ts",
+        "test/topic-rebuild-queue.test.ts"
+      ],
+      "diff_evidence": "fc.commands generates up to 25 commands including crash, advance-time, claim, succeed, defer and fail. The command handlers compare the model against getPipelineJob. commitThenThrowOnce executes the real statement before raising. Topic query tests check replacement data, stale-owner writes and rollback.",
+      "transferable_rule": "Force the interleaving at the mutation boundary and inspect durable side effects. A lifecycle model that checks only status can miss damage to rows owned by a replacement.",
+      "outcome_caveat": "GitHub records a closed, unmerged PR and a successful exact-head test job. The PR reports a separate schedule that removed replacement rows despite green tests. The closing comment identifies merged #30 as the replacement. The lease design did not ship through #24.",
+      "related_url": "https://github.com/adewale/flux-search/pull/24#issuecomment-6148065782",
+      "files_url": "https://github.com/adewale/flux-search/pull/24/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/33348068224/job/99355929300"
+    },
+    {
+      "number": 26,
+      "title": "Make default search checks offline and fix FTS syntax without new CI lanes",
+      "url": "https://github.com/adewale/flux-search/pull/26",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated verification audit with a search implementation fix",
+      "weakness": "Default tests queried the deployed Worker. Some n-gram cases printed observations while asserting only reference queries. A 200-run property checked only a string type. Other cases inspected JavaScript source, silently skipped missing corpus data, or rarely reached cold-start states.",
+      "attempted_remedy": "Split offline and opt-in deployed tests, block unstubbed fetch in the offline suite, and send requests through the production handler with SQLite/FTS5 and controlled model/vector responses. Move diagnostic comparisons to a report, reallocate the 200 runs to real SQL execution, and integrate the frontend/corpus work from #27.",
+      "test_paths": [
+        "vitest.config.ts",
+        "test/setup/no-network.ts",
+        "test/fts-safety.test.ts",
+        "test/helpers-d1.ts",
+        "test/helpers-search-route.ts",
+        "test/ngram-cases.test.ts",
+        "test/live/ngram-invariants.test.ts",
+        "scripts/ngram-cases-report.mjs",
+        "test/semantic-threshold.test.ts",
+        "test/search-state.pbt.test.ts",
+        "test/page-wiring.test.ts"
+      ],
+      "diff_evidence": "test/setup/no-network.ts throws on unstubbed fetch. searchRoute sends app.request through Hono. The adapter uses column metadata to return SELECT rows or write change counts in a transaction. The removed 200-run typeof query check funds a property that submits generated expressions to SQLite MATCH. The cold-start generator trims to the pre-existing maximum length. N-gram comparisons move out of the 179-line deleted test into a diagnostic command plus explicit live invariants.",
+      "transferable_rule": "Test the code under review at a real execution boundary, retain deployed relevance checks separately, and turn diagnostic outputs into assertions only where a product invariant exists. Redirect existing property runs toward a meaningful independent oracle.",
+      "outcome_caveat": "GitHub records a merge and successful npm test and typecheck steps. Head 6f61fa1 of #27 appears in the #26 commit list. Offline doubles cannot establish deployed ranking relevance or provider behavior. The reported 882 offline cases and local browser runs were not independently rerun.",
+      "related_url": "https://github.com/adewale/flux-search/pull/26/commits",
+      "files_url": "https://github.com/adewale/flux-search/pull/26/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/37873324898/job/113636088040"
+    },
+    {
+      "number": 27,
+      "title": "Test audit: run frontend page modules instead of grepping them; reach cold-start states in PBT",
+      "url": "https://github.com/adewale/flux-search/pull/27",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated test-quality audit, folded into #26",
+      "weakness": "Source string checks could pass with broken page behavior. Random traces rarely entered the featured-results state. Four corpus suites skipped a missing or empty required fixture.",
+      "attempted_remedy": "Delete the source-search topic-link test and replace three other wiring checks with executions of actual page modules against a stand-in derived from their HTML. Generate cold-start prefixes and make missing fixtures fail explicitly.",
+      "test_paths": [
+        "test/topic-detail-links.test.ts",
+        "test/frontend-utils.test.ts",
+        "test/accessibility.test.ts",
+        "test/helpers-page.ts",
+        "test/page-wiring.test.ts",
+        "test/search-state.pbt.test.ts",
+        "test/corpus-chunks.test.ts",
+        "test/corpus-crud.test.ts",
+        "test/corpus-survival.test.ts",
+        "test/corpus-topics.test.ts"
+      ],
+      "diff_evidence": "page-wiring decodes links for multiword and ampersand keywords and checks the real parseQuery result. It separately observes textContent and innerHTML, sanitizer order, and visible labels. The stand-in reads IDs and initial hidden state from markup. Half the generated traces start with LOAD(\"\") then LATEST_LOADED. All four corpus files replace it.skip with a failing fixture check.",
+      "transferable_rule": "Check rendered output and its downstream consumer, seed underrepresented state transitions, and make required fixture availability an executable prerequisite. Report existing suite-level detection separately from stronger local attribution.",
+      "outcome_caveat": "Closed without a direct merge. The authors report detecting 13 of 13 planted page faults versus 2 of 13 and reaching featured results in 156 of 300 traces versus 2 of 300 under one seed. These measurements are author-reported. GitHub shows its head failed dependency audit before tests ran. Its head is present in merged #26. The stand-in omits tab click handling.",
+      "related_url": "https://github.com/adewale/flux-search/pull/27#issuecomment-6003664846",
+      "files_url": "https://github.com/adewale/flux-search/pull/27/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/37089286697/job/111105968872"
+    },
+    {
+      "number": 30,
+      "title": "Recover failed queue sends and fence corpus publication by generation",
+      "url": "https://github.com/adewale/flux-search/pull/30",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test fidelity and boundary checks embedded in a production queue repair",
+      "weakness": "The existing rebuild test deliberately omitted the run record created by production and expected a missing row. It stopped before terminal redelivery. The SQLite double also allowed bound values above the deployed D1 limits.",
+      "attempted_remedy": "Use the production precondition, replay extracts after completion, and inspect dispatched payloads, embedding rows and AI call counts. Add a controlled concurrency comparison and checks on the actual SQL parameter sizes for a realistic corpus.",
+      "test_paths": [
+        "test/topic-rebuild-queue.test.ts",
+        "test/topic-publication.test.ts",
+        "test/pipeline-jobs.test.ts"
+      ],
+      "diff_evidence": "In the original queue test, expect(run).toBeNull() becomes a seeded pipeline_runs record and a completed-status assertion. Replayed extracts must leave dispatches and saved embeddings equal and aiCalls at one. The publication suite pauses an older read, allows another update, then compares final rows against a fresh rebuild. A 134-topic, 768-dimension fixture checks every bind against 100 parameters and 2,000,000 bytes per string.",
+      "transferable_rule": "Seed the same preconditions as the caller, assert persisted outputs after replay, and explicitly model provider limits absent from a local double. For overlaps, compare the final state with an independently scheduled control.",
+      "outcome_caveat": "GitHub records a merge and successful exact-head npm test and typecheck steps. The offline controls cover the tested schedules and parameter sizes. The author-reported red/green runs and behavior of deployed services were not independently reproduced.",
+      "files_url": "https://github.com/adewale/flux-search/pull/30/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/38056433807/job/114225802970"
+    },
+    {
+      "number": 33,
+      "title": "Check article and topics-rail geometry in a local browser",
+      "url": "https://github.com/adewale/flux-search/pull/33",
+      "state": "open",
+      "merged": false,
+      "classification": "Dedicated replacement of a brittle implementation-detail test",
+      "weakness": "The article-layout unit test matched three literal CSS declarations. Equivalent formatting could fail it, and declarations in comments could satisfy it while the rendered column shrank.",
+      "attempted_remedy": "Delete the source-text test and measure the article and topics rail on the real local Worker page in Chromium. Add that focused fixture-backed check to the existing CI job.",
+      "test_paths": [
+        "test/issue-rail-layout.test.ts",
+        "e2e/issue-rail-layout.spec.ts",
+        "playwright.config.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The 12-line CSS string suite was deleted. At widths 1280 and 1600 the browser spec measures getBoundingClientRect(), checks an approximately 640 px article and verifies the rail starts at or after its right edge. At widths 899 and 375 it requires a hidden rail and an article inside the viewport.",
+      "transferable_rule": "Test responsive layout through browser geometry at representative widths around a breakpoint. Verify a semantically equivalent rewrite passes and an actual loss of reading width fails.",
+      "outcome_caveat": "Open at inspection. GitHub records a successful exact-head CI step named Check article and topics rail in the local Worker. The equivalent-CSS and narrowed-grid experiments are author-reported. The four Chromium widths cover the specified layouts.",
+      "files_url": "https://github.com/adewale/flux-search/pull/33/files",
+      "ci_url": "https://github.com/adewale/flux-search/actions/runs/42315011687/job/128225362956"
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        19,
+        20,
+        21,
+        22,
+        23,
+        25,
+        29,
+        31
+      ],
+      "reason": "Dependency or action version bumps only. The release notes describe upstream tests, and the inventories contain package metadata or action references."
+    },
+    {
+      "numbers": [
+        1
+      ],
+      "reason": "Topic extraction feature and new coverage. Its 22 test/helper paths were all added, including the original SQLite adapter. The PR documents the feature harness without diagnosing or replacing an existing test."
+    },
+    {
+      "numbers": [
+        2,
+        3
+      ],
+      "reason": "#2 changes frontend implementation only. #3 updates the original queue test's expectations to reflect a changed finalizer contract and adds tests for new rate limits and filtered vector search."
+    },
+    {
+      "numbers": [
+        28,
+        32
+      ],
+      "reason": "#28 updates package metadata to remediate dependency advisories. #32 enforces action pinning with a workflow linter."
+    }
+  ],
+  "limitations": [
+    "Reviewed pull request metadata, complete changed-file inventories, and relevant text patches. Addition/deletion counts matched the patches for the 13 candidate and adjacent PRs. GitHub listed 11 binary snapshot changes in #18 without text patches.",
+    "Verified GitHub CI statuses at the eight PR heads and checked the linked closure records and #26 commits. Reported local experiments and deployment behavior were not rerun.",
+    "#27 and #26 describe overlapping work. #24 was superseded by #30. A PR count counts each historical attempt."
+  ]
+}

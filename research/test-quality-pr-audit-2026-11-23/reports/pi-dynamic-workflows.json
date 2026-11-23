@@ -1,0 +1,22 @@
+{
+  "repository": "adewale/pi-dynamic-workflows",
+  "total_prs": 1,
+  "pages_checked": [
+    "GitHub REST pulls, state=all, per_page=100, with no author or date filter. Page 1 returned PR #1 and page 2 returned zero.",
+    "Reviewed the PR title and body and all four changed-file patches. The files endpoint returned four entries on its first page, matching the PR detail's changed_files count."
+  ],
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/pi-dynamic-workflows/pull/1",
+      "state": "closed",
+      "merged": true,
+      "reason": "The ci.yml and release.yml diffs only pin action versions. The new action-pinning.yml runs zizmor and filters for unpinned-uses, and dependabot.yml configures dependency updates. The PR body describes manual validation probes, but the patches contain no test-suite repair or change to how application behavior is verified."
+    }
+  ],
+  "limitations": [
+    "The audit covers GitHub pull requests. The validation probes reported in PR #1 were not independently executed."
+  ]
+}

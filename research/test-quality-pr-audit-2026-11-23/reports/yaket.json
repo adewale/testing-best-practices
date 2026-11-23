@@ -1,0 +1,205 @@
+{
+  "repository": "adewale/yaket",
+  "total_prs": 7,
+  "pages_checked": 2,
+  "enumeration": {
+    "source": "https://api.github.com/repos/adewale/yaket/pulls?state=all&per_page=100&page=1",
+    "page_counts": [
+      7,
+      0
+    ],
+    "states": {
+      "merged": 5,
+      "closed_unmerged": 1,
+      "open": 1
+    },
+    "review": "Read all titles and bodies and inspected all seven changed-file inventories and the relevant file patches. Independently compared the file lists with the paginated pull-request files endpoint.",
+    "changed_files_by_pr": {
+      "1": 60,
+      "2": 7,
+      "3": 26,
+      "4": 9,
+      "5": 5,
+      "6": 6,
+      "7": 3
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Yaket 0.6: multilingual parity, alias removal, and pluggable internals",
+      "url": "https://github.com/adewale/yaket/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality work embedded in a release",
+      "weakness": "The mutation audit identified unguarded extractor defaults and deduplication boundaries. The existing edge-compatibility test scanned source text for four Node modules and could miss imports in the built bundle.",
+      "attempted_remedy": "Target observable mutation survivors with default and threshold tests. Build the worker bundle and inspect its import graph and emitted dynamic imports alongside the source check.",
+      "test_paths": [
+        "docs/audits/mutation-testing-2026-04-26.md",
+        "stryker.conf.json",
+        "test/keyword-extractor-defaults.test.ts",
+        "test/dedup-boundaries.test.ts",
+        "test/edge-compatibility.test.ts",
+        "test/bundle-size.test.ts",
+        "scripts/bundle-leak-detector.ts"
+      ],
+      "diff_evidence": [
+        "The audit distinguishes equivalent cache/algorithm mutations from behavior-changing defaults. The default suite explicitly checks n=3, top=20 and dedupLim=0.9. A custom similarity strategy returns exactly 0.9, then the suite compares survivors against the no-dedup baseline. A separate case exceeds the limit and expects exactly one result.",
+        "The bundle test feeds esbuild's metafile to findForbiddenBuiltinImports and checks the built output for literal dynamic imports. The old source check matched only static imports of fs, path, child_process and os. The Stryker configuration switches coverageAnalysis from off to perTest."
+      ],
+      "transferable_rule": "Triage mutation survivors by observable consequences. Pick boundary inputs that separate plausible implementations, and test platform compatibility against the built artifact.",
+      "outcome": "Merged. Head verification, Python parity and CLI coverage succeeded. Mutation was skipped on the PR head. The committed audit reports 68.77%, without a before/after measurement of these tests. The head verify log had expired (HTTP 410). PR #4 later replaced the weak size-only dedup comparison and deleted the CLI source-length check introduced here.",
+      "verification_urls": [
+        "https://github.com/adewale/yaket/actions/runs/25052207726"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Fuzz Python parity with pinned Unicode cases",
+      "url": "https://github.com/adewale/yaket/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated differential-testing repair with production fixes",
+      "weakness": "The differential-fuzz suite exercised only fixed perturbations. The reference job selected only python-parity.test.ts, and the Python reference and its dependencies floated.",
+      "attempted_remedy": "Keep the fixed corpus, add shrinkable generated cases, pin the reference and its dependencies, and run both suites in CI. Add permanent regressions for the Unicode mismatches found.",
+      "test_paths": [
+        "test/differential-fuzz.test.ts",
+        "test/candidate-construction.test.ts",
+        "test/tokenizer-parity.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "A fast-check property executes 25 generated cases of English fixtures plus emoji, CJK or Arabic fragments. It compares ordered keyword identities and scores within 1e-12 to Python. A separate test still invokes buildMutatedSamples().",
+        "The CI job pins YAKE at f7944f645106d8c37c6999a1ba66d222f215a151, pins five Python packages and invokes both test files. Regressions distinguish two- from three-emoji terms and exercise adjacent emoji and sentence punctuation."
+      ],
+      "transferable_rule": "Run generated differential tests against a fixed reference in CI. Keep the minimized examples as direct regressions and record the oracle revision for replay.",
+      "outcome": "Merged. The head's parity job log shows both files executed with three tests passing. The PR reports that shrinking exposed score drift. The reviewed log confirms the final passing run, not the original failure.",
+      "verification_urls": [
+        "https://github.com/adewale/yaket/actions/runs/33345733162/job/99349370024"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Verification and test audit: pinned Python parity in CI and releases, post-build package smoke, Stryker dry-run fix, stale demo fix, stronger tests",
+      "url": "https://github.com/adewale/yaket/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated verification and test audit, incorporating #4",
+      "weakness": "CI selected only two parity files. Missing Python references could silently skip tests. A Vitest smoke test compiled the package inside a short test timeout. Cache-bound coverage performed 45,000 distance/ratio calls under mutation instrumentation. The demo and behavioral assertion weaknesses from #4 were still present.",
+      "attempted_remedy": "Require the oracle in CI and release verification, run the four-file parity command, exercise the existing build in a post-build smoke step and drive eviction with an isolated 100-entry cache. Incorporate the nine file patches from #4.",
+      "test_paths": [
+        "test/helpers/python-reference.ts",
+        "test/python-parity-lane.test.ts",
+        "test/differential-fuzz.test.ts",
+        "test/python-parity.test.ts",
+        "test/seqm-parity.test.ts",
+        "test/similarity-cache.test.ts",
+        "test/package-smoke.test.ts",
+        "scripts/package-smoke.ts",
+        "package.json",
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml"
+      ],
+      "diff_evidence": [
+        "The shared helper throws if YAKET_REQUIRE_PYTHON_REFERENCE=1 and the checkout is absent. The parity-lane test discovers test files that import the helper. The npm command adds seqm-parity and multilingual-parity. The latter uses frozen multilingual expectations and does not itself need a live Python process.",
+        "The old package-smoke.test.ts spawned tsc. Its replacement runs after build, checks export target and declaration files, and executes the built CLI on successful and failing inputs.",
+        "The cache-bound test now inserts 150 distinct cases into a configurable 100-entry cache and requires positive occupancy within the limit. The earlier test looped 22,500 times for each of two calls. All nine patches from #4 match byte for byte."
+      ],
+      "transferable_rule": "Make missing dependencies fail in required test jobs. Put artifact smoke tests after the build. Trigger boundary behavior with a small configurable fixture so the mutation runner can finish.",
+      "outcome": "Merged. The head parity job logged 16 passing tests across four files. The verify log printed “package smoke: ok”. An earlier manual mutation job on 496aa7d logged 664 killed, 18 timed out, 97 survived and 8 uncovered. The 86.66% score included timeouts, with 84.37% killed alone. Mutation was skipped on the final PR head. The #4 repairs represent one implementation.",
+      "verification_urls": [
+        "https://github.com/adewale/yaket/actions/runs/38141089651/job/114474939721",
+        "https://github.com/adewale/yaket/actions/runs/38141089651/job/114474939838",
+        "https://github.com/adewale/yaket/actions/runs/36688601182/job/109800184234"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Test audit: fix stale demo output, replace vacuous and source-text tests",
+      "url": "https://github.com/adewale/yaket/pull/4",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated audit, closed and incorporated into #3",
+      "weakness": "Substring checks passed with stale demo output and CLI help. Length ceilings and loops could pass on the wrong deduplication algorithm, a cache storing nothing or an empty result. An edge-compatibility test asserted only that cli.ts exceeded 100 characters.",
+      "attempted_remedy": "Recompute each displayed keyword list, exercise CLI help and parsing, choose inputs that differentiate dispatchers, assert exact survivors and cache occupancy, require positive result witnesses and delete the source-length check.",
+      "test_paths": [
+        "demo/index.html",
+        "test/demo.test.ts",
+        "test/docs-sync.test.ts",
+        "test/keyword-extractor-hooks.test.ts",
+        "test/dedup-boundaries.test.ts",
+        "test/similarity-cache-isolation.test.ts",
+        "test/bobbin-adapter.test.ts",
+        "test/reference.test.ts",
+        "test/edge-compatibility.test.ts"
+      ],
+      "diff_evidence": [
+        "The demo compares the embedded keyword set with the extractor's current top ten for each sample. The product-docs sample data changed in the same PR. The CLI test compares README and help flag lists and checks each flag changes parseCliArgs([]).",
+        "For “alpha alpha alhpa beta” at threshold 0.8, the test now checks Jaro drops “alhpa” while Levenshtein keeps it. The dedup test checks four ordered survivors and their baseline scores. After 50 distinct cache keys, four caches must each have size 10.",
+        "The adapter explicitly requires a keyword for the unigram case and “machine learning” for bigrams. The stopword test requires alpha, beta and gamma before inspecting boundaries. The misleading CLI-length test is deleted."
+      ],
+      "transferable_rule": "Try an empty result and a plausible wrong algorithm against each assertion. Choose inputs and expected outputs that expose both faults. For generated examples, test the promise made to the reader.",
+      "outcome": "Closed without merging this PR directly. Its nine patches are identical in merged #3. The head verify job ran nine demo tests. The detailed planted-fault results belong to the author. The demo tests cover data and initial rendering, leaving interactive tab behavior and independently computed TF-IDF results outside their scope.",
+      "verification_urls": [
+        "https://github.com/adewale/yaket/actions/runs/37091907858/job/111113846373",
+        "https://github.com/adewale/yaket/pull/3/files"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "chore: patch tooling and migrate the existing Workers test plugin",
+      "url": "https://github.com/adewale/yaket/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "Assertion repair embedded in a test-tool migration",
+      "weakness": "The real Workers runtime test compared whole keyword/score values exactly. A last-bit score difference between V8 versions caused an unrelated runtime upgrade to fail.",
+      "attempted_remedy": "Migrate the existing workerd lane to the maintained Cloudflare Vitest plugin. Keep keyword identities exact and give only the two computed scores a 15-decimal-place tolerance.",
+      "test_paths": [
+        "test/cloudflare-runtime.test.ts",
+        "vitest.cloudflare.config.ts"
+      ],
+      "diff_evidence": [
+        "Two toEqual checks become exact keyword checks for “Cloudflare Workers” and “search enrichment” plus toBeCloseTo(expected, 15) for each score. The Vitest configuration retains cloudflareTest with a new package import."
+      ],
+      "transferable_rule": "Scope numeric tolerances to the individual fields with a demonstrated runtime precision difference. Keep the checks for identities and other discrete outputs exact.",
+      "outcome": "Merged. The head verify log records the Workers-specific suite passing its one test. The PR gives the original difference as about 9e-17. This audit did not replay both V8 versions.",
+      "verification_urls": [
+        "https://github.com/adewale/yaket/actions/runs/37912654814/job/113761245911"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/yaket/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "False-positive repair embedded in workflow hardening",
+      "weakness": "The existing parity-lane test treated any 40-hex SHA anywhere in CI or release YAML as a copied Python reference pin. It also rejected legitimate action pins.",
+      "attempted_remedy": "Scope the duplicate-oracle-pin assertion to workflow text outside action-reference lines, while keeping the existing checks for setup, lane invocation and pip pins.",
+      "test_paths": [
+        "test/python-parity-lane.test.ts"
+      ],
+      "diff_evidence": [
+        "The old test applied the 40-hex regex to the entire file. The new test strips YAML uses: lines into referenceSetup and applies the regex to that value. The pip-version assertion still scans the original text. The workflow diffs show actual full-SHA action references."
+      ],
+      "transferable_rule": "Test a configuration rule within the fields it governs. Include a valid neighboring field with the same lexical shape when checking for false positives.",
+      "outcome": "Merged. The head verify log records all five parity-lane tests passing with pinned actions present. The check still uses line-oriented text matching and drops every uses: line. The new action-security lint alone would not qualify this PR.",
+      "verification_urls": [
+        "https://github.com/adewale/yaket/actions/runs/42028011929/job/127246997876"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 7,
+      "title": "Bump the github-actions group with 3 updates",
+      "url": "https://github.com/adewale/yaket/pull/7",
+      "reason": "Dependabot updates only the pinned versions of three actions across ci.yml, pages.yml and release.yml. The diffs retain the same test commands and assertions."
+    }
+  ],
+  "limitations": [
+    "The results count pull requests. Closed #4 and merged #3 share the same nine-file test-audit implementation.",
+    "GitHub omitted patch text for #1 src/similarity.ts and #5 package-lock.json. Both are listed in the complete file inventories. Every test or test-configuration patch cited here was available.",
+    "Verification uses PR diffs, GitHub check runs and available job logs. PR descriptions and checked-in reports are identified separately when they provide the only evidence. No local test, fault-injection or mutation reruns were performed."
+  ]
+}

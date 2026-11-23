@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added (portfolio PR test audit, 2026-11-23)
+- Installable `references/test-audit.md`: focused candidate searches, a calibrated signal table, retain/repair/consolidate/delete decisions, expected-value provenance, keeper ownership, old-versus-new fault checks, and allowed-change controls for suspected implementation locks. It includes a reusable task brief and treats baseline failures as possible product defects.
+- Assess and Upgrade routes load the workflow for existing-suite work. No deletion targets, assertion quotas, mutation-score floors, or recurring lanes are introduced.
+- Write mode asks for the contract, credible regression, missing proof, and a real boundary before adding another test.
+- Historical per-repository PR evidence and an OpenClaw comparison are retained under `research/`; they are excluded from the installable skill directory.
+
 ### Retracted guidance
 Rules the skill has withdrawn. If your repository enforces one of these (a script, a lint, a lesson, a quota), it is enforcing guidance the skill no longer gives.
 

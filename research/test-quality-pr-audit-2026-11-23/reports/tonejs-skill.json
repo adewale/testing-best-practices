@@ -1,0 +1,28 @@
+{
+  "repository": "adewale/tonejs-skill",
+  "total_prs": 2,
+  "pages_checked": [
+    "GET /repos/adewale/tonejs-skill/pulls?state=all&per_page=100 returned #2 and #1 on page 1 and zero records on page 2. Both PR bodies were screened.",
+    "GET /repos/adewale/tonejs-skill/pulls/{number}/files?per_page=100&page=1 returned three paths for #1 and one for #2. Reviewed all four file patches."
+  ],
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/tonejs-skill/pull/1",
+      "state": "closed",
+      "merged": true,
+      "reason": "Added a workflow linter for the zizmor unpinned-uses rule and a Dependabot schedule. The existing check-tone-docs.yml diff replaced three action tags with commit SHAs. The positive and negative probes described in the PR validated the new pinning policy."
+    },
+    {
+      "number": 2,
+      "title": "Bump the github-actions group with 3 updates",
+      "url": "https://github.com/adewale/tonejs-skill/pull/2",
+      "state": "open",
+      "merged": false,
+      "reason": "Dependabot updated three action references in .github/workflows/check-tone-docs.yml. All six changed lines were reference substitutions."
+    }
+  ],
+  "limitations": []
+}

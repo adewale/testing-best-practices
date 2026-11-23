@@ -1,0 +1,169 @@
+{
+  "repository": "adewale/garten",
+  "total_prs": 9,
+  "pages_checked": {
+    "pull_requests": [
+      {
+        "page": 1,
+        "per_page": 100,
+        "count": 9
+      },
+      {
+        "page": 2,
+        "per_page": 100,
+        "count": 0
+      }
+    ],
+    "states": "all",
+    "author_or_date_filter": false,
+    "state_counts": {
+      "merged": 7,
+      "closed_unmerged": 1,
+      "open": 1
+    },
+    "changed_files_per_pr": {
+      "1": 52,
+      "2": 2,
+      "3": 47,
+      "4": 3,
+      "5": 2,
+      "6": 4,
+      "7": 1,
+      "8": 3,
+      "9": 1
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Release 1.1.0 — audit fixes, testing overhaul, events API, transparent background",
+      "url": "https://github.com/adewale/garten/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing overhaul embedded in a release",
+      "weakness": "Default configurations and call-level canvas tests could miss a plant whose vine path was discarded before stroke, even when a garden rendered successfully.",
+      "attempted_remedy": "Extended the existing renderer suite with a path-recording context, swept the finite plant enum across growth stages, and checked canvas assumptions and visible pixels in Chromium.",
+      "test_paths": [
+        "src/plants/renderers.test.ts",
+        "src/plants/render-sweep.test.ts",
+        "tests/contract/canvas-contract.spec.ts",
+        "tests/visual/garden.spec.ts"
+      ],
+      "diff_evidence": [
+        "The climber regression calls drawPlant, finds the stroked path starting at the plant base, and requires eight quadratic vine segments and zero leaf Bézier segments.",
+        "The sweep calls drawPlant for every PlantType and checks that a fully grown plant issued a fill or stroke. The Chromium contract test compares a painted control with a path discarded by beginPath, and the visual tests inspect RGBA values plus seeded screenshots."
+      ],
+      "transferable_rule": "When a mock can accept an impossible or invisible rendering result, test a concrete visible failure and verify the mock's assumptions against the real renderer.",
+      "outcome": "Merged. The head CI verify and Chromium jobs succeeded. The PR's reported 0/12 to 12/12 improvement concerns selected defect reintroductions. The scheduled mutation job was skipped on this run, and this audit did not replay those probes.",
+      "head_ci": "https://github.com/adewale/garten/actions/runs/27288426876"
+    },
+    {
+      "number": 2,
+      "title": "Model Garten timing with shrinkable command sequences",
+      "url": "https://github.com/adewale/garten/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated testing-method change",
+      "weakness": "Existing mathematical properties did not execute Garten's requestAnimationFrame callbacks. A test could pass while pause, speed changes, loop reset, or destroy mishandled real playback.",
+      "attempted_remedy": "Added shrinkable command sequences that exercise the real controller with a controllable frame queue, comparing each transition to an independent timing model.",
+      "test_paths": [
+        "src/Garden.lifecycle.property.test.ts"
+      ],
+      "diff_evidence": [
+        "fc.modelRun drives play, pause, seek, speed and duration changes, frame advancement, completion, regeneration and destroy. The assertions compare state, elapsed time, normalized progress, and the number of pending frames after commands.",
+        "The test runs both looping modes with up to 50 generated commands per sequence and 100 runs per mode. AdvancePastEnd crosses the end only when generated and executable."
+      ],
+      "transferable_rule": "Drive the callbacks a stateful component actually schedules, and check public state and resource ownership after each generated command.",
+      "outcome": "Merged. Both head CI jobs succeeded. The four locally reported fault injections were not replayed here. The renderer is mocked. The lifecycle test has the same blob in #2 and #3, so the latter is not independent evidence for this repair.",
+      "head_ci": "https://github.com/adewale/garten/actions/runs/37869608895"
+    },
+    {
+      "number": 3,
+      "title": "Fix renderer and numeric boundary defects within a smaller test budget",
+      "url": "https://github.com/adewale/garten/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Substantive repairs to existing tests in a production-fix PR",
+      "weakness": "Renderer tests calculated their own clamping formulas without calling the renderer. Browser checks inferred plant growth from all painted pixels, and a resize test slept 400 ms and accepted any sufficiently painted lower band.",
+      "attempted_remedy": "Replaced formula-only assertions with actual render output at boundary inputs, checked the resized bitmap against a fresh render at the target size, and removed unstable proxy measurements where object identity was observable.",
+      "test_paths": [
+        "src/plants/renderers.test.ts",
+        "tests/visual/garden.spec.ts",
+        "src/performance.test.ts",
+        "tests/contract/canvas-contract.spec.ts",
+        "src/integration.test.ts"
+      ],
+      "diff_evidence": [
+        "A test that computed Math.max(3, 6 + (-10)) was replaced with tests that render plants at modifier -100 and at their minimum, require nonempty operation streams, and compare the streams.",
+        "The resize test waits for a 640-pixel canvas and compares its full bitmap to a fresh 640-pixel garden. Growth assertions count plant pixels above the ground band. The determinism test compares full bitmap bytes from separate browser contexts.",
+        "The MutableVec2 test drops a relative wall-clock threshold and checks addMut returns the same object with the expected coordinates. Canvas restore checks now include the transform and compositing mode."
+      ],
+      "transferable_rule": "Replace calculations copied into a test with observable production behavior. For asynchronous rendering, wait for the operation's observable completion and compare against an independent reference frame.",
+      "outcome": "Merged. The head CI verify and Chromium jobs succeeded. The PR reports 953 cases and approximately 1,390 randomized runs. This audit inspected diffs and job status and did not reproduce the run counts. The folded work from #4 and the unchanged lifecycle test from #2 are counted as PR history.",
+      "head_ci": "https://github.com/adewale/garten/actions/runs/37872586430"
+    },
+    {
+      "number": 4,
+      "title": "Test audit: replace copied plant-type counts and source-text pins with category-registry checks",
+      "url": "https://github.com/adewale/garten/pull/4",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated test audit, folded into #3",
+      "weakness": "Two tests pinned 147 enum members while a type could be missing from the generator registry. Disjoint groups alone could allow swapped category names, substring assertions accepted counts with extra leading digits, and source-text checks broke on equivalent refactors.",
+      "attempted_remedy": "Removed the copied counts and source-code substring checks. Generated plants through each public category filter and checked named representatives, disjoint ownership, and coverage of all enum members.",
+      "test_paths": [
+        "src/docs-sync.test.ts",
+        "src/integration.test.ts",
+        "src/property.test.ts"
+      ],
+      "diff_evidence": [
+        "The category tests grow a deterministic garden for each category, require nonempty results, look for a representative such as lavender for herb, check cross-category duplicates, and compare the union with Object.values(PlantType).",
+        "The documentation test imports GEN_SEED_STRIDE and PLANT_SEED_STRIDE and adds a word boundary before numeric claims. The sort test now requires at least two plants with differing heights before checking their order."
+      ],
+      "transferable_rule": "Test registration through the consumer and give each name an independently known representative that can expose a swap. Guard against empty, uniform, or partial-string matches.",
+      "outcome": "Closed without a direct merge. GitHub lists audit commits 23039b7b and 3cafa962 in merged #3, whose final integration diff retains the registry coverage check. Both head CI jobs passed on #4. The author reports fault-injection results that were not independently rerun. The chosen seed witnesses current membership without proving reachability for every seed.",
+      "head_ci": "https://github.com/adewale/garten/actions/runs/37092157891"
+    },
+    {
+      "number": 7,
+      "title": "ci: use supported Ubuntu for locked Playwright",
+      "url": "https://github.com/adewale/garten/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing browser test environment repair",
+      "weakness": "The browser job used a floating Ubuntu image. The PR identified a runner upgrade outside the supported platforms of the locked Playwright version, which could prevent the Chromium suite from executing.",
+      "attempted_remedy": "Pinned the existing browser job to Ubuntu 24.04 to retain an executable browser verification lane.",
+      "test_paths": [
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "The only changed line replaces runs-on: ubuntu-latest with runs-on: ubuntu-24.04 for the Real-pixel and canvas-contract tests (Chromium) job."
+      ],
+      "transferable_rule": "Pair the test runner image with the platform supported by the locked browser tooling, and verify that the existing browser job actually completes.",
+      "outcome": "Merged. The exact-head Chromium and verify jobs succeeded. The platform incompatibility is documented by the author. This audit did not reproduce a failing pre-change browser run. The PR changes execution reliability only.",
+      "head_ci": "https://github.com/adewale/garten/actions/runs/41527653512"
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 5,
+      "reason": "Development dependency maintenance. Only package.json and its lockfile changed. The PR documented a local browser discrepancy and left the existing browser tests in place."
+    },
+    {
+      "number": 6,
+      "reason": "Security-motivated checker migration. The Acorn script still parses the same three dist artifacts as ES2018 using the same module/script distinction. Its positive and negative migration controls were reported in the PR body."
+    },
+    {
+      "number": 8,
+      "reason": "Action version pinning, a zizmor workflow lint rule, and Dependabot configuration. Existing product-test checks retained their commands."
+    },
+    {
+      "number": 9,
+      "reason": "Open Dependabot action-version updates in ci.yml."
+    }
+  ],
+  "limitations": [
+    "Reviewed titles, bodies, and complete changed-file inventories for all nine PRs. Fetched the changed-file API records for each PR and inspected candidate test, CI, and checker patches. The service omitted patches for generated docs/index.global.js.map and package-lock.json in #1 and package-lock.json in #5. The file inventories include these paths. PNG golden contents were not independently compared.",
+    "GitHub run and job records establish head CI status for the five matches. They do not independently establish the authors' local mutation counts, benchmark results, or long-term reliability."
+  ]
+}

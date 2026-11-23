@@ -1,0 +1,275 @@
+{
+  "repository": "adewale/audit-skill",
+  "total_prs": 17,
+  "pages_checked": 2,
+  "enumeration": {
+    "url": "https://api.github.com/repos/adewale/audit-skill/pulls?state=all&per_page=100&page=1",
+    "page_sizes": [
+      17,
+      0
+    ],
+    "states": "all",
+    "author_or_date_filters": false,
+    "all_titles_and_bodies_reviewed": true,
+    "changed_file_pages": "Fetched /pulls/{n}/files for all 17 PRs. Each list fit on one 100-entry page. Every text patch's additions and deletions matched its file counters."
+  },
+  "matching_prs": [
+    {
+      "number": 10,
+      "title": "Verification and test audit: delete stale .skill bundle, lint frontmatter, bind and self-test eval oracles",
+      "url": "https://github.com/adewale/audit-skill/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "explicit test audit",
+      "weakness": "Shared benchmark cases gave severity credit for almost any verdict word. Some negative controls credited incidental words such as “not” or “expected” in an answer that falsely reported a finding. An existing installation check inspected source directories and missed archived deliverables.",
+      "attempted_remedy": "Bind verdicts to the expected class, reject contradictory labels, and challenge four negative controls with false-positive answers. Bring in #11's legacy oracle self-tests. Extend install-boundary to compare archive entries and bytes with a declared skill directory and delete the stale bundle.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "tests/test_verdict_oracles.py",
+        "evals/evals.json",
+        "evals/oracles/fixture_oracle.py",
+        "evals/oracles/test_oracles.py",
+        ".github/workflows/install-boundary.yml",
+        "scripts/check_install_boundary.py"
+      ],
+      "diff_evidence": [
+        "EXPECTED_CLASS covers 11 cases. NEG_SAMPLES supplies paired responses for fake-secret, lockfile, design-philosophy and toy-security cases. One bad lockfile answer says “Expected only package.json” while calling the change Minor.",
+        "The workflow uses skill-eval-harness==0.6.0 for strict leakage/ablation validation, manifest audit and both unittest discovery roots in one job. The three legacy oracle/test patches match #11 byte for byte.",
+        "archive_errors compares filename-to-bytes mappings and flags extra, missing or stale entries."
+      ],
+      "transferable_rule": "Use the production grader on plausible false alarms as well as correct reports. For distributed artifacts, check the bytes a consumer installs. Keep deterministic checks together when they share a runner and dependencies.",
+      "outcome_caveat": "Merged. GitHub recorded successful steps for both self-test suites, manifest validation and manifest audit. This confirms the fixed controls ran. Hidden cases still rely on judgment and there was no fresh model benchmark. Four red failures on the old negative-control assertions are author-reported.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/10/files",
+        "https://github.com/adewale/audit-skill/actions/runs/38053483957/job/114217152769",
+        "https://github.com/adewale/audit-skill/pull/11"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Test audit: bind eval verdict/detection oracles and self-test them on recorded reports",
+      "url": "https://github.com/adewale/audit-skill/pull/11",
+      "state": "closed",
+      "merged": false,
+      "classification": "explicit test audit",
+      "weakness": "Legacy verdict and detection terms matched negations or checklist headings. The old script accepted any mention of Severity or High and could reject an otherwise valid Critical table rating. One manifest assertion used an unsupported operation.",
+      "attempted_remedy": "Anchor actual verdicts, require fixture-specific evidence, and replace the unsupported check. Exercise each separately scored assertion and the manifest's script command through the real grader using archived outputs, independent valid phrasings, and near misses.",
+      "test_paths": [
+        "evals/evals.json",
+        "evals/oracles/fixture_oracle.py",
+        "evals/oracles/test_oracles.py",
+        ".github/workflows/eval-oracles.yml"
+      ],
+      "diff_evidence": [
+        "Direct comparison against both archived mixed-branch reports: the original Blocking substring matches prose such as “None of these are blocking”, while the new verdict/overall regex rejects both Minor reports. Four old detections (API key, debug prints, missing tests, unrelated changes) match the first archived Clean report and their replacements reject it.",
+        "test_each_verdict_assertion_accepts_exactly_the_allowed_reports grades each assertion separately. test_every_assertion_is_graded_by_the_harness rejects a deferred result. FixtureOracle.run_oracle invokes the manifest script; cases include a valid Critical table cell, a Low (not High) rating and a Clean verdict beside a High finding.",
+        "The mixed case now permits Minor or Blocking and rejects Clean, documenting the mismatch between the old expectation and current severity guidance."
+      ],
+      "transferable_rule": "Challenge each independently scored assertion with a realistic wrong report and an independently worded right one. Include headings, negated findings, unsupported grading modes and output formats that users actually produce.",
+      "outcome_caveat": "Closed without a direct merge. Three substantive patches shipped in #10, so this is one campaign with two PR records. GitHub recorded success for the oracle self-tests. The 19 killed mutants and 53 old-tree failing subtests are author-reported manual results. No fresh model run is evidenced.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/11/files",
+        "https://github.com/adewale/audit-skill/actions/runs/37103832482/job/111148411903",
+        "https://github.com/adewale/audit-skill/blob/ac4d5aaba6e66a47fdbfa24db68e9542e052a9ff/audit-workspace/iteration-1/mixed-branch-minor/with_skill/outputs/audit_report.md",
+        "https://github.com/adewale/audit-skill/blob/ac4d5aaba6e66a47fdbfa24db68e9542e052a9ff/audit-workspace/iteration-1/clean-branch-clean/with_skill/outputs/audit_report.md"
+      ]
+    },
+    {
+      "number": 17,
+      "title": "Generate audit fixtures instead of retaining orphan Git pins",
+      "url": "https://github.com/adewale/audit-skill/pull/17",
+      "state": "open",
+      "merged": false,
+      "classification": "existing test fixture repair",
+      "weakness": "Four committed test-repository gitlinks had no .gitmodules mapping. Their input could not be fetched by a new checkout.",
+      "attempted_remedy": "Delete the four references. Generate local repositories with specified Git states in a temporary location. Keep dated reports explicitly historical.",
+      "test_paths": [
+        "audit-workspace/test-repo-clean",
+        "audit-workspace/test-repo-dirty",
+        "audit-workspace/test-repo-mixed",
+        "audit-workspace/test-repo-deepdive",
+        "scripts/create_audit_fixtures.py",
+        "tests/test_audit_fixture_repositories.py"
+      ],
+      "diff_evidence": [
+        "The base tree lists four mode-160000 paths and no .gitmodules. The replacement uses Git to construct the fixtures. The unittest inspects porcelain status, a tracked edit, a feature branch one commit ahead, an untracked path, a tracked test file, and refusal to overwrite the fixture paths."
+      ],
+      "transferable_rule": "Generate otherwise unavailable fixtures from maintained inputs and assert their observable state. Identify historical outputs whose inputs cannot be reconstructed.",
+      "outcome_caveat": "Open. The head install-boundary check passed. The test confirms test_app.py is tracked but does not run that generated test. The generator makes replacement scenarios and cannot reproduce the original reports.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/17/files",
+        "https://github.com/adewale/audit-skill/actions/runs/42313804657/job/128221391348"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/audit-skill/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "existing eval assertion upgrade attempt",
+      "weakness": "A fixture severity assertion awarded a point for a label such as Severity with no correct rating.",
+      "attempted_remedy": "Replace the standalone lexical severity check with a manifest-invoked script that also requires file, route and ordering evidence.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-harness.md"
+      ],
+      "diff_evidence": [
+        "The old case already had cites-route-file and detects-auth-order assertions. The new script repeats those requirements and still accepts any of Severity, Blocking, High or verdict for the rating. Its exit status therefore strengthens the individual severity point's prerequisites, but adds no new rating constraint to the full set of objective checks."
+      ],
+      "transferable_rule": "When wrapping existing assertions in a script, demonstrate which previously passing wrong answer now fails the whole case. Check acceptance of valid ratings too.",
+      "outcome_caveat": "Merged. No check runs were returned for the head. The author reports one passing archived fixture result. #11 later replaced the script's permissive rating group.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/3/files",
+        "https://github.com/adewale/audit-skill/pull/11"
+      ]
+    },
+    {
+      "number": 1,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/audit-skill/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "testing approach",
+      "weakness": "Earlier evaluation depended on an author's local workspace. For example, the base iteration-1 grader hard-coded an absolute /Users path. With-skill results by themselves could also obscure saturated cases.",
+      "attempted_remedy": "Add an independently installable shared benchmark with paired with_skill/without_skill tasks, visible and hidden splits, negative triggers and declared ablations.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md",
+        "evals/holdout/.gitignore",
+        "evals/holdback/.gitignore",
+        "audit-workspace/iteration-1/grade.py (base evidence)"
+      ],
+      "diff_evidence": [
+        "The manifest defines 26 cases, including six trigger cases and two private prompt references, and five opt-in ablations. The run protocol includes reviewing saturated and non-discriminating cases. The legacy grader stayed in the tree."
+      ],
+      "transferable_rule": "Make an evaluation runnable from a fresh checkout, compare the same inputs with a baseline, and distinguish declared hidden or ablation coverage from measured results.",
+      "outcome_caveat": "Merged. No check runs were returned for the head. The six passing trigger cases are author-reported. The private prompts and scored ablation outputs are absent from the patch.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/1/files",
+        "https://github.com/adewale/audit-skill/blob/2bf42ceeb53f68ac701cb0182bf0d78204dbbbc9/audit-workspace/iteration-1/grade.py"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/audit-skill/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "testing approach — reporting",
+      "weakness": "The existing eval manifest lacked explicit case classifications for difficulty, success goal and trigger type used by the harness's slice reports.",
+      "attempted_remedy": "Label the existing cases so trigger, outcome and difficulty groups can be reported separately.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": [
+        "All 26 cases gain domain, difficulty and success_goals. Six trigger cases gain trigger_type, split between implicit and negative-near-miss. The patch does not alter prompts or assertions."
+      ],
+      "transferable_rule": "Give important case groups explicit metadata so aggregate results can be inspected by slice.",
+      "outcome_caveat": "Merged. No check runs were returned for the head. Manifest validation is author-reported. This is reporting infrastructure with no measured improvement to oracle discrimination.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/5/files"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Add install boundary CI check",
+      "url": "https://github.com/adewale/audit-skill/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "testing approach — regression gate",
+      "weakness": "Package hygiene had been checked manually in #7. The installable directory could acquire development files without that check running on later changes.",
+      "attempted_remedy": "Add a regression gate that derives the skill directory from installation metadata and fails on missing SKILL.md or repository-only files.",
+      "test_paths": [
+        "scripts/check_install_boundary.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": [
+        "The script traverses declared directories for banned path components and bytecode suffixes. The new workflow runs it on pull requests and main pushes. This original implementation inspects source directories only."
+      ],
+      "transferable_rule": "Turn a repeatable release check into a gate that follows the actual install metadata and explicitly states the artifact boundary it covers.",
+      "outcome_caveat": "Merged. Head install-boundary passed. This did not validate archived bundles. #10 later enlarged the gate after finding a stale .skill archive.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/8/files",
+        "https://github.com/adewale/audit-skill/actions/runs/27562582753/job/81478145112",
+        "https://github.com/adewale/audit-skill/pull/7",
+        "https://github.com/adewale/audit-skill/pull/10"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "ci: avoid duplicate and superseded validation",
+      "url": "https://github.com/adewale/audit-skill/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "testing approach — execution cost",
+      "weakness": "Obsolete revisions of the same PR could continue consuming runners for the install-boundary job, which includes manifest checks and oracle tests. The Ruff workflow also accepted both branch pushes and pull requests.",
+      "attempted_remedy": "Cancel superseded jobs for the same workflow and PR and limit Ruff's branch push trigger to main.",
+      "test_paths": [
+        ".github/workflows/install-boundary.yml",
+        ".github/workflows/ruff.yml"
+      ],
+      "diff_evidence": [
+        "Both workflows group concurrency by workflow and PR number, falling back to run_id outside PRs, with cancel-in-progress enabled. The install-boundary workflow already limited push to main. Only Ruff changes its push trigger."
+      ],
+      "transferable_rule": "Cancel obsolete runs per PR when the latest revision supersedes them. Inspect the events and assertions owned by each job before changing scheduling.",
+      "outcome_caveat": "Merged. Both head checks passed. Neither that result nor the diff measures runner savings or proves a particular older in-flight run was cancelled.",
+      "sources": [
+        "https://github.com/adewale/audit-skill/pull/14/files",
+        "https://github.com/adewale/audit-skill/actions/runs/41525466736/job/125551930736"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 2,
+      "title": "Update skill eval harness reference to v0.2.0",
+      "reason": "Harness reference bump only."
+    },
+    {
+      "number": 4,
+      "title": "Add multi-agent skill support metadata",
+      "reason": "Agent compatibility and package metadata."
+    },
+    {
+      "number": 6,
+      "title": "Bump eval harness to v0.4.0",
+      "reason": "Minimum harness version bump only."
+    },
+    {
+      "number": 7,
+      "title": "Narrow install bundle to skill directory",
+      "reason": "Packaging fix. The only eval change removes the obsolete root SKILL.md path. The persistent regression gate was added in #8."
+    },
+    {
+      "number": 9,
+      "title": "Upgrade Ruff to 0.16.0",
+      "reason": "Ruff lint release adoption. Edits to graders are lint cleanups without substantive oracle changes."
+    },
+    {
+      "number": 12,
+      "title": "Avoid duplicate CI runs on pull request branches",
+      "reason": "Open scheduling proposal touches only Ruff's branch/tag push filters. It does not change test execution."
+    },
+    {
+      "number": 13,
+      "title": "Require evidence for safe cuts and reuse relevant open PRs",
+      "reason": "Two new judge-only scenarios accompany a new maintenance-audit feature. The examples discuss deletion and independent trust boundaries. The PR does not audit or change an existing test."
+    },
+    {
+      "number": 15,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "reason": "Workflow dependency pinning and a new supply-chain policy scanner, without a test-quality or testing-method change."
+    },
+    {
+      "number": 16,
+      "title": "Bump the github-actions group with 3 updates",
+      "reason": "Dependabot action-pin upgrades only."
+    }
+  ],
+  "limitations": [
+    "Read-only audit of historical diffs, archived samples and available GitHub check records. No model or mutation campaign was rerun.",
+    "The removed binary audit-skill.skill in #10 had no text patch. The list records its deletion, and the changed scanner demonstrates the remedy."
+  ]
+}
