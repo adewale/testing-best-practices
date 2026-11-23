@@ -33,6 +33,7 @@ COMMANDS = [
     ["node", "scripts/test-exhaustive-example.mjs"],
     [sys.executable, "scripts/test-harness-workflow.py"],
     [sys.executable, "scripts/test-blind-comparison.py"],
+    [sys.executable, "scripts/test-receipt-verifier.py"],
     [sys.executable, "scripts/verify-issues20-21-receipt.py"],
     [sys.executable, "scripts/eval-health-report.py"],
     [sys.executable, "scripts/audit-best-practices.py"],

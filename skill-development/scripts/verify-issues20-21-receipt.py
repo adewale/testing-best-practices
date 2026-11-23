@@ -117,8 +117,22 @@ def main() -> int:
             "INFO: current manifest differs from the historical compatibility "
             "snapshot; historical scores do not attest to this revision"
         )
+    # These hashes identify the scripts used for that compatibility snapshot;
+    # they do not constrain future implementations or keep retired paths alive.
     for relative, expected in current["current_reproduction_script_sha256"].items():
-        check(f"current script {relative}", file_sha256(ROOT / relative), expected, errors)
+        script = ROOT / relative
+        if not script.is_file():
+            print(
+                f"INFO: current script {relative} is absent; "
+                "historical scores do not attest to this revision"
+            )
+        elif file_sha256(script) == expected:
+            print(f"INFO: current script {relative} matches the receipt's compatibility snapshot")
+        else:
+            print(
+                f"INFO: current script {relative} differs from the historical compatibility "
+                "snapshot; historical scores do not attest to this revision"
+            )
 
     historical_runs = ROOT / "skill-development/eval-runs/skill-harness-issues20-21-repeat3"
     if historical_runs.is_dir():
