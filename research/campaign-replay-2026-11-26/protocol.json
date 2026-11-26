@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-26",
+  "type": "one-shot historical decision replay",
+  "base_revision": "bd48fe3edf05e2c8371aa517557fe530c1a1cf65",
+  "pr_revision": "bce78ee6cdc225ebd817161d6727276ec2876e9c",
+  "arms": [
+    "none",
+    "base",
+    "pr41"
+  ],
+  "requested_model": "gpt-6.2-astra",
+  "requested_reasoning_effort": "max",
+  "repetitions_per_cell": 1,
+  "generation_count": 27,
+  "judge_count": 9,
+  "max_concurrency": 6,
+  "scope": "Plans/proposed changes only; no historical CI or mutation campaigns are executed. Content efficacy is tested with references explicitly supplied; automatic skill discovery is not tested.",
+  "source_limits": "Known public historical scenarios, reconstructed rather than verbatim original requests. No fresh holdout, no population reliability estimate.",
+  "isolation": "Fresh no-history subject per cell; may read only its packet and write its answer. No repository/corpus browsing, external research or cross-subject communication.",
+  "blinding": "Subjects receive no arm name, outcome history or criteria. Judges receive prompt, frozen criteria and opaque candidate IDs only; no skill bundles, arm labels or generation mapping. Same model family is a limitation.",
+  "grading": "Absolute per-case criteria. PASS only if every criterion is supported by the proposed actions. A warning does not excuse an unsafe shipped action. Missing/ambiguous evidence => UNCERTAIN. Invalid outputs/errors => INVALID, never silently retried. Preserve failures, ties and all raw candidate plans. No keyword-only score.",
+  "stop_rule": "27 subjects plus 9 judges. No repeat-until-green, treatment tuning, scheduled lane, new CI gate, or post-hoc extra samples. Fix transport/serialization errors only before scored trials; retain any scored execution failure."
+}
