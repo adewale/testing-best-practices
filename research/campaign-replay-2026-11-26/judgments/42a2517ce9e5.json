@@ -1,0 +1,77 @@
+{
+  "case": "R05",
+  "candidates": [
+    {
+      "id": "2cc376543a28",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Budgets one full run, shared preparation, and one focused checker evaluation per row. Keeps the global timeout.",
+          "reason": "Adding a distinct rejection case normally costs one focused check."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Gives each row a private copy, reruns affected steps for earlier edits, and computes a fresh verdict with the production checker.",
+          "reason": "Each rejection depends on the specific altered input while upstream preparation can be shared."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Asserts acceptance of a raw known-good input through the normal verifier and complete pipeline. Also checks that an untouched copy passes and every existing tamper row rejects.",
+          "reason": "This exercises the preparation-to-verdict handoff and checks both outcomes at the shared fixture boundary."
+        }
+      ]
+    },
+    {
+      "id": "072977237798",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Keeps the timeout and budgets the expanded group against its pre-change median. Runs every row through both pipelines during migration.",
+          "reason": "The full comparison is temporary. The ongoing runner shares independent stages and reserves full runs for cases that need them."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Freezes trusted reference data per setup, recomputes the actual digest from each submitted artifact in its example, and calls the real checker with fresh state for every mutation.",
+          "reason": "The trusted expectation can be reused while changed inputs and their dependent stages produce an independent decision."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Runs an untouched positive control through the ordinary end-to-end path. Requires each named existing and proposed mutation to change its target and receive a rejection.",
+          "reason": "The complete path must accept a valid input, and the negative assertions each exercise an actual change."
+        }
+      ]
+    },
+    {
+      "id": "7fdf267627e1",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Keeps one full CI run and the current global timeout. Adds focused rows for distinct new rejection obligations and defers duplicates.",
+          "reason": "The expanded suite pays only for the additional checker work needed by each distinct case."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Copies the last unaffected intermediate for each row, restarts before any earlier mutation, and recomputes derived evidence and the final verdict with the production checker.",
+          "reason": "Only work upstream of the change is shared, so each altered input can independently expose an erroneous acceptance."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Runs real preparation and the complete oracle on a known-good raw input, checks an untouched copy at the checker, and requires the documented rejection for each existing variant.",
+          "reason": "The full-path acceptance and both fixture-level outcomes are asserted. A crash or timeout would fail the negative test."
+        }
+      ]
+    }
+  ]
+}

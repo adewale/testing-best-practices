@@ -1,0 +1,77 @@
+{
+  "case": "R06",
+  "candidates": [
+    {
+      "id": "ee52c9970651",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Share deterministic renders across assertions, keep repeatability runs, cover feasible style, complexity and format pairs, and target extra seeds and browsers.",
+          "reason": "The plan removes duplicate execution while directing new renders to dimensions the matrix held constant."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Require a named case with the original three values, fixture, environment and defect assertion. Run it on the affected and fixed revisions.",
+          "reason": "The regression survives regeneration and must distinguish the defect from the fix."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Map retiring rows to checked behaviors, verify coverage independently, shadow both suites, and replay historical defects. Revise the 2,250-render target if obligations require more.",
+          "reason": "Retirement depends on preserving the assertions and investigating old-only detections. The ordinary-run budget is adjustable and does not determine the suite size."
+        }
+      ]
+    },
+    {
+      "id": "0ef9721fc57d",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Inventory the 360 repeats and share matching deterministic renders. Cover feasible pairs across style, source complexity and supported formats, with representative browser runs.",
+          "reason": "The plan preserves deliberate repeats and spends interaction coverage on the missing dimensions without multiplying the full matrix."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Retain the incident’s exact three values, fixture, environment and assertion as a named case regardless of generated rows. Reintroduce the incident and require the original failure.",
+          "reason": "The exact reproducer has its own obligation and a check that it still detects the symptom."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Check registry membership and feasible tuples independently. Shadow both suites, compare seeded faults, and require preserved regressions and resolved discrepancies before retirement.",
+          "reason": "Enrollment, coverage and defect detection receive separate checks. The plan reports the generated row count and measures savings before retiring cases."
+        }
+      ]
+    },
+    {
+      "id": "9e3bd98af50c",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Reuse artifacts for identical inputs, retain assertions and intentional repeats, and cover feasible pairs including complexity × format. Use representative browser rows on a slower lane.",
+          "reason": "This reduces redundant renders while exercising variation in both source structure and output format."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Pin the exact three values, triggering fixture, environment and discriminating assertion regardless of generator output, then replay the original defect.",
+          "reason": "The specific historical case remains mandatory even as the generated pair and triple rows change."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Check executed registry membership and tuple coverage independently. Shadow on identical revisions, compare fault detections and keep each old-only row until its replacement catches the fault.",
+          "reason": "Retirement requires preserved behavior and resolved holdout differences. Render count is measured after generation."
+        }
+      ]
+    }
+  ]
+}

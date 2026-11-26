@@ -1,0 +1,77 @@
+{
+  "case": "R09",
+  "candidates": [
+    {
+      "id": "de7aa4d16bdf",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Both records are present in migrated SQLite. Each expected ID comes from the fixture. A scratch change returns both rows with valid bindings and must fail on the extra ID.",
+          "reason": "The fixture supplies an independent expectation and the extra-row failure demonstrates sensitivity to a broken filter."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "All three requests use the normal endpoint. The miss checks its established response, and distinct caller-visible cases must carry forward when SQL assertions are removed.",
+          "reason": "The endpoint executes its own query and preserves the observable contracts covered by the suite."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Run the focused suite once with the fault and once after restoring the query, then stop.",
+          "reason": "The one-off check fits within the existing suite and runner."
+        }
+      ]
+    },
+    {
+      "id": "03c9e0077220",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Each seeded filter value is paired with its own distinguishable record in migrated SQLite. An always-true predicate must fail a response assertion by returning the unrelated record.",
+          "reason": "The seed pairs determine the expected rows independently and the control verifies that the endpoint rejects overbroad results."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "The endpoint handles both lookups and the unseeded value. The assertions preserve the response shape and specified no-match behavior. Removal is limited to SQL assertions that only checked filtering.",
+          "reason": "The real endpoint exercises selection and the negative case, and the removal rule protects assertions covering a separate contract."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Stop after the one-time fault check and restored run, using the existing test lane and endpoint API.",
+          "reason": "Validation is bounded to the focused suite and requires no permanent infrastructure."
+        }
+      ]
+    },
+    {
+      "id": "453865452c48",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "A, B, and the missing key have explicit fixture-based expectations in migrated SQLite. Forcing every lookup to use A must make the B and missing-key cases fail by returning A.",
+          "reason": "The wrong binding breaks selection while preserving the SQL text, and the independent expectations expose that error."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "All lookups use the usual endpoint entry point. The miss checks the public no-match response. Any other observable rule found in the old assertions gets a retained case.",
+          "reason": "The checks cover the endpoint's own query, bindings, and relevant caller-visible contracts."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Compare the old and repaired endpoint checks on one scratch change, discard it, and run the focused suite in the existing lane.",
+          "reason": "The comparison and review of superseded assertions stay within this repair and end after the focused validation."
+        }
+      ]
+    }
+  ]
+}

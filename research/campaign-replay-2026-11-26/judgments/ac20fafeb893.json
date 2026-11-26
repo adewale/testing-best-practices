@@ -1,0 +1,77 @@
+{
+  "case": "R04",
+  "candidates": [
+    {
+      "id": "0aca6e930e20",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes filesystem lookups for recorded script paths. Tests expect success after a comment edit and after a rename leaves the old path absent.",
+          "reason": "Historical verification can succeed when a live script changes or disappears."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps all three script identifiers and digests, checks for identical receipt bytes after refactors, and issues a separate receipt for a new evaluation.",
+          "reason": "The original fingerprints remain attributable to the original run."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Hashes each archived output and independently derives totals using historical rules. Tests require failure for a one-byte change with the count intact, a missing output, and a changed total with valid output hashes.",
+          "reason": "The tests isolate output corruption and accounting errors so each check must detect its own defect."
+        }
+      ]
+    },
+    {
+      "id": "d724ec0ccc4b",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Drops the current-script lookup and expects the revised verifier to exit successfully after both a comment edit and a rename. Any optional script-byte comparison uses an archived copy.",
+          "reason": "The verifier does not depend on the live script's contents or continued presence."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Preserves all three identifiers and digests verbatim, checks the receipt stays byte-identical, and assigns a separate receipt to a new evaluation.",
+          "reason": "A refactor cannot overwrite the fingerprints recorded for that evaluation."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Checks archived bytes against recorded digests and reconciles totals against archived results. Separate tests damage a byte while preserving the count, delete an output, and change a total by one with valid digests.",
+          "reason": "Each defect must produce a failure identifying the affected candidate or total."
+        }
+      ]
+    },
+    {
+      "id": "211c73716269",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes lookup and hashing of present-day script paths. A comment edit and a rename that removes the historical path must each exit zero.",
+          "reason": "A script can evolve or be retired without invalidating the historical archive."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Preserves the three original hash values and compares receipt bytes before and after both successful and failing verification.",
+          "reason": "The proposed read-only behavior and tests guard against refreshing the recorded fingerprints."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Matches candidates to archived outputs, hashes exact bytes and tallies outcomes independently. Tests require failure for added whitespace that preserves the outcome, a missing output, and a changed total with intact digests.",
+          "reason": "Output integrity and recorded totals each receive an independent corruption test."
+        }
+      ]
+    }
+  ]
+}
