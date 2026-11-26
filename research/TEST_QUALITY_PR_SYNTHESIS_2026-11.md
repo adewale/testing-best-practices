@@ -76,6 +76,10 @@ Historical diffs establish what a PR attempted. CI success establishes only
 what the identified job ran at its identified revision. Neither establishes
 that a heuristic generalizes, that an author-reported mutation result was
 independently reproduced, or that the revised skill improves model behavior.
-This change supplies a reusable workflow; no new model benchmark has been run.
+The initial workflow addition had no new model benchmark. A subsequent
+[nine-scenario decision replay](campaign-replay-2026-11-26/README.md) on
+2026-11-26 observed 9/9 passes for PR #41, the pre-PR skill and no skill alike.
+It establishes appropriate decisions on those supplied reconstructions, with
+no observed incremental benefit and no claim of reliable campaign prevention.
 Private-repository evidence is retained locally and excluded from the public
 PR's source reports.

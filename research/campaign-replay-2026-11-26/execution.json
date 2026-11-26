@@ -1,0 +1,18 @@
+{
+  "backend": "collaboration/sub-agent",
+  "requested_model": "gpt-6.2-astra",
+  "requested_reasoning_effort": "max",
+  "model_identity": "requested, not independently provider-attested",
+  "subjects": 27,
+  "judges": 9,
+  "generation_retries": 0,
+  "judge_retries": 0,
+  "guidance_revisions_changed_during_run": false,
+  "criteria_changed_after_generations_began": false,
+  "automatic_skill_discovery_tested": false,
+  "historical_campaign_execution_tested": false,
+  "actual_patch_execution_tested": false,
+  "isolation": "Fresh no-history agents instructed to use their packet only; shared filesystem, no OS-enforced boundary or centrally audited tool traces.",
+  "cli_probe": "Codex CLI 0.172.0-alpha.2 reached service but failed HTTP 401 expired-login authentication before any answer; no CLI sample counted.",
+  "result": "9/9 PASS in each arm; saturated one-shot historical review screen, no observed incremental benefit."
+}

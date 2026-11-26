@@ -24,10 +24,31 @@ RESPONSE_FORMAT = (
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--judges", action="store_true", help="reconstruct the retained blind judge inputs")
     args = parser.parse_args()
     protocol = json.loads((STUDY / "protocol.json").read_text())
     cases = json.loads((STUDY / "cases.json").read_text())
     args.out.mkdir(parents=True, exist_ok=True)
+    if args.judges:
+        instructions = (STUDY / "grading-instructions.md").read_text()
+        by_id = {case["id"]: case for case in cases}
+        jobs = json.loads((STUDY / "judge-map.json").read_text())
+        for job in jobs:
+            case = by_id[job["case"]]
+            candidates = [{
+                "id": identifier,
+                "answer": json.loads((STUDY / "outputs" / (identifier + ".json")).read_text()),
+            } for identifier in job["candidate_ids"]]
+            evidence = {
+                "case": case["id"], "task": case["prompt"],
+                "criteria": [{"criterion": i, "requirement": requirement}
+                             for i, requirement in enumerate(case["criteria"], 1)],
+                "candidates": candidates,
+            }
+            packet = instructions + "\n\n# Evidence\n\n" + json.dumps(evidence, indent=2) + "\n"
+            (args.out / (job["id"] + ".md")).write_text(packet)
+        print(f"Prepared {len(jobs)} judge packets; no model calls or grading performed.")
+        return
     jobs = []
     for case in cases:
         for arm in protocol["arms"]:

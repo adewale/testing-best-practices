@@ -56,6 +56,8 @@ For an existing suite, use the [test-audit workflow and reusable task brief](tes
 
 The [PR evidence catalogue](research/test-quality-pr-audit-2026-11-23/catalogue.md) records the owner's historical test-quality work, including unmerged and overlapping attempts. The [synthesis](research/TEST_QUALITY_PR_SYNTHESIS_2026-11.md) connects those findings and OpenClaw's Test Audit skill to the workflow.
 
+A [historical campaign decision replay](research/campaign-replay-2026-11-26/README.md) tested nine scenarios across no-skill, pre-PR and PR #41 arms. All three passed 9/9; this screen found no incremental benefit from the new guidance and does not establish reliable campaign prevention.
+
 ## How it works
 
 The skill operates in four modes:

@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Validation (historical campaign replay, 2026-11-26)
+- Retained nine frozen historical/control scenarios, 27 independent model plans, nine arm-blinded judgments and reproducible input preparation. No-skill, pre-PR and PR #41 arms each passed 9/9. The saturated one-shot screen shows no incremental benefit; no campaign-prevention or model-uplift claim is made, and no recurring gate was added.
+
 ### Corrected (historical receipt verification)
 - Current reproduction-script hash differences and retired script paths are informational, as current-manifest differences already are. Historical hashes remain unchanged; frozen evidence and recorded totals remain checked.
 - Added executable regression controls for harmless live-script edits/removal and corrupted historical evidence/totals to the deterministic gate.
