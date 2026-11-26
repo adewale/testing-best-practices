@@ -81,6 +81,41 @@ class ReceiptVerifierTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("recorded objective totals", result.stderr)
 
+    def test_missing_without_skill_run_fails_even_when_pass_totals_match(self) -> None:
+        receipt = json.loads(self.receipt_bytes)
+        cell = next(
+            case["without_skill"]
+            for model in receipt["scoring"]["objective"].values()
+            for case in model.values()
+            if case["without_skill"]["passed"] == 0
+        )
+        cell["runs"] -= 1
+        (self.root / RECEIPT).write_text(json.dumps(receipt))
+        result = self.verify()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("without_skill runs", result.stderr)
+
+    def test_shifted_repeats_fail_even_when_each_arm_total_matches(self) -> None:
+        receipt = json.loads(self.receipt_bytes)
+        cells = [case["without_skill"] for model in receipt["scoring"]["objective"].values() for case in model.values()]
+        cells[0]["runs"] -= 1
+        cells[1]["runs"] += 1
+        (self.root / RECEIPT).write_text(json.dumps(receipt))
+        result = self.verify()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("without_skill runs", result.stderr)
+
+    def test_impossible_pass_count_fails_even_when_aggregate_matches(self) -> None:
+        receipt = json.loads(self.receipt_bytes)
+        cell = next(iter(next(iter(receipt["scoring"]["objective"].values())).values()))["without_skill"]
+        old_passed = cell["passed"]
+        cell["passed"] = cell["runs"] + 1
+        receipt["scoring"]["totals"]["without_skill"] += cell["passed"] - old_passed
+        (self.root / RECEIPT).write_text(json.dumps(receipt))
+        result = self.verify()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("0 <= passed <= runs", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

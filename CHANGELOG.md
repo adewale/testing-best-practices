@@ -11,6 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 ### Corrected (historical receipt verification)
 - Current reproduction-script hash differences and retired script paths are informational, as current-manifest differences already are. Historical hashes remain unchanged; frozen evidence and recorded totals remain checked.
 - Added executable regression controls for harmless live-script edits/removal and corrupted historical evidence/totals to the deterministic gate.
+- Verify every recorded model/case/arm against the historical study's declared enrollment and repeat count, including the without-skill denominator and impossible pass counts.
 
 ### Added (portfolio PR test audit, 2026-11-23)
 - Installable `references/test-audit.md`: focused candidate searches, a calibrated signal table, retain/repair/consolidate/delete decisions, expected-value provenance, keeper ownership, old-versus-new fault checks, and allowed-change controls for suspected implementation locks. It includes a reusable task brief and treats baseline failures as possible product defects.

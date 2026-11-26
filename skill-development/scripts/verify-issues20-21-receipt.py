@@ -81,13 +81,35 @@ def objective_totals(matrix: dict) -> dict[str, int]:
     }
 
 
+def check_objective_matrix(receipt: dict, errors: list[str]) -> None:
+    """Check the recorded study against its declared enrollment and repeat count."""
+    generation = receipt["generation"]
+    matrix = receipt["scoring"]["objective"]
+    models = set(generation["requested_models"])
+    cases = set(generation["cases"])
+    check("recorded objective models", set(matrix), models, errors)
+    for model in models & matrix.keys():
+        check(f"recorded objective cases for {model}", set(matrix[model]), cases, errors)
+        for case_id in cases & matrix[model].keys():
+            case = matrix[model][case_id]
+            check(f"recorded objective arms for {model}/{case_id}", set(case), {"with_skill", "without_skill"}, errors)
+            for arm in {"with_skill", "without_skill"} & case.keys():
+                label = f"recorded objective {model}/{case_id}/{arm}"
+                runs, passed = case[arm]["runs"], case[arm]["passed"]
+                check(f"{label} runs", runs, generation["runs_per_arm_model"], errors)
+                if type(runs) is not int or type(passed) is not int or not 0 <= passed <= runs:
+                    errors.append(f"{label}: passed and runs must be integer counts with 0 <= passed <= runs")
+
+
 def main() -> int:
     receipt = json.loads(RECEIPT.read_text())
     errors: list[str] = []
     check("receipt artifact kind", receipt.get("artifact_kind"), "historical_receipt", errors)
     if "not a reproducible attestation" not in receipt.get("evidence_state", ""):
         errors.append("receipt evidence_state must disclose that this is not a reproducible attestation")
-    check("recorded objective totals", objective_totals(receipt["scoring"]["objective"]), receipt["scoring"]["totals"], errors)
+    check_objective_matrix(receipt, errors)
+    if not errors:
+        check("recorded objective totals", objective_totals(receipt["scoring"]["objective"]), receipt["scoring"]["totals"], errors)
     print("INFO: historical manifest hash is authentication-only; its exact preimage was not retained.")
     print(
         "INFO: historical oracle_tree_sha256_at_attestation is authentication-only; "
