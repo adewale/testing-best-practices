@@ -1,0 +1,25 @@
+{
+  "decision": "approve",
+  "changes": [
+    {
+      "target": "Endpoint test setup",
+      "action": "Replace the unconditional fake with temporary SQLite.",
+      "details": "Apply the real migrations and point the endpoint at the same temporary database. Seed two records with different filter values and distinguishable identifiers. Keep both present for every request."
+    },
+    {
+      "target": "Endpoint assertions",
+      "action": "Assert the complete result for each filter value.",
+      "details": "Request each seeded value through the endpoint and assert that only its corresponding record is returned. Request an unseeded value and assert the endpoint's specified no-match response. Remove SQL substring assertions whose only purpose was to check this filtering behavior."
+    }
+  ],
+  "retained_contracts": [
+    "Each supported lookup in these cases returns exactly its matching record, excludes the other record, and preserves the endpoint's response shape.",
+    "An unmatched lookup preserves the endpoint's existing no-match behavior."
+  ],
+  "validation": [
+    "As a one-time check, temporarily make the WHERE condition always true and run the focused endpoint suite. Confirm it fails on a response assertion because an unrelated record is returned.",
+    "Restore the predicate and rerun the focused suite against a fresh migrated database. Confirm both matched lookups and the unmatched lookup pass."
+  ],
+  "cost_and_stop": "Each focused run takes about six seconds. Stop after the one-time failure check and passing restored run. Use the existing test lane and endpoint API.",
+  "rationale": "A SQL substring can survive a broken predicate, and the fake supplies the same rows either way. Two records in the same database make a filtering error observable through the endpoint."
+}

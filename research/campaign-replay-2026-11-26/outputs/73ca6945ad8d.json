@@ -1,0 +1,36 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Production API and cache",
+      "action": "Drop the five proposed exports and the cache-poisoning test.",
+      "details": "Keep the helpers private. Exercise the cache through ordinary renderer/extractor calls and retain the public output comparisons. Eviction order has no specified observable effect here."
+    },
+    {
+      "target": "Public route test",
+      "action": "Replace the exact tie-break assertion.",
+      "details": "Use a unit-edge fixture with routes S–A–T, S–B–T and S–C–D–T. Check the requested endpoints, that each step uses a fixture edge, and that the route takes two edges. Repeat the identical request from an equivalent fresh state and assert the same route within that implementation."
+    },
+    {
+      "target": "Boundary/default regression and production rule",
+      "action": "Add the failing public API case, then correct the branch that produces the wrong value.",
+      "details": "Reduce the reported discrepancy to its smallest public input. Record the expected result from the independent reference as a literal and assert the returned value. Correct the affected boundary comparison or default selection and retain a neighboring case with its own expected value to catch an overbroad fix."
+    },
+    {
+      "target": "Mutation policy",
+      "action": "Drop the proposed 90 threshold.",
+      "details": "Record the alternate shortest route as a permitted output and the eviction change as an internal policy difference. Close both survivors on those grounds."
+    }
+  ],
+  "retained_contracts": [
+    "The route connects the specified endpoints by a shortest valid path and is repeatable for identical inputs and conditions.",
+    "Public renderer/extractor values agree with the reference, including at the affected boundary or default."
+  ],
+  "validation": [
+    "Run the focused boundary case on the faulty revision. Verify the failure reports the incorrect public value. Run the same case and its neighbor after the fix and require both to pass.",
+    "Run the route test with each allowed tie-break. Both implementations should pass. As an isolated control, returning S–C–D–T should fail the length assertion.",
+    "Run the focused renderer/extractor tests with the original and alternate eviction policies. Compare public results with the reference on first and repeated calls."
+  ],
+  "cost_and_stop": "Use the focused owner suite and one-off controls. Stop when the real regression distinguishes the faulty and repaired revisions, both allowed variants pass, and the two survivors are classified.",
+  "rationale": "The boundary defect changes a value callers rely on. A repeatable alternative shortest path satisfies the routing contract, and the eviction detail preserves the observed values. Killing either survivor would reward a test for restricting a valid implementation."
+}

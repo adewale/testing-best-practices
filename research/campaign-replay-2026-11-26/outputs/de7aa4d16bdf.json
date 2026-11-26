@@ -1,0 +1,25 @@
+{
+  "decision": "approve",
+  "changes": [
+    {
+      "target": "Endpoint test fixture",
+      "action": "Replace the canned database fake with temporary SQLite initialized from the real migrations.",
+      "details": "Seed two records with distinct IDs and filter values in the same database. Call the normal endpoint against that database for all three requests. Clean up the database after the test."
+    },
+    {
+      "target": "Filter assertions",
+      "action": "Replace SQL substring checks with assertions on returned records.",
+      "details": "Request the first filter value and expect exactly the first ID. Request the second and expect exactly the second ID. Request an unused value against the same populated database and assert the endpoint’s established no-match response. Take the expected IDs directly from the fixture."
+    }
+  ],
+  "retained_contracts": [
+    "Each matching request returns its own record exactly once and excludes the other record. A request with no match returns no records in the endpoint’s established response form.",
+    "Carry forward any distinct caller-visible behavior represented by an existing case before removing its SQL assertion. SQL spelling and formatting can vary."
+  ],
+  "validation": [
+    "In a scratch checkout, temporarily make the endpoint query return both fixture rows for either filter while keeping its bindings valid. Run the focused endpoint suite with its existing runner. Check that a matching case fails on the unexpected extra ID.",
+    "Restore the query and run the same focused suite. Verify that both matching requests and the no-match request execute and the runner exits successfully."
+  ],
+  "cost_and_stop": "The focused suite takes about six seconds per run. Stop after the one-off failure demonstration and the restored passing run. Keep the change within the existing suite.",
+  "rationale": "The fake can return the expected row even when the query selects the wrong records. Executing the endpoint’s query against the migrated schema lets the fixture distinguish a correct predicate, a constant result, and a missing filter."
+}

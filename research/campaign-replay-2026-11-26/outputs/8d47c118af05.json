@@ -1,0 +1,32 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Nightly route-mutation workflow",
+      "action": "Replace the scheduled run with a manual, non-blocking pilot.",
+      "details": "Remove the nightly trigger and four-job matrix. Use one target runner, reject overlapping runs, disable retries, and cap the whole job at 30 minutes. Require a recorded owner who will review the results before dispatch."
+    },
+    {
+      "target": "Mutation selection and reporting",
+      "action": "Limit the pilot to a reproducible route-only sample.",
+      "details": "At a fixed revision, select one route module and at most 10 mutants in stable ID order. Run only the relevant focused tests. Record the revision, runner, selection, elapsed time, runner-minutes, and individual outcomes. Drop the proposed score floor. Flag empty selections, timeouts, and missing results as incomplete."
+    },
+    {
+      "target": "Focused route tests",
+      "action": "Keep the current tests in their existing workflow.",
+      "details": "Ship no speculative test additions. If the owner confirms that a survivor exposes a missed route behavior, add a focused regression that passes on the original renderer and fails on that mutant."
+    }
+  ],
+  "retained_contracts": [
+    "The existing focused route tests still run on their current triggers and keep their current pass/fail behavior.",
+    "Route mutation remains available as a diagnostic. Its scope stays within routing."
+  ],
+  "validation": [
+    "Lint the edited workflow and inspect its event and job graph. Verify that a nightly tick and a pull request launch zero mutation jobs, and that a manual request with an owner launches one bounded job.",
+    "Run the existing focused route suite on the unmodified renderer and confirm its tests are discovered and pass.",
+    "On the target runner, have the owner preview the mutant list at the pinned revision. Check that it is nonempty, route-only, reproducible, and within the 10-mutant cap. Run that selection once and reconcile the report against every selected ID.",
+    "Verify the timeout or interrupted-result path reports an incomplete pilot. Review surviving mutants against observable route behavior and demonstrate any resulting test on both the original renderer and the mutant."
+  ],
+  "cost_and_stop": "The pilot consumes zero scheduled runner-minutes and at most 30 runner-minutes per dispatch. Hold it until an owner is recorded. At the cap, stop and keep partial results. If the sample cannot finish, reduce it before any further trial. Keep scheduling, expansion, and score enforcement disabled pending a completed target-runner baseline and owner review of cost and actionable findings.",
+  "rationale": "Four balanced jobs would average about 41 minutes each before overhead, but sharding alone still consumes about 165 runner-minutes. Actual balance is unmeasured, and enrolling every module changes the workload. A floor of 60 per shard has no completed baseline. A bounded pilot measures cost and shows whether mutation finds gaps in the green route suite."
+}

@@ -1,0 +1,32 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Public renderer/extractor API and its boundary/default branch",
+      "action": "Add the regression first, then fix the branch that produces the wrong value.",
+      "details": "Reduce the observed failure to one public call. Preserve how its input is supplied, including omission if that selects the default. Assert the affected output field against a literal taken from the independent reference. Pair it with the nearest input on the other branch whose expected result differs. Correct the failing branch and keep all five helpers private."
+    },
+    {
+      "target": "Shortest-route test",
+      "action": "Replace the proposed fixed tie-break with a public contract test.",
+      "details": "Use unit-length edges forming S–A–T, S–B–T and S–C–D–T. Verify that the returned route starts at S, ends at T, follows existing edges and uses exactly two edges. Repeat the call from a fresh equivalent instance with identical input and compare the two returned routes. Either shortest route can satisfy every assertion."
+    },
+    {
+      "target": "Cache test and mutation policy",
+      "action": "Drop the cache-poisoning test and the proposed 90 threshold.",
+      "details": "Retain the public output comparisons with the reference. Record the repeatable route substitution as permitted by the contract and the eviction change as affecting only internal cache behavior on the supplied evidence. Ship neither a cache-access hook nor a production tie-break change."
+    }
+  ],
+  "retained_contracts": [
+    "Public results, including the boundary/default value, agree with the independent reference wherever the contract specifies a value.",
+    "Identical routing inputs produce the same valid shortest route. Equal-length alternatives are permitted.",
+    "Clients use the existing public API. Cache eviction order is an implementation choice."
+  ],
+  "validation": [
+    "Run the focused boundary/default examples on the original implementation. Check that the failing case reports the observed wrong value and its neighboring control passes.",
+    "After the correction, rerun those examples and the nearest renderer/extractor public API suite. Check the same expected values and a successful exit.",
+    "Check the route assertions against both two-edge alternatives. A consistent choice of either should pass, a three-edge result should fail, and changing the choice across identical calls should fail repeatability."
+  ],
+  "cost_and_stop": "Use the focused pre-fix failure and post-fix pass as evidence that the regression catches this fault class. Stop after the public suite passes and both permissible survivors have recorded dispositions. A new mutation sweep or recurring gate adds no decision here.",
+  "rationale": "The boundary/default error changes a value callers receive. An exact route or cache eviction assertion would fail on a conforming implementation and make later refactoring more expensive."
+}

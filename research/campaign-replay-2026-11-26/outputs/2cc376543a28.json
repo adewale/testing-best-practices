@@ -1,0 +1,31 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Tamper-test fixture",
+      "action": "Prepare one known-good case per suite run.",
+      "details": "Run real preparation once and retain the immutable artifact and its trusted reference inputs. Give each named row a private copy of the artifact. If a row alters an earlier input, share only the steps upstream of that change and rerun the affected steps."
+    },
+    {
+      "target": "Tamper cases",
+      "action": "Run the production checker on every row.",
+      "details": "Include an untouched copy that must pass. For each existing bad variant, apply its specific edit and assert that the checker rejects that copy. Assert the documented rejection reason when available. Keep expected outcomes in the case table and compute a fresh verdict for each input. Add a proposed variant when it exercises a distinct rejection condition or known regression."
+    },
+    {
+      "target": "Full verification path",
+      "action": "Retain one end-to-end test.",
+      "details": "Start with a known-good raw input, invoke the normal verifier entry point, and assert acceptance after real preparation and the complete oracle pipeline. Keep the current global timeout."
+    }
+  ],
+  "retained_contracts": [
+    "A valid input passes through the real preparation-to-verdict path.",
+    "The checker accepts the intact prepared artifact and independently rejects every specified tamper variant."
+  ],
+  "validation": [
+    "Compare old and revised results for the same named variants. Run the rows in reverse order as well. Every rejection must follow a successful setup and an actual checker invocation.",
+    "In an isolated copy, temporarily bypass one rejection rule. Its focused row must fail because the checker accepts the altered artifact. Restore the rule and rerun that row.",
+    "Time the verifier group and the entire unit suite before and after on the same runner with the same selected cases. Record elapsed seconds, suite share against the reported 32%, preparation count and full-pipeline count."
+  ],
+  "cost_and_stop": "Budget one full run plus shared preparation and one focused checker evaluation per table row. Stop expanding once the named rejection conditions have evidence. If measured time fails to improve, profile the remaining repeated work before adding cases.",
+  "rationale": "The expensive setup establishes a valid starting point. Each altered artifact still needs its own decision. Sharing work upstream of the edit removes repeated cost while the full-path test guards the handoff from preparation to verification."
+}

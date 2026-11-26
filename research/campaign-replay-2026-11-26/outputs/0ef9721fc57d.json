@@ -1,0 +1,36 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "4,500-render matrix",
+      "action": "Inventory the 360 repeats",
+      "details": "Group by effective renderer inputs, seed and environment. Identify the assertions each execution supports. Share one deterministic render across distinct assertions when setup matches. Keep intentional repeatability checks separately identified."
+    },
+    {
+      "target": "Fast interaction suite",
+      "action": "Generate a constrained pairwise portfolio",
+      "details": "Derive style levels from their owning registries. Vary source complexity with documented fixtures at minimal, typical and supported boundary sizes, and include every supported output format. Cover every feasible pair across these factors. Apply documented impossibility constraints during generation. Require all feasible triples for the three factors named by the incident, with other factors at base strength. Version the model, constraints, generator, seed, stable row IDs and coverage report."
+    },
+    {
+      "target": "Renderer contracts",
+      "action": "Use the public renderer and format-specific oracles",
+      "details": "Enroll every canonical style and format in cheap one-way conformance checks. Enumerate small pure option tables. Decode or parse each rendered artifact and compare its content and style-sensitive features with independently reviewed expectations for its input and format."
+    },
+    {
+      "target": "Seeds and browsers",
+      "action": "Use them where they exercise distinct risks",
+      "details": "Generate reproducible source variations within complexity classes, check content preservation, and retain failing inputs for replay. Exercise representative format and style fixtures in supported browsers on a measured slower lane. Record which browser interactions this lane covers."
+    }
+  ],
+  "retained_contracts": [
+    "Keep the incident’s exact three values, original triggering fixture, relevant environment and discriminating assertion as a named fixed regression regardless of generated rows.",
+    "Preserve distinct existing contract assertions and required browser or visual checks. Exact registry enrollment remains independently checkable."
+  ],
+  "validation": [
+    "Independently enumerate feasible pairs and elevated triples from the model. Check row validity, missing tuples and exact canonical registry membership. Trace complexity, format and style through execution to the inspected artifact.",
+    "Add an isolated registry member and confirm enrollment. Drop a required tuple and confirm the coverage checker fails. Ignore a format or style setting and confirm an artifact assertion fails.",
+    "Run old and candidate suites in shadow on the same revisions and runners. Reintroduce the repaired incident and verify the fixed case fails for its original symptom. Compare representative seeded faults and investigate every old-only detection. Rotate randomly selected legacy holdouts."
+  ],
+  "cost_and_stop": "Report actual rows per lane after generation. Compare runner time, p50/p90 critical path, retries, flake rate, triage and baseline-review effort at equal budgets. Retire old cases only after all hard obligations pass, every discriminating regression survives, shadow discrepancies are resolved and measured savings justify retirement. Keep the legacy fallback if the model or enrollment drifts.",
+  "rationale": "More seeds and browsers multiply executions while leaving complexity and format constant. The proposed portfolio spends render time on those missing interactions and preserves the specific failure that motivated three-factor testing."
+}

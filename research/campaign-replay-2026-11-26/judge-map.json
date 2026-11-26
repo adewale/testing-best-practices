@@ -1,0 +1,110 @@
+[
+  {
+    "id": "849f88aa1a60",
+    "case": "R01",
+    "packet": "/workspace/campaign-replay-judge-packets/849f88aa1a60.md",
+    "packet_sha256": "2cdad8f28b64d90b814a521a078964b83f2852c6ea7232514e800d7af4d72005",
+    "candidate_ids": [
+      "e0ac039f05fc",
+      "3c4cb3ab4816",
+      "8d47c118af05"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/849f88aa1a60.json"
+  },
+  {
+    "id": "6dd0816be610",
+    "case": "R02",
+    "packet": "/workspace/campaign-replay-judge-packets/6dd0816be610.md",
+    "packet_sha256": "bedf527449131d8153755cdd7add3070938f2da6c41fe921ffbafa5d5cdd09de",
+    "candidate_ids": [
+      "247551539e25",
+      "1fa188118cad",
+      "73ca6945ad8d"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/6dd0816be610.json"
+  },
+  {
+    "id": "7180c2b08883",
+    "case": "R03",
+    "packet": "/workspace/campaign-replay-judge-packets/7180c2b08883.md",
+    "packet_sha256": "f1fe4cec6356cc1caa24f8c733bd6ab405e27003b818e99edeb13d467aea7d8f",
+    "candidate_ids": [
+      "461e1844682f",
+      "3a66eed1ecae",
+      "b943977ba88b"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/7180c2b08883.json"
+  },
+  {
+    "id": "ac20fafeb893",
+    "case": "R04",
+    "packet": "/workspace/campaign-replay-judge-packets/ac20fafeb893.md",
+    "packet_sha256": "a4c8821f7e5dd1b6dda34468037baca05f2c08ed956c6de157956b32659c34ef",
+    "candidate_ids": [
+      "0aca6e930e20",
+      "d724ec0ccc4b",
+      "211c73716269"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/ac20fafeb893.json"
+  },
+  {
+    "id": "42a2517ce9e5",
+    "case": "R05",
+    "packet": "/workspace/campaign-replay-judge-packets/42a2517ce9e5.md",
+    "packet_sha256": "a8802ec6cb9b00662ccdb95053305f97e7b7fcceeb121a8f75941aa24982cb7b",
+    "candidate_ids": [
+      "2cc376543a28",
+      "072977237798",
+      "7fdf267627e1"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/42a2517ce9e5.json"
+  },
+  {
+    "id": "9f49be4450a2",
+    "case": "R06",
+    "packet": "/workspace/campaign-replay-judge-packets/9f49be4450a2.md",
+    "packet_sha256": "4de47c399402a78471bce51a1ea637c7431222cf6818bcafa4ad9cbc9c94dc47",
+    "candidate_ids": [
+      "ee52c9970651",
+      "0ef9721fc57d",
+      "9e3bd98af50c"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/9f49be4450a2.json"
+  },
+  {
+    "id": "3307ef3bd113",
+    "case": "R07",
+    "packet": "/workspace/campaign-replay-judge-packets/3307ef3bd113.md",
+    "packet_sha256": "bca6f6d802b84dc2cd027c01bc2073c602621c3d787a09bc37e08b11df39a400",
+    "candidate_ids": [
+      "0e8d15fc799b",
+      "3b8a3adc76fe",
+      "b43f1b09dc15"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/3307ef3bd113.json"
+  },
+  {
+    "id": "147d1d4c3892",
+    "case": "R08",
+    "packet": "/workspace/campaign-replay-judge-packets/147d1d4c3892.md",
+    "packet_sha256": "53d3525e562832c44eda3758f5bbd155bd2bd041b637fa4ffa3cfd55116c19bb",
+    "candidate_ids": [
+      "78f0b3607a50",
+      "9a66453a9f75",
+      "2f82ed507caa"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/147d1d4c3892.json"
+  },
+  {
+    "id": "0c7525f06d5a",
+    "case": "R09",
+    "packet": "/workspace/campaign-replay-judge-packets/0c7525f06d5a.md",
+    "packet_sha256": "bb01a2bec56ee0664b49b7d4cb15f0fa3f5c5bffa6487c827e4f852aa3289027",
+    "candidate_ids": [
+      "de7aa4d16bdf",
+      "03c9e0077220",
+      "453865452c48"
+    ],
+    "output": "research/campaign-replay-2026-11-26/judgments/0c7525f06d5a.json"
+  }
+]

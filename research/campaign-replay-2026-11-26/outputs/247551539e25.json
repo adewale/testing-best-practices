@@ -1,0 +1,42 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Public boundary/default behavior",
+      "action": "Fix the incorrect result",
+      "details": "Add a regression that calls the public API with the smallest input that reproduces the reported default or boundary error. Assert the expected public value from the reference. Correct the existing branch that selects or applies the default, preserving behavior for inputs outside the failing case."
+    },
+    {
+      "target": "Five proposed helper exports",
+      "action": "Drop the exports and their direct tests",
+      "details": "Exercise the correction through the existing public entry point. Keep the helpers private."
+    },
+    {
+      "target": "Route test",
+      "action": "Replace the proposed exact-route assertion",
+      "details": "Use a fixture with two equally short routes. Check that the returned route joins the requested endpoints using valid steps and has the fixture’s independently known minimum length. Compare a repeat call on identical input with the first result to test repeatability while accepting either route."
+    },
+    {
+      "target": "Cache tests",
+      "action": "Drop the proposed cache-poisoning test",
+      "details": "Retain the existing checks of public output against the reference. Eviction order is an internal choice, and the proposed test would require manufacturing private state."
+    },
+    {
+      "target": "Mutation audit",
+      "action": "Record the two survivor dispositions",
+      "details": "Identify the route change as a permitted observable variation and the eviction change as an internal variation with matching public values in the audited cases. Keep both visible in the raw mutation result."
+    }
+  ],
+  "retained_contracts": [
+    "A route must be valid, shortest, and repeatable for identical input. Either tied shortest route is permitted.",
+    "Public values, including the boundary/default result, must agree with the reference.",
+    "The existing public API and helper visibility are preserved."
+  ],
+  "validation": [
+    "Run the boundary/default regression against the original implementation and verify it fails on the returned value. Run it again after the fix and verify it passes.",
+    "Run the route contract test against the original route choice and the alternative tied choice. Both should pass, including the repeat-call assertion.",
+    "Run the existing renderer/extractor suite, including public reference comparisons, after the correction."
+  ],
+  "cost_and_stop": "Limit production work to the boundary/default defect. Stop after its regression demonstrates the fix, the route contract and existing suite pass, and both survivors have a recorded disposition. Treat 90 as an audit target rather than a release condition.",
+  "rationale": "The boundary/default failure gives callers a wrong value. Requiring one permitted route or one private eviction order would increase the kill count by rejecting behavior the contract allows."
+}

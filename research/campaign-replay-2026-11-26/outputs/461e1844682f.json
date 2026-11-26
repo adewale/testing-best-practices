@@ -1,0 +1,27 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Per-file assertion-density rule and draft additions",
+      "action": "Drop the 3.0 threshold and remove the checks added solely to reach it.",
+      "details": "Delete the redundant isinstance and not-null checks and the assertions that search implementation source for substrings. If a source check was meant to cover a real requirement, exercise that requirement through the public interface. Use assertion counts only to find tests worth reading."
+    },
+    {
+      "target": "Sanitizer tests whose only assertion is nonempty output",
+      "action": "Replace the nonempty assertion with checks on the actual sanitizer result.",
+      "details": "Use a safe-only example with distinctive allowed content, and a mixed example with two different allowed text fragments around a construct the sanitizer promises to remove. In the mixed result, assert that the forbidden construct is absent and that both allowed fragments survive. In the safe-only result, check the promised content is preserved. Derive expectations from the sanitizer contract. Compare parsed structure if formatting can vary."
+    }
+  ],
+  "retained_contracts": [
+    "Keep the single assertion that the specified input raises the promised exception.",
+    "Keep the single assertion that checks the complete property across its stated input domain."
+  ],
+  "validation": [
+    "Run the existing focused test command for the sanitizer and the retained exception and property cases. Confirm it collects and executes the intended cases.",
+    "In a scratch copy, temporarily make the sanitizer return its input. Run the mixed case and require a failure identifying the retained forbidden construct.",
+    "Restore the sanitizer, then temporarily make it return an unrelated nonempty constant. Require a failure identifying missing allowed content. The old nonempty assertion would accept this result.",
+    "Remove the temporary change. Run the focused tests and the usual CI test entry point on the proposed patch. Check the exit statuses and confirm the diff contains only the intended test changes."
+  ],
+  "cost_and_stop": "Use the existing runner and two one-off fault checks. Stop once the focused cases distinguish both faults, the restored suite passes, and each added assertion covers a stated behavior.",
+  "rationale": "An exact exception or a complete property can be checked in one assertion. Several padding checks can all pass while a sanitizer returns an unrelated string. The proposed replacements distinguish failure to remove forbidden content from loss of allowed content."
+}

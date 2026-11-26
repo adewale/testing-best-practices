@@ -1,0 +1,32 @@
+{
+  "decision": "reject",
+  "changes": [
+    {
+      "target": "Release fixture and manifest",
+      "action": "Retain the byte-level check",
+      "details": "Keep the published archive and its manifest byte-for-byte. Use the digest in that manifest as the independent expected value. Compute the actual digest over the archive as received, using the manifest’s algorithm. Keep verification read-only."
+    },
+    {
+      "target": "Importer integrity tests",
+      "action": "Keep the valid and corrupted cases",
+      "details": "Exercise the public importer with the original archive and then with a corrupted temporary copy, supplying the same published manifest both times. Keep the rejection assertion. If the existing corruption also breaks parsing, add a parseable copy with identical logical contents and different archive bytes to isolate the integrity check."
+    },
+    {
+      "target": "Importer refactor",
+      "action": "Allow implementation details to change",
+      "details": "The importer may reorganize its helpers or stream the bytes in different chunk sizes. Parsed-content assertions can check the result of a successful import. Any digest that pins only an incidental intermediate representation can be removed once its purpose is confirmed."
+    }
+  ],
+  "retained_contracts": [
+    "The published manifest identifies one exact release artifact. A formatting or packaging change that preserves all parsed values still changes the artifact when it changes the bytes.",
+    "The public importer accepts the intact release and rejects an archive whose digest differs from the published value."
+  ],
+  "validation": [
+    "Independently hash the intact fixture with the manifest’s algorithm, compare it with the published digest, and verify that importing it succeeds.",
+    "Import the deliberately corrupted copy against the original manifest and assert rejection. Check the public integrity error if the API specifies one.",
+    "For the parseable variant, use an archive reader to confirm equal logical contents and independently confirm a different raw digest. Assert that importing it against the original manifest fails. A check based only on parsed equality would accept this case.",
+    "Run the same focused cases against the original and refactored importers with the same release fixture and manifest. Compare their public outcomes."
+  ],
+  "cost_and_stop": "One release fixture, the existing corruption case, and at most one additional parseable variant suffice. Stop when the focused cases give the specified outcomes across the refactor. These checks are proposed and unrun.",
+  "rationale": "A digest change caused solely by formatting is precisely what an exact-byte release commitment must detect. Parsed equality discards the distinction that the manifest publishes."
+}

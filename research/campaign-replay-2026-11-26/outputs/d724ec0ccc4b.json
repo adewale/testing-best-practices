@@ -1,0 +1,34 @@
+{
+  "decision": "reject",
+  "changes": [
+    {
+      "target": "Receipt verifier",
+      "action": "Keep the archive checks and remove the lookup of current scripts.",
+      "details": "Read each candidate file named in the receipt from the archive. Hash its original bytes with the recorded algorithm and compare with its recorded digest. Reconcile the recorded counts and totals against the archived result records using the rules for that run. Return a nonzero status and identify the file or total on any missing input or mismatch."
+    },
+    {
+      "target": "Historical script provenance",
+      "action": "Preserve all three recorded script identifiers and digests verbatim.",
+      "details": "Validate required provenance fields and digest format using the receipt schema. An old path is a historical identifier. If original script bytes were archived, their digest can be checked against that immutable copy. A receipt containing only a script digest can report the recorded identity without claiming to have verified the script bytes."
+    },
+    {
+      "target": "Receipt updates",
+      "action": "Keep verification read-only.",
+      "details": "Issue a separate receipt for an intentional new evaluation. A change to the current scripts' behavior belongs in those scripts' own input/output tests."
+    }
+  ],
+  "retained_contracts": [
+    "The archived candidate bytes match the evidence cited for that evaluation.",
+    "The summary accounts for the archived results and its totals reconcile.",
+    "The receipt retains the identities recorded for the three tools at evaluation time."
+  ],
+  "validation": [
+    "Invoke the real verifier on a small temporary archive with two candidate files, independently fixed digests, and hand-counted totals. Expect exit 0 and a byte-identical receipt after verification.",
+    "With that same receipt and archive, add only a comment to a current script, then separately rename a current script so its historical path is absent. Show the existing verifier fails on each change and the revised verifier exits 0 with the receipt untouched.",
+    "On fresh copies, change one archived output byte while preserving its contribution to the totals, then separately remove a listed output. Both must fail and identify the affected candidate.",
+    "On another copy, change only a recorded total by one. Both output digests still match. Require a nonzero status identifying the total and its expected and observed values.",
+    "Remove a required historical script digest or give it malformed syntax. Require a provenance-field error even with valid candidate data."
+  ],
+  "cost_and_stop": "Use one local fixture and the existing verifier entry point. Stop once the archive and totals defects fail for their intended reasons and the two harmless script changes pass. No evaluation rerun is required.",
+  "rationale": "Refreshing hashes after a refactor rewrites the account of which scripts produced the archived evidence and could bless changed outputs. Deleting the verifier loses its ability to detect damaged evidence and incorrect totals. The archive itself supplies the comparison that gives this check value."
+}

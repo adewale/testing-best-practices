@@ -1,0 +1,33 @@
+{
+  "decision": "reject",
+  "changes": [
+    {
+      "target": "Per-file assertion density and draft additions",
+      "action": "Drop the 3.0 threshold and remove the checks added solely to reach it.",
+      "details": "Use an available count only to locate tests for review. Require a named contract and a plausible regression for each proposed assertion. The draft's type, presence and source-substring checks add no evidence about what the sanitizer returns."
+    },
+    {
+      "target": "Single-assertion exception and property tests",
+      "action": "Retain their existing assertions and inputs.",
+      "details": "The exception test already distinguishes the promised failure from success or a different exception. The property test already expresses its complete invariant."
+    },
+    {
+      "target": "Sanitizer tests that only check nonempty output",
+      "action": "Replace the weak assertion with removal and preservation checks on the real public sanitizer.",
+      "details": "Build a mixed input using a construct the sanitizer policy says to remove and allowed text such as 'Quarterly report 17'. Check the returned content for the absence of the forbidden construct and the presence of those exact words. Include a safe-only row with different allowed text. Derive expectations from the policy and fixture literals. Compare parsed content when serialization may vary."
+    }
+  ],
+  "retained_contracts": [
+    "The specified invalid input raises the promised exception.",
+    "The complete property holds over its intended input domain.",
+    "Sanitization removes prohibited content and preserves permitted content, including when they occur together."
+  ],
+  "validation": [
+    "Run the original and revised focused tests on the same clean baseline with the project's runner. Confirm it selects the named cases and record failures for investigation.",
+    "In an isolated copy, make the sanitizer return its input. Run both versions against this fault. The old nonempty check should pass on the mixed case and the new removal check should fail.",
+    "Repeat with a sanitizer that returns a fixed benign nonempty string. The old check should pass and the new preservation check should identify the missing words. Inspect the failure messages for the intended reason.",
+    "Try a behavior-preserving private helper rename or formatting change. The revised tests should stay green. Restore the clean implementation and run the focused suite and its normal CI entry point, recording the selected cases and exit status."
+  ],
+  "cost_and_stop": "Limit edits to the audit proposal and the identified weak tests. Stop when the two faults are distinguished, the sound contracts remain covered, and the restored suite passes. These checks are proposed and have not been run.",
+  "rationale": "A sanitizer can return the wrong nonempty string and satisfy every padding check. A single precise assertion can catch the promised regression. Fault controls show what the edited suite can actually distinguish."
+}

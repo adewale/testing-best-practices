@@ -1,0 +1,26 @@
+{
+  "decision": "approve",
+  "changes": [
+    {
+      "target": "Changed parser function",
+      "action": "Run one hand-seeded mutation in a scratch copy.",
+      "details": "Reuse the escaped bug's one-line change if it represents the off-by-one fault in question. Otherwise move the relevant boundary by one. For example, if the specification includes the limit, change <= to < so equality is the distinguishing input."
+    },
+    {
+      "target": "Existing parser boundary tests",
+      "action": "Keep the suite if a current assertion detects the fault. Repair the boundary table if a reachable fault survives.",
+      "details": "For a demonstrated gap, add the smallest distinguishing input through the public parser. Use an otherwise valid fixture and the documented result at the boundary. For an inclusive maximum, check the parsed value at the limit and retain the rejection just beyond it. Ship the regression row once it fails on the seeded fault and passes on restored code."
+    }
+  ],
+  "retained_contracts": [
+    "The public parse result or documented error on either side of the changed boundary, including the specified behavior at equality."
+  ],
+  "validation": [
+    "In the scratch copy, run the existing command selecting the four focused tests. Record the revision, command, collected test IDs and passing baseline. Resolve a baseline failure before interpreting a mutation.",
+    "Apply only the chosen edit and rerun the identical four tests. Record the diff, exit status and assertion. A mismatch on the expected public result establishes that the existing suite catches this fault.",
+    "If all four pass, feed the distinguishing input to the public parser on both versions and compare with the contract. A changed, incorrect result warrants the regression row. If the line is unreachable or both versions give the documented behavior, report that finding. A setup failure or timeout leaves the question open.",
+    "If a row was added, run it on the same mutant for the expected failure. Restore the original function byte-for-byte, verify its diff is empty and rerun the focused suite."
+  ],
+  "cost_and_stop": "At two seconds per four-test run, baseline, mutant and restoration take about six seconds of test execution. Cap the whole exercise, including triage, at ten minutes. Stop when the specific fault is classified and any added row is verified, or record the remaining uncertainty at the cap.",
+  "rationale": "High coverage shows the parser ran. Changing a single comparison tests whether the current assertions can distinguish the wrong boundary result. One manual run answers the maintainer's decision directly."
+}

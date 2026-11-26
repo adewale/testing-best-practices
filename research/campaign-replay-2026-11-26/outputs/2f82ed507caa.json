@@ -1,0 +1,31 @@
+{
+  "decision": "reject",
+  "changes": [
+    {
+      "target": "Release fixture and manifest",
+      "action": "Keep the published pair",
+      "details": "Verify the digest over the complete archive bytes using the algorithm and expected value from the published manifest. Keep that manifest independent of the bytes under test."
+    },
+    {
+      "target": "Importer regression test",
+      "action": "Keep the corruption case and add a formatting-only case if needed",
+      "details": "Pass the original manifest to each import. Use a copy for the mutation. If the existing corruption case already produces a readable archive with equal parsed content, reuse it for both purposes."
+    },
+    {
+      "target": "Implementation-specific assertions",
+      "action": "Remove incidental hash assertions where present",
+      "details": "Allow the importer to stream or buffer the input and reorganize its helpers. Use parsed equality for assertions about decoded content."
+    }
+  ],
+  "retained_contracts": [
+    "The published archive bytes and their manifest digest stay fixed across the importer refactor.",
+    "The importer accepts the intact release and rejects an archive whose bytes fail the manifest digest check, even when it decodes to the same content."
+  ],
+  "validation": [
+    "Compute the digest of the untouched fixture independently, compare it with the published value, and confirm the public importer accepts the fixture with that manifest.",
+    "Run the intentional corruption case through the public importer with the unchanged manifest and assert rejection.",
+    "Construct a valid alternate encoding of the same parsed content, for example by changing insignificant formatting in a member and repacking. Confirm equal parsed content and a different archive digest, then assert that importing it with the original manifest fails."
+  ],
+  "cost_and_stop": "Use the existing release fixture and generate modified copies during the test. Stop once acceptance, corruption rejection, and rejection of a readable equivalent encoding pass through the refactored importer.",
+  "rationale": "A formatting change can preserve every parsed value while changing the bytes the publisher committed to. Parsed equality alone would let that substitution pass. The manifest supplies an oracle that survives changes to the importer."
+}
