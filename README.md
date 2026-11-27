@@ -58,6 +58,8 @@ The [PR evidence catalogue](research/test-quality-pr-audit-2026-11-23/catalogue.
 
 A [historical campaign decision replay](research/campaign-replay-2026-11-26/README.md) tested nine scenarios across no-skill, pre-PR and PR #41 arms. All three passed 9/9; this screen found no incremental benefit from the new guidance and does not establish reliable campaign prevention.
 
+The [larger four-arm follow-up](research/campaign-replay-2026-11-27/RESULTS.md) compared no guidance, earlier PR41, a revised candidate and OpenClaw. Its historical screen scored 7/9, 9/9, 8/9 and 9/9; the candidate missed a public rejection path. Nine reports delivered larger-suite repairs in Mermaid, Keyboardia and PDA, with native fault and permitted-change controls. Interruptions and a failed judge remain recorded. The subsequent E79 repair has deterministic controls but no fresh model comparison.
+
 ## How it works
 
 The skill operates in four modes:

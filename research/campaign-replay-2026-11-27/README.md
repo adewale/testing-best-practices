@@ -34,4 +34,6 @@ To inspect an archive, use `tar -tzf inputs/<name>.tar.gz`. To verify the retain
 
 To reconstruct all work trees, use a second empty directory. Extract the three repository archives and OpenClaw archive in the same layout and copy `runtime-smoke/`. Copy only `controller/{build_packets.py,control_run.py,protocol.md,protocol-review.md,grading-b.md}` from this record. From that directory run `python3 -B controller/build_packets.py prepare --candidate 300a179a1d622b66134409356add50e81393e95e --repo /absolute/path/to/testing-best-practices`, then `python3 -B controller/build_packets.py verify --work`. The repository must contain the pinned Git history. Do not copy `freeze.json`, previous outputs or live trial directories into a fresh reconstruction before preparation: the guard intentionally refuses to overwrite retained experiments. Dependency provisioning is a separate step in the case runtime guides.
 
+Raw transcripts, TSV empty columns and patches retain their original whitespace so their recorded bytes remain verifiable.
+
 All evidence here concerns public repositories. The companion portfolio audit includes private projects and remains outside this public research folder.
