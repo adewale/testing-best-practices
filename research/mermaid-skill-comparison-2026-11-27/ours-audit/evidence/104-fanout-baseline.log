@@ -1,0 +1,15 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/fanout-symmetry.test.ts:
+(pass) fan-out peer symmetry > grouped diamond targets keep their authored containment (TD) [267.60ms]
+(pass) fan-out peer symmetry > grouped diamond targets keep their authored containment (LR) [90.21ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (LR) [13.06ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (RL) [7.10ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (TD) [8.90ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (BT) [7.33ms]
+(pass) fan-out peer symmetry > peers with differing label widths are equalized to a common width and aligned [35.47ms]
+
+ 7 pass
+ 0 fail
+ 83 expect() calls
+Ran 7 tests across 1 file. [721.00ms]

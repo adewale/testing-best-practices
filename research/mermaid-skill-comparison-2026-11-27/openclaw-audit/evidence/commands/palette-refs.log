@@ -1,0 +1,96 @@
+editor/css/variables.css:16:  --t-bg: #F8F4F0;       /* Kiln Stone (was Paper #F5F0E4) */
+editor/css/variables.css:19:  --brand-pine: #6FC2A2;
+editor/css/variables.css:62:  --bg: color-mix(in srgb, var(--t-fg) 4%, var(--t-bg));
+editor/css/variables.css:67:  --border: color-mix(in srgb, var(--t-fg) 13%, var(--t-bg));   /* same 13% hairline as the site --line */
+editor/css/variables.css:87:  --line: var(--border);
+editor/css/variables.css:141:  --success: #296C1E;
+editor/css/variables.css:142:  --info:    #1F6FB0;
+editor/css/variables.css:143:  --warn:    #8A5A12;
+editor/css/variables.css:144:  --danger:  #A0352A;
+editor/css/variables.css:163::root[data-scheme="dark"] {
+editor/css/variables.css:167:   * copy by chrome-token-lockstep.test.ts. The dark accent IS --brand-pine. */
+editor/css/variables.css:168:  --t-bg: #17130D;
+editor/css/variables.css:171:  --success: #6CBF68;
+editor/css/variables.css:172:  --info:    #78B4EA;
+editor/css/variables.css:173:  --warn:    #E0A75A;
+editor/css/variables.css:174:  --danger:  #E58C82;
+editor/css/variables.css:248:    --t-bg: Canvas;
+editor/css/variables.css:251:    --bg: Canvas;
+editor/css/variables.css:255:    --border: ButtonText;
+editor/css/variables.css:271:    --success: CanvasText;
+editor/css/variables.css:272:    --info: LinkText;
+editor/css/variables.css:273:    --warn: CanvasText;
+editor/css/variables.css:274:    --danger: CanvasText;
+website/source/assets/styles.css:25:     the --m-* tokens below; --brand-pine is only the pre-canvas fallback and
+website/source/assets/styles.css:27:     visible on a light chip. (Tonal alt: --brand-pine #2E9E7E, --brand-on
+website/source/assets/styles.css:29:  --brand-pine: #6FC2A2;   /* chip fallback ≈ the shader mid */
+website/source/assets/styles.css:80:  --bg:     #F8F4F0;   /* Kiln Stone — a cleaner, lower-chroma warm neutral (was Paper #F5F0E4) */
+website/source/assets/styles.css:95:  --line:         color-mix(in srgb, var(--fg) 13%, var(--bg));
+website/source/assets/styles.css:113:     [data-scheme="dark"]; the tints re-derive automatically. */
+website/source/assets/styles.css:114:  --success: #296C1E; --info: #1F6FB0; --warn: #8A5A12; --danger: #A0352A;
+website/source/assets/styles.css:152:[data-theme="pine-light"]        { --bg:#F4F8F6; --fg:#16231E; --accent:#1A7351; }
+website/source/assets/styles.css:153:[data-theme="zinc-light"]        { --bg:#FFFFFF; --fg:#27272A; --accent:#2563EB; }
+website/source/assets/styles.css:154:[data-theme="github-light"]      { --bg:#FFFFFF; --fg:#1F2328; --accent:#0969DA; }
+website/source/assets/styles.css:155:[data-theme="solarized-light"]   { --bg:#FDF6E3; --fg:#586E75; --accent:#268BD2; }
+website/source/assets/styles.css:156:[data-theme="catppuccin-latte"]  { --bg:#EFF1F5; --fg:#4C4F69; --accent:#8839EF; }
+website/source/assets/styles.css:157:[data-theme="nord-light"]        { --bg:#ECEFF4; --fg:#2E3440; --accent:#5E81AC; }
+website/source/assets/styles.css:158:[data-theme="tokyo-night-light"] { --bg:#D5D6DB; --fg:#343B58; --accent:#34548A; }
+website/source/assets/styles.css:159:[data-theme="salmon"]            { --bg:#FFFBF5; --fg:#521000; --accent:#D23C00; }
+website/source/assets/styles.css:160:[data-theme="dusk"]              { --bg:#2A2521; --fg:#E9DFCC; --accent:#CC8A57; }
+website/source/assets/styles.css:161:[data-theme="paper-dark"]        { --bg:#16130D; --fg:#ECE3CE; --accent:#C9824F; }
+website/source/assets/styles.css:162:[data-theme="pine-dark"]         { --bg:#0F1512; --fg:#E7ECE9; --accent:#6FC2A2; }
+website/source/assets/styles.css:163:[data-theme="zinc-dark"]         { --bg:#18181B; --fg:#FAFAFA; --accent:#60A5FA; }
+website/source/assets/styles.css:164:[data-theme="github-dark"]       { --bg:#0D1117; --fg:#E6EDF3; --accent:#4493F8; }
+website/source/assets/styles.css:165:[data-theme="tokyo-night"]       { --bg:#1A1B26; --fg:#A9B1D6; --accent:#7AA2F7; }
+website/source/assets/styles.css:166:[data-theme="tokyo-night-storm"] { --bg:#24283B; --fg:#A9B1D6; --accent:#7AA2F7; }
+website/source/assets/styles.css:167:[data-theme="catppuccin-mocha"]  { --bg:#1E1E2E; --fg:#CDD6F4; --accent:#CBA6F7; }
+website/source/assets/styles.css:168:[data-theme="nord"]              { --bg:#2E3440; --fg:#D8DEE9; --accent:#88C0D0; }
+website/source/assets/styles.css:169:[data-theme="dracula"]           { --bg:#282A36; --fg:#F8F8F2; --accent:#BD93F9; }
+website/source/assets/styles.css:170:[data-theme="solarized-dark"]    { --bg:#002B36; --fg:#93A1A1; --accent:#268BD2; }
+website/source/assets/styles.css:171:[data-theme="one-dark"]          { --bg:#282C34; --fg:#ABB2BF; --accent:#C678DD; }
+website/source/assets/styles.css:172:[data-theme="salmon-dark"]       { --bg:#1F1008; --fg:#F5DCC8; --accent:#FF6B35; }
+website/source/assets/styles.css:173:[data-theme="tufte-dark"]        { --bg:#1C1C1A; --fg:#E8E4DC; --accent:#C87070; }
+website/source/assets/styles.css:183::root, [data-scheme="light"] {
+website/source/assets/styles.css:193:[data-scheme="dark"] {
+website/source/assets/styles.css:202:  --success: #6CBF68; --info: #78B4EA; --warn: #E0A75A; --danger: #E58C82;
+website/source/assets/styles.css:207::root, :root[data-scheme="light"] { color-scheme: light; }
+website/source/assets/styles.css:208::root[data-scheme="dark"] { color-scheme: dark; }
+website/source/assets/styles.css:278:.brand .mark { width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--brand-pine); color: var(--brand-on); display: inline-grid; place-items: center; }
+website/source/assets/styles.css:692:[data-scheme="light"] .dia-light { opacity: 1; }
+website/source/assets/styles.css:693:[data-scheme="light"] .dia-dark { opacity: 0; }
+website/source/assets/styles.css:857:  :root { --paper: Canvas; --ink: CanvasText; --ink-soft: CanvasText; --ink-faint: CanvasText; --surface: Canvas; --chip: Canvas; --line: CanvasText; --line-strong: CanvasText; --link: LinkText; --control-bg: ButtonFace; --control-bg-hover: ButtonFace; --control-fg: ButtonText; --control-border: ButtonText; --diagram-bg: Canvas; --popover-bg: Canvas;
+website/source/assets/styles.css:859:    --success: CanvasText; --info: LinkText; --warn: CanvasText; --danger: CanvasText;
+DESIGN.md:8:  brand-pine: "#6FC2A2"
+DESIGN.md:79:- Flat panels with hairline borders, not glossy cards or SaaS shadows.
+DESIGN.md:89:- **Pine Mark** (`--brand-pine`, `--brand-on`): the lighter logo chip and shader fallback only. It is a separate brand token from the action accent; do not use it as a CTA color.
+DESIGN.md:123:The system is flat by default. Depth comes from tonal layering, hairline borders, sticky bars, and code surfaces. Shadows are minimal and structural; wide “ghost card” shadows are prohibited.
+DESIGN.md:137:- **Secondary:** surface fill, ink/soft-ink text, hairline border.
+DESIGN.md:147:- **Shadow Strategy:** hairline only unless the component is an overlay.
+DESIGN.md:151:- **Style:** surface fill, hairline border, 8px radius, visible label.
+editor/css/variables.css:19:  --brand-pine: #6FC2A2;
+editor/css/variables.css:67:  --border: color-mix(in srgb, var(--t-fg) 13%, var(--t-bg));   /* same 13% hairline as the site --line */
+editor/css/variables.css:164:  /* The Kiln Charcoal triplet. chromeThemeColors() in rendering.js sets the
+editor/css/variables.css:167:   * copy by chrome-token-lockstep.test.ts. The dark accent IS --brand-pine. */
+editor/js/rendering.js:96:export function chromeThemeColors() {
+editor/js/rendering.js:112:  var chrome = chromeThemeColors();
+src/__tests__/editor-theme-switch.test.ts:8: * the render theme while the chrome triplet stays pinned to the brand.
+src/__tests__/editor-theme-switch.test.ts:63:// registered palettes; the pine values come from the chrome triplets in rendering.js.
+src/__tests__/chrome-token-lockstep.test.ts:3: * Chrome token lockstep — the editor app shell and the public site are meant to
+src/__tests__/chrome-token-lockstep.test.ts:8: *   website/source/assets/styles.css   :root theme triplet + functional hues
+src/__tests__/chrome-token-lockstep.test.ts:9: *   editor/css/variables.css           --t-* triplet + functional hues
+src/__tests__/chrome-token-lockstep.test.ts:10: *   editor/js/rendering.js             chromeThemeColors() light/dark triplets
+src/__tests__/chrome-token-lockstep.test.ts:12: * This test reads the CSS tokens, evaluates rendering.js's chromeThemeColors()
+src/__tests__/chrome-token-lockstep.test.ts:35:function chromeThemeColors(isDark: boolean): { bg: string; fg: string; accent: string } {
+src/__tests__/chrome-token-lockstep.test.ts:39:    'chromeThemeColors()',
+src/__tests__/chrome-token-lockstep.test.ts:52:  test('light chrome triplet matches across site CSS, editor CSS, and rendering.js', () => {
+src/__tests__/chrome-token-lockstep.test.ts:57:    expect(chromeThemeColors(false)).toEqual(site)
+src/__tests__/chrome-token-lockstep.test.ts:61:    expect(cssHex(editorCss, 'brand-pine')).toBe(cssHex(siteCss, 'brand-pine'))
+src/__tests__/chrome-token-lockstep.test.ts:65:  test('dark chrome triplet matches editor CSS and rendering.js; its accent is the brand pine', () => {
+src/__tests__/chrome-token-lockstep.test.ts:68:    // branch of chromeThemeColors() (whose inline styles win at runtime).
+src/__tests__/chrome-token-lockstep.test.ts:69:    const dark = chromeThemeColors(true)
+src/__tests__/chrome-token-lockstep.test.ts:73:    expect(cssHex(editorCss, 'brand-pine'), 'editor --brand-pine').toBe(dark.accent)
+src/__tests__/chrome-token-lockstep.test.ts:74:    expect(cssHex(siteCss, 'brand-pine'), 'site --brand-pine').toBe(dark.accent)
+src/__tests__/chrome-token-lockstep.test.ts:77:  test('functional hues match in both polarities', () => {
+src/__tests__/chrome-token-lockstep.test.ts:108:    const darkGap = gap(hue(chromeThemeColors(true).accent), hue(cssHex(darkBlock(siteCss), 'success')))
+src/__tests__/chrome-token-lockstep.test.ts:112:  test('shared scale tokens match: radii, motion, hairline mix', () => {
+/usr/bin/chromium

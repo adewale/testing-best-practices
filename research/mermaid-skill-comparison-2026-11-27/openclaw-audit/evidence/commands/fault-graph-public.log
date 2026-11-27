@@ -1,0 +1,26 @@
+[
+  {
+    "name": "parallel fan",
+    "pairs": [
+      "A>B",
+      "A>B",
+      "A>C",
+      "A>D"
+    ],
+    "svgSha256": "92e082f6a68e0bdcaae4b3c02820fe8ffb120e6199730903047c71eab43ce660",
+    "layoutSha256": "dcf6b7ea5095c04b1b71b44c84ced3db49ed00f0263f4bbcea2776419c7c1b94",
+    "size": 5165
+  },
+  {
+    "name": "parallel fan with label",
+    "pairs": [
+      "A>B",
+      "A>B",
+      "C>B",
+      "D>B"
+    ],
+    "svgSha256": "08d2544231d60554fa35062293b43c35ab51bd05f3b4231d5837af4589d2f23a",
+    "layoutSha256": "02341f566d6c0241978167ddd2f8c93ccfa35b39f4513b94218c269562586311",
+    "size": 6214
+  }
+]

@@ -1,0 +1,108 @@
+commit 268efa1d6ef09f016ca4f24debe7ea764b9e0c21
+Author: Ade Oshineye <adewale@gmail.com>
+Date:   Fri Nov 20 03:39:27 2026 +0000
+
+    fix(layout): retain centered through-trunks at internal forks [skip ci]
+
+diff --git a/src/layout/passes/fanout.ts b/src/layout/passes/fanout.ts
+index 3d7a7c9..4923d7a 100644
+--- a/src/layout/passes/fanout.ts
++++ b/src/layout/passes/fanout.ts
+@@ -3,7 +3,7 @@ import type { LabelMetricsStyle } from '../../route-contracts.ts'
+ import { graphReachability, layoutFlow, nodeCrossCenter, nodeMainStart, rectsOverlap } from '../geometry.ts'
+ import { positionedEdgeForwardish, sameFlowLayer, nodeInsideGroups, flattenPositionedGroups, rectInsideGroup, expandGroupsForMainShift, moveKeepsGroupContainment, sourceEmissionPort, targetFlowPort, symmetricOffsets, doglegBetween, routeClearOfNodes } from './shared.ts'
+ import { terminalLabelRunLength, terminalLabelCorridorLength, assignBundledFanoutLabels } from './bundled-labels.ts'
+-import { retainConstructedBundleRoutes } from '../bundle-routes.ts'
++import { hasConstructedBundleRoute, retainConstructedBundleRoutes } from '../bundle-routes.ts'
+ import { countPointPairCrossings } from '../../shared/edge-crossing-pair.ts'
+ import { terminalHookLength } from '../route-geometry.ts'
+ import { laneContextFor, straightLaneFor } from '../route-lanes.ts'
+@@ -261,11 +261,25 @@ export function applySymmetricFanoutEmissions(
+     const elbow = ((capacityElbow - midpointElbow) * f.sign < 0) ? capacityElbow : midpointElbow
+     // Unmoved targets must still leave the source its own hook before the elbow.
+     if (routeOnly && (elbow - sourceEdge) * f.sign < Math.max(...sorted.map(edge => terminalHookLength(style, edge, 'start'))) - 0.001) continue
++    // Continue a centred approach through an internal rectangular fork only
++    // where the bundler already admitted its outgoing trunk to this elbow.
++    const centrePort = sourceEmissionPort(source, graph.direction, 0, 1)
++    const keepTrunk = source.shape === 'rectangle' && (elbow - centrePort[f.main]) * f.sign > 0 && sorted.every(edge => {
++      const [start, next] = edge.points
++      return !edge.label && bundled.has(edge) && !!start && !!next && start.x === centrePort.x && start.y === centrePort.y
++        && next[f.cross] === centrePort[f.cross] && (next[f.main] - elbow) * f.sign >= 0 && hasConstructedBundleRoute(edge)
++    }) && edges.some(edge => {
++      if (edge.target !== source.id || edge.style === 'invisible') return false
++      const entry = edge.points.at(-1), previous = edge.points.at(-2)
++      const facing = targetFlowPort(source, graph.direction)
++      return !!entry && !!previous && entry.x === facing.x && entry.y === facing.y && previous[f.cross] === facing[f.cross]
++        && (entry[f.main] - previous[f.main]) * f.sign > 0
++    })
+     const proposed: Array<{ edge: PositionedEdge; points: Point[] }> = []
+     for (let i = 0; i < sorted.length; i++) {
+       const edge = sorted[i]!
+       const target = nodeMap.get(edge.target)!
+-      const points = doglegBetween(sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
++      const points = doglegBetween(keepTrunk ? { ...centrePort } : sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
+       if (!routeClearOfNodes(points, nodes, new Set([edge.source, edge.target]))) { clear = false; break }
+       proposed.push({ edge, points })
+     }
+5:import { terminalLabelRunLength, terminalLabelCorridorLength, assignBundledFanoutLabels } from './bundled-labels.ts'
+29:    const rect = labelRect({ ...edge, labelPosition: point }, style)
+53:  bundled: ReadonlySet<PositionedEdge>,
+61:    if (!bundled.has(edge) || !edge.label || !positionedEdgeForwardish(edge, nodeMap, direction)) continue
+66:    if (group.length < 2 || group.length > 3) continue
+67:    if (new Set(group.map(edge => edge.target)).size < group.length) continue
+68:    const sorted = [...group].sort((a, b) => {
+76:      const proposed = sorted.map(edge => ({ edge: { ...edge }, points: edge.points }))
+107:  const sorted = [...raw].sort((a, b) => nodeCrossCenter(nodeMap.get(a.target)!, direction) - nodeCrossCenter(nodeMap.get(b.target)!, direction))
+135:  bundled: Set<PositionedEdge>,
+142:    if (!positionedEdgeForwardish(edge, nodeMap, graph.direction)) continue
+150:    if (!source || !sorted) continue
+163:      if (lanes.every((lane, i) => lane !== null && Math.abs(lane - centre + (lanes[lanes.length - 1 - i]! - centre)) <= 1)) continue
+173:    const maxWidth = Math.max(...targets.map(t => t.width))
+174:    const maxHeight = Math.max(...targets.map(t => t.height))
+176:    const rank = Math.min(...targets.map(t => nodeMainStart(t, graph.direction)))
+211:          if (targetIds.has(other.id)) continue
+224:      continue
+231:      ? (f.sign > 0 ? Math.min(...targets.map(t => t.x)) : Math.max(...targets.map(t => t.x + t.width)))
+232:      : (f.sign > 0 ? Math.min(...targets.map(t => t.y)) : Math.max(...targets.map(t => t.y + t.height)))
+233:    const requiredCorridor = Math.max(0, ...sorted.map(edge => terminalLabelCorridorLength(edge, graph.direction, style)))
+246:        continue
+249:        ? (f.sign > 0 ? Math.min(...targets.map(t => t.x)) : Math.max(...targets.map(t => t.x + t.width)))
+250:        : (f.sign > 0 ? Math.min(...targets.map(t => t.y)) : Math.max(...targets.map(t => t.y + t.height)))
+256:      continue
+258:    const requiredTerminalRun = Math.max(0, ...sorted.map(edge => terminalLabelRunLength(edge, graph.direction, style, sourceEdge, targetEdge)))
+263:    if (routeOnly && (elbow - sourceEdge) * f.sign < Math.max(...sorted.map(edge => terminalHookLength(style, edge, 'start'))) - 0.001) continue
+269:      return !edge.label && bundled.has(edge) && !!start && !!next && start.x === centrePort.x && start.y === centrePort.y
+282:      const points = doglegBetween(keepTrunk ? { ...centrePort } : sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
+294:      continue
+298:    const staged = proposed.map(({ edge, points }) => ({ edge: { ...edge, points }, points }))
+304:        continue
+313:    retainConstructedBundleRoutes(proposed.map(proposal => proposal.edge), bundled)
+    65	  test.each(['LR', 'RL', 'TD', 'BT'] as const)('an internal fork continues its admitted centre trunk (%s)', direction => {
+    66	    const graph = parseGraph(`flowchart ${direction}\nA-->C\nC-->D\nC-->E[Longer child]`)
+    67	    const { nodes, edges, groups } = layoutGraphSync(graph)
+    68	    const style = resolveRenderStyle()
+    69	    const forks = edges.filter(edge => edge.source === 'C')
+    70	    // The incoming route is explicitly centred so the test isolates the
+    71	    // writer from upstream differences in which port a layout happens to use.
+    72	    const incoming = edges.find(edge => edge.target === 'C')!
+    73	    const start = sourceEmissionPort(nodes.find(node => node.id === 'A')!, direction, 0, 1)
+    74	    const end = targetFlowPort(nodes.find(node => node.id === 'C')!, direction)
+    75	    const { main } = layoutFlow(direction)
+    76	    incoming.points = doglegBetween(start, end, direction, (start[main] + end[main]) / 2)
+    77	    const bundled = bundleEdgePaths(edges, nodes, groups, graph.direction, style)
+    78	    expect(forks.length).toBe(2)
+    79	    expect(forks.every(edge => bundled.has(edge))).toBe(true)
+    80	    const first = forks[0]!, second = forks[1]!
+    81	    const trunk = first.points.slice(0, 2).map(point => ({ ...point }))
+    82	    expect(second.points.slice(0, 2)).toEqual(trunk)
+    83	    expect(Math.hypot(trunk[1]!.x - trunk[0]!.x, trunk[1]!.y - trunk[0]!.y)).toBeGreaterThan(0)
+    84	    applySymmetricFanoutEmissions(nodes, edges, groups, graph, bundled, style)
+    85	    expect(first.points.slice(0, 2)).toEqual(trunk)
+    86	    expect(second.points.slice(0, 2)).toEqual(trunk)
+    87	    expect(first.points[0]).not.toBe(second.points[0])
+    88	    expect(first.points[1]).not.toBe(second.points[1])
+50:  applySymmetricFanoutEmissions,
+1444:    id: 'applySymmetricFanoutEmissions', doc: 're-route small equivalent fan-outs symmetrically; mark bundle-owned',
+1447:    run: c => { applySymmetricFanoutEmissions(c.nodes, c.edges, c.groups, c.graph, c.bundled, c.style) },
+1451:    after: ['applySymmetricFanoutEmissions'], mutates: ['edges'],
+1467:    after: ['applySymmetricFanoutEmissions', 'applySymmetricParallelEdgeLanes', 'applyParallelDuplicateLanes'],

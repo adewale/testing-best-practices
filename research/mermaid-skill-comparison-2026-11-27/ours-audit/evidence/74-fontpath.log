@@ -1,0 +1,156 @@
+    50	import { NodeResourceResolver } from '../node-resource-resolver.ts'
+    51	import { verifyRegisteredEmbeddedFontResources } from './embedded-font-resources.ts'
+    52	import { snapshotHostBackendPolicy, type HostBackendPolicy } from '../scene/backend.ts'
+    53	import { snapshotTextMeasurementProfile, type TextMeasurementProfile } from '../text-measurement-profile.ts'
+    54	export type { PngFontWarning, PngRasterWarning } from '../shared/png-font-warnings.ts'
+    55	export type { PngLegibilityWarning } from '../shared/png-legibility-warnings.ts'
+    56	
+    57	export interface PngOptions extends RenderOptions, PngOutputPolicyInput {
+    58	  /** Receives glyph-coverage and legibility warnings instead of the default
+    59	   *  stderr write. Warnings never change the PNG bytes; identical inputs
+    60	   *  render identically whether or not a handler is installed. */
+    61	  onWarning?: (warning: PngRasterWarning) => void
+    62	}
+    63	
+    64	/**
+    65	 * Locate and integrity-check the installed font manifest. Rasterization gets
+    66	 * the exact verified file set rather than trusting every file in a directory.
+    67	 */
+    68	interface BundledFonts {
+    69	  readonly snapshotDirectory: string
+    70	  readonly buffers: readonly Uint8Array[]
+    71	  readonly files: readonly string[]
+    72	}
+    73	
+    74	let cachedBundledFonts: BundledFonts | undefined
+    75	let cleanupRegistered = false
+    76	
+    77	function materializeVerifiedFontSnapshot(
+    78	  resources: ReturnType<NodeResourceResolver['verifyInstalled']>['resources'],
+    79	): BundledFonts {
+    80	  // resvg's synchronous N-API binding accepts paths rather than font buffers.
+    81	  // Materialize private files from the verified snapshots, never from the
+    82	  // original package paths; coverage continues to consume the buffers below.
+    83	  const snapshotDirectory = mkdtempSync(join(tmpdir(), 'agentic-mermaid-fonts-'))
+    84	  try {
+    85	    const buffers = resources.map(resource => resource.readBytes())
+    86	    const files = buffers.map((bytes, index) => {
+    87	      const file = join(snapshotDirectory, `${index}-${basename(resources[index]!.entry.path)}`)
+    88	      writeFileSync(file, bytes, { flag: 'wx', mode: 0o400 })
+    89	      return file
+    90	    })
+    91	    return Object.freeze({
+    92	      snapshotDirectory,
+    93	      buffers: Object.freeze(buffers),
+    94	      files: Object.freeze(files),
+    95	    })
+    96	  } catch (error) {
+    97	    try { rmSync(snapshotDirectory, { recursive: true, force: true }) } catch { /* retain the original materialization error */ }
+    98	    throw error
+    99	  }
+   100	}
+   101	
+   102	function resolveBundledFonts(): BundledFonts {
+   103	  if (cachedBundledFonts) return cachedBundledFonts
+   104	  // import.meta.url works under Bun + Node ESM
+   105	  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   106	  const here = typeof (import.meta as any).url === 'string' ? fileURLToPath((import.meta as any).url) : __filename
+   107	  let dir = dirname(here)
+   108	  for (let i = 0; i < 6; i++) {
+   109	    const candidate = join(dir, 'assets', 'fonts')
+   110	    if (existsSync(candidate)) {
+   111	      const verified = new NodeResourceResolver(dir, RESOURCE_MANIFEST).verifyInstalled()
+   112	      cachedBundledFonts = materializeVerifiedFontSnapshot(verified.resources)
+   113	      break
+   114	    }
+   115	    const parent = dirname(dir)
+   116	    if (parent === dir) break
+   117	    dir = parent
+   118	  }
+   119	  if (!cachedBundledFonts) {
+   120	    const embedded = verifyRegisteredEmbeddedFontResources(RESOURCE_MANIFEST)
+   121	    if (embedded) cachedBundledFonts = materializeVerifiedFontSnapshot(embedded.resources)
+   122	  }
+   123	  if (!cachedBundledFonts) throw new Error('RESOURCE_MISSING: required bundled font manifest could not be located')
+   124	  if (!cleanupRegistered) {
+   125	    cleanupRegistered = true
+   126	    process.once('exit', () => {
+   127	      try {
+   128	        if (cachedBundledFonts) rmSync(cachedBundledFonts.snapshotDirectory, { recursive: true, force: true })
+   129	      } catch {
+   130	        // Process exit must not be made exceptional by best-effort cleanup.
+   131	      }
+   132	    })
+   133	  }
+   134	  return cachedBundledFonts
+   135	}
+src/agent/png.ts:77:function materializeVerifiedFontSnapshot(
+src/agent/png.ts:81:  // Materialize private files from the verified snapshots, never from the
+src/agent/png.ts:112:      cachedBundledFonts = materializeVerifiedFontSnapshot(verified.resources)
+src/agent/png.ts:121:    if (embedded) cachedBundledFonts = materializeVerifiedFontSnapshot(embedded.resources)
+src/agent/png.ts:239:      // These private files were materialized from the exact verified byte
+src/agent/embedded-font-resources.ts:21: * Reconstruct a private manifest-shaped package root from opaque embedded-file
+src/agent/embedded-font-resources.ts:44:    const materialized = new Set<string>()
+src/agent/embedded-font-resources.ts:54:      if (materialized.has(file.manifestPath)) {
+src/agent/embedded-font-resources.ts:75:      materialized.add(file.manifestPath)
+    20	
+    21	function sha256(bytes: Uint8Array): string {
+    22	  return createHash('sha256').update(bytes).digest('hex')
+    23	}
+    24	
+    25	describe('PNG in-process determinism', () => {
+    26	  test('5 renders of same fixture produce byte-identical output', async () => {
+    27	    // Warm-up render — eliminates first-call WASM/napi init differences
+    28	    await renderMermaidPNG(FIXTURE)
+    29	
+    30	    const renders: Uint8Array[] = []
+    31	    for (let i = 0; i < 5; i++) {
+    32	      renders.push(await renderMermaidPNG(FIXTURE))
+    33	    }
+    34	    const hashes = renders.map(sha256)
+    35	
+    36	    // All 5 hashes identical via Set size === 1
+    37	    expect(new Set(hashes).size).toBe(1)
+    38	  })
+    39	
+    40	  test('determinism holds across different fixtures (no cross-talk)', async () => {
+    41	    const a = await renderMermaidPNG('flowchart LR\n  A --> B')
+    42	    const b = await renderMermaidPNG('flowchart LR\n  X --> Y')
+    43	    expect(sha256(a)).not.toBe(sha256(b))
+    44	    // Re-render the first one — should match its earlier hash
+    45	    const a2 = await renderMermaidPNG('flowchart LR\n  A --> B')
+    46	    expect(sha256(a)).toBe(sha256(a2))
+    47	  })
+    48	
+    49	  test('determinism holds across scale variants', async () => {
+    50	    const s1a = await renderMermaidPNG('flowchart LR\n  A --> B', { scale: 1 })
+    51	    const s1b = await renderMermaidPNG('flowchart LR\n  A --> B', { scale: 1 })
+    52	    const s2a = await renderMermaidPNG('flowchart LR\n  A --> B', { scale: 2 })
+    53	    expect(sha256(s1a)).toBe(sha256(s1b))
+    54	    expect(sha256(s1a)).not.toBe(sha256(s2a))
+    55	  })
+    56	})
+    57	
+    58	describe('styled PNG', () => {
+    59	  test('style + seed thread through to rasterization deterministically', async () => {
+    60	    const a = await renderMermaidPNG(FIXTURE, { style: 'hand-drawn', seed: 1 })
+    61	    const b = await renderMermaidPNG(FIXTURE, { style: 'hand-drawn', seed: 1 })
+    62	    expect(sha256(a)).toBe(sha256(b))
+    63	    // A different seed re-rolls the ink; crisp differs from styled entirely.
+src/text-metrics.ts:224: * back from Inter to a wider system font. Inter and DejaVu browser probes put
+src/agent/png.ts:247:      // DejaVu still covers glyphs Inter lacks (arrows, math, Armenian, …).
+docs/custom-fonts.md:279:2. DejaVu Sans as a per-glyph fallback for symbols Inter lacks.
+docs/custom-fonts.md:293:uses Inter, with DejaVu available for per-glyph fallback.
+     1	import { resolve } from 'node:path'
+     2	
+     3	const ROOT = resolve(import.meta.dir, '../..')
+     4	const patterns = [
+     5	  'src/__tests__/**/*.test.ts',
+     6	  'eval/family-usage/count.test.ts',
+     7	  'eval/endpoint-marker/architecture-metrics.test.ts',
+     8	]
+     9	
+    10	/** Canonical collection, shared by the unit runner and order diagnostics. */
+    11	export function unitTestFiles(): string[] {
+    12	  return [...new Set(patterns.flatMap(pattern => [...new Bun.Glob(pattern).scanSync({ cwd: ROOT })]))].sort()
+    13	}

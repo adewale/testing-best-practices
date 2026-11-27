@@ -1,0 +1,58 @@
+270:    ? `<style>\n  .journey-task-text { font-family: ${visual.taskFontFamily}; }\n</style>`
+588:    open: `<g class="journey-task" data-id="${escapeAttr(task.id)}" data-score="${task.score}"${sectionAttr}${actorAttr}>`,
+622:    attributes: { className: 'journey-task-box' },
+640:    attributes: { className: 'journey-task-text' },
+   116	  test('Latin labels plus DejaVu-covered symbols produce no warning', () => {
+   117	    // ∮ is missing from Inter but present in bundled DejaVu Sans — the
+   118	    // coverage check must honor the whole bundled fallback chain.
+   119	    const { warnings } = collectWarnings('flowchart LR\n  A[Contour ∮ integral] --> B[plain]')
+   120	    expect(warnings).toEqual([])
+   121	  })
+   122	
+   123	  test('loadSystemFonts: true keeps a qualified known-font warning', () => {
+   124	    const { png, warnings } = collectWarnings(CJK_SRC, { loadSystemFonts: true })
+   125	    expect(png.length).toBeGreaterThan(100)
+   126	    expect(warnings.some(w => w.script === 'CJK')).toBe(true)
+   127	    expect(warnings[0]!.message).toContain('installed system font may cover')
+   128	    expect(warnings[0]!.message).not.toContain('will draw as')
+   129	  })
+   130	
+   131	  test('warnings are deterministic across identical renders', () => {
+   132	    const a = collectWarnings(CJK_SRC)
+   133	    const b = collectWarnings(CJK_SRC)
+   134	    expect(a.warnings).toEqual(b.warnings)
+   135	    const hash = (png: Uint8Array) => createHash('sha256').update(png).digest('hex')
+   136	    expect(hash(a.png)).toBe(hash(b.png))
+   137	  })
+   138	})
+   139	
+   140	describe('fontDirs escape hatch', () => {
+   141	  test.skipIf(!HAS_CJK_FONT)('a CJK-capable fontDirs clears the warning and changes the rendered bytes', () => {
+   142	    const bare = collectWarnings(CJK_SRC)
+   143	    const withFonts = collectWarnings(CJK_SRC, { fontDirs: [CJK_FONT_DIR] })
+   144	    expect(withFonts.warnings.filter(w => w.script === 'CJK')).toEqual([])
+   145	    // Real glyphs instead of tofu — the extra directory reached the rasterizer.
+   146	    expect(Buffer.compare(Buffer.from(bare.png), Buffer.from(withFonts.png))).not.toBe(0)
+   147	  })
+   148	})
+   149	
+   150	// ---------------------------------------------------------------------------
+   151	// CLI plumbing: --font-dirs / --system-fonts and the stderr warning channel.
+   152	// ---------------------------------------------------------------------------
+   153	
+   154	function captureCli(argv: string[]): { code: number; out: string; err: string } {
+   155	  const outChunks: string[] = []
+   156	  const errChunks: string[] = []
+   157	  const origOut = process.stdout.write.bind(process.stdout)
+   158	  const origErr = process.stderr.write.bind(process.stderr)
+   159	  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   160	  ;(process.stdout as any).write = (s: unknown) => { outChunks.push(String(s)); return true }
+   161	  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   162	  ;(process.stderr as any).write = (s: unknown) => { errChunks.push(String(s)); return true }
+src/journey/renderer.ts:88:export function renderJourneySvg(
+src/journey/renderer.ts:97:export function lowerJourneyDrawing<T>(
+src/journey/renderer.ts:956:export const lowerJourneyScene = sceneLowering<PositionedJourneyDiagram>(lowerJourneyDrawing)
+src/journey/layout.ts:68:export interface JourneyVisualConfig {
+src/journey/layout.ts:86:export interface JourneyRequestAppearance {
+src/journey/layout.ts:142:export function resolveJourneyRequestAppearance(options: RenderOptions = {}): JourneyRequestAppearance {
+src/journey/layout.ts:176:export function layoutJourneyDiagram(

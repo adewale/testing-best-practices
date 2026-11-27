@@ -1,0 +1,18 @@
+{
+  "label": "oc-cli-repair-fault",
+  "argv": [
+    "bun",
+    "test",
+    "src/__tests__/cli-multi-input.test.ts",
+    "--timeout",
+    "30000"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {},
+  "timeout_seconds": 120,
+  "exit_code": 1,
+  "status": "completed",
+  "duration_seconds": 0.6925757239987433,
+  "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+  "stderr_sha256": "60a1120a63bcbbd2cab18185e2f0fad433351b21a2cc16fcda916af6f34d1efb"
+}

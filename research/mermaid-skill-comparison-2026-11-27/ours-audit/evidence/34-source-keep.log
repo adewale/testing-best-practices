@@ -1,0 +1,164 @@
+src/__tests__/property-source-preservation.test.ts
+src/__tests__/property-source-preserving-edit.test.ts
+src/__tests__/agent-source-preserving-edit.test.ts
+src/__tests__/sdk-preservation-declarations.test.ts
+src/__tests__/testdata/unicode/preserve_order_of_definition.txt
+src/__tests__/testdata/ascii/preserve_order_of_definition.txt
+src/__tests__/property-source-preservation.test.ts:37:    // that read indentation as structure (mindmap, kanban, treemap, ishikawa)
+src/__tests__/property-source-preservation.test.ts:39:    // re-read as several roots. Scaling the indentation keeps every family's
+src/__tests__/property-source-preservation.test.ts:45:          const source = family.build(size, 'canon').replace(/^ +/gm, indent => ' '.repeat(indent.length * scale))
+src/__tests__/property-source-preserving-edit.test.ts:2:// blank lines and uneven indentation. Independent of the projection code:
+src/__tests__/property-source-preserving-edit.test.ts:41:  { weight: 2, arbitrary: fc.tuple(fc.constantFrom('', '  ', '\t'), fc.stringMatching(/^[a-z ]{1,8}$/)).map(([indent, text]) => [`${indent}%% ${text.trim() || 'note'}`]) },
+src/__tests__/property-source-preserving-edit.test.ts:48:).map(([gaps, indents]) => {
+src/__tests__/property-source-preserving-edit.test.ts:50:  family.statements.forEach((statement, index) => lines.push(indents[index]! + statement, ...gaps[index + 1]!))
+src/__tests__/property-source-preserving-edit.test.ts:119:// comment's indentation; a moved line now keeps its authored bytes. The other
+src/__tests__/property-source-preserving-edit.test.ts:133:  test('generated op sequences on commented, unevenly indented diagrams', () => {
+src/__tests__/agent-source-preserving-edit.test.ts:10://   4. new and rewritten lines are spelled and indented as in the reference
+src/__tests__/agent-source-preserving-edit.test.ts:120:// Fragments with untouched messages spelled with spaces, an empty branch and
+src/__tests__/agent-source-preserving-edit.test.ts:133:// Fragments nested two and three deep, indented with tabs and their messages
+src/__tests__/agent-source-preserving-edit.test.ts:171:// indented like them, not like the fragment's opener.
+src/__tests__/agent-source-preserving-edit.test.ts:494:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:495:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:496:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:497:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:498:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:506:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:524:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:538:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:583:[Omitted long matching line]
+src/__tests__/agent-source-preserving-edit.test.ts:654:    const untouched = source.split('\n').filter(line => !touched.includes(line))
+src/__tests__/agent-source-preserving-edit.test.ts:655:    expect(inOrder(untouched, output)).toEqual([])
+src/agent/source-projection.ts:87:  readonly method: 'local' | 'canonical'
+src/agent/mutate.ts:298:export function mutatePreservingSource(d: ParsedDiagram, op: unknown): Result<SourceMutationResult, MutationError> {
+src/agent/mutate.ts:367:  if (whole.ok) return { ...whole.value, preservation: { method: 'local' } }
+src/agent/mutate.ts:378:    if (current !== original && sameProjectedDiagram(current, after)) return { source, diagram: current, preservation: { method: 'local' } }
+     1	// Generated op sequences on generated diagrams with interleaved comments,
+     2	// blank lines and uneven indentation. Independent of the projection code:
+     3	//  - the source-preserving edit succeeds exactly when the canonical edit does;
+     4	//  - each step reads back as the same diagram as the canonical edit of the
+     5	//    same diagram (facts and canonical statements, compared as multisets);
+     6	//  - a step that reports `canonical` returns exactly the canonical source;
+     7	//  - while every step is `local`, every interleaved comment and blank line
+     8	//    survives, in order.
+     9	import { describe, expect, test } from 'bun:test'
+    10	import fc from 'fast-check'
+    11	import { describeMermaidFacts, describeOps, mutateChecked, mutatePreservingSource, parseRegisteredMermaid, serializeMermaid } from '../agent/index.ts'
+    12	import type { MutableFamilyId } from '../agent/mutation-ops.ts'
+    13	import type { ParsedDiagram } from '../agent/types.ts'
+    14	import { fcParameters } from './helpers/fc-parameters.ts'
+    15	
+    16	interface Family {
+    17	  family: MutableFamilyId
+    18	  header: string
+    19	  statements: string[]
+    20	  ids: string[]
+    21	  /** Gaps (0 = before the first statement) inside blocks whose comments the
+    22	   * reader does not admit as structured: ER attribute blocks read as opaque. */
+    23	  quiet?: number[]
+    24	}
+    25	
+    26	// Statements each family's grammar reads one per line, in an order that keeps
+    27	// the diagram valid however comments and blank lines are interleaved.
+    28	const FAMILIES: Family[] = [
+    29	  { family: 'flowchart', header: 'graph TD', statements: ['A["Alpha one"] --> B{Beta?}', 'B -->|yes| C(Gamma):::hot', 'B -- no --> D[Delta]', 'subgraph G["Group title"]', 'E[Eps] --> F', 'end', 'classDef hot fill:#f96;', 'style A fill:#eee'], ids: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'hot', 'A->B'] },
+    30	  { family: 'sequence', header: 'sequenceDiagram', statements: ['participant A as Alice', 'participant B as Bob', 'A ->> B: hello', 'alt ok', 'B -->> A: fine', 'else no', 'B -x A: fail', 'end', 'Note over A,B: done'], ids: ['A', 'B'] },
+    31	  { family: 'class', header: 'classDiagram', statements: ['class Animal {', '+String name', '+eat() void', '}', 'class Dog', 'Animal <|-- Dog : extends', 'note for Dog "Good"', 'class Cat:::pet', 'classDef pet fill:#f9f'], ids: ['Animal', 'Dog', 'Cat', 'pet'] },
+    32	  { family: 'state', header: 'stateDiagram-v2', statements: ['[*] --> Idle', 'Idle --> Run: start', 'state Run {', 'Fast --> Slow', '}', 'Run --> Done: stop', 'Idle: Waiting', 'Done --> [*]'], ids: ['Idle', 'Run', 'Fast', 'Slow', 'Done'] },
+    33	  { family: 'er', header: 'erDiagram', statements: ['CUSTOMER ||--o{ ORDER : places', 'CUSTOMER {', 'string name', 'string email PK', '}', 'ORDER {', 'int id', '}', 'ITEM["Line item"]'], ids: ['CUSTOMER', 'ORDER', 'ITEM'], quiet: [2, 3, 4, 6, 7] },
+    34	  { family: 'gantt', header: 'gantt', statements: ['title Plan', 'dateFormat YYYY-MM-DD', 'section Build', 'Design :des, 2024-01-01, 5d', 'Code :code, after des, 10d', 'section Ship', 'Release :milestone, rel, 2024-01-20, 0d'], ids: ['des', 'code', 'rel'] },
+    35	]
+    36	
+    37	/** One authored line between statements: a comment, a blank line or nothing. */
+    38	const gapArb = fc.oneof(
+    39	  { weight: 3, arbitrary: fc.constant<string[]>([]) },
+    40	  { weight: 1, arbitrary: fc.constantFrom([''], ['', '']) },
+    41	  { weight: 2, arbitrary: fc.tuple(fc.constantFrom('', '  ', '\t'), fc.stringMatching(/^[a-z ]{1,8}$/)).map(([indent, text]) => [`${indent}%% ${text.trim() || 'note'}`]) },
+    42	)
+    43	
+    44	const blankArb = fc.constantFrom<string[]>([], [''])
+    45	const sourceArb = (family: Family) => fc.tuple(
+    46	  fc.tuple(...Array.from({ length: family.statements.length + 1 }, (_, gap) => family.quiet?.includes(gap) ? blankArb : gapArb)),
+    47	  fc.array(fc.constantFrom('', '  ', '    ', '\t'), { minLength: family.statements.length, maxLength: family.statements.length }),
+    48	).map(([gaps, indents]) => {
+    49	  const lines = [family.header, ...gaps[0]!]
+    50	  family.statements.forEach((statement, index) => lines.push(indents[index]! + statement, ...gaps[index + 1]!))
+    51	  return { source: `${lines.join('\n')}\n`, comments: lines.filter(line => line.trim().startsWith('%%') || !line.trim()) }
+    52	})
+    53	
+    54	// Shape-valid ops from each family's published field docs, with every string
+   111	    left.splice(found, 1)
+   112	    return false
+   113	  })
+   114	}
+   115	
+   116	type Case = [MutableFamilyId, { source: string; comments: string[] }, Array<Record<string, unknown>>]
+   117	const gantt = (lines: string[]) => ({ source: `${lines.join('\n')}\n`, comments: lines.filter(line => line.trim().startsWith('%%') || !line) })
+   118	// Reduced counterexamples. The first caught the projection rewriting a moved
+   119	// comment's indentation; a moved line now keeps its authored bytes. The other
+   120	// two caught the property's draft, which wrongly expected comment order to
+   121	// survive a reorder: Gantt keeps comments as segments of their section, so a
+   122	// moved section may carry them past each other. The last caught the
+   123	// property expecting a comment inside a removed sequence fragment to survive:
+   124	// the fragment's kept lines go with it, as its messages do.
+   125	const EXAMPLES: Array<[Case]> = [
+   126	  [['gantt', gantt(['gantt', '', 'title Plan', 'dateFormat YYYY-MM-DD', '%% a', 'section Build', '%% a', 'Design :des, 2024-01-01, 5d', '%% note', 'Code :code, after des, 10d', 'section Ship', '\t%% a', 'Release :milestone, rel, 2024-01-20, 0d']), [{ kind: 'move_section', from: 0, to: 1 }, { kind: 'add_section', label: 'des' }]]],
+   127	  [['gantt', gantt(['gantt', 'title Plan', '', 'dateFormat YYYY-MM-DD', '', 'section Build', 'Design :des, 2024-01-01, 5d', '%% a', 'Code :code, after des, 10d', 'section Ship', '%% note', 'Release :milestone, rel, 2024-01-20, 0d', '%% a']), [{ kind: 'move_section', from: 1, to: 0 }]]],
+   128	  [['gantt', gantt(['gantt', '%% a', 'title Plan', 'dateFormat YYYY-MM-DD', '', 'section Build', 'Design :des, 2024-01-01, 5d', 'Code :code, after des, 10d', '%% a', 'section Ship', 'Release :milestone, rel, 2024-01-20, 0d', '%% note']), [{ kind: 'move_section', from: 0, to: 1 }, { kind: 'add_task', sectionIndex: 0, label: 'des', end: 'des' }]]],
+   129	  [['sequence', { source: 'sequenceDiagram\nparticipant A as Alice\nparticipant B as Bob\nA ->> B: hello\nalt ok\n%% note\nB -->> A: fine\n\nelse no\n%% note\nB -x A: fail\n%% note\nend\nNote over A,B: done\n%% note\n', comments: ['%% note', '', '%% note', '%% note', '%% note'] }, [{ kind: 'remove_fragment', index: 0 }]]],
+   130	]
+   131	
+   132	describe('source-preserving edits agree with canonical edits', () => {
+   133	  test('generated op sequences on commented, unevenly indented diagrams', () => {
+   134	    let local = 0
+   135	    fc.assert(fc.property(caseArb, ([family, { source, comments }, ops]) => {
+   136	      let current = parse(source), allLocal = true, text = source
+   137	      expect(current.kind).toBe(family)
+   138	      expect(current.body.kind).not.toBe('opaque')
+   139	      for (const op of ops) {
+   140	        const canonical = mutateChecked(current, op)
+   141	        const preserved = mutatePreservingSource(current, op)
+   142	        expect({ op, ok: preserved.ok }).toEqual({ op, ok: canonical.ok })
+   143	        if (!canonical.ok || !preserved.ok) break
+   144	        expect({ op, model: model(parse(preserved.value.source)) }).toEqual({ op, model: model(canonical.value) })
+   145	        if (preserved.value.preservation?.method === 'canonical') {
+   146	          allLocal = false
+   147	          expect(preserved.value.source).toBe(serializeMermaid(canonical.value))
+   148	        } else {
+   149	          expect(preserved.value.preservation).toEqual({ method: 'local' })
+   150	          local++
+   151	        }
+   152	        current = preserved.value.diagram
+   153	        text = preserved.value.source
+   154	      }
+   155	      // A removed fragment takes the comments kept in its branches with it.
+   156	      if (!allLocal || ops.some(op => op.kind === 'remove_fragment')) return
+   157	      const reordered = ops.some(op => /^(?:move|reorder)_/.test(String(op.kind)))
+   158	      const missing = (reordered ? missingAnywhere : missingInOrder)(comments, text.split('\n'))
+   159	      expect({ text, missing }).toEqual({ text, missing: [] })
+   160	    }), fcParameters({ numRuns: 1500, examples: EXAMPLES }))
+   161	    expect(local).toBeGreaterThan(300)
+   162	  }, 180_000)
+   163	})
+59:changing declaration order or state ownership.
+72:Continuations retain their native period owner; a reorder that cannot preserve
+79:Some families are segment-preserving rather than all-or-nothing: sequence keeps `alt`/`opt`/`loop`/`par`/`critical`/`break`/`rect` as typed fragments (with their own read-back and mutation ops, and their `create`/`destroy` lines, notes, activation lines and nested fragments, which every fragment op reaches through an optional `fragmentPath` of `{ fragmentIndex, branchIndex }` steps, and which `move_fragment` moves between branches and the top level with `toFragmentPath`) and top-level `create`/`destroy`, notes and `activate`/`deactivate` lines as typed statements (edited, with message `+`/`-` marks, by `add_activation`, `remove_activation` and `set_message_activation`) while box/autonumber/title and comments ride along verbatim (at top level, or inside a fragment branch beside its typed statements; a kept branch line never holds a message or note), and its top-level message indices stay separate from fragment-message indices (facts state each message's op address as `message#N op [fragmentPath P] [fragmentIndex F branchIndex B] index K`, and each activation line's address and each activation span by the messages around it); a typed edit that would leave a `create`/`destroy` apart from its message, or a deactivation of a participant that is not active, is refused rather than written or balanced by dropping authored lines; gantt keeps calendar directives and click/comment lines as verbatim segments; ER keeps ordered typed and opaque-block segments. Only input that cannot be segmented (e.g. an unbalanced `end`) falls back to a whole-body opaque body.
+94:source-preserving mutation (below) supports four bounded operations on opaque
+100:  member order, including annotations; selecting an annotation is refused.
+159:   siblings; a reordered statement keeps its authored line. Comments, blank
+161:   are copied byte for byte.
+164:   statements. Statement order the facts do not carry (declaration order, for
+165:   example) may follow the authored order. It must also leave no statement
+201:are written in canonical order (`A:::hot & B --> C` less `A --> C` becomes
+211:line naming it, the statement on the first kept line naming it moves verbatim,
+218:where it exists move with it, in order: removing `A --> B` before
+234:classDef moves verbatim to just after the `cssClass`. No such move passes a
+235:statement sharing a word with the one moved, whose order ours may read where
+241:Mermaid 12.2.0 also draws a Class class's paint in statement order, the last
+244:given earlier, whatever the order. The family's `existingTargets` reports such
+256:Typical fallbacks: a move that would reorder kept statements (a note on `S`
+271:- Library batches: `applyOps({ source, ops, mode: 'source-preserving' })`.
+274:- Declarative MCP `mutate`: pass `mode: 'source-preserving'` with `source` and
+279:- Editor adapter: programmatic `applyOps(source, ops, 'source-preserving')`
+282:Batch success includes `mode: 'source-preserving'`, verification diagnostics
+291:output with `am format` keep working; 0.6.0 makes source-preserving the default
+346:existing verbatim contract. Other families keep their existing segmented/opaque

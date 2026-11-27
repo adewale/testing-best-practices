@@ -1,0 +1,17 @@
+src/__tests__/quadrant-style.test.ts:151:      expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: expect.stringContaining('notacolor') } })
+src/__tests__/quadrant-style.test.ts:161:    expect(payload).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', property: 'color', value: 'notacolor' } })
+src/__tests__/quadrant-style.test.ts:162:    expect(projectRenderErrorDiagnostic({ code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: 'forged' }))
+src/__tests__/authored-style-color-admission.test.ts:205:      expect(batch.error).toMatchObject({ code: 'INVALID_STYLE_COLOR', property: 'fill', value: 'notacolor', message: expect.stringContaining('style A: fill "notacolor"') })
+src/__tests__/authored-style-color-admission.test.ts:217:    expect(payload).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', property: 'fill', value: 'notacolor' } })
+src/__tests__/authored-style-color-admission.test.ts:219:    expect(projectRenderErrorDiagnostic({ code: 'INVALID_STYLE_COLOR', message: 'forged', property: 'fill', value: 'notacolor' }))
+268efa1 fix(layout): retain centered through-trunks at internal forks [skip ci]
+4b9d028 Merge origin/main into the AX-assessment branch
+2f7becd Preserve eligible grouped fan-outs with transactional containment checks
+68bd964 Retain grouped targets during fan-out optimization
+834c83d Prepare 0.5.5 release notes
+430178a Name the families each render option really affects
+268efa1 fix(layout): retain centered through-trunks at internal forks [skip ci]
+
+ src/__tests__/fanout-symmetry.test.ts | 30 ++++++++++++++++++++++++++++++
+ src/layout/passes/fanout.ts           | 18 ++++++++++++++++--
+ 2 files changed, 46 insertions(+), 2 deletions(-)

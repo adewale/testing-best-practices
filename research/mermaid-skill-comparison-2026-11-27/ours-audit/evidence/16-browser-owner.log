@@ -1,0 +1,256 @@
+     1	#!/usr/bin/env bun
+     2	import { resolve } from 'node:path'
+     3	import { existsSync } from 'node:fs'
+     4	import { parseArgs } from 'node:util'
+     5	import { BROWSER_CONTRACT_FILES } from './browser-contract-files.ts'
+     6	
+     7	const root = resolve(import.meta.dir, '..')
+     8	const { values } = parseArgs({ options: { shard: { type: 'string' } }, strict: true })
+     9	let contracts = BROWSER_CONTRACT_FILES
+    10	if (values.shard !== undefined) {
+    11	  const match = /^([1-9]\d*)\/([1-9]\d*)$/.exec(values.shard)
+    12	  const index = Number(match?.[1])
+    13	  const total = Number(match?.[2])
+    14	  if (!match || index > total || total > contracts.length) throw new Error('Expected --shard=N/M with 1 <= N <= M <= browser contract count')
+    15	  contracts = contracts.slice(Math.floor((index - 1) * contracts.length / total), Math.floor(index * contracts.length / total))
+    16	  if (contracts.length === 0) throw new Error('Browser shard contains no contracts')
+    17	}
+    18	
+    19	async function run(
+    20	  command: string[],
+    21	  options: { cwd: string; env?: Record<string, string | undefined>; requireTests?: boolean },
+    22	): Promise<void> {
+    23	  console.log(`$ ${command.join(' ')}`)
+    24	  const child = Bun.spawn(command, {
+    25	    cwd: options.cwd,
+    26	    env: { ...process.env, ...options.env },
+    27	    stdout: 'pipe',
+    28	    stderr: 'pipe',
+    29	  })
+    30	  const [stdout, stderr, exitCode] = await Promise.all([
+    31	    new Response(child.stdout).text(),
+    32	    new Response(child.stderr).text(),
+    33	    child.exited,
+    34	  ])
+    35	  if (stdout) process.stdout.write(stdout)
+    36	  if (stderr) process.stderr.write(stderr)
+    37	  if (exitCode !== 0) throw new Error(`Command exited ${exitCode}: ${command.join(' ')}`)
+    38	  if (options.requireTests) {
+    39	    const counts = [...`${stdout}\n${stderr}`.matchAll(/(?:^|\n)\s*(\d+) pass(?:\s|$)/g)]
+    40	    const passed = counts.reduce((total, match) => total + Number(match[1]), 0)
+    41	    if (passed === 0) throw new Error(`Browser contract executed zero passing tests: ${command.join(' ')}`)
+    42	  }
+    43	}
+    44	
+    45	if (process.env.AM_CI_ARTIFACTS === '1') {
+    46	  for (const path of ['website/public/index.html', 'dist/browser.global.js']) {
+    47	    if (!existsSync(resolve(root, path))) throw new Error(`Transferred browser artifact is missing: ${path}`)
+    48	  }
+    49	} else {
+    50	  await run(['bun', 'run', 'website'], { cwd: root })
+    51	}
+    52	for (const contract of contracts) {
+    53	  await run(['bun', 'test', contract.file, '--timeout', '600000'], {
+    54	    cwd: import.meta.dir,
+    55	    env: contract.browserOptIn ? { AM_BROWSER_TESTS: '1' } : undefined,
+    56	    requireTests: true,
+    57	  })
+    58	}
+     1	/**
+     2	 * Page isolation for inline SVG. Two diagrams inlined in one HTML document must
+     3	 * each compute the same paint as when they are alone; before style scoping, a
+     4	 * later diagram's rules repainted earlier diagrams of the same family (the
+     5	 * production Examples page lost 8 of 15 renders once its style gallery loaded).
+     6	 *
+     7	 * Browser lane only (`bun run test:browser`, AM_BROWSER_TESTS=1). AM_CHROMIUM
+     8	 * overrides the pinned browser executable.
+     9	 */
+    10	import { afterAll, beforeAll, describe, expect, test } from 'bun:test'
+    11	import fc from 'fast-check'
+    12	import { fcParameters } from './helpers/fc-parameters.ts'
+    13	import { existsSync } from 'node:fs'
+    14	import { chromium, type Browser, type Page } from 'playwright'
+    15	
+    16	import { EDITOR_EXAMPLES } from '../../editor/examples.ts'
+    17	import { createMermaidRenderer, knownStyles, renderMermaidSVG } from '../index.ts'
+    18	import type { ProfileTextMeasurementInput } from '../text-measurement-profile.ts'
+    19	
+    20	const chromiumExecutable = (() => {
+    21	  const override = process.env.AM_CHROMIUM
+    22	  if (override) {
+    23	    if (!existsSync(override)) throw new Error(`AM_CHROMIUM is set but no executable exists at: ${override}`)
+    24	    return override
+    25	  }
+    26	  try { return existsSync(chromium.executablePath()) ? undefined : null } catch { return null }
+    27	})()
+    28	const describeBrowser = chromiumExecutable !== null && process.env.AM_BROWSER_TESTS === '1'
+    29	  ? describe
+    30	  : describe.skip
+    31	
+    32	const STYLE_NAMES = knownStyles()
+    33	
+    34	interface RenderCase { example: number; style: number }
+    35	
+    36	const caseArb = fc.record({
+    37	  example: fc.integer({ min: 0, max: EDITOR_EXAMPLES.length - 1 }),
+    38	  style: fc.integer({ min: 0, max: STYLE_NAMES.length }),
+    39	})
+    40	
+    41	// Same family in two styles is the case that collided; mix it with arbitrary pairs.
+    42	const pairArb: fc.Arbitrary<[RenderCase, RenderCase]> = fc.oneof(
+    43	  fc.tuple(caseArb, fc.integer({ min: 0, max: STYLE_NAMES.length })).map(([left, style]): [RenderCase, RenderCase] => [left, { example: left.example, style }]),
+    44	  fc.tuple(caseArb, caseArb),
+    45	)
+    46	
+    47	function render(input: RenderCase, idPrefix: string): string {
+    48	  const example = EDITOR_EXAMPLES[input.example]!
+    49	  const style = input.style < STYLE_NAMES.length ? STYLE_NAMES[input.style] : undefined
+    50	  return renderMermaidSVG(example.source, {
+    51	    ...(example.options ?? {}),
+    52	    ...(style ? { style } : {}),
+    53	    idPrefix,
+    54	    embedFontImport: false,
+    55	    security: 'strict',
+    56	  })
+    57	}
+    58	
+    59	const PAINT_PROPERTIES = ['fill', 'stroke', 'stroke-width', 'opacity', 'fill-opacity', 'stroke-opacity', 'font-family', 'font-size', 'font-weight', 'visibility', 'display']
+    60	
+    61	async function paints(page: Page, html: string, containerId: string): Promise<string[]> {
+    62	  await page.setContent(`<!doctype html><html><body>${html}</body></html>`)
+    63	  return page.evaluate(({ id, properties }) => {
+    64	    const root = document.getElementById(id)!.querySelector('svg')!
+    65	    return [root, ...root.querySelectorAll('*')].map(element => {
+    66	      const style = getComputedStyle(element)
+    67	      return `${element.tagName}|${properties.map(name => style.getPropertyValue(name)).join('|')}`
+    68	    })
+    69	  }, { id: containerId, properties: PAINT_PROPERTIES })
+    70	}
+    71	
+    72	let browser: Browser
+    73	
+    74	describeBrowser('inline SVG diagrams do not repaint each other', () => {
+    75	  beforeAll(async () => {
+    76	    browser = await chromium.launch(chromiumExecutable ? { executablePath: chromiumExecutable } : {})
+     1	/**
+     2	 * Editor style switcher — behavioral contract for the style/theme split.
+     3	 *
+     4	 * The style dropdown changes the diagram's LOOK (mark treatment: crisp,
+     5	 * hand-drawn, watercolor, …); the theme dropdown changes its PALETTE; render
+     6	 * precedence stacks them (explicit theme colors win over the style's own
+     7	 * palette). Like the theme switcher, a style change re-renders the artwork
+     8	 * only — the Kiln chrome never moves.
+     9	 *
+    10	 * Serves website/public in the explicit `test:browser` lane and skips the
+    11	 * coverage unit lane. AM_CHROMIUM overrides the pinned browser executable.
+    12	 */
+    13	import { afterAll, beforeAll, describe, expect, test } from 'bun:test'
+    14	import { Buffer } from 'node:buffer'
+    15	import { existsSync } from 'node:fs'
+    16	import { extname, join, normalize } from 'node:path'
+    17	import { deflateRawSync } from 'node:zlib'
+    18	import { chromium, type Browser, type Page } from 'playwright'
+    19	import { serveWithAvailablePort } from '../../e2e/test-port.ts'
+    20	import { DEFAULT_ARCHITECTURE_VISUAL } from '../architecture/config.ts'
+    21	import { inspectPngColorProfile, inspectPngDimensions } from '../output-color-profile.ts'
+    22	import { renderMermaidSVGWithReceipt } from '../index.ts'
+    23	import {
+    24	  SECTION_A_TRANSPORT_FIXTURE,
+    25	  sectionATransportReceiptProjection,
+    26	} from './helpers/section-a-transport-fixture.ts'
+    27	
+    28	const REPO = join(import.meta.dir, '..', '..')
+    29	const SITE = join(REPO, 'website', 'public')
+    30	
+    31	let server: ReturnType<typeof Bun.serve>
+    32	let browser: Browser
+    33	let baseUrl = ''
+    34	
+    35	async function newIsolatedPage(viewport: { width: number; height: number }): Promise<Page> {
+    36	  const context = await browser.newContext({ viewport })
+    37	  return context.newPage()
+    38	}
+    39	
+    40	const chromiumExecutable = (() => {
+    41	  const override = process.env.AM_CHROMIUM
+    42	  if (override) {
+    43	    if (!existsSync(override)) throw new Error(`AM_CHROMIUM is set but no executable exists at: ${override}`)
+    44	    return override
+    45	  }
+    46	  try { return existsSync(chromium.executablePath()) ? undefined : null } catch { return null }
+    47	})()
+    48	const describeBrowser = chromiumExecutable !== null && process.env.AM_BROWSER_TESTS === '1'
+    49	  ? describe
+    50	  : describe.skip
+    51	
+    52	const mime: Record<string, string> = {
+    53	  '.html': 'text/html; charset=utf-8',
+    54	  '.js': 'text/javascript; charset=utf-8',
+    55	  '.css': 'text/css; charset=utf-8',
+    56	  '.svg': 'image/svg+xml',
+    57	  '.png': 'image/png',
+    58	  '.ico': 'image/x-icon',
+    59	}
+    60	
+    61	function fileForPath(pathname: string) {
+    62	  const rel = decodeURIComponent(pathname).replace(/^\/+/, '')
+    63	  const candidate = rel && !rel.endsWith('/') ? rel : `${rel}index.html`
+    64	  const abs = normalize(join(SITE, candidate))
+    65	  if (!abs.startsWith(SITE)) return null
+     1	/**
+     2	 * Editor theme switcher — behavioral contract for the chrome/artwork split.
+     3	 *
+     4	 * The theme dropdown changes what the diagram RENDERS as; it must never retint
+     5	 * the app shell, whose Kiln brand (Stone ground, Pine accent) follows only the
+     6	 * user's light/dark toggle. This drives the real editor bundle in Chromium:
+     7	 * switch Paper → tokyo-night → Paper and assert the diagram's arrowheads track
+     8	 * the render theme while the chrome triplet stays pinned to the brand.
+     9	 *
+    10	 * Serves website/public like website-browser-a11y.test.ts. It runs only in the
+    11	 * explicit `test:browser` lane so the coverage unit lane never starts browser
+    12	 * servers. Set AM_CHROMIUM=/path/to/chrome there to use a system Chromium when
+    13	 * the pinned Playwright browser build is absent (e.g. sandboxed containers).
+    14	 */
+    15	import { afterAll, beforeAll, describe, expect, test } from 'bun:test'
+    16	import { existsSync } from 'node:fs'
+    17	import { extname, join, normalize } from 'node:path'
+    18	import { chromium, type Browser, type Page } from 'playwright'
+    19	import { serveWithAvailablePort } from '../../e2e/test-port.ts'
+    20	
+    21	const REPO = join(import.meta.dir, '..', '..')
+    22	const SITE = join(REPO, 'website', 'public')
+    23	
+    24	let server: ReturnType<typeof Bun.serve>
+    25	let browser: Browser
+    26	let baseUrl = ''
+    27	
+    28	const chromiumExecutable = (() => {
+    29	  const override = process.env.AM_CHROMIUM
+    30	  // An explicit override that points nowhere is a broken opt-in — fail loudly
+    31	  // rather than describe.skip, or a typo'd path masquerades as a green run.
+    32	  if (override) {
+    33	    if (!existsSync(override)) throw new Error(`AM_CHROMIUM is set but no executable exists at: ${override}`)
+    34	    return override
+    35	  }
+    36	  try { return existsSync(chromium.executablePath()) ? undefined : null } catch { return null }
+    37	})()
+    38	const describeBrowser = chromiumExecutable !== null && process.env.AM_BROWSER_TESTS === '1'
+    39	  ? describe
+    40	  : describe.skip
+    41	
+    42	const mime: Record<string, string> = {
+    43	  '.html': 'text/html; charset=utf-8',
+    44	  '.js': 'text/javascript; charset=utf-8',
+    45	  '.css': 'text/css; charset=utf-8',
+    46	  '.svg': 'image/svg+xml',
+    47	  '.png': 'image/png',
+    48	  '.ico': 'image/x-icon',
+    49	}
+    50	
+    51	function fileForPath(pathname: string) {
+    52	  const rel = decodeURIComponent(pathname).replace(/^\/+/, '')
+    53	  const candidate = rel && !rel.endsWith('/') ? rel : `${rel}index.html`
+    54	  const abs = normalize(join(SITE, candidate))
+e2e/browser-contract-files.ts:20:  Object.freeze({ file: '../src/__tests__/svg-style-isolation-browser.test.ts', browserOptIn: true }),
+e2e/browser-contract-files.ts:21:  Object.freeze({ file: '../src/__tests__/marker-raster-parity-browser.test.ts', browserOptIn: true }),
+e2e/run-browser-contracts.ts:55:    env: contract.browserOptIn ? { AM_BROWSER_TESTS: '1' } : undefined,

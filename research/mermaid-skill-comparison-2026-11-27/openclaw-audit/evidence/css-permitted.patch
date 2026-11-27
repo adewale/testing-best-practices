@@ -1,0 +1,13 @@
+diff --git a/website/source/assets/styles.css b/website/source/assets/styles.css
+index 82520c7..b96c8e4 100644
+--- a/website/source/assets/styles.css
++++ b/website/source/assets/styles.css
+@@ -26,7 +26,7 @@
+      tracks the shader mid. A --m-sweep darker than the chip keeps the sweep
+      visible on a light chip. (Tonal alt: --brand-pine #2E9E7E, --brand-on
+      #DEF4EC, --m-deep #257E63, --m-mid #2E9E7E, --m-sweep #BFE9D8.) */
+-  --brand-pine: #6FC2A2;   /* chip fallback ≈ the shader mid */
++  --brand-pine: rgb(111 194 162);   /* chip fallback ≈ the shader mid */
+   --brand-on:   #0A4434;   /* the graph glyph — deep forest */
+   --m-deep:     #5CB897;   /* shader gradient, foot */
+   --m-mid:      #79C9AB;   /* shader gradient, head */

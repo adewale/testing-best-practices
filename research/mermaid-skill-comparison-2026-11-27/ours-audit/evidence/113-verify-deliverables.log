@@ -1,0 +1,9 @@
+local report links 58 valid; human full/partial files 20 53
+4 findings have complete evidence links; 116 command entries before this final check
+color-test-request-fix.patch 0 
+fallback-only-fonts.patch 0 
+interior-label-assertion.patch 0 
+missing-all-fonts.patch 0 
+normalized-line-endings.patch 0 
+terminal-error-wrapping.patch 0 
+report words 1748

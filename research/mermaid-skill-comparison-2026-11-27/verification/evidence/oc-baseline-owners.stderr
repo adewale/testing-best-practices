@@ -1,0 +1,81 @@
+
+src/__tests__/chrome-token-lockstep.test.ts:
+(pass) editor and site chrome share one brand system > light chrome triplet matches across site CSS, editor CSS, and rendering.js [2.39ms]
+(pass) editor and site chrome share one brand system > brand chip tokens match [0.09ms]
+(pass) editor and site chrome share one brand system > dark chrome triplet matches editor CSS and rendering.js; its accent is the brand pine [1.04ms]
+(pass) editor and site chrome share one brand system > functional hues match in both polarities [0.21ms]
+(pass) editor and site chrome share one brand system > success stays a distinct hue from the pine accent (shipped hex, both polarities) [1.06ms]
+(pass) editor and site chrome share one brand system > shared scale tokens match: radii, motion, hairline mix [0.36ms]
+
+src/__tests__/layout-bundle-proposals.test.ts:
+(pass) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [155.89ms]
+(pass) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [26.90ms]
+(pass) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [26.64ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB plain [2.30ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB caption [0.10ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB colour [0.08ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB width [0.08ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB classes [0.12ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB marker [0.14ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB no-heads [0.65ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT plain [1.14ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT caption [0.18ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT colour [0.14ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT width [0.08ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT classes [0.04ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT marker [0.21ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT no-heads [0.41ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR plain [0.99ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR caption [0.05ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR colour [0.03ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR width [0.05ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR classes [0.04ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR marker [0.04ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR no-heads [0.83ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL plain [0.88ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL caption [0.08ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL colour [0.08ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL width [0.03ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL classes [0.05ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL marker [0.06ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL no-heads [0.26ms]
+(pass) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.49ms]
+(pass) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.15ms]
+(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.35ms]
+(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.08ms]
+(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 1px [0.35ms]
+(pass) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.46ms]
+(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: dense mesh [401.93ms]
+(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: detached feedback [11.79ms]
+(pass) bounded generic bundle proposals > only the selected placement compares an unbundled proposal and it reuses that ELK result [264.19ms]
+(pass) bounded generic bundle proposals > an ordinary alternative failure retains the certified bundled proposal [113.12ms]
+(pass) bounded generic bundle proposals > parallel edges keep their specialized lanes instead of buying fewer proper crossings with ambiguous contacts [15.42ms]
+(pass) bounded generic bundle proposals > clean symmetric fans, placement-only calls and graphs over the work bound skip the second pipeline [153.22ms]
+
+src/__tests__/cli-multi-input.test.ts:
+(pass) #930 pathname watch lifecycle > observes atomic rename-over saves and subsequent writes to the replacement inode [115.59ms]
+(pass) #930 pathname watch lifecycle > metadata polling observes changes when the host event source stays silent [31.02ms]
+(pass) #959 multi-input rendering > renders multiple files, emits a results array, skips bad ones [61.87ms]
+(pass) #959 multi-input rendering > multi-input json parse errors expose structured details, not stringified blobs [10.12ms]
+(pass) #959 multi-input rendering > single input keeps single-output behavior (no results array) [9.66ms]
+(pass) #959 multi-input rendering > --security strict applies to multi-input SVG renders [15.04ms]
+am render --security accepts only strict
+(pass) #959 multi-input rendering > invalid --security values are rejected instead of silently using default mode [0.92ms]
+am render --watch accepts exactly one input file
+(pass) #959 multi-input rendering > --watch rejects multiple inputs instead of doing a one-shot multi-render [1.29ms]
+(pass) #930 watch frame (the step every --watch change runs) > reflects file changes on re-invocation [18.08ms]
+(pass) #930 watch frame (the step every --watch change runs) > a frame reports each ineffective config field once, before its output [44.64ms]
+(pass) #930 watch frame (the step every --watch change runs) > strict SVG option applies to the watch frame [6.63ms]
+(pass) #930 watch frame (the step every --watch change runs) > a failed frame prints the family diagnostic, as JSON under --json and as one line otherwise [6.21ms]
+am render --format png does not support --watch; run non-watch PNG renders with --output <file.png>
+(pass) #930 watch frame (the step every --watch change runs) > watch mode rejects PNG instead of writing SVG to a PNG path [0.68ms]
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+(pass) #930 watch frame (the step every --watch change runs) > PNG rejects non-positive and non-finite scales as argument errors [3.55ms]
+
+ 63 pass
+ 0 fail
+ 516 expect() calls
+Ran 63 tests across 3 files. [1.87s]

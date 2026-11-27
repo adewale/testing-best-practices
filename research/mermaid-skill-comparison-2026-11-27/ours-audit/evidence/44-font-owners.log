@@ -1,0 +1,58 @@
+src/agent/png.ts:4:// Uses @resvg/resvg-js (napi-rs build, pinned 2.6.2) for deterministic
+src/agent/png.ts:12:// - SVG input rendered with embedFontImport: false so resvg doesn't fetch
+src/agent/png.ts:19:// What's NOT tested: direct x86_64-vs-ARM64 byte equality, resvg version drift
+src/agent/png.ts:28:import type { Resvg } from '@resvg/resvg-js'
+src/agent/png.ts:35:import { prepareResvgMarkerOrientation } from '../resvg-marker-orientation.ts'
+src/agent/png.ts:80:  // resvg's synchronous N-API binding accepts paths rather than font buffers.
+src/agent/png.ts:195:  // SVG input: embedFontImport=false so resvg doesn't try to fetch from
+src/agent/png.ts:232:  const resvgOpts: ConstructorParameters<typeof Resvg>[1] = {
+src/agent/png.ts:235:    // dimensions. Rendering at zoom 1 avoids resvg-specific ratio rounding.
+src/agent/png.ts:241:      fontFiles: [...bundledFonts.files],
+src/agent/png.ts:242:      fontDirs: [...outputPolicy.fonts.callerDirectories],
+src/agent/png.ts:246:      // boxes. resvg falls back per-glyph across every loaded font, so
+src/agent/png.ts:254:    ? require('@resvg/resvg-js')
+src/agent/png.ts:255:    : createRequire(import.meta.url)('@resvg/resvg-js')) as typeof import('@resvg/resvg-js')
+src/agent/png.ts:257:    const rasterized = applyPngColorProfile(new NativeResvg(svg, resvgOpts).render().asPng())
+src/agent/png.ts:268:  // resvg returns Buffer in Node; ensure we surface Uint8Array consistently.
+src/custom-font-geometry.ts:141:    size: numericAttribute(element.attrs, 'font-size', parent.size),
+src/__tests__/png-fonts.test.ts:106:    expect(cjk?.message).toContain('fontDirs')
+src/__tests__/png-fonts.test.ts:140:describe('fontDirs escape hatch', () => {
+src/__tests__/png-fonts.test.ts:141:  test.skipIf(!HAS_CJK_FONT)('a CJK-capable fontDirs clears the warning and changes the rendered bytes', () => {
+src/__tests__/png-fonts.test.ts:143:    const withFonts = collectWarnings(CJK_SRC, { fontDirs: [CJK_FONT_DIR] })
+src/png-contract.ts:44:  fontDirs?: readonly string[]
+src/png-contract.ts:85:  fontDirs: NATIVE_PNG_POLICY_FIELD,
+src/png-contract.ts:147:    fontDirs: {
+src/png-contract.ts:148:      ...PNG_OUTPUT_OPTION_FIELD_ROLES.fontDirs,
+src/png-contract.ts:293:/** Read the root SVG user-space bounds that font-size and other presentation
+src/png-contract.ts:374: * Native and WASM resvg then render at zoom 1, while browser Canvas receives
+src/png-contract.ts:395:  // Pin resvg to the same mapping, including the 1px secondary-dimension edge
+src/png-contract.ts:548: * by Canvas and resvg. Keep this narrower admission contract separate from the
+src/png-contract.ts:666:    if (input.fontDirs !== undefined) {
+src/png-contract.ts:667:      const directories = input.fontDirs
+src/png-contract.ts:673:        throw new TypeError(`PNG fontDirs must be a dense array of at most ${MAX_PNG_FONT_DIRECTORIES} paths`)
+src/png-contract.ts:682:            `PNG fontDirs must be a dense array of non-empty paths no longer than ${MAX_PNG_FONT_DIRECTORY_LENGTH} characters`,
+src/png-contract.ts:743:  readonly engine: 'resvg'
+src/png-contract.ts:753:  engine: 'resvg',
+src/png-contract.ts:761:  engine: 'resvg',
+src/png-contract.ts:778:    engine: 'resvg',
+assets/fonts/FONT-LICENSES.md
+assets/fonts/Inter-Medium.ttf
+assets/fonts/Inter-Bold.ttf
+assets/fonts/ArchitectsDaughter.ttf
+assets/fonts/Inter-SemiBold.ttf
+assets/fonts/EBGaramond.ttf
+assets/fonts/Inter-Regular.ttf
+assets/fonts/ShareTechMono.ttf
+assets/fonts/DejaVuSans.ttf
+assets/fonts/DejaVuSans-Bold.ttf
+assets/fonts/Caveat.ttf
+src/__tests__/theme-font-variable.test.ts
+src/__tests__/custom-font-geometry.test.ts
+src/__tests__/png-fonts.test.ts
+src/__tests__/embedded-font-resources.test.ts
+src/__tests__/website-font-subsets.test.ts
+f9ec8c1 Pin GitHub Actions and enforce immutable references (#603)
+007dc14 Use Bun 1.4.4 for CI and bootstrap installs
+307e3cc Keep the editor child deadline within its declared test budget
+README.md:216:- [Fonts in custom styles](./docs/custom-fonts.md) — font selection, SVG declarations, PNG directories, fallbacks, and browser usage.
+docs/features.md:57:[Omitted long matching line]

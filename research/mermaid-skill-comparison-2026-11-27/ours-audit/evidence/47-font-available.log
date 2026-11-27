@@ -1,0 +1,38 @@
+/usr/bin/fc-list
+Noto Sans Mono CJK KR: /usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc
+Noto Sans Mono CJK JP: /usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc
+Noto Sans Mono CJK HK: /usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc
+Noto Serif CJK SC: /usr/share/fonts/opentype/noto/NotoSerifCJK-Regular.ttc
+Noto Sans Mono CJK SC: /usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc
+Noto Serif CJK TC: /usr/share/fonts/opentype/noto/NotoSerifCJK-Regular.ttc
+Noto Sans Mono CJK TC: /usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc
+Noto Serif CJK JP: /usr/share/fonts/opentype/noto/NotoSerifCJK-Regular.ttc
+Noto Serif CJK HK: /usr/share/fonts/opentype/noto/NotoSerifCJK-Regular.ttc
+Noto Serif CJK KR: /usr/share/fonts/opentype/noto/NotoSerifCJK-Regular.ttc
+Noto Sans CJK JP: /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
+Noto Sans CJK HK: /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
+/usr/local/bin/apt-get
+fonts-wqy-zenhei:
+  Installed: (none)
+  Candidate: (none)
+  Version table:
+W: Unable to read /etc/apt/apt.conf.d/80-applied-apt-retries - open (13: Permission denied)
+.github/workflows/ci.yml:167:        run: sudo apt-get update && sudo apt-get install -y fonts-wqy-zenhei
+.github/workflows/ci.yml:177:      # Keep two isolated workers: subprocess-heavy suites contend at four.
+.github/workflows/ci.yml:213:            ln -s "$GITHUB_WORKSPACE/node_modules" "$layout_base/node_modules"
+.github/workflows/ci.yml:268:            // Each revision gets its own process and module/registry identities.
+.github/workflows/ci.yml:472:    name: Renderer isolation (${{ matrix.os }})
+.github/workflows/ci.yml:619:      - name: Install the editor's requested monospace font
+.github/workflows/ci.yml:622:        # Keep font metrics consistent with the Ubuntu host browser contract.
+.github/workflows/ci.yml:625:          apt-get install -y --no-install-recommends fonts-dejavu-core=2.37-8
+.github/workflows/ci.yml:736:            writeFileSync(out + "/contact-sheet.html", `<!doctype html><html lang="en"><meta charset="utf-8"><title>Render preservation controls</title><style>body{font:14px system-ui;margin:24px}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:24px}h2{font-size:14px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}figure{margin:0}img{width:100%;height:220px;object-fit:contain}</style><h1>Render preservation controls</h1><p>Base ${receipt.base}; head ${receipt.head}.</p><p>These thumbnails are an overview. Open a PNG or <a href="review.html">the full comparison</a> to inspect complete labels and marker contacts. Inputs and options are in <a href="receipt.json">the receipt</a>.</p><main>${cards}</main></html>`);
+.github/workflows/ci.yml:835:      - name: Retain standalone editor module graph and byte counts
+.github/workflows/ci.yml:890:      - name: Retain payload reports and module graphs
+src/journey/renderer.ts:622:    attributes: { className: 'journey-task-box' },
+src/__tests__/journey-theme.test.ts:35:    expect(svg).toContain('class="journey-task-box"')
+src/__tests__/journey-theme.test.ts:47:    expect(svg).toContain('class="journey-task-box"')
+src/__tests__/png-fonts.test.ts:49:  const m = svg.match(/<rect class="journey-task-box" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/)
+src/__tests__/png-fonts.test.ts:50:  if (!m) throw new Error('journey-task-box rect not found in SVG output')
+src/__tests__/section-b-temporal-bindings.test.ts:84:    const taskWidth = (svg: string) => Number(svg.match(/<rect class="journey-task-box"[^>]*\swidth="([^"]+)"/)?.[1])
+15:export function decodePng(png: Uint8Array): DecodedPng {
+26:export function inkColumns(img: DecodedPng, x0: number, x1: number, y0: number, y1: number, threshold = 100): number[] {

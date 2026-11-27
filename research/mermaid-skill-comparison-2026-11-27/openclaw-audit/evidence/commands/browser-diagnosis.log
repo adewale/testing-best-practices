@@ -1,0 +1,10 @@
+6:[pid=3104][err] [3104:3104:1127/143518.056809:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+7:[pid=3104][err] chrome_crashpad_handler: --database is required
+8:[pid=3104][err] Try 'chrome_crashpad_handler --help' for more information.
+9:[pid=3104][err] [3104:3104:1127/143518.068565:FATAL:chrome/browser/process_singleton_posix.cc:315] Socket path too long: /workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/org.chromium.Chromium.Ok2evU/SingletonSocket.
+13:[2m  - [pid=3104][err] [3104:3104:1127/143518.056809:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+14:[2m  - [pid=3104][err] chrome_crashpad_handler: --database is required[22m
+15:[2m  - [pid=3104][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+16:[2m  - [pid=3104][err] [3104:3104:1127/143518.068565:FATAL:chrome/browser/process_singleton_posix.cc:315] Socket path too long: /workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/org.chromium.Chromium.Ok2evU/SingletonSocket.[22m
+-rwxr-xr-x 1 nobody nogroup 5064 Nov  2 03:51 /usr/bin/chromium
+Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)

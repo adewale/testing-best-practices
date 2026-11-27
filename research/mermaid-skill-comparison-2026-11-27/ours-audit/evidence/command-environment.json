@@ -1,0 +1,19 @@
+{
+  "work_directory": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+  "scratch_worktree_during_controls": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+  "runtime_path_prefix": "/workspace/mermaid-skill-comparison-2026-11-27/toolchain/node_modules/.bin:/tmp/test-audit-validation/bin",
+  "bun": "1.4.4 (38afee6c8)",
+  "node": "24.22.3",
+  "private_install": "614 packages installed with the provided lockfile; see dependency-install.log",
+  "runner": "evidence/run.py",
+  "environment_overrides": {
+    "BUN_INSTALL_CACHE_DIR": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/cache",
+    "XDG_CACHE_HOME": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/cache/xdg",
+    "TMPDIR": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/tmp",
+    "CI": "1 unless the exact command overrides it with true",
+    "NO_COLOR": "1"
+  },
+  "runner_convention": "The command field is the exact bash command passed to the local wrapper after PATH was prefixed. It uses bash -o pipefail -c; exit is the process status, and elapsed_seconds is monotonic wall time. Multi-command exploratory reads can end successfully after an earlier path error, which remains in the raw combined output. Code 1 from a read-only rg search may indicate no matches. Python public-API probes print individual errors even when their process exits successfully. Tests ran one at a time in the lane. Each behavioral test, probe and replay used timeout 120s. The canonical Bun per-test setting, when supplied, was --timeout 30000 (30 seconds). No command needed a longer external timeout.",
+  "initialization": "The initial three reads occurred before the runtime prefix had been obtained; they used Python, cat and ls only. Their explicit result metadata is recorded as bootstrap entries. Report authoring, JSON index assembly, bundle verification and progress messages are administrative operations. The ledger is the audit worker\u2019s record, not a centrally audited trace.",
+  "replay": "Create a disposable checkout at base, borrow a compatible private installation and prepend the runtime prefix. Copy evidence/probes/*.ts to the root of that checkout so their source imports resolve. The recorded exploratory command files were named .audit-font-choice.ts, .audit-pixels.ts and .audit-edit.ts. The pixel probe takes its PNG destination as argv[2]. Saved patch files are relative to the checkout. All scratch source changes were discarded after 7,024 checks of Git blob content."
+}

@@ -1,0 +1,3 @@
+# Public source attribution
+
+Agentic Mermaid source excerpts and retained proof artifacts refer to [adewale/agentic-mermaid](https://github.com/adewale/agentic-mermaid/tree/f49196e7f5d6d2f0970a4a76fe62644ee5e9d004), MIT licensed; see LICENSE.Agentic-Mermaid. OpenClaw guidance is retained verbatim from [openclaw/openclaw](https://github.com/openclaw/openclaw/tree/dff00f34e82554ec5afb4422db2540e630a42b1b), MIT licensed; see LICENSE.OpenClaw and openclaw-manifest.json. Our guidance comes from testing-best-practices at 7ea8838f, under this repository's license. Source and guidance hash manifests identify the exact available inputs. Installed dependency trees, credential stores and unrelated/private audits are outside the publication.

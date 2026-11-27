@@ -1,0 +1,15 @@
+{
+  "label": "oc-graph-geometry-baseline",
+  "argv": [
+    "bun",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/evidence/bundle-witness.ts"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {},
+  "timeout_seconds": 120,
+  "exit_code": 0,
+  "status": "completed",
+  "duration_seconds": 0.0840499580008327,
+  "stdout_sha256": "3d90187b7cdc47585c5f05e14a64eec92cc1fc3182408b892584de7b8dbdb9ba",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

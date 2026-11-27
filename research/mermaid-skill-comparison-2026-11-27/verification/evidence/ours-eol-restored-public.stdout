@@ -1,0 +1,3 @@
+{"kind":"LF","method":"local","expected":"flowchart LR\n  A[Bravo] --> B\n  %% keep comment\n  C[Charlie] --> D\n","actual":"flowchart LR\n  A[Bravo] --> B\n  %% keep comment\n  C[Charlie] --> D\n"}
+{"kind":"CRLF","method":"local","expected":"flowchart LR\r\n  A[Bravo] --> B\r\n  %% keep comment\r\n  C[Charlie] --> D\r\n","actual":"flowchart LR\r\n  A[Bravo] --> B\r\n  %% keep comment\r\n  C[Charlie] --> D\r\n"}
+{"kind":"mixed","method":"local","expected":"flowchart LR\r\n  A[Bravo] --> B\n  %% keep comment\r\n  C[Charlie] --> D\n","actual":"flowchart LR\r\n  A[Bravo] --> B\n  %% keep comment\r\n  C[Charlie] --> D\n"}

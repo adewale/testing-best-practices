@@ -1,0 +1,538 @@
+1:# Testing strategy — what we test, how, and why
+17:## Local CI parity
+101:## The central problem: this is a partly non-testable program
+122:## Oracle types and the gates that use them
+136:## 1. Specified oracles — structural correctness
+168:## 2. Derived oracles — goldens and snapshots
+206:## 2a. Registry-derived combinatorial conformance
+246:## 3. Derived oracles — differential corpora
+384:## 4. Metamorphic oracles — relations instead of ground truth
+422:### Seed policy: pinned gates, rolling finders
+505:### Applying Hegel guidance with fast-check
+533:## 5. Pseudo-oracles — do selected seeded faults make the suite fail?
+558:## 6. Heuristic / perceptual oracles — geometry inside human bounds
+603:## 7. Human / model oracles — the axis nothing else covers
+621:## What runs where
+785:## Contract review and completion
+848:### Boundary-contract matrix — lessons applied from the 2026-07 agent audit
+872:#157 and #160, is recorded in
+881:## What makes a good test
+965:## Why the suite is shaped this way
+982:## Honest gaps (current, not aspirational)
+1019:## References
+## Contract review and completion
+
+Before implementing a cross-surface change, put a short contract/evidence table
+in the PR description. For a small change, use a sentence. Each contract states
+observable behavior, its owning producer and consumers, and what could falsify
+it. Choose expectations from public behavior or independent source evidence
+before examining existing assertions. Reuse existing tests and probes; this is
+a review method, not another generated manifest or test-presence gate.
+
+Preserve distinctions until the component that owns the decision can resolve
+them. Examples from PR #470 show why this matters:
+
+| Contract | Distinction to preserve | Evidence at the owning boundary |
+| --- | --- | --- |
+| Worker recovery | An obsolete operation can still report a broken worker; deferred loading differs from an optional rendering failure | Cancel an export while its import fails, then exercise the queued preview and first retry; compare cold and warm receipts. |
+| Deployment recovery | A temporary network failure differs from an old document requesting retired asset URLs | Serve two actual asset generations and preserve the latest draft/settings across explicit reload, including storage/encoding failure. |
+| Benchmark identity | A rendered SVG or equal input count does not establish the requested theme or measured source | Assert active/restored theme identity and exact input/module/config identity; reject invalid resume before overwriting evidence. |
+| Repository matching | Missing metadata differs from explicit unsupported, malformed or conflicting metadata | Enter through raw repository normalization and matching together; include URI ports and scp-style addresses. |
+| Responsibility categories | A known member and valid labels do not establish complete source review | Cite pinned public APIs/authoring flows for assigned roles; leave unreviewed responsibilities explicit. |
+
+Review purposeful transitions and interacting boundaries, rather than every
+combination. Where the change applies, consider cold/warm state, cancellation
+and failure ordering, representation changes, multiple consumers/platforms and
+deployment generations. State exclusions instead of treating untested cases as
+passed. Tests should still protect one contract at its owning boundary; do not
+combine unrelated UI, persistence and export contracts into one test.
+
+For each confirmed finding, identify the failed assumption and trace it from
+raw input through all affected consumers. Distinguish a pre-existing defect
+from one introduced by a repair. Review adjacent paths that share that
+assumption, extend an existing behavioral test where possible, and demonstrate
+red → green for the bug. If only the example is fixed, keep the broader gap
+open. If exhaustive review is infeasible, narrow the claim and state the gap.
+
+When multiple reviewers are requested, assign independently falsifiable
+hypotheses and explicit ownership of interactions, not just folders. One review
+must connect the changed producers to their consumers. Ask reviewers to derive
+expected behavior before reading existing tests; permit no finding and require
+a reproduction for actionable defects. The change author reconciles findings
+against the combined candidate. A severity label or number of agents does not
+replace that reconciliation.
+
+Completion requires resolved confirmed in-scope defects, evidence for the
+declared contracts, disclosed remaining limitations, and successful required CI
+for the exact final head. Record the base/head and dependency revision, link
+the CI run, wait for terminal results, then recheck the current base and PR head.
+Read the base branch's live remote ref: the PR's recorded base commit and the
+workflow event's base SHA can be stale. Inspect the actual CI checkout and its
+parents to confirm which base/head combination ran; the workflow run's head SHA
+alone does not identify its merge checkout.
+After a push, follow the new run. A base update requires a fresh check of the
+combined candidate; after code/dependency changes, requalify affected contracts.
+Retained measurements may apply when their shipped/input bytes are unchanged;
+keep their original revision, date and limits. Never report a pending run as
+ready. The hygiene script reports heuristics, not this completion decision.
+
+Repeat an audit to answer a named unresolved question or examine a material
+change to a contract. Repeating the same prompt until no reviewer finds
+anything is not a stopping rule. New discoveries can reopen an affected
+contract; a clean audit alone neither proves completeness nor invalidates
+sound evidence for other contracts. Do not create more gates or approval
+artifacts merely to certify that the review procedure was followed.
+
+### Boundary-contract matrix — lessons applied from the 2026-07 agent audit
+
+The PR #162 audit exposed a blind spot that family/layout coverage did not
+address: a contract could be correct in one helper and false at another public
+boundary. The review of
+[`adewale/testing-best-practices`](https://github.com/adewale/testing-best-practices)
+led to four concrete changes in how this suite treats those seams:
+
+| Risk boundary | Previous false confidence | Required evidence now |
+|---|---|---|
+| JSON-RPC wire lexemes | hosted integer example only | one shared exact-id codec; property tests over unsafe integer, decimal, exponent, batch, nested-id, sentinel-collision, and malformed-text cases; real local HTTP and installed stdio-bin checks |
+| CLI bootstrap/package | formatter helper unit test | walking-skeleton E2E against the real `am` and MCP source entrypoints in a copied checkout with Bun auto-install explicitly disabled |
+| cache before dispatch | normalized-key examples | non-idempotent `execute` is uncacheable; remaining keys retain the complete raw argument object so a warm valid request cannot mask an invalid one; warm-cache regression tests inject the collision |
+| docs/catalog claims | selected-subset presence checks | ordered exact equality against runtime registries, uniqueness, and existence of every catalog target; public `llms.txt` is checked after generation |
+| sequence semantics | global message count | one shared branch-aware message-context model feeds describe, facts, verify/layout and typed edits; unsupported nested semantics must emit a warning |
+| sockets/proxies/chunks | helper could return early | socket tests fail when bind/startup fails, proxy-origin SSE is read from the real stream, and split UTF-8 chunks are exercised at the byte boundary |
+
+These follow the research's trust-boundary lens, walking-skeleton smoke tests,
+property-based parser contracts, exact doc-sync, fault injection, and
+correctness-by-construction guidance. Shared validators/codecs/context models
+replace repeated per-layer checks; tests remain at the untyped HTTP/stdio/CLI
+boundaries where TypeScript cannot enforce the wire contract.
+
+The dated provenance and prevention analysis, including the reviews of PRs
+#157 and #160, is recorded in
+[`project/agent-interface-contract-audit-2026-07.md`](https://github.com/adewale/agentic-mermaid/blob/f2b3fd0ab50af0841175681f87a0b40090b9c9f5/docs/project/agent-interface-contract-audit-2026-07.md).
+
+The validation rule for future cross-surface changes is: enumerate every
+public consumer first, then require at least one non-vacuous proof at the
+lowest honest tier and one shipped-boundary proof where packaging, transport,
+or generation can change the result. A test that silently returns because its
+environment is unavailable is not evidence for a CI-required capability.
+
+## What makes a good test
+- Before reporting a PR ready, follow CI for the exact final head through
+  completion, investigate failures, and recheck the current base and PR head.
+  A new push invalidates the previous readiness result. A base update requires
+  checking the combined candidate again; requalify affected evidence after
+  code or dependency changes.
+
+### Shared meaning and output-specific geometry
+
+- Share authored identities, typed parent/endpoint references and display
+  interpretation before projection. Keep pixel and terminal-cell layout rules
+  in their owning adapters; a common semantic helper does not prove geometry.
+- Test correspondence and connectivity alongside appearance. Inspect public
+  identities, parents, endpoints and actual owned ink; raster checks cannot
+  detect duplicate IDs or prove that stored ownership/ports describe a real path.
+- Exercise bounded, purposeful combinations: nested containers with reciprocal
+  or parallel edges, wide graphemes beside protected markers, and authored names
+  that resemble generated IDs. Choose cases that challenge interacting rules,
+  rather than duplicating isolated examples or creating another coverage roster.
+- Bind review to the combined candidate and its final dependency revision.
+  After a dependency update, rerun the affected contracts and recheck integration
+  before declaring the candidate audited. An earlier review is evidence only
+  for its recorded revision.
+- Measure execution and download cost separately. Lazy evaluation can avoid
+  computation while retaining code in the initial bundle. Check the actual
+  module/request graph and compressed startup/lazy payloads before claiming a
+  download reduction; report fully consumed receipts as well as text-only work.
+
+## Pull requests — use the `good-pr` skill
+
+Before opening or updating a PR, use the **good-pr** skill
+(<https://github.com/adewale/good-pr>; install with `npx skills add adewale/good-pr`).
+It evaluates a PR across seven dimensions and ships a readiness script and a
+description template. Apply it to every PR in this repo.
+
+The seven dimensions:
+
+1. **Reproduction steps** — reference the issue; give the exact steps/probe a
+   maintainer can run to reproduce the bug and confirm the fix.
+2. **Visual evidence** — for visual/UI changes include captioned before/after
+   renders (generated artifacts preferred). If a geometry change is below visual
+   perceptibility, say so honestly and let the quantitative metric stand as the
+   evidence — do not pad the PR with near-identical screenshots. Attach renders
+   to the PR (uploaded images or a CI artifact) rather than committing new files
+   under `docs/pr-assets/`, and never make a test read PR evidence: the
+   regression protection belongs in a semantic test of the current render.
+3. **Code that fits** — match existing patterns, naming, and comment density; no
+   unrelated refactoring smuggled in.
+4. **Tests that prove the fix** — tests must fail when the fix is reverted.
+   Verify red→green and state the result (e.g. "N tests fail without the fix").
+   For bug fixes, demonstrate the intended failure and passing repair at the
+   owning boundary. The optional `scripts/ci/red-green.ts --base <sha>` diagnostic
+   can help; one failing assertion does not prove every changed contract.
+   Behavior-preserving refactors do not need a failing-base test or opt-out label.
+5. **Scoped and safe** — one concern, minimal diff, full test suite run, risks flagged.
+6. **Standalone description** — what / why / how / testing / risk, understandable
+   without reading the diff.
+7. **Trust** — be honest about readiness, limitations, and any test that is a
+   regression guard rather than a bug-discriminating test.
+
+Do not create a PR unless explicitly asked.
+     1	[test]
+     2	# Determinism: pin the fast-check global seed for every property suite
+     3	# (AM_FC_SEED=random rolls fresh seeds; see docs/testing-strategy.md).
+     4	preload = ["./src/__tests__/fc-seed.preload.ts"]
+     5	# Coverage is opt-in via `bun run test:coverage` (weekly/manual CI).
+     6	# Omit coverage here: an explicit false overrides Bun's --coverage flag.
+     7	# lcov only: the text reporter's giant padded table intermittently kills
+     8	# bun's stdout writer (`error: An internal error occurred (WriteFailed)`,
+     9	# exit 1 with zero test failures) — reproduced twice on CI's piped output
+    10	# (runs 28576001032, 28576303182) and once locally. This bunfig list also
+    11	# overrides any --coverage-reporter CLI flag, so it must be fixed here.
+    12	# Read coverage from coverage/lcov.info.
+    13	coverageReporter = ["lcov"]
+    14	
+    15	# Only measure coverage on production source, not test files or scripts
+    16	coverageSkipTestFiles = true
+     1	[test]
+     2	coverage = false
+     1	name: CI
+     2	
+     3	on:
+     4	  workflow_dispatch:
+     5	    inputs:
+     6	      layout_evidence:
+     7	        description: Generate the extended layout review artifacts
+     8	        type: boolean
+     9	        default: false
+    10	  push:
+    11	    branches: [main]
+    12	  pull_request:
+    13	
+    14	concurrency:
+    15	  group: ci-${{ github.event.pull_request.number || github.ref }}
+    16	  cancel-in-progress: true
+    17	
+    18	jobs:
+    19	  scope:
+    20	    name: Select required checks
+    21	    runs-on: ubuntu-latest
+    22	    outputs:
+    23	      full: ${{ steps.scope.outputs.full }}
+    24	      layout: ${{ steps.scope.outputs.layout }}
+    25	    steps:
+    26	      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+    27	        with:
+    28	          fetch-depth: 0
+    29	      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+    30	        with:
+    31	          bun-version: 1.4.4
+    32	          no-cache: true
+    33	      - name: Classify the changes in the tested checkout
+    34	        id: scope
+    35	        env:
+    36	          REQUEST_LAYOUT: ${{ inputs.layout_evidence == true }}
+    37	        run: |
+    38	          flags=()
+    39	          if [[ "$REQUEST_LAYOUT" == true ]]; then flags+=(--layout-evidence); fi
+    40	          base=''
+    41	          case "$GITHUB_EVENT_NAME" in
+    42	            pull_request)
+    43	              # Checkout's first parent is the actual tested base, including
+    44	              # base updates after the PR's original event snapshot.
+    45	              parents=$(git rev-list --parents -n 1 HEAD)
+    46	              if [[ $(wc -w <<< "$parents") -eq 3 ]]; then base=$(git rev-parse HEAD^1); fi
+    47	              ;;
+    48	            push) base=$(jq -r '.before // ""' "$GITHUB_EVENT_PATH") ;;
+    49	          esac
+    50	          if [[ "$base" =~ ^[0-9a-f]{40}$ ]] && git cat-file -e "$base^{commit}" 2>/dev/null; then
+    51	            git diff --name-only --no-renames -z "$base" HEAD -- | bun scripts/ci/change-scope.ts "${flags[@]}"
+    52	          else
+    53	            # Dispatches (including release qualification), new branches and
+    54	            # missing history always run every required runtime lane.
+    55	            bun scripts/ci/change-scope.ts --full "${flags[@]}" </dev/null
+    56	          fi
+    57	
+    58	  docs:
+    59	    name: Documentation checks
+    60	    needs: scope
+    61	    if: needs.scope.outputs.full == 'false'
+    62	    runs-on: ubuntu-latest
+    63	    steps:
+    64	      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+    65	      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+    66	        with:
+    67	          bun-version: 1.4.4
+    68	          no-cache: true
+    69	      - run: bun install --frozen-lockfile
+    70	      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+    71	        with:
+    72	          node-version: 24
+    73	          package-manager-cache: false
+    74	      - name: Use the publishing npm for package selection
+    75	        run: npm install -g npm@11.18.0 --ignore-scripts
+    76	      - name: Preserve published package immutability without rebuilding
+    77	        run: bun run scripts/ci/published-version.ts --docs-only
+    78	      - name: Check generated facts and execute documented examples
+    79	        run: |
+    80	          bun test --timeout 30000 src/__tests__/doc-blocks.test.ts src/__tests__/doc-cli-commands.test.ts src/__tests__/agent-doc-sync.test.ts src/__tests__/cli-init-agent.test.ts src/__tests__/cli-llms-txt.test.ts
+    81	          bun run scripts/generate-agent-doc-artifacts.ts --check
+    82	          bun run website:check
+    83	          git diff --exit-code
+    84	
+    85	  artifacts:
+    86	    name: Build portable test artifacts
+    87	    needs: scope
+    88	    if: needs.scope.outputs.full == 'true'
+    89	    runs-on: ubuntu-latest
+    90	    steps:
+    91	      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+    92	      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+    93	        with:
+    94	          bun-version: 1.4.4
+    95	          no-cache: true
+    96	      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+    97	        with:
+    98	          node-version: 24
+    99	          package-manager-cache: false
+   100	      - run: bun install --frozen-lockfile
+   101	      - name: Install the publishing npm used for the package manifest
+   102	        run: npm install -g npm@11.18.0 --ignore-scripts
+   103	      - name: Build the portable bundles and website fixture once
+   104	        env:
+   105	          AM_EDITOR_BUILD_METAFILE: ci-editor-metafile.json
+   106	        run: |
+   107	          bun run build
+   108	          bun scripts/site/prepare-website-fixture.ts --reuse-lazy
+   109	      - name: Verify the package, including private-file exclusion
+   110	        run: |
+   111	          mkdir -p skill-evals/private
+   112	          probe=$(mktemp -d skill-evals/private/ci-pack-exclusion-XXXXXX)
+   113	          trap 'rm -rf "$probe"' EXIT
+   114	          printf 'must never ship\n' > "$probe/sentinel.txt"
+   115	          bun run scripts/ci/verify-publish-package.ts --pack-destination ci-release-artifact
+   116	      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+   117	        with:
+   118	          name: portable-test-artifacts
+   119	          path: |
+   120	            dist/
+   121	            website/public/
+   122	            website/src/generated/
+   123	            ci-editor-metafile.json
+   124	          include-hidden-files: true
+   125	          retention-days: 7
+   126	          if-no-files-found: error
+   127	      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+   128	        with:
+   129	          name: verified-test-package
+   130	          path: ci-release-artifact/
+   131	          retention-days: 7
+   132	          if-no-files-found: error
+   133	
+   134	  semantic:
+   135	    needs: scope
+   136	    if: needs.scope.outputs.full == 'true'
+   137	    name: Independent semantic conformance
+   138	    permissions:
+   139	      contents: read
+   140	    uses: ./.github/workflows/modern-mermaid.yml
+   141	
+   142	  unit:
+   143	    needs: [scope, artifacts]
+   144	    if: needs.scope.outputs.full == 'true'
+   145	    name: Unit tests (${{ matrix.shard }})
+   146	    runs-on: ubuntu-latest
+   147	    # Keep runaway tests and runner teardown bounded.
+   148	    timeout-minutes: 20
+   149	    strategy:
+   150	      fail-fast: false
+   151	      matrix:
+   152	        shard: [1/3, 2/3, 3/3]
+   153	
+   154	    steps:
+   155	      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+   156	
+   157	      - name: Setup Bun
+   158	        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+   159	        with:
+   160	          bun-version: 1.4.4
+   161	          no-cache: true
+   162	
+   163	      - name: Install dependencies
+   164	        run: bun install --frozen-lockfile
+   165	
+   166	      - name: Install the CJK coverage fixture
+   167	        run: sudo apt-get update && sudo apt-get install -y fonts-wqy-zenhei
+   168	
+   169	      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+   170	        with:
+   171	          name: portable-test-artifacts
+   172	          path: .
+   173	      - name: Verify the transferred website fixture is usable
+   174	        run: bun scripts/site/prepare-website-fixture.ts --reuse
+   175	
+   176	      # Coverage is a scheduled diagnostic, not a condition for passing tests.
+   177	      # Keep two isolated workers: subprocess-heavy suites contend at four.
+   178	      - name: Run test shard
+   179	        env:
+   180	          AM_WEBSITE_FIXTURE_ROOT: ${{ github.workspace }}
+   181	        run: bun run test -- --shard=${{ matrix.shard }} --parallel=2
+   182	
+   183	  layout-evidence:
+   184	    name: Layout backend review evidence
+   185	    needs: scope
+   186	    if: needs.scope.outputs.layout == 'true' && (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch')
+   187	    runs-on: ubuntu-latest
+   188	    timeout-minutes: 25
+   189	    # Review evidence, not a gate: steps record their outcome and the job ends
+   190	    # green, so a red check on a PR always means a gating lane failed.
+   191	    continue-on-error: true
+   192	    permissions:
+   193	      contents: read
+   194	    steps:
+   195	      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+   196	        with:
+   197	          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+   198	      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+   199	        with:
+   200	          bun-version: 1.4.4
+   201	      - run: bun install --frozen-lockfile
+   202	      - name: Prepare the immutable base for layout review
+   203	        id: base
+   204	        if: github.event_name == 'pull_request'
+   205	        continue-on-error: true
+   206	        env:
+   207	          LAYOUT_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+   208	        run: |
+   209	          layout_base="$RUNNER_TEMP/layout-review-base"
+   210	          git fetch --no-tags --depth=1 origin "$LAYOUT_BASE_SHA"
+   211	          git worktree add --detach "$layout_base" "$LAYOUT_BASE_SHA"
+   212	          if cmp -s bun.lock "$layout_base/bun.lock"; then
+   213	            ln -s "$GITHUB_WORKSPACE/node_modules" "$layout_base/node_modules"
+   214	          else
+   215	            (cd "$layout_base" && bun install --frozen-lockfile)
+   216	          fi
+   217	          echo "LAYOUT_BASE_ROOT=$layout_base" >> "$GITHUB_ENV"
+   218	      - name: Render graph backend comparison
+   219	        id: backends
+   220	        continue-on-error: true
+   221	        env:
+   222	          LAYOUT_REVIEW: ${{ runner.temp }}/layout-backends
+   223	        run: |
+   224	          mkdir -p "$LAYOUT_REVIEW"
+   225	          bun -e '
+   226	            import { renderMermaidPNGWithReceipt, renderMermaidSVGWithReceipt } from "./src/agent/index.ts";
+   227	            import { flowchartTree } from "./eval/shared/graph-fixtures.ts";
+   228	            import { collectSamples } from "./eval/layout-compare/run.ts";
+   229	            import { generatedFlowchartSamples } from "./eval/layout-compare/generated.ts";
+   230	            const fixtures = [
+   231	              ["fan-in-fan-out", await Bun.file("eval/layout-compare/fixtures/fan-in-fan-out.mmd").text()],
+   232	              ["nested-wide-titles", await Bun.file("eval/layout-compare/fixtures/nested-wide-titles.mmd").text()],
+   233	              ["cyclic-labelled-11", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-11.mmd").text()],
+   234	              ["cyclic-labelled-10", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-10.mmd").text()],
+   235	              ["cyclic-labelled-15", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-15.mmd").text()],
+   236	              ["cyclic-labelled-19", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-19.mmd").text()],
+   237	              ["cyclic-labelled-9", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-9.mmd").text()],
+   238	              ["cyclic-labelled-13", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-13.mmd").text()],
+   239	              ["cyclic-labelled-9-chains", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-9-chains.mmd").text()],
+   240	              ["cyclic-labelled-15-chains", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-15-chains.mmd").text()],
+   241	              ["cyclic-labelled-18-cuts", await Bun.file("eval/layout-compare/fixtures/cyclic-labelled-18-cuts.mmd").text()],
+   242	              ["architecture-backends", await Bun.file("eval/layout-compare/fixtures/architecture-backends.mmd").text()],
+   243	              ["class-backends", await Bun.file("eval/layout-compare/fixtures/class-backends.mmd").text()],
+   244	              ["class-compound-backends", await Bun.file("eval/layout-compare/fixtures/class-compound-backends.mmd").text()],
+   245	              ["er-backends", await Bun.file("eval/layout-compare/fixtures/er-backends.mmd").text()],
+   246	              ["er-compound-backends", await Bun.file("eval/layout-compare/fixtures/er-compound-backends.mmd").text()],
+   247	              ["requirement-backends", await Bun.file("eval/layout-compare/fixtures/requirement-backends.mmd").text()],
+   248	              ["tree-300", flowchartTree(300)],
+   249	              ["parallel-label-corridor", "flowchart BT\nn0 --> n6\nn0 -->|edge 4 xxxxxxx| n2\nn0 --> n6"],
+   250	            ];
+   251	            const directory = process.env.LAYOUT_REVIEW;
+   252	            for (const [name, source] of fixtures) for (const backend of ["elk", "agentic"]) {
+   253	              const options = { graphLayout: { backend }, security: "strict" };
+   254	              const pngOptions = { ...options, ...(name === "tree-300" ? { fitTo: { width: 1600 } } : {}) };
+   255	              const rendered = renderMermaidPNGWithReceipt(source, pngOptions);
+   256	              const vector = renderMermaidSVGWithReceipt(source, options);
+   257	              await Bun.write(`${directory}/${name}-${backend}.svg`, vector.svg);
+   258	              await Bun.write(`${directory}/${name}-${backend}.png`, rendered.png);
+   259	              await Bun.write(`${directory}/${name}-${backend}.json`, JSON.stringify({ source, options: pngOptions, receipt: rendered.receipt, svgOptions: options, svgReceipt: vector.receipt, review: name === "tree-300" ? "PNG is an overview; zoom the full SVG for leaf labels and route crossings." : "Inspect labels, arrows and route clearance." }, null, 2));
+   260	            }
+   261	            const samples = collectSamples({ includeStress: true });
+   262	            const advisory = [
+   263	              { name: "class-inheritance", source: samples.find(s => s.id === "corpus/class/0")?.source },
+   264	              { name: "er-tree", source: samples.find(s => s.id === "fixture/stress/er-40-entities.mmd")?.source },
+   265	              { name: "parallel-labels", source: generatedFlowchartSamples({ start: 40, count: 1 })[0].source },
+   266	            ];
+   267	            if (advisory.some(s => !s.source)) throw new Error("Missing layout advisory review input");
+   268	            // Each revision gets its own process and module/registry identities.
+   269	            // Inputs are fixed by the candidate, then replayed unchanged at base.
+   270	            const probe = `
+   271	              const { renderMermaidPNGWithReceipt, renderMermaidSVGWithReceipt, layoutMermaidWithReceipt, measureQuality } = await import(process.cwd() + "/src/agent/index.ts");
+   272	              const revision = new TextDecoder().decode(Bun.spawnSync(["git", "rev-parse", "HEAD"]).stdout).trim();
+   273	              for (const { name, source } of JSON.parse(process.env.LAYOUT_REVIEW_INPUTS)) for (const backend of ["elk", "agentic"]) {
+   274	                const label = process.env.LAYOUT_REVIEW_LABEL;
+   275	                const path = process.env.LAYOUT_REVIEW + "/advisory-" + name + "-" + label + "-" + backend;
+   276	                const options = { graphLayout: { backend }, security: "strict" };
+   277	                try {
+   278	                  const svg = renderMermaidSVGWithReceipt(source, options);
+   279	                  const png = renderMermaidPNGWithReceipt(source, { ...options, fitTo: { width: 1000 } });
+   280	                  const layout = layoutMermaidWithReceipt(source, options);
+     1	name: Qualify canonical CI
+     2	
+     3	on:
+     4	  workflow_call:
+     5	    inputs:
+     6	      commit:
+     7	        type: string
+     8	        required: true
+     9	      required:
+    10	        type: boolean
+    11	        default: true
+    12	    outputs:
+    13	      qualified:
+    14	        value: ${{ jobs.qualify.outputs.qualified }}
+    15	
+    16	permissions:
+    17	  actions: read
+    18	  contents: read
+    19	
+    20	jobs:
+    21	  qualify:
+    22	    runs-on: ubuntu-latest
+    23	    timeout-minutes: 2
+    24	    outputs:
+    25	      qualified: ${{ steps.proof.outputs.qualified }}
+    26	    steps:
+    27	      - name: Require full canonical CI qualification
+    28	        id: proof
+    29	        env:
+    30	          GH_TOKEN: ${{ github.token }}
+    31	          EXPECTED_SHA: ${{ inputs.commit }}
+    32	          REQUIRE_QUALIFICATION: ${{ inputs.required }}
+    33	        run: |
+    34	          runs="$(timeout 20s gh api -X GET \
+    35	            "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs" \
+    36	            -f head_sha="$EXPECTED_SHA" -f branch=main -f status=success -f per_page=100)"
+    37	          eligible_runs="$(jq -r --arg sha "$EXPECTED_SHA" '
+    38	            .workflow_runs[] | select(.head_sha == $sha and .head_branch == "main" and .conclusion == "success")
+    39	            | .id | select(type == "number" and floor == .)
+    40	          ' <<< "$runs")"
+    41	          # The test aggregate requires every runtime lane; CI complete also
+    42	          # checks the selected mode and label-approval maintenance.
+    43	          for run_id in $eligible_runs; do
+    44	            jobs="$(timeout 20s gh api --paginate -X GET \
+    45	              "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/jobs" -f filter=latest -f per_page=100)"
+    46	            qualified="$(jq -s '[.[].jobs[]] as $jobs |
+    47	              all("test", "CI complete"; . as $name |
+    48	                any($jobs[]; .name == $name and .conclusion == "success"))' <<< "$jobs")"
+    49	            if [[ "$qualified" == true ]]; then
+    50	              echo "qualified=true" >> "$GITHUB_OUTPUT"
+    51	              echo "Full canonical CI passed for $EXPECTED_SHA in run $run_id"
+    52	              exit 0
+    53	            fi
+    54	          done
+    55	          echo "qualified=false" >> "$GITHUB_OUTPUT"
+    56	          if [[ "$REQUIRE_QUALIFICATION" == true ]]; then
+    57	            echo "::error::Dispatch full ci.yml on main for $EXPECTED_SHA before publishing or manually deploying."
+    58	            exit 1
+    59	          fi
+    60	          echo "::notice::No full canonical CI qualification exists for $EXPECTED_SHA; deployment skipped."
+    61	          echo "### Deployment skipped: no full canonical CI for $EXPECTED_SHA" >> "$GITHUB_STEP_SUMMARY"

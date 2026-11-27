@@ -1,0 +1,24 @@
+f49196e7f5d6d2f0970a4a76fe62644ee5e9d004
+391
+3512
+!! node_modules/
+?? node_modules
+1.4.4
+229M	../scratch
+556K	../evidence
+240:(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: dense mesh [400.14ms]
+241:(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: detached feedback [11.43ms]
+242:(pass) bounded generic bundle proposals > only the selected placement compares an unbundled proposal and it reuses that ELK result [283.86ms]
+243:(pass) bounded generic bundle proposals > an ordinary alternative failure retains the certified bundled proposal [116.74ms]
+244:(pass) bounded generic bundle proposals > parallel edges keep their specialized lanes instead of buying fewer proper crossings with ambiguous contacts [15.01ms]
+245:(pass) bounded generic bundle proposals > clean symmetric fans, placement-only calls and graphs over the work bound skip the second pipeline [157.79ms]
+247:7 tests failed:
+248:(fail) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [140.93ms]
+249:(fail) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [26.93ms]
+250:(fail) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [24.70ms]
+251:(fail) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [1.15ms]
+252:(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.68ms]
+253:(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.24ms]
+254:(fail) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.68ms]
+256: 36 pass
+257: 7 fail

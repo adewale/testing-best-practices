@@ -1,0 +1,22 @@
+editor/css/variables.css:19:  --brand-pine: #6FC2A2;
+editor/css/variables.css:167:   * copy by chrome-token-lockstep.test.ts. The dark accent IS --brand-pine. */
+editor/css/topbar.css:48:  background: var(--brand-pine);
+website/source/assets/styles.css:25:     the --m-* tokens below; --brand-pine is only the pre-canvas fallback and
+website/source/assets/styles.css:27:     visible on a light chip. (Tonal alt: --brand-pine #2E9E7E, --brand-on
+website/source/assets/styles.css:29:  --brand-pine: #6FC2A2;   /* chip fallback ≈ the shader mid */
+website/source/assets/styles.css:278:.brand .mark { width: 24px; height: 24px; border-radius: var(--radius-sm); background: var(--brand-pine); color: var(--brand-on); display: inline-grid; place-items: center; }
+website/source/pages/skill-workflow.html:16:    <a class="brand" href="home.html"><span class="mark"></span> Agentic&nbsp;Mermaid</a>
+website/source/pages/docs-article.html:26:    <a class="brand" href="home.html"><span class="mark"></span> Agentic&nbsp;Mermaid</a>
+website/source/pages/home.html:17:    <a class="brand" href="home.html"><span class="mark"></span> Agentic&nbsp;Mermaid</a>
+rg: editor/index.html: No such file or directory (os error 2)
+rg: website/source/index.html: No such file or directory (os error 2)
+website/build.ts:84:const rootAssets = new Set(['favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'og-image.png', 'styles.css', 'theme.js', 'shader-mark.js', 'llms.txt', 'agent-instructions.md', 'capabilities.json'])
+website/build.ts:135:  if (/<link rel="stylesheet" href="([^\"]+)"\s*>/.test(html)) {
+website/build.ts:136:    return html.replace(/<link rel="stylesheet" href="([^\"]+)"\s*>/, '<link rel="stylesheet" href="$1">\n' + links)
+website/build.ts:234:  const css = await Bun.file(join(SOURCE_ASSETS, 'styles.css')).text()
+website/build.ts:246:  await emit('styles.css', fontFace + '\n' + css)
+website/build.ts:333:    html = html.replace('</head>', `<link rel="stylesheet" href="/${EXAMPLES_STYLE_REL}">\n</head>`)
+website/build.ts:2479:// the stylesheet it documents; hex appears only as the label under a swatch.
+website/build.ts:2483:<p>The stylesheet separates <strong>brand</strong> (the mark, the grain, the type — constants no palette may set), <strong>palette</strong> (a <code>--bg</code>/<code>--fg</code>/<code>--accent</code> triplet everything else derives from), and <strong>scheme</strong> (light/dark polarity). The seam means a renderer palette can restyle a diagram plate without touching the logo or the shell — the same isolation the editor uses when its palette dropdown changes render output but never the app chrome.</p>
+website/build.ts:2518:<p>Spacing runs a 4px-based scale (<code>--sp-1</code> 4px → <code>--sp-9</code> 56px). Radii come in three sizes plus a pill; nested corners are derived, not matched: <code>inner&nbsp;=&nbsp;outer&nbsp;−&nbsp;border&nbsp;−&nbsp;padding</code>, written as a <code>calc()</code> so the derivation is visible in the stylesheet.</p>
+e2e/mcp-app-preview.e2e.test.ts:256:          background: getComputedStyle(document.body).backgroundColor,

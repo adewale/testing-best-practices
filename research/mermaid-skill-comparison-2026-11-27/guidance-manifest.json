@@ -1,0 +1,138 @@
+{
+  "ours": {
+    "testing-best-practices/SKILL.md": {
+      "sha256": "8002fb7c3c2ff59d854029dc291d468b2e5bf9632d8dbd19a4efdcf9aae406da",
+      "bytes": 26021
+    },
+    "testing-best-practices/references/antipatterns.md": {
+      "sha256": "f6b9c0c1b97ca141e22a377b18b5da1c4239ff9e50ce2c0abc649873839378d6",
+      "bytes": 19262
+    },
+    "testing-best-practices/references/characterization-testing.md": {
+      "sha256": "422b709af86ea5b3e370a965c1efd74b3030eca59e5ad8248ae1c9f403fbdbd4",
+      "bytes": 1223
+    },
+    "testing-best-practices/references/checker-calibration.md": {
+      "sha256": "5b021ceb59fe6ed092505e3152244229f998c4e3cc3954a0ab03efba763c5fe4",
+      "bytes": 5857
+    },
+    "testing-best-practices/references/combinatorial-testing.md": {
+      "sha256": "a17e08e35319d0fbd62f77a9aa041b765dfc9699c2bcd26951567bf2c7362617",
+      "bytes": 10038
+    },
+    "testing-best-practices/references/correctness-by-construction.md": {
+      "sha256": "243e88f050330afa4f3f67a3f44083fc7b579ed37a34fc129f803cde8b5e8a84",
+      "bytes": 18162
+    },
+    "testing-best-practices/references/deterministic-time.md": {
+      "sha256": "949b7a22282aa5bb076149bbd91ef9aa298e4c74264c7c62ad1a77a985fa1027",
+      "bytes": 10510
+    },
+    "testing-best-practices/references/differential-testing.md": {
+      "sha256": "d18bd2488a2bdafcafac17a712bffc3050d197991b766b86feabdd72089b53dd",
+      "bytes": 6753
+    },
+    "testing-best-practices/references/doc-sync-testing.md": {
+      "sha256": "27fce21634942a79d0193a0cf3f001315f582a3a9b3cf94aad59cdf0beb9ff7b",
+      "bytes": 2076
+    },
+    "testing-best-practices/references/exhaustive-testing.md": {
+      "sha256": "2bd3f0ac5258cf52dea244e6bb2e49e42dc93b7b57b9b0a6338078a75bb9eeb9",
+      "bytes": 5799
+    },
+    "testing-best-practices/references/fuzzing.md": {
+      "sha256": "e5b45634d2787cb44c4a8c38d67fbead956236343c7729d876427e8856459335",
+      "bytes": 3082
+    },
+    "testing-best-practices/references/gate-integrity.md": {
+      "sha256": "4f1f8656aa0b16ffef1cf4aecf682bdd1282bfebf67609a9b864fd91d79979fb",
+      "bytes": 11025
+    },
+    "testing-best-practices/references/go.md": {
+      "sha256": "84ac6fb10faa92f99e77031c3361137ebffda0f64b9ac77fc8db61b170a31ad7",
+      "bytes": 9883
+    },
+    "testing-best-practices/references/golden-file-testing.md": {
+      "sha256": "c9a38aaea9711191dabf82fa615168141ad3dca71f5d35073210726d6de7c7a4",
+      "bytes": 11679
+    },
+    "testing-best-practices/references/mathematical-properties.md": {
+      "sha256": "a17fbed61384286179654b6f3b379360857c3750868570fdfebbb98d6229aac7",
+      "bytes": 1358
+    },
+    "testing-best-practices/references/mutation-testing.md": {
+      "sha256": "4aec2271864ff7396e765b57a2bb4d54277107949ce87385d881be89809556b1",
+      "bytes": 9885
+    },
+    "testing-best-practices/references/property-based-testing.md": {
+      "sha256": "e99916ba05eb86884a3b6516b5e5ae3b6c760c796ce4375c290204c41ca33237",
+      "bytes": 3036
+    },
+    "testing-best-practices/references/python.md": {
+      "sha256": "f0ac4068fc3aab0e117f436e5451559421b45e47c403ba8320f0c935773bd0ac",
+      "bytes": 6162
+    },
+    "testing-best-practices/references/rust.md": {
+      "sha256": "730dbd0399356625a4067f59f08271c318c1e98c82808603c9b71043817a469f",
+      "bytes": 4673
+    },
+    "testing-best-practices/references/test-audit-patterns.md": {
+      "sha256": "5e3633c34d2f89a062a07b340cd6f61f10832ee4b754032468a207ea3106b41f",
+      "bytes": 5290
+    },
+    "testing-best-practices/references/test-audit.md": {
+      "sha256": "ec1dd4be9a943951fc358075c42aabbdc395580c4be44af3a5ef8f4fa2b17913",
+      "bytes": 13940
+    },
+    "testing-best-practices/references/test-data-builders.md": {
+      "sha256": "33f03369e21ac1ad9d019f0a123b6b344668796566cbffa36bce78e203ba5a23",
+      "bytes": 3939
+    },
+    "testing-best-practices/references/test-types.md": {
+      "sha256": "b452351c7ba2aa466b561a35d4b34c5d9aad6dc9a3c7ebbc9c09de5d69632f10",
+      "bytes": 19698
+    },
+    "testing-best-practices/references/typescript.md": {
+      "sha256": "d3d928b4e18ee8c86e9f7cc16b04d8dbfa8788b194ffdf1ed9ec495848f945c4",
+      "bytes": 11498
+    },
+    "testing-best-practices/references/vcr-cassettes.md": {
+      "sha256": "d602a3c4d3f8d443fccc8764101815e5695c17bb1d2fe5f9521eaf7a8f4e3a86",
+      "bytes": 3992
+    }
+  },
+  "openclaw": {
+    ".agents/skills/openclaw-testing/SKILL.md": {
+      "sha256": "800366ae70aa5a5191347ef31bc7fe577903a066a3d496109c8aed73b5a071a4",
+      "bytes": 8798
+    },
+    ".agents/skills/test-audit/CAMPAIGN.md": {
+      "sha256": "c844b1df2b23153b55e1ac06c128953e956d51ecd0b6b2df3f8a33009f245ef0",
+      "bytes": 5558
+    },
+    ".agents/skills/test-audit/SKILL.md": {
+      "sha256": "1390c61901a1b9ec46778901ebd24f96b201989977d7b8dea2f05b7e593ab025",
+      "bytes": 2669
+    },
+    ".agents/skills/test-audit/references/audit.md": {
+      "sha256": "71fbcc8d3f0b423a650edc25a99f634ef7f20211c25751c54892e24a5bac3c0c",
+      "bytes": 3535
+    },
+    "LICENSE": {
+      "sha256": "9efd316ecf1c4c60f6fd5d26433142fff2b6794d7d328e9bc6179b29bf9c82a4",
+      "bytes": 1076
+    },
+    "docs/help/testing/boundary-scenarios.md": {
+      "sha256": "cbe36fa47424fb6566da019f3949d0cbbb61e87b23396ad3449d3a8bc1b6417f",
+      "bytes": 3855
+    },
+    "docs/help/testing/fixtures.md": {
+      "sha256": "f63268fab7609c439853f05f485b8c4d4f1297807cf6b71e295c330fbe76a0dd",
+      "bytes": 8490
+    },
+    "docs/help/testing/writing-tests.md": {
+      "sha256": "37056fbd1ad4935ad8818cc868e8b844b515d77af91f7b14683446a50b3866f1",
+      "bytes": 5977
+    }
+  }
+}

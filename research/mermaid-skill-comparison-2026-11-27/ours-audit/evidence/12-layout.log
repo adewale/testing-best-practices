@@ -1,0 +1,122 @@
+src/__tests__/route-contracts.test.ts:2409:  it.each([
+src/__tests__/route-contracts.test.ts:2424:  it("a blocked vertex emit hooks into the target's facing cross-side port (1 bend, not a 2-bend Z)", () => {
+src/__tests__/route-contracts.test.ts:2451:  it.each(['LR', 'RL'] as const)(
+src/__tests__/route-contracts.test.ts:2476:  it.each([
+src/__tests__/route-contracts.test.ts:2516:  it.each([
+src/__tests__/route-contracts.test.ts:2584:  it('port-lane alignment includes diamonds: K becomes vertex-to-vertex straight', () => {
+src/__tests__/route-contracts.test.ts:2598:  it('a feedback out-edge does not veto vertex alignment (R: yes-branch runs straight)', () => {
+src/__tests__/route-contracts.test.ts:2614:  it('two lines out of one diamond side spread symmetrically (no line hogs the vertex)', () => {
+src/__tests__/route-contracts.test.ts:2647:  it('a TD decision fork/rejoin exits the diamond through lower facet ports before honoring target lanes', () => {
+src/__tests__/route-contracts.test.ts:2666:  it('a TD decision fork/rejoin connects every line through named endpoint ports', () => {
+src/__tests__/route-contracts.test.ts:2681:  it('issue #42: grouped TD decision branches expose named lower diamond facet ports', () => {
+src/__tests__/route-contracts.test.ts:2704:  it('bi-directional pairs render as TWO EQUAL parallel lines, symmetric about the centerline', () => {
+src/__tests__/route-contracts.test.ts:2745:  it.each([
+src/__tests__/route-contracts.test.ts:2759:  it('diamond-to-diamond with misaligned centers: the source vertex wins (lines emit from points)', () => {
+src/__tests__/route-contracts.test.ts:2771:describe('route contracts — properties', () => {
+src/__tests__/route-contracts.test.ts:2810:  it('every edge gets a certificate and no unexplained hitch survives the pipeline', () => {
+src/__tests__/route-contracts.test.ts:2823:  it('straightened routes are two-point, axis-aligned, and end on the node bbox boundary', () => {
+src/__tests__/route-contracts.test.ts:2848:  it('layout output is deterministic across repeated runs', () => {
+src/__tests__/route-contracts.test.ts:2860:describe('DECISION_BRANCH_UNLABELED lint (ISO 5807 10.3.1.2 / ANSI X3.5 4.10.2)', () => {
+src/__tests__/route-contracts.test.ts:2861:  it('fires once per unlabeled branch of a multi-exit decision', () => {
+src/__tests__/route-contracts.test.ts:2867:  it('stays silent for fully labeled decisions, single exits, and non-diamonds', () => {
+src/__tests__/route-contracts.test.ts:2878:describe('node repairs retain terminal axes around measured headers', () => {
+src/__tests__/route-contracts.test.ts:2907:it('new terminal detour never changes a simple route into selfcontact',()=>{
+src/__tests__/route-contracts.test.ts:2922:it('website Cloud source retains all authored nodes, groups, markers and clear literal bands',async()=>{
+src/__tests__/route-contracts.test.ts:2939:describe('port-lane reserved-header admission', () => {
+src/__tests__/route-contracts.test.ts:2945:  it('keeps an owned port alignment from dragging its incident shaft across a clear rail', () => {
+src/__tests__/route-contracts.test.ts:2971:  it('keeps the same slide when the authored foreign shaft has a real ink gap', () => {
+src/__tests__/route-contracts.test.ts:3030:  it('retains the clear compound detour from chained hubs 355 instead of sweeping its terminal run through G', () => {
+src/__tests__/route-contracts.test.ts:3040:  it('rejects a moved node footprint entering a header even when its new shaft stays outside the band', () => {
+src/__tests__/route-contracts.test.ts:3062:  it('still performs the clear alignment with an unrelated live header', () => {
+src/__tests__/route-contracts.test.ts:3078:  it('refuses raw exterior contact when the moved card border enters the header', () => {
+src/__tests__/route-contracts.test.ts:3097:  it('does not turn an unchanged pre-existing bad edge into a veto of an unrelated clear move', () => {
+src/__tests__/route-contracts.test.ts:3107:describe('port-lane foreign painted corridors', () => {
+src/__tests__/route-contracts.test.ts:3108:  it('retains a foreign cubic marker when serving collapses its raw horizontal tangent', () => {
+src/__tests__/route-contracts.test.ts:3203:describe('container crossing repair reuses proven Z lanes', () => {
+src/__tests__/route-contracts.test.ts:3224:  it('a separated container with no common straight lane removes its crossing through a complete clear Z', () => {
+src/__tests__/route-contracts.test.ts:3246:  it.each(['already clear', 'labelled'] as const)('preserves existing geometry for an %s container route', kind => {
+src/__tests__/route-contracts.test.ts:3254:  it('the existing total-node quality bound leaves a large container route unchanged', () => {
+src/__tests__/route-contracts.test.ts:3270:it('a crossing container Z cannot borrow a bbox-gap proof for a diamond facet inside that box', () => {
+src/__tests__/route-contracts.test.ts:3302:describe('unresolved marker-label seats', () => {
+src/__tests__/route-contracts.test.ts:3305:  it('withholds optional halo moves when a caller can move a shaft from a label setter', () => {
+src/__tests__/route-contracts.test.ts:3330:  it.each([0, 1])('protects a caption on an invisible %i-point carrier when its neighbour reroutes', length => {
+src/__tests__/route-contracts.test.ts:3346:  it.each([
+src/__tests__/route-contracts.test.ts:3395:  it.each([0, 1, 2, 3])('seats a short-loop caption without changing its route (quarter turns=%s)', turns => {
+src/__tests__/route-contracts.test.ts:3406:  it('reseats a blocking caption jointly even without a current label-pair conflict', () => {
+src/__tests__/route-contracts.test.ts:3421:describe('marker-label rescue refusal and custody', () => {
+src/__tests__/route-contracts.test.ts:3424:  it.each(['unknown-ink','no-room','work-exhausted'] as const)('retains the complete original when rescue has %s',mode=>{
+src/__tests__/route-contracts.test.ts:3432:  it('retains an already clear legacy layout exactly',()=>{
+src/__tests__/route-contracts.test.ts:3438:  it('keeps a foreign painted shaft and a node body protected',()=>{
+src/__tests__/route-contracts.test.ts:3450:it('a hidden carrier still reserves its visible caption during marker-label rescue',()=>{
+src/__tests__/route-contracts.test.ts:3457:describe('settled orthogonal excursions', () => {
+src/__tests__/route-contracts.test.ts:3458:  it('preserves the closed route set when a shortcut would expose another unresolved hitch', () => {
+src/__tests__/route-contracts.test.ts:3484:  it('does not sweep another shaft of the same edge through its retained start arrow', () => {
+src/__tests__/route-contracts.test.ts:3501:  it('keeps a required route outside an unrelated container frame', () => {
+src/__tests__/route-contracts.test.ts:3518:  it.each([0, 1, 2, 3])('contracts an excursion with its caption while preserving both contacts at rotation %s', turns => {
+src/__tests__/route-contracts.test.ts:3550:  it.each(['caption halo', 'thick parallel shaft'] as const)('rejects a shortcut that introduces contact with a foreign %s', obstacle => {
+src/__tests__/route-contracts.test.ts:3570:it('withholds the new overhang rescue for a rounded subject without changing its legacy seat',()=>{
+src/__tests__/route-contracts.test.ts:3578:it('label rescue retains full thick header borders while admitting a separated seat',()=>{
+src/__tests__/route-contracts.test.ts:3587:it('rounded header emission retains the generic join support when tiny arcs lose tangent agreement',()=>{
+src/__tests__/route-contracts.test.ts:3595:describe('private label-bearing route channels', () => {
+src/__tests__/route-contracts.test.ts:3606:  it.each(cases.flatMap(([name, source]) => ['LR', 'RL', 'TD', 'BT'].map(direction => [name, direction, source.replace(/^flowchart [A-Z]+/, `flowchart ${direction}`)] as const)))('seats %s in %s without dropping route semantics', (_name, _direction, source) => {
+src/__tests__/route-contracts.test.ts:3617:it.each([0, 1, 2, 3].flatMap(turns => ([['end', 'solid', false], ['start', 'solid', false], ['start', 'thick', false], ['both', 'thick', false], ['start', 'thick', true]] as const).map(([marked, shaft, collinear]) => ({ turns, marked, shaft, collinear }))))('a private channel retains $marked $shaft arrow leads and clears foreign ink at rotation $turns (collinear=$collinear)', ({ turns, marked, shaft, collinear }) => {
+src/__tests__/route-contracts.test.ts:3659:it('route repair preserves authored identities when positioned edges are reordered', () => {
+src/__tests__/route-contracts.test.ts:3669:it('an overflowing terminal displacement cannot bypass marker separation', () => {
+src/__tests__/self-loop-arcs.test.ts:93:describe('self-loops are real arcs (typed route class, not a stub)', () => {
+src/__tests__/self-loop-arcs.test.ts:94:  test.each(['TD', 'BT', 'LR', 'RL'])('loops beside reciprocal returns use clear channels (%s)', direction => {
+src/__tests__/self-loop-arcs.test.ts:118:    test(`${c.name}: leaves and re-enters the boundary at distinct points, with real clearance`, () => {
+src/__tests__/self-loop-arcs.test.ts:139:    test(`${c.name}: label pill hugs the loop without covering it or the node`, () => {
+src/__tests__/self-loop-arcs.test.ts:164:    test(`${c.name}: certificate names the loop side; gates stay green`, () => {
+src/__tests__/self-loop-arcs.test.ts:189:  test('self-loop keeps clear of sibling nodes (no loop-through-node)', () => {
+src/__tests__/self-loop-arcs.test.ts:206:  test('unlabeled self-loop still arcs', () => {
+src/__tests__/self-loop-arcs.test.ts:213:  test('self-loop on a diamond anchors on the diamond outline', () => {
+src/__tests__/self-loop-arcs.test.ts:226:  test('two self-loops on one node allocate distinct collision-free geometry', () => {
+src/__tests__/self-loop-arcs.test.ts:237:  test.each(['TD', 'BT', 'LR', 'RL'])('reserves loop shafts across different owners in %s', direction => {
+src/__tests__/self-loop-arcs.test.ts:246:  test('eight labeled loops allocate unique bounded routes and label centers', () => {
+src/__tests__/self-loop-arcs.test.ts:280:  test('all blocked existing loop sides preserve live routes and report marker owners', () => {
+src/__tests__/self-loop-arcs.test.ts:301:  test('self-loop layout is deterministic', () => {
+src/__tests__/self-loop-arcs.test.ts:307:  test('verify stays clean over self-loop diagrams (state + flowchart)', () => {
+src/__tests__/self-loop-arcs.test.ts:317:test('a marker-safe nested state loop also keeps its prepared label clear of foreign states', () => {
+src/__tests__/self-loop-arcs.test.ts:337:  test(`a ${side} self-loop admits its complete pill before choosing a side (${obstacle})`, () => {
+src/__tests__/self-loop-arcs.test.ts:371:test('choosing an owned loop side keeps a previously clear foreign shaft visible', () => {
+src/__tests__/self-loop-arcs.test.ts:400:test('an unknown nested-loop contact leaves a measurable side eligible', () => {
+src/__tests__/self-loop-arcs.test.ts:423:test('sliding a loop caption cannot bury a clear shaft to remove two shallow grazes', () => {
+src/__tests__/self-loop-arcs.test.ts:444:test('a rejected nested loop leaves every earlier label seat and route unchanged', () => {
+src/__tests__/self-loop-arcs.test.ts:462:test('a wider nested label cannot detach an earlier short label from its own arc', () => {
+src/__tests__/graph-layout-selection.test.ts:32:describe('checked graph layout selection', () => {
+src/__tests__/graph-layout-selection.test.ts:33:  test.each(['LR', 'RL'].flatMap(direction => [false, true].map(edited => ({ direction, edited }))))('aligns complete paths across flat groups in $direction (edited=$edited)', ({ direction, edited }) => {
+src/__tests__/graph-layout-selection.test.ts:46:  test.each(['preserve-order', 'hints', 'local-direction', 'partial', 'labelled', 'cycle', 'scope-cycle'] as const)('retains scoped ordering constraints for %s', mode => {
+src/__tests__/graph-layout-selection.test.ts:60:  test('admits only closed, nonredundant selection objects and normalizes fallback', () => {
+src/__tests__/graph-layout-selection.test.ts:72:  test('preserves default ELK bytes and exposes the selected kernel across source, parsed and layout calls', () => {
+src/__tests__/graph-layout-selection.test.ts:95:  test.each(['TD', 'LR'] as const)('keeps an incomplete ternary tree crossing-free after all geometry passes in %s', direction => {
+src/__tests__/graph-layout-selection.test.ts:110:  test.each([
+src/__tests__/graph-layout-selection.test.ts:133:  test.each(['TD', 'LR', 'BT', 'RL'].flatMap(direction => [
+src/__tests__/graph-layout-selection.test.ts:153:  test.each<{ nodes: number; edges: number; source: string; crossings?: number; reducedRoute?: { from: string; to: string; label: string } }>([
+src/__tests__/graph-layout-selection.test.ts:193:  test.each(['TD', 'BT', 'LR', 'RL'] as const)('retains the nine-node labelled graph meaning in %s', direction => {
+src/__tests__/graph-layout-selection.test.ts:213:  test.each([
+src/__tests__/graph-layout-selection.test.ts:231:  test.each(['elk'] as const)('contains wide nested headers in %s without changing frame endpoints', async backend => {
+src/__tests__/graph-layout-selection.test.ts:256:  test.each(['TD', 'LR'] as const)('certifies mixed shape outlines, labelled branches and markers in %s', direction => {
+src/__tests__/graph-layout-selection.test.ts:267:  test.each([
+src/__tests__/graph-layout-selection.test.ts:286:  test.each(['TD', 'LR', 'BT', 'RL'])('retains State pseudostates, configured bars and notes with ELK in %s', direction => {
+src/__tests__/graph-layout-selection.test.ts:306:  test.each([
+src/__tests__/graph-layout-selection.test.ts:326:  test.each([
+src/__tests__/graph-layout-selection.test.ts:362:  test.each([
+src/__tests__/graph-layout-selection.test.ts:388:  test('retains large grouped graph meaning across ELK and terminal projections', () => {
+src/__tests__/graph-layout-selection.test.ts:410:  test.each(['TB', 'BT', 'LR', 'RL'] as const)('routes to and from a nested frame in %s without substituting a child', direction => {
+src/__tests__/graph-layout-selection.test.ts:423:  test.each(['flowchart', 'state'].flatMap(family => ['TD', 'LR'].flatMap(direction => [
+src/__tests__/graph-layout-selection.test.ts:443:  test('rejects retired Native policies and retains the long-link source through ELK', () => {
+src/__tests__/graph-layout-selection.test.ts:454:  test('keeps terminal-cell layout independent and classifies optional companion execution', () => {
+src/__tests__/graph-layout-selection.test.ts:477:  test('diagnoses nonapplicable families without claiming graph execution', () => {
+src/__tests__/graph-layout-selection.test.ts:483:  test('CLI convenience flags use the same checked graph option and receipt', () => {
+src/__tests__/cli-batch-render-parity.test.ts
+src/__tests__/gitgraph-agent-ops.test.ts
+src/__tests__/mcp-client-interop.test.ts
+src/__tests__/property-source-preserving-edit.test.ts
+src/__tests__/mindmap-agent-ops.test.ts
+src/__tests__/agent-determinism.test.ts
+src/__tests__/agent-facts.test.ts
+src/__tests__/agent-describe.test.ts
+src/__tests__/property-upstream-flowchart.test.ts
+src/__tests__/property-editor-codec-fuzz.test.ts
+src/__tests__/mcp-stdio-cancellation.test.ts
+src/__tests__/cli-multi-input.test.ts

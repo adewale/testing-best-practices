@@ -1,0 +1,141 @@
+   468	interface Case {
+   469	  name: string
+   470	  source: string
+   471	  op: Record<string, unknown>
+   472	  /** Input lines the op may change or remove; every other line must survive. */
+   473	  touched?: string[]
+   474	  /** The reference edit as exact find/replace patches on the input. */
+   475	  reference: Array<[find: string, replace: string]>
+   476	}
+   477	
+   478	const CASES: Case[] = [
+   479	  { name: 'flowchart add_node into a quoted-title group\'s sibling', source: FLOWCHART, op: { kind: 'add_node', id: 'H', label: 'In group', parent: 'grp' }, reference: [['     G[Gee]\n', '     G[Gee]\n     H[In group]\n']] },
+   480	  { name: 'flowchart remove_node', source: FLOWCHART, op: { kind: 'remove_node', id: 'D' }, touched: ['      B -- no --> D[Skip]'], reference: [['      B -- no --> D[Skip]\n', '']] },
+   481	  { name: 'flowchart rename_node inside a quoted-title subgraph', source: FLOWCHART, op: { kind: 'rename_node', from: 'E', to: 'Ex' }, touched: ['    E[Think] --> F[Act]'], reference: [['E[Think]', 'Ex[Think]']] },
+   482	  { name: 'flowchart set_label on a :::class node', source: FLOWCHART, op: { kind: 'set_label', target: 'C', label: 'Do it now' }, touched: ['  B -->|yes| C(Do it):::hot'], reference: [['C(Do it)', 'C(Do it now)']] },
+   483	  { name: 'flowchart set_label on an entity-spelled quoted label', source: FLOWCHART, op: { kind: 'set_label', target: 'A', label: 'Begin' }, touched: ['    A["Start <here>"] --> B{Decide?}'], reference: [['"Start <here>"', '"Begin"']] },
+   484	  { name: 'flowchart add_edge with a label', source: FLOWCHART, op: { kind: 'add_edge', from: 'F', to: 'G', label: 'next' }, reference: [['     G[Gee]\n  end\n', '     G[Gee]\n  end\n    F -->|next| G\n']] },
+  1550	/**
+  1551	 * Write `after` (the canonical result of a typed edit) as a local change to
+  1552	 * `authored`, the exact source `before` was parsed from. Returns the edited
+  1553	 * source and its parse, or why no local change reproduces `after`.
+  1554	 */
+  1555	export function projectStructuredEdit(authored: string, before: ParsedDiagram, after: ParsedDiagram): Result<{ source: string; diagram: ParsedDiagram }, string> {
+  1556	  const wrapper = before.meta.wrapperSource ?? ''
+  1557	  if (!authored.startsWith(wrapper)) return err('the authored wrapper could not be located')
+  1558	  const c0 = statements(before), c1 = statements(after)
+  1559	  if (!c0 || !c1) return err('the diagram has no structured statements to project')
+  1560	  // The wrapper is rewritten only when the edit changes what the canonical
+  1561	  // writer puts there (a frontmatter title, for example).
+  1562	  const canonicalWrapper = (d: ParsedDiagram, lines: readonly string[]) => wrapperPrefix(d.meta, 'verbatim', lines.join('\n') + '\n', d.kind)
+  1563	  const written = canonicalWrapper(before, c0)
+  1564	  let nextWrapper = wrapper
+  1565	  if (written !== canonicalWrapper(after, c1)) {
+  1566	    // Directives authored after the header stay where they are; the writer
+  1567	    // would also have copied them into its wrapper.
+  1568	    const moved = written.startsWith(wrapper) ? written.slice(wrapper.length) : ''
+  1569	    nextWrapper = after.meta.wrapperSource ?? wrapper
+  1570	    if (moved && nextWrapper.endsWith(moved)) nextWrapper = nextWrapper.slice(0, -moved.length)
+  1571	  }
+  1572	  const lines = splitLines(authored.slice(wrapper.length))
+  1573	  const eol = /\r\n/.test(authored) ? '\r\n' : '\n'
+  1574	  const reader = lineReader(wrapper, lines[0]?.text ?? '')
+  1575	  const facts = describeMermaidFacts(after)
+  1576	  const tried = new Set<string>()
+  1577	  // The diff depends only on whether whitespace counts, so the variants
+  1578	  // share two.
+  1579	  const diffs = new Map<boolean, DiffOp[] | undefined>()
+  1580	  const diffFor = (loose: boolean) => {
+  1581	    if (!diffs.has(loose)) diffs.set(loose, canonicalDiff(c0, c1, loose))
+  1582	    return diffs.get(loose)
+  1583	  }
+  1584	  let unplanned: string | undefined, closest: { size: number; reason: string } | undefined
+  1585	  // The names in statements a rejected candidate gains or lacks.
+  1616	  const leftEarly = new Map<string, ReadonlyArray<{ statement: string; name: string; follows?: string }>>()
+  1617	  const attempt = (authoredLines: readonly AuthoredLine[], trace: Trace, variants: readonly Variant[], early?: (variant: Variant, plan: Plan, premature: ReadonlyArray<{ statement: string; name: string; follows?: string }>) => void): { source: string; diagram: ParsedDiagram } | undefined => {
+  1618	    unplanned = undefined
+  1619	    // The candidate that rewrites the fewest authored lines is read first, so
+  1620	    // a variant that respells untouched lines (a verbatim fragment the exact
+  1621	    // diff sees as changed) never wins over one that keeps them; ties keep
+  1622	    // the variant order.
+  1623	    const candidates: Array<{ source: string; cost: number; plan: Plan; variant: Variant }> = []
+  1624	    for (const variant of variants) {
+  1625	      const plan = planEdit(authoredLines, c0, c1, diffFor(variant.loose), trace, variant, reader)
+  1626	      if (typeof plan === 'string') { unplanned ??= plan; continue }
+  1627	      const source = nextWrapper + renderPlan(authoredLines, plan, eol)
+  1628	      const written = [...plan.before.values(), ...plan.after.values()].reduce((sum, list) => sum + list.length, 0)
+  1629	      candidates.push({ source, cost: plan.removed.size + plan.text.size + written, plan, variant })
+  1630	    }
+  1631	    candidates.sort((a, b) => a.cost - b.cost)
+  1632	    for (const { source, plan, variant } of candidates) {
+  1633	      if (tried.has(source)) {
+  1634	        const premature = leftEarly.get(source)
+  1635	        if (premature) early?.(variant, plan, premature)
+   299	  const result = editPreservedSource(d, op)
+   300	  logToolInvocation('mutate', result.ok)
+   301	  return result
+   302	}
+   303	
+   304	function admittedOp(kind: OpFamily, op: unknown): Result<AnyMutationOp, MutationError> {
+   305	  const admitted = admitOpRecord(op)
+   306	  const invalid = validateOp(kind, admitted.ok ? admitted.value : op)
+   307	  return invalid ? err(invalid) : ok((admitted.ok ? admitted.value : op) as AnyMutationOp)
+   308	}
+   309	
+   310	function editPreservedSource(d: ParsedDiagram, op: unknown): Result<SourceMutationResult, MutationError> {
+   311	  if (d.body.kind !== 'opaque' && d.body.kind !== 'preserved' && d.body.kind !== 'extension' && hasOpSchema(d.kind)) {
+   312	    const checked = admittedOp(d.kind, op)
+   313	    if (!checked.ok) return checked
+   314	    const edited = applyOneMutation(d, checked.value)
+   315	    return edited.ok ? ok(preserveStructuredEdit(d, edited.value)) : edited
+   316	  }
+   317	  if (d.body.kind !== 'opaque' || d.body.family !== d.kind) return err({ code: 'INVALID_OP', message: 'Source-preserving mutation requires a structured or opaque body of its parsed family' })
+   318	  const plugin = getFamily(d.kind)
+   319	  if (!plugin?.mutateSource || !hasOpSchema(d.kind)) return err({ code: 'UNSUPPORTED_FAMILY', message: `${d.kind} has no source-preserving mutation contract` })
+   320	  const checked = admittedOp(d.kind, op)
+   348	/**
+   349	 * Write `after`, the committed canonical result of typed edits to `before`,
+   350	 * as a local change to the source `before` was parsed from. The whole batch
+   351	 * is projected at once; when that does not read back as `after`, a batch of
+   352	 * at most OP_BY_OP_PROJECTION_LIMIT ops is projected op by op. A diagram
+   353	 * with no authored source, or an edit no local change reproduces, is
+   354	 * written canonically with the reason.
+   355	 */
+   356	export function preserveStructuredEdit(before: ParsedDiagram, after: ParsedDiagram, ops: readonly unknown[] = []): SourceMutationResult {
+   357	  const canonical = (reason: string): SourceMutationResult => ({ source: serializeMermaid(after), diagram: after, preservation: { method: 'canonical', reason } })
+   358	  const authored = authoredSourceOf(before.source)
+   359	  if (authored === undefined) return canonical('the diagram was not parsed from source, so there are no authored lines to keep')
+   360	  const read = (source: string) => {
+   361	    const parsed = parseMermaid(source)
+   362	    return parsed.ok && parsed.value.kind === before.kind && parsed.value.body.kind === before.body.kind ? parsed.value : undefined
+   363	  }
+   364	  const original = read(authored)
+   365	  if (!original) return canonical('the authored source no longer reads as this diagram')
+   366	  const whole = projectStructuredEdit(authored, original, after)
+   367	  if (whole.ok) return { ...whole.value, preservation: { method: 'local' } }
+   368	  if (ops.length > OP_BY_OP_PROJECTION_LIMIT) return canonical(`${whole.error}; batches of more than ${OP_BY_OP_PROJECTION_LIMIT} operations are not projected one by one`)
+   369	  if (ops.length > 1) {
+   370	    let source = authored, current = original
+   371	    for (const op of ops) {
+   372	      const checked = hasOpSchema(current.kind) ? admittedOp(current.kind, op) : ok(op as AnyMutationOp)
+   373	      const next = checked.ok ? applyOneMutation(current, checked.value) : checked
+   374	      const projected = next.ok ? projectStructuredEdit(source, current, next.value) : undefined
+   375	      if (!projected?.ok) break
+     1	import fc from 'fast-check'
+     2	
+     3	/** Keep local regression settings in gates, but let finder/replay controls win. */
+     4	export function fcParameters<T>(defaults: fc.Parameters<T> = {}): fc.Parameters<T> {
+     5	  const parameters = { ...defaults }
+     6	  const global = fc.readConfigureGlobal()
+     7	  if (process.env.AM_FC_SEED !== undefined) {
+     8	    // With AM_FC_SEED=random the preload leaves seed unset. Removing a local
+     9	    // pin lets fast-check choose (and report) a fresh seed for this property.
+    10	    if (global.seed === undefined) delete parameters.seed
+    11	    else parameters.seed = global.seed
+    12	  }
+    13	  if (global.numRuns !== undefined) {
+    14	    // Finder counts are a floor: never reduce an already stronger local run.
+    15	    parameters.numRuns = Math.max(defaults.numRuns ?? 100, global.numRuns)
+    16	  }
+    17	  return parameters
+    18	}

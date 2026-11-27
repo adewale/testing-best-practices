@@ -1,0 +1,13 @@
+5:import { BROWSER_CONTRACT_FILES } from './browser-contract-files.ts'
+14:  if (!match || index > total || total > contracts.length) throw new Error('Expected --shard=N/M with 1 <= N <= M <= browser contract count')
+46:  for (const path of ['website/public/index.html', 'dist/browser.global.js']) {
+47:    if (!existsSync(resolve(root, path))) throw new Error(`Transferred browser artifact is missing: ${path}`)
+55:    env: contract.browserOptIn ? { AM_BROWSER_TESTS: '1' } : undefined,
+45:  '.css': 'text/css; charset=utf-8',
+10:const constructed = new WeakMap<PositionedEdge, BundleRouteGeometry>()
+13:  const origin = edge.points[0]
+16:  for (const point of edge.points) coordinates.push(point.x - origin.x, point.y - origin.y)
+39:    edge.points.length * 2 !== owned.coordinates.length) return false
+40:  const origin = edge.points[0]
+42:  for (let i = 0; i < edge.points.length; i++) {
+43:    const point = edge.points[i]!

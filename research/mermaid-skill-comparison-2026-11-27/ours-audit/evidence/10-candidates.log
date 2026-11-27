@@ -1,0 +1,176 @@
+e2e/mcp-browser-cors.e2e.test.ts:165:describe.skipIf(!LAUNCH)('hosted /mcp in a real cross-origin browser', () => {
+e2e/browser.test.ts:488:    await worker.evaluate(() => { setTimeout(() => { throw new Error('intentional worker crash') }, 0) })
+src/__tests__/cli-batch-render-parity.test.ts:33:      await new Promise(resolve => setTimeout(resolve, 10))
+src/__tests__/treemap-upstream-bench.test.ts:50:        return it.skip(name, fn)
+src/__tests__/marker-raster-parity-browser.test.ts:18:const describeBrowser = available && process.env.AM_BROWSER_TESTS === '1' ? describe : describe.skip
+src/__tests__/resource-manifest-integrity.test.ts:114:  test.skipIf(!NODE)('plain Node verifies shipped resources when /dev/fd realpath is not canonical', async () => {
+src/__tests__/agent-mcp-http.test.ts:31:    await new Promise(resolve => setTimeout(resolve, 5))
+src/__tests__/agent-mcp-http.test.ts:66:  test.skipIf(!HAS_IPV6_LOOPBACK)(`IPv6 loopback spellings advertise bracketed URLs and serve requests${HAS_IPV6_LOOPBACK ? '' : ' (skipped: this host has no ::1 loopback)'}`, async () => {
+src/__tests__/mcp-client-interop.test.ts:34:    await new Promise(resolve => setTimeout(resolve, 10))
+src/__tests__/png-fonts.test.ts:141:  test.skipIf(!HAS_CJK_FONT)('a CJK-capable fontDirs clears the warning and changes the rendered bytes', () => {
+src/__tests__/png-fonts.test.ts:221:  test.skipIf(!HAS_CJK_FONT)('--font-dirs silences the CJK warning', () => {
+src/__tests__/svg-style-isolation-browser.test.ts:30:  : describe.skip
+src/__tests__/editor-style-switch.test.ts:50:  : describe.skip
+src/__tests__/editor-theme-switch.test.ts:31:  // rather than describe.skip, or a typo'd path masquerades as a green run.
+src/__tests__/editor-theme-switch.test.ts:40:  : describe.skip
+src/__tests__/editor-theme-switch.test.ts:174:      await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/editor-theme-switch.test.ts:178:      await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/agent-mermaid-corpus.test.ts:117:  test.skipIf(divergences.length === 0)('divergence entries preserve their declared source behavior', () => {
+src/__tests__/website-build.test.ts:1531:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/website-browser-a11y.test.ts:41:const describeBrowser = browserRequested ? describe : describe.skip
+src/__tests__/agent-determinism.test.ts:44:  return (name, body) => test.skip(`${name} (skipped: missing ${missing.join(', ')})`, body)
+src/__tests__/zenuml-browser.test.ts:7:const browserTests = process.env.AM_BROWSER_TESTS === '1' ? describe : describe.skip
+src/__tests__/editor-script-behaviour.test.ts:475:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/editor-script-behaviour.test.ts:536:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/editor-script-behaviour.test.ts:582:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/mcp-stdio-cancellation.test.ts:84:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/mcp-stdio-cancellation.test.ts:116:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/cli-multi-input.test.ts:43:      await new Promise(resolve => setTimeout(resolve, 100))
+src/__tests__/requirement-upstream-bench.test.ts:49:  const checkedIt = (name: string, fn: () => void) => (exclusions.some(e => e.test === name) ? it.skip(name, fn) : it(name, fn))
+src/__tests__/block-upstream-bench.test.ts:50:  const checkedIt = (name: string, fn: () => void) => (exclusions.some(e => e.test === name) ? it.skip(name, fn) : it(name, fn))
+src/__tests__/hosted-mcp-http.test.ts:631:          await new Promise(resolve => setTimeout(resolve, 0))
+e2e/tarball-consumer-fuzz.e2e.test.ts:337:      }).transform(new Response(Bun.markdown.html(readFileSync(join(packageDir, document), 'utf8')))).text()
+e2e/browser.test.ts:399:  const html = new Uint8Array(await Bun.file(join(ROOT, 'editor.html')).arrayBuffer())
+e2e/browser-bundle.e2e.test.ts:294:    const source = readFileSync(BUNDLE, 'utf8')
+e2e/browser-bundle.e2e.test.ts:324:    const source = readFileSync(join(REPO, 'eval/layout-compare/fixtures/zenuml-native-checkout.mmd'), 'utf8')
+e2e/browser-bundle.e2e.test.ts:901:    const source = mode === 'refined-cycle' ? readFileSync(join(REPO, 'eval/layout-compare/fixtures/cyclic-labelled-15.mmd'), 'utf8')
+e2e/cli.e2e.test.ts:56:      const html = readFileSync(tmpOut, 'utf8')
+src/__tests__/mcp-deploy-rate-budget.test.ts:17:const deployJob = (parseYaml(readFileSync(join(ROOT, '.github', 'workflows', 'deploy-cloudflare.yml'), 'utf8')) as {
+src/__tests__/class-layout-backends.test.ts:1594: const source=readFileSync(new URL('./fixtures/class-crowded-rtl-note.mmd',import.meta.url),'utf8'),capture:{positioned?:PositionedClassDiagram}={},original=classLayoutModule.layoutClassDiagram
+src/__tests__/production-site-smoke.test.ts:133:  const steps = (parseYaml(readFileSync(join(ROOT, '.github', 'workflows', 'deploy-cloudflare.yml'), 'utf8')) as {
+src/__tests__/agent-doc-sync.test.ts:508:    const sources = docs.map(file => ({ file, text: readFileSync(join(REPO, file), 'utf8') }))
+src/__tests__/agent-readiness-standards.test.ts:57:  return parseYaml(readFileSync(join(WORKFLOWS_DIR, file), 'utf8')) as Workflow
+src/__tests__/treemap-upstream-bench.test.ts:45:  const source = readFileSync(join(bench, 'upstream', file), 'utf8').replace(/^import[^;]*;\s*/gm, ''),
+src/__tests__/terminal-native-route-regressions.test.ts:179:  const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-19.mmd', import.meta.url), 'utf8')
+src/__tests__/terminal-native-route-regressions.test.ts:479:  const source = readFileSync(new URL(`../../eval/layout-compare/fixtures/${fixture}.mmd`, import.meta.url), 'utf8')
+src/__tests__/paint-certification.test.ts:1247:  const { source } = JSON.parse(readFileSync(new URL('./fixtures/class-native-clearance.json', import.meta.url), 'utf8')) as { source: string }
+src/__tests__/paint-certification.test.ts:1766:  const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8').replace(/^flowchart LR/, `flowchart ${direction}`)
+src/__tests__/ugly-detector.test.ts:24:    const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8')
+src/__tests__/arrowhead-terminal-clearance.test.ts:37:    { name: 'Flowchart sharp duplicate', source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-19.mmd', import.meta.url), 'utf8') },
+src/__tests__/style-spec-authority.test.ts:190:    const html = readFileSync(out, 'utf8')
+src/__tests__/metadata-yaml.test.ts:160:  .find(name => name.endsWith('.mjs') && /export \{\s*JSON_SCHEMA,\s*load\s*\}/.test(readFileSync(join(JS_YAML_DIR, name), 'utf8')))
+src/__tests__/ishikawa-upstream-bench.test.ts:36:const source = readFileSync(join(bench, 'upstream/ishikawa.spec.ts.txt'), 'utf8').replace(/^import[^;]*;\s*/gm, '')
+src/__tests__/treemap-native.test.ts:335:    const source = readFileSync(new URL('../../eval/stable-families/fixtures/treemap.mmd', import.meta.url), 'utf8'),
+src/__tests__/chrome-token-lockstep.test.ts:23:const siteCss = readFileSync(join(REPO, 'website/source/assets/styles.css'), 'utf8')
+src/__tests__/chrome-token-lockstep.test.ts:24:const editorCss = readFileSync(join(REPO, 'editor/css/variables.css'), 'utf8')
+src/__tests__/mindmap-gitgraph-grammar.test.ts:188:    const markdown = readFileSync(join(import.meta.dir, '..', '..', 'skills/agentic-mermaid-diagram-workflow/references/upstream/gitgraph.md'), 'utf8')
+src/__tests__/mindmap-gitgraph-grammar.test.ts:236:    const markdown = readFileSync(join(import.meta.dir, '..', '..', 'skills/agentic-mermaid-diagram-workflow/references/upstream/gitgraph.md'), 'utf8')
+src/__tests__/cli-init-agent.test.ts:50:    expect(readFileSync(join(dir, 'skills', 'agentic-mermaid-diagram-workflow', linkedGuide!), 'utf8')).toBe(AGENT_INSTRUCTIONS)
+src/__tests__/graph-layout-cache-integration.test.ts:187:  const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8')
+src/__tests__/graph-layout-selection.test.ts:154:    { nodes: 11, edges: 24, crossings: 3, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-11.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:155:    { nodes: 10, edges: 20, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-10.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:156:    { nodes: 15, edges: 31, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:157:    { nodes: 19, edges: 44, crossings: 37, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-19.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:158:    { nodes: 13, edges: 31, crossings: 7, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-13.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:159:    { nodes: 15, edges: 34, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15-chains.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:160:    { nodes: 9, edges: 23, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-9-chains.mmd', import.meta.url), 'utf8'), reducedRoute: { from: 'n1', to: 'n8', label: 'edge 0 xxx' } },
+src/__tests__/graph-layout-selection.test.ts:194:    const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-9.mmd', import.meta.url), 'utf8').replace(/^flowchart BT/, `flowchart ${direction}`)
+src/__tests__/graph-layout-selection.test.ts:232:    const source = await Bun.file(new URL('../../eval/layout-compare/fixtures/nested-wide-titles.mmd', import.meta.url)).text()
+src/__tests__/deploy-workflow-transaction.test.ts:20:const WORKFLOW = parseYaml(readFileSync(join(REPO, '.github', 'workflows', 'deploy-cloudflare.yml'), 'utf8')) as {
+src/__tests__/requirement-upstream-bench.test.ts:46:  const source = readFileSync(join(bench, 'upstream', file), 'utf8').replace(/^import[^;]*;\s*/gm, '')
+src/__tests__/styled-output.test.ts:53:    .map(name => ({ name, source: readFileSync(join(FIXTURES, name), 'utf8') }))
+src/__tests__/styled-output.test.ts:355:      const source = readFileSync(join(demoRoot, fixture), 'utf8')
+src/__tests__/block-upstream-bench.test.ts:47:  const source = readFileSync(join(bench, 'upstream', file), 'utf8').replace(/^import[^;]*;\s*/gm, '')
+src/__tests__/website-font-subsets.test.ts:59:    const styles = readFileSync(join(PUBLIC, 'styles.css'), 'utf8')
+.github/workflows/contract-discovery.yml:46:          AM_FC_SEED: ${{ steps.replay.outputs.seed }}
+.github/workflows/contract-discovery.yml:47:          AM_FC_NUM_RUNS: '300'
+.github/workflows/contract-discovery.yml:50:          bun test --timeout 30000 --preload ./scripts/ci/contract-discovery-preload.ts \
+.github/workflows/ci.yml:80:          bun test --timeout 30000 src/__tests__/doc-blocks.test.ts src/__tests__/doc-cli-commands.test.ts src/__tests__/agent-doc-sync.test.ts src/__tests__/cli-init-agent.test.ts src/__tests__/cli-llms-txt.test.ts
+.github/workflows/ci.yml:181:        run: bun run test -- --shard=${{ matrix.shard }} --parallel=2
+.github/workflows/ci.yml:191:    continue-on-error: true
+.github/workflows/ci.yml:205:        continue-on-error: true
+.github/workflows/ci.yml:220:        continue-on-error: true
+.github/workflows/ci.yml:298:        continue-on-error: true
+.github/workflows/ci.yml:354:    continue-on-error: true
+.github/workflows/ci.yml:366:        continue-on-error: true
+.github/workflows/ci.yml:416:        continue-on-error: true
+.github/workflows/ci.yml:492:        run: bun test src/__tests__/mcp-source-tools.test.ts e2e/single-binary.e2e.test.ts --timeout 30000
+.github/workflows/ci.yml:579:        run: cd e2e && bun test cli-smoke.e2e.test.ts cli.e2e.test.ts fresh-checkout.e2e.test.ts single-binary.e2e.test.ts --timeout 180000
+.github/workflows/ci.yml:767:        run: cd e2e && bun test dist-artifact.e2e.test.ts --timeout 400000
+.github/workflows/ci.yml:784:        run: cd e2e && bun test tarball-consumer-fuzz.e2e.test.ts --timeout 600000
+.github/workflows/ci.yml:800:        run: bun run test:browser
+4: * SVG insertion sink, and PNG export provenance. They replace assertions that
+11:import { afterAll, beforeAll, describe, expect, test } from 'bun:test'
+118:        const expected = renderAndVerifyMermaid(source, options)
+120:        expect(actual.svg, id).toBe(expected.svg)
+121:        expect(actual.receipt, id).toEqual(expected.receipt)
+122:        expect(actual.verification, id).toEqual({ ok: expected.verification.ok, warnings: expected.verification.warnings, checks: expected.verification.checks })
+125:          const expectedTerminal = renderMermaidASCIIWithReceipt(source, terminalOptions)
+127:          expect(terminal.text, id).toBe(expectedTerminal.text)
+128:          expect(terminal.receipt, id).toEqual(expectedTerminal.receipt)
+129:          expect(terminal.outputPolicy, id).toEqual(expectedTerminal.outputPolicy)
+131:        expect(page.workers()).toHaveLength(1)
+152:        const expectedSvg = renderAndVerifyMermaid(source, options)
+153:        const expectedText = renderMermaidASCIIWithReceipt(source, { ...options, colorMode: 'none' })
+154:        expect(expectedSvg.svg).toContain(label)
+155:        expect(expectedText.text).toContain(label)
+156:        expect(expectedSvg.receipt.capabilityDecision.resolutions).toContainEqual(expect.objectContaining({ id: `family:${family}`, status: 'selected' }))
+166:          expect(artifact.svg).toBe(expectedSvg.svg)
+167:          expect(artifact.receipt).toEqual(expectedSvg.receipt)
+168:          expect(artifact.verification).toEqual({ ok: expectedSvg.verification.ok, warnings: expectedSvg.verification.warnings, checks: expectedSvg.verification.checks })
+171:          expect(artifact.text).toBe(expectedText.text)
+172:          expect(artifact.receipt).toEqual(expectedText.receipt)
+173:          expect(artifact.outputPolicy).toEqual(expectedText.outputPolicy)
+179:        expect(page.workers()).toHaveLength(1)
+193:      expect(() => renderAndVerifyMermaid(source)).toThrow(`Unrecognized Mermaid header: "${header}"`)
+204:      expect(actual.cold).toBe(`Unrecognized Mermaid header: "${header}"`)
+205:      expect(actual.warm).toBe(actual.cold)
+209:  test('invalid source config wins over an unavailable cold family download', async () => {
+221:      expect(await renderError('---\nconfig: [\n---\nsequenceDiagram\nAlice->>Bob: Message')).toStartWith('Mermaid frontmatter is not valid YAML:')
+222:      expect(blocked).toBe(0)
+223:      expect(await renderError('sequenceDiagram\nAlice->>Bob: Message')).toContain('Diagram code could not load')
+224:      expect(blocked).toBeGreaterThan(0)
+228:  test('cached-family editing works without new modules and a failed family download retries on the next edit', async () => {
+237:      await page.waitForFunction(() => document.getElementById('status-text')?.textContent === 'OK' && document.getElementById('preview-inner')?.textContent?.includes('Offline edit'))
+238:      expect(blocked).toBe(0)
+239:      await page.locator('#code-editor').fill('sequenceDiagram\n Alice->>Bob: First download')
+241:      expect(blocked).toBeGreaterThan(0)
+242:      expect(await page.locator('.preview-error-detail').textContent()).toContain('Check your connection')
+243:      expect(await page.locator('#runtime-recovery').isVisible()).toBe(true)
+245:      await page.locator('#code-editor').fill('sequenceDiagram\n Alice->>Bob: Recovered download')
+246:      await page.waitForFunction(() => document.getElementById('status-text')?.textContent === 'OK' && document.getElementById('preview-inner')?.textContent?.includes('Recovered download'))
+247:      expect(page.workers()).toHaveLength(1)
+248:      expect(await page.locator('#runtime-recovery').isVisible()).toBe(false)
+252:  test.each(['disabled', 'replaced'] as const)('a failed fitting download respects a %s request', async transition => {
+272:      await page.locator('#settings-btn').click()
+278:          && !!document.getElementById('preview-inner')?.dataset.sharedRequestDigest)
+287:        expect(await page.locator('#status-text').textContent()).toBe('OK')
+288:        expect(await page.locator('#runtime-recovery').isVisible()).toBe(false)
+289:        expect(await page.locator('#export-svg-btn').isEnabled()).toBe(true)
+292:        expect(await page.locator('#runtime-recovery').isVisible()).toBe(true)
+293:        expect(await page.locator('#export-svg-btn').isEnabled()).toBe(false)
+298:  test.each([1280, 390])('reload recovery at %i px preserves unverified edits and settings without browser storage', async width => {
+317:      if (width < 768) await page.locator('#mode-source').click()
+321:      if (width < 768) await page.locator('#mode-preview').click()
+322:      expect(await page.locator('#runtime-recovery').isVisible()).toBe(true)
+323:      expect(documents).toBe(1)
+324:      expect(await page.locator('#verify-structural').textContent()).toBe('Not run')
+325:      const errorBounds = await page.locator('.preview-runtime-error').boundingBox()
+326:      expect(errorBounds!.x + errorBounds!.width).toBeLessThanOrEqual(width)
+330:      await page.locator('#reload-editor').click()
+333:      expect(documents).toBe(2)
+334:      expect(await page.locator('#code-editor').inputValue()).toBe(source)
+335:      expect(await page.locator('#preview-inner svg').textContent()).toContain('Keep latest β')
+338:      expect(restored).toEqual({ ...initial, source })
+339:      expect(await page.locator('.theme-dropdown-item[data-theme="nord"]').getAttribute('aria-selected')).toBe('true')
+340:      expect(await page.locator('.theme-dropdown-item[data-style="hand-drawn"]').getAttribute('aria-selected')).toBe('true')
+341:      expect(JSON.parse(await page.locator('#cfg-advanced-options').inputValue()).padding).toBe(64)
+342:      expect(await page.locator('#runtime-recovery').isVisible()).toBe(false)
+359:      await page.locator('#reload-editor').click()
+360:      await page.waitForFunction(() => document.getElementById('toast')?.textContent?.includes('Copy or export the source first'))
+361:      expect(page.url()).toBe(url)
+362:      expect(await page.locator('#code-editor').inputValue()).toBe(source)
+363:      expect(await page.locator('#reload-editor').isEnabled()).toBe(true)
+367:  test('preview rendering uses one persistent worker and a late result cannot replace the newest verified source', async () => {
+388:    await page.waitForFunction(() => document.getElementById('status-text')?.textContent === 'OK' && document.getElementById('preview-inner')?.textContent?.includes('Newest'))
+393:    expect(await page.locator('#preview-inner svg').textContent()).toContain('Newest')
+394:    expect(await page.locator('#preview-inner svg').textContent()).not.toContain('Earlier')
+395:    expect(await page.locator('#render-time').textContent()).toContain('Rendered and verified')
+396:    expect(page.workers()).toHaveLength(1)
+401:    await page.waitForFunction(() => document.getElementById('status-text')?.textContent === 'OK' && document.getElementById('preview-inner')?.textContent?.includes('Slow'))
+417:    expect(delays[0]).toBeGreaterThanOrEqual(60)
+418:    expect(delays[0]).toBeLessThan(300)
+419:    await page.waitForFunction(() => document.getElementById('status-text')?.textContent === 'OK' && document.getElementById('preview-inner')?.textContent?.includes('Prompt'))
+429:    expect(await demo.locator('[data-edit-panel="0"]').isVisible()).toBe(true)
+435:    expect(await apply.getAttribute('aria-pressed')).toBe('true')
+436:    expect(await demo.locator('[data-edit-panel="1"] svg').textContent()).toContain('Approved')

@@ -1,0 +1,66 @@
+f49196e7f5d6d2f0970a4a76fe62644ee5e9d004
+391
+3512
+1.4.4
+f49196e Merge pull request #620: improve graph routing and painted clearance [skip ci]
+c790c8a fix(layout): contract settled route excursions safely [skip ci]
+cdaf3cc test(layout): pin reviewed hub geometry and prior routing repairs [skip ci]
+304d730 fix(layout): keep port alignment from adding crossings [skip ci]
+7483631 fix(layout): avoid new shaft masking when choosing loop sides [skip ci]
+268efa1 fix(layout): retain centered through-trunks at internal forks [skip ci]
+dd37e47 refactor(layout): share centered edge label reservations [skip ci]
+74b5fee refactor(elk): compress sweep snapshots and reuse counter buffers [skip ci]
+ed12997 refactor(layout): repair masking shafts after label seating fails [skip ci]
+5c232f9 fix(layout): keep foreign shafts and repeated edges visible [skip ci]
+50fe874 fix(layout): align independent paths across groups [skip ci]
+72b50c6 fix(layout): compare unbundled multigraph routes [skip ci]
+acbbec1 fix(scene): prove marker separation from internal dividers [skip ci]
+86b95f1 fix(layout): center forest parents beside disconnected trees [skip ci]
+97f9825 fix(layout): rank loop channels by crossings and label conflicts [skip ci]
+17c400a Merge pull request #616 from adewale/work/elk-layered-typescript-port-20261114
+e61e0df perf(elk): avoid private array shifts and unused fallback sets [skip ci]
+ad0d403 [skip ci] Reject unsupported algorithms before compound layout
+5934861 [skip ci] Expect ELK on the first graph render
+6779c46 [skip ci] Preserve reviewed rendering contracts after Native retirement
+c083908 [skip ci] Record reviewed ELK Swimlane placement in the styled reference
+d7b2db9 [skip ci] Retain Class proof and cache ownership cases under sole ELK
+4691b24 [skip ci] Exercise sole ELK through standalone editor workers
+1bb5307 [skip ci] Adapt the browser error facade to sole ELK ownership
+e73180b [skip ci] Integrate current main for sole ELK qualification
+c6fb360 [skip ci] Retire Native graph layout and simplify the ELK pipeline
+6f11d6d Merge pull request #618 from adewale/claude/brave-ritchie-na4ib4
+b14761a Expect typed activation statements in the sequence citizenship profile
+ff968d9 Draw a Class style over its style classes, and keep Mermaid drawing it so
+57529f2 [skip ci] Restore relation sets after adverse end-to-end trials
+.github/workflows/coverage.yml
+.github/workflows/contract-discovery.yml
+.github/workflows/sync-mermaid-docs.yml
+.github/workflows/action-pinning.yml
+.github/workflows/ruff.yml
+.github/workflows/publish.yml
+.github/workflows/modern-mermaid.yml
+.github/workflows/qualify-ci.yml
+.github/workflows/ci.yml
+.github/workflows/deploy-cloudflare.yml
+    606 src/__tests__
+     28 eval/benchmark
+      4 eval/mermaid-modern-compat
+      2 eval/mermaid-upstream-suite-bench
+      2 eval/layout-compare
+      1 scripts/sketch-prototype
+      1 eval/font-layout
+      1 eval/family-usage
+      1 eval/endpoint-marker
+      1 eval/edit-arms
+      1 e2e/tarball-consumer-fuzz.e2e.test.ts
+      1 e2e/single-binary.e2e.test.ts
+      1 e2e/security-csp.e2e.test.ts
+      1 e2e/mcp-browser-cors.e2e.test.ts
+      1 e2e/mcp-app-preview.e2e.test.ts
+      1 e2e/fresh-checkout.e2e.test.ts
+      1 e2e/editor-site-interactions.e2e.test.ts
+      1 e2e/dist-artifact.e2e.test.ts
+      1 e2e/cli.e2e.test.ts
+      1 e2e/cli-smoke.e2e.test.ts
+      1 e2e/browser.test.ts
+      1 e2e/browser-bundle.e2e.test.ts

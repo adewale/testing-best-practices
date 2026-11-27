@@ -1,0 +1,18 @@
+{
+  "label": "ours-eol-fault-owner",
+  "argv": [
+    "bun",
+    "test",
+    "src/__tests__/agent-source-preserving-edit.test.ts",
+    "--timeout",
+    "30000"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {},
+  "timeout_seconds": 120,
+  "exit_code": 0,
+  "status": "completed",
+  "duration_seconds": 12.425258877001397,
+  "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+  "stderr_sha256": "ed2ebb2f1a03e46c96276ea7cdfed914f0a4525e876a0d16ad07ef73727db88f"
+}

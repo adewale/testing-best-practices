@@ -1,0 +1,31 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/fanout-symmetry.test.ts:
+(pass) fan-out peer symmetry > grouped diamond targets keep their authored containment (TD) [175.21ms]
+(pass) fan-out peer symmetry > grouped diamond targets keep their authored containment (LR) [84.41ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (LR) [13.49ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (RL) [7.00ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (TD) [10.27ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (BT) [9.09ms]
+(pass) fan-out peer symmetry > peers with differing label widths are equalized to a common width and aligned [42.28ms]
+
+src/__tests__/png-fonts.test.ts:
+(pass) PNG font provenance > distinguishes verified, caller-directory, system, and buffer inputs [0.09ms]
+(pass) PNG raster font matches the metrics font > long journey task label rasterizes inside its measured task box [235.35ms]
+(pass) PNG glyph-coverage warnings > CJK text without a covering font warns, naming the script and the escape hatch [20.28ms]
+(pass) PNG glyph-coverage warnings > uncovered emoji warns with the emoji script bucket [12.97ms]
+(pass) PNG glyph-coverage warnings > Latin labels plus DejaVu-covered symbols produce no warning [13.60ms]
+(pass) PNG glyph-coverage warnings > loadSystemFonts: true keeps a qualified known-font warning [190.77ms]
+(pass) PNG glyph-coverage warnings > warnings are deterministic across identical renders [23.34ms]
+(pass) fontDirs escape hatch > a CJK-capable fontDirs clears the warning and changes the rendered bytes [618.25ms]
+(pass) am render --format png font flags > PNG-only controls are rejected for non-PNG formats [6.03ms]
+(pass) am render --format png font flags > fit dimensions are integer pixels [7.33ms]
+(pass) am render --format png font flags > CJK render warns on stderr and reports warnings in the --json envelope [19.94ms]
+(pass) am render --format png font flags > pure-Latin render prints no coverage warning [14.96ms]
+(pass) am render --format png font flags > --font-dirs silences the CJK warning [447.35ms]
+(pass) am render --format png font flags > --system-fonts keeps a qualified bundled-font coverage warning [66.69ms]
+
+ 21 pass
+ 0 fail
+ 136 expect() calls
+Ran 21 tests across 2 files. [2.28s]

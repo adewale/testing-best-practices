@@ -1,0 +1,89 @@
+  1490	  for (const choices of options) {
+  1491	    placements = placements.flatMap(base => choices.map(change => {
+  1492	      const next = { after: new Map(base.after), before: new Map(base.before), carry: new Map(base.carry), past: new Map(base.past) }
+  1493	      change(next)
+  1494	      return next
+  1495	    })).slice(0, MAX_PLACE_ALTERNATIVES)
+  1496	  }
+  1497	  return placements.filter(next => !same(next.after, place.after) || !same(next.before, place.before) || !same(next.carry, place.carry) || !same(next.past, place.past))
+  1498	}
+  1499	
+  1500	/** The authored lines [from, to] of the whole statement read from `line`:
+  1501	 * every line its statements are read from, the closers of blocks they open,
+  1502	 * and the lines after them until the run reads alone as exactly what its
+  1503	 * lines are read as (a block note's body lines and `end note`). */
+  1504	function statementAt(lines: readonly AuthoredLine[], c0: readonly string[], line: number, { roles, partsOf, nesting }: {
+  1505	  roles: ReadonlyMap<number, readonly number[]>
+  1506	  partsOf: (index: number) => readonly number[]
+  1507	  nesting: NonNullable<Trace['nesting']>
+  1508	}, reader: LineReader): [number, number] | undefined {
+  1509	  const parts = (roles.get(line) ?? []).flatMap(index => [...partsOf(index)])
+  1510	  if (!parts.length) return undefined
+  1511	  const from = Math.min(line, ...parts)
+  1512	  let to = Math.max(line, ...parts)
+  1513	  for (let step = 0; step <= MAX_SPLIT_LINES && to < lines.length; step++) {
+  1514	    const unit = Array.from({ length: to - from + 1 }, (_, offset) => from + offset)
+  1515	    const closer = Math.max(-1, ...unit.map(at => nesting.closer.get(at) ?? -1))
+  1516	    if (closer > to) { to = closer; continue }
+  1517	    const reading = reader.isolated(unit.map(at => lines[at]!.text).join('\n').trim())
+  1518	    const reads = (at: number) => (roles.get(at) ?? []).some(index => reading?.has(c0[index]!.trim()))
+  1519	    if (reading && unit.every(at => (roles.get(at) ?? []).every(index => reading.has(c0[index]!.trim()))) && !reads(to + 1)) return [from, to]
+  1520	    to++
+  1521	  }
+  1522	  return undefined
+  1523	}
+  1524	
+  1525	/** The authored step between nesting levels: a tab, or the smallest indent. */
+  1526	function indentUnit(lines: readonly AuthoredLine[]): string {
+  1527	  let smallest = Infinity
+  1528	  for (const { text } of lines.slice(1)) {
+  1529	    if (inert(text)) continue
+  1530	    const indent = leading(text)
+  1531	    if (indent.startsWith('\t')) return '\t'
+  1532	    if (indent.length) smallest = Math.min(smallest, indent.length)
+  1533	  }
+  1534	  return Number.isFinite(smallest) ? ' '.repeat(smallest) : ''
+  1535	}
+  1536	
+  1537	function renderPlan(lines: readonly AuthoredLine[], plan: Plan, eol: string): string {
+  1538	  const out: string[] = []
+  1539	  let pending = ''
+  1540	  const emit = (text: string, end: string) => { out.push(pending, text); pending = end || eol }
+  1541	  lines.forEach((line, index) => {
+  1542	    for (const text of plan.before.get(index) ?? []) emit(text, eol)
+  1543	    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, line.eol)
+  1544	    for (const text of plan.after.get(index) ?? []) emit(text, eol)
+  1545	  })
+  1546	  const last = lines.at(-1)
+  1547	  return out.join('') + (last && last.eol === '' && !plan.after.get(lines.length - 1)?.length && !plan.removed.has(lines.length - 1) ? '' : pending)
+  1548	}
+  1549	
+  1550	/**
+  1551	 * Write `after` (the canonical result of a typed edit) as a local change to
+  1552	 * `authored`, the exact source `before` was parsed from. Returns the edited
+  1553	 * source and its parse, or why no local change reproduces `after`.
+25:// physical lines as one authored line, and traces a statement the parser
+92:interface AuthoredLine { readonly text: string; readonly eol: string }
+103:function splitLines(text: string): AuthoredLine[] {
+108:    lines.push({ text: text.slice(start, match.index), eol: match[0] })
+111:  if (start < text.length) lines.push({ text: text.slice(start), eol: '' })
+268:/** A value may continue on later physical lines (a quoted label written over
+281:      let { text, eol } = line
+283:        text += eol + lines[next]!.text
+284:        eol = lines[next]!.eol
+286:        if (found?.size && [...found.keys()].every(statement => canonical.has(statement))) { line = { text, eol }; at = next; break }
+305:  for (const line of lines) { starts.push(offset); offset += line.text.length + line.eol.length }
+675: * statement joined from several physical lines spells a canonical line break
+1537:function renderPlan(lines: readonly AuthoredLine[], plan: Plan, eol: string): string {
+1540:  const emit = (text: string, end: string) => { out.push(pending, text); pending = end || eol }
+1542:    for (const text of plan.before.get(index) ?? []) emit(text, eol)
+1543:    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, line.eol)
+1544:    for (const text of plan.after.get(index) ?? []) emit(text, eol)
+1547:  return out.join('') + (last && last.eol === '' && !plan.after.get(lines.length - 1)?.length && !plan.removed.has(lines.length - 1) ? '' : pending)
+1572:  const lines = splitLines(authored.slice(wrapper.length))
+1573:  const eol = /\r\n/.test(authored) ? '\r\n' : '\n'
+1627:      const source = nextWrapper + renderPlan(authoredLines, plan, eol)
+1665:    // Statements spelled over several physical lines are traced, edited and
+482:  { name: 'flowchart set_label on a :::class node', source: FLOWCHART, op: { kind: 'set_label', target: 'C', label: 'Do it now' }, touched: ['  B -->|yes| C(Do it):::hot'], reference: [['C(Do it)', 'C(Do it now)']] },
+483:  { name: 'flowchart set_label on an entity-spelled quoted label', source: FLOWCHART, op: { kind: 'set_label', target: 'A', label: 'Begin' }, touched: ['    A["Start <here>"] --> B{Decide?}'], reference: [['"Start <here>"', '"Begin"']] },
+547:  { name: 'flowchart set_label on a label written over two lines', source: SPLIT_FLOWCHART, op: { kind: 'set_label', target: 'A', label: 'Load' }, touched: ['  A["Load the', '     config"] --> B'], reference: [['A["Load the\n     config"]', 'A["Load"]']] },

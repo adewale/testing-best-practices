@@ -1,0 +1,22 @@
+{"font":"default","region":[378,1110,285,394],"digest":"60e4157380022d7e335c653c9975348df62f6d3358f45fb831f0a2170e3eb3fd"}
+{"font":"Inter","region":[378,1110,285,394],"digest":"60e4157380022d7e335c653c9975348df62f6d3358f45fb831f0a2170e3eb3fd"}
+{"font":"Inter, serif","region":[378,1110,285,394],"digest":"60e4157380022d7e335c653c9975348df62f6d3358f45fb831f0a2170e3eb3fd"}
+{"font":"DejaVu Sans","region":[378,1110,285,394],"digest":"60e4157380022d7e335c653c9975348df62f6d3358f45fb831f0a2170e3eb3fd"}
+21 |   masks.push(digest)
+22 |   console.log(JSON.stringify({font:font??'default',region:[x0,x1,y0,y1],digest}))
+23 | }
+24 | assert.equal(masks[0],masks[1],'the default draws Inter for Latin text')
+25 | assert.equal(masks[1],masks[2],'the fallback after a covering first face can change')
+26 | assert.notEqual(masks[1],masks[3],'two covering but differently shaped faces must draw different task glyphs')
+            ^
+AssertionError: two covering but differently shaped faces must draw different task glyphs
+ generatedMessage: false,
+     actual: "60e4157380022d7e335c653c9975348df62f6d3358f45fb831f0a2170e3eb3fd",
+   expected: "60e4157380022d7e335c653c9975348df62f6d3358f45fb831f0a2170e3eb3fd",
+   operator: "notStrictEqual",
+       diff: "simple",
+       code: "ERR_ASSERTION"
+
+      at /workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/.audit-font-choice.ts:26:8
+
+Bun v1.4.4 (Linux x64)

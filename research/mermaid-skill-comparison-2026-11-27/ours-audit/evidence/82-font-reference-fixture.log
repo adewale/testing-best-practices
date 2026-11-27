@@ -1,0 +1,25 @@
+   273	
+   274	### PNG
+   275	
+   276	`renderMermaidPNG` renders offline with `@resvg/resvg-js`. It loads:
+   277	
+   278	1. The bundled Inter faces used by the text-metrics model.
+   279	2. DejaVu Sans as a per-glyph fallback for symbols Inter lacks.
+   280	3. The bundled faces referenced by built-in Styles: Caveat, EB Garamond,
+   281	   Architects Daughter, and Share Tech Mono.
+   282	4. Any directories supplied through `fontDirs`.
+   283	5. OS-installed fonts only when `loadSystemFonts: true` is requested.
+   284	
+   285	The CLI equivalents are `--font-dirs <dir[,dir...]>` and `--system-fonts`.
+   286	Prefer a dedicated `fontDirs` directory when reproducible output matters.
+   287	System-font loading makes the result depend on the machine's installed faces.
+   288	
+   289	The family stored inside the font file must match the intended family token in
+   290	the Style's `font` value — normally the first family in its stack. Supply the
+   291	weights the diagram uses; Agentic Mermaid commonly emits 400, 500, 600, and
+   292	700. If an unbundled requested family cannot be resolved, PNG rasterization
+   293	uses Inter, with DejaVu available for per-glyph fallback.
+   294	
+   295	## Diagnostics and layout limits
+   296	
+30:          GH_TOKEN: ${{ github.token }}

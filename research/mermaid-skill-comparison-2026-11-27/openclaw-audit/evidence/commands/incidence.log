@@ -1,0 +1,6 @@
+857
+606
+3:import { unitTestFiles } from './unit-test-files.ts'
+5:const root = resolve(import.meta.dir, '../..')
+6:const args = process.argv.slice(2)
+17:const child = Bun.spawn([process.execPath, 'test', '--timeout', '30000', ...unitTestFiles(), ...args], {

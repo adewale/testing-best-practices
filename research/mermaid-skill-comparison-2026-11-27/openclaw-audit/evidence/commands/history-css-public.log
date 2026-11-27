@@ -1,0 +1,5 @@
+0297fa7d3428c09118d89a6878bfad3e49f93b1b	Use explicit editor modules and separate website build responsibilities
+389cdda8a475c86ef9917d4cca2278a7d9dc0cc2	test: replace weak oracles and remove redundant test ceremony
+122815bb3c4f149eb36256cf30463491edeaf417	Supply canonical browser adapter in chrome script harness
+3a5a6c91e68d443579bd3833901e7b707edd3c3e	Simplify verification: check behaviour, not implementation (#357)
+7347c53f00d33b69fdac6df89915b2283e059a77	Kiln brand system: an app-shell identity decoupled from the diagram themes (#100)

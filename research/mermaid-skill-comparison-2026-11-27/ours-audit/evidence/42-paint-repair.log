@@ -1,0 +1,26 @@
+diff --git a/src/__tests__/authored-style-color-admission.test.ts b/src/__tests__/authored-style-color-admission.test.ts
+index ebdf823..301925f 100644
+--- a/src/__tests__/authored-style-color-admission.test.ts
++++ b/src/__tests__/authored-style-color-admission.test.ts
+@@ -200,7 +200,7 @@ describe('authored style color admission (#303, source/typed slice)', () => {
+   test('CLI and MCP SVG transport preserve only the nominal, named diagnostic', async () => {
+     const source = SOURCES[0]!.make('notacolor')
+     for (const format of ['svg', 'ascii', 'unicode'] as const) {
+-      const batch = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }
++      const batch = runBatchLine(JSON.stringify({ op: 'render', source, options: { format } }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }
+       expect(batch.ok).toBe(false)
+       expect(batch.error).toMatchObject({ code: 'INVALID_STYLE_COLOR', property: 'fill', value: 'notacolor', message: expect.stringContaining('style A: fill "notacolor"') })
+     }
+diff --git a/src/__tests__/quadrant-style.test.ts b/src/__tests__/quadrant-style.test.ts
+index ad8998f..cfc8bd1 100644
+--- a/src/__tests__/quadrant-style.test.ts
++++ b/src/__tests__/quadrant-style.test.ts
+@@ -147,7 +147,7 @@ describe('quadrant authored paint admission (#303)', () => {
+   it('projects only nominal bounded color errors through CLI and MCP', async () => {
+     const source = 'quadrantChart\n  A: [0.5, 0.5] color: notacolor'
+     for (const format of ['svg', 'ascii', 'unicode'] as const) {
+-      const result = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }
++      const result = runBatchLine(JSON.stringify({ op: 'render', source, options: { format } }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }
+       expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: expect.stringContaining('notacolor') } })
+     }
+     const response = await handleHostedRequest(

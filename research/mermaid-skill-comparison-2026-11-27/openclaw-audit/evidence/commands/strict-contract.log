@@ -1,0 +1,31 @@
+src/output-security.ts:15:export type OutputSecurityMode = 'default' | 'strict'
+src/output-security.ts:448:export function validateRawThemeCss(value: unknown, mode: OutputSecurityMode): string | undefined {
+src/output-security.ts:585:function applySecurityPolicy(svg: string, mode: OutputSecurityMode, useWritten: boolean): OutputSecurityResult {
+src/output-security.ts:607:export function applyOutputSecurityPolicy(svg: string, mode: OutputSecurityMode = 'default'): OutputSecurityResult {
+src/output-security.ts:614:export function applyWrittenOutputSecurityPolicy(svg: string, mode: OutputSecurityMode = 'default'): OutputSecurityResult {
+src/cli/index.ts:191:  const security = securityFlag === 'strict' ? ('strict' as const) : undefined
+src/cli/index.ts:199:  if (securityFlag !== undefined && securityFlag !== 'strict') {
+src/cli/index.ts:354:  // renderer; `--security strict` enforces the shared SVG output-security policy.
+src/cli/index.ts:748:export function buildPreviewHtml(source: string, opts: { security?: 'default' | 'strict' } = {}): Result<string, { code: string; message: string; details?: unknown }> {
+src/cli/index.ts:754:  const svg = renderMermaidSVG(source, { security: opts.security ?? 'strict' })
+src/cli/index.ts:802:  const security = 'strict' as const
+src/cli/index.ts:804:  if (securityFlag !== undefined && securityFlag !== 'strict') {
+src/cli/index.ts:1170:- render --format ${CLI_RENDER_FORMATS.join(', ')} [--security strict] — render a diagram; PNG requires --output and does not support multi-input/watch
+src/cli/index.ts:1199:Agentic Mermaid outputs SVG, PNG, ASCII, Unicode, and JSON layout. Full capability list: ${formats}. SVG strict mode (security: 'strict') emits zero external-fetch
+src/renderer.ts:154:    parts.push(renderNode(marks, node, font, style, colors, options.security !== 'strict'))
+src/__tests__/cli-multi-input.test.ts:118:  test('--security strict applies to multi-input SVG renders', () => {
+src/__tests__/cli-multi-input.test.ts:121:    const { code, out } = capture(() => runCli(['render', a, b, '--format', 'svg', '--security', 'strict']))
+src/__tests__/cli-multi-input.test.ts:124:    expect(payload.files.every((f: any) => f.ok && !f.output.includes('fonts.googleapis.com'))).toBe(true)
+src/__tests__/cli-multi-input.test.ts:158:    const output = renderWatchFrame(f, 'svg', { security: 'strict' }, false).output
+src/__tests__/cli-multi-input.test.ts:160:    expect(output).not.toContain('fonts.googleapis.com')
+src/__tests__/cli-batch-render-parity.test.ts:61:    const options = { format: 'svg', style: 'nord-light', seed: 8, security: 'strict', idPrefix: 'caller-' }
+src/__tests__/cli-batch-render-parity.test.ts:64:      style: 'nord-light', seed: 8, security: 'strict', idPrefix: 'd3-caller-',
+src/theme.ts:317:          ? [`@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(font)}:wght@400;500;600;700&amp;display=swap');`]
+src/theme.ts:320:          ? [`@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap');`]
+src/__tests__/agent-cli-render-formats.test.ts:76:  test('--json success is an ok envelope; --output keeps the plain artifact and reports the write', () => {
+src/__tests__/agent-cli-render-formats.test.ts:85:      const written = capture(() => runCli(['render', '--format', format, '--output', output, '--json', f]))
+src/cli/help.ts:34:  --output <FILE>        Write render/preview output to FILE instead of stdout
+src/cli/help.ts:107:Multiple inputs emit a JSON results array for non-PNG formats.
+src/cli/help.ts:110:layout JSON plus "ok". With --output FILE the file always holds the plain
+src/cli/help.ts:177:  preview: `am preview <file|-> [--output preview.html] [--open] [--json] [--security strict]
+src/cli/help.ts:179:--output, emits HTML to stdout unless --open is set, in which case a temp HTML

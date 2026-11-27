@@ -1,0 +1,47 @@
+
+src/__tests__/authored-style-color-admission.test.ts:
+(pass) authored style color admission (#303, source/typed slice) > distinguishes real colors from safe-looking words and malformed functions [130.85ms]
+(pass) authored style color admission (#303, source/typed slice) > every affected graphical source placement refuses the offending value by directive and property [289.12ms]
+(pass) authored style color admission (#303, source/typed slice) > verify exposes the same reason, and PNG refuses before drawing a misleading node [17.58ms]
+(pass) authored style color admission (#303, source/typed slice) > unused declarations cannot hide invalid colors from render or verify [40.92ms]
+(pass) authored style color admission (#303, source/typed slice) > Class style and classDef order neither admits nor echoes refused paint [56.62ms]
+(pass) authored style color admission (#303, source/typed slice) > async browser SVG refuses invalid paint in every affected family [10.98ms]
+(pass) authored style color admission (#303, source/typed slice) > typed style mutations refuse the same unknown and malformed colors at build time [166.79ms]
+(pass) authored style color admission (#303, source/typed slice) > Class, ER, and State typed style mutations reject bad paint [36.94ms]
+(pass) authored style color admission (#303, source/typed slice) > CLI and MCP SVG transport preserve only the nominal, named diagnostic [10.66ms]
+
+src/__tests__/quadrant-style.test.ts:
+(pass) quadrant parser models point styles and classDefs > keeps commas inside functional colors while splitting top-level entries [3.96ms]
+(pass) quadrant parser models point styles and classDefs > rejects unbalanced color functions loudly [0.18ms]
+(pass) quadrant parser models point styles and classDefs > parses direct point styles into typed fields [0.12ms]
+(pass) quadrant parser models point styles and classDefs > parses ::: class assignments into className [0.10ms]
+(pass) quadrant parser models point styles and classDefs > parses classDef lines into the classDefs table (space before colon tolerated) [0.06ms]
+(pass) quadrant parser models point styles and classDefs > keeps the loud-error contract for malformed style metadata [0.82ms]
+(pass) quadrant authored paint admission (#303) > refuses every non-drawable direct and class paint before graphical or terminal output [50.00ms]
+(pass) quadrant authored paint admission (#303) > preserves drawable fill and stroke paints, including none and unresolved local variables [74.69ms]
+(pass) quadrant authored paint admission (#303) > projects only nominal bounded color errors through CLI and MCP [11.02ms]
+(pass) quadrant point style resolution > direct styles win over class styles which win over defaults [0.18ms]
+(pass) quadrant point style resolution > a point referencing an unknown class resolves to defaults (upstream parity) [0.08ms]
+(pass) quadrant layout consumes resolved point styles > positioned radius follows direct/class radius [0.92ms]
+(pass) quadrant layout consumes resolved point styles > unstyled points keep the default radius [0.41ms]
+(pass) quadrant SVG renders point styles > direct styles reach the circle (fill / radius / stroke) [0.19ms]
+(pass) quadrant SVG renders point styles > a styled point rendered attributes match its classDef [0.06ms]
+(pass) quadrant SVG renders point styles > class names are emitted as CSS classes so external stylesheets can target them [0.03ms]
+(pass) quadrant SVG renders point styles > unstyled points keep the plain themed markup (no style attribute) [2.69ms]
+(pass) quadrant SVG renders point styles > is deterministic [3.66ms]
+(pass) quadrant agent body models styles structurally > the upstream styled example parses to a structured quadrant body [1.36ms]
+(pass) quadrant agent body models styles structurally > serializes canonically and re-parses identically (structured + legacy differential) [2.78ms]
+(pass) quadrant agent body models styles structurally > mutation ops preserve classes and styles on untouched fields [4.75ms]
+(pass) quadrant agent body models styles structurally > verifies clean: no UNSUPPORTED_SYNTAX for modeled styling [7.52ms]
+(pass) quadrant agent body models styles structurally > malformed style tails still fall back to opaque (loud render error preserved) [0.56ms]
+(pass) unknown style properties and hostile class names > constructor-classname source stays readable and warns about its unsupported property [3.05ms]
+(pass) unknown style properties and hostile class names > unknown properties survive serialize → re-parse verbatim (lossless) [0.50ms]
+(pass) unknown style properties and hostile class names > unknown properties are inert in render (never reach the style attribute) [1.74ms]
+(pass) unknown style properties and hostile class names > classDef named __proto__ does not pollute Object.prototype and still applies [0.10ms]
+(pass) unknown style properties and hostile class names > className constructor with no classDef resolves to defaults, not Object.prototype [0.04ms]
+(pass) unknown style properties and hostile class names > well-formed unknown entries on a point stay source-only with the style preserved [0.23ms]
+
+ 38 pass
+ 0 fail
+ 997 expect() calls
+Ran 38 tests across 2 files. [1304.00ms]

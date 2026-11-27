@@ -1,0 +1,230 @@
+src/__tests__/agent-doc-sync.test.ts:202:    const AGENT = JSON.stringify(join(REPO, 'src/agent/index.ts'))
+src/__tests__/agent-doc-sync.test.ts:203:    const CORE = JSON.stringify(join(REPO, 'src/index.ts'))
+src/__tests__/agent-doc-sync.test.ts:204:    const BROWSER = JSON.stringify(join(REPO, 'src/browser-lazy.ts'))
+src/__tests__/agent-doc-sync.test.ts:227:          const wired = block.replaceAll("'agentic-mermaid/agent/core'", JSON.stringify(join(REPO, 'src/agent/core.ts'))).replaceAll("'agentic-mermaid/agent'", AGENT).replaceAll("'agentic-mermaid/browser/lazy'", BROWSER).replaceAll("'agentic-mermaid'", CORE)
+src/__tests__/agent-doc-sync.test.ts:479:                  path: join(REPO, 'src/browser-lazy.ts'),
+src/__tests__/heuristic-coverage.test.ts:43:// pre-check, src/layout-engine.ts).
+src/__tests__/quadrant-interactive.test.ts:4:// (src/shared/svg-tooltip.ts) rather than a copy. Hover chrome appears only
+src/__tests__/capability-negotiation.test.ts:27:const EVIDENCE = 'src/__tests__/capability-negotiation.test.ts'
+src/__tests__/terminal-projection-security.test.ts:198:    expect(claims.every(claim => claim.evidence === 'src/__tests__/terminal-projection-security.test.ts')).toBe(true)
+src/__tests__/mcp-stateless-era.test.ts:17:import { createMcpHandler, type McpRequestEvent } from '../../website/src/mcp-handler.ts'
+src/__tests__/ascii-wrap.test.ts:2: * Tests for the shared width-aware wrap module (src/ascii/wrap.ts).
+src/__tests__/diagram-work-limits.test.ts:80:      expect(elk).not.toHaveBeenCalled()
+src/__tests__/diagram-work-limits.test.ts:81:      expect(grid).not.toHaveBeenCalled()
+src/__tests__/diagram-work-limits.test.ts:123:      expect(elk).not.toHaveBeenCalled()
+src/__tests__/diagram-work-limits.test.ts:172:      expect(measurement).not.toHaveBeenCalled()
+src/__tests__/diagram-work-limits.test.ts:188:      expect(elk).not.toHaveBeenCalled()
+src/__tests__/diagram-work-limits.test.ts:241:      expect(measurement).not.toHaveBeenCalled()
+src/__tests__/diagram-work-limits.test.ts:242:      expect(terminalMeasurement).not.toHaveBeenCalled()
+src/__tests__/diagram-work-limits.test.ts:256:      expect(measurement).not.toHaveBeenCalled()
+src/__tests__/treeview-native.test.ts:114:    const authored = 'treeView-beta\naccTitle: Files\nsrc/\n    main.ts'
+src/__tests__/ascii-target-width.test.ts:27:  treeview: 'treeView-beta\nsrc/\n    "A very descriptive 界 file name with several words.ts"',
+src/__tests__/performance-observations.test.ts:19:    import './src/index.ts'
+src/__tests__/performance-observations.test.ts:20:    import { getFamily, replaceFamilyForTest } from './src/agent/families.ts'
+src/__tests__/performance-observations.test.ts:21:    import { resolveRenderRequest } from './src/render-contract.ts'
+src/__tests__/performance-observations.test.ts:22:    import { withPerformanceObserver } from './src/performance-observations.ts'
+src/__tests__/performance-observations.test.ts:103:    import { cachedPositioned, retainPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/performance-observations.test.ts:140:    import { renderMermaidSVG } from './src/index.ts'
+src/__tests__/performance-observations.test.ts:141:    import { cachedPositioned, retainPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/performance-observations.test.ts:142:    import { withPerformanceObserver } from './src/performance-observations.ts'
+src/__tests__/performance-observations.test.ts:254:    import { renderMermaidSVG } from './src/index.ts'
+src/__tests__/performance-observations.test.ts:255:    import { clearElkLayoutCache, elkLayoutSync } from './src/elk-instance.ts'
+src/__tests__/performance-observations.test.ts:256:    import { resolveRenderRequestForExecution } from './src/render-contract.ts'
+src/__tests__/performance-observations.test.ts:257:    import { positionResolvedFamily } from './src/positioning.ts'
+src/__tests__/performance-observations.test.ts:258:    import { retainedNativeDrawing, retainedPositionedScene } from './src/scene/positioned.ts'
+src/__tests__/class-layout-backends.test.ts:398:      expect(producer).toHaveBeenCalledTimes(3)
+src/__tests__/characterization-layout.test.ts:5:// the behaviour of the hand-written grid + A* layout (src/ascii/grid.ts,
+src/__tests__/property-abstraction-waists.test.ts:415:      import './src/__tests__/fc-seed.preload.ts'
+src/__tests__/property-abstraction-waists.test.ts:417:      import { fcParameters } from './src/__tests__/helpers/fc-parameters.ts'
+src/__tests__/property-abstraction-waists.test.ts:418:      import { BUILTIN_FAMILY_METADATA, getFamily, knownFamilies } from './src/agent/families.ts'
+src/__tests__/property-abstraction-waists.test.ts:419:      import { registerFamily } from './src/agent/family-registration.ts'
+src/__tests__/property-abstraction-waists.test.ts:455:              { capability: 'detection', state: 'native', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:456:              { capability: 'source-preservation', state: 'source-preserved', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:457:              { capability: 'parse', state: 'source-preserved', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:458:              { capability: 'serialize', state: 'source-preserved', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:459:              { capability: 'mutation', state: 'diagnosed', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:460:              { capability: 'verify', state: 'diagnosed', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:461:              { capability: 'layout', state: 'absent', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:462:              { capability: 'scene', state: 'absent', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:463:              { capability: 'svg', state: 'absent', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/property-abstraction-waists.test.ts:464:              { capability: 'terminal', state: 'absent', evidence: ['src/__tests__/property-abstraction-waists.test.ts'] },
+src/__tests__/architecture-lookup-ownership.test.ts:76:    expect(elkProducer).toHaveBeenCalledTimes(1)
+src/__tests__/positioned-artifact-convergence.test.ts:8:const EVIDENCE = 'src/__tests__/positioned-artifact-convergence.test.ts'
+src/__tests__/cli-batch-render-parity.test.ts:15:    const child = spawn(process.execPath, ['src/cli/am-bin.ts', 'batch', '--jsonl'], { stdio: ['pipe', 'pipe', 'pipe'] })
+src/__tests__/metadata-yaml.test.ts:2:// (src/shared/metadata-yaml.ts). The oracle is pinned upstream Mermaid,
+src/__tests__/renderer-security.test.ts:15:      const { renderMermaidSVGWithReceipt, applyOutputSecurityPolicy } = await import('./src/index.ts')
+src/__tests__/renderer-security.test.ts:16:      const { sceneAssertionsEnabled } = await import('./src/scene/assertions.ts')
+src/__tests__/property-hard-invariants.test.ts:3:// assessLayout (src/layout-rubric.ts) is an INDEPENDENT oracle: it reimplements
+src/__tests__/code-mode-membrane-traps.test.ts:1:// Characterization of the Code Mode read-only membrane (src/mcp/facade.ts):
+src/__tests__/scene-fidelity.test.ts:328:        const { getFamily, replaceFamilyForTest } = await import('./src/agent/families.ts')
+src/__tests__/scene-fidelity.test.ts:329:        const { renderMermaidSVG, renderMermaidASCIIWithReceipt } = await import('./src/index.ts')
+src/__tests__/scene-fidelity.test.ts:330:        const { verifyMermaid } = await import('./src/agent/verify.ts')
+src/__tests__/scene-fidelity.test.ts:331:        const { resolveRenderRequest } = await import('./src/render-contract.ts')
+src/__tests__/scene-fidelity.test.ts:332:        const { positionResolvedFamily } = await import('./src/positioning.ts')
+src/__tests__/scene-fidelity.test.ts:333:        const { renderPositionedMermaidSVG } = await import('./src/graphical-render.ts')
+src/__tests__/scene-fidelity.test.ts:334:        const { assertScenesOf } = await import('./src/scene/assertions.ts')
+src/__tests__/extension-family-public-api.test.ts:18:const EVIDENCE = 'src/__tests__/extension-family-public-api.test.ts'
+src/__tests__/er-subgraph-tolerance.test.ts:59:      expect(elk).toHaveBeenCalledTimes(1)
+src/__tests__/mcp-client-interop.test.ts:18:import { createMcpHandler } from '../../website/src/mcp-handler.ts'
+src/__tests__/mcp-client-interop.test.ts:152:      args: ['run', 'src/mcp/mcp-bin.ts'],
+src/__tests__/verify-publish-package.test.ts:47:      'src/internal.ts',
+src/__tests__/verify-publish-package.test.ts:52:      'npm package has unexpected file: src/internal.ts',
+src/__tests__/position-cache-ownership.test.ts:10:    import * as drawing from './src/scene/native-drawing.ts'
+src/__tests__/position-cache-ownership.test.ts:11:    import * as paint from './src/scene/paint-certification.ts'
+src/__tests__/position-cache-ownership.test.ts:12:    import { renderMermaidSVGWithReceipt as render } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:13:    import { layoutMermaidWithReceipt } from './src/agent/index.ts'
+src/__tests__/position-cache-ownership.test.ts:14:    import { resolveRenderRequestForExecution } from './src/render-contract.ts'
+src/__tests__/position-cache-ownership.test.ts:15:    import { positionFamilyForNativeRender, positionedForSceneLowering } from './src/positioning.ts'
+src/__tests__/position-cache-ownership.test.ts:55:    import { clonePositioned, retainPositioned, cachedPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:56:    import { preparePixelText, transferRetainedPixelText } from './src/shared/prepared-text.ts'
+src/__tests__/position-cache-ownership.test.ts:96:    import { clonePositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:97:    import { preparePixelText, pixelTextLine } from './src/shared/prepared-text.ts'
+src/__tests__/position-cache-ownership.test.ts:135:    import { getFamily } from './src/agent/families.ts'
+src/__tests__/position-cache-ownership.test.ts:136:    import { renderMermaidSVGWithReceipt } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:137:    import { inheritNativeDrawing, nativeDrawingOf, sceneLowering } from './src/scene/drawing.ts'
+src/__tests__/position-cache-ownership.test.ts:158:    import { preparePixelText } from './src/shared/prepared-text.ts'
+src/__tests__/position-cache-ownership.test.ts:159:    import { clonePositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:160:    import { createNativePaintEmission } from './src/scene/native-paint-emission.ts'
+src/__tests__/position-cache-ownership.test.ts:193:    import { borrowedPositioned, cachedNativeDrawing, finishedNativeDrawing, retainFinishedNativeDrawing, retainNativeDrawing, retainOwnedNativeSvgPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:224:    import { borrowedPositioned, cachedNativeDrawing, retainNativeDrawing, retainOwnedNativeSvgPositioned, retainPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:253:    import { borrowedPositioned, cachedNativeDrawing, retainNativeDrawing, retainOwnedNativeSvgPositioned, retainPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:291:    import { borrowedPositioned, cachedNativeDrawing, retainNativeDrawing, retainOwnedNativeSvgPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:320:    import { borrowedPositioned, cachedNativeDrawing, retainNativeDrawing, retainOwnedNativeSvgPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:354:    import { borrowedPositioned, cachedNativeDrawing, retainNativeDrawing, retainOwnedNativeSvgPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:396:    import { createMermaidRenderer } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:397:    import { PERFORMANCE_EXPERIMENTS, withPerformanceExperiments } from './src/experimental-performance.ts'
+src/__tests__/position-cache-ownership.test.ts:446:    import { renderMermaidSVGWithReceipt } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:447:    import { getFamily } from './src/agent/families.ts'
+src/__tests__/position-cache-ownership.test.ts:448:    import { inheritNativeDrawing, nativeDrawingOf, sceneLowering } from './src/scene/drawing.ts'
+src/__tests__/position-cache-ownership.test.ts:449:    import { withRenderStageObserver } from './src/render-stages.ts'
+src/__tests__/position-cache-ownership.test.ts:450:    import { resolveRenderRequestForExecution } from './src/render-contract.ts'
+src/__tests__/position-cache-ownership.test.ts:451:    import { positionFamilyForNativeRender } from './src/positioning.ts'
+src/__tests__/position-cache-ownership.test.ts:452:    import { retainedNativeDrawing } from './src/scene/positioned.ts'
+src/__tests__/position-cache-ownership.test.ts:453:    import { borrowedPositioned, cachedNativeDrawing, retainNativeDrawing, retainOwnedNativeSvgPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:560:      import { isOwnedFamily } from './src/experimental/owned-family.ts'
+src/__tests__/position-cache-ownership.test.ts:561:      import { DefaultBackend, isOriginalEnrolledDefaultBackend, registerBackend, registerBuiltInBackend } from './src/scene/backend.ts'
+src/__tests__/position-cache-ownership.test.ts:583:        const { getFamily, replaceFamilyForTest } = await import('./src/agent/families.ts')
+src/__tests__/position-cache-ownership.test.ts:584:        const { createBrowserFamilyDescriptor } = await import('./src/browser-lazy/family.ts')
+src/__tests__/position-cache-ownership.test.ts:637:      import { renderMermaidSVGWithReceipt } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:638:      import { renderMermaidPNGWithReceipt } from './src/agent/index.ts'
+src/__tests__/position-cache-ownership.test.ts:639:      import { resolveRenderRequestForExecution } from './src/render-contract.ts'
+src/__tests__/position-cache-ownership.test.ts:640:      import { positionResolvedFamily, retainedFamilyProjection } from './src/positioning.ts'
+src/__tests__/position-cache-ownership.test.ts:641:      import { getFamily, replaceFamilyForTest } from './src/agent/families.ts'
+src/__tests__/position-cache-ownership.test.ts:642:      import { PERFORMANCE_EXPERIMENTS, withPerformanceExperiments } from './src/experimental-performance.ts'
+src/__tests__/position-cache-ownership.test.ts:723:    import { createMermaidRenderer, parseRegisteredMermaid, renderMermaidSVGWithReceipt } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:724:    import { resolveRenderRequestForExecution } from './src/render-contract.ts'
+src/__tests__/position-cache-ownership.test.ts:725:    import { positionResolvedFamily, retainedFamilyProjection } from './src/positioning.ts'
+src/__tests__/position-cache-ownership.test.ts:726:    import { getFamily, replaceFamilyForTest } from './src/agent/families.ts'
+src/__tests__/position-cache-ownership.test.ts:727:    import { PERFORMANCE_EXPERIMENTS, withPerformanceExperiments } from './src/experimental-performance.ts'
+src/__tests__/position-cache-ownership.test.ts:825:    import { renderMermaidSVGWithReceipt, layoutMermaidWithReceipt } from './src/agent/index.ts'
+src/__tests__/position-cache-ownership.test.ts:826:    import { scanSvgStartTags } from './src/svg-structure.ts'
+src/__tests__/position-cache-ownership.test.ts:913:    import { clonePositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:972:    import { clonePositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:981:    const { preparePixelText, isRetainedPixelText } = await import('./src/shared/prepared-text.ts')
+src/__tests__/position-cache-ownership.test.ts:1002:    import { clonePositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:1003:    import { preparePixelText } from './src/shared/prepared-text.ts'
+src/__tests__/position-cache-ownership.test.ts:1049:    import { clonePositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:1050:    import { preparePixelText, isRetainedPixelText } from './src/shared/prepared-text.ts'
+src/__tests__/position-cache-ownership.test.ts:1086:    import { renderMermaidSVGWithReceipt, createMermaidRenderer } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:1087:    import { resolveRenderRequestForExecution } from './src/render-contract.ts'
+src/__tests__/position-cache-ownership.test.ts:1088:    import { positionResolvedFamily } from './src/positioning.ts'
+src/__tests__/position-cache-ownership.test.ts:1089:    import { getFamily } from './src/agent/families.ts'
+src/__tests__/position-cache-ownership.test.ts:1090:    import { inheritNativeDrawing, nativeDrawingOf, sceneLowering } from './src/scene/drawing.ts'
+src/__tests__/position-cache-ownership.test.ts:1091:    import { PERFORMANCE_EXPERIMENTS, withPerformanceExperiments } from './src/experimental-performance.ts'
+src/__tests__/position-cache-ownership.test.ts:1131:    import { clonePositioned, retainPositioned, cachedPositioned } from './src/experimental/position-cache.ts'
+src/__tests__/position-cache-ownership.test.ts:1132:    import { preparePixelText, pixelTextLine, isRetainedPixelText } from './src/shared/prepared-text.ts'
+src/__tests__/position-cache-ownership.test.ts:1171:    import { renderMermaidSVGWithReceipt as svg, renderResolvedScene } from './src/index.ts'
+src/__tests__/position-cache-ownership.test.ts:1172:    import { renderMermaidPNGWithReceipt as png } from './src/agent/index.ts'
+src/__tests__/position-cache-ownership.test.ts:1173:    import { PERFORMANCE_EXPERIMENTS, withPerformanceExperiments } from './src/experimental-performance.ts'
+src/__tests__/ascii-pathfinder-trunk.test.ts:3:// NOTE: trunk-sharing was ALREADY implemented (src/ascii/edge-bundling.ts
+src/__tests__/agent-create.test.ts:257:      treeview: ['src/', 'index.ts'],
+src/__tests__/red-green-gate.test.ts:31:  put('src/value.ts', baseSource)
+src/__tests__/red-green-gate.test.ts:32:  put('src/__tests__/behavior.test.ts', "import { expect, test } from 'bun:test'\nimport { value } from '../value.ts'\ntest('base behavior', () => expect(value).toBe(1))\n")
+src/__tests__/red-green-gate.test.ts:36:  put('src/value.ts', 'export const value = 2\nexport const introduced = true\n')
+src/__tests__/red-green-gate.test.ts:37:  put('src/__tests__/behavior.test.ts', testSource)
+src/__tests__/prepare-release.test.ts:19:  write('src/version.ts', "// Runtime-safe version.\nexport const PACKAGE_VERSION = '1.2.3'\n")
+src/__tests__/prepare-release.test.ts:22:  write('src/browser-lazy/generated/existing.ts', 'original generated data\n')
+src/__tests__/prepare-release.test.ts:24:  const original = new Map(['package.json', 'server.json', 'src/version.ts', 'CHANGELOG.md', 'docs/api.md', 'src/browser-lazy/generated/existing.ts'].map(path => [path, read(path)]))
+src/__tests__/prepare-release.test.ts:34:      expect(f.read('src/version.ts')).toContain("PACKAGE_VERSION = '1.2.4'")
+src/__tests__/prepare-release.test.ts:40:    expect(changed).toEqual(['package.json', 'server.json', 'src/version.ts'])
+src/__tests__/prepare-release.test.ts:75:        f.write('src/browser-lazy/generated/existing.ts', 'partly regenerated\n')
+src/__tests__/prepare-release.test.ts:76:        f.write('src/browser-lazy/generated/new.ts', 'new generated data\n')
+src/__tests__/prepare-release.test.ts:79:        f.write('src/cli/agent-instructions.ts', 'partly generated instructions\n')
+src/__tests__/prepare-release.test.ts:84:    expect(existsSync(join(f.root, 'src/browser-lazy/generated/new.ts'))).toBe(false)
+src/__tests__/prepare-release.test.ts:85:    expect(existsSync(join(f.root, 'src/cli/agent-instructions.ts'))).toBe(false)
+src/__tests__/elk-layout-cache.test.ts:48:      import * as solvers from './src/elk-solver.ts'
+src/__tests__/elk-layout-cache.test.ts:52:      const { elkLayoutSync, clearElkLayoutCache } = await import('./src/elk-instance.ts')
+src/__tests__/sankey-rubric-properties.test.ts:6:// unusual input had no gate. The assessor in src/family-rubric.ts owns the
+src/__tests__/parser.test.ts:30:      const { parseMermaid } = await import('./src/parser.ts')
+src/__tests__/sequence-config.test.ts:3:// pattern). Wired keys have natural mappings in src/sequence/layout.ts:
+src/__tests__/sequence-config.test.ts:12:// from the single wire-or-warn table in src/sequence/config.ts.
+src/__tests__/doc-cli-commands.test.ts:247:    { file: 'src/cli/init-agent.ts AGENTS_SNIPPET', snippets: markdownSnippets(AGENTS_SNIPPET) },
+src/__tests__/doc-cli-commands.test.ts:248:    { file: 'src/cli/init-agent.ts INIT_SKILL_MD', snippets: markdownSnippets(INIT_SKILL_MD) },
+src/__tests__/doc-cli-commands.test.ts:249:    ...Object.entries(COMMAND_HELP).map(([verb, help]) => ({ file: `src/cli/index.ts COMMAND_HELP.${verb}`, snippets: helpTextSnippets(help) })),
+src/__tests__/doc-cli-commands.test.ts:250:    { file: 'src/mcp/mcp-cli.ts MCP_CLI_HELP', snippets: helpTextSnippets(MCP_CLI_HELP) },
+src/__tests__/flowchart-v11-shapes.test.ts:7: *    through ONE table (src/flowchart-shapes.ts) to a semantic shape id plus a
+src/__tests__/quadrant.test.ts:392:    // typed QuadrantBody (not opaque). See src/agent/quadrant-body.ts.
+src/__tests__/label-placement.test.ts:19:// (src/layout-rubric.ts): 0 is perfectly centred, →0.5 is jammed at an endpoint.
+src/__tests__/er-layout-backends.test.ts:471:      expect(producer).toHaveBeenCalledTimes(1)
+src/__tests__/er-layout-backends.test.ts:485:      expect(elk).toHaveBeenCalledTimes(1)
+src/__tests__/layout-equivalence.test.ts:18://   UPDATE_LAYOUT_BASELINE=1 bun test src/__tests__/layout-equivalence.test.ts
+src/__tests__/layout-equivalence.test.ts:160:      throw new Error(`${diffs.length} of ${current.size} diagram(s) diverged from the geometry baseline:\n  ${shown}${more}\n\n` + `If intentional: UPDATE_LAYOUT_BASELINE=1 bun test src/__tests__/layout-equivalence.test.ts, ` + `review the golden diff, and list each changed golden and why in the PR description.`)
+src/__tests__/agent-body-shared-rules.test.ts:7:// src/agent/body-utils.ts, so adopting the shared helper is byte-identical.
+src/__tests__/class-serializer-conformance.test.ts:9: * (src/class/parser.ts) to the same namespace structure the op promised —
+src/__tests__/styled-output.test.ts:9://   UPDATE_STYLED_BASELINE=1 bun test src/__tests__/styled-output.test.ts
+src/__tests__/styled-output.test.ts:547:    const { renderMermaidPNGWasm } = await import('../../website/src/png-wasm.ts')
+src/__tests__/fidelity-route-conformance.test.ts:2:import { renderWebsiteSVGWithReceipt } from '../../website/src/rendering.ts'
+src/__tests__/standalone-family-metadata-projection.test.ts:32:  const path = join(temporary, 'src/agent', stable ? 'stable-family-metadata.ts' : 'family-registry.ts')
+src/__tests__/standalone-family-metadata-projection.test.ts:53:  for (const relative of ['src/agent/family-registry.ts', 'src/agent/stable-family-metadata.ts']) {
+src/__tests__/standalone-family-metadata-projection.test.ts:61:  for (const [relative, name] of [['src/agent/family-registry.ts', 'BUILTIN_FAMILY_DESCRIPTOR_SEEDS'], ['src/agent/stable-family-metadata.ts', 'STABLE_FAMILY_DESCRIPTOR_SEEDS']]) {
+src/__tests__/standalone-family-metadata-projection.test.ts:91:  const unrelated = join(temporary, 'src/agent/families-builtin.ts')
+src/__tests__/crisp-drawing.test.ts:11:    import { renderMermaidSVGWithReceipt } from './src/index.ts'
+src/__tests__/crisp-drawing.test.ts:12:    import { knownBuiltinFamilies, getFamily, BUILTIN_FAMILY_METADATA } from './src/agent/families.ts'
+src/__tests__/crisp-drawing.test.ts:13:    import { getBackendDescriptor } from './src/scene/backend.ts'
+src/__tests__/crisp-drawing.test.ts:14:    import * as marks from './src/scene/marks.ts'
+src/__tests__/crisp-drawing.test.ts:15:    import { withRenderStageObserver } from './src/render-stages.ts'
+src/__tests__/crisp-drawing.test.ts:16:    import { resolveRenderRequest, resolvedFamilyRenderContextOf } from './src/render-contract.ts'
+src/__tests__/crisp-drawing.test.ts:17:    import { positionResolvedFamily } from './src/positioning.ts'
+src/__tests__/crisp-drawing.test.ts:96:    import * as conformance from './src/scene/backend-conformance.ts'
+src/__tests__/crisp-drawing.test.ts:97:    import { renderMermaidSVG } from './src/index.ts'
+src/__tests__/crisp-drawing.test.ts:114:    import './src/scene/default-backend.ts'
+src/__tests__/crisp-drawing.test.ts:115:    import { getBackendDescriptor } from './src/scene/backend.ts'
+src/__tests__/crisp-drawing.test.ts:116:    import { createTextMeasurementExecution, withTextMeasurementExecution } from './src/text-measurement-profile.ts'
+src/__tests__/crisp-drawing.test.ts:117:    import { measureTextWidth } from './src/text-metrics.ts'
+src/__tests__/crisp-drawing.test.ts:136:    import { DefaultBackend, getBackendDescriptor } from './src/scene/backend.ts'
+src/__tests__/crisp-drawing.test.ts:137:    import { attachSceneNodeSerialization, sceneNodeSerialization } from './src/scene/serialization.ts'
+src/__tests__/crisp-drawing.test.ts:153:    await import('./src/scene/default-backend.ts')
+src/__tests__/crisp-drawing.test.ts:166:    import { DefaultBackend, getBackendDescriptor, registerBuiltInBackend } from './src/scene/backend.ts'
+src/__tests__/crisp-drawing.test.ts:176:      await import('./src/scene/default-backend.ts')
+src/__tests__/extension-family-mcp-parity.test.ts:23:const EVIDENCE = 'src/__tests__/extension-family-mcp-parity.test.ts'
+src/__tests__/c4-layout-admission.test.ts:53:      expect(pixel).not.toHaveBeenCalled()
+src/__tests__/c4-layout-admission.test.ts:54:      expect(cell).not.toHaveBeenCalled()
+src/__tests__/c4-layout-admission.test.ts:70:      expect(pixel).not.toHaveBeenCalled()
+src/__tests__/c4-layout-admission.test.ts:71:      expect(cell).not.toHaveBeenCalled()
+src/__tests__/hosted-harness-security.test.ts:2:// (src/mcp/harness-runtime.ts + dynamic-harness.ts). A public, unauthenticated
+src/__tests__/family-rubric.test.ts:1:// The family-generic layout rubric (src/family-rubric.ts) is the quality
+src/__tests__/curved-connector-projection.test.ts:76:    expect(admission).not.toHaveBeenCalled()
+src/__tests__/agent-cli-tty-guard.test.ts:59:      [process.execPath, 'src/cli/am-bin.ts', 'render', '--format', 'ascii', '-'],
+src/__tests__/website-cache-policy.test.ts:2:import { classifyWebsiteAssetCache, type WebsiteAssetCacheInput } from '../../website/src/worker-core.ts'
+src/__tests__/compactness.test.ts:1:// The Tier 3 compactness lint (src/layout/compactness.ts): EDGE_RANK_SLACK and
+src/__tests__/mcp-protocol-input-matrix.test.ts:4:import { createMcpHandler } from '../../website/src/mcp-handler.ts'
+src/__tests__/png-fonts.test.ts:3:// Text metrics (src/text-metrics.ts) model Inter, and the SVG output requests
+src/__tests__/hosted-execute-loader.test.ts:2:// (website/src/execute-loader.ts):
+src/__tests__/hosted-execute-loader.test.ts:9:import { createLoaderExecute, createLoaderToolRunner, deployTag, DYNAMIC_WORKER_COMPAT_DATE, MAX_RESULT_BYTES, MAX_TOOL_RESULT_BYTES, readCapped, type WorkerLoaderBinding } from '../../website/src/execute-loader.ts'
+src/__tests__/contact-sheet.test.ts:15://   UPDATE_CONTACT_SHEET_GEOMETRY=1 bun test src/__tests__/contact-sheet.test.ts
+src/__tests__/contact-sheet.test.ts:131:      'If intentional: UPDATE_CONTACT_SHEET_GEOMETRY=1 bun test src/__tests__/contact-sheet.test.ts, ' +
+src/__tests__/audit-regressions.test.ts:12:import { createMcpHandler, type McpCache } from '../../website/src/mcp-handler.ts'
+src/__tests__/journey-parse-core.test.ts:1:// Shared Journey parse core: the renderer parser (src/journey/parser.ts) and
+src/__tests__/journey-parse-core.test.ts:2:// the structured agent parser (src/agent/journey-body.ts) consume ONE grammar
+src/__tests__/journey-parse-core.test.ts:3:// (src/journey/parse-core.ts), so the same source text cannot produce
+src/__tests__/family-registration-conformance.test.ts:33:const EVIDENCE = 'src/__tests__/family-registration-conformance.test.ts'
+src/__tests__/quadrant-style.test.ts:13:// layout (one resolution site, src/quadrant/point-style.ts) → renderer, and
+src/__tests__/ci-change-scope.test.ts:22:    [['src/parser.ts', 'docs/api.md'], { full: true, layout: true }],
+src/__tests__/ci-change-scope.test.ts:24:    [['docs/api.md', 'src/deleted.ts'], { full: true, layout: true }],
+src/__tests__/ci-change-scope.test.ts:25:    [['src/mcp/server.ts'], { full: true, layout: false }],
+src/__tests__/ci-change-scope.test.ts:63:    writeFileSync(join(root, 'src/value.ts'), 'export const value = 1\n')
+src/__tests__/ci-change-scope.test.ts:85:    writeFileSync(join(repo.root, 'src/value.ts'), 'export const value = 2\n')
+src/__tests__/ci-change-scope.test.ts:93:    repo.git('mv', 'src/value.ts', 'docs/value.md')
+src/__tests__/mermaid-entities.test.ts:1:// The shared Mermaid entity codec (src/shared/mermaid-entities.ts and its
+src/__tests__/mermaid-entities.test.ts:2:// display half, src/shared/mermaid-entity-display.ts).
+src/__tests__/gantt-label-wrap.test.ts:4:// SHARED measured-pixel wrap machinery (src/shared/label-wrap.ts — the journey

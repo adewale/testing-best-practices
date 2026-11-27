@@ -1,0 +1,126 @@
+   108	    expect(payload.files[1].error.message).not.toContain('"details"')
+   109	  })
+   110	
+   111	  test('single input keeps single-output behavior (no results array)', () => {
+   112	    const a = tmp('flowchart TD\n A --> B')
+   113	    const { code, out } = capture(() => runCli(['render', a, '--format', 'ascii']))
+   114	    expect(code).toBe(0)
+   115	    expect(() => JSON.parse(out)).toThrow() // raw ASCII, not a JSON envelope
+   116	  })
+   117	
+   118	  test('--security strict applies to multi-input SVG renders', () => {
+   119	    const a = tmp('flowchart TD\n A --> B')
+   120	    const b = tmp('flowchart LR\n X --> Y')
+   121	    const { code, out } = capture(() => runCli(['render', a, b, '--format', 'svg', '--security', 'strict']))
+   122	    expect(code).toBe(0)
+   123	    const payload = JSON.parse(out)
+   124	    expect(payload.files.every((f: any) => f.ok && !f.output.includes('fonts.googleapis.com'))).toBe(true)
+   125	  })
+   126	
+   127	  test('invalid --security values are rejected instead of silently using default mode', () => {
+   128	    const a = tmp('flowchart TD\n A --> B')
+   129	    expect(runCli(['render', a, '--security', 'stric'])).toBe(2)
+   130	  })
+   131	
+   132	  test('--watch rejects multiple inputs instead of doing a one-shot multi-render', () => {
+   133	    const a = tmp('flowchart TD\n A --> B')
+   134	    const b = tmp('flowchart LR\n X --> Y')
+   135	    expect(runCli(['render', a, b, '--watch'])).toBe(2)
+   136	  })
+   137	})
+   138	
+   139	describe('#930 watch frame (the step every --watch change runs)', () => {
+   140	  test('reflects file changes on re-invocation', () => {
+   141	    const f = tmp('flowchart TD\n A[Before]')
+   142	    expect(renderWatchFrame(f, 'ascii', {}, false)).toMatchObject({ output: expect.stringContaining('Before'), stderr: [] })
+   143	    writeFileSync(f, 'flowchart TD\n A[After]')
+   144	    expect(renderWatchFrame(f, 'ascii', {}, false).output).toContain('After')
+   145	  })
+   146	
+   147	  test('a frame reports each ineffective config field once, before its output', () => {
+   148	    const f = tmp('---\nconfig:\n  journey:\n    boxMargin: 10\n---\njourney\n  Task: 3: Me')
+   149	    const frame = renderWatchFrame(f, 'svg', {}, false)
+   150	    expect(frame.output).toContain('<svg')
+   151	    expect(frame.stderr.filter(line => line.includes('journey.boxMargin'))).toEqual([
+   152	      expect.stringMatching(/^am render --watch: warning INEFFECTIVE_CONFIG \(journey\.boxMargin\): .+\n$/),
+   153	    ])
+   154	  })
+   155	
+   156	  test('strict SVG option applies to the watch frame', () => {
+   157	    const f = tmp('flowchart TD\n A --> B')
+   158	    const output = renderWatchFrame(f, 'svg', { security: 'strict' }, false).output
+   159	    expect(output).toContain('<svg')
+   160	    expect(output).not.toContain('fonts.googleapis.com')
+   161	  })
+   162	
+   163	  test('a failed frame prints the family diagnostic, as JSON under --json and as one line otherwise', () => {
+   164	    for (const fixture of [
+   165	      {
+   166	        source: 'futureDiagram&#45;v99\n  payload',
+   167	        code: 'UNKNOWN_HEADER',
+   168	        authoredHeader: 'futureDiagram&#45;v99',
+   169	      },
+   170	      {
+   171	        source: 'flowchart&#45;elk\n  A --> B',
+   172	        code: 'UNSUPPORTED_FAMILY',
+   173	        authoredHeader: 'flowchart&#45;elk',
+   174	      },
+   175	    ]) {
+   176	      const file = tmp(fixture.source)
+   177	      const structured = renderWatchFrame(file, 'svg', {}, true)
+   178	      expect(structured.output).toBeUndefined()
+   179	      expect(structured.stderr).toHaveLength(1)
+   180	      const payload = JSON.parse(structured.stderr[0]!)
+   181	      expect(payload).toMatchObject({
+   182	        ok: false,
+   183	        error: {
+   184	          code: fixture.code,
+   185	          line: 1,
+   186	          preservation: { source: fixture.source },
+   187	          help: expect.stringContaining('source was preserved unchanged'),
+   188	        },
+   189	      })
+   190	      expect(payload.error.message).not.toContain('undefined')
+   191	      const span = payload.error.preservation.spans.header
+   192	      expect(fixture.source.slice(span.start.offset, span.end.offset)).toBe(fixture.authoredHeader)
+   193	
+   194	      const plain = renderWatchFrame(file, 'svg', {}, false)
+   195	      expect(plain.output).toBeUndefined()
+   196	      expect(plain.stderr).toEqual([`render error: ${fixture.code}: ${payload.error.message}\n`])
+   197	    }
+   198	  })
+   199	
+   200	  test('watch mode rejects PNG instead of writing SVG to a PNG path', () => {
+   201	    const f = tmp('flowchart TD\n A --> B')
+   202	    const code = runCli(['render', f, '--format', 'png', '--output', `${f}.png`, '--watch'])
+   203	    expect(code).toBe(2)
+   204	  })
+   205	
+   206	  test('PNG rejects non-positive and non-finite scales as argument errors', () => {
+   207	    const f = tmp('flowchart TD\n A --> B')
+   208	    const output = `${f}.png`
+   209	    for (const scale of ['0', '-1', 'NaN', 'Infinity']) {
+   210	      expect(runCli(['render', f, '--format', 'png', '--output', output, '--scale', scale])).toBe(2)
+   211	    }
+   212	  })
+   213	})
+docs/project/mcp-client-interop-verification-plan.md
+e2e/cli.e2e.test.ts:99:describe('am render multi-input', () => {
+src/__tests__/labeled-source-port-property.test.ts:4:// labelled source feeding a multi-input hub — exits at its side mid-port AND is
+src/__tests__/labeled-source-port-property.test.ts:13:// the hub. The cases in this file all have a multi-input hub (B fed by A + B2),
+src/__tests__/cli-flags-help-sync.test.ts:162:  test('rejects malformed values, commands without layout, and --watch', () => {
+src/__tests__/cli-flags-help-sync.test.ts:167:      ['render', '--watch', '--timeout', '5', 'ignored.mmd'],
+src/__tests__/cli-error-envelope.test.ts:234:  test('a missing file in a multi-input render is an argument error, not a render failure', () => {
+docs/features.md:101:`render` (svg/ascii/unicode/layout with multi-input results; png uses one
+docs/features.md:102:input plus `--output`; `--security strict`, `--watch`), `render-markdown` (skip bad blocks),
+src/__tests__/cli-multi-input.test.ts:1:// Loop 13 M4 (#959) + M5 (#930): multi-input rendering + watch re-render step.
+src/__tests__/cli-multi-input.test.ts:10:const temp = useTempDirs('am-multi-input-')
+src/__tests__/cli-multi-input.test.ts:84:describe('#959 multi-input rendering', () => {
+src/__tests__/cli-multi-input.test.ts:85:  test('renders multiple files, emits a results array, skips bad ones', () => {
+src/__tests__/cli-multi-input.test.ts:99:  test('multi-input json parse errors expose structured details, not stringified blobs', () => {
+src/__tests__/cli-multi-input.test.ts:118:  test('--security strict applies to multi-input SVG renders', () => {
+src/__tests__/cli-multi-input.test.ts:132:  test('--watch rejects multiple inputs instead of doing a one-shot multi-render', () => {
+src/__tests__/cli-multi-input.test.ts:135:    expect(runCli(['render', a, b, '--watch'])).toBe(2)
+src/__tests__/cli-multi-input.test.ts:139:describe('#930 watch frame (the step every --watch change runs)', () => {
+src/__tests__/cli-multi-input.test.ts:152:      expect.stringMatching(/^am render --watch: warning INEFFECTIVE_CONFIG \(journey\.boxMargin\): .+\n$/),
+src/__tests__/cli-multi-input.test.ts:202:    const code = runCli(['render', f, '--format', 'png', '--output', `${f}.png`, '--watch'])

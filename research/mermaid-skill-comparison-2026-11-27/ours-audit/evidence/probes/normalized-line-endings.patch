@@ -1,0 +1,13 @@
+diff --git a/src/agent/source-projection.ts b/src/agent/source-projection.ts
+index 7c96bc5..942aa5f 100644
+--- a/src/agent/source-projection.ts
++++ b/src/agent/source-projection.ts
+@@ -1540,7 +1540,7 @@ function renderPlan(lines: readonly AuthoredLine[], plan: Plan, eol: string): st
+   const emit = (text: string, end: string) => { out.push(pending, text); pending = end || eol }
+   lines.forEach((line, index) => {
+     for (const text of plan.before.get(index) ?? []) emit(text, eol)
+-    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, line.eol)
++    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, eol)
+     for (const text of plan.after.get(index) ?? []) emit(text, eol)
+   })
+   const last = lines.at(-1)

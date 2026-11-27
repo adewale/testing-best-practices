@@ -1,0 +1,19 @@
+diff --git a/src/cli/index.ts b/src/cli/index.ts
+index fbf4909..d626dce 100644
+--- a/src/cli/index.ts
++++ b/src/cli/index.ts
+@@ -400,8 +400,12 @@ function renderPreflightedSourceToFormatWithReceipt(source: string, format: stri
+   const descriptor = renderOutputForCliFormat(format)
+   if (!descriptor) throw new Error(`unsupported render format: ${format}`)
+   if (descriptor.id === 'ascii' || descriptor.id === 'unicode') {
+-    const rendered = renderMermaidASCIIWithReceipt(source, { ...sharedOptions, useAscii: descriptor.id === 'ascii', targetWidth })
+-    return { output: rendered.text, receipt: rendered.receipt }
++    try {
++      const rendered = renderMermaidASCIIWithReceipt(source, { ...sharedOptions, useAscii: descriptor.id === 'ascii', targetWidth })
++      return { output: rendered.text, receipt: rendered.receipt }
++    } catch (error) {
++      throw new Error('Terminal rendering failed', { cause: error })
++    }
+   }
+   if (descriptor.id === 'layout') {
+     // Delegate the original request after the shared preflight so the CLI and library

@@ -1,0 +1,18 @@
+{
+  "label": "oc-graph-repair-permitted",
+  "argv": [
+    "bun",
+    "test",
+    "src/__tests__/layout-bundle-proposals.test.ts",
+    "--timeout",
+    "30000"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {},
+  "timeout_seconds": 120,
+  "exit_code": 0,
+  "status": "completed",
+  "duration_seconds": 1.300929102999362,
+  "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+  "stderr_sha256": "b656bbe6a9491e55fa996a40c75131b82820ea37310d1068a4a34f6d296d6384"
+}

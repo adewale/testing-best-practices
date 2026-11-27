@@ -1,0 +1,151 @@
+f49196e7f5d6d2f0970a4a76fe62644ee5e9d004
+## main...origin/main
+origin	https://github.com/adewale/agentic-mermaid.git (fetch)
+origin	https://github.com/adewale/agentic-mermaid.git (push)
+f49196e Merge pull request #620: improve graph routing and painted clearance [skip ci]
+c790c8a fix(layout): contract settled route excursions safely [skip ci]
+cdaf3cc test(layout): pin reviewed hub geometry and prior routing repairs [skip ci]
+304d730 fix(layout): keep port alignment from adding crossings [skip ci]
+7483631 fix(layout): avoid new shaft masking when choosing loop sides [skip ci]
+268efa1 fix(layout): retain centered through-trunks at internal forks [skip ci]
+dd37e47 refactor(layout): share centered edge label reservations [skip ci]
+74b5fee refactor(elk): compress sweep snapshots and reuse counter buffers [skip ci]
+ed12997 refactor(layout): repair masking shafts after label seating fails [skip ci]
+5c232f9 fix(layout): keep foreign shafts and repeated edges visible [skip ci]
+50fe874 fix(layout): align independent paths across groups [skip ci]
+72b50c6 fix(layout): compare unbundled multigraph routes [skip ci]
+acbbec1 fix(scene): prove marker separation from internal dividers [skip ci]
+86b95f1 fix(layout): center forest parents beside disconnected trees [skip ci]
+97f9825 fix(layout): rank loop channels by crossings and label conflicts [skip ci]
+17c400a Merge pull request #616 from adewale/work/elk-layered-typescript-port-20261114
+e61e0df perf(elk): avoid private array shifts and unused fallback sets [skip ci]
+ad0d403 [skip ci] Reject unsupported algorithms before compound layout
+5934861 [skip ci] Expect ELK on the first graph render
+6779c46 [skip ci] Preserve reviewed rendering contracts after Native retirement
+c083908 [skip ci] Record reviewed ELK Swimlane placement in the styled reference
+d7b2db9 [skip ci] Retain Class proof and cache ownership cases under sole ELK
+4691b24 [skip ci] Exercise sole ELK through standalone editor workers
+1bb5307 [skip ci] Adapt the browser error facade to sole ELK ownership
+e73180b [skip ci] Integrate current main for sole ELK qualification
+c6fb360 [skip ci] Retire Native graph layout and simplify the ELK pipeline
+6f11d6d Merge pull request #618 from adewale/claude/brave-ritchie-na4ib4
+b14761a Expect typed activation statements in the sequence citizenship profile
+ff968d9 Draw a Class style over its style classes, and keep Mermaid drawing it so
+57529f2 [skip ci] Restore relation sets after adverse end-to-end trials
+   1924 src
+    818 eval
+    348 docs
+    125 scripts
+     48 website
+     45 editor
+     43 skills
+     34 skill-evals
+     25 e2e
+     21 examples
+     12 assets
+     12 .github
+     10 research
+      7 LICENSES
+      4 public
+      4 bin
+      1 tsup.zenuml.config.ts
+      1 tsup.config.ts
+      1 tsup.browser.config.ts
+      1 tsup.browser-lazy.config.ts
+      1 tsconfig.repo.json
+      1 tsconfig.json
+      1 shared
+      1 server.json
+      1 ruff.toml
+      1 package.json
+      1 llms.txt
+      1 bunfig.toml
+      1 bun.lock
+      1 biome.json
+      1 TODO.md
+      1 THIRD_PARTY_NOTICES.md
+      1 SECURITY.md
+      1 README.md
+      1 PRODUCT.md
+      1 LICENSE
+      1 Instructions_for_agents.md
+      1 DESIGN.md
+      1 CLAUDE.md
+      1 CHANGELOG.md
+      1 AGENT_NATIVE.md
+      1 AGENTS.md
+      1 .vscode
+      1 .impeccable
+      1 .gitignore
+      1 .gitattributes
+      1 .cursor
+      1 .claude
+.github/workflows/action-pinning.yml
+.github/workflows/ci.yml
+.github/workflows/contract-discovery.yml
+.github/workflows/coverage.yml
+.github/workflows/deploy-cloudflare.yml
+.github/workflows/modern-mermaid.yml
+.github/workflows/publish.yml
+.github/workflows/qualify-ci.yml
+.github/workflows/ruff.yml
+.github/workflows/sync-mermaid-docs.yml
+AGENTS.md
+CLAUDE.md
+bunfig.toml
+e2e/bunfig.toml
+eval/benchmark/package.json
+package.json
+total 676
+drwx------  25 agent agent   4096 Nov 27 14:28 .
+drwx------   6 agent agent   4096 Nov 27 14:30 ..
+drwx------   2 agent agent   4096 Nov 27 14:27 .claude
+drwx------   2 agent agent   4096 Nov 27 14:27 .cursor
+drwx------   7 agent agent   4096 Nov 27 14:30 .git
+-rw-------   1 agent agent    509 Nov 27 14:27 .gitattributes
+drwx------   3 agent agent   4096 Nov 27 14:27 .github
+-rw-------   1 agent agent   3175 Nov 27 14:27 .gitignore
+drwx------   2 agent agent   4096 Nov 27 14:27 .impeccable
+drwx------   2 agent agent   4096 Nov 27 14:27 .vscode
+-rw-------   1 agent agent    409 Nov 27 14:27 AGENTS.md
+-rw-------   1 agent agent  15627 Nov 27 14:27 AGENT_NATIVE.md
+-rw-------   1 agent agent 178370 Nov 27 14:27 CHANGELOG.md
+-rw-------   1 agent agent  11638 Nov 27 14:27 CLAUDE.md
+-rw-------   1 agent agent   9792 Nov 27 14:27 DESIGN.md
+-rw-------   1 agent agent  12061 Nov 27 14:27 Instructions_for_agents.md
+-rw-------   1 agent agent   1067 Nov 27 14:27 LICENSE
+drwx------   2 agent agent   4096 Nov 27 14:27 LICENSES
+-rw-------   1 agent agent   2445 Nov 27 14:27 PRODUCT.md
+-rw-------   1 agent agent  13579 Nov 27 14:27 README.md
+-rw-------   1 agent agent   9696 Nov 27 14:27 SECURITY.md
+-rw-------   1 agent agent   6315 Nov 27 14:27 THIRD_PARTY_NOTICES.md
+-rw-------   1 agent agent  41792 Nov 27 14:27 TODO.md
+drwx------   3 agent agent   4096 Nov 27 14:27 assets
+drwx------   2 agent agent   4096 Nov 27 14:27 bin
+-rw-------   1 agent agent   1180 Nov 27 14:27 biome.json
+-rw-------   1 agent agent 166277 Nov 27 14:27 bun.lock
+-rw-------   1 agent agent    880 Nov 27 14:27 bunfig.toml
+drwx------  12 agent agent   4096 Nov 27 14:27 docs
+drwx------   4 agent agent   4096 Nov 27 14:27 e2e
+drwx------   5 agent agent   4096 Nov 27 14:27 editor
+drwx------  47 agent agent   4096 Nov 27 14:27 eval
+drwx------   3 agent agent   4096 Nov 27 14:27 examples
+-rw-------   1 agent agent    677 Nov 27 14:27 llms.txt
+drwx------ 468 agent agent  20480 Nov 27 14:29 node_modules
+-rw-------   1 agent agent  13473 Nov 27 14:27 package.json
+drwx------   2 agent agent   4096 Nov 27 14:27 public
+drwx------   2 agent agent   4096 Nov 27 14:27 research
+-rw-------   1 agent agent     68 Nov 27 14:27 ruff.toml
+drwx------  12 agent agent   4096 Nov 27 14:27 scripts
+-rw-------   1 agent agent    985 Nov 27 14:27 server.json
+drwx------   3 agent agent   4096 Nov 27 14:27 shared
+drwx------   5 agent agent   4096 Nov 27 14:27 skill-evals
+drwx------   4 agent agent   4096 Nov 27 14:27 skills
+drwx------  48 agent agent   4096 Nov 27 14:27 src
+-rw-------   1 agent agent    936 Nov 27 14:27 tsconfig.json
+-rw-------   1 agent agent    507 Nov 27 14:27 tsconfig.repo.json
+-rw-------   1 agent agent   4605 Nov 27 14:27 tsup.browser-lazy.config.ts
+-rw-------   1 agent agent   1245 Nov 27 14:27 tsup.browser.config.ts
+-rw-------   1 agent agent   4310 Nov 27 14:27 tsup.config.ts
+-rw-------   1 agent agent    988 Nov 27 14:27 tsup.zenuml.config.ts
+drwx------   5 agent agent   4096 Nov 27 14:27 website

@@ -1,0 +1,170 @@
+     1	import { resolve } from 'node:path'
+     2	import { assertWebsiteFixture, prepareWebsiteFixture } from '../site/prepare-website-fixture.ts'
+     3	import { unitTestFiles } from './unit-test-files.ts'
+     4	
+     5	const root = resolve(import.meta.dir, '../..')
+     6	const args = process.argv.slice(2)
+     7	if (args[0] === '--') args.shift()
+     8	
+     9	if (args.includes('--help') || args.includes('-h')) {
+    10	  const help = Bun.spawn([process.execPath, 'test', ...args], { stdin: 'inherit', stdout: 'inherit', stderr: 'inherit' })
+    11	  process.exit(await help.exited)
+    12	}
+    13	
+    14	if (process.env.AM_WEBSITE_FIXTURE_ROOT === root) assertWebsiteFixture(root)
+    15	else prepareWebsiteFixture(root)
+    16	
+    17	const child = Bun.spawn([process.execPath, 'test', '--timeout', '30000', ...unitTestFiles(), ...args], {
+    18	  cwd: root,
+    19	  env: { ...process.env, AM_WEBSITE_FIXTURE_ROOT: root },
+    20	  stdin: 'inherit', stdout: 'inherit', stderr: 'inherit',
+    21	})
+    22	process.exit(await child.exited)
+     1	export interface BrowserContractFile {
+     2	  /** Path resolved from the e2e/ working directory. */
+     3	  file: string
+     4	  browserOptIn?: boolean
+     5	}
+     6	
+     7	/** One file per process: sharing Playwright/server hooks exhausts constrained
+     8	 * runners and can turn valid browser contracts into timeout cascades. */
+     9	export const BROWSER_CONTRACT_FILES: readonly BrowserContractFile[] = Object.freeze([
+    10	  Object.freeze({ file: 'security-csp.e2e.test.ts' }),
+    11	  Object.freeze({ file: 'browser.test.ts' }),
+    12	  Object.freeze({ file: 'browser-bundle.e2e.test.ts' }),
+    13	  Object.freeze({ file: 'mcp-browser-cors.e2e.test.ts' }),
+    14	  Object.freeze({ file: 'mcp-app-preview.e2e.test.ts' }),
+    15	  Object.freeze({ file: 'editor-site-interactions.e2e.test.ts' }),
+    16	  Object.freeze({ file: '../src/__tests__/editor-theme-switch.test.ts', browserOptIn: true }),
+    17	  Object.freeze({ file: '../src/__tests__/editor-style-switch.test.ts', browserOptIn: true }),
+    18	  Object.freeze({ file: '../src/__tests__/website-browser-a11y.test.ts', browserOptIn: true }),
+    19	  Object.freeze({ file: '../src/__tests__/zenuml-browser.test.ts', browserOptIn: true }),
+    20	  Object.freeze({ file: '../src/__tests__/svg-style-isolation-browser.test.ts', browserOptIn: true }),
+    21	  Object.freeze({ file: '../src/__tests__/marker-raster-parity-browser.test.ts', browserOptIn: true }),
+    22	])
+     1	name: Qualify canonical CI
+     2	
+     3	on:
+     4	  workflow_call:
+     5	    inputs:
+     6	      commit:
+     7	        type: string
+     8	        required: true
+     9	      required:
+    10	        type: boolean
+    11	        default: true
+    12	    outputs:
+    13	      qualified:
+    14	        value: ${{ jobs.qualify.outputs.qualified }}
+    15	
+    16	permissions:
+    17	  actions: read
+    18	  contents: read
+    19	
+    20	jobs:
+    21	  qualify:
+    22	    runs-on: ubuntu-latest
+    23	    timeout-minutes: 2
+    24	    outputs:
+    25	      qualified: ${{ steps.proof.outputs.qualified }}
+    26	    steps:
+    27	      - name: Require full canonical CI qualification
+    28	        id: proof
+    29	        env:
+    30	          GH_TOKEN: ${{ github.token }}
+    31	          EXPECTED_SHA: ${{ inputs.commit }}
+    32	          REQUIRE_QUALIFICATION: ${{ inputs.required }}
+    33	        run: |
+    34	          runs="$(timeout 20s gh api -X GET \
+    35	            "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs" \
+    36	            -f head_sha="$EXPECTED_SHA" -f branch=main -f status=success -f per_page=100)"
+    37	          eligible_runs="$(jq -r --arg sha "$EXPECTED_SHA" '
+    38	            .workflow_runs[] | select(.head_sha == $sha and .head_branch == "main" and .conclusion == "success")
+    39	            | .id | select(type == "number" and floor == .)
+    40	          ' <<< "$runs")"
+    41	          # The test aggregate requires every runtime lane; CI complete also
+    42	          # checks the selected mode and label-approval maintenance.
+    43	          for run_id in $eligible_runs; do
+    44	            jobs="$(timeout 20s gh api --paginate -X GET \
+    45	              "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/jobs" -f filter=latest -f per_page=100)"
+    46	            qualified="$(jq -s '[.[].jobs[]] as $jobs |
+    47	              all("test", "CI complete"; . as $name |
+    48	                any($jobs[]; .name == $name and .conclusion == "success"))' <<< "$jobs")"
+    49	            if [[ "$qualified" == true ]]; then
+    50	              echo "qualified=true" >> "$GITHUB_OUTPUT"
+    51	              echo "Full canonical CI passed for $EXPECTED_SHA in run $run_id"
+    52	              exit 0
+    53	            fi
+    54	          done
+    55	          echo "qualified=false" >> "$GITHUB_OUTPUT"
+    56	          if [[ "$REQUIRE_QUALIFICATION" == true ]]; then
+    57	            echo "::error::Dispatch full ci.yml on main for $EXPECTED_SHA before publishing or manually deploying."
+    58	            exit 1
+    59	          fi
+    60	          echo "::notice::No full canonical CI qualification exists for $EXPECTED_SHA; deployment skipped."
+    61	          echo "### Deployment skipped: no full canonical CI for $EXPECTED_SHA" >> "$GITHUB_STEP_SUMMARY"
+   159	        with:
+   160	          bun-version: 1.4.4
+   161	          no-cache: true
+   162	
+   163	      - name: Install dependencies
+   164	        run: bun install --frozen-lockfile
+   165	
+   166	      - name: Install the CJK coverage fixture
+   167	        run: sudo apt-get update && sudo apt-get install -y fonts-wqy-zenhei
+   168	
+   169	      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+   170	        with:
+   171	          name: portable-test-artifacts
+   172	          path: .
+   173	      - name: Verify the transferred website fixture is usable
+   174	        run: bun scripts/site/prepare-website-fixture.ts --reuse
+   175	
+   176	      # Coverage is a scheduled diagnostic, not a condition for passing tests.
+   177	      # Keep two isolated workers: subprocess-heavy suites contend at four.
+   178	      - name: Run test shard
+   179	        env:
+   180	          AM_WEBSITE_FIXTURE_ROOT: ${{ github.workspace }}
+   181	        run: bun run test -- --shard=${{ matrix.shard }} --parallel=2
+   182	
+   183	  layout-evidence:
+   184	    name: Layout backend review evidence
+   775	      - name: Run tarball consumer and Getting Started commands under Node
+   776	        if: ${{ matrix.suite == 'tarball-consumer' || matrix.suite == 'tarball-consumer-node22' }}
+   777	        # Installs the verified package into a clean project and fuzzes its library
+   778	        # + `am`/`agentic-mermaid-mcp` bins as spawned Node processes — the real
+   779	        # consumer path (exports resolution, files[], bin linking, native deps).
+   780	        # Executes the Getting Started shell blocks and pinned MCP config from
+   781	        # the built page and library guide against that same tarball.
+   782	        env:
+   783	          AM_TEST_TARBALL: ${{ github.workspace }}/ci-release-artifact/package.tgz
+   784	        run: cd e2e && bun test tarball-consumer-fuzz.e2e.test.ts --timeout 600000
+   785	
+   786	      - name: Reject a divergent already-published immutable npm version
+   787	        if: ${{ matrix.suite == 'tarball-consumer' }}
+   788	        run: bun run scripts/ci/published-version.ts
+   789	
+   790	      # The file manifest proves which files ship; publint and attw prove the
+   791	      # shipped exports resolve and carry types for Node ESM and bundlers.
+   792	      - name: Lint the packed package's exports and types
+   793	        if: ${{ matrix.suite == 'tarball-consumer' }}
+   794	        run: bun run lint:package
+   795	
+   796	      - name: Run canonical browser contracts
+   797	        if: ${{ matrix.suite == 'browser-site' }}
+   798	        # Keep every contract, one process per file. The other browser job
+   799	        # owns resolved-scene comparisons, so neither waits behind both suites.
+   800	        run: bun run test:browser
+   801	
+   802	      - name: Compare resolved scenes with Chromium
+   803	        if: ${{ matrix.suite == 'browser' }}
+   804	        # Read pinned Rayner snapshot specs as data; do not execute its code.
+   805	        run: |
+   806	          mkdir -p bench-report/resolved-scene
+134:  semantic:
+142:  unit:
+446:  quality:
+554:  test:
+565:  cli:
+578:      - name: Run CLI and native binary contracts
+581:  e2e:

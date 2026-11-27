@@ -1,0 +1,136 @@
+   194	): RenderedPng {
+   195	  // SVG input: embedFontImport=false so resvg doesn't try to fetch from
+   196	  // Google Fonts during rasterization. CSS-variable fonts (Loop 8 M2) means
+   197	  // the SVG still declares its font-family preference via --font.
+   198	  const preparedInput = projection?.input ?? prepareRenderInput(input)
+   199	  const source = preparedInput.source
+   200	  const onWarning = opts.onWarning
+   201	  if (onWarning !== undefined && typeof onWarning !== 'function') {
+   202	    throw new TypeError('PNG onWarning must be a function')
+   203	  }
+   204	  const outputOptions = projectNativePngOutputPolicyInput(opts as unknown as Readonly<Record<string, unknown>>)
+   205	  const renderOptions = omitPngOutputOptions(opts as unknown as Readonly<Record<string, unknown>>) as RenderOptions
+   206	  const graphical = renderPngGraphicalProjection(
+   207	    source,
+   208	    renderOptions,
+   209	    outputOptions,
+   210	    { backendPolicy: hostOptions.backendPolicy, textMeasurement: hostOptions.textMeasurement, ...preparedInput.resolutionOptions },
+   211	    projection?.consumeLayout,
+   212	  )
+   213	  const outputPolicy = graphical.outputPolicy
+   214	  const svg = finalizePngRasterSvg(
+   215	    prepareResvgMarkerOrientation(inlineFontVarForRaster(graphical.svg)),
+   216	    graphical.rasterDimensions,
+   217	  )
+   218	
+   219	  const bundledFonts = withPngRasterizer('loading bundled fonts', resolveBundledFonts)
+   220	
+   221	  // Surface known coverage/shaping uncertainty before bytes ship. System
+   222	  // fonts broaden the rasterizer's set but are machine-dependent, so they
+   223	  // qualify the warning rather than turning an unknown outcome into silence.
+   224	  const emit = onWarning ?? ((w: PngRasterWarning) => process.stderr.write(`agentic-mermaid renderMermaidPNG: warning ${w.code}: ${w.message}\n`))
+   225	  for (const warning of buildPngFontWarnings(findUncoveredScripts(
+   226	    svg,
+   227	    outputPolicy.fonts.callerDirectories,
+   228	    bundledFonts.buffers,
+   229	  ), { systemFontsMayCover: outputPolicy.fonts.loadSystemFonts })) emit(warning)
+   230	  for (const warning of graphical.legibilityWarnings) emit(warning)
+   231	
+   232	  const resvgOpts: ConstructorParameters<typeof Resvg>[1] = {
+   233	    background: graphical.rasterBackground,
+   234	    // The shared contract already projected and pinned exact integer root
+   235	    // dimensions. Rendering at zoom 1 avoids resvg-specific ratio rounding.
+   236	    fitTo: { mode: 'zoom', value: 1 },
+   237	    font: {
+   238	      loadSystemFonts: outputPolicy.fonts.loadSystemFonts,
+   239	      // These private files were materialized from the exact verified byte
+   240	      // snapshots. Explicit caller directories remain a host-controlled input.
+   241	      fontFiles: [...bundledFonts.files],
+   242	      fontDirs: [...outputPolicy.fonts.callerDirectories],
+   243	      // Inter is the metrics font: src/text-metrics.ts is calibrated for it
+   244	      // and the SVG @import requests it, so rasterizing with anything else
+   245	      // (DejaVu is ~14% wider) pushes long labels outside their measured
+   246	      // boxes. resvg falls back per-glyph across every loaded font, so
+   247	      // DejaVu still covers glyphs Inter lacks (arrows, math, Armenian, …).
+   248	      defaultFontFamily: outputPolicy.fonts.defaultFamily,
+   249	    },
+   250	  }
+   251	
+   252	  // Bun needs a literal require to embed the addon in the standalone CLI.
+   253	  const { Resvg: NativeResvg } = (typeof Bun !== 'undefined'
+   254	    ? require('@resvg/resvg-js')
+   255	    : createRequire(import.meta.url)('@resvg/resvg-js')) as typeof import('@resvg/resvg-js')
+   256	  const png = withPngRasterizer('rasterizing', () => {
+   257	    const rasterized = applyPngColorProfile(new NativeResvg(svg, resvgOpts).render().asPng())
+   258	    const actualDimensions = inspectPngDimensions(rasterized)
+   259	    if (actualDimensions.width !== graphical.rasterDimensions.width
+   260	      || actualDimensions.height !== graphical.rasterDimensions.height) {
+     1	/**
+     2	 * Golden-file regression test for journey SVG rendering.
+     3	 */
+     4	import { describe, it, expect } from 'bun:test'
+     5	import { readFileSync, writeFileSync } from 'node:fs'
+     6	import { join } from 'node:path'
+     7	import { renderMermaidSVG } from '../index.ts'
+     8	import { normalizeSvg } from './helpers/svg-normalize.ts'
+     9	
+    10	const snapshotDir = join(import.meta.dir, 'testdata', 'svg')
+    11	
+    12	describe('renderMermaidSVG – journey snapshots', () => {
+    13	  it('matches the representative journey golden SVG', () => {
+    14	    const actual = renderMermaidSVG(`journey
+    15	      title Product journey
+    16	      section Discover
+    17	      Interview users: 4: PM, Research
+    18	      section Deliver
+    19	      Prototype<br>review: 3: Design, Eng
+    20	      Ship: 5: Eng, QA`)
+    21	
+    22	    const snapshot = join(snapshotDir, 'journey-representative.svg')
+    23	    if (process.env.UPDATE_GOLDEN) writeFileSync(snapshot, actual)
+    24	    const expected = readFileSync(snapshot, 'utf-8')
+    25	
+    26	    expect(normalizeSvg(actual)).toBe(normalizeSvg(expected))
+    27	  })
+    28	
+    29	  it('matches the Mermaid docs journey example SVG', () => {
+    30	    const actual = renderMermaidSVG(`journey
+    31	      title My working day
+    32	      section Go to work
+    33	      Make tea: 5: Me
+    34	      Go upstairs: 3: Me
+    35	      Do work: 1: Me, Cat
+    36	      section Go home
+    37	      Go downstairs: 5: Me
+    38	      Sit down: 3: Me`)
+    39	
+    40	    const snapshot = join(snapshotDir, 'journey-mermaid-docs-example.svg')
+    41	    if (process.env.UPDATE_GOLDEN) writeFileSync(snapshot, actual)
+    42	    const expected = readFileSync(snapshot, 'utf-8')
+    43	
+    44	    expect(normalizeSvg(actual)).toBe(normalizeSvg(expected))
+    45	  })
+    46	})
+12:  rgba: Uint8Array
+17:  const rgba = new Uint8Array(UPNG.toRGBA8(img)[0] as ArrayBuffer)
+18:  return { width: img.width as number, height: img.height as number, rgba }
+23: * `threshold`) within rows [y0, y1). Near-black text ink scores ~0–60; white
+26:export function inkColumns(img: DecodedPng, x0: number, x1: number, y0: number, y1: number, threshold = 100): number[] {
+33:      if ((img.rgba[i]! + img.rgba[i + 1]! + img.rgba[i + 2]!) / 3 < threshold) {
+1:import { HOSTED_FONT_RESOURCES } from './font-manifest.ts'
+15:export const PNG_DEFAULT_FONT_FAMILY = 'Inter' as const
+24:export const MAX_PNG_FONT_DIRECTORIES = 16 as const
+25:export const MAX_PNG_FONT_DIRECTORY_LENGTH = 4_096 as const
+153:        maxItems: MAX_PNG_FONT_DIRECTORIES,
+154:        items: { type: 'string', minLength: 1, maxLength: MAX_PNG_FONT_DIRECTORY_LENGTH, pattern: '\\S' },
+242:    readonly defaultFamily: typeof PNG_DEFAULT_FONT_FAMILY
+500:const BUNDLED_FONT_RESOURCES = Object.freeze(
+501:  HOSTED_FONT_RESOURCES.map(resource => `${resource.identity.id}@${resource.identity.version}#sha256:${resource.sha256}`),
+670:        || directories.length > MAX_PNG_FONT_DIRECTORIES
+673:        throw new TypeError(`PNG fontDirs must be a dense array of at most ${MAX_PNG_FONT_DIRECTORIES} paths`)
+680:          || directory.length > MAX_PNG_FONT_DIRECTORY_LENGTH) {
+682:            `PNG fontDirs must be a dense array of non-empty paths no longer than ${MAX_PNG_FONT_DIRECTORY_LENGTH} characters`,
+712:      defaultFamily: PNG_DEFAULT_FONT_FAMILY,
+713:      bundledResources: BUNDLED_FONT_RESOURCES,
+730:export const PNG_FONT_SOURCES = Object.freeze([
+739:export type PngFontSource = typeof PNG_FONT_SOURCES[number]

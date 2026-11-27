@@ -1,0 +1,272 @@
+     1	// Generated op sequences on generated diagrams with interleaved comments,
+     2	// blank lines and uneven indentation. Independent of the projection code:
+     3	//  - the source-preserving edit succeeds exactly when the canonical edit does;
+     4	//  - each step reads back as the same diagram as the canonical edit of the
+     5	//    same diagram (facts and canonical statements, compared as multisets);
+     6	//  - a step that reports `canonical` returns exactly the canonical source;
+     7	//  - while every step is `local`, every interleaved comment and blank line
+     8	//    survives, in order.
+     9	import { describe, expect, test } from 'bun:test'
+    10	import fc from 'fast-check'
+    11	import { describeMermaidFacts, describeOps, mutateChecked, mutatePreservingSource, parseRegisteredMermaid, serializeMermaid } from '../agent/index.ts'
+    12	import type { MutableFamilyId } from '../agent/mutation-ops.ts'
+    13	import type { ParsedDiagram } from '../agent/types.ts'
+    14	import { fcParameters } from './helpers/fc-parameters.ts'
+    15	
+    16	interface Family {
+    17	  family: MutableFamilyId
+    18	  header: string
+    19	  statements: string[]
+    20	  ids: string[]
+    21	  /** Gaps (0 = before the first statement) inside blocks whose comments the
+    22	   * reader does not admit as structured: ER attribute blocks read as opaque. */
+    23	  quiet?: number[]
+    24	}
+    25	
+    26	// Statements each family's grammar reads one per line, in an order that keeps
+    27	// the diagram valid however comments and blank lines are interleaved.
+    28	const FAMILIES: Family[] = [
+    29	  { family: 'flowchart', header: 'graph TD', statements: ['A["Alpha one"] --> B{Beta?}', 'B -->|yes| C(Gamma):::hot', 'B -- no --> D[Delta]', 'subgraph G["Group title"]', 'E[Eps] --> F', 'end', 'classDef hot fill:#f96;', 'style A fill:#eee'], ids: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'hot', 'A->B'] },
+    30	  { family: 'sequence', header: 'sequenceDiagram', statements: ['participant A as Alice', 'participant B as Bob', 'A ->> B: hello', 'alt ok', 'B -->> A: fine', 'else no', 'B -x A: fail', 'end', 'Note over A,B: done'], ids: ['A', 'B'] },
+    31	  { family: 'class', header: 'classDiagram', statements: ['class Animal {', '+String name', '+eat() void', '}', 'class Dog', 'Animal <|-- Dog : extends', 'note for Dog "Good"', 'class Cat:::pet', 'classDef pet fill:#f9f'], ids: ['Animal', 'Dog', 'Cat', 'pet'] },
+    32	  { family: 'state', header: 'stateDiagram-v2', statements: ['[*] --> Idle', 'Idle --> Run: start', 'state Run {', 'Fast --> Slow', '}', 'Run --> Done: stop', 'Idle: Waiting', 'Done --> [*]'], ids: ['Idle', 'Run', 'Fast', 'Slow', 'Done'] },
+    33	  { family: 'er', header: 'erDiagram', statements: ['CUSTOMER ||--o{ ORDER : places', 'CUSTOMER {', 'string name', 'string email PK', '}', 'ORDER {', 'int id', '}', 'ITEM["Line item"]'], ids: ['CUSTOMER', 'ORDER', 'ITEM'], quiet: [2, 3, 4, 6, 7] },
+    34	  { family: 'gantt', header: 'gantt', statements: ['title Plan', 'dateFormat YYYY-MM-DD', 'section Build', 'Design :des, 2024-01-01, 5d', 'Code :code, after des, 10d', 'section Ship', 'Release :milestone, rel, 2024-01-20, 0d'], ids: ['des', 'code', 'rel'] },
+    35	]
+    36	
+    37	/** One authored line between statements: a comment, a blank line or nothing. */
+    38	const gapArb = fc.oneof(
+    39	  { weight: 3, arbitrary: fc.constant<string[]>([]) },
+    40	  { weight: 1, arbitrary: fc.constantFrom([''], ['', '']) },
+    41	  { weight: 2, arbitrary: fc.tuple(fc.constantFrom('', '  ', '\t'), fc.stringMatching(/^[a-z ]{1,8}$/)).map(([indent, text]) => [`${indent}%% ${text.trim() || 'note'}`]) },
+    42	)
+    43	
+    44	const blankArb = fc.constantFrom<string[]>([], [''])
+    45	const sourceArb = (family: Family) => fc.tuple(
+    46	  fc.tuple(...Array.from({ length: family.statements.length + 1 }, (_, gap) => family.quiet?.includes(gap) ? blankArb : gapArb)),
+    47	  fc.array(fc.constantFrom('', '  ', '    ', '\t'), { minLength: family.statements.length, maxLength: family.statements.length }),
+    48	).map(([gaps, indents]) => {
+    49	  const lines = [family.header, ...gaps[0]!]
+    50	  family.statements.forEach((statement, index) => lines.push(indents[index]! + statement, ...gaps[index + 1]!))
+    51	  return { source: `${lines.join('\n')}\n`, comments: lines.filter(line => line.trim().startsWith('%%') || !line.trim()) }
+    52	})
+    53	
+    54	// Shape-valid ops from each family's published field docs, with every string
+    55	// drawn from the diagram's identities or a few labels (ASCII, spaced, Unicode).
+    56	type FieldDoc = { name: string; required: boolean; type: string; fields?: FieldDoc[] }
+    57	const opArb = (family: Family): fc.Arbitrary<Record<string, unknown>> => {
+    58	  const text = fc.constantFrom(...family.ids, 'N1', 'New label', 'Größe', '2024-02-01', '3d')
+    59	  const value = ({ type, fields }: Pick<FieldDoc, 'type' | 'fields'>): fc.Arbitrary<unknown> => {
+    60	    if (type.startsWith('one of ')) {
+    61	      const values = [...type.matchAll(/"(?:[^"\\]|\\.)*"/g)].map(match => JSON.parse(match[0]) as string)
+    62	      return type.endsWith(' | null') ? fc.constantFrom<unknown>(...values, null) : fc.constantFrom(...values)
+    63	    }
+    64	    switch (type) {
+    65	      case 'string': return text
+    66	      case 'number': return fc.integer({ min: 0, max: 2 })
+    67	      case 'boolean': return fc.boolean()
+    68	      case 'string | null': return fc.option(text, { nil: null })
+    69	      case 'number | null': return fc.option(fc.integer({ min: 0, max: 2 }), { nil: null })
+    70	      case 'string[]': return fc.array(text, { maxLength: 2 })
+    71	      case 'object': return record(fields ?? [])
+    72	      case 'object | null': return fields ? fc.option(record(fields), { nil: null }) : fc.constant(null)
+    73	      default: return fc.constant(undefined)
+    74	    }
+    75	  }
+    76	  const record = (fields: FieldDoc[]): fc.Arbitrary<Record<string, unknown>> =>
+    77	    fc.record(Object.fromEntries(fields.map(field => [field.name, value(field)])), { requiredKeys: fields.filter(field => field.required).map(field => field.name) })
+    78	  return fc.oneof(...Object.entries(describeOps(family.family) as Record<string, FieldDoc[]>).map(([kind, fields]) => record(fields).map(op => ({ kind, ...op }))))
+    79	}
+    80	
+    81	const caseArb = fc.constantFrom(...FAMILIES).chain(family => fc.tuple(fc.constant(family.family), sourceArb(family), fc.array(opArb(family), { minLength: 1, maxLength: 3 })))
+    82	
+    83	function parse(source: string): ParsedDiagram {
+    84	  const parsed = parseRegisteredMermaid(source)
+    85	  if (!parsed.ok) throw new Error(`${JSON.stringify(parsed.error)}\n${source}`)
+    86	  return parsed.value
+    87	}
+    88	
+    89	const model = (d: ParsedDiagram) => ({
+    90	  facts: describeMermaidFacts(d).sort(),
+    91	  statements: serializeMermaid(d).split('\n').filter(line => line.trim() && !line.trim().startsWith('%%')).map(line => line.replace(/\s+/g, '')).sort(),
+    92	})
+    93	
+    94	/** `kept` lines that are missing from `lines` as an ordered subsequence. */
+    95	function missingInOrder(kept: readonly string[], lines: readonly string[]): string[] {
+    96	  let at = 0
+    97	  return kept.filter(line => {
+    98	    const found = lines.indexOf(line, at)
+    99	    if (found < 0) return true
+   100	    at = found + 1
+   101	    return false
+   102	  })
+   103	}
+   104	
+   105	/** Lines of `kept` missing from `lines`, counted as a multiset. */
+   106	function missingAnywhere(kept: readonly string[], lines: readonly string[]): string[] {
+   107	  const left = [...lines]
+   108	  return kept.filter(line => {
+   109	    const found = left.indexOf(line)
+   110	    if (found < 0) return true
+   111	    left.splice(found, 1)
+   112	    return false
+   113	  })
+   114	}
+   115	
+   116	type Case = [MutableFamilyId, { source: string; comments: string[] }, Array<Record<string, unknown>>]
+   117	const gantt = (lines: string[]) => ({ source: `${lines.join('\n')}\n`, comments: lines.filter(line => line.trim().startsWith('%%') || !line) })
+   118	// Reduced counterexamples. The first caught the projection rewriting a moved
+   119	// comment's indentation; a moved line now keeps its authored bytes. The other
+   120	// two caught the property's draft, which wrongly expected comment order to
+   121	// survive a reorder: Gantt keeps comments as segments of their section, so a
+   122	// moved section may carry them past each other. The last caught the
+   123	// property expecting a comment inside a removed sequence fragment to survive:
+   124	// the fragment's kept lines go with it, as its messages do.
+   125	const EXAMPLES: Array<[Case]> = [
+   126	  [['gantt', gantt(['gantt', '', 'title Plan', 'dateFormat YYYY-MM-DD', '%% a', 'section Build', '%% a', 'Design :des, 2024-01-01, 5d', '%% note', 'Code :code, after des, 10d', 'section Ship', '\t%% a', 'Release :milestone, rel, 2024-01-20, 0d']), [{ kind: 'move_section', from: 0, to: 1 }, { kind: 'add_section', label: 'des' }]]],
+   127	  [['gantt', gantt(['gantt', 'title Plan', '', 'dateFormat YYYY-MM-DD', '', 'section Build', 'Design :des, 2024-01-01, 5d', '%% a', 'Code :code, after des, 10d', 'section Ship', '%% note', 'Release :milestone, rel, 2024-01-20, 0d', '%% a']), [{ kind: 'move_section', from: 1, to: 0 }]]],
+   128	  [['gantt', gantt(['gantt', '%% a', 'title Plan', 'dateFormat YYYY-MM-DD', '', 'section Build', 'Design :des, 2024-01-01, 5d', 'Code :code, after des, 10d', '%% a', 'section Ship', 'Release :milestone, rel, 2024-01-20, 0d', '%% note']), [{ kind: 'move_section', from: 0, to: 1 }, { kind: 'add_task', sectionIndex: 0, label: 'des', end: 'des' }]]],
+   129	  [['sequence', { source: 'sequenceDiagram\nparticipant A as Alice\nparticipant B as Bob\nA ->> B: hello\nalt ok\n%% note\nB -->> A: fine\n\nelse no\n%% note\nB -x A: fail\n%% note\nend\nNote over A,B: done\n%% note\n', comments: ['%% note', '', '%% note', '%% note', '%% note'] }, [{ kind: 'remove_fragment', index: 0 }]]],
+   130	]
+   131	
+   132	describe('source-preserving edits agree with canonical edits', () => {
+   133	  test('generated op sequences on commented, unevenly indented diagrams', () => {
+   134	    let local = 0
+   135	    fc.assert(fc.property(caseArb, ([family, { source, comments }, ops]) => {
+   136	      let current = parse(source), allLocal = true, text = source
+   137	      expect(current.kind).toBe(family)
+   138	      expect(current.body.kind).not.toBe('opaque')
+   139	      for (const op of ops) {
+   140	        const canonical = mutateChecked(current, op)
+   141	        const preserved = mutatePreservingSource(current, op)
+   142	        expect({ op, ok: preserved.ok }).toEqual({ op, ok: canonical.ok })
+   143	        if (!canonical.ok || !preserved.ok) break
+   144	        expect({ op, model: model(parse(preserved.value.source)) }).toEqual({ op, model: model(canonical.value) })
+   145	        if (preserved.value.preservation?.method === 'canonical') {
+   146	          allLocal = false
+   147	          expect(preserved.value.source).toBe(serializeMermaid(canonical.value))
+   148	        } else {
+   149	          expect(preserved.value.preservation).toEqual({ method: 'local' })
+   150	          local++
+   151	        }
+   152	        current = preserved.value.diagram
+   153	        text = preserved.value.source
+   154	      }
+   155	      // A removed fragment takes the comments kept in its branches with it.
+   156	      if (!allLocal || ops.some(op => op.kind === 'remove_fragment')) return
+   157	      const reordered = ops.some(op => /^(?:move|reorder)_/.test(String(op.kind)))
+   158	      const missing = (reordered ? missingAnywhere : missingInOrder)(comments, text.split('\n'))
+   159	      expect({ text, missing }).toEqual({ text, missing: [] })
+   160	    }), fcParameters({ numRuns: 1500, examples: EXAMPLES }))
+   161	    expect(local).toBeGreaterThan(300)
+   162	  }, 180_000)
+   163	})
+93:    await fc.assert(fc.asyncProperty(hostileEncodedArb, async (encoded) => {
+109:    await fc.assert(fc.asyncProperty(wellFormedStringArb, async (src) => {
+120:    await fc.assert(fc.asyncProperty(wellFormedStringArb, async (src0) => {
+146:    fc.assert(fc.property(fc.oneof(configArb, fc.anything()), (config) => {
+211:    fc.assert(fc.property(wellFormedStringArb, (value) => {
+     1	// Regression: fan-out peers with differing label widths must be equalized and
+     2	// aligned (the "warnings"/"ok" symmetry).
+     3	//
+     4	// In `C -->|warnings| D["warnings"]` + `C -->|ok| E["ok"]`, D and E are genuine
+     5	// fan-out peers of C. ELK places them at different widths (97 vs 60) AND
+     6	// different main-axis positions (~32px apart, driven by that width gap), so they
+     7	// look mismatched. applySymmetricFanoutEmissions exists to equalize such peers,
+     8	// but its same-rank gate previously rejected any pair more than 28px apart —
+     9	// tighter than the very width-driven drift it was meant to absorb — so it bailed
+    10	// and the asymmetry stood. Widening that gate to 40 (still below layerSpacing,
+    11	// and AFTER the peer confirmation, so non-peers are never affected) lets the pass
+    12	// equalize them. Reverting the gate to 28 fails the assertions below.
+    13	
+    14	import { describe, test, expect } from 'bun:test'
+    15	import { parseRegisteredMermaid as parseMermaid, layoutMermaid } from '../agent/index.ts'
+    16	import { parseMermaid as parseGraph } from '../parser.ts'
+    17	import { layoutGraphSync } from '../layout-engine.ts'
+    18	import { layoutFlow } from '../layout/geometry.ts'
+    19	import { doglegBetween, sourceEmissionPort, targetFlowPort } from '../layout/passes/shared.ts'
+    20	import { bundleEdgePaths } from '../layout/passes/edge-bundling.ts'
+    21	import { applySymmetricFanoutEmissions } from '../layout/passes/fanout.ts'
+    22	import { resolveRenderStyle } from '../styles.ts'
+    23	import { renderMermaidSVG } from '../index.ts'
+    24	
+    25	const SYM = [
+    26	  'flowchart LR',
+    27	  '  A["warnings"] -->|warnings| B["ok"]',
+    28	  '  B -->|ok| C["rendered"]',
+    29	  '  A2["same word: warnings"] --> A',
+    30	  '  B2["same word: ok"] --> B',
+    31	  '  C -->|warnings| D["warnings"]',
+    32	  '  C -->|ok| E["ok"]',
+    33	].join('\n')
+    34	
+    35	describe('fan-out peer symmetry', () => {
+    36	  for (const direction of ['TD', 'LR']) test(`grouped diamond targets keep their authored containment (${direction})`, () => {
+    37	    const source = `flowchart ${direction}
+    38	A[Christmas] -->|Get money| B(Go shopping)
+    39	B --> C{Let me think}
+    40	B --> G[/Another/]
+    41	C ==>|One| D[Laptop]
+    42	C -->|Two| E[iPhone]
+    43	C -->|Three| F[fa:fa-car Car]
+    44	subgraph section
+    45	C
+    46	D
+    47	E
+    48	F
+    49	G
+    50	end`
+    51	    const positioned = layoutGraphSync(parseGraph(source))
+    52	    const group = positioned.groups.find(group => group.id === 'section')!
+    53	    expect(group).toBeDefined()
+    54	    for (const id of ['C', 'D', 'E', 'F', 'G']) {
+    55	      const node = positioned.nodes.find(node => node.id === id)!
+    56	      expect(node.x).toBeGreaterThanOrEqual(group.x)
+    57	      expect(node.y).toBeGreaterThanOrEqual(group.y)
+    58	      expect(node.x + node.width).toBeLessThanOrEqual(group.x + group.width)
+    59	      expect(node.y + node.height).toBeLessThanOrEqual(group.y + group.height)
+    60	    }
+    61	    const svg = renderMermaidSVG(source)
+    62	    expect(svg).toContain('iPhone')
+    63	    expect(svg).toContain('section')
+    64	  })
+    65	  test.each(['LR', 'RL', 'TD', 'BT'] as const)('an internal fork continues its admitted centre trunk (%s)', direction => {
+    66	    const graph = parseGraph(`flowchart ${direction}\nA-->C\nC-->D\nC-->E[Longer child]`)
+    67	    const { nodes, edges, groups } = layoutGraphSync(graph)
+    68	    const style = resolveRenderStyle()
+    69	    const forks = edges.filter(edge => edge.source === 'C')
+    70	    // The incoming route is explicitly centred so the test isolates the
+    71	    // writer from upstream differences in which port a layout happens to use.
+    72	    const incoming = edges.find(edge => edge.target === 'C')!
+    73	    const start = sourceEmissionPort(nodes.find(node => node.id === 'A')!, direction, 0, 1)
+    74	    const end = targetFlowPort(nodes.find(node => node.id === 'C')!, direction)
+    75	    const { main } = layoutFlow(direction)
+    76	    incoming.points = doglegBetween(start, end, direction, (start[main] + end[main]) / 2)
+    77	    const bundled = bundleEdgePaths(edges, nodes, groups, graph.direction, style)
+    78	    expect(forks.length).toBe(2)
+    79	    expect(forks.every(edge => bundled.has(edge))).toBe(true)
+    80	    const first = forks[0]!, second = forks[1]!
+    81	    const trunk = first.points.slice(0, 2).map(point => ({ ...point }))
+    82	    expect(second.points.slice(0, 2)).toEqual(trunk)
+    83	    expect(Math.hypot(trunk[1]!.x - trunk[0]!.x, trunk[1]!.y - trunk[0]!.y)).toBeGreaterThan(0)
+    84	    applySymmetricFanoutEmissions(nodes, edges, groups, graph, bundled, style)
+    85	    expect(first.points.slice(0, 2)).toEqual(trunk)
+    86	    expect(second.points.slice(0, 2)).toEqual(trunk)
+    87	    expect(first.points[0]).not.toBe(second.points[0])
+    88	    expect(first.points[1]).not.toBe(second.points[1])
+    89	  })
+    90	  test('peers with differing label widths are equalized to a common width and aligned', () => {
+    91	    const p = parseMermaid(SYM)
+    92	    expect(p.ok).toBe(true)
+    93	    if (!p.ok) return
+    94	    const layout = layoutMermaid(p.value)
+    95	    const D = layout.nodes.find(n => n.id === 'D')!
+    96	    const E = layout.nodes.find(n => n.id === 'E')!
+    97	    expect(D).toBeDefined()
+    98	    expect(E).toBeDefined()
+    99	    // Equal width (both widened to the wider "warnings" box) ...
+   100	    expect(D.w).toBe(E.w)
+   101	    // ... and aligned on the main (flow) axis — LR ⇒ identical x.
+   102	    expect(D.x).toBe(E.x)
+   103	  })
+   104	})

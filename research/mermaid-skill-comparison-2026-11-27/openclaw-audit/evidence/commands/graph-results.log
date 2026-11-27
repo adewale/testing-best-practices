@@ -1,0 +1,91 @@
+../evidence/commands/permitted-graph-owner.log:4:(pass) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [138.88ms]
+../evidence/commands/permitted-graph-owner.log:5:(pass) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [28.73ms]
+../evidence/commands/permitted-graph-owner.log:6:(pass) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [25.14ms]
+../evidence/commands/permitted-graph-owner.log:44:Expected: [
+../evidence/commands/permitted-graph-owner.log:59:Received: serializes to the same string
+../evidence/commands/permitted-graph-owner.log:62:(fail) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.89ms]
+../evidence/commands/permitted-graph-owner.log:63:(pass) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.22ms]
+../evidence/commands/permitted-graph-owner.log:73:Expected: [
+../evidence/commands/permitted-graph-owner.log:88:Received: serializes to the same string
+../evidence/commands/permitted-graph-owner.log:91:(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.48ms]
+../evidence/commands/permitted-graph-owner.log:101:Expected: [
+../evidence/commands/permitted-graph-owner.log:116:Received: serializes to the same string
+../evidence/commands/permitted-graph-owner.log:119:(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.16ms]
+../evidence/commands/permitted-graph-owner.log:120:(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 1px [0.41ms]
+../evidence/commands/permitted-graph-owner.log:130:Expected: [
+../evidence/commands/permitted-graph-owner.log:145:Received: serializes to the same string
+../evidence/commands/permitted-graph-owner.log:148:(fail) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.55ms]
+../evidence/commands/permitted-graph-owner.log:157:(fail) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.89ms]
+../evidence/commands/permitted-graph-owner.log:158:(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.48ms]
+../evidence/commands/permitted-graph-owner.log:159:(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.16ms]
+../evidence/commands/permitted-graph-owner.log:160:(fail) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.55ms]
+../evidence/commands/permitted-graph-owner.log:162: 39 pass
+../evidence/commands/permitted-graph-owner.log:163: 4 fail
+../evidence/commands/fault-graph-owner.log:13:Expected: false
+../evidence/commands/fault-graph-owner.log:14:Received: true
+../evidence/commands/fault-graph-owner.log:17:(fail) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [144.30ms]
+../evidence/commands/fault-graph-owner.log:27:Expected: false
+../evidence/commands/fault-graph-owner.log:28:Received: true
+../evidence/commands/fault-graph-owner.log:31:(fail) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [24.14ms]
+../evidence/commands/fault-graph-owner.log:41:Expected: false
+../evidence/commands/fault-graph-owner.log:42:Received: true
+../evidence/commands/fault-graph-owner.log:45:(fail) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [23.75ms]
+../evidence/commands/fault-graph-owner.log:74:(pass) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.66ms]
+../evidence/commands/fault-graph-owner.log:75:(pass) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.24ms]
+../evidence/commands/fault-graph-owner.log:76:(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.31ms]
+../evidence/commands/fault-graph-owner.log:77:(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.15ms]
+../evidence/commands/fault-graph-owner.log:78:(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 1px [0.52ms]
+../evidence/commands/fault-graph-owner.log:79:(pass) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [5.69ms]
+../evidence/commands/fault-graph-owner.log:88:(fail) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [144.30ms]
+../evidence/commands/fault-graph-owner.log:89:(fail) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [24.14ms]
+../evidence/commands/fault-graph-owner.log:90:(fail) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [23.75ms]
+../evidence/commands/fault-graph-owner.log:92: 40 pass
+../evidence/commands/fault-graph-owner.log:93: 3 fail
+{
+  "claimed": 0,
+  "lineWidth": 1,
+  "header": {
+    "id": "G",
+    "label": "G",
+    "x": 60.1,
+    "y": 45,
+    "width": 6,
+    "height": 4,
+    "headerHeight": 4,
+    "children": []
+  },
+  "hazardousVerticalSegments": [
+    {
+      "from": "A",
+      "to": "B",
+      "a": {
+        "x": 60,
+        "y": 40
+      },
+      "b": {
+        "x": 60,
+        "y": 70
+      }
+    },
+    {
+      "from": "A",
+      "to": "C",
+      "a": {
+        "x": 60,
+        "y": 40
+      },
+      "b": {
+        "x": 60,
+        "y": 70
+      }
+    }
+  ],
+  "before": [
+    [
+      {
+        "x": 80,
+        "y": 20
+      },
+      {
+        "x": 110,
+        "y": 20

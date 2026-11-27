@@ -1,0 +1,39 @@
+src/cli/deadline.ts:20:/** Set in the child the deadline supervisor starts, which then runs the
+src/cli/deadline.ts:42:export function runCliWithDeadline(argv: readonly string[], command: string, timeoutMs: number, json: boolean): Promise<number> {
+src/cli/deadline.ts:58:      process.stderr.write(`am ${command}: could not start the deadline-supervised process: ${error.message}\n`)
+src/cli/deadline.ts:66:        if (json) process.stdout.write(JSON.stringify({ ok: false, error: { code: 'RENDER_TIMEOUT', message } }) + '\n')
+src/cli/deadline.ts:67:        process.stderr.write(`Error: RENDER_TIMEOUT: ${message}\n`)
+src/cli/run-entrypoint.ts:2:import { CLI_DEADLINE_CHILD_ENV, runCliWithDeadline } from './deadline.ts'
+src/cli/run-entrypoint.ts:15:    return runCliWithDeadline(argv, prepared.args.command, prepared.deadlineMs, prepared.json)
+src/cli/index.ts:1186:Exit codes: 0 ok, 2 arg error, 3 verify-failed, 4 internal (including a verify whose errors are all INTERNAL_ERROR), 124 exceeded --timeout (default 120 s; RENDER_TIMEOUT).
+src/cli/help.ts:58:  124 the command exceeded its --timeout deadline and was stopped (RENDER_TIMEOUT)
+src/cli/help.ts:105:  --timeout <SECONDS> Stop after SECONDS and exit 124 with RENDER_TIMEOUT
+bin/am.ts:40:  await import('../src/mcp/source-supervisor.ts')
+src/__tests__/cli-flags-help-sync.test.ts:144:  test('a layout that outlives the deadline is stopped with exit 124 and RENDER_TIMEOUT', () => {
+src/__tests__/cli-flags-help-sync.test.ts:150:      stdout: { ok: false, error: { code: 'RENDER_TIMEOUT', message: expect.stringContaining('1s deadline') } },
+src/__tests__/cli-flags-help-sync.test.ts:152:    expect(result.stderr).toContain('RENDER_TIMEOUT')
+src/__tests__/cli-flags-help-sync.test.ts:156:  test('the supervised command reads piped stdin and keeps its own exit status', () => {
+src/__tests__/extension-family-mcp-parity.test.ts:143:  // The local server runs describe, like verify and render, in its supervised
+src/__tests__/hosted-execute-loader.test.ts:326:      .toEqual({ ok: false, error: { code: 'RENDER_TIMEOUT', message: `Operation exceeded its ${HOSTED_TOOL_CPU_MS}ms CPU budget` } })
+src/__tests__/hosted-execute-loader.test.ts:330:    ['a cpuMs overrun', () => new Error('Worker exceeded CPU time limit.'), 'RENDER_TIMEOUT'],
+src/__tests__/hosted-execute-loader.test.ts:336:    ['a hung call past the wall-clock backstop', () => new Promise<never>(() => {}), 'RENDER_TIMEOUT'],
+src/__tests__/hosted-execute-loader.test.ts:367:    expect(results[3]).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT', message: expect.stringContaining('30000ms CPU allowance') } })
+src/__tests__/hosted-execute-loader.test.ts:383:    expect(await runner(heavy('H2'), 10_000)).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT', message: expect.stringContaining('30000ms CPU allowance') } })
+src/__tests__/hosted-execute-loader.test.ts:439:      return { ok: false, error: { code: 'RENDER_TIMEOUT', message: 'isolate' } }
+src/__tests__/hosted-mcp-http.test.ts:633:          return { ok: false, error: { code: 'RENDER_TIMEOUT', message: `${request.name} exceeded its ${cpuMs}ms CPU budget` } }
+src/__tests__/hosted-mcp-http.test.ts:640:    expect(bodies.map(body => JSON.parse(body.result.content[0]!.text).error.code)).toEqual(Array(5).fill('RENDER_TIMEOUT'))
+src/__tests__/mcp-source-tools.test.ts:131:  test.each(['before ready', 'after ready'])('worker failure %s terminates its supervisor', async phase => {
+src/__tests__/mcp-source-tools.test.ts:143:  test('supervisor rejects an oversized worker reply before forwarding it', async () => {
+src/__tests__/mcp-source-tools.test.ts:189:      expect(await executor.run('verify', {}, { timeoutMs: 100 })).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:297:    expect(await expired).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:302:  // lays out runs in the supervised renderer, so a short host deadline stops it
+src/__tests__/mcp-source-tools.test.ts:320:    expect(payload(await request(2, { name, arguments: args }, 500))).toMatchObject({ isError: true, ok: false, error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:326:    expect(await runSourceToolIsolated('render_svg', { source: 'flowchart TD\nA-->B' }, { timeoutMs: 0 })).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:433:      expect(await result).toMatchObject({ error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:494:    expect(await executor.run('verify', {}, { timeoutMs: 0 })).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:513:    expect(await result).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:528:    expect(await first).toMatchObject({ ok: false, error: { code: 'RENDER_TIMEOUT' } })
+src/__tests__/mcp-source-tools.test.ts:545:  test.each([[72, 'RENDER_MEMORY_LIMIT'], [73, 'RENDER_WORKER_FAILED'], [74, 'RENDER_LIMIT_UNAVAILABLE']] as const)('projects supervisor exit %s and permits recovery', async (code, expected) => {
+src/__tests__/helpers/test-child.ts:100:        // Descendants left after that point require external owned supervision.
+rg: docs/cli*: No such file or directory (os error 2)
+rg: docs/reference: No such file or directory (os error 2)

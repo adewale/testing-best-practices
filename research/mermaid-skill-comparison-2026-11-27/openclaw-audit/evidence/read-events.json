@@ -1,0 +1,762 @@
+[
+  {
+    "path": "bunfig.toml",
+    "coverage": "full",
+    "lines": [
+      1,
+      16
+    ],
+    "length": 16,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/fixtures.md",
+    "coverage": "full",
+    "lines": [
+      1,
+      166
+    ],
+    "length": 166,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "AGENTS.md",
+    "coverage": "full",
+    "lines": [
+      1,
+      8
+    ],
+    "length": 8,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "package.json",
+    "coverage": "full",
+    "lines": [
+      1,
+      320
+    ],
+    "length": 320,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/boundary-scenarios.md",
+    "coverage": "full",
+    "lines": [
+      1,
+      65
+    ],
+    "length": 65,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "CLAUDE.md",
+    "coverage": "full",
+    "lines": [
+      1,
+      196
+    ],
+    "length": 196,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-multi-input.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      213
+    ],
+    "length": 213,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/chrome-token-lockstep.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      132
+    ],
+    "length": 132,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-flags-help-sync.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      217
+    ],
+    "length": 217,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-batch-render-parity.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      92
+    ],
+    "length": 92,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/consolidation-gate.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      113
+    ],
+    "length": 113,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-jsonl.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      95
+    ],
+    "length": 95,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/deploy-workflow-transaction.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      517
+    ],
+    "length": 517,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-flags-help-sync.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      217
+    ],
+    "length": 217,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/parser-observation-lines.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      141
+    ],
+    "length": 141,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/consolidation-gate.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      113
+    ],
+    "length": 113,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "e2e/cli.e2e.test.ts",
+    "coverage": "partial",
+    "lines": [
+      1,
+      195
+    ],
+    "length": 336,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/deadline.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      74
+    ],
+    "length": 74,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "docs/testing-strategy.md",
+    "coverage": "partial",
+    "lines": [
+      785,
+      847
+    ],
+    "length": 1033,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/run-entrypoint.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      19
+    ],
+    "length": 19,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/index.ts",
+    "coverage": "partial",
+    "lines": [
+      225,
+      427
+    ],
+    "length": 1559,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": ".github/workflows/ci.yml",
+    "coverage": "partial",
+    "lines": [
+      141,
+      184
+    ],
+    "length": 951,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/preflight.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      79
+    ],
+    "length": 79,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "bin/am.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      47
+    ],
+    "length": 47,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/index.ts",
+    "coverage": "partial",
+    "lines": [
+      223,
+      298
+    ],
+    "length": 1559,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-error-envelope.test.ts",
+    "coverage": "partial",
+    "lines": [
+      205,
+      280
+    ],
+    "length": 336,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-config-warnings.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      70
+    ],
+    "length": 70,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "website/source/assets/styles.css",
+    "coverage": "partial",
+    "lines": [
+      1,
+      127
+    ],
+    "length": 1023,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/helpers/editor-module-harness.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      37
+    ],
+    "length": 37,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "website/source/assets/styles.css",
+    "coverage": "partial",
+    "lines": [
+      267,
+      291
+    ],
+    "length": 1023,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/browser-script-harness.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      376
+    ],
+    "length": 376,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "DESIGN.md",
+    "coverage": "partial",
+    "lines": [
+      1,
+      105
+    ],
+    "length": 185,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/editor-theme-switch.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      217
+    ],
+    "length": 217,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "editor/css/topbar.css",
+    "coverage": "partial",
+    "lines": [
+      37,
+      75
+    ],
+    "length": 512,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "website/source/pages/home.html",
+    "coverage": "partial",
+    "lines": [
+      1,
+      32
+    ],
+    "length": 160,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "website/build.ts",
+    "coverage": "partial",
+    "lines": [
+      209,
+      250
+    ],
+    "length": 2966,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/help.ts",
+    "coverage": "partial",
+    "lines": [
+      86,
+      111
+    ],
+    "length": 232,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/helpers/temp-dir.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      35
+    ],
+    "length": 35,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/helpers/cli-capture.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      47
+    ],
+    "length": 47,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/layout-bundle-proposals.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      282
+    ],
+    "length": 282,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/fanout-symmetry.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      104
+    ],
+    "length": 104,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/graph-layout-selection.test.ts",
+    "coverage": "partial",
+    "lines": [
+      1,
+      135
+    ],
+    "length": 495,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/layout-bundle-proposals.test.ts",
+    "coverage": "partial",
+    "lines": [
+      135,
+      282
+    ],
+    "length": 282,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/fanout-symmetry.test.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      104
+    ],
+    "length": 104,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/layout-bundle-proposals.test.ts",
+    "coverage": "partial",
+    "lines": [
+      45,
+      137
+    ],
+    "length": 282,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/layout/passes/edge-bundling.ts",
+    "coverage": "partial",
+    "lines": [
+      132,
+      273
+    ],
+    "length": 389,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/layout/passes/edge-bundling.ts",
+    "coverage": "partial",
+    "lines": [
+      274,
+      389
+    ],
+    "length": 389,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/layout-engine.ts",
+    "coverage": "partial",
+    "lines": [
+      1384,
+      1458
+    ],
+    "length": 2168,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/index.ts",
+    "coverage": "partial",
+    "lines": [
+      173,
+      224
+    ],
+    "length": 1559,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/help.ts",
+    "coverage": "partial",
+    "lines": [
+      26,
+      43
+    ],
+    "length": 232,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/layout/passes/edge-bundling.ts",
+    "coverage": "partial",
+    "lines": [
+      1,
+      131
+    ],
+    "length": 389,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/layout-bundle-proposals.test.ts",
+    "coverage": "partial",
+    "lines": [
+      122,
+      137
+    ],
+    "length": 282,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/agent-cli-render-formats.test.ts",
+    "coverage": "partial",
+    "lines": [
+      65,
+      92
+    ],
+    "length": 92,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "editor/css/variables.css",
+    "coverage": "partial",
+    "lines": [
+      1,
+      42
+    ],
+    "length": 284,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/cli/index.ts",
+    "coverage": "partial",
+    "lines": [
+      63,
+      172
+    ],
+    "length": 1559,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-multi-input.test.ts",
+    "coverage": "partial",
+    "lines": [
+      160,
+      213
+    ],
+    "length": 213,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "editor/js/rendering.js",
+    "coverage": "partial",
+    "lines": [
+      88,
+      138
+    ],
+    "length": 672,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "editor/html/topbar.html",
+    "coverage": "partial",
+    "lines": [
+      1,
+      30
+    ],
+    "length": 337,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/agent-cli-render-formats.test.ts",
+    "coverage": "partial",
+    "lines": [
+      1,
+      64
+    ],
+    "length": 92,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": ".github/workflows/ci.yml",
+    "coverage": "partial",
+    "lines": [
+      563,
+      582
+    ],
+    "length": 951,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "docs/features.md",
+    "coverage": "partial",
+    "lines": [
+      98,
+      110
+    ],
+    "length": 159,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": ".github/workflows/ci.yml",
+    "coverage": "partial",
+    "lines": [
+      790,
+      805
+    ],
+    "length": 951,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "scripts/ci/unit-test-files.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      13
+    ],
+    "length": 13,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "scripts/ci/run-unit-tests.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      22
+    ],
+    "length": 22,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "e2e/browser-contract-files.ts",
+    "coverage": "full",
+    "lines": [
+      1,
+      22
+    ],
+    "length": 22,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/layout/bundle-routes.ts",
+    "coverage": "partial",
+    "lines": [
+      1,
+      60
+    ],
+    "length": 73,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/fixtures.md",
+    "coverage": "partial",
+    "lines": [
+      112,
+      166
+    ],
+    "length": 166,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/layout-bundle-proposals.test.ts",
+    "coverage": "partial",
+    "lines": [
+      223,
+      282
+    ],
+    "length": 282,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/layout/bundle-routes.ts",
+    "coverage": "partial",
+    "lines": [
+      61,
+      73
+    ],
+    "length": 73,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/boundary-scenarios.md",
+    "coverage": "full",
+    "lines": [
+      1,
+      65
+    ],
+    "length": 65,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/editor-theme-switch.test.ts",
+    "coverage": "partial",
+    "lines": [
+      1,
+      105
+    ],
+    "length": 217,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/cli-error-envelope.test.ts",
+    "coverage": "partial",
+    "lines": [
+      224,
+      241
+    ],
+    "length": 336,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/browser-script-harness.ts",
+    "coverage": "partial",
+    "lines": [
+      353,
+      376
+    ],
+    "length": 376,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "src/__tests__/agent-cli-render-formats.test.ts",
+    "coverage": "partial",
+    "lines": [
+      76,
+      92
+    ],
+    "length": 92,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": ".github/workflows/ci.yml",
+    "coverage": "partial",
+    "lines": [
+      790,
+      804
+    ],
+    "length": 951,
+    "method": "numbered file inspection"
+  },
+  {
+    "path": "e2e/browser-contract-files.ts",
+    "coverage": "partial",
+    "lines": [
+      12,
+      22
+    ],
+    "length": 22,
+    "method": "numbered file inspection"
+  }
+]

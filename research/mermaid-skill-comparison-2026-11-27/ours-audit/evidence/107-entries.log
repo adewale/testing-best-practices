@@ -1,0 +1,26 @@
+(fail) fan-out peer symmetry > an internal fork continues its admitted centre trunk (LR) [13.79ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (RL) [6.70ms]
+(fail) fan-out peer symmetry > an internal fork continues its admitted centre trunk (TD) [8.28ms]
+(fail) fan-out peer symmetry > an internal fork continues its admitted centre trunk (BT) [7.30ms]
+17:205 |       expect(batch.error).toMatchObject({ code: 'INVALID_STYLE_COLOR', property: 'fill', value: 'notacolor', message: expect.stringContaining('style A: fill "notacolor"') })
+19:error: expect(received).toMatchObject(expected)
+22:-   "code": "INVALID_STYLE_COLOR",
+26:+   "code": "RENDER_FAILED",
+51:151 |       expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: expect.stringContaining('notacolor') } })
+53:error: expect(received).toMatchObject(expected)
+57:-     "code": "INVALID_STYLE_COLOR",
+62:+     "code": "RENDER_FAILED",
+100: 36 pass
+101: 2 fail
+97-eol-old-canonical-timeout 0 64.3029
+103-clean-owner-matrix 0 66.0457
+71-fontsuite-old-fault 1 1.8191
+80-fallback-old 0 2.4379
+36-old-on-fault 0 1.4268
+46-corrected-on-fault 1 1.6145
+55-corrected-clean 0 1.2964
+88-edit-baseline 0 19.0434
+59-coverage-missing 1 0.4713
+62-coverage-real-font 0 1.8116
+104-fanout-baseline 0 0.7357
+105-fanout-history-replay 1 0.8737

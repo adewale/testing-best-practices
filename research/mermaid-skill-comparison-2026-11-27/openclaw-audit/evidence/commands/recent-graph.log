@@ -1,0 +1,50 @@
+f49196e Merge pull request #620: improve graph routing and painted clearance [skip ci]
+
+ docs/design/system/layout-rubric.md                |   5 +-
+ docs/quality.md                                    |   6 +-
+ src/__tests__/fanout-symmetry.test.ts              |  30 ++
+ src/__tests__/graph-layout-selection.test.ts       |  68 ++++-
+ src/__tests__/label-conflicts.test.ts              |  15 +
+ src/__tests__/layout-bundle-proposals.test.ts      |  42 +++
+ src/__tests__/layout-pass.test.ts                  |   6 +-
+ src/__tests__/layout-symmetry.test.ts              |  24 ++
+ src/__tests__/paint-certification.test.ts          |  23 ++
+ src/__tests__/route-contracts.test.ts              | 211 ++++++++++++-
+ src/__tests__/self-loop-arcs.test.ts               | 115 +++++++-
+ src/__tests__/testdata/contact-sheet-geometry.json |  20 +-
+ .../testdata/layout-geometry-baseline.json         |  24 +-
+ src/elk-layered/kernel/crossing.ts                 | 120 +++++++-
+ src/layout-engine.ts                               | 145 ++++-----
+ src/layout/graph-paint-support.ts                  | 184 ++++++++++--
+ src/layout/passes/edge-bundling.ts                 |  38 ++-
+ src/layout/passes/fanout.ts                        |  18 +-
+ src/layout/passes/peers.ts                         | 115 +++++++-
+ src/layout/passes/port-lanes.ts                    |  13 +-
+ src/layout/route-lanes.ts                          |  14 +-
+ src/layout/route-marker-clearance.ts               |  18 +-
+ src/layout/route-self-loops.ts                     | 128 ++++++--
+ src/renderer.ts                                    |  19 +-
+ src/route-contracts.ts                             | 328 +++++++++++++++++----
+ src/scene/paint-certification.ts                   |  29 +-
+ src/shared/edge-label-geometry.ts                  |  16 +
+ 27 files changed, 1506 insertions(+), 268 deletions(-)
+editor/js/examples.js:48:export function renderExamplePaletteHtml() {
+editor/js/examples.js:70:export function renderExamplePalettes() {
+editor/js/rendering.js:365:export function updateVerifyPanel(source, renderOptions, providedResult) {
+editor/js/rendering.js:433:export async function renderTextOutputs(source) {
+editor/html/topbar.html:3:  <a href="/" class="app-brand" aria-label="Agentic Mermaid Editor home">
+editor/html/topbar.html:4:    <span class="app-mark" aria-hidden="true">
+editor/html/topbar.html:24:    <span class="app-brand-text">Agentic&nbsp;Mermaid</span><span class="app-context">Editor</span>
+src/__tests__/feedback-reroute.test.ts
+src/__tests__/property-route-contracts-fuzz.test.ts
+src/__tests__/terminal-axis-route.test.ts
+src/__tests__/fidelity-route-conformance.test.ts
+src/__tests__/er-ascii-clearance.test.ts
+src/__tests__/measured-route-safety.test.ts
+src/__tests__/arrowhead-terminal-clearance.test.ts
+src/__tests__/route-contracts-syntax-range.test.ts
+src/__tests__/terminal-native-route-regressions.test.ts
+src/__tests__/ancestor-boundary-routes.test.ts
+src/__tests__/route-contracts.test.ts
+src/__tests__/route-channel-geometry.test.ts
+src/__tests__/ascii-bundle-forward-clearance.test.ts

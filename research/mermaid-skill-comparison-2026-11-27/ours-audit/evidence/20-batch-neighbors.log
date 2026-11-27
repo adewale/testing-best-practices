@@ -1,0 +1,43 @@
+docs/features.md:106:`batch --jsonl` (including mutate),
+e2e/tarball-consumer-fuzz.e2e.test.ts:13://   T2  `am` bin           — `am batch --jsonl` over generated ops (one bad line
+e2e/tarball-consumer-fuzz.e2e.test.ts:439:  test('batch --jsonl: one result per line, bad lines never abort, ASCII matches source', () => {
+e2e/tarball-consumer-fuzz.e2e.test.ts:454:      ['not json at all', 'INVALID_JSON'], ['{"op":123}', 'INVALID_PAYLOAD'],
+e2e/cli.e2e.test.ts:3:// Spawns the real `bin/am.ts` via `bun run` and pipes JSONL / source via
+e2e/cli.e2e.test.ts:151:  test('processes mutate lines without aborting the JSONL stream', () => {
+e2e/cli.e2e.test.ts:205:    expect(out[2].error.code).toBe('INVALID_JSON')
+src/__tests__/cli-batch-render-parity.test.ts:2:import { renderSourceToFormatWithReceipt, runBatchLine } from '../cli/index.ts'
+src/__tests__/cli-batch-render-parity.test.ts:10:  return runBatchLine(JSON.stringify({ op: 'render', source, options }), lineIndex)
+src/__tests__/cli-batch-render-parity.test.ts:14:  test('live JSONL emits before EOF and preserves UTF-8, nonblank indices and per-line errors', async () => {
+src/__tests__/cli-batch-render-parity.test.ts:46:      expect(bad).toMatchObject({ ok: false, error: { code: 'INVALID_JSON' } })
+src/__tests__/property-cli-surface-fuzz.test.ts:2:// the `am` bin: the argv parser and the `am batch --jsonl` line handler. The
+src/__tests__/property-cli-surface-fuzz.test.ts:10:import { parseArgs, runBatchLine, renderMarkdownBlocks, FLAG_SPECS } from '../cli/index.ts'
+src/__tests__/property-cli-surface-fuzz.test.ts:106:// runBatchLine — the `am batch --jsonl` per-line handler. Its documented
+src/__tests__/property-cli-surface-fuzz.test.ts:128:describe('cli-surface fuzz: runBatchLine', () => {
+src/__tests__/property-cli-surface-fuzz.test.ts:132:        const out = runBatchLine(line, idx)
+src/__tests__/property-cli-surface-fuzz.test.ts:153:        const out = runBatchLine(JSON.stringify({ op: 'render', source, options: { format } }), idx)
+src/__tests__/property-cli-surface-fuzz.test.ts:166:      expect(runBatchLine(JSON.stringify({ op }))).toMatchObject({
+src/__tests__/property-cli-surface-fuzz.test.ts:175:      expect(runBatchLine(JSON.stringify({
+src/__tests__/property-cli-surface-fuzz.test.ts:193:    const result = runBatchLine(JSON.stringify({
+src/__tests__/property-cli-surface-fuzz.test.ts:213:      expect(runBatchLine(JSON.stringify(payload))).toMatchObject({
+src/__tests__/property-cli-surface-fuzz.test.ts:218:    expect(runBatchLine(JSON.stringify({ op: 'mutate', source, mutation }))).toMatchObject({ ok: true })
+src/__tests__/property-cli-surface-fuzz.test.ts:219:    expect(runBatchLine(JSON.stringify({ op: 'mutate', source, mutations: [mutation] }))).toMatchObject({ ok: true })
+src/__tests__/property-cli-surface-fuzz.test.ts:223:    expect(runBatchLine(JSON.stringify({
+src/__tests__/transport-family-diagnostic-parity.test.ts:3:import { renderMarkdownBlocks, runBatchLine } from '../cli/index.ts'
+src/__tests__/transport-family-diagnostic-parity.test.ts:91:        const result = runBatchLine(line, 0) as { ok: boolean; error?: any }
+src/__tests__/agent-mcp.test.ts:12:import { runCli, runBatchLine } from '../cli/index.ts'
+src/__tests__/agent-mcp.test.ts:42:    expect(runBatchLine(JSON.stringify({ op: 'mutate', source, mutation: op, preserveSource: true }))).toMatchObject({ ok: true, data: { source: result.source, mode: 'source-preserving' } })
+src/__tests__/agent-mcp.test.ts:75:    expect(runBatchLine(JSON.stringify({ op: 'mutate', source, mutation: op, preserveSource: true }))).toMatchObject({ ok: true, data: { source: result.source, mode: 'source-preserving' } })
+src/__tests__/agent-mcp.test.ts:95:      const batch = runBatchLine(JSON.stringify({ op: 'mutate', source, mutations: ops }))
+src/__tests__/extension-family-public-api.test.ts:7:import { buildCapabilities, runBatchLine, runCli } from '../cli/index.ts'
+src/__tests__/extension-family-public-api.test.ts:800:      expect(runBatchLine(JSON.stringify({ op: 'parse', source }))).toMatchObject({
+src/__tests__/audit-regressions.test.ts:7:import { runBatchLine, runCli } from '../cli/index.ts'
+src/__tests__/audit-regressions.test.ts:187:    const rendered = runBatchLine(JSON.stringify({ op: 'render', source: 'flowchart LR\n  A --> B', options: { format: 'ascii' } })) as any
+src/__tests__/quadrant-style.test.ts:28:import { runBatchLine } from '../cli/index.ts'
+src/__tests__/quadrant-style.test.ts:150:      const result = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }
+src/__tests__/theme-color-admission.test.ts:7:import { runBatchLine } from '../cli/index.ts'
+src/__tests__/theme-color-admission.test.ts:350:    expect(runBatchLine(JSON.stringify({ op: 'render', source, options: { ...options, format } }), 0), `cli ${format}`)
+src/__tests__/authored-style-color-admission.test.ts:7:import { runBatchLine } from '../cli/index.ts'
+src/__tests__/authored-style-color-admission.test.ts:203:      const batch = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }
+src/__tests__/property-validator-surface-fuzz.test.ts:17:import { runBatchLine, runCli } from '../cli/index.ts'
+src/__tests__/property-validator-surface-fuzz.test.ts:250:      const batch = runBatchLine(JSON.stringify({ op: 'verify', source, options: { labelCharCap: json } }))
+3ef85bd Keep a sequence creating message and its activation clear of the created header

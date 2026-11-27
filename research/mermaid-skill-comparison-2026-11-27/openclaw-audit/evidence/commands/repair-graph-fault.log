@@ -1,0 +1,259 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/layout-bundle-proposals.test.ts:
+31 |       const box = { x0: x - border, x1: x + width + border, y0: y - border, y1: y + height + border }
+32 |       for (let i = 1; i < points.length; i++) {
+33 |         const a = points[i - 1]!, b = points[i]!
+34 |         expect(a.x === b.x || a.y === b.y).toBe(true)
+35 |         expect(Math.max(a.x, b.x) + half > box.x0 && Math.min(a.x, b.x) - half < box.x1
+36 |           && Math.max(a.y, b.y) + half > box.y0 && Math.min(a.y, b.y) - half < box.y1).toBe(false)
+                                                                                            ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/layout-bundle-proposals.test.ts:36:88)
+(fail) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [140.93ms]
+31 |       const box = { x0: x - border, x1: x + width + border, y0: y - border, y1: y + height + border }
+32 |       for (let i = 1; i < points.length; i++) {
+33 |         const a = points[i - 1]!, b = points[i]!
+34 |         expect(a.x === b.x || a.y === b.y).toBe(true)
+35 |         expect(Math.max(a.x, b.x) + half > box.x0 && Math.min(a.x, b.x) - half < box.x1
+36 |           && Math.max(a.y, b.y) + half > box.y0 && Math.min(a.y, b.y) - half < box.y1).toBe(false)
+                                                                                            ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/layout-bundle-proposals.test.ts:36:88)
+(fail) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [26.93ms]
+31 |       const box = { x0: x - border, x1: x + width + border, y0: y - border, y1: y + height + border }
+32 |       for (let i = 1; i < points.length; i++) {
+33 |         const a = points[i - 1]!, b = points[i]!
+34 |         expect(a.x === b.x || a.y === b.y).toBe(true)
+35 |         expect(Math.max(a.x, b.x) + half > box.x0 && Math.min(a.x, b.x) - half < box.x1
+36 |           && Math.max(a.y, b.y) + half > box.y0 && Math.min(a.y, b.y) - half < box.y1).toBe(false)
+                                                                                            ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/layout-bundle-proposals.test.ts:36:88)
+(fail) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [24.70ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB plain [3.70ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB caption [0.25ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB colour [0.22ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB width [0.25ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB classes [0.57ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB marker [0.23ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB no-heads [0.87ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT plain [1.88ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT caption [0.12ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT colour [0.20ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT width [0.23ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT classes [0.33ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT marker [0.06ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT no-heads [1.23ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR plain [1.85ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR caption [0.06ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR colour [0.05ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR width [0.15ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR classes [0.15ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR marker [0.17ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR no-heads [0.76ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL plain [2.16ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL caption [0.18ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL colour [4.56ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL width [0.06ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL classes [0.03ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL marker [0.17ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL no-heads [0.47ms]
+102 |     ]
+103 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: marked }))
+104 |     const before = structuredClone(edges.map(edge => edge.points))
+105 |     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+106 |     expect(bundled.size).toBe(marked ? 0 : 2)
+107 |     if (marked) for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toEqual(before[i]!)
+                                                                                      ^
+error: expect(received).toEqual(expected)
+
+  [
+    {
+-     "x": 80,
+-     "y": 20,
++     "x": 60,
++     "y": 40,
+    },
+    {
+-     "x": 110,
+-     "y": 20,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 110,
+-     "y": 120,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 80,
+-     "y": 120,
++     "x": 60,
++     "y": 100,
+    },
+  ]
+
+- Expected  - 8
++ Received  + 8
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/layout-bundle-proposals.test.ts:107:81)
+(fail) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [1.15ms]
+(pass) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.24ms]
+114 |     ]
+115 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: true, inlineStyle: { 'stroke-width': width } }))
+116 |     const before = structuredClone(edges.map(edge => edge.points))
+117 |     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+118 |     expect(bundled.size).toBe(width === '1px' ? 2 : 0)
+119 |     if (width !== '1px') for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toEqual(before[i]!)
+                                                                                               ^
+error: expect(received).toEqual(expected)
+
+  [
+    {
+-     "x": 80,
+-     "y": 20,
++     "x": 60,
++     "y": 40,
+    },
+    {
+-     "x": 110,
+-     "y": 20,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 110,
+-     "y": 120,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 80,
+-     "y": 120,
++     "x": 60,
++     "y": 100,
+    },
+  ]
+
+- Expected  - 8
++ Received  + 8
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/layout-bundle-proposals.test.ts:119:90)
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.68ms]
+114 |     ]
+115 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: true, inlineStyle: { 'stroke-width': width } }))
+116 |     const before = structuredClone(edges.map(edge => edge.points))
+117 |     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+118 |     expect(bundled.size).toBe(width === '1px' ? 2 : 0)
+119 |     if (width !== '1px') for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toEqual(before[i]!)
+                                                                                               ^
+error: expect(received).toEqual(expected)
+
+  [
+    {
+-     "x": 80,
+-     "y": 20,
++     "x": 60,
++     "y": 40,
+    },
+    {
+-     "x": 110,
+-     "y": 20,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 110,
+-     "y": 120,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 80,
+-     "y": 120,
++     "x": 60,
++     "y": 100,
+    },
+  ]
+
+- Expected  - 8
++ Received  + 8
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/layout-bundle-proposals.test.ts:119:90)
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.24ms]
+(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 1px [0.60ms]
+127 |     ]
+128 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: false }))
+129 |     const before = structuredClone(edges.map(edge => edge.points))
+130 |     const bundled = bundleEdgePaths(edges, nodes, [{ id: 'G', label: 'G', x: 60.1, y: 45, width: 6, height: 4, headerHeight: 4, children: [] }], 'TB', resolveRenderStyle())
+131 |     expect(bundled.size).toBe(0)
+132 |     for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toEqual(before[i]!)
+                                                                          ^
+error: expect(received).toEqual(expected)
+
+  [
+    {
+-     "x": 80,
+-     "y": 20,
++     "x": 60,
++     "y": 40,
+    },
+    {
+-     "x": 110,
+-     "y": 20,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 110,
+-     "y": 120,
++     "x": 60,
++     "y": 70,
+    },
+    {
+-     "x": 80,
+-     "y": 120,
++     "x": 60,
++     "y": 100,
+    },
+  ]
+
+- Expected  - 8
++ Received  + 8
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/layout-bundle-proposals.test.ts:132:69)
+(fail) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.68ms]
+(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: dense mesh [400.14ms]
+(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: detached feedback [11.43ms]
+(pass) bounded generic bundle proposals > only the selected placement compares an unbundled proposal and it reuses that ELK result [283.86ms]
+(pass) bounded generic bundle proposals > an ordinary alternative failure retains the certified bundled proposal [116.74ms]
+(pass) bounded generic bundle proposals > parallel edges keep their specialized lanes instead of buying fewer proper crossings with ambiguous contacts [15.01ms]
+(pass) bounded generic bundle proposals > clean symmetric fans, placement-only calls and graphs over the work bound skip the second pipeline [157.79ms]
+
+7 tests failed:
+(fail) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [140.93ms]
+(fail) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [26.93ms]
+(fail) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [24.70ms]
+(fail) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [1.15ms]
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.68ms]
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.24ms]
+(fail) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.68ms]
+
+ 36 pass
+ 7 fail
+ 350 expect() calls
+Ran 43 tests across 1 file. [1490.00ms]

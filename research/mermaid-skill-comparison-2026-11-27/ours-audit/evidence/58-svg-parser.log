@@ -1,0 +1,46 @@
+src/zenuml/frame.ts:80:    const svg = new DOMParser().parseFromString(result.svg, 'image/svg+xml').documentElement
+src/scene/fidelity.ts:19:import { parseSvgTransform, transformMatrix } from './transforms.ts'
+src/scene/fidelity.ts:175:  const crisp = raw ? parseSvgTransform(raw) : undefined
+src/scene/resolved-geometry.ts:4:import { composeMatrices, parseSvgTransform } from './transforms.ts'
+src/scene/resolved-geometry.ts:15:  const matrix = parseSvgTransform(value)
+src/scene/transforms.ts:29:export function parseSvgTransform(value: string): AffineMatrix | undefined {
+src/scene/marks.ts:38:import type { parseSvgTransform } from './transforms.ts'
+src/scene/marks.ts:69:const groupEmission = new WeakMap<object, { open: string; opacity: string | undefined; style: boolean; matrix: ReturnType<typeof parseSvgTransform> }>()
+src/scene/group-emission.ts:3:import { parseSvgTransform, transformMatrix } from './transforms.ts'
+src/scene/group-emission.ts:29:  const matrix = written === undefined ? undefined : parseSvgTransform(written)
+src/__tests__/aesthetic-issue-regressions.test.ts:21:import { detectSvg, parseSvg, type Finding, type Rendered } from '../../eval/ugly-detector/detect.ts'
+src/__tests__/aesthetic-issue-regressions.test.ts:29:  return parseSvg(renderedSvg(src))
+src/__tests__/agent-png.test.ts:27:      const loaded = () => Object.keys(require.cache).some(path => path.includes('@resvg/resvg-js'))
+src/__tests__/agent-png-determinism.test.ts:5:// FIRST (don't include in the comparison set) to factor out resvg/napi
+src/__tests__/png-fonts.test.ts:7:// PNG: no glyph ink may appear beyond the task box's right border. Nothing
+src/__tests__/png-fonts.test.ts:19:import { decodePng, inkColumns } from './helpers/png-pixels.ts'
+src/__tests__/png-fonts.test.ts:67:    const overflow = inkColumns(
+   157	  const origOut = process.stdout.write.bind(process.stdout)
+   158	  const origErr = process.stderr.write.bind(process.stderr)
+   159	  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   160	  ;(process.stdout as any).write = (s: unknown) => { outChunks.push(String(s)); return true }
+   161	  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   162	  ;(process.stderr as any).write = (s: unknown) => { errChunks.push(String(s)); return true }
+   163	  let code: number
+   164	  try {
+   165	    const result = runCli(argv)
+   166	    if (typeof result !== 'number') throw new Error('Expected a synchronous command')
+   167	    code = result
+   168	  } finally {
+   169	    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   170	    ;(process.stdout as any).write = origOut
+   171	    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   172	    ;(process.stderr as any).write = origErr
+   173	  }
+   174	  return { code, out: outChunks.join(''), err: errChunks.join('') }
+   175	}
+   176	
+   177	function tmpPngRun(source: string, extraFlags: string[] = []): { code: number; out: string; err: string; outFile: string } {
+   178	  const dir = temp.dir('am-png-fonts-')
+   179	  const inFile = join(dir, 'in.mmd')
+   180	  const outFile = join(dir, 'out.png')
+   181	  writeFileSync(inFile, source)
+   182	  const r = captureCli(['render', inFile, '--format', 'png', '--output', outFile, ...extraFlags])
+   183	  return { ...r, outFile }
+   184	}
+   185	

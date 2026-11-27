@@ -1,0 +1,21 @@
+
+src/__tests__/png-fonts.test.ts:
+(pass) PNG font provenance > distinguishes verified, caller-directory, system, and buffer inputs [0.10ms]
+(pass) PNG raster font matches the metrics font > long journey task label rasterizes inside its measured task box [314.82ms]
+(pass) PNG glyph-coverage warnings > CJK text without a covering font warns, naming the script and the escape hatch [65.79ms]
+(pass) PNG glyph-coverage warnings > uncovered emoji warns with the emoji script bucket [19.47ms]
+(pass) PNG glyph-coverage warnings > Latin labels plus DejaVu-covered symbols produce no warning [19.98ms]
+(pass) PNG glyph-coverage warnings > loadSystemFonts: true keeps a qualified known-font warning [163.83ms]
+(pass) PNG glyph-coverage warnings > warnings are deterministic across identical renders [23.04ms]
+(pass) fontDirs escape hatch > a CJK-capable fontDirs clears the warning and changes the rendered bytes [505.15ms]
+(pass) am render --format png font flags > PNG-only controls are rejected for non-PNG formats [5.22ms]
+(pass) am render --format png font flags > fit dimensions are integer pixels [8.92ms]
+(pass) am render --format png font flags > CJK render warns on stderr and reports warnings in the --json envelope [20.65ms]
+(pass) am render --format png font flags > pure-Latin render prints no coverage warning [14.26ms]
+(pass) am render --format png font flags > --font-dirs silences the CJK warning [498.73ms]
+(pass) am render --format png font flags > --system-fonts keeps a qualified bundled-font coverage warning [55.10ms]
+
+ 14 pass
+ 0 fail
+ 51 expect() calls
+Ran 14 tests across 1 file. [2.14s]

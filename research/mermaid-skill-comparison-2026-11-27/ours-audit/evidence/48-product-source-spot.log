@@ -1,0 +1,91 @@
+src/svg-family-hooks/journey.ts
+src/journey/config-diagnostics.ts
+src/journey/renderer.ts
+src/journey/parser.ts
+src/journey/types.ts
+src/journey/family-source.ts
+src/journey/parse-core.ts
+src/journey/layout.ts
+src/positioned-views/journey.ts
+src/agent/journey-body.ts
+src/ascii/journey.ts
+src/browser-lazy/families/journey.ts
+src/browser-lazy/generated/verified/journey.ts
+src/browser-lazy/generated/terminal/journey.ts
+src/browser-lazy/generated/descriptors/journey.ts
+src/__tests__/journey-layout.test.ts
+src/__tests__/journey-fractional-score-fidelity.test.ts
+src/__tests__/journey-theme.test.ts
+src/__tests__/journey-svg-snapshot.test.ts
+src/__tests__/agent-journey.test.ts
+src/__tests__/testdata/styled/journey-basic.look-tufte.svg
+src/__tests__/journey-layout-quality.test.ts
+src/__tests__/journey-ascii.test.ts
+src/__tests__/journey-integration.test.ts
+src/__tests__/testdata/svg/journey-mermaid-docs-example.svg
+src/__tests__/testdata/svg/journey-representative.svg
+src/__tests__/journey-parse-core.test.ts
+src/__tests__/journey-semicolon-extension.test.ts
+src/__tests__/journey-parser.test.ts
+src/__tests__/closing-the-gap.test.ts:398:    expect(svg).not.toMatch(/data-task="safe"[^>]+(?:role="link"|tabindex=)/)
+src/__tests__/gantt-svg-snapshot.test.ts:144:  describe('task status ink', () => {
+src/__tests__/gantt-svg-snapshot.test.ts:181:    /** Two tasks read apart when one paints an ink the other has nothing like. */
+src/__tests__/gantt-svg-snapshot.test.ts:200:                expect(readApart(inksOf(STATUS_TASKS[a][k]!), inksOf(STATUS_TASKS[b][k]!)), `${look} ${JSON.stringify(palette)}: ${a} vs ${b} ${k ? 'milestone' : 'bar'}`).toBe(true)
+src/__tests__/gantt-svg-snapshot.test.ts:204:            expect(readApart(inksOf(STATUS_TASKS[a][0]), inksOf(STATUS_TASKS[a][1])), `${look} ${JSON.stringify(palette)}: ${a} milestone vs bar`).toBe(false)
+src/__tests__/gantt-label-wrap.test.ts:4:// SHARED measured-pixel wrap machinery (src/shared/label-wrap.ts — the journey
+src/__tests__/agent-gantt.test.ts:733:  test('AX tree exposes tasks as nodes, dependencies as edges, entries and sinks', () => {
+src/__tests__/png-fonts.test.ts:6:// test renders a journey with a long task label and pixel-scans the decoded
+src/__tests__/png-fonts.test.ts:7:// PNG: no glyph ink may appear beyond the task box's right border. Nothing
+src/__tests__/png-fonts.test.ts:55:  test('long journey task label rasterizes inside its measured task box', () => {
+.github/workflows/coverage.yml:1:name: Unit coverage diagnostic
+.github/workflows/coverage.yml:3:# Coverage locates under-tested source; behavioral assertions remain in CI.
+.github/workflows/coverage.yml:15:  group: coverage-diagnostic
+.github/workflows/coverage.yml:36:        run: bun run test:coverage -- --shard=${{ matrix.shard }} --parallel=2
+.github/workflows/coverage.yml:37:      - name: Upload shard coverage
+.github/workflows/coverage.yml:41:          name: unit-coverage-${{ strategy.job-index }}
+.github/workflows/coverage.yml:42:          path: coverage/lcov.info
+.github/workflows/coverage.yml:58:          pattern: unit-coverage-*
+.github/workflows/coverage.yml:59:          path: coverage-shards
+.github/workflows/coverage.yml:60:      - run: bun run scripts/ci/merge-lcov.ts coverage-shards coverage/lcov.info 3
+.github/workflows/coverage.yml:63:          name: coverage-lcov
+.github/workflows/coverage.yml:64:          path: coverage/lcov.info
+     1	// Tiny PNG pixel-inspection helper for raster tests. Wraps upng-js (already a
+     2	// devDependency, used by the sketch-prototype scripts) so tests can decode
+     3	// renderMermaidPNG output and scan for glyph ink without adding dependencies.
+     4	
+     5	// @ts-expect-error - upng-js ships no types
+     6	import UPNG from 'upng-js'
+     7	
+     8	export interface DecodedPng {
+     9	  width: number
+    10	  height: number
+    11	  /** RGBA8, row-major, 4 bytes per pixel. */
+    12	  rgba: Uint8Array
+    13	}
+    14	
+    15	export function decodePng(png: Uint8Array): DecodedPng {
+    16	  const img = UPNG.decode(png.buffer.slice(png.byteOffset, png.byteOffset + png.byteLength))
+    17	  const rgba = new Uint8Array(UPNG.toRGBA8(img)[0] as ArrayBuffer)
+    18	  return { width: img.width as number, height: img.height as number, rgba }
+    19	}
+    20	
+    21	/**
+    22	 * Columns in [x0, x1) that contain at least one "ink" pixel (mean RGB below
+    23	 * `threshold`) within rows [y0, y1). Near-black text ink scores ~0–60; white
+    24	 * background and the pastel section/box fills score far above 100.
+    25	 */
+    26	export function inkColumns(img: DecodedPng, x0: number, x1: number, y0: number, y1: number, threshold = 100): number[] {
+    27	  const cols: number[] = []
+    28	  const yStart = Math.max(0, Math.floor(y0))
+    29	  const yEnd = Math.min(img.height, Math.ceil(y1))
+    30	  for (let x = Math.max(0, Math.floor(x0)); x < Math.min(img.width, Math.ceil(x1)); x++) {
+    31	    for (let y = yStart; y < yEnd; y++) {
+    32	      const i = (y * img.width + x) * 4
+    33	      if ((img.rgba[i]! + img.rgba[i + 1]! + img.rgba[i + 2]!) / 3 < threshold) {
+    34	        cols.push(x)
+    35	        break
+    36	      }
+    37	    }
+    38	  }
+    39	  return cols
+    40	}

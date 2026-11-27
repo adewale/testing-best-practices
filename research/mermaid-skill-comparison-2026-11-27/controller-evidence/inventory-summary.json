@@ -1,0 +1,15 @@
+{
+  "recorded_utc": "2026-11-27T14:31:02.017085+00:00",
+  "tracked_files": 3512,
+  "tracked_bytes": 61776465,
+  "conventional_test_paths": 660,
+  "pattern": "(?:\\.(?:test|spec)\\.(?:[cm]?[jt]sx?)|_test\\.py)$",
+  "groups": {
+    "e2e": 12,
+    "eval": 41,
+    "scripts": 1,
+    "src": 606
+  },
+  "source_sha": "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+  "warning": "File inventory is availability, not actual inspection/execution or a defect denominator."
+}

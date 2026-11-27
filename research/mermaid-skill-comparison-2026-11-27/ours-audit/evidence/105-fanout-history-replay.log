@@ -1,0 +1,95 @@
+ src/layout/passes/fanout.ts | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/fanout-symmetry.test.ts:
+(pass) fan-out peer symmetry > grouped diamond targets keep their authored containment (TD) [321.33ms]
+(pass) fan-out peer symmetry > grouped diamond targets keep their authored containment (LR) [93.58ms]
+80 |     const first = forks[0]!, second = forks[1]!
+81 |     const trunk = first.points.slice(0, 2).map(point => ({ ...point }))
+82 |     expect(second.points.slice(0, 2)).toEqual(trunk)
+83 |     expect(Math.hypot(trunk[1]!.x - trunk[0]!.x, trunk[1]!.y - trunk[0]!.y)).toBeGreaterThan(0)
+84 |     applySymmetricFanoutEmissions(nodes, edges, groups, graph, bundled, style)
+85 |     expect(first.points.slice(0, 2)).toEqual(trunk)
+                                          ^
+error: expect(received).toEqual(expected)
+
+  [
+    {
+      "x": 208,
+-     "y": 88.9,
++     "y": 82.75,
+    },
+    {
+      "x": 232,
+-     "y": 88.9,
++     "y": 82.75,
+    },
+  ]
+
+- Expected  - 2
++ Received  + 2
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/src/__tests__/fanout-symmetry.test.ts:85:38)
+(fail) fan-out peer symmetry > an internal fork continues its admitted centre trunk (LR) [13.79ms]
+(pass) fan-out peer symmetry > an internal fork continues its admitted centre trunk (RL) [6.70ms]
+80 |     const first = forks[0]!, second = forks[1]!
+81 |     const trunk = first.points.slice(0, 2).map(point => ({ ...point }))
+82 |     expect(second.points.slice(0, 2)).toEqual(trunk)
+83 |     expect(Math.hypot(trunk[1]!.x - trunk[0]!.x, trunk[1]!.y - trunk[0]!.y)).toBeGreaterThan(0)
+84 |     applySymmetricFanoutEmissions(nodes, edges, groups, graph, bundled, style)
+85 |     expect(first.points.slice(0, 2)).toEqual(trunk)
+                                          ^
+error: expect(received).toEqual(expected)
+
+  [
+    {
+-     "x": 168.791,
++     "x": 158.791,
+      "y": 161.8,
+    },
+    {
+-     "x": 168.791,
++     "x": 158.791,
+      "y": 185.8,
+    },
+  ]
+
+- Expected  - 2
++ Received  + 2
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/src/__tests__/fanout-symmetry.test.ts:85:38)
+(fail) fan-out peer symmetry > an internal fork continues its admitted centre trunk (TD) [8.28ms]
+80 |     const first = forks[0]!, second = forks[1]!
+81 |     const trunk = first.points.slice(0, 2).map(point => ({ ...point }))
+82 |     expect(second.points.slice(0, 2)).toEqual(trunk)
+83 |     expect(Math.hypot(trunk[1]!.x - trunk[0]!.x, trunk[1]!.y - trunk[0]!.y)).toBeGreaterThan(0)
+84 |     applySymmetricFanoutEmissions(nodes, edges, groups, graph, bundled, style)
+85 |     expect(first.points.slice(0, 2)).toEqual(trunk)
+                                          ^
+error: expect(received).toEqual(expected)
+
+  [
+    {
+-     "x": 168.791,
++     "x": 158.791,
+      "y": 124.90000000000003,
+    },
+    {
+-     "x": 168.791,
++     "x": 158.791,
+      "y": 100.90000000000003,
+    },
+  ]
+
+- Expected  - 2
++ Received  + 2
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/src/__tests__/fanout-symmetry.test.ts:85:38)
+(fail) fan-out peer symmetry > an internal fork continues its admitted centre trunk (BT) [7.30ms]
+(pass) fan-out peer symmetry > peers with differing label widths are equalized to a common width and aligned [36.33ms]
+
+ 4 pass
+ 3 fail
+ 74 expect() calls
+Ran 7 tests across 1 file. [838.00ms]

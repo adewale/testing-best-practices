@@ -1,0 +1,70 @@
+docs/features.md:106:`batch --jsonl` (including mutate),
+    37	/** One authored line between statements: a comment, a blank line or nothing. */
+    38	const gapArb = fc.oneof(
+    39	  { weight: 3, arbitrary: fc.constant<string[]>([]) },
+    40	  { weight: 1, arbitrary: fc.constantFrom([''], ['', '']) },
+    41	  { weight: 2, arbitrary: fc.tuple(fc.constantFrom('', '  ', '\t'), fc.stringMatching(/^[a-z ]{1,8}$/)).map(([indent, text]) => [`${indent}%% ${text.trim() || 'note'}`]) },
+    42	)
+    43	
+    44	const blankArb = fc.constantFrom<string[]>([], [''])
+    45	const sourceArb = (family: Family) => fc.tuple(
+    46	  fc.tuple(...Array.from({ length: family.statements.length + 1 }, (_, gap) => family.quiet?.includes(gap) ? blankArb : gapArb)),
+    47	  fc.array(fc.constantFrom('', '  ', '    ', '\t'), { minLength: family.statements.length, maxLength: family.statements.length }),
+    48	).map(([gaps, indents]) => {
+    49	  const lines = [family.header, ...gaps[0]!]
+    50	  family.statements.forEach((statement, index) => lines.push(indents[index]! + statement, ...gaps[index + 1]!))
+    51	  return { source: `${lines.join('\n')}\n`, comments: lines.filter(line => line.trim().startsWith('%%') || !line.trim()) }
+    52	})
+    53	
+   132	describe('source-preserving edits agree with canonical edits', () => {
+   133	  test('generated op sequences on commented, unevenly indented diagrams', () => {
+   134	    let local = 0
+   135	    fc.assert(fc.property(caseArb, ([family, { source, comments }, ops]) => {
+   136	      let current = parse(source), allLocal = true, text = source
+   137	      expect(current.kind).toBe(family)
+   138	      expect(current.body.kind).not.toBe('opaque')
+   139	      for (const op of ops) {
+   140	        const canonical = mutateChecked(current, op)
+   141	        const preserved = mutatePreservingSource(current, op)
+   142	        expect({ op, ok: preserved.ok }).toEqual({ op, ok: canonical.ok })
+   143	        if (!canonical.ok || !preserved.ok) break
+   144	        expect({ op, model: model(parse(preserved.value.source)) }).toEqual({ op, model: model(canonical.value) })
+   145	        if (preserved.value.preservation?.method === 'canonical') {
+   146	          allLocal = false
+   147	          expect(preserved.value.source).toBe(serializeMermaid(canonical.value))
+   148	        } else {
+   149	          expect(preserved.value.preservation).toEqual({ method: 'local' })
+   150	          local++
+   151	        }
+   152	        current = preserved.value.diagram
+   153	        text = preserved.value.source
+   154	      }
+   155	      // A removed fragment takes the comments kept in its branches with it.
+   156	      if (!allLocal || ops.some(op => op.kind === 'remove_fragment')) return
+   157	      const reordered = ops.some(op => /^(?:move|reorder)_/.test(String(op.kind)))
+   158	      const missing = (reordered ? missingAnywhere : missingInOrder)(comments, text.split('\n'))
+   159	      expect({ text, missing }).toEqual({ text, missing: [] })
+   160	    }), fcParameters({ numRuns: 1500, examples: EXAMPLES }))
+   161	    expect(local).toBeGreaterThan(300)
+   162	  }, 180_000)
+28:  test('emits a JSON envelope with the expected top-level keys', () => {
+44:  test('writes standalone HTML and can use a stubbed opener', () => {
+66:  test('an unknown family returns its structured capability diagnostic', () => {
+74:  test('opener failures are not reported as success', () => {
+82:  test('emits prose by default and AX-tree JSON on request', () => {
+100:  test('unsupported --format exits 2 instead of falling back to SVG', () => {
+107:  test('--format png rejects multiple inputs instead of ignoring extras', () => {
+126:  test('--format layout returns layout JSON per file, not ASCII strings', () => {
+151:  test('processes mutate lines without aborting the JSONL stream', () => {
+168:    const lines = stdout.trim().split('\n').map(l => JSON.parse(l))
+179:  test('processes 5 lines with mixed validity and exits 0', () => {
+192:    const lines = stdout.trim().split('\n')
+215:  test('an empty line is skipped silently', () => {
+223:  test('unknown command exits 2', () => {
+106:These edits retain bytes outside the owned edit ranges and compare the complete
+161:   are copied byte for byte.
+228:pass writes it at the earliest place after what it needs, within the block
+248:before the same statement). The placement pass writes the new one of the two
+313:[Omitted long matching line]
+345:retained at the end rather than discarded. Leading wrapper bytes retain their
+346:existing verbatim contract. Other families keep their existing segmented/opaque

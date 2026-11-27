@@ -1,0 +1,70 @@
+{"files":608,"selected":["src/__tests__/agent-png-determinism.test.ts","src/__tests__/agent-source-preserving-edit.test.ts","src/__tests__/authored-style-color-admission.test.ts","src/__tests__/cli-batch-render-parity.test.ts","src/__tests__/cli-multi-input.test.ts","src/__tests__/fanout-symmetry.test.ts","src/__tests__/journey-svg-snapshot.test.ts","src/__tests__/png-fonts.test.ts","src/__tests__/property-source-preserving-edit.test.ts","src/__tests__/quadrant-style.test.ts"]}
+    88	   * the rejection. The projection runs in the worker: it is sent as source
+    89	   * text, so it may use only its argument and globals, never a test's
+    90	   * variables, and must return plain JSON (spread a Map or Set). */
+    91	  project<T>(source: string, projection: (diagram: UpstreamDiagram) => T | Promise<T>): Promise<UpstreamProjection<T>>
+    92	  /** `project` over each source in order, in one round trip. */
+    93	  projectEach<T>(sources: readonly string[], projection: (diagram: UpstreamDiagram) => T | Promise<T>): Promise<Array<UpstreamProjection<T>>>
+    94	  /** `projectEach` for sources upstream must accept: a rejection throws,
+    95	   * naming the source. */
+    96	  projectAll<T>(sources: readonly string[], projection: (diagram: UpstreamDiagram) => T | Promise<T>): Promise<T[]>
+    97	  /** Plain JSON of the diagram DB's getters (titles, sections, tasks, axes,
+    98	   * commits, ...) for families without a dedicated projection above, or
+    99	   * undefined when Mermaid rejects the source. GitGraph's random commit ids
+   100	   * are masked so two parses of one source compare equal. */
+   101	  database(source: string): Promise<string | undefined>
+   102	  close(): void
+   103	}
+   104	
+   105	const REPO = join(import.meta.dir, '..', '..', '..')
+   106	// Replies carry a sentinel so any stray upstream console output on stdout
+   107	// cannot be mistaken for a reply.
+   108	const REPLY = '\u0001am-upstream\u0001'
+   109	
+   110	const WORKER = `
+   111	import { JSDOM } from 'jsdom'
+   112	const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'http://localhost/' })
+   113	for (const key of ['window', 'document', 'navigator', 'HTMLElement', 'SVGElement', 'Element', 'Node', 'Option', 'location', 'localStorage']) {
+   114	  Object.defineProperty(globalThis, key, { configurable: true, value: dom.window[key] })
+   115	}
+   116	const { default: mermaid } = await import('mermaid')
+   117	mermaid.initialize({ startOnLoad: false })
+   118	const { createZenUMLReference } = await import(${JSON.stringify(new URL('../../../eval/mermaid-modern-compat/zenuml-reference.mjs', import.meta.url).href)})
+   119	const { readFileSync } = await import('node:fs')
+   120	const mermaidVersion = JSON.parse(readFileSync(new URL('../package.json', import.meta.resolve('mermaid')), 'utf8')).version
+   121	const zen = createZenUMLReference(mermaid, mermaidVersion)
+   122	const referenceDiagram = source => zen.diagram(source)
+   123	const REPLY = ${JSON.stringify(REPLY)}
+   124	function flowchart(db) {
+   125	  if (typeof db?.getVertices !== 'function' || typeof db?.getEdges !== 'function') return undefined
+   126	  return {
+   127	    vertices: [...db.getVertices().values()].map(v => ({ id: v.id, text: String(v.text ?? ''), type: v.type })),
+   128	    edges: db.getEdges().map(e => ({ start: e.start, end: e.end, type: e.type, stroke: e.stroke, text: String(e.text ?? '') })),
+   129	    subgraphs: (db.getSubGraphs?.() ?? []).map(s => ({ id: s.id, title: String(s.title ?? ''), nodes: [...s.nodes] })),
+   130	  }
+   131	}
+   132	function sequence(db) {
+   133	  if (typeof db?.getActors !== 'function' || typeof db?.getMessages !== 'function') return undefined
+   134	  return {
+   135	    actors: [...db.getActors().values()].map(a => ({ name: a.name, description: String(a.description ?? ''), type: String(a.type ?? ''), links: { ...a.links } })),
+   136	    messages: db.getMessages().map(m => ({ from: m.from, to: m.to, message: String(m.message ?? ''), type: m.type })),
+   137	    created: Object.fromEntries(db.getCreatedActors?.() ?? []),
+   138	    destroyed: Object.fromEntries(db.getDestroyedActors?.() ?? []),
+   139	  }
+139:    "!docs/mermaid-layout-complaints.md",
+182:    "harvest:upstream": "bun run eval/mermaid-upstream-suite-bench/harvest.ts",
+183:    "harvest:upstream:refresh-check": "bun run eval/mermaid-upstream-suite-bench/refresh-check.ts",
+221:    "eval:family-portfolio": "bun run eval/mermaid-family-portfolio/build.ts",
+222:    "eval:mermaid-assertions": "bun run eval/mermaid-upstream-assertions/run.ts",
+223:    "eval:mermaid-modern": "bun run eval/mermaid-modern-compat/run.ts",
+224:    "eval:mermaid-grammar": "bun run eval/mermaid-modern-compat/grammar-run.ts",
+225:    "reference:mermaid": "bash scripts/setup-mermaid-reference.sh",
+227:    "test:mermaid-modern": "bun test --timeout 30000 eval/mermaid-modern-compat/semantic.test.ts eval/mermaid-modern-compat/native-operations.test.ts eval/mermaid-modern-compat/grammar-regressions.test.ts eval/mermaid-modern-compat/roadmap-semantics.test.ts",
+234:    "gallery:mermaid-docs": "bun run scripts/pr-assets/mermaid-doc-showcase-gallery.ts",
+237:    "gallery:sankey-comparison": "bun run scripts/pr-assets/sankey-mermaid-comparison.ts",
+246:    "bench:pinned-mermaid": "bun eval/benchmark/commands.ts bench:pinned-mermaid",
+292:    "@mermaid-js/mermaid-zenuml": "1.0.1",
+301:    "beautiful-mermaid": "1.1.3",
+303:    "jsdom": "26.1.0",
+304:    "mermaid": "12.2.0",
+305:    "mermaid-ast": "0.8.2",

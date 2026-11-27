@@ -1,0 +1,77 @@
+   269	before displaying or raster-capturing the result. A raw SVG export still only
+   270	declares the family; it does not serialize a dynamically registered `FontFace`.
+   271	The public live editor can use faces already available to its page/browser,
+   272	but it has no filesystem `fontDirs` option or arbitrary font-file input.
+   273	
+   274	### PNG
+   275	
+   276	`renderMermaidPNG` renders offline with `@resvg/resvg-js`. It loads:
+   277	
+   278	1. The bundled Inter faces used by the text-metrics model.
+   279	2. DejaVu Sans as a per-glyph fallback for symbols Inter lacks.
+   280	3. The bundled faces referenced by built-in Styles: Caveat, EB Garamond,
+   281	   Architects Daughter, and Share Tech Mono.
+   282	4. Any directories supplied through `fontDirs`.
+   283	5. OS-installed fonts only when `loadSystemFonts: true` is requested.
+   284	
+   285	The CLI equivalents are `--font-dirs <dir[,dir...]>` and `--system-fonts`.
+   286	Prefer a dedicated `fontDirs` directory when reproducible output matters.
+   287	System-font loading makes the result depend on the machine's installed faces.
+   288	
+   289	The family stored inside the font file must match the intended family token in
+   290	the Style's `font` value — normally the first family in its stack. Supply the
+   291	weights the diagram uses; Agentic Mermaid commonly emits 400, 500, 600, and
+   292	700. If an unbundled requested family cannot be resolved, PNG rasterization
+   293	uses Inter, with DejaVu available for per-glyph fallback.
+   294	
+   295	## Diagnostics and layout limits
+   296	
+   297	`PNG_FONT_COVERAGE` warns when no loaded face contains a character, such as a
+   298	CJK or emoji code point. It is a glyph-coverage check, not a family-presence
+   115	
+   116	type Case = [MutableFamilyId, { source: string; comments: string[] }, Array<Record<string, unknown>>]
+   117	const gantt = (lines: string[]) => ({ source: `${lines.join('\n')}\n`, comments: lines.filter(line => line.trim().startsWith('%%') || !line) })
+   118	// Reduced counterexamples. The first caught the projection rewriting a moved
+   119	// comment's indentation; a moved line now keeps its authored bytes. The other
+   120	// two caught the property's draft, which wrongly expected comment order to
+   121	// survive a reorder: Gantt keeps comments as segments of their section, so a
+   122	// moved section may carry them past each other. The last caught the
+   123	// property expecting a comment inside a removed sequence fragment to survive:
+   124	// the fragment's kept lines go with it, as its messages do.
+   125	const EXAMPLES: Array<[Case]> = [
+   126	  [['gantt', gantt(['gantt', '', 'title Plan', 'dateFormat YYYY-MM-DD', '%% a', 'section Build', '%% a', 'Design :des, 2024-01-01, 5d', '%% note', 'Code :code, after des, 10d', 'section Ship', '\t%% a', 'Release :milestone, rel, 2024-01-20, 0d']), [{ kind: 'move_section', from: 0, to: 1 }, { kind: 'add_section', label: 'des' }]]],
+   127	  [['gantt', gantt(['gantt', 'title Plan', '', 'dateFormat YYYY-MM-DD', '', 'section Build', 'Design :des, 2024-01-01, 5d', '%% a', 'Code :code, after des, 10d', 'section Ship', '%% note', 'Release :milestone, rel, 2024-01-20, 0d', '%% a']), [{ kind: 'move_section', from: 1, to: 0 }]]],
+   128	  [['gantt', gantt(['gantt', '%% a', 'title Plan', 'dateFormat YYYY-MM-DD', '', 'section Build', 'Design :des, 2024-01-01, 5d', 'Code :code, after des, 10d', '%% a', 'section Ship', 'Release :milestone, rel, 2024-01-20, 0d', '%% note']), [{ kind: 'move_section', from: 0, to: 1 }, { kind: 'add_task', sectionIndex: 0, label: 'des', end: 'des' }]]],
+   129	  [['sequence', { source: 'sequenceDiagram\nparticipant A as Alice\nparticipant B as Bob\nA ->> B: hello\nalt ok\n%% note\nB -->> A: fine\n\nelse no\n%% note\nB -x A: fail\n%% note\nend\nNote over A,B: done\n%% note\n', comments: ['%% note', '', '%% note', '%% note', '%% note'] }, [{ kind: 'remove_fragment', index: 0 }]]],
+   130	]
+   131	
+   132	describe('source-preserving edits agree with canonical edits', () => {
+   133	  test('generated op sequences on commented, unevenly indented diagrams', () => {
+    12	  if (!parsed.ok) throw new Error(JSON.stringify(parsed.error))
+    13	  return parsed.value
+    14	}
+    15	
+    16	function reload(diagram: ParsedDiagram): ParsedDiagram {
+    17	  const payload = JSON.parse(JSON.stringify(diagram, (_key, value) => value instanceof Map ? Object.fromEntries(value) : value instanceof Set ? [...value] : value))
+    18	  const result = synthesizeFromGraph(payload)
+    19	  if (!result.ok) throw new Error(JSON.stringify(result.error))
+    20	  const source = serializeMermaid(result.value)
+    21	  const reparsed = parse(source)
+    22	  expect(serializeMermaid(reparsed)).toBe(source)
+    23	  return reparsed
+    24	}
+    25	
+    26	function edit(diagram: ParsedDiagram, op: AnyMutationOp): ParsedDiagram {
+    27	  const result = mutate(diagram, op)
+    28	  if (!result.ok) throw new Error(result.error.message)
+    29	  return reload(result.value)
+    30	}
+    31	
+    32	const wrapperArb = fc.constantFrom('', '%% wrapper\n', '---\ntitle: Preserve\n---\n%% wrapper\n', '%%{init: {"theme":"dark"}}%%\n')
+    33	
+    34	describe('canonical source', () => {
+    35	  for (const family of Object.values(METAMORPHIC_FAMILIES)) {
+    36	    // canonicalSource is the normalized renderer and source-map input. Families
+    37	    // that read indentation as structure (mindmap, kanban, treemap, ishikawa)
+    38	    // lost their tree when it was line-trimmed: a mindmap's canonical source
+211:export function startUpstreamMermaid(): UpstreamMermaid {

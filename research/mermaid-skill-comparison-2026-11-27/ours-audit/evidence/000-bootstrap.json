@@ -1,0 +1,21 @@
+{
+  "source": "local terminal result metadata from the initial read-only parallel call",
+  "results": [
+    {
+      "id": "000a-task-packet",
+      "exit": 0,
+      "reported_tool_wall_seconds": 4.1805e-05
+    },
+    {
+      "id": "000b-assigned-skill",
+      "exit": 0,
+      "reported_tool_wall_seconds": 2.9343e-05
+    },
+    {
+      "id": "000c-lane-directory",
+      "exit": 0,
+      "reported_tool_wall_seconds": 2.5941e-05
+    }
+  ],
+  "raw_stdout": "The original output was displayed directly before the file-logging wrapper existed. This artifact records those results rather than reconstructing a raw transcript."
+}

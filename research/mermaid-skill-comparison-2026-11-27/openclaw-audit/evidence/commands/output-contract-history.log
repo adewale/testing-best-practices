@@ -1,0 +1,32 @@
+Give render --json an ok envelope and keep --output artifacts plain
+
+What: `am render` single-input success under --json now carries ok:true
+(additive: textual forms keep {"<format>", receipt, warnings}; layout keeps
+its layout keys plus receipt). With --output FILE, the file always holds
+the plain artifact (the bytes plain stdout would carry) and --json prints
+{ok:true, path, bytes, receipt, warnings} on stdout, as the PNG path does.
+Without --json nothing changes. render help and Instructions_for_agents.md
+(and the generated src/cli/agent-instructions.ts) describe both shapes.
+
+Why (H3): the textual --json success envelope had no ok key while every
+failure and the png/preview successes did, and
+`am render f.mmd --output f.svg --json` wrote the JSON wrapper into f.svg
+(not valid SVG; same for ascii/unicode/layout files) and printed nothing.
+help.ts documented the wrapping, so this was a documented trap.
+
+How: cmdRender computes the artifact once, writes it for --output and
+reports the write under --json; the stdout envelope is built only for
+--json without --output.
+
+Testing: agent-cli-render-formats.test.ts "--json success is an ok
+envelope; --output keeps the plain artifact and reports the write"
+(extends the former per-format key test across svg/ascii/unicode/layout).
+Red before the fix (svg envelope lacked "ok"; a probe of the pre-fix CLI
+showed f.svg beginning {"svg":"<svg ...), green after. bun run typecheck,
+bun run lint; bun test over agent-cli-render-formats, all cli-*.test.ts,
+doc-cli-commands, agent-doc-sync, agent-mcp, graph-layout-selection,
+section-a-transport-parity, audit-regressions, style-spec-authority:
+323 pass.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_017qeCgVPZM8imgb2fP3VZNF

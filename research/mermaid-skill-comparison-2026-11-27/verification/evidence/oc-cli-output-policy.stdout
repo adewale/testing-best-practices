@@ -1,0 +1,52 @@
+{
+  "argv": [
+    "bun",
+    "run",
+    "bin/am.ts",
+    "render",
+    "/tmp/tmplbd80l5a/first.mmd",
+    "--format",
+    "ascii",
+    "--output",
+    "/tmp/tmplbd80l5a/1.txt",
+    "--json"
+  ],
+  "input_count": 1,
+  "exit": 0,
+  "stderr": "",
+  "destination_exists": true,
+  "stdout_keys": [
+    "ok",
+    "path",
+    "bytes",
+    "receipt",
+    "warnings"
+  ],
+  "file_rows": 0,
+  "reported_path": "/tmp/tmplbd80l5a/1.txt"
+}
+{
+  "argv": [
+    "bun",
+    "run",
+    "bin/am.ts",
+    "render",
+    "/tmp/tmplbd80l5a/first.mmd",
+    "/tmp/tmplbd80l5a/second.mmd",
+    "--format",
+    "ascii",
+    "--output",
+    "/tmp/tmplbd80l5a/2.txt",
+    "--json"
+  ],
+  "input_count": 2,
+  "exit": 0,
+  "stderr": "",
+  "destination_exists": false,
+  "stdout_keys": [
+    "ok",
+    "files"
+  ],
+  "file_rows": 2,
+  "reported_path": null
+}

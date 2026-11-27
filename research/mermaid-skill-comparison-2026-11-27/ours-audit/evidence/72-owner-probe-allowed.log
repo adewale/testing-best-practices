@@ -1,0 +1,85 @@
+     1	// Journey layout/renderer quality gates. These encode the Mermaid-classic
+     2	// acceptance criteria from docs/design/families/journey-migration-parity.md as
+     3	// executable geometry checks (the criteria used to live only in prose):
+     4	//   - section spans tile without overlap, tasks sit inside their span,
+     5	//   - long task/section labels wrap instead of blowing out the plot,
+     6	//   - the viewBox stays tight below the baseline,
+     7	//   - the experience-curve line connects score markers in task order,
+     8	//   - derived actor colors stay distinguishable at any actor count,
+     9	//   - explicit Mermaid section colors keep readable label contrast.
+    10	
+    11	import { describe, it, expect } from 'bun:test'
+    12	import { renderMermaidSVG } from '../index.ts'
+    13	import { parseJourneyDiagram } from '../journey/parser.ts'
+    14	import { layoutJourneyDiagram, resolveJourneyRequestAppearance } from '../journey/layout.ts'
+    15	import type { RenderOptions } from '../types.ts'
+    16	import { preprocessMermaidLines } from '../mermaid-source.ts'
+    17	import { wcagContrastRatio, wcagCssContrastRatio } from '../shared/color-math.ts'
+    18	import { verifyMermaid } from '../agent/verify.ts'
+    19	
+    20	function layout(text: string, options: RenderOptions = {}) {
+    21	  return layoutJourneyDiagram(
+    22	    parseJourneyDiagram(preprocessMermaidLines(text)),
+    23	    resolveJourneyRequestAppearance(options),
+    24	    options,
+    25	  )
+    26	}
+    27	
+    28	const WIDE_LABEL_SOURCE = `journey
+    29	  title T
+    30	  section A very long section label that is much wider than its tasks
+    31	    Short: 3: Me
+    32	  section Next
+    33	    Task: 4: Me
+    34	  section Third
+    35	    Last: 2: Me`
+    36	
+    37	describe('section tiling', () => {
+    38	  it('section spans never overlap, even when a label is wider than its tasks', () => {
+src/journey/layout.ts:158:  actorDotsWidth: number
+src/journey/layout.ts:220:    const tasks = section.tasks.map(task => measureTask(resolveLabelContent(task.text, task.textContent), task.actors.length, style, visual))
+src/journey/layout.ts:289:      const actorDots = positionActorDots(task, actorIndex, centerX, taskY + taskMetric.height - style.nodePaddingY - JY.actorDotRadius)
+src/journey/layout.ts:294:        text: taskMetric.text,
+src/journey/layout.ts:303:        textY: taskY + style.nodePaddingY + taskMetric.textHeight / 2,
+src/journey/layout.ts:316:        actorDots,
+src/journey/layout.ts:334:      labelY: sectionY + sectionHeaderHeight / 2,
+src/journey/layout.ts:407:          labelY: y,
+src/journey/layout.ts:431:  const taskText = block.text
+src/journey/layout.ts:433:  const actorDotsWidth = actorCount > 0
+src/journey/layout.ts:439:    actorDotsWidth + style.nodePaddingX * 2,
+src/journey/layout.ts:452:    actorDotsWidth,
+src/journey/types.ts:78:  labelY: number
+src/journey/types.ts:114:  labelY: number
+src/journey/types.ts:124:export interface PositionedJourneyTask {
+src/journey/types.ts:140:  actorDots: PositionedJourneyActorDot[]
+638:    paint: { fill: paints.taskText },
+3:A custom style chooses a font family; the environment that renders the
+11:  "font": "'Acme Sans', Inter, system-ui",
+21:`font` is a CSS family name or family stack. It does not load a file, register
+22:a browser `FontFace`, or tell the PNG rasterizer where to find one. This keeps
+23:the same style usable across SVG and PNG while each output surface resolves
+24:fonts in its own way.
+31:Save the JSON above as `acme-report.style.json`. For an SVG that declares the
+32:family without making an external font request:
+42:For a PNG, point the local rasterizer at a directory containing the matching
+43:font faces:
+49:  --font-dirs ./fonts \
+58:  renderMermaidPNG,
+59:  renderMermaidSVG,
+68:const svg = renderMermaidSVG(source, {
+74:const png = renderMermaidPNG(source, {
+76:  fontDirs: ['./fonts'],
+81:## Which font value wins
+83:For `renderMermaidSVG`, font selection follows this precedence, from strongest
+86:1. The render call's explicit `font` option.
+87:2. Mermaid `fontFamily` configuration.
+88:3. Mermaid `themeVariables.fontFamily` configuration.
+89:4. The resolved Style stack's `font` field.
+92:`renderMermaidPNG` accepts the same shared `font` option and precedence as SVG.
+93:`fontDirs` makes faces available to the rasterizer but does not choose the
+97:keeps the inline/file-loaded Style's font because `dracula` is a palette-only
+98:Style; a later Style that defines `font` would replace it. A file's `name`
+103:`validateStyleSpec` checks that `font` is a string. It cannot prove that the
+104:family is installed, present under `fontDirs`, or available to a browser.
+106:## Trusted font measurement profiles
+112:const svg = renderMermaidSVG(source, { fontMetrics: 'bundled-inter' })

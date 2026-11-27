@@ -1,0 +1,199 @@
+# Property-Based Testing
+
+Load this reference when writing or assessing generative tests. Use the language reference for engine-specific collection and replay.
+
+## Choose the input layer deliberately
+
+| Input layer | Best evidence |
+|---|---|
+| Small finite domain | Exhaustive loop or table |
+| Arbitrary bytes/text | Totality, resource bounds, or documented error shape |
+| Specification-valid structures | Semantic invariants, field preservation, canonicalization, or roundtrip |
+| Mutations of valid corpus entries | Deep parser reach plus malformed-neighbor behavior |
+| Stateful operation sequences | Model agreement after every accepted operation |
+
+Keep totality and semantic properties separate. For semantic parser properties, generate a model, encode it independently of the production parser, then compare the parsed meaning with the model. Validate any “valid” builder independently; otherwise every case can stop at the parser's first guard.
+
+Construct admitted values directly instead of filtering most candidates away. Do not widen documented finite, typed, or protocol-bounded domains merely to claim breadth; enumerate small finite spaces.
+
+## Use an independent oracle
+
+Prefer the strongest applicable oracle: an exact invariant, roundtrip with defined equivalence, idempotence, metamorphic relation, differential implementation, or small shadow model. “Did not crash” is a useful hostile-input floor, not a universal endpoint. Reject conditional assertions, blanket exception suppression, expected values computed with production logic, and models copied from the system under test.
+
+## Execution and replay
+
+Use the engine's reported example, seed/path, database, or corpus artifact. Promote important minimized failures into the form ordinary tests replay. Verify collection with the exact CI configuration when multiple runners, projects, or filters make reachability uncertain; add a persistent drift guard only when that configuration is itself a recurring risk.
+
+## Budgets and CI
+
+- Size each property's timeout to its `numRuns`/`max_examples`, or run a fast PR budget
+  plus a deeper scheduled budget. A property that takes 1.4 s alone can exceed a 5 s
+  default under parallel load.
+- Watch generator cost: filters that reject most candidates and large bounded regexes
+  (Hypothesis `from_regex(r"[a-z]{501,800}")`) trip slow-generation health checks under
+  coverage or load. Construct values directly (`st.text(alphabet=..., min_size=501,
+  max_size=800)`) instead of suppressing the health check.
+- A fixed seed keeps PR gates reproducible; a scheduled random-seed run finds new
+  cases. When CI finds a counterexample, pin it as a regression case and fix the code
+  or the oracle — it is a finding, not a flake.
+- For small finite domains (118 elements, 12 enum values), loop over every member;
+  sampling at 100 runs misses some each time.
+- Invariants that a no-op satisfies (determinism, commutativity, count preservation)
+  need a companion assertion that the operation changed something.
+   225	          expect(JSON.parse(JSON.stringify(sandbox.value)), `${name} Code Mode`).toEqual(expected)
+   226	        }
+   227	        if (markdown) {
+   228	          expect(renderMarkdownBlocks(`\`\`\`mermaid\n${source}\n\`\`\``)[0], `${name} render-markdown`).toMatchObject({ ok: false, error: expected })
+   229	        }
+   230	      }
+   231	    })
+   232	  })
+   233	
+   234	  test('a missing file in a multi-input render is an argument error, not a render failure', () => {
+   235	    const present = tmp('flowchart LR\n  A --> B')
+   236	    const missing = `${present}.missing.mmd`
+   237	    const { code, out } = capture(() => runCli(['render', present, missing, '--format', 'svg']))
+   238	    expect(code).toBe(0)
+   239	    expect(JSON.parse(out).files[1]).toMatchObject({ ok: false, error: { code: 'ARG', message: `File not found: ${missing}` } })
+   240	  })
+   241	})
+   242	
+   243	// Issue A7: report layout safety draws geometry that fails certification only
+   244	// on drawable checks instead of refusing it. Every render surface returns the
+   245	// drawing with the same receipt, and every verify surface fails naming the
+    96	  })
+    97	})
+    98	
+    99	describe('am render multi-input', () => {
+   100	  test('unsupported --format exits 2 instead of falling back to SVG', () => {
+   101	    const r = runAm(['render', '--format', 'nope', '-'], 'flowchart LR\n  A --> B\n')
+   102	    expect(r.status).toBe(2)
+   103	    expect(r.stderr).toContain('unsupported --format')
+   104	    expect(r.stdout).toBe('')
+   105	  })
+   106	
+   107	  test('--format png rejects multiple inputs instead of ignoring extras', () => {
+   108	    const { writeFileSync, existsSync, unlinkSync } = require('node:fs') as typeof import('node:fs')
+   109	    const a = `/tmp/am-png-a-${Date.now()}.mmd`
+   110	    const b = `/tmp/am-png-b-${Date.now()}.mmd`
+   111	    const out = `/tmp/am-png-out-${Date.now()}.png`
+   112	    writeFileSync(a, 'flowchart LR\n  A --> B\n')
+   113	    writeFileSync(b, 'flowchart LR\n  C --> D\n')
+   114	    try {
+   115	      const r = runAm(['render', '--format', 'png', a, b, '--output', out])
+   116	      expect(r.status).toBe(2)
+   117	      expect(r.stderr).toContain('exactly one input')
+   118	      expect(existsSync(out)).toBe(false)
+   119	    } finally {
+   120	      if (existsSync(a)) unlinkSync(a)
+   121	      if (existsSync(b)) unlinkSync(b)
+   122	      if (existsSync(out)) unlinkSync(out)
+   123	    }
+   124	  })
+   125	
+   126	  test('--format layout returns layout JSON per file, not ASCII strings', () => {
+   127	    const { writeFileSync, existsSync, unlinkSync } = require('node:fs') as typeof import('node:fs')
+   128	    const a = `/tmp/am-json-a-${Date.now()}.mmd`
+   129	    const b = `/tmp/am-json-b-${Date.now()}.mmd`
+   130	    writeFileSync(a, 'flowchart LR\n  A --> B\n')
+   131	    writeFileSync(b, 'flowchart LR\n  C --> D\n')
+   132	    try {
+   133	      const r = runAm(['render', '--format', 'layout', a, b])
+   134	      expect(r.status).toBe(0)
+   135	      const payload = JSON.parse(r.stdout)
+   136	      expect(payload.files.length).toBe(2)
+   137	      expect(payload.files.map((result: { file: string; ok: boolean; output: { kind: string; nodes: { id: string }[] } }) => ({
+   138	        file: result.file, ok: result.ok, kind: result.output.kind, nodes: result.output.nodes.map(node => node.id).sort(),
+   139	      }))).toEqual([
+   140	        { file: a, ok: true, kind: 'flowchart', nodes: ['A', 'B'] },
+   141	        { file: b, ok: true, kind: 'flowchart', nodes: ['C', 'D'] },
+   142	      ])
+   143	    } finally {
+   144	      if (existsSync(a)) unlinkSync(a)
+   145	      if (existsSync(b)) unlinkSync(b)
+   146	    }
+   147	  })
+   148	})
+   149	
+     1	// Per-file temporary directories that are removed after the file's tests, so
+     2	// suites stop leaking fixtures into the shared OS temp root.
+     3	
+     4	import { afterAll } from 'bun:test'
+     5	import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+     6	import { tmpdir } from 'node:os'
+     7	import { join } from 'node:path'
+     8	
+     9	export interface TempDirs {
+    10	  /** A fresh directory under the OS temp root, removed after the file's tests. */
+    11	  dir(prefix?: string): string
+    12	  /** Write `content` to `name` inside a fresh directory and return its path. */
+    13	  file(name: string, content: string): string
+    14	}
+    15	
+    16	/** Call once at a test file's top level; registers the cleanup hook. */
+    17	export function useTempDirs(prefix = 'am-test-'): TempDirs {
+    18	  const created: string[] = []
+    19	  afterAll(() => {
+    20	    for (const dir of created.splice(0)) rmSync(dir, { recursive: true, force: true })
+    21	  })
+    22	  const dir = (dirPrefix = prefix): string => {
+    23	    const path = mkdtempSync(join(tmpdir(), dirPrefix))
+    24	    created.push(path)
+    25	    return path
+    26	  }
+    27	  return {
+    28	    dir,
+    29	    file(name, content) {
+    30	      const path = join(dir(), name)
+    31	      writeFileSync(path, content)
+    32	      return path
+    33	    },
+    34	  }
+    35	}
+     1	// One in-process CLI capture for tests that call runCli directly: stdout and
+     2	// stderr are collected (strings or bytes) and always restored, even on throw.
+     3	
+     4	export interface CapturedCli {
+     5	  code: number
+     6	  out: string
+     7	  err: string
+     8	}
+     9	
+    10	function intercept(): { result: (code: number) => CapturedCli; restore: () => void } {
+    11	  const out: string[] = []
+    12	  const err: string[] = []
+    13	  const decoder = new TextDecoder()
+    14	  const text = (chunk: unknown) => (chunk instanceof Uint8Array ? decoder.decode(chunk) : String(chunk))
+    15	  const originalOut = process.stdout.write
+    16	  const originalErr = process.stderr.write
+    17	  process.stdout.write = ((chunk: unknown) => { out.push(text(chunk)); return true }) as typeof process.stdout.write
+    18	  process.stderr.write = ((chunk: unknown) => { err.push(text(chunk)); return true }) as typeof process.stderr.write
+    19	  return {
+    20	    result: code => ({ code, out: out.join(''), err: err.join('') }),
+    21	    restore: () => {
+    22	      process.stdout.write = originalOut
+    23	      process.stderr.write = originalErr
+    24	    },
+    25	  }
+    26	}
+    27	
+    28	export function captureCli(run: () => number | Promise<number>): CapturedCli {
+    29	  const capture = intercept()
+    30	  try {
+    31	    const code = run()
+    32	    if (typeof code !== 'number') throw new Error('Use captureCliAsync for streaming commands')
+    33	    return capture.result(code)
+    34	  } finally {
+    35	    capture.restore()
+    36	  }
+    37	}
+    38	
+    39	/** The same capture around an async entry point (e.g. runAmCli). */
+    40	export async function captureCliAsync(run: () => Promise<number>): Promise<CapturedCli> {
+    41	  const capture = intercept()
+    42	  try {
+    43	    return capture.result(await run())
+    44	  } finally {
+    45	    capture.restore()
+    46	  }
+    47	}

@@ -1,0 +1,16 @@
+agent-instructions.ts
+am-bin.ts
+args.ts
+deadline.ts
+exit-codes.ts
+help.ts
+index.ts
+init-agent.ts
+jsonl.ts
+markdown-fences.ts
+preflight.ts
+run-entrypoint.ts
+rg: docs/cli.md: No such file or directory (os error 2)
+rg: docs/reference: No such file or directory (os error 2)
+README.md:111:am render diagram.mmd --format png --output diagram.png
+README.md:143:Use strict `preview` for human inspection and `mutate --op/--ops` for verified one-shot or batched edits.

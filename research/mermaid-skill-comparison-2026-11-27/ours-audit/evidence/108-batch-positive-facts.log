@@ -1,0 +1,66 @@
+   177	  })
+   178	
+   179	  test('processes 5 lines with mixed validity and exits 0', () => {
+   180	    const validRender = JSON.stringify({ op: 'render', source: 'flowchart LR\n  A --> B', options: { format: 'ascii' } })
+   181	    const validVerify = JSON.stringify({ op: 'verify', source: 'flowchart LR\n  A --> B' })
+   182	    const malformed = '{not valid json'
+   183	    const unknownOp = JSON.stringify({ op: 'nope', source: 'x' })
+   184	    // Large source > 10KB. Use long ASCII labels rather than many nodes so the
+   185	    // layout engine doesn't blow the wallclock budget.
+   186	    const longLabel = 'x'.repeat(200)
+   187	    const big = JSON.stringify({ op: 'render', source: `flowchart LR\n  A["${longLabel}"] --> B["${longLabel}"]\n  B --> C["${longLabel}"]\n  C --> D["${longLabel}"]\n  D --> E["${longLabel}"]\n  E --> F["${longLabel}"]\n  F --> G["${longLabel}"]\n  G --> H["${longLabel}"]\n  H --> I["${longLabel}"]\n  I --> J["${longLabel}"]\n  J --> K["${longLabel}"]\n  K --> L["${longLabel}"]\n  L --> M["${longLabel}"]\n  M --> N["${longLabel}"]\n`, options: { format: 'ascii' } })
+   188	    const stdin = [validRender, validVerify, malformed, unknownOp, big].join('\n') + '\n'
+   189	
+   190	    const { status, stdout } = runAm(['batch'], stdin)
+   191	    expect(status).toBe(0)
+   192	    const lines = stdout.trim().split('\n')
+   193	    expect(lines.length).toBe(5)
+   194	
+   195	    const out = lines.map(l => JSON.parse(l))
+   196	    expect(out[0].ok).toBe(true)
+   197	    expect(out[0].op).toBe('render')
+   198	    expect(typeof out[0].data.ascii).toBe('string')
+   199	
+   200	    expect(out[1].ok).toBe(true)
+   201	    expect(out[1].op).toBe('verify')
+   202	    expect(Array.isArray(out[1].data.warnings)).toBe(true)
+   203	
+   204	    expect(out[2].ok).toBe(false)
+   205	    expect(out[2].error.code).toBe('INVALID_JSON')
+   206	
+   207	    expect(out[3].ok).toBe(false)
+   208	    expect(out[3].error.code).toBe('UNKNOWN_OP')
+   213	  return Object.freeze(
+   214	    CLI_RENDER_OUTPUT_DESCRIPTORS.map(descriptor => descriptor.transports.cli.format as CliRenderFormat),
+   215	  )
+   216	}
+   217	
+   218	export const CLI_RENDER_FORMATS: readonly CliRenderFormat[] = /* @__PURE__ */ cliRenderFormats()
+   219	
+   220	function defaultCliRenderFormat(): CliRenderFormat {
+   221	  const defaults = CLI_RENDER_OUTPUT_DESCRIPTORS.filter(descriptor => descriptor.transports.cli.default)
+   222	  if (defaults.length !== 1) throw new Error('Render output contract must declare exactly one default CLI format')
+   223	  return defaults[0]!.transports.cli.format as CliRenderFormat
+   224	}
+   225	
+   226	export const DEFAULT_CLI_RENDER_FORMAT = /* @__PURE__ */ defaultCliRenderFormat()
+   227	
+   228	export function isCliRenderFormat(value: string): value is CliRenderFormat {
+   229	  return CLI_RENDER_FORMATS.includes(value as CliRenderFormat)
+   198	  })
+   199	
+   200	  test('CLI and MCP SVG transport preserve only the nominal, named diagnostic', async () => {
+   201	    const source = SOURCES[0]!.make('notacolor')
+   202	    for (const format of ['svg', 'ascii', 'unicode'] as const) {
+   203	      const batch = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }
+   204	      expect(batch.ok).toBe(false)
+   205	      expect(batch.error).toMatchObject({ code: 'INVALID_STYLE_COLOR', property: 'fill', value: 'notacolor', message: expect.stringContaining('style A: fill "notacolor"') })
+   206	    }
+   207	
+   146	
+   147	  it('projects only nominal bounded color errors through CLI and MCP', async () => {
+   148	    const source = 'quadrantChart\n  A: [0.5, 0.5] color: notacolor'
+   149	    for (const format of ['svg', 'ascii', 'unicode'] as const) {
+   150	      const result = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }
+   151	      expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: expect.stringContaining('notacolor') } })
+   152	    }

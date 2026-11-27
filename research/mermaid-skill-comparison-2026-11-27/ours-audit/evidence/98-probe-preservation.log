@@ -1,0 +1,10 @@
+total 36
+-rw------- 1 agent agent 2352 Nov 27 14:44 color-test-request-fix.patch
+-rw------- 1 agent agent  755 Nov 27 14:44 fallback-only-fonts.patch
+-rw------- 1 agent agent  913 Nov 27 14:44 interior-label-assertion.patch
+-rw------- 1 agent agent 1629 Nov 27 14:44 journey-font-choice.ts
+-rw------- 1 agent agent 1258 Nov 27 14:44 journey-pixels.ts
+-rw------- 1 agent agent  695 Nov 27 14:44 missing-all-fonts.patch
+-rw------- 1 agent agent  756 Nov 27 14:44 normalized-line-endings.patch
+-rw------- 1 agent agent  986 Nov 27 14:44 source-edit-bytes.ts
+-rw------- 1 agent agent 1064 Nov 27 14:44 terminal-error-wrapping.patch

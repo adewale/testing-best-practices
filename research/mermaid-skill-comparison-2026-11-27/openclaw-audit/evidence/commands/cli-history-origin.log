@@ -1,0 +1,17 @@
+4b9d028112f2dfe32a5033284d3679abd1133e92	Merge origin/main into the AX-assessment branch
+50b3ddfb936cb5c84e5ea43dd51840644c346130	Add eight native diagram families and preserve meaning through checked edits (#601)
+f32aa3efd9a017c39e23bf386ca3405cfd713e8b	Restore the proofs the preservation review found missing
+33ca176750c5979cc3c5ab025d2a93b8c8b69bb9	Test the watch frame the watcher runs, not a test-only copy
+829ea24db8c4bcef895e9a9020a6d008c5ad88c4	test(zenuml): refresh remaining unsupported-family witnesses
+c533f5562e15d379222cf2e354b2228ba9a6fcd5	feat: complete native support for six stable Mermaid families
+9c46a22e1789c9572b6b1f11432868bbcfb169f4	Complete C4 public contracts and cross-family review integration
+28a805b76ed9a514f359e7c76093e08b74c02372	Tests protect behaviour: remove tests of tests, mutation testing and committed derived files (#361)
+e86b61e9678fb067ff6f64f40260f6597eb6fe06	fix: backstop pathname watches with metadata polling
+4277eb1160a3b01b053a62583e933389f7d4d5ec	test: harden pathname watch timing across hosts
+d79a552cc1245bcf745fe3cab0a075b84bb085fc	ci: make sharded evidence and watch tests portable
+373a91c60f8dd980529669926c2169fb9f9363f2	feat!: harden style, parser, and runtime contracts
+4749b3df9d6694a57505b491f7d1f41c092e62e7	feat!: remove deprecated compatibility surfaces [approve-goldens]
+40304164bc6145f14cbd7819206051064ca90f31	fix: close final Section A audit loop
+9a4d2828b03586673d7710e22a6359e1628f325e	fix: close Section A audit findings
+80cbf881ae5652c4481e34bbc8ef97deae4973a0	Harden agent Code Mode and CLI contracts
+070c4b0e09d4113db4492380c5912090f71058eb	M4+M5 (#959/#930): multi-input rendering + --watch

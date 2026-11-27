@@ -1,0 +1,37 @@
+{
+  "recorded_utc": "2026-11-27T14:28:44.253902+00:00",
+  "purpose": "Compare current skill content, then independently use each ordinary bounded audit on full Agentic Mermaid main",
+  "source_sha": "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+  "ours_sha": "7ea8838f53590965926bc8a223b149aba2f822a9",
+  "ours_version": "0.3.3",
+  "openclaw_sha": "dff00f34e82554ec5afb4422db2540e630a42b1b",
+  "source_files": 3512,
+  "source_copies": "Independent full tracked copies including shallow 30-commit Git histories; no prior findings supplied",
+  "requested_model": "gpt-6.2-astra",
+  "requested_reasoning_effort": "max",
+  "audit_budget_minutes": 40,
+  "arms": [
+    "ours-audit",
+    "openclaw-audit"
+  ],
+  "mode": "ordinary bounded audit; no whole-subsystem retirement campaign",
+  "work": "read-only audit, with disposable scratch-only fault/allowed-change probes; no product PR or production changes",
+  "common_scope": "Entire public repository available. Let each workflow choose high-value candidates; disclose selected and actually inspected scope, unexecuted tiers, setup and tool failures. Findings need concrete source evidence. Separate product defects, test gaps, implementation locks and setup limitations. No minimum findings/deletion target.",
+  "common_output": "Original report plus machine-readable findings and read/command ledgers retained before comparative verification. Credible fault and allowed-change experiments encouraged when feasible; incomplete leads labelled.",
+  "retries": "No model trial retries or answer regeneration. Corrected technical commands retain original failure.",
+  "comparison": "Descriptive overlap, unique findings, grounding, proof and restraint; no composite score or superiority estimate from one subject per skill. Previous historical project/skill exposure prevents treating this as an unseen benchmark.",
+  "runtime": "Bun 1.4.4 matched to repo CI; Node v24.22.3; separate dependency installations and caches, shared host not enforced OS isolation. No live provider/model calls.",
+  "dispatched_utc": "2026-11-27T14:30:21.904831+00:00",
+  "agents": {
+    "ours": "/root/mermaid_ours_current",
+    "openclaw": "/root/mermaid_openclaw_current"
+  },
+  "dependency_install": {
+    "ours_seconds": 12.05,
+    "openclaw_seconds": 11.52,
+    "packages_each": 614,
+    "frozen_lockfile": true,
+    "separate_caches": true
+  },
+  "common_task_sha256": "a0d4b113d8eeee952793a4b09089c6752d5d453e2b886a5b99541295f010fb19"
+}

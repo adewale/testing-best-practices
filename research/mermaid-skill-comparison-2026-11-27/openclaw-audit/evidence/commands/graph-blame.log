@@ -1,0 +1,41 @@
+5c232f904dba (Ade Oshineye 2026-11-19 19:31:53 +0000  93)     }
+5c232f904dba (Ade Oshineye 2026-11-19 19:31:53 +0000  94)   })
+5c232f904dba (Ade Oshineye 2026-11-19 19:31:53 +0000  95) 
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000  96)   test.each([true, false])('a bundle marker cannot paint a foreign tiny card (marked=%s)', marked => {
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000  97)     const nodes: PositionedNode[] = [
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000  98)       { id: 'A', label: 'A', shape: 'rectangle', x: 40, y: 0, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000  99)       { id: 'B', label: 'B', shape: 'rectangle', x: 40, y: 100, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 100)       { id: 'C', label: 'C', shape: 'rectangle', x: 140, y: 100, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 101)       { id: 'P', label: '', shape: 'rectangle', x: 57.51, y: 92.01, width: 0.05, height: 0.02 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 102)     ]
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 103)     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: marked }))
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 104)     const before = edges.map(edge => edge.points)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 105)     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 106)     expect(bundled.size).toBe(marked ? 0 : 2)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 107)     if (marked) for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 108)   })
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 109)   test.each(['var(--edge-width)', '2%', '1px'])('unknown authored width cannot authorize a bundle: %s', width => {
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 110)     const nodes: PositionedNode[] = [
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 111)       { id: 'A', label: 'A', shape: 'rectangle', x: 40, y: 0, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 112)       { id: 'B', label: 'B', shape: 'rectangle', x: 40, y: 100, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 113)       { id: 'C', label: 'C', shape: 'rectangle', x: 140, y: 100, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 114)     ]
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 115)     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: true, inlineStyle: { 'stroke-width': width } }))
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 116)     const before = edges.map(edge => edge.points)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 117)     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 118)     expect(bundled.size).toBe(width === '1px' ? 2 : 0)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 119)     if (width !== '1px') for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 120)   })
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 121) 
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 122)   test('a shaft touching the full header by its stroke retains its old route', () => {
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 123)     const nodes: PositionedNode[] = [
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 124)       { id: 'A', label: 'A', shape: 'rectangle', x: 40, y: 0, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 125)       { id: 'B', label: 'B', shape: 'rectangle', x: 40, y: 100, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 126)       { id: 'C', label: 'C', shape: 'rectangle', x: 140, y: 100, width: 40, height: 40 },
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 127)     ]
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 128)     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: false }))
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 129)     const before = edges.map(edge => edge.points)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 130)     const bundled = bundleEdgePaths(edges, nodes, [{ id: 'G', label: 'G', x: 60.1, y: 45, width: 6, height: 4, headerHeight: 4, children: [] }], 'TB', resolveRenderStyle())
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 131)     expect(bundled.size).toBe(0)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 132)     for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
+^834c83dfa45 (Ade Oshineye 2026-10-31 14:53:27 +0000 133)   })

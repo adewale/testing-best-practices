@@ -1,0 +1,201 @@
+     1	import { afterAll, beforeAll, describe, expect, test } from 'bun:test'
+     2	import { existsSync } from 'node:fs'
+     3	import { chromium, type Browser } from 'playwright'
+     4	import { renderMermaidSVG } from '../index.ts'
+     5	import { renderMermaidPNG } from '../agent/png.ts'
+     6	import { renderSvgPixels } from './helpers/raster.ts'
+     7	import { prepareSvgForPngRasterization } from '../png-contract.ts'
+     8	import { decodePng } from './helpers/png-pixels.ts'
+     9	import { colorPixelBoxInRaster } from './helpers/raster.ts'
+    10	import { resolveRenderRequest, resolvedRenderExecutionPlanOf } from '../render-contract.ts'
+    11	import { positionResolvedFamily } from '../positioning.ts'
+    12	import { lowerPositionedFamilyScene } from '../graphical-render.ts'
+    13	import type { SceneNode } from '../scene/ir.ts'
+    14	import type { RenderOptions } from '../types.ts'
+    15	
+    16	const executablePath = process.env.AM_CHROMIUM
+    17	const available = executablePath ? existsSync(executablePath) : existsSync(chromium.executablePath())
+    18	const describeBrowser = available && process.env.AM_BROWSER_TESTS === '1' ? describe : describe.skip
+    19	let browser: Browser
+    20	
+    21	describeBrowser('native PNG and browser marker contact', () => {
+    22	  beforeAll(async () => { browser = await chromium.launch(executablePath ? { executablePath } : {}) })
+    23	  afterAll(async () => { await browser?.close() })
+    24	
+    25	  test('family-owned endpoint glyphs agree across faces, styles and native/browser rasterizers', async () => {
+    26	    const cases: Array<{ source: string; options?: RenderOptions }> = []
+    27	    for (const direction of ['LR', 'RL', 'TB', 'BT']) {
+    28	      for (const relation of ['<|--', '--|>', '*--', '--*', 'o--', '--o', '<--', '-->', '()--', '--()']) {
+    29	        cases.push({ source: `classDiagram\ndirection ${direction}\nA ${relation} B` })
+    30	      }
+    31	      cases.push({ source: `flowchart ${direction}\nA <--> B` })
+    32	      cases.push({ source: `stateDiagram-v2\ndirection ${direction}\nA --> B` })
+    33	    }
+    34	    for (const [from, to] of [['L', 'R'], ['R', 'L'], ['T', 'B'], ['B', 'T']]) {
+    35	      cases.push({ source: `architecture-beta\nservice a(server)[A]\nservice b(database)[B]\na:${from} <--> ${to}:b`, options: { architecture: { visual: { edgeStroke: '#ff0000' } } } })
+    36	      cases.push({ source: `architecture-beta\njunction j\nservice b(database)[B]\nj:${from}<-->${to}:b` })
+    37	      for (const junctionFirst of [true, false]) cases.push({
+    38	        source: `---\ntitle: Junction connections\n---\narchitecture-beta\ngroup outer(cloud)[Outer]\ngroup g(cloud)[Group] in outer\njunction j in g\nservice b(database)[B] in g\n${junctionFirst ? `j:${from}<-->${to}:b` : `b:${from}<-->${to}:j`}\nalign ${from === 'L' || from === 'R' ? 'row' : 'column'} j b`,
+    39	        options: { architecture: { visual: { junctionOuterRadius: 20, edgeLineWidth: 3 } } },
+    40	      })
+    41	    }
+    42	    cases.push({ source: 'sequenceDiagram\nA<<->>B: filled\nB<<-->>A: reverse\nA<<->>A: self\nA-)B: open\nA-xB: cross\nA-|\\B: half top\nA-|/B: half bottom\nA\\|-B: start half top\nA/|-B: start half bottom\nA-\\\\B: stick top\nA-//B: stick bottom\nA\\\\-B: start stick top\nA//-B: start stick bottom' })
+    43	    cases.push({ source: 'journey\ntitle Work\nsection Today\nDone: 5: Me' })
+    44	    cases.push({ source: 'gantt\ndateFormat YYYY-MM-DD\nsection Work\nFirst :a, 2026-01-01, 1d\nNext :after a, 1d', options: { gantt: { dependencyArrows: true } } })
+    45	    const page = await browser.newPage()
+    46	    try {
+    47	      for (const input of cases) {
+    48	        for (const stroke of ['crisp', 'jittered', 'freehand'] as const) {
+    49	          const options: RenderOptions = { ...input.options, embedFontImport: false, seed: 7,
+    50	            style: { stroke, roles: { edge: { strokeColor: '#ff0000', lineWidth: 2 } } } }
+    51	          const native = decodePng(renderMermaidPNG(input.source, { ...options, scale: 1 }))
+    52	          const svg = prepareSvgForPngRasterization(renderMermaidSVG(input.source, options), {
+    53	            width: native.width, height: native.height, pixels: native.width * native.height,
+    54	          })
+    55	          const request = resolveRenderRequest(input.source, options)
+    56	          const scene = lowerPositionedFamilyScene(request, positionResolvedFamily(resolvedRenderExecutionPlanOf(request).family.id, request))
+    57	          const endpoints: Array<{ id: string; x: number; y: number }> = []
+    58	          const visit = (node: SceneNode): void => {
+    59	            if (node.kind === 'group') node.children.forEach(child => visit(child.node))
+    60	            if (node.kind !== 'connector') return
+    61	            for (const endpoint of ['start', 'end'] as const) {
+    62	              const point = node.endpoints[endpoint]?.point
+    63	              if (node.markers[endpoint] && point) endpoints.push({ id: `${node.id}/${endpoint}`, ...point })
+    64	            }
+    65	          }
+    66	          scene.parts.forEach(visit)
+    67	          expect(endpoints.length, `${scene.family}/${stroke}`).toBeGreaterThan(0)
+    68	          const regions = endpoints.map(point => ({ left: Math.max(0, Math.floor(point.x - 24)), right: Math.min(native.width, Math.ceil(point.x + 24)), top: Math.max(0, Math.floor(point.y - 24)), bottom: Math.min(native.height, Math.ceil(point.y + 24)) }))
+    69	          const web = await page.evaluate(async ({ source, regions }) => {
+    70	            const img = new Image()
+    71	            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(source)))
+    72	            await img.decode()
+    73	            const canvas = document.createElement('canvas')
+    74	            canvas.width = img.width; canvas.height = img.height
+    75	            const context = canvas.getContext('2d')!
+    76	            context.fillStyle = '#ffffff'; context.fillRect(0, 0, img.width, img.height)
+    77	            context.drawImage(img, 0, 0)
+    78	            const pixels = context.getImageData(0, 0, img.width, img.height).data
+    79	            return regions.map(region => {
+    80	              let left = Infinity, right = -Infinity, top = Infinity, bottom = -Infinity
+    81	              for (let y = region.top; y < region.bottom; y++) for (let x = region.left; x < region.right; x++) {
+    82	                const i = (y * img.width + x) * 4
+    83	                const r = pixels[i]!, g = pixels[i + 1]!, b = pixels[i + 2]!
+    84	                // Include family-authored translucency (Gantt dependencies).
+    85	                if (!(pixels[i + 3]! > 0 && r > 170 && r - g > 45 && r - b > 45)) continue
+    86	                left = Math.min(left, x); right = Math.max(right, x)
+    87	                top = Math.min(top, y); bottom = Math.max(bottom, y)
+    88	              }
+    89	              return { left, right, top, bottom }
+    90	            })
+    91	          }, { source: svg, regions })
+    92	          for (const [index, endpoint] of endpoints.entries()) {
+    93	            const a = colorPixelBoxInRaster({ width: native.width, height: native.height, pixels: native.rgba },
+    94	              (r, g, b, alpha) => alpha > 0 && r > 170 && r - g > 45 && r - b > 45, regions[index])
+    95	            const b = web[index]!
+    96	            for (const side of ['left', 'right', 'top', 'bottom'] as const) {
+    97	              // Styled rasterizers differ at faint/jittered edge pixels. This
+    98	              // is a bounded contact check, not a pixel-equality promise.
+    99	              expect(Math.abs(a[side] - b[side]), `${scene.family}/${stroke}/${endpoint.id}/${side}`).toBeLessThanOrEqual(3)
+   100	            }
+   101	          }
+   102	        }
+   103	      }
+   104	    } finally { await page.close() }
+   105	  }, 120_000)
+   106	
+   107	  test('marker viewports clip wide tip strokes at the attachment plane', async () => {
+   108	    const page = await browser.newPage()
+   109	    try {
+   110	      for (const source of ['architecture-beta\njunction j\nservice b(database)[B]\nj:R<-->L:b', 'flowchart LR\nA ==> B', 'stateDiagram-v2\nstate fork_state <<fork>>\n[*] --> fork_state']) {
+   111	        await page.setContent(renderMermaidSVG(source, { embedFontImport: false, architecture: { visual: { junctionOuterRadius: 20, edgeLineWidth: 3 } } }))
+   112	        const overflow = await page.locator('marker').evaluateAll(markers => markers.map(marker => getComputedStyle(marker).overflow))
+   113	        expect(overflow.length).toBeGreaterThan(0)
+   114	        expect(overflow.every(value => value === 'hidden')).toBe(true)
+   115	      }
+   116	    } finally { await page.close() }
+   117	  })
+   118	
+   119	  test('start reversal survives nonzero viewBoxes, marker units, clipping and carrier rotation', async () => {
+   120	    const { prepareResvgMarkerOrientation } = await import('../resvg-marker-orientation.ts')
+   121	    const page = await browser.newPage()
+   122	    try {
+   123	      for (const units of ['userSpaceOnUse', 'strokeWidth']) for (const angle of [0, 90, 180, 270]) {
+   124	        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><defs><marker id="head" markerWidth="12" markerHeight="8" viewBox="10 20 12 8" refX="22" refY="24" markerUnits="${units}" orient="auto-start-reverse" overflow="hidden"><path d="M10 20 L22 24 L10 28Z" fill="#ff0000"/></marker></defs><line x1="60" y1="90" x2="120" y2="90" stroke="#111111" stroke-width="2" transform="rotate(${angle} 90 90)" marker-start="url(#head)" marker-end="url(#head)"/></svg>`
+   125	        const native = colorPixelBoxInRaster(renderSvgPixels(prepareResvgMarkerOrientation(svg)), (r, g, b, a) => a > 0 && r > 180 && g < 90 && b < 90)
+   126	        const web = await page.evaluate(async source => {
+   127	          const image = new Image(); image.src = 'data:image/svg+xml;base64,' + btoa(source); await image.decode()
+   128	          const canvas = document.createElement('canvas'); canvas.width = 180; canvas.height = 180
+   129	          const ctx = canvas.getContext('2d')!; ctx.drawImage(image, 0, 0)
+   130	          const pixels = ctx.getImageData(0, 0, 180, 180).data
+   131	          let left = Infinity, right = -Infinity, top = Infinity, bottom = -Infinity
+   132	          for (let y = 0; y < 180; y++) for (let x = 0; x < 180; x++) {
+   133	            const i = (y * 180 + x) * 4
+   134	            if (!(pixels[i + 3]! > 0 && pixels[i]! > 180 && pixels[i + 1]! < 90 && pixels[i + 2]! < 90)) continue
+   135	            left = Math.min(left, x); right = Math.max(right, x); top = Math.min(top, y); bottom = Math.max(bottom, y)
+   136	          }
+   137	          return { left, right, top, bottom }
+   138	        }, svg)
+   139	        for (const side of ['left', 'right', 'top', 'bottom'] as const) expect(Math.abs(native[side] - web[side]), `${units}/${angle}/${side}`).toBeLessThanOrEqual(1)
+   140	      }
+   141	    } finally { await page.close() }
+   142	  })
+   143	})
+package.json:26:    "./browser": "./dist/browser.global.js",
+package.json:37:    "./browser/lazy": {
+package.json:38:      "types": "./dist/browser-lazy/index.d.ts",
+package.json:39:      "import": "./dist/browser-lazy/index.js",
+package.json:40:      "default": "./dist/browser-lazy/index.js"
+package.json:50:  "unpkg": "./dist/browser.global.js",
+package.json:51:  "jsdelivr": "./dist/browser.global.js",
+package.json:160:    "test:coverage": "bun run test -- --coverage",
+package.json:166:    "generate": "bun run generate:sdk && bun run generate:browser-families && bun run doc-blocks && bun run agent-doc-artifacts && bun run style-spec-artifacts",
+package.json:169:    "test:browser": "bun run e2e/run-browser-contracts.ts",
+package.json:181:    "bench:release:browser": "bun eval/benchmark/commands.ts bench:release:browser",
+package.json:184:    "build": "bun run generate:sdk && tsup && bun run build:browser && bun run build:browser:lazy && bun run build:zenuml",
+package.json:185:    "build:browser": "tsup --config tsup.browser.config.ts",
+package.json:186:    "build:browser:lazy": "bun run scripts/build/clean-browser-lazy.ts && bun run generate:browser-families && tsup --config tsup.browser-lazy.config.ts",
+package.json:187:    "check:browser-lazy": "bun run scripts/build/browser-lazy-report.ts",
+package.json:189:    "generate:browser-families": "bun run scripts/build/generate-browser-family-catalog.ts",
+package.json:190:    "check:browser-families": "bun run scripts/build/generate-browser-family-catalog.ts --check",
+package.json:209:    "lint:package": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints ./browser",
+package.json:274:    "browserslist": "4.28.9",
+.github/workflows/ci.yml:181:        run: bun run test -- --shard=${{ matrix.shard }} --parallel=2
+.github/workflows/ci.yml:590:      image: ${{ contains(fromJSON('["browser","browser-site","payload"]'), matrix.suite) && 'mcr.microsoft.com/playwright:v1.65.1-noble@sha256:766137e2d9caad4744187e53cdc89320ba6f2eb57cff097374020944b44dd0a9' || '' }}
+.github/workflows/ci.yml:606:        suite: [dist-artifact, tarball-consumer, tarball-consumer-node22, browser, browser-site, payload]
+.github/workflows/ci.yml:611:      - name: Align the browser container session with its user
+.github/workflows/ci.yml:612:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+.github/workflows/ci.yml:620:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+.github/workflows/ci.yml:622:        # Keep font metrics consistent with the Ubuntu host browser contract.
+.github/workflows/ci.yml:627:      - name: Install Bun in the browser environment
+.github/workflows/ci.yml:628:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+.github/workflows/ci.yml:635:        if: ${{ matrix.suite != 'browser' && matrix.suite != 'browser-site' && matrix.suite != 'payload' }}
+.github/workflows/ci.yml:668:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+.github/workflows/ci.yml:750:      - name: Capture native ZenUML Looks and configured browser controls
+.github/workflows/ci.yml:765:        # Keep distinct browser/Node bundler and deferred-ELK contracts here.
+.github/workflows/ci.yml:796:      - name: Run canonical browser contracts
+.github/workflows/ci.yml:797:        if: ${{ matrix.suite == 'browser-site' }}
+.github/workflows/ci.yml:798:        # Keep every contract, one process per file. The other browser job
+.github/workflows/ci.yml:800:        run: bun run test:browser
+.github/workflows/ci.yml:803:        if: ${{ matrix.suite == 'browser' }}
+.github/workflows/ci.yml:808:          bun scripts/resolved-scene-oracle.ts /tmp/resolved-families.json --compare --progress --worker-bundle dist/browser.global.js | tee bench-report/resolved-scene/families.log
+.github/workflows/ci.yml:818:        if: ${{ always() && matrix.suite == 'browser' }}
+.github/workflows/ci.yml:827:        if: ${{ always() && matrix.suite == 'browser-site' }}
+.github/workflows/ci.yml:836:        if: ${{ always() && matrix.suite == 'browser-site' }}
+.github/workflows/ci.yml:846:        # Capture the same portable site artifact used by browser contracts.
+.github/workflows/ci.yml:872:          bun run scripts/build/browser-lazy-report.ts --measure-only --json > head-lazy.json
+.github/workflows/ci.yml:875:          bun run scripts/build/browser-lazy-report.ts --root ../payload-base --measure-only --json > base-lazy.json
+.github/workflows/contract-discovery.yml:46:          AM_FC_SEED: ${{ steps.replay.outputs.seed }}
+.github/workflows/contract-discovery.yml:47:          AM_FC_NUM_RUNS: '300'
+scripts/ci/publish-package-files.json:36:    "dist/browser-lazy/index.d.ts",
+scripts/ci/publish-package-files.json:37:    "dist/browser-lazy/index.js",
+scripts/ci/publish-package-files.json:38:    "dist/browser.global.js",
+scripts/ci/publish-package-files.json:118:    "docs/browser.md",
+scripts/ci/payload-delta.ts:6:// absolute ceilings (website-payload-budgets.ts, browser-lazy-budgets.json, the
+scripts/ci/verify-publish-package.ts:36:  const lazyChunk = (path: string) => path.startsWith('dist/browser-lazy/chunks/') && path.endsWith('.js')
+scripts/ci/verify-publish-package.ts:128:    const normalized = files.filter(path => !path.startsWith('dist/browser-lazy/chunks/')).map(normalizePackagePath).sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+scripts/ci/verify-publish-package.ts:132:  const emittedChunks = Object.keys(lazyBuild.outputs).filter(path => path.startsWith('dist/browser-lazy/chunks/') && path.endsWith('.js'))
+scripts/ci/quality-gates.ts:19:  { id: 'browser-family-catalog', label: 'Verify the committed lazy browser family catalog', command: ['bun', 'run', 'check:browser-families'] },
+scripts/ci/quality-gates.ts:25:  { id: 'browser-lazy', label: 'Verify the lazy browser bundle graph and size budgets', command: ['bun', 'run', 'check:browser-lazy'] },
+scripts/ci/base-bun.ts:2:// The payload delta (ci.yml, e2e browser lane) compares the PR's build with its
+scripts/ci/base-bun.ts:36:    // Match the browser container's npm installation: it has no unzip for

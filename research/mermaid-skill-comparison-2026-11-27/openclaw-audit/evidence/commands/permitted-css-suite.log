@@ -1,0 +1,42 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/chrome-token-lockstep.test.ts:
+(pass) editor and site chrome share one brand system > light chrome triplet matches across site CSS, editor CSS, and rendering.js [1.70ms]
+25 | const renderingJs = await editorModuleScript('rendering.js')
+26 | 
+27 | /** First `--name: <hex>` declaration in a block of CSS text. */
+28 | function cssHex(css: string, name: string): string {
+29 |   const m = css.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{3,8})`))
+30 |   expect(Boolean(m), `--${name} not found`).toBe(true)
+                                                 ^
+error: --brand-pine not found
+
+Expected: true
+Received: false
+
+      at cssHex (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/chrome-token-lockstep.test.ts:30:45)
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/chrome-token-lockstep.test.ts:61:50)
+(fail) editor and site chrome share one brand system > brand chip tokens match [0.23ms]
+25 | const renderingJs = await editorModuleScript('rendering.js')
+26 | 
+27 | /** First `--name: <hex>` declaration in a block of CSS text. */
+28 | function cssHex(css: string, name: string): string {
+29 |   const m = css.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{3,8})`))
+30 |   expect(Boolean(m), `--${name} not found`).toBe(true)
+                                                 ^
+error: --brand-pine not found
+
+Expected: true
+Received: false
+
+      at cssHex (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/chrome-token-lockstep.test.ts:30:45)
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control/src/__tests__/chrome-token-lockstep.test.ts:74:12)
+(fail) editor and site chrome share one brand system > dark chrome triplet matches editor CSS and rendering.js; its accent is the brand pine [0.71ms]
+(pass) editor and site chrome share one brand system > functional hues match in both polarities [0.14ms]
+(pass) editor and site chrome share one brand system > success stays a distinct hue from the pine accent (shipped hex, both polarities) [0.62ms]
+(pass) editor and site chrome share one brand system > shared scale tokens match: radii, motion, hairline mix [0.30ms]
+
+ 4 pass
+ 2 fail
+ 83 expect() calls
+Ran 6 tests across 1 file. [254.00ms]

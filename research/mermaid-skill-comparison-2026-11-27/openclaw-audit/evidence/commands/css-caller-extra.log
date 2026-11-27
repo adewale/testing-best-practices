@@ -1,0 +1,5 @@
+94:    // here. --m-sweep lighter than the chip lifts; darker than it dips — which
+97:    const cs = getComputedStyle(mark);
+99:    gl.uniform3fv(gl.getUniformLocation(prog, 'u_cDeep'), pick('--m-deep', '#0B634F'));
+100:    gl.uniform3fv(gl.getUniformLocation(prog, 'u_cMid'), pick('--m-mid', '#0E6F56'));
+101:    gl.uniform3fv(gl.getUniformLocation(prog, 'u_cSweep'), pick('--m-sweep', '#A3DEC4'));

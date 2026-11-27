@@ -1,0 +1,8 @@
+b83b2657e02fe4d2d568852e9df1a8c15594de0a	Give render --json an ok envelope and keep --output artifacts plain
+389cdda8a475c86ef9917d4cca2278a7d9dc0cc2	test: replace weak oracles and remove redundant test ceremony
+28a805b76ed9a514f359e7c76093e08b74c02372	Tests protect behaviour: remove tests of tests, mutation testing and committed derived files (#361)
+7f4284a346304e0ea6034847d22c86d88a9d3003	fix: close multi-agent hardening audit findings
+4749b3df9d6694a57505b491f7d1f41c092e62e7	feat!: remove deprecated compatibility surfaces [approve-goldens]
+40304164bc6145f14cbd7819206051064ca90f31	fix: close final Section A audit loop
+52350a07981fe1e3700833a8f31d7feebf378dd7	Close layout certificates and upstream bench gaps
+43e65b419a1e7ce6e440b3435f3d727714ef319c	A3 + A4 (Loop 9 M3 + M4): am render --format json|unicode|ascii

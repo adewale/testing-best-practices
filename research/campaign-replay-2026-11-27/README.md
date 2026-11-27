@@ -1,5 +1,7 @@
 # Four-arm campaign replay and larger-suite audit
 
+A [later same-day comparison](../mermaid-skill-comparison-2026-11-27/README.md) applies current skill 0.3.3 and OpenClaw to the full Agentic Mermaid source. That separate audit does not rerun the historical R05 case or change the four-arm results below.
+
 The revised skill and development tools are frozen at `300a179a1d622b66134409356add50e81393e95e`. The [protocol](controller/protocol.md), [freeze receipt](controller/freeze.json), [input manifest](controller/source-manifest.json) and [independent pre-run review](controller/protocol-review.md) were fixed before any subject was dispatched. The completed [results](RESULTS.md) retain both successful and failed attempts; [execution metadata](controller/execution.json) and the [artifact hash index](evidence-index.json) accompany the raw evidence.
 
 The study attempted 48 fresh Astra 6.2 Max subjects and 12 fresh arm-blinded judges, with no retries. It obtained 45 reports, 11 completed judgments and one failed judge attempt. Three execution subjects were interrupted before reporting; another delivered a report before its backend status became unavailable. Thirty-six subjects revisit the same nine historical planning cases with four guidance packages: none, PR41 at `379e0d9`, the revised candidate and OpenClaw at `9fd0b7d`. Twelve subjects were assigned one actual bounded repair in three larger native suite samples. The historical cases previously saturated at 9/9 in all three tested arms. They establish continuity rather than autonomous campaign prevention.

@@ -1,0 +1,14 @@
+diff --git a/src/agent/png.ts b/src/agent/png.ts
+index cc1a344..08dc752 100644
+--- a/src/agent/png.ts
++++ b/src/agent/png.ts
+@@ -238,7 +238,7 @@ export function renderMermaidPNGWithReceiptForHost(
+       loadSystemFonts: outputPolicy.fonts.loadSystemFonts,
+       // These private files were materialized from the exact verified byte
+       // snapshots. Explicit caller directories remain a host-controlled input.
+-      fontFiles: [...bundledFonts.files],
++      fontFiles: [],
+       fontDirs: [...outputPolicy.fonts.callerDirectories],
+       // Inter is the metrics font: src/text-metrics.ts is calibrated for it
+       // and the SVG @import requests it, so rasterizing with anything else
+{"label":"Complete the extremely long registration questionnaire form","boxPixels":{"x":372,"y":278.8,"w":744.584,"h":121.8},"image":[1257,965],"interior":13,"exterior":0,"interiorColumnRange":[738,750]}

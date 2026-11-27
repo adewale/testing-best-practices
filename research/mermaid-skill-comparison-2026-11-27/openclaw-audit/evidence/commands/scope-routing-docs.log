@@ -1,0 +1,73 @@
+1:# Testing strategy — what we test, how, and why
+17:## Local CI parity
+101:## The central problem: this is a partly non-testable program
+122:## Oracle types and the gates that use them
+136:## 1. Specified oracles — structural correctness
+168:## 2. Derived oracles — goldens and snapshots
+206:## 2a. Registry-derived combinatorial conformance
+246:## 3. Derived oracles — differential corpora
+384:## 4. Metamorphic oracles — relations instead of ground truth
+422:### Seed policy: pinned gates, rolling finders
+505:### Applying Hegel guidance with fast-check
+533:## 5. Pseudo-oracles — do selected seeded faults make the suite fail?
+558:## 6. Heuristic / perceptual oracles — geometry inside human bounds
+603:## 7. Human / model oracles — the axis nothing else covers
+621:## What runs where
+785:## Contract review and completion
+848:### Boundary-contract matrix — lessons applied from the 2026-07 agent audit
+872:#157 and #160, is recorded in
+881:## What makes a good test
+965:## Why the suite is shaped this way
+982:## Honest gaps (current, not aspirational)
+1019:## References
+21:    runs-on: ubuntu-latest
+33:      - name: Classify the changes in the tested checkout
+43:              # Checkout's first parent is the actual tested base, including
+62:    runs-on: ubuntu-latest
+80:          bun test --timeout 30000 src/__tests__/doc-blocks.test.ts src/__tests__/doc-cli-commands.test.ts src/__tests__/agent-doc-sync.test.ts src/__tests__/cli-init-agent.test.ts src/__tests__/cli-llms-txt.test.ts
+86:    name: Build portable test artifacts
+89:    runs-on: ubuntu-latest
+118:          name: portable-test-artifacts
+129:          name: verified-test-package
+145:    name: Unit tests (${{ matrix.shard }})
+146:    runs-on: ubuntu-latest
+147:    # Keep runaway tests and runner teardown bounded.
+152:        shard: [1/3, 2/3, 3/3]
+171:          name: portable-test-artifacts
+176:      # Coverage is a scheduled diagnostic, not a condition for passing tests.
+178:      - name: Run test shard
+181:        run: bun run test -- --shard=${{ matrix.shard }} --parallel=2
+187:    runs-on: ubuntu-latest
+351:    runs-on: ubuntu-latest
+450:    runs-on: ubuntu-latest
+476:        # macos-latest selects ARM64, whose hosted pool can abandon queued jobs.
+477:        os: [macos-15-intel, windows-latest]
+492:        run: bun test src/__tests__/mcp-source-tools.test.ts e2e/single-binary.e2e.test.ts --timeout 30000
+498:    runs-on: ubuntu-latest
+528:    runs-on: ubuntu-latest
+554:  test:
+555:    runs-on: ubuntu-latest
+566:    name: CLI and single-binary tests
+569:    runs-on: ubuntu-latest
+579:        run: cd e2e && bun test cli-smoke.e2e.test.ts cli.e2e.test.ts fresh-checkout.e2e.test.ts single-binary.e2e.test.ts --timeout 180000
+585:    runs-on: ubuntu-latest
+632:          test "$(bun --version)" = "1.4.4"
+654:          name: portable-test-artifacts
+660:          name: verified-test-package
+673:      - name: Resolve tested PR revisions
+767:        run: cd e2e && bun test dist-artifact.e2e.test.ts --timeout 400000
+773:          test "$(npm --version)" = "11.18.0"
+784:        run: cd e2e && bun test tarball-consumer-fuzz.e2e.test.ts --timeout 600000
+800:        run: bun run test:browser
+815:          bun scripts/resolved-scene-oracle.ts /tmp/resolved-rayner.json --compare --self-test --progress | tee bench-report/resolved-scene/rayner.log
+863:          test -s head-site.json
+910:    runs-on: ubuntu-latest
+911:    needs: [scope, docs, test, expire-label-approvals]
+923:            ([.docs.result, .test.result] | all(. == "success" or . == "skipped")) and
+924:            (if $full == "true" then .test.result == "success"
+933:    runs-on: ubuntu-latest
+947:          name: verified-test-package
+origin	https://github.com/adewale/agentic-mermaid.git (fetch)
+origin	https://github.com/adewale/agentic-mermaid.git (push)
+28M	src
+12M	eval
