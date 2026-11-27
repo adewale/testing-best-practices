@@ -1,0 +1,44 @@
+diff --git a/test/agent-data.test.ts b/test/agent-data.test.ts
+index a467716..7e2e28f 100644
+--- a/test/agent-data.test.ts
++++ b/test/agent-data.test.ts
+@@ -79,8 +79,12 @@ describe("personal data controls", () => {
+     await tool(a, "poppy_status", {}); // Initialize the lazily owned Company store.
+     await a.stub.poppySql("INSERT INTO poppy_accounts (issuer, account, token, scope, expires_at, updated_at) VALUES ('https://auth.example', 'account', 'SEALED_REFRESH_CREDENTIAL', '', NULL, 1)");
+     const bytes = new Uint8Array(2 * 1024 * 1024);
++    // The pattern continues across the 1 MiB boundary, so replaying the first chunk changes the file.
++    for (let index = 0; index < bytes.length; index++) bytes[index] = index % 251;
+     bytes.set([0xff, 0xd8, 0xff]);
+-    await a.stub.attach(a.identity, "photo.jpg", bytes.buffer, null);
++    const preview = Uint8Array.of(0xff, 0xd8, 0xff, 0xa9, 0x00);
++    const photo = await a.stub.attach(a.identity, "photo.jpg", bytes.buffer, preview.buffer);
++    if (!photo.ok) throw new Error(photo.error);
+     const response = await fetchWorker(request(a.cookie));
+     expect(response.status).toBe(200);
+     expect(response.headers.get("Cache-Control")).toBe("no-store");
+@@ -94,8 +98,23 @@ describe("personal data controls", () => {
+     expect(text).not.toContain("SEALED_REFRESH_CREDENTIAL");
+     expect(data.tables.poppy_accounts[0].token).toEqual({ omitted: "credential" });
+     expect(data.tables.model_keys).toBeUndefined();
+-    expect(data.tables.attachment_chunks).toHaveLength(2);
+-    expect(data.tables.attachment_chunks[0].bytes).toMatchObject({ encoding: "base64" });
++    const chunks: { id: string; part: string; seq: number; bytes: { encoding: string; data: string } }[] = data.tables.attachment_chunks;
++    expect(chunks).toHaveLength(3);
++    for (const [part, original, count] of [["file", bytes, 2], ["preview", preview, 1]] as const) {
++      const rows = chunks
++        .filter(row => row.id === photo.attachment.id && row.part === part)
++        .sort((left, right) => left.seq - right.seq);
++      expect(rows, part).toHaveLength(count);
++      expect(new Set(rows.map(row => row.seq)).size, part).toBe(count);
++      for (const row of rows) {
++        expect(row.seq).toBeTypeOf("number");
++        expect(row.bytes.encoding).toBe("base64");
++      }
++      const decoded = rows.map(row => atob(row.bytes.data)).join("");
++      expect(decoded.length, part).toBe(original.length);
++      const mismatch = original.findIndex((byte, index) => byte !== decoded.charCodeAt(index));
++      expect(mismatch, `first differing byte of the exported ${part}`).toBe(-1);
++    }
+     expect((await fetchWorker(request(""))).status).toBe(401);
+   });
+ 

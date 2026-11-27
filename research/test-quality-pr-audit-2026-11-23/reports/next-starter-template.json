@@ -1,0 +1,15 @@
+{
+  "repository": "adewale/next-starter-template",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/next-starter-template/pulls?state=all&per_page=100&page=1",
+      "page": 1,
+      "count": 0,
+      "terminal": true
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

@@ -1,0 +1,18 @@
+{
+  "repository": "adewale/agentic-mermaid",
+  "source_sha": "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+  "exact_head_canonical_ci_runs": 0,
+  "canonical_ci_evidence": "exact-head-canonical-ci.json",
+  "head_commit_message": "Merge pull request #620: improve graph routing and painted clearance [skip ci]",
+  "head_coverage_run": {
+    "id": 45202594140,
+    "conclusion": "failure",
+    "failed_job": 137789694316,
+    "failure": "CI requires a CJK font: install fonts-wqy-zenhei or set AM_CJK_FONT_DIR",
+    "location": "src/__tests__/png-fonts.test.ts:89",
+    "other_unit_shards": "2/3 and 3/3 succeeded",
+    "merge": "skipped"
+  },
+  "classification": "Missing exact-head broad proof and a reproducible coverage prerequisite failure; not an assertion that selected green focused runs cover the full repository.",
+  "logs": "head-coverage-job-excerpts.log and .json retain explicitly labelled excerpts from one fetched job log."
+}

@@ -1,0 +1,218 @@
+{
+  "repository": "adewale/agentic-mermaid",
+  "base": "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+  "status": "complete",
+  "scope": "Bounded test-quality audit. Hosted CI, native CLI/rendering, source-preserving edits, one recent layout regression and adjacent browser/package proof.",
+  "findings": [
+    {
+      "id": "coverage-cjk-fixture",
+      "category": "CI setup defect",
+      "severity": "medium",
+      "decision": "repair",
+      "title": "Weekly coverage cannot publish its merged report without its CJK font fixture",
+      "locations": [
+        ".github/workflows/coverage.yml:32-46",
+        ".github/workflows/ci.yml:163-181",
+        "src/__tests__/png-fonts.test.ts:83-94",
+        "src/__tests__/png-fonts.test.ts:140-146"
+      ],
+      "contract": "The weekly or manually dispatched three-shard diagnostic builds a merged coverage artifact after exercising the selected unit tests. In CI, the font suite requires an actual CJK-capable font.",
+      "owner_and_callers": "coverage.yml invokes package.json test:coverage, scripts/ci/run-unit-tests.ts and its unitTestFiles collector; png-fonts belongs to that collector. The standard unit job supplies fonts-wqy-zenhei. coverage.yml only installs Bun packages and builds tsup.",
+      "independent_basis": "The workflow explicitly requires three shard inputs for the merge, and the font escape-hatch test separately requires the CJK warning to clear and rendered bytes to differ. Installed Noto CJK genuinely covers the Japanese fixture.",
+      "history": "The diagnostic was introduced at 62afa5fffe. Commit 886bc94e150d added the CI font requirement. Two independently retrieved Actions runs failed on the corresponding line.",
+      "observed": "2026-11-23 at the base SHA: covered shard 1/3 failed, 2/3 and 3/3 passed, merge skipped. 2026-11-16 on an older SHA: shard 3/3 failed at the same line, merge skipped. Local covered PNG suite in CI=true mode, missing default font, failed at import; pointing to installed Noto CJK gave 14 pass, 0 fail.",
+      "overlap": "Regular CI already provisions the font. The coverage case is reproducible without turning off the guard or skipping real glyph rendering.",
+      "recommendation": "Provision the same actual CJK font in the covered unit job before collection. Keep the failure on a missing resource and the CLI/rendered-byte checks. The merged artifact still needs a hosted run after any proposed change.",
+      "evidence": [
+        "43-font-ci",
+        "47-font-available",
+        "49-history-ci",
+        "59-coverage-missing",
+        "62-coverage-real-font",
+        "90-png-baseline-history"
+      ],
+      "hosted": [
+        "https://github.com/adewale/agentic-mermaid/actions/runs/45202594140/job/137789694316",
+        "https://github.com/adewale/agentic-mermaid/actions/runs/43872218670/job/133316046971"
+      ]
+    },
+    {
+      "id": "native-png-font-selection",
+      "category": "test gap",
+      "severity": "medium",
+      "decision": "repair",
+      "title": "The Journey raster-font test accepts the fallback face and the disappearance of label glyphs",
+      "locations": [
+        "src/__tests__/png-fonts.test.ts:47-75",
+        "src/__tests__/helpers/png-pixels.ts:21-39",
+        "src/agent/png.ts:219-249",
+        "docs/custom-fonts.md:274-293"
+      ],
+      "contract": "The default native PNG renderer draws ordinary Latin labels using bundled Inter and keeps the long Journey task text legible inside its measured box. DejaVu is an available fallback.",
+      "owner_and_callers": "The native PNG adapter resolves verified font snapshots, passes the file list to Resvg, and exposes its output through renderMermaidPNG and the CLI. Journey independently draws its task box and label at src/journey/renderer.ts:611-640.",
+      "independent_basis": "The public font guide specifies Inter and DejaVu. The authored long label must occupy the task body. On this fixture default/explicit Inter should agree, changing a later fallback should preserve it, and a requested covering face with different glyphs should be distinguishable. The candidate compares cropped raster regions relationally. It never pins the observed hashes.",
+      "weakness": "The existing pixel assertion counts dark columns only to the right of the box. Empty output and a different face that still fits satisfy it.",
+      "history": "Commit 3c296024c12 added the Journey raster test to catch label overflow. The test describes DejaVu as a historically wider substitute.",
+      "controls": [
+        {
+          "fault": "Pass only verified DejaVu Sans files to Resvg, leaving normal caller directories and warning inputs unchanged.",
+          "old": "All 20 tests in png-fonts, journey-svg-snapshot, and agent-png-determinism passed. The actual default task-region hash changed to the baseline's explicit DejaVu hash. Both still had zero columns beyond the box.",
+          "new": "Four-render relational probe failed for indistinguishable Inter and DejaVu on the fault and passed on restored code. 'Inter, serif' remained equivalent to 'Inter'."
+        },
+        {
+          "fault": "Pass an empty bundled font array to Resvg.",
+          "old": "All 14 png-fonts tests and both Journey SVG snapshots passed. The neighboring Flowchart cross-talk test independently detected lost glyphs. Baseline had 504 distinct dark interior columns versus 13 central columns under the fault; neither had exterior overflow.",
+          "new": "The same test with positive ink checks in two label bands failed on the missing-font fault. The font-choice relation separately addresses the fallback-only fault."
+        }
+      ],
+      "overlap": "The actual Flowchart determinism case catches the total loss. SVG goldens and verified-byte tests cover different boundaries. Two snapshots cannot observe native face selection.",
+      "recommendation": "Extend the existing raster owner with a check for task glyphs within the box and a relational comparison of the public default, an explicit covering primary face and a distinct bundled face. Keep the current overflow condition. Hashes in the evidence identify the local images only.",
+      "evidence": [
+        "62-coverage-real-font",
+        "66-pixels-baseline",
+        "68-no-bundled-fonts",
+        "71-fontsuite-old-fault",
+        "75-font-candidate-oracle",
+        "78-dejavu-alternative",
+        "80-fallback-old",
+        "83-fallback-calibrated",
+        "85-font-choice-clean",
+        "90-png-baseline-history",
+        "106-positive-controls-restored"
+      ],
+      "artifacts": [
+        "evidence/probes/journey-font-choice.ts",
+        "evidence/journey-baseline.png",
+        "evidence/journey-dejavu-only.png",
+        "evidence/journey-without-bundled-fonts.png"
+      ]
+    },
+    {
+      "id": "batch-render-format-location",
+      "category": "test gap",
+      "severity": "medium",
+      "decision": "repair",
+      "title": "Four terminal color-diagnostic rows dispatch the default SVG renderer",
+      "locations": [
+        "src/__tests__/authored-style-color-admission.test.ts:200-206",
+        "src/__tests__/quadrant-style.test.ts:147-152",
+        "src/cli/index.ts:1388-1401",
+        "src/cli/index.ts:1517-1531"
+      ],
+      "contract": "For both Flowchart and Quadrant, invalid authored paint should yield the named INVALID_STYLE_COLOR field/value diagnostic when the batch CLI requests SVG, ASCII or Unicode.",
+      "owner_and_callers": "cmdBatch passes each JSONL line into runBatchLine, which reads options.format and defaults to SVG. The terminal and graphical branches return through the CLI's structured diagnostic projection.",
+      "independent_basis": "The request schema and correctly formed positive batch calls supply the wire shape. The expected subject/property/value follows the authored source. Positive valid-paint probes identify the actual output key and receipt for each family and requested format.",
+      "weakness": "The two fixtures put format beside op and source. The four nominal ASCII/Unicode cases consequently select the default SVG path; identical refusal text hides the mistake.",
+      "history": "The original request literals are present in the public diffs for commits 1cde6faa800 (general authored styles) and 5a9d37f3178 (Quadrant).",
+      "controls": [
+        {
+          "fault": "Wrap only the CLI's terminal rendering exception to provide new context but lose the nominal error class.",
+          "old": "38/38 passed with the committed request fixtures, same as clean.",
+          "new": "Changing only the two request constructors to options:{format} produced 36 pass and two failures with the same fault. The corrected fixtures on the original implementation passed 38/38. Documented valid colors returned distinct svg/ascii/unicode receipts."
+        }
+      ],
+      "overlap": "Direct library tests already check that all corresponding renderers reject bad colors. property-cli-surface-fuzz checks successful terminal rendering, and theme-color-admission correctly nests options when checking different error codes. These do not establish the nominal authored-color projection on these two batch terminal routes. The broad terminal wrapper can affect other valid checks; no whole-suite survival claim.",
+      "recommendation": "Repair the two existing constructors by nesting format under options. Retain their direct renderer, hosted SVG and forged-error assertions. Leave the policy for unknown top-level fields to API owners.",
+      "evidence": [
+        "23-spot-format",
+        "24-format-seams",
+        "27-paint-baseline",
+        "30-route-probe",
+        "33-fault",
+        "36-old-on-fault",
+        "42-paint-repair",
+        "46-corrected-on-fault",
+        "54-public-history-reports",
+        "55-corrected-clean"
+      ]
+    },
+    {
+      "id": "source-preservation-mixed-line-endings",
+      "category": "test gap",
+      "severity": "low",
+      "decision": "repair",
+      "title": "Structured local-edit cases miss normalization of untouched mixed line endings",
+      "locations": [
+        "src/__tests__/property-source-preserving-edit.test.ts:45-51",
+        "src/__tests__/property-source-preserving-edit.test.ts:139-161",
+        "src/__tests__/agent-source-preserving-edit.test.ts:646-665",
+        "src/agent/source-projection.ts:1537-1547",
+        "docs/agent-mutation-policy.md:145-174"
+      ],
+      "contract": "An admissible local set_label edit changes the authored label and retains surrounding bytes, including the line endings on pre-existing unrelated lines.",
+      "owner_and_callers": "The public applyOps source-preserving mode reaches structured projection via src/agent/mutate.ts:358-367. renderPlan has the original terminator for each line, while new lines use an inferred file-level convention. CLI, MCP and the editor expose the same mode.",
+      "independent_basis": "The public mutation policy says untouched lines are copied byte for byte. A literal original containing Alpha and two unrelated lines yields the expected bytes by replacing only Alpha with Bravo. The method receipt must say local.",
+      "weakness": "The broad generator varies blank lines, comments and indentation but joins its inputs with LF. The structured fixture cases inspected use LF. Read-side CRLF span tests and opaque-body exact tests exercise different owners.",
+      "history": "Source projection is actively maintained; the supplied history includes multiline tracing in 5307eb7, authored-spacing work in 817f6c5, and later statement-order changes. This is a fault injection into the current renderer, not a claimed past defect.",
+      "controls": [
+        {
+          "fault": "Write the inferred document EOL for every pre-existing line, as for new lines.",
+          "old": "403/403 passed in the four named source/edit suites under the repository's 30-second per-test setting.",
+          "new": "The public exact-byte probe failed only for the mixed LF/CRLF input. Both uniform controls passed even on the faulty owner. Restoring per-line EOL passed all three input cases."
+        }
+      ],
+      "overlap": "The hand-authored table compares untouched lines and independent Mermaid readings; retain it. agent-class and agent.test include homogeneous CRLF/opaque-source cases. This finding concerns a structured local write after parsing, not general parser acceptance.",
+      "recommendation": "Extend one existing structured set_label fixture with a mixed-terminator input. Compare its full returned string to the one-token literal replacement and check method local. A full new per-family matrix would add little to this shared writer contract.",
+      "evidence": [
+        "34-source-keep",
+        "37-keep-contract",
+        "70-source-case-baselines",
+        "76-mixed-ending-overlap",
+        "86-source-byte-control",
+        "88-edit-baseline",
+        "92-eol-fault",
+        "93-eol-old-on-fault",
+        "97-eol-old-canonical-timeout",
+        "102-restored-endings",
+        "103-clean-owner-matrix"
+      ],
+      "artifacts": [
+        "evidence/probes/source-edit-bytes.ts",
+        "evidence/probes/normalized-line-endings.patch"
+      ]
+    }
+  ],
+  "product_defects": [],
+  "policy_questions": [
+    "Unknown top-level JSONL request members are currently ignored; the test fixture repair does not require changing that policy.",
+    "The pinned merge uses [skip ci]. This audit establishes the check history for the SHA, without inferring a branch-protection policy."
+  ],
+  "execution_limits": [
+    "The full local suite is reserved for CI.",
+    "Public job metadata and annotations were available; unauthenticated log download failed with HTTP 403, so hosted test counts were unavailable.",
+    "An initial four-file LF/CRLF mutant run used Bun\u2019s default per-test timeout and failed a deep Class namespace timing case. The same files passed at the repository\u2019s 30,000 ms per-test setting, inside the same 120 s outer cap."
+  ],
+  "retained": [
+    {
+      "path": "src/__tests__/fanout-symmetry.test.ts:65-88",
+      "decision": "retain",
+      "contract": "The pass preserves an already-admitted nonzero center trunk; the test owns an intermediate route that downstream passes can otherwise obscure.",
+      "evidence": [
+        "104-fanout-baseline",
+        "105-fanout-history-replay",
+        "106-positive-controls-restored"
+      ],
+      "result": "On the pre-268efa1 production pass with current tests, LR, TD and BT fail on changed trunk coordinates; RL and the three other cases pass. All seven pass at base."
+    },
+    {
+      "path": "src/__tests__/agent-png-determinism.test.ts:40-46",
+      "decision": "retain",
+      "contract": "A-B versus X-Y must yield different native pixels; it independently caught the missing-font fault."
+    },
+    {
+      "path": "e2e/run-browser-contracts.ts:37-41",
+      "decision": "retain",
+      "contract": "The browser runner sets the opt-in and refuses zero passing cases per registered file; marker-suite skip selection alone is insufficient evidence of a dead browser lane."
+    },
+    {
+      "path": "e2e/cli.e2e.test.ts:126-142",
+      "decision": "retain",
+      "contract": "The layout command associates each of two paths with its distinct node IDs. A broad multi-input status-only criticism would ignore this separate wiring proof."
+    },
+    {
+      "path": "src/__tests__/cli-batch-render-parity.test.ts:14-55",
+      "decision": "retain",
+      "contract": "The live subprocess requires Unicode content, an error between successes and output while stdin remains open."
+    }
+  ]
+}

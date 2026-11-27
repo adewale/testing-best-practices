@@ -1,0 +1,33 @@
+{
+  "decision": "reject",
+  "changes": [
+    {
+      "target": "Historical receipt verifier",
+      "action": "Verify the archived run",
+      "details": "For every candidate output listed in the receipt, read its archived bytes and compare its digest with the recorded digest using the receipt's hash algorithm. Check the recorded totals against the archived results using the historical counting rules. A missing output, digest mismatch, or total mismatch fails verification and identifies the affected file or total."
+    },
+    {
+      "target": "Script provenance",
+      "action": "Remove the comparison with the current checkout",
+      "details": "Keep all three recorded script identifiers and digests. Check the required fields and digest format when reading the receipt. Resolve candidate paths against the archive and make no filesystem lookup for the recorded script paths. The script digests can identify matching historical sources if those are available later."
+    },
+    {
+      "target": "Receipt maintenance",
+      "action": "Preserve the original receipt",
+      "details": "Leave verification read-only. Keep the receipt byte-for-byte through refactors. Record a deliberate new evaluation in its own receipt."
+    }
+  ],
+  "retained_contracts": [
+    "A valid historical archive verifies successfully after its producer scripts change names or contents.",
+    "Every listed candidate output must be present and match its recorded digest. The recorded totals must agree with the archived results.",
+    "Existing receipts retain their original format and historical provenance."
+  ],
+  "validation": [
+    "Verify a small valid fixture with known candidate results and totals. Expect success. In separate cases add a comment to a current producer script and move one to a new name so the old path is absent. Expect success in each case with identical receipt bytes.",
+    "With the current script still renamed, change one byte of an archived output, keeping the result count unchanged. Expect failure naming that output. Restore the fixture, delete a listed output, and expect failure naming the missing file.",
+    "Change only a recorded total in a fixture copy, leaving every output hash valid. Expect failure showing the recorded and derived totals.",
+    "In a fixture copy, remove a required script digest or give it an invalid digest format. Expect a receipt-format failure identifying the entry."
+  ],
+  "cost_and_stop": "Use one small temporary archive for the regression cases and run the focused verifier tests. Stop when refactors pass with the original receipt and each damaged fixture fails for the expected reason. No candidate reruns or receipt migration are needed.",
+  "rationale": "Refreshing hashes would rewrite the historical evidence and could bless changed output bytes. Deleting the verifier would discard the archive integrity checks. Comparing archived bytes and totals with the original receipt answers the historical question even as the checkout evolves."
+}

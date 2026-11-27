@@ -1,0 +1,31 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Full verifier test",
+      "action": "Keep one preparation-to-verdict test in CI.",
+      "details": "Pass a small, independently known-good input through the normal verifier entry point, including real preparation and the complete oracle pipeline. Assert acceptance."
+    },
+    {
+      "target": "Tamper tests",
+      "action": "Prepare a read-only fixture once and make every existing variant a named checker test.",
+      "details": "Use the last common intermediate that is independent of the tampering. Give each row its own copy, apply one specified change, and pass that copy to the real production checker. Recompute every result that depends on the changed input, including derived evidence and the final verdict. If a variant changes an earlier input, start that row before the affected stage. Require the documented rejection, treating crashes and timeouts as test failures. Run an untouched copy through the same checker and require acceptance."
+    },
+    {
+      "target": "Proposed audit additions",
+      "action": "Add a focused row for each distinct new failure mode or regression and retain the existing global timeout.",
+      "details": "Identify the defect each proposed row would detect. Defer duplicates that add preparation or pipeline runs without testing a further rejection obligation."
+    }
+  ],
+  "retained_contracts": [
+    "The public verifier accepts a known-good input from raw input through final decision.",
+    "Each specified bad variant reaches the real checker on its own merits and receives a rejection. The pristine control remains acceptable regardless of row order."
+  ],
+  "validation": [
+    "Compare the base and revised reports from the unit CI entry point. Account for every existing named tamper case and confirm every rejection assertion ran, along with both acceptance checks.",
+    "In a scratch run, give one negative row an untouched copy while keeping its rejection assertion. Confirm that row fails because the checker accepts the input. Restore the change and verify the row passes.",
+    "Time the tamper group and full unit suite before and after on the same runner with the same existing cases and settings. Record absolute times and the group's share alongside the reported 32% baseline. Inspect a timing trace to verify that only variant-dependent work repeats."
+  ],
+  "cost_and_stop": "The revised cost is one full integration run, one shared preparation, and the sum of per-variant copying and required checker work. Stop expanding once each distinct obligation has a passing control or a rejecting case as applicable. If comparable timings show no saving, profile the repeated stage before adding variants.",
+  "rationale": "A longer timeout would leave the repeated work in place. Sharing immutable preparation saves that work while a fresh checker invocation gives every variant a chance to expose an erroneous acceptance."
+}

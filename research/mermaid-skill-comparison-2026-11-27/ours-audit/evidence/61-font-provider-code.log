@@ -1,0 +1,16 @@
+src/agent/font-coverage-core.ts:132:export function findUncoveredScriptsFromBuffers(svg: string, fontBuffers: readonly Uint8Array[]): UncoveredScript[] {
+src/agent/font-coverage.ts:55:export function findUncoveredScripts(
+src/agent/font-coverage-core.ts:132:export function findUncoveredScriptsFromBuffers(svg: string, fontBuffers: readonly Uint8Array[]): UncoveredScript[] {
+src/agent/font-coverage.ts:55:export function findUncoveredScripts(
+src/__tests__/helpers/upstream-mermaid.ts:111:import { JSDOM } from 'jsdom'
+src/__tests__/helpers/upstream-mermaid.ts:112:const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'http://localhost/' })
+ls: cannot access '/usr/share/fonts/truetype/wqy': No such file or directory
+/usr/share/fonts/opentype/noto
+src/__tests__/agent-mcp-png.test.ts
+src/__tests__/agent-png-determinism.test.ts
+src/__tests__/agent-png.test.ts
+src/__tests__/browser-png-contract.test.ts
+src/__tests__/host-png-backend-parity.test.ts
+src/__tests__/png-fonts.test.ts
+src/__tests__/png-legibility-warning.test.ts
+src/__tests__/png-output-options-contract.test.ts

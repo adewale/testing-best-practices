@@ -1,0 +1,14 @@
+{
+  "repository": "adewale/BuzzWatching",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "page": 1,
+      "url": "https://api.github.com/repos/adewale/BuzzWatching/pulls?state=all&per_page=100&page=1",
+      "count": 0
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

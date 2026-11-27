@@ -1,0 +1,42 @@
+workflow ci.yml
+44189175605 17c400a942d05090679ef7cb07588fd5ee763382 failure 2026-11-17T22:21:02Z 2026-11-17T22:35:40Z
+43986133432 6f11d6d095c61f63c89bb558ba66b3bf519f2a9e success 2026-11-17T00:15:20Z 2026-11-17T00:29:00Z
+  134413674684 Select required checks success 2026-11-17T22:21:05Z 2026-11-17T22:21:35Z []
+  134413676828 Expire label approvals of earlier heads skipped 2026-11-17T22:21:03Z 2026-11-17T22:21:03Z []
+  134413980511 Build portable test artifacts success 2026-11-17T22:21:37Z 2026-11-17T22:23:16Z []
+  134413980531 Quality gates failure 2026-11-17T22:21:37Z 2026-11-17T22:23:52Z [('Run the complete local and CI quality suite', 'failure')]
+  134413980588 CLI and single-binary tests success 2026-11-17T22:21:37Z 2026-11-17T22:22:10Z []
+  134413980619 MCP conformance success 2026-11-17T22:21:38Z 2026-11-17T22:21:59Z []
+  134413980705 Renderer isolation (macos-15-intel) success 2026-11-17T22:21:40Z 2026-11-17T22:22:39Z []
+  134413980903 Independent semantic conformance / semantic success 2026-11-17T22:21:38Z 2026-11-17T22:26:00Z []
+  134413981086 Renderer isolation (windows-latest) success 2026-11-17T22:21:38Z 2026-11-17T22:23:04Z []
+  134413983264 Documentation checks skipped 2026-11-17T22:21:36Z 2026-11-17T22:21:36Z []
+  134413983420 Layout backend review evidence skipped 2026-11-17T22:21:36Z 2026-11-17T22:21:36Z []
+  134413983640 Generated layout diagnostic (advisory) skipped 2026-11-17T22:21:36Z 2026-11-17T22:21:36Z []
+  134414948440 Installed-package quickstarts success 2026-11-17T22:23:18Z 2026-11-17T22:23:39Z []
+  134414948564 Unit tests (3/3) success 2026-11-17T22:23:18Z 2026-11-17T22:27:04Z []
+  134414948631 E2E (dist-artifact) success 2026-11-17T22:23:18Z 2026-11-17T22:23:36Z []
+  134414948647 Unit tests (1/3) success 2026-11-17T22:23:18Z 2026-11-17T22:29:19Z []
+  134414948656 E2E (browser) success 2026-11-17T22:23:18Z 2026-11-17T22:35:27Z []
+  134414948673 E2E (tarball-consumer-node22) success 2026-11-17T22:23:19Z 2026-11-17T22:24:30Z []
+  134414948681 E2E (payload) success 2026-11-17T22:23:18Z 2026-11-17T22:24:23Z []
+  134414948716 E2E (tarball-consumer) success 2026-11-17T22:23:18Z 2026-11-17T22:24:28Z []
+  134414948747 E2E (browser-site) success 2026-11-17T22:23:18Z 2026-11-17T22:29:34Z []
+  134414948805 Unit tests (2/3) success 2026-11-17T22:23:18Z 2026-11-17T22:29:26Z []
+  134421879474 test failure 2026-11-17T22:35:30Z 2026-11-17T22:35:34Z [('Require every runtime lane to pass', 'failure')]
+  134421947360 CI complete failure 2026-11-17T22:35:36Z 2026-11-17T22:35:39Z [('Require every selected CI lane to pass', 'failure')]
+workflow qualify-ci.yml
+workflow coverage.yml
+45202594140 f49196e7f5d6d2f0970a4a76fe62644ee5e9d004 failure 2026-11-23T15:12:23Z 2026-11-23T15:18:50Z
+43872218670 9a2144746b8661df602ee67a102cf0e9a3aa2f42 failure 2026-11-16T13:03:51Z 2026-11-16T13:14:01Z
+  137789693581 unit (2/3) success 2026-11-23T15:12:25Z 2026-11-23T15:17:45Z []
+  137789694316 unit (1/3) failure 2026-11-23T15:12:25Z 2026-11-23T15:18:50Z [('Run covered unit shard', 'failure')]
+  137789694474 unit (3/3) success 2026-11-23T15:12:25Z 2026-11-23T15:17:32Z []
+  137794013000 merge skipped 2026-11-23T15:18:50Z 2026-11-23T15:18:50Z []
+workflow contract-discovery.yml
+40706893890 7ac58c28a102f434ed79e2c41c00f0bb5fe35da1 failure 2026-10-28T14:32:10Z 2026-10-28T14:34:51Z
+  122881332675 discover failure 2026-10-28T14:33:15Z 2026-10-28T14:34:51Z [('Search bounded grammar contract candidates', 'failure')]
+workflow modern-mermaid.yml
+40305479210 97aea9522d46e94446672435225d55efb5cf5203 success 2026-10-26T10:11:43Z 2026-10-26T10:26:03Z
+39233967936 db5ecd2787d3182fd886f5798b6993052a996449 success 2026-10-19T09:57:53Z 2026-10-19T10:09:16Z
+  121513402690 semantic success 2026-10-26T10:11:45Z 2026-10-26T10:26:02Z []

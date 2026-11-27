@@ -1,0 +1,30 @@
+diff --git a/src/__tests__/cli-multi-input.test.ts b/src/__tests__/cli-multi-input.test.ts
+index e0ff49f..5c212eb 100644
+--- a/src/__tests__/cli-multi-input.test.ts
++++ b/src/__tests__/cli-multi-input.test.ts
+@@ -83,17 +83,16 @@ describe('#930 pathname watch lifecycle', () => {
+ 
+ describe('#959 multi-input rendering', () => {
+   test('renders multiple files, emits a results array, skips bad ones', () => {
+-    const a = tmp('flowchart TD\n A --> B')
+-    const b = tmp('flowchart LR\n X --> Y')
++    const first = tmp('flowchart TD\n A[First Label] --> B')
+     const bad = tmp('not a diagram')
+-    const { code, out } = capture(() => runCli(['render', a, b, bad, '--format', 'ascii']))
++    const last = tmp('flowchart LR\n X[Final Label] --> Y')
++    const { code, out } = capture(() => runCli(['render', first, bad, last, '--format', 'ascii']))
+     expect(code).toBe(0)
+-    const payload = JSON.parse(out)
+-    expect(payload.files.length).toBe(3)
+-    expect(payload.files[0].ok).toBe(true)
+-    expect(payload.files[1].ok).toBe(true)
+-    expect(payload.files[2].ok).toBe(false)
+-    expect(payload.files[2].error.code).toBe('UNKNOWN_HEADER')
++    expect(JSON.parse(out).files).toEqual([
++      expect.objectContaining({ index: 0, file: first, ok: true, output: expect.stringContaining('First Label') }),
++      expect.objectContaining({ index: 1, file: bad, ok: false, error: expect.objectContaining({ code: 'UNKNOWN_HEADER' }) }),
++      expect.objectContaining({ index: 2, file: last, ok: true, output: expect.stringContaining('Final Label') }),
++    ])
+   })
+ 
+   test('multi-input json parse errors expose structured details, not stringified blobs', () => {

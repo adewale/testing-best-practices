@@ -1,0 +1,37 @@
+diff --git a/src/agent/source-projection.ts b/src/agent/source-projection.ts
+index 7c96bc5..942aa5f 100644
+--- a/src/agent/source-projection.ts
++++ b/src/agent/source-projection.ts
+@@ -1540,7 +1540,7 @@ function renderPlan(lines: readonly AuthoredLine[], plan: Plan, eol: string): st
+   const emit = (text: string, end: string) => { out.push(pending, text); pending = end || eol }
+   lines.forEach((line, index) => {
+     for (const text of plan.before.get(index) ?? []) emit(text, eol)
+-    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, line.eol)
++    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, eol)
+     for (const text of plan.after.get(index) ?? []) emit(text, eol)
+   })
+   const last = lines.at(-1)
+{"kind":"LF","method":"local","expected":"flowchart LR\n  A[Bravo] --> B\n  %% keep comment\n  C[Charlie] --> D\n","actual":"flowchart LR\n  A[Bravo] --> B\n  %% keep comment\n  C[Charlie] --> D\n"}
+{"kind":"CRLF","method":"local","expected":"flowchart LR\r\n  A[Bravo] --> B\r\n  %% keep comment\r\n  C[Charlie] --> D\r\n","actual":"flowchart LR\r\n  A[Bravo] --> B\r\n  %% keep comment\r\n  C[Charlie] --> D\r\n"}
+{"kind":"mixed","method":"local","expected":"flowchart LR\r\n  A[Bravo] --> B\n  %% keep comment\r\n  C[Charlie] --> D\n","actual":"flowchart LR\r\n  A[Bravo] --> B\r\n  %% keep comment\r\n  C[Charlie] --> D\r\n"}
+13 |   const actual=result.ok ? result.source : result.error
+14 |   console.log(JSON.stringify({kind,method:result.ok?result.preservation?.method:null,expected,actual}))
+15 |   if (result.ok && result.preservation?.method==='local' && actual===expected) continue
+16 |   failures++
+17 | }
+18 | assert.equal(failures,0,'every accepted local edit must retain the original bytes around the changed label')
+            ^
+AssertionError: every accepted local edit must retain the original bytes around the changed label
+
+1 !== 0
+
+ generatedMessage: false,
+     actual: 1,
+   expected: 0,
+   operator: "strictEqual",
+       diff: "simple",
+       code: "ERR_ASSERTION"
+
+      at /workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/.audit-edit.ts:18:8
+
+Bun v1.4.4 (Linux x64)

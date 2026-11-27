@@ -1,0 +1,373 @@
+{
+  "classification": "Exploratory follow-up on the submission's unmodified secondary finding. Excluded from frozen directional metrics.",
+  "source": "Pinned production and original HTTP test. No candidate changes applied.",
+  "variant": "Compare original batched .toArray() with an open cursor iterated across stream yields.",
+  "probe": "Use the real Workers SQL storage API and AgentData.erase; read the first of five seeded memory records and pause while later records remain.",
+  "results": {
+    "pinned": {
+      "node": "v24.22.3",
+      "results": [
+        {
+          "config": "test/vitest.config.ts",
+          "files": [
+            "test/agent-data.test.ts",
+            "test/cursor-evaluator.test.ts"
+          ],
+          "pattern": "erases while an export is unread or cancelled|checks erasure after a populated export row",
+          "exit": 0,
+          "signal": null,
+          "passed": 2,
+          "failed": 0,
+          "skipped": 30,
+          "todo": 0,
+          "success": true,
+          "assertions": [
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls commits erasure and the old-login cutoff together, or retains both records and retry state",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls exposes only public build provenance without requiring a personal session",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls returns the saved Company selection only to its owner, and a reset chat starts empty",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls classifies every stored table and column, so a new one can't reach an export by default",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls withholds push addresses, queued jobs and one-time sign-in values, and an unclassified column",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls erases local state and revokes every pre-deletion cookie while allowing a fresh sign-in",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls confirms one completed erasure to every concurrent deletion caller",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls requires same-origin confirmation before any destructive work",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains data while a pending Company sign-in could still issue credentials",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retires an abandoned used sign-in without repeating its token grant",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retires an abandoned sent sign-in without repeating its token grant",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains a live mediated sign-in until its issued token can be revoked",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains a sealed exchanged token answer when recovery cannot bind it",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls revokes Company refresh tokens before erasing a stored sign-in and its bound credentials",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains local records and the revocation credential if a Company refuses, then completes on retry",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls erases everything once the person abandons a credential a Company will never revoke",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls leaves open pages connected when deletion stops short, so a kept agent still works",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls says so when a resumed deletion stops short, so it can't end silently",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls holds a waiver to the credentials it names",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls revokes what it can when another Company refuses, and asks only about the refusal",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls erases while an export is unread or cancelled: no read holds a table open",
+              "status": "passed"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls exports every row of a table longer than one read",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls doesn't wait for a exchanging sign-in that can never finish",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls doesn't wait for a pending sign-in that can never finish",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls ignores the page's frames while deleting, since they can start new Company work",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls stops the website browser while deleting: its cookie-bearing requests and saved forms stay here",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls lists an account sign-out hasn't reached, so it can't be erased unasked",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls does not lock the agent when a Company's records are gone, and can still erase",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls refuses a malformed waiver before any destructive work",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls keeps a deletion's waivers through a retry, and drops them when it stops",
+              "status": "skipped"
+            },
+            {
+              "file": "test/cursor-evaluator.test.ts",
+              "name": "checks erasure after a populated export row has reached its reader",
+              "status": "passed"
+            }
+          ]
+        }
+      ]
+    },
+    "live-cursor": {
+      "node": "v24.22.3",
+      "results": [
+        {
+          "config": "test/vitest.config.ts",
+          "files": [
+            "test/agent-data.test.ts",
+            "test/cursor-evaluator.test.ts"
+          ],
+          "pattern": "erases while an export is unread or cancelled|checks erasure after a populated export row",
+          "exit": 1,
+          "signal": null,
+          "passed": 1,
+          "failed": 1,
+          "skipped": 30,
+          "todo": 0,
+          "success": false,
+          "assertions": [
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls commits erasure and the old-login cutoff together, or retains both records and retry state",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls exposes only public build provenance without requiring a personal session",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls returns the saved Company selection only to its owner, and a reset chat starts empty",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls classifies every stored table and column, so a new one can't reach an export by default",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls withholds push addresses, queued jobs and one-time sign-in values, and an unclassified column",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls erases local state and revokes every pre-deletion cookie while allowing a fresh sign-in",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls confirms one completed erasure to every concurrent deletion caller",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls requires same-origin confirmation before any destructive work",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains data while a pending Company sign-in could still issue credentials",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retires an abandoned used sign-in without repeating its token grant",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retires an abandoned sent sign-in without repeating its token grant",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains a live mediated sign-in until its issued token can be revoked",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains a sealed exchanged token answer when recovery cannot bind it",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls revokes Company refresh tokens before erasing a stored sign-in and its bound credentials",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls retains local records and the revocation credential if a Company refuses, then completes on retry",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls erases everything once the person abandons a credential a Company will never revoke",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls leaves open pages connected when deletion stops short, so a kept agent still works",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls says so when a resumed deletion stops short, so it can't end silently",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls holds a waiver to the credentials it names",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls revokes what it can when another Company refuses, and asks only about the refusal",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls erases while an export is unread or cancelled: no read holds a table open",
+              "status": "passed"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls exports every row of a table longer than one read",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls doesn't wait for a exchanging sign-in that can never finish",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls doesn't wait for a pending sign-in that can never finish",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls ignores the page's frames while deleting, since they can start new Company work",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls stops the website browser while deleting: its cookie-bearing requests and saved forms stay here",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls lists an account sign-out hasn't reached, so it can't be erased unasked",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls does not lock the agent when a Company's records are gone, and can still erase",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls refuses a malformed waiver before any destructive work",
+              "status": "skipped"
+            },
+            {
+              "file": "test/agent-data.test.ts",
+              "name": "personal data controls keeps a deletion's waivers through a retry, and drops them when it stops",
+              "status": "skipped"
+            },
+            {
+              "file": "test/cursor-evaluator.test.ts",
+              "name": "checks erasure after a populated export row has reached its reader",
+              "status": "failed",
+              "message": "Error: database table is locked: SQLITE_LOCKED\n    at /work/src/agent-data.ts:78:51\n    at AgentData.erase (/work/src/agent-data.ts:75:18)\n    at /work/test/cursor-evaluator.test.ts:23:20\n    at maybeHandleRunRequest (work/node_modules/@cloudflare/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:157:18)\n    at DurableObject.Wrapper.fetch (work/node_modules/@cloudflare/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:552:20)"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

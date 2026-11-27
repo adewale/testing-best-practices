@@ -1,0 +1,27 @@
+{
+  "decision": "approve",
+  "changes": [
+    {
+      "target": "Changed parser function",
+      "action": "Try one temporary mutation at the relevant boundary.",
+      "details": "Choose an input whose specified result changes when the comparison shifts by one. For example, if the upper limit is inclusive, change `<=` to `<` so the exact-limit input is rejected. Use the existing test runner."
+    },
+    {
+      "target": "Parser boundary tests",
+      "action": "Add a regression assertion only if the existing tests miss the fault.",
+      "details": "Exercise the distinguishing input through the existing parser API and assert the specified result or error. Keep the test once it fails on the mutant and passes on the original. If an existing boundary assertion catches the fault, the experiment needs no committed change."
+    }
+  ],
+  "retained_contracts": [
+    "The parser's documented boundary behavior and existing API remain the source of expected results.",
+    "The experiment covers one fault in the changed function and runs manually within the proposed ten-minute cap."
+  ],
+  "validation": [
+    "Run the four focused tests on the original function. If any fail, stop and report that the baseline prevents a conclusion.",
+    "Apply the single mutation and rerun the same four tests unchanged. Identify the failing test, input and assertion. A failure at the expected boundary assertion answers yes. Four passes answer no for this fault. A build error or an unrelated failure is inconclusive.",
+    "If all four pass, add the distinguishing assertion and run it against the still-mutated function. Verify that it fails for the expected boundary result.",
+    "Undo only the temporary mutation. Rerun the focused tests, including any new assertion, and verify that they pass and that the production diff matches its pre-experiment state."
+  ],
+  "cost_and_stop": "The baseline, mutant and restored runs of the original four tests total about six seconds of test time. Stop after this one fault. If setup or diagnosis reaches ten minutes, restore the function and report the evidence collected, marking an unresolved result inconclusive.",
+  "rationale": "Coverage shows that the tests exercised the parser. A targeted change and its observed assertion failure answer whether those tests detect this particular off-by-one error."
+}

@@ -1,0 +1,31 @@
+{
+  "decision": "reject",
+  "changes": [
+    {
+      "target": "Published release archive and manifest",
+      "action": "Keep the exact-byte check",
+      "details": "Keep the original fixture and its published manifest entry fixed. Hash the raw archive bytes using the manifest’s algorithm and compare with the published value. A new release supplies its own archive and commitment. An importer refactor gives no reason to refresh either."
+    },
+    {
+      "target": "Importer rejection test",
+      "action": "Exercise the public importer with a temporary copy",
+      "details": "Make a format-valid byte change that preserves the parsed contents, such as changing a format-permitted metadata field ignored by the content parser. Supply the original manifest with the copy and assert rejection. The altered bytes may vary. Their digest only needs to differ from the published value."
+    },
+    {
+      "target": "Implementation and semantic assertions",
+      "action": "Allow changes outside the byte-level contract",
+      "details": "The importer may stream or buffer the bytes, and its private helpers may change. Use parsed-content equality to check promised imported content and to establish that the altered test case still parses equivalently."
+    }
+  ],
+  "retained_contracts": [
+    "The manifest commits to the exact published archive bytes, including any formatting or container metadata.",
+    "The public importer accepts the intact release and rejects an archive whose digest disagrees with the same manifest."
+  ],
+  "validation": [
+    "Compute the original fixture’s raw-byte digest independently, compare it with the published manifest entry, and import the intact fixture successfully.",
+    "Parse both archives and compare their contents. Confirm the copy’s raw-byte digest differs from the published value.",
+    "Import the copy with the original manifest and require rejection. If the public API distinguishes integrity errors, assert that error."
+  ],
+  "cost_and_stop": "Run the focused importer checks using one immutable fixture and one temporary derivative. Stop when the intact case passes and the parse-equivalent altered case demonstrates rejection.",
+  "rationale": "Parsed equality would accept the very byte change the manifest is published to detect. The published digest supplies an expectation independent of the importer."
+}

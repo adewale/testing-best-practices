@@ -1,0 +1,203 @@
+3512 tracked 921 test paths including fixtures
+217 src/__tests__/testdata
+29 src/__tests__/helpers
+28 eval/benchmark/tests
+4 eval/mermaid-block-bench/upstream
+2 eval/mermaid-requirement-bench/upstream
+2 eval/mermaid-treemap-bench/upstream
+2 eval/mermaid-upstream-suite-bench/upstream-f3dea583
+2 src/__tests__/fixtures
+1 e2e/browser-bundle.e2e.test.ts
+1 e2e/browser.test.ts
+1 e2e/cli-smoke.e2e.test.ts
+1 e2e/cli.e2e.test.ts
+1 e2e/dist-artifact.e2e.test.ts
+1 e2e/editor-site-interactions.e2e.test.ts
+1 e2e/fresh-checkout.e2e.test.ts
+1 e2e/mcp-app-preview.e2e.test.ts
+1 e2e/mcp-browser-cors.e2e.test.ts
+1 e2e/security-csp.e2e.test.ts
+1 e2e/single-binary.e2e.test.ts
+1 e2e/tarball-consumer-fuzz.e2e.test.ts
+1 eval/edit-arms/edit-arms.test.ts
+1 eval/endpoint-marker/architecture-metrics.test.ts
+1 eval/family-usage/count.test.ts
+1 eval/font-layout/worker.test.ts
+1 eval/layout-compare/run.test.ts
+1 eval/layout-compare/stability.test.ts
+1 eval/mermaid-ishikawa-bench/upstream
+1 eval/mermaid-modern-compat/grammar-regressions.test.ts
+1 eval/mermaid-modern-compat/native-operations.test.ts
+1 eval/mermaid-modern-compat/roadmap-semantics.test.ts
+1 eval/mermaid-modern-compat/semantic.test.ts
+1 scripts/sketch-prototype/styles.test.ts
+1 src/__tests__/__fixtures__
+1 src/__tests__/accessibility-directives-complexity.test.ts
+1 src/__tests__/accessibility-relation-palette.test.ts
+1 src/__tests__/aesthetic-issue-regressions.test.ts
+1 src/__tests__/agent-analysis.test.ts
+1 src/__tests__/agent-architecture.test.ts
+1 src/__tests__/agent-ascii-maxwidth.test.ts
+1 src/__tests__/agent-ascii-meta.test.ts
+1 src/__tests__/agent-auth-flow.test.ts
+1 src/__tests__/agent-body-shared-rules.test.ts
+1 src/__tests__/agent-body-utils.test.ts
+1 src/__tests__/agent-class.test.ts
+1 src/__tests__/agent-cli-render-formats.test.ts
+1 src/__tests__/agent-cli-tty-guard.test.ts
+1 src/__tests__/agent-create.test.ts
+1 src/__tests__/agent-describe.test.ts
+1 src/__tests__/agent-determinism.test.ts
+1 src/__tests__/agent-doc-sync.test.ts
+1 src/__tests__/agent-er.test.ts
+1 src/__tests__/agent-facts.test.ts
+1 src/__tests__/agent-families.test.ts
+1 src/__tests__/agent-family-layouts.test.ts
+1 src/__tests__/agent-gantt.test.ts
+1 src/__tests__/agent-journey.test.ts
+1 src/__tests__/agent-mcp-http.test.ts
+1 src/__tests__/agent-mcp-png.test.ts
+1 src/__tests__/agent-mcp.test.ts
+1 src/__tests__/agent-mermaid-corpus.test.ts
+1 src/__tests__/agent-mermaidseqbench.test.ts
+1 src/__tests__/agent-op-array-slip.test.ts
+1 src/__tests__/agent-op-schema.test.ts
+1 src/__tests__/agent-opaque-fidelity.test.ts
+1 src/__tests__/agent-pie.test.ts
+test definition files
+659
+606 src/__tests__
+28 eval/benchmark
+4 eval/mermaid-modern-compat
+2 eval/layout-compare
+2 eval/mermaid-upstream-suite-bench
+1 e2e/browser-bundle.e2e.test.ts
+1 e2e/browser.test.ts
+1 e2e/cli-smoke.e2e.test.ts
+1 e2e/cli.e2e.test.ts
+1 e2e/dist-artifact.e2e.test.ts
+1 e2e/editor-site-interactions.e2e.test.ts
+1 e2e/fresh-checkout.e2e.test.ts
+1 e2e/mcp-app-preview.e2e.test.ts
+1 e2e/mcp-browser-cors.e2e.test.ts
+1 e2e/security-csp.e2e.test.ts
+1 e2e/single-binary.e2e.test.ts
+1 e2e/tarball-consumer-fuzz.e2e.test.ts
+1 eval/edit-arms
+1 eval/endpoint-marker
+1 eval/family-usage
+1 eval/font-layout
+1 scripts/sketch-prototype
+top-level directories
+1924 src
+818 eval
+348 docs
+125 scripts
+48 website
+45 editor
+43 skills
+34 skill-evals
+25 e2e
+21 examples
+12 .github
+12 assets
+10 research
+7 LICENSES
+4 bin
+4 public
+1 .claude
+1 .cursor
+1 .gitattributes
+1 .gitignore
+1 .impeccable
+1 .vscode
+1 AGENTS.md
+1 AGENT_NATIVE.md
+1 CHANGELOG.md
+1 CLAUDE.md
+1 DESIGN.md
+1 Instructions_for_agents.md
+1 LICENSE
+1 PRODUCT.md
+1 README.md
+1 SECURITY.md
+1 THIRD_PARTY_NOTICES.md
+1 TODO.md
+1 biome.json
+1 bun.lock
+1 bunfig.toml
+1 llms.txt
+1 package.json
+1 ruff.toml
+1 server.json
+1 shared
+1 tsconfig.json
+1 tsconfig.repo.json
+1 tsup.browser-lazy.config.ts
+1 tsup.browser.config.ts
+1 tsup.config.ts
+1 tsup.zenuml.config.ts
+f49196e 2026-11-20 Merge pull request #620: improve graph routing and painted clearance [skip ci]
+c790c8a 2026-11-20 fix(layout): contract settled route excursions safely [skip ci]
+
+src/__tests__/graph-layout-selection.test.ts
+src/__tests__/route-contracts.test.ts
+src/__tests__/testdata/layout-geometry-baseline.json
+src/layout/graph-paint-support.ts
+src/layout/route-lanes.ts
+src/route-contracts.ts
+cdaf3cc 2026-11-20 test(layout): pin reviewed hub geometry and prior routing repairs [skip ci]
+
+src/__tests__/testdata/contact-sheet-geometry.json
+src/__tests__/testdata/layout-geometry-baseline.json
+304d730 2026-11-20 fix(layout): keep port alignment from adding crossings [skip ci]
+
+src/__tests__/route-contracts.test.ts
+src/layout/passes/port-lanes.ts
+7483631 2026-11-20 fix(layout): avoid new shaft masking when choosing loop sides [skip ci]
+
+src/__tests__/self-loop-arcs.test.ts
+src/layout/route-self-loops.ts
+src/route-contracts.ts
+268efa1 2026-11-20 fix(layout): retain centered through-trunks at internal forks [skip ci]
+
+src/__tests__/fanout-symmetry.test.ts
+src/layout/passes/fanout.ts
+dd37e47 2026-11-20 refactor(layout): share centered edge label reservations [skip ci]
+
+src/layout-engine.ts
+74b5fee 2026-11-20 refactor(elk): compress sweep snapshots and reuse counter buffers [skip ci]
+
+src/elk-layered/kernel/crossing.ts
+ed12997 2026-11-19 refactor(layout): repair masking shafts after label seating fails [skip ci]
+
+src/__tests__/layout-pass.test.ts
+src/__tests__/route-contracts.test.ts
+src/layout-engine.ts
+src/layout/graph-paint-support.ts
+src/route-contracts.ts
+5c232f9 2026-11-19 fix(layout): keep foreign shafts and repeated edges visible [skip ci]
+
+src/__tests__/graph-layout-selection.test.ts
+src/__tests__/label-conflicts.test.ts
+src/__tests__/layout-bundle-proposals.test.ts
+src/__tests__/route-contracts.test.ts
+src/__tests__/self-loop-arcs.test.ts
+src/layout-engine.ts
+src/layout/graph-paint-support.ts
+src/layout/passes/edge-bundling.ts
+src/layout/route-marker-clearance.ts
+src/layout/route-self-loops.ts
+src/renderer.ts
+src/route-contracts.ts
+src/shared/edge-label-geometry.ts
+50fe874 2026-11-19 fix(layout): align independent paths across groups [skip ci]
+
+src/__tests__/graph-layout-selection.test.ts
+src/layout-engine.ts
+72b50c6 2026-11-19 fix(layout): compare unbundled multigraph routes [skip ci]
+
+docs/design/system/layout-rubric.md
+docs/quality.md
+src/__tests__/graph-layout-selection.test.ts
+src/layout-engine.ts

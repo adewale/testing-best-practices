@@ -52,6 +52,16 @@ Use testing-best-practices to review these tests for false confidence, mock drif
 
 The skill routes itself by task mode (write, assess, upgrade, detect), detects the repository language/framework, then loads only the relevant reference files.
 
+For an existing suite, use the [test-audit workflow and reusable task brief](testing-best-practices/references/test-audit.md). It provides candidate searches, retain/repair/consolidate/delete decisions, a contract-preservation ledger, and old-versus-new fault checks before removing coverage. Search signals start an investigation; they do not authorize deletion.
+
+The [PR evidence catalogue](research/test-quality-pr-audit-2026-11-23/catalogue.md) records the owner's historical test-quality work, including unmerged and overlapping attempts. The [synthesis](research/TEST_QUALITY_PR_SYNTHESIS_2026-11.md) connects those findings and OpenClaw's Test Audit skill to the workflow.
+
+A [historical campaign decision replay](research/campaign-replay-2026-11-26/README.md) tested nine scenarios across no-skill, pre-PR and PR #41 arms. All three passed 9/9; this screen found no incremental benefit from the new guidance and does not establish reliable campaign prevention.
+
+The [larger four-arm follow-up](research/campaign-replay-2026-11-27/RESULTS.md) compared no guidance, earlier PR41, a revised candidate and OpenClaw. Its historical screen scored 7/9, 9/9, 8/9 and 9/9; the candidate missed a public rejection path. Nine reports delivered larger-suite repairs in Mermaid, Keyboardia and PDA, with native fault and permitted-change controls. Interruptions and a failed judge remain recorded. The subsequent E79 repair has deterministic controls; the historical screen was not rerun for it.
+
+A [fresh head-to-head audit of Agentic Mermaid](research/mermaid-skill-comparison-2026-11-27/README.md) then applied current skill 0.3.3 and OpenClaw independently to the full source with native Bun. Each found three distinct test gaps; a CI setup defect and a separate CLI/help mismatch were recorded separately. Parent native controls reproduced the material contrasts. The findings are complementary; one audit per skill does not establish superiority.
+
 ## How it works
 
 The skill operates in four modes:
@@ -115,6 +125,9 @@ Language-specific guidance loads on demand based on the project's language. Adva
 | `references/vcr-cassettes.md` | Code calling external APIs |
 | `references/doc-sync-testing.md` | CLI commands, plugin hooks, or verification claims in docs and agent instructions |
 | `references/gate-integrity.md` | CI/hooks/test-config changes, gated or scheduled tiers, "is this check running and can it fail?", deploy verification |
+| `references/test-audit.md` | Auditing and repairing existing tests, deciding what to retain/consolidate/delete, and proving retained contracts survive |
+| `references/test-audit-patterns.md` | Larger-suite sampling, failure/recovery witnesses, meaningful coverage denominators and layer-retirement preservation |
+| `references/checker-calibration.md` | Custom grader controls, real command routing, failed/provisional results and compatible evaluation measurements |
 | `references/mutation-testing.md` | Focused mutation diagnostics, survivor triage, and recurring-lane safety |
 | `references/combinatorial-testing.md` | Large interacting-factor matrices and cost-aware covering portfolios |
 | `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |
@@ -128,10 +141,10 @@ The project now uses layered evals rather than a single public prompt table:
 
 | Layer | Current state |
 |------|---------------|
-| Development eval suite | 78 cases in `skill-development/evals/evals.json`: 39 write, 18 upgrade, 19 assess, 2 detect |
+| Development eval suite | 79 cases in `skill-development/evals/evals.json`: 39 write, 19 upgrade, 19 assess, 2 detect |
 | Hidden probes | 18 hard/adversarial probes tracked by eval-health metadata |
 | Shared benchmark | 48 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
-| Fixture oracles | 55 fixture oracles; each good sample passes and every bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round; of E70–E78, 3 run the candidate's tests against seeded mutants, and E78 also requires that two equivalent mutants survive |
+| Fixture oracles | 56 fixture oracles; each good sample passes and every bad sample fails. Executable controls cover timing, retry recovery, real SQLite, public-verdict propagation and mutation sensitivity; E78 also requires that two equivalent mutants survive |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | Regression guard: all 110 checks pass, including adversarial-probe coverage for new technique sections. A pass means no known regression, not a quality score |
@@ -220,7 +233,7 @@ evals/                              # Public/shared prompt eval assets
   oracles/                          # Shared fixture oracle helpers
 
 skill-development/                  # Development-only evals and quality gates
-  evals/                            # 78 rubric evals, schema, scorecard, health plan, fixture oracles
+  evals/                            # 79 rubric evals, schema, scorecard, health plan, fixture oracles
   scripts/check-all.py              # Runs all local non-LLM gates
   scripts/                          # Static audit, oracle runners, mini-repos, prompt-eval runner, scoring tools
 

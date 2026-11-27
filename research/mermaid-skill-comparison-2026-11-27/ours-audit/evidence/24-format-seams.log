@@ -1,0 +1,121 @@
+   297	
+   298	const init = (body: string, ...entries: Entry[]): string =>
+   299	  `%%{init: ${JSON.stringify(configAt(entries))}}%%\n${body}`
+   300	const frontmatter = (body: string, ...entries: Entry[]): string =>
+   301	  `---\nconfig: ${JSON.stringify(configAt(entries))}\n---\n${body}`
+   302	const initVars = (body: string, themeVariables: Record<string, unknown>): string =>
+   303	  `%%{init: ${JSON.stringify({ themeVariables })}}%%\n${body}`
+   304	
+   305	const shown = (value: unknown): string => typeof value === 'string' ? value : JSON.stringify(value)
+   306	const refusal = (path: string, value: unknown): string =>
+   307	  `${path}: ${JSON.stringify(shown(value))} is not a CSS color`
+   308	const renderFailed = (reason: string) => ({ code: 'RENDER_FAILED' as const, reason: expect.stringContaining(reason), origin: 'config' as const })
+   309	
+   310	function diagnosticFor(path: string, value: unknown): Record<string, string> {
+   311	  return path.startsWith('themeVariables.')
+   312	    ? { code: 'INVALID_THEME_COLOR', key: path.slice('themeVariables.'.length), value: shown(value) }
+   313	    : { code: 'INVALID_CONFIG_COLOR', path, value: shown(value) }
+   314	}
+   315	
+   316	async function mcpRender(tool: string, source: string, options?: RenderOptions): Promise<unknown> {
+   317	  const response = await handleHostedRequest(
+   318	    { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: tool, arguments: { source, ...(options ? { options } : {}) } } },
+   319	    {
+   320	      async execute() { return { ok: true, value: null, logs: [] } },
+   321	      async renderPng(input, opts) {
+   322	        return { ...renderMermaidPNGWithReceipt(input, opts), warnings: [] }
+   323	      },
+   324	    },
+   325	  )
+   326	  return JSON.parse((response?.result as { content: Array<{ text: string }> }).content[0]!.text)
+   327	}
+   328	
+   329	/** One named refusal on every public route. PNG, browser-lazy, CLI and MCP load
+   330	 * heavier machinery, so callers run this once per family probe, not per key. */
+   331	async function expectRefusedOnEveryRoute(
+   332	  source: string,
+   333	  options: RenderOptions | undefined,
+   334	  named: string,
+   335	  diagnostic: Record<string, string>,
+   336	): Promise<void> {
+   337	  expect(() => renderMermaidSVG(source, options), 'svg').toThrow(named)
+   338	  expect(() => renderMermaidPNG(source, options), 'png').toThrow(named)
+   339	  await expect(renderMermaidSVGAsync(source, options)).rejects.toThrow(named)
+   340	  for (const colorMode of ['none', 'ansi16', 'ansi256', 'truecolor', 'html'] as const) {
+   341	    expect(() => renderMermaidASCII(source, { ...options, colorMode }), colorMode).toThrow(named)
+   342	  }
+   343	  expect(verifyMermaid(source, { renderOptions: options }).warnings, 'verify').toContainEqual(renderFailed(named))
+   344	  const parsed = parseRegisteredMermaid(source)
+   345	  expect(parsed.ok).toBe(true)
+   346	  if (parsed.ok) {
+   347	    expect(verifyMermaid(parsed.value, { renderOptions: options }).warnings, 'verify parsed').toContainEqual(renderFailed(named))
+   348	  }
+   349	  for (const format of ['svg', 'ascii', 'unicode'] as const) {
+   350	    expect(runBatchLine(JSON.stringify({ op: 'render', source, options: { ...options, format } }), 0), `cli ${format}`)
+   351	      .toMatchObject({ ok: false, error: { ...diagnostic, message: expect.stringContaining(named) } })
+   352	  }
+   353	  for (const tool of ['render_svg', 'render_ascii', 'render_png']) {
+   354	    expect(await mcpRender(tool, source, options), `mcp ${tool}`).toMatchObject({ ok: false, error: diagnostic })
+   355	  }
+   356	  expect(projectRenderErrorDiagnostic({ ...diagnostic, message: 'forged' }), 'forged diagnostic')
+   357	    .toEqual({ code: 'RENDER_FAILED', message: 'Rendering failed' })
+   358	}
+   359	
+   360	describe.each([...FAMILIES])('theme color admission (#303): $family', row => {
+   361	  test.each([...row.paints])('%s refuses every surviving malformed paint by name', path => {
+   362	    for (const value of INVALID) {
+   363	      const source = init(row.body, [path, value])
+   364	      const expected = row.invalidAfterInit?.(path, value) ?? { kind: 'refused', value }
+   365	      if (expected.kind === 'removed') {
+   366	        let effective: unknown = normalizeMermaidSource(source).config
+src/__tests__/quadrant-style.test.ts:3:// mermaid-js/mermaid#5173, documented at mermaid.js.org/syntax/quadrantChart):
+src/__tests__/quadrant-style.test.ts:13:// layout (one resolution site, src/quadrant/point-style.ts) → renderer, and
+src/__tests__/quadrant-style.test.ts:18:import { parseQuadrantChart } from '../quadrant/parser.ts'
+src/__tests__/quadrant-style.test.ts:19:import { layoutQuadrantChart } from '../quadrant/layout.ts'
+src/__tests__/quadrant-style.test.ts:20:import { QuadrantStyleColorError, resolvePointVisual } from '../quadrant/point-style.ts'
+src/__tests__/quadrant-style.test.ts:37:// The official upstream docs example (also eval corpus/quadrant/2).
+src/__tests__/quadrant-style.test.ts:38:const STYLED = `quadrantChart
+src/__tests__/quadrant-style.test.ts:42:  quadrant-1 We should expand
+src/__tests__/quadrant-style.test.ts:43:  quadrant-2 Need to promote
+src/__tests__/quadrant-style.test.ts:44:  quadrant-3 Re-evaluate
+src/__tests__/quadrant-style.test.ts:45:  quadrant-4 May be improved
+src/__tests__/quadrant-style.test.ts:61:describe('quadrant parser models point styles and classDefs', () => {
+src/__tests__/quadrant-style.test.ts:65:    const chart = parse(`quadrantChart
+src/__tests__/quadrant-style.test.ts:71:    const svg = renderMermaidSVG(`quadrantChart
+src/__tests__/quadrant-style.test.ts:77:    expect(() => parse('quadrantChart\n  Broken: [0.2, 0.8] color: rgb(1, 2, 3')).toThrow('unbalanced parentheses')
+src/__tests__/quadrant-style.test.ts:106:    expect(() => parse('quadrantChart\n  A: [0.5, 0.5] radius: big')).toThrow(/radius/i)
+src/__tests__/quadrant-style.test.ts:107:    expect(() => parse('quadrantChart\n  A: [0.5, 0.5] banana: "spl;it"')).toThrow(/style/i)
+src/__tests__/quadrant-style.test.ts:108:    expect(() => parse('quadrantChart\n  A: [0.5, 0.5] color: "x;{}"')).toThrow(/color|style/i)
+src/__tests__/quadrant-style.test.ts:112:describe('quadrant authored paint admission (#303)', () => {
+src/__tests__/quadrant-style.test.ts:119:          `quadrantChart\n  A: [0.5, 0.5] ${property}: ${value}`,
+src/__tests__/quadrant-style.test.ts:120:          `quadrantChart\n  classDef bad ${property}: ${value}\n  A:::bad: [0.5, 0.5]`,
+src/__tests__/quadrant-style.test.ts:140:      const source = `quadrantChart\n  A: [0.5, 0.5] color: ${value}, stroke-color: ${value}`
+src/__tests__/quadrant-style.test.ts:148:    const source = 'quadrantChart\n  A: [0.5, 0.5] color: notacolor'
+src/__tests__/quadrant-style.test.ts:149:    for (const format of ['svg', 'ascii', 'unicode'] as const) {
+src/__tests__/quadrant-style.test.ts:150:[Omitted long matching line]
+src/__tests__/quadrant-style.test.ts:151:[Omitted long matching line]
+src/__tests__/quadrant-style.test.ts:162:    expect(projectRenderErrorDiagnostic({ code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: 'forged' }))
+src/__tests__/quadrant-style.test.ts:166:    try { renderMermaidSVG(`quadrantChart\n  A: [0.5, 0.5] color: ${veryLong}`) } catch (error) { thrown = error }
+src/__tests__/quadrant-style.test.ts:178:describe('quadrant point style resolution', () => {
+src/__tests__/quadrant-style.test.ts:199:    const chart2 = parse('quadrantChart\n  P:::ghost: [0.5, 0.5]')
+src/__tests__/quadrant-style.test.ts:210:describe('quadrant layout consumes resolved point styles', () => {
+src/__tests__/quadrant-style.test.ts:220:    const positioned = layoutQuadrantChart(parse('quadrantChart\n  P: [0.5, 0.5]'))
+src/__tests__/quadrant-style.test.ts:235:describe('quadrant SVG renders point styles', () => {
+src/__tests__/quadrant-style.test.ts:256:    expect(circleFor(svg, 'Campaign B')).toContain('class="quadrant-point class1"')
+src/__tests__/quadrant-style.test.ts:260:    const plain = renderMermaidSVG('quadrantChart\n  P: [0.5, 0.5]')
+src/__tests__/quadrant-style.test.ts:263:    expect(c).toContain('class="quadrant-point"')
+src/__tests__/quadrant-style.test.ts:275:describe('quadrant agent body models styles structurally', () => {
+src/__tests__/quadrant-style.test.ts:276:  it('the upstream styled example parses to a structured quadrant body', () => {
+src/__tests__/quadrant-style.test.ts:280:    expect(p.value.body.kind).toBe('quadrant')
+src/__tests__/quadrant-style.test.ts:337:    const p = parseMermaid('quadrantChart\n  A: [0, 0] ::: foo')
+src/__tests__/quadrant-style.test.ts:342:    const bad = parseMermaid('quadrantChart\n  A: [0, 0] banana: "spl;it"')
+src/__tests__/quadrant-style.test.ts:353:  const UPSTREAM = 'quadrantChart\n    classDef constructor fill:#ff0000\n    Microsoft:::constructor: [0.75, 0.75]'
+src/__tests__/quadrant-style.test.ts:362:    const inert = v.warnings.filter(w => w.code === 'UNSUPPORTED_SYNTAX' && w.syntax === 'quadrant_style_property')
+src/__tests__/quadrant-style.test.ts:387:    const chart = parseQuadrantChart(toMermaidLines('quadrantChart\n  classDef __proto__ radius: 11\n  A:::__proto__: [0.5, 0.5]'))
+src/__tests__/quadrant-style.test.ts:394:    const chart = parseQuadrantChart(toMermaidLines('quadrantChart\n  A:::constructor: [0.5, 0.5]'))
+src/__tests__/quadrant-style.test.ts:400:    const p = parseMermaid('quadrantChart\n  A: [0.2, 0.2] banana: split')
+src/__tests__/authored-style-color-admission.test.ts:34:describe('authored style color admission (#303, source/typed slice)', () => {
+src/__tests__/authored-style-color-admission.test.ts:202:    for (const format of ['svg', 'ascii', 'unicode'] as const) {
+src/__tests__/authored-style-color-admission.test.ts:203:      const batch = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }
+ff968d9 Draw a Class style over its style classes, and keep Mermaid drawing it so
+834c83d Prepare 0.5.5 release notes

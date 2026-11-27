@@ -1,0 +1,56 @@
+     8 AGENTS.md
+   196 CLAUDE.md
+   222 src/__tests__/authored-style-color-admission.test.ts
+   406 src/__tests__/quadrant-style.test.ts
+   235 src/__tests__/png-fonts.test.ts
+    69 src/__tests__/agent-png-determinism.test.ts
+   163 src/__tests__/property-source-preserving-edit.test.ts
+   703 src/__tests__/agent-source-preserving-edit.test.ts
+   104 src/__tests__/fanout-symmetry.test.ts
+   143 src/__tests__/marker-raster-parity-browser.test.ts
+    13 scripts/ci/unit-test-files.ts
+   951 .github/workflows/ci.yml
+    66 .github/workflows/coverage.yml
+    58 e2e/run-browser-contracts.ts
+  3337 total
+108:    lines.push({ text: text.slice(start, match.index), eol: match[0] })
+111:  if (start < text.length) lines.push({ text: text.slice(start), eol: '' })
+281:      let { text, eol } = line
+283:        text += eol + lines[next]!.text
+284:        eol = lines[next]!.eol
+286:        if (found?.size && [...found.keys()].every(statement => canonical.has(statement))) { line = { text, eol }; at = next; break }
+305:  for (const line of lines) { starts.push(offset); offset += line.text.length + line.eol.length }
+1537:function renderPlan(lines: readonly AuthoredLine[], plan: Plan, eol: string): string {
+1540:  const emit = (text: string, end: string) => { out.push(pending, text); pending = end || eol }
+1542:    for (const text of plan.before.get(index) ?? []) emit(text, eol)
+1543:    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, line.eol)
+1544:    for (const text of plan.after.get(index) ?? []) emit(text, eol)
+1547:  return out.join('') + (last && last.eol === '' && !plan.after.get(lines.length - 1)?.length && !plan.removed.has(lines.length - 1) ? '' : pending)
+1573:  const eol = /\r\n/.test(authored) ? '\r\n' : '\n'
+1627:      const source = nextWrapper + renderPlan(authoredLines, plan, eol)
+   107	// cannot be mistaken for a reply.
+   108	const REPLY = '\u0001am-upstream\u0001'
+   109	
+   110	const WORKER = `
+   111	import { JSDOM } from 'jsdom'
+   112	const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'http://localhost/' })
+   113	for (const key of ['window', 'document', 'navigator', 'HTMLElement', 'SVGElement', 'Element', 'Node', 'Option', 'location', 'localStorage']) {
+   114	  Object.defineProperty(globalThis, key, { configurable: true, value: dom.window[key] })
+   115	}
+   116	const { default: mermaid } = await import('mermaid')
+   117	mermaid.initialize({ startOnLoad: false })
+   118	const { createZenUMLReference } = await import(${JSON.stringify(new URL('../../../eval/mermaid-modern-compat/zenuml-reference.mjs', import.meta.url).href)})
+   119	const { readFileSync } = await import('node:fs')
+   120	const mermaidVersion = JSON.parse(readFileSync(new URL('../package.json', import.meta.resolve('mermaid')), 'utf8')).version
+   121	const zen = createZenUMLReference(mermaid, mermaidVersion)
+   122	const referenceDiagram = source => zen.diagram(source)
+   123	const REPLY = ${JSON.stringify(REPLY)}
+   124	function flowchart(db) {
+   125	  if (typeof db?.getVertices !== 'function' || typeof db?.getEdges !== 'function') return undefined
+   126	  return {
+   127	    vertices: [...db.getVertices().values()].map(v => ({ id: v.id, text: String(v.text ?? ''), type: v.type })),
+   128	    edges: db.getEdges().map(e => ({ start: e.start, end: e.end, type: e.type, stroke: e.stroke, text: String(e.text ?? '') })),
+ff968d9 Draw a Class style over its style classes, and keep Mermaid drawing it so
+0cfd100 Place new styling statements after what Mermaid needs them to follow
+e0f1f0c Keep statements Mermaid applies only to existing entities after them
+ea27649 Keep a state note after its state's first mention in source-preserving edits

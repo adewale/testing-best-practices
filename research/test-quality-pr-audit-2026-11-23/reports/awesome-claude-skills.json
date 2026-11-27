@@ -1,0 +1,15 @@
+{
+  "repository": "adewale/awesome-claude-skills",
+  "total_prs": 0,
+  "pages_checked": 1,
+  "enumeration": {
+    "url": "https://api.github.com/repos/adewale/awesome-claude-skills/pulls?state=all&per_page=100&page=1",
+    "page_sizes": [
+      0
+    ],
+    "result": "GitHub returned an empty array on the first page for all pull request states, with no author or date filter."
+  },
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

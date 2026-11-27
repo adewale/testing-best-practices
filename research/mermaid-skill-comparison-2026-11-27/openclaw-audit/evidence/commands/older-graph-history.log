@@ -1,0 +1,8 @@
+5c232f904dba30c04edc29478794b4eb679c670e	fix(layout): keep foreign shafts and repeated edges visible [skip ci]
+74cd725687bc70a90bfcf31352e371f91cb4df2a	Add selectable Agentic layered layout alongside ELK (#449)
+7c5e2b0df1806b05e5081a01ef52cf8d487424b9	Keep benchmarks local and reuse per-project evidence
+fdd06ba72393a904f7c2d45f2cdc7fb1dcbd654a	Merge current main and preserve strengthened route contracts
+f58b8e48bf7b1afb76e4f4daf646e907d92217d8	Qualify geometry contracts and reviewed render changes
+389cdda8a475c86ef9917d4cca2278a7d9dc0cc2	test: replace weak oracles and remove redundant test ceremony
+e3779f23b8600242d4b501d4be238175efaa2f16	fix: align route proofs and reuse certified layout choices
+1af833658147cd4581888b11ce5ad8842001d3a0	refactor: unify diagram quality metrics and bounded route selection

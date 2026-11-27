@@ -1,0 +1,11 @@
+/actions/workflows/ci.yml/runs?head_sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004&per_page=10
+count 0
+/actions/runs/43872218670/jobs?per_page=20
+133316046645 unit (1/3) success
+133316046968 unit (2/3) success
+133316046971 unit (3/3) failure
+[('.github', 10452, 'Process completed with exit code 1.'), ('src/__tests__/png-fonts.test.ts', 89, '\n      at /home/runner/work/agentic-mermaid/agentic-mermaid/src/__tests__/png-fonts.test.ts:89:55'), ('.github', 1, '"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"')]
+133321519905 merge skipped
+/check-runs/137789694316/annotations
+{'path': '.github', 'start_line': 10571, 'end_line': 10571, 'message': 'Process completed with exit code 1.', 'title': '', 'annotation_level': 'failure'}
+{'path': 'src/__tests__/png-fonts.test.ts', 'start_line': 89, 'end_line': 89, 'message': '\n      at /home/runner/work/agentic-mermaid/agentic-mermaid/src/__tests__/png-fonts.test.ts:89:55', 'title': 'error: CI requires a CJK font: install fonts-wqy-zenhei or set AM_CJK_FONT_DIR', 'annotation_level': 'failure'}

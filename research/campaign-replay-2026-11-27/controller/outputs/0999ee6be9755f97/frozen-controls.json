@@ -1,0 +1,805 @@
+{
+  "participantFingerprint": "de12b4afd96f2fe30e9319a29491cd47f441801bd03516d820f27cc94dba7345",
+  "baselineExpectationsVerified": false,
+  "productUnittest": {
+    "exit": 0,
+    "output": "test_browser_negative_rejection_is_quality_not_fast_svg_success (mermaid_baseline_test.BaselineControls.test_browser_negative_rejection_is_quality_not_fast_svg_success) ... ok\ntest_declared_fresh_window_cannot_override_mixed_or_missing_measurement_uuids (mermaid_baseline_test.BaselineControls.test_declared_fresh_window_cannot_override_mixed_or_missing_measurement_uuids) ... ok\ntest_direct_mermaid_intersection_never_divides_unequal_candidate_cohorts (mermaid_baseline_test.BaselineControls.test_direct_mermaid_intersection_never_divides_unequal_candidate_cohorts) ... ok\ntest_missing_or_duplicate_round_cannot_manufacture_success (mermaid_baseline_test.BaselineControls.test_missing_or_duplicate_round_cannot_manufacture_success) ... ok\ntest_original_assertions_keep_unavailable_in_mermaid_denominator (mermaid_baseline_test.BaselineControls.test_original_assertions_keep_unavailable_in_mermaid_denominator) ... ok\ntest_parser_workflow_cost_and_unavailable_negative_do_not_become_api_or_syntax_credit (mermaid_baseline_test.BaselineControls.test_parser_workflow_cost_and_unavailable_negative_do_not_become_api_or_syntax_credit) ... ok\ntest_predeclared_control_envelope_leaves_ambiguous_or_noisy_cost_unresolved (mermaid_baseline_test.BaselineControls.test_predeclared_control_envelope_leaves_ambiguous_or_noisy_cost_unresolved) ... ok\ntest_real_typescript_document_exports_remain_portable_and_reject_changed_data (mermaid_baseline_test.BaselineControls.test_real_typescript_document_exports_remain_portable_and_reject_changed_data) ... ok\ntest_version_rejection_happens_before_output_writes (mermaid_baseline_test.BaselineControls.test_version_rejection_happens_before_output_writes) ... ok\ntest_zero_duration_rejected_attempts_are_retained (mermaid_baseline_test.BaselineControls.test_zero_duration_rejected_attempts_are_retained) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.134s\n\nOK\n"
+  },
+  "publicManifestValidation": {
+    "method": "Full public manifest validation including public stubs. No hidden prompts were hydrated and no cases were run by this validator.",
+    "commands": [
+      {
+        "command": "node scripts/eval/materialize-skill-runner-manifest.ts --manifest skill-evals/shared-benchmark.json --repo-root . --out .case-runner.json",
+        "exit": 0,
+        "stdout": "Wrote runner manifest <temp-repo>/.case-runner.json",
+        "warningCount": 0,
+        "stderr": ""
+      },
+      {
+        "command": "/usr/bin/python3 -B participant/support/skill-eval-harness/skill_benchmark.py validate .case-runner.json",
+        "exit": 0,
+        "stdout": "OK: agentic-mermaid-project-skills \u2014 51 cases, 4 ablations",
+        "warningCount": 32,
+        "stderr": "WARN pos-family-c4-context-fixture: assertion 'c4-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-c4-context-fixture: assertion 'preserved-interactions' value 'HTTPS' appears in prompt (leakage; case may saturate)\nWARN pos-family-c4-context-fixture: assertion 'preserved-interactions' value 'Records purchase' appears in prompt (leakage; case may saturate)\nWARN pos-family-c4-context-fixture: assertion 'preserved-interactions' value 'provider' appears in prompt (leakage; case may saturate)\nWARN pos-family-flowchart-library-fixture: assertion 'library-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-sequence-code-mode-fixture: assertion 'sequence-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-class-library-fixture: assertion 'class-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-class-library-fixture: assertion 'receipt' value 'Receipt' appears in prompt (leakage; case may saturate)\nWARN pos-family-er-library-fixture: assertion 'er-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-er-library-fixture: assertion 'product' value 'PRODUCT' appears in prompt (leakage; case may saturate)\nWARN pos-family-journey-library-fixture: assertion 'journey-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-journey-library-fixture: assertion 'review-order' value 'Review order' appears in prompt (leakage; case may saturate)\nWARN pos-family-xychart-library-fixture: assertion 'xychart-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-architecture-library-fixture: assertion 'architecture-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-state-library-fixture: assertion 'state-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-state-library-fixture: assertion 'failed' value 'Failed' appears in prompt (leakage; case may saturate)\nWARN pos-family-state-library-fixture: assertion 'failed' value 'error' appears in prompt (leakage; case may saturate)\nWARN pos-family-pie-library-fixture: assertion 'pie-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-quadrant-library-fixture: assertion 'quadrant-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-quadrant-library-fixture: assertion 'mcp' value 'MCP setup' appears in prompt (leakage; case may saturate)\nWARN pos-family-gantt-library-fixture: assertion 'gantt-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-gantt-library-fixture: assertion 'docs' value 'Docs' appears in prompt (leakage; case may saturate)\nWARN pos-family-mindmap-library-fixture: assertion 'mindmap-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-mindmap-library-fixture: assertion 'validation' value 'Validation' appears in prompt (leakage; case may saturate)\nWARN pos-family-gitgraph-library-fixture: assertion 'gitgraph-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-gitgraph-library-fixture: assertion 'docs' value 'docs' appears in prompt (leakage; case may saturate)\nWARN pos-family-packet-native-fixture: assertion 'packet-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-kanban-native-fixture: assertion 'kanban-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-requirement-native-fixture: assertion 'requirement-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-block-native-fixture: assertion 'block-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-treemap-native-fixture: assertion 'treemap-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nWARN pos-family-ishikawa-native-fixture: assertion 'ishikawa-loop' value 'verifyMermaid' appears in prompt (leakage; case may saturate)\nnote: version-1 manifest grades with behavior-preserving defaults; `skill-benchmark migrate --check` shows the version-2 upgrade (severity + oracle tiers stamped, judgment calls listed)"
+      }
+    ]
+  },
+  "editorGrade": {
+    "method": "Upstream v0.6.0 grade_case_variant on original or candidate manifest and saved text. No model or full manifest benchmark ran.",
+    "scriptOraclesEnabled": false,
+    "cases": [
+      "pos-live-editor-source-of-truth",
+      "adv-reject-editor-html-direct-edit"
+    ],
+    "counts": {
+      "incorrect": 7,
+      "correct": 11
+    },
+    "controls": [
+      {
+        "control": "maintain_owner",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "accept",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "maintain_owner",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "accept",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "regenerate_paraphrase",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "accept",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "regenerate_paraphrase",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "accept",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "assembler_in_context",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "accept",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "assembler_in_context",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "accept",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "direct_edit_negated_rebuild",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "direct_edit_negated_rebuild",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "wrong_owner_only",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "wrong_owner_only",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "skip_rebuild_only",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "skip_rebuild_only",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "direct_edit_only",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "direct_edit_only",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "behavior_without_formats",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "behavior_without_formats",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "accept",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "no_relevant_content",
+        "case": "pos-live-editor-source-of-truth",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      },
+      {
+        "control": "no_relevant_content",
+        "case": "adv-reject-editor-html-direct-edit",
+        "expected": "reject",
+        "decision": "reject",
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "type": "structured_output"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "type": "json_field_equals"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "type": "structured_output"
+          }
+        ]
+      }
+    ]
+  },
+  "imageDecisions": {
+    "method": "Actual candidate TypeScript test callbacks and cookbook --check under Node. Renderer output is controlled by injecting real fixture bytes. Native rasterization, Bun discovery and workflow jobs did not run.",
+    "assets": {
+      "cookbook": {
+        "asset": "docs/assets/style-cookbook/cupertino-prototype.png",
+        "recordedSHA256": "7e50d010c627341c2dcf63fb30f0e364f3461027a49c78447272421c965305fd",
+        "baseMatchesReceipt": true,
+        "inputs": {
+          "original": {
+            "bytes": 16125,
+            "dimensions": [
+              900,
+              186
+            ],
+            "encodedSHA256": "7e50d010c627341c2dcf63fb30f0e364f3461027a49c78447272421c965305fd",
+            "rgbaSHA256": "bce46165788241e8fc8505535f3108d43e09632684a6b644784ce13a17edae6f",
+            "samePixelSequence": true,
+            "sameDimensionsAndPixels": true,
+            "sameApprovedBytes": true
+          },
+          "reencoded": {
+            "bytes": 17681,
+            "dimensions": [
+              900,
+              186
+            ],
+            "encodedSHA256": "ff4743089ba02f73578403b3dfac0838e52504c51c47e2bd82e183a15cea6ede",
+            "rgbaSHA256": "bce46165788241e8fc8505535f3108d43e09632684a6b644784ce13a17edae6f",
+            "samePixelSequence": true,
+            "sameDimensionsAndPixels": true,
+            "sameApprovedBytes": false
+          },
+          "visiblePixel": {
+            "bytes": 17682,
+            "dimensions": [
+              900,
+              186
+            ],
+            "encodedSHA256": "6fd4b83570657392d47488cc0cad49a516a3ae08ee528c78afd818854ed0fe58",
+            "rgbaSHA256": "ce46e98ec7c8c115743930931f954a4a0e9a03a9e6e0c6a91e779654078725e7",
+            "samePixelSequence": false,
+            "sameDimensionsAndPixels": false,
+            "sameApprovedBytes": false
+          },
+          "dimensions": {
+            "bytes": 22066,
+            "dimensions": [
+              186,
+              900
+            ],
+            "encodedSHA256": "69f5268b9317b178ff5dce031efc095c8b8a9e8804a098e3d92fd18c5c0f04b4",
+            "rgbaSHA256": "bce46165788241e8fc8505535f3108d43e09632684a6b644784ce13a17edae6f",
+            "samePixelSequence": true,
+            "sameDimensionsAndPixels": false,
+            "sameApprovedBytes": false
+          }
+        },
+        "freshness": {
+          "cookbook-regeneration": {
+            "original": {
+              "exit": 0,
+              "callback": "keeps cookbook screenshots in sync with the generator",
+              "decision": "accept"
+            },
+            "reencoded": {
+              "exit": 0,
+              "callback": "keeps cookbook screenshots in sync with the generator",
+              "decision": "reject",
+              "error": "REPLAY_ASSERTION toEqual "
+            },
+            "visiblePixel": {
+              "exit": 0,
+              "callback": "keeps cookbook screenshots in sync with the generator",
+              "decision": "reject",
+              "error": "REPLAY_ASSERTION toEqual "
+            },
+            "dimensions": {
+              "exit": 0,
+              "callback": "keeps cookbook screenshots in sync with the generator",
+              "decision": "reject",
+              "error": "REPLAY_ASSERTION toEqual "
+            }
+          },
+          "cookbook-cli": {
+            "original": {
+              "decision": "accept",
+              "exit": 0
+            },
+            "reencoded": {
+              "decision": "reject",
+              "exit": 1
+            },
+            "visiblePixel": {
+              "decision": "reject",
+              "exit": 1
+            },
+            "dimensions": {
+              "decision": "reject",
+              "exit": 1
+            }
+          }
+        },
+        "approvals": {
+          "original": {
+            "exit": 0,
+            "callback": "binds recorded visual review evidence to each prototype screenshot",
+            "decision": "accept"
+          },
+          "reencoded": {
+            "exit": 0,
+            "callback": "binds recorded visual review evidence to each prototype screenshot",
+            "decision": "reject",
+            "error": "REPLAY_ASSERTION toBe docs/assets/style-cookbook/cupertino-prototype.png"
+          }
+        },
+        "existingPixelHelper": {
+          "original": {
+            "sameDimensions": true,
+            "sameRGBASequence": true,
+            "equivalent": true
+          },
+          "reencoded": {
+            "sameDimensions": true,
+            "sameRGBASequence": true,
+            "equivalent": true
+          },
+          "visiblePixel": {
+            "sameDimensions": true,
+            "sameRGBASequence": false,
+            "equivalent": false
+          },
+          "dimensions": {
+            "sameDimensions": false,
+            "sameRGBASequence": true,
+            "equivalent": false
+          }
+        }
+      },
+      "section": {
+        "asset": "src/__tests__/testdata/section-b-brand-evidence.png",
+        "recordedSHA256": "f76d64d49383f30cae3438d59096e197c81220b3f8c5bafa8bb7eb02f464db56",
+        "baseMatchesReceipt": true,
+        "inputs": {
+          "original": {
+            "bytes": 1910706,
+            "dimensions": [
+              1560,
+              17064
+            ],
+            "encodedSHA256": "f76d64d49383f30cae3438d59096e197c81220b3f8c5bafa8bb7eb02f464db56",
+            "rgbaSHA256": "e8e970d6261ad9f6be00da0760bc2f153ca1328eba79c2e6537bee4d9eebbd6f",
+            "samePixelSequence": true,
+            "sameDimensionsAndPixels": true,
+            "sameApprovedBytes": true
+          },
+          "reencoded": {
+            "bytes": 1817170,
+            "dimensions": [
+              1560,
+              17064
+            ],
+            "encodedSHA256": "3974415b5ff6c875329a969467061d13a3874ddcaa3b8c1140a17e78e4cef90c",
+            "rgbaSHA256": "e8e970d6261ad9f6be00da0760bc2f153ca1328eba79c2e6537bee4d9eebbd6f",
+            "samePixelSequence": true,
+            "sameDimensionsAndPixels": true,
+            "sameApprovedBytes": false
+          },
+          "visiblePixel": {
+            "bytes": 1817169,
+            "dimensions": [
+              1560,
+              17064
+            ],
+            "encodedSHA256": "3b757907c175989fb9e2242207cbaa6c46d0de59593f474bc73f3cb9d4dc26cc",
+            "rgbaSHA256": "bf1cf6c2897df925953f72d4708180c97e05c8821a46dd04474c6b66065e8563",
+            "samePixelSequence": false,
+            "sameDimensionsAndPixels": false,
+            "sameApprovedBytes": false
+          },
+          "dimensions": {
+            "bytes": 1817109,
+            "dimensions": [
+              1560,
+              17063
+            ],
+            "encodedSHA256": "9fb7e4bd554a7b0a24af16c996e6f3612d940172139196673f56d29f7260ed88",
+            "rgbaSHA256": "062e7ec6484eb089d6bff9f3a7441117323db6d263051975c1e77875349fa408",
+            "samePixelSequence": false,
+            "sameDimensionsAndPixels": false,
+            "sameApprovedBytes": false
+          }
+        },
+        "freshness": {
+          "section-regeneration": {
+            "original": {
+              "exit": 0,
+              "callback": "byte-matches the registry-driven renderer output and is reviewable at native size",
+              "decision": "accept"
+            },
+            "reencoded": {
+              "exit": 0,
+              "callback": "byte-matches the registry-driven renderer output and is reviewable at native size",
+              "decision": "reject",
+              "error": "REPLAY_ASSERTION toBe Section B PNG differs from the reviewed golden; inspect the candidate before updating visual-approval.json"
+            },
+            "visiblePixel": {
+              "exit": 0,
+              "callback": "byte-matches the registry-driven renderer output and is reviewable at native size",
+              "decision": "reject",
+              "error": "REPLAY_ASSERTION toBe Section B PNG differs from the reviewed golden; inspect the candidate before updating visual-approval.json"
+            },
+            "dimensions": {
+              "exit": 0,
+              "callback": "byte-matches the registry-driven renderer output and is reviewable at native size",
+              "decision": "reject",
+              "error": "REPLAY_ASSERTION toBe Section B PNG differs from the reviewed golden; inspect the candidate before updating visual-approval.json"
+            }
+          }
+        },
+        "approvals": {
+          "original": {
+            "exit": 0,
+            "callback": "the recorded visual review approves the exact committed rendering bytes",
+            "decision": "accept"
+          },
+          "reencoded": {
+            "exit": 0,
+            "callback": "the recorded visual review approves the exact committed rendering bytes",
+            "decision": "reject",
+            "error": "Section B visual approval covers f76d64d49383f30cae3438d59096e197c81220b3f8c5bafa8bb7eb02f464db56, not 3974415b5ff6c875329a969467061d13a3874ddcaa3b8c1140a17e78e4cef90c; inspect the generated sheet at native size before approving it"
+          }
+        }
+      }
+    }
+  },
+  "workflowFixture": {
+    "method": "Original prerequisite statements under Node and unprivileged shell command recorders for identified YAML steps. No real font install, rendering, shard, upload or merge.",
+    "prerequisite": {
+      "missingCI": {
+        "exit": 1,
+        "declaredPrerequisiteMessage": true
+      },
+      "presentCI": {
+        "exit": 0,
+        "declaredPrerequisiteMessage": false
+      },
+      "missingLocal": {
+        "exit": 0,
+        "declaredPrerequisiteMessage": false
+      }
+    },
+    "canonical": {
+      "shards": [
+        "1/3",
+        "2/3",
+        "3/3"
+      ],
+      "shardCommandIndex": 6,
+      "recognizedSetupBeforeShard": true,
+      "setupCommands": [
+        {
+          "index": 3,
+          "exit": 0,
+          "aptGetCalls": [
+            [
+              "update"
+            ],
+            [
+              "install",
+              "-y",
+              "fonts-wqy-zenhei"
+            ]
+          ],
+          "beforeShard": true
+        }
+      ],
+      "mergeNeeds": null,
+      "mergeCommand": [],
+      "sharedActions": []
+    },
+    "coverage": {
+      "shards": [
+        "1/3",
+        "2/3",
+        "3/3"
+      ],
+      "shardCommandIndex": 4,
+      "recognizedSetupBeforeShard": false,
+      "setupCommands": [],
+      "mergeNeeds": "unit",
+      "mergeCommand": [
+        "bun run scripts/ci/merge-lcov.ts coverage-shards coverage/lcov.info 3"
+      ],
+      "sharedActions": []
+    }
+  }
+}

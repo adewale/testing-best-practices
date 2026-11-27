@@ -1,0 +1,511 @@
+   145	Ordinary structured mutation re-serializes the whole diagram canonically.
+   146	Source-preserving mode instead returns the authored source with only the
+   147	edited statements changed. It accepts every operation of every structured
+   148	family:
+   149	
+   150	1. The operations run as an ordinary structured edit; an operation that fails
+   151	   there fails here with the same error and index.
+   152	2. The difference between the canonical text before and after the edit is
+   153	   replayed on the authored lines. Each canonical statement is traced to the
+   154	   authored line that produced it (by the family source map's identities, by
+   155	   identical spelling, or by that line's own parsed reading). A changed value is
+   156	   spliced into the line that spells it, keeping its quoting; a line whose
+   157	   every statement goes away is deleted; a new statement is written in
+   158	   canonical spelling beside its neighbour, indented like its authored
+   159	   siblings; a reordered statement keeps its authored line. Comments, blank
+   160	   lines, directives, frontmatter, `:::class` shorthand and every other line
+   161	   are copied byte for byte.
+   162	3. The candidate is published only when the shared parser reads it back as the
+   163	   same diagram as the canonical edit: the same facts and the same canonical
+   164	   statements. Statement order the facts do not carry (declaration order, for
+   165	   example) may follow the authored order. It must also leave no statement
+   166	   before the entity it applies to that the authored source did not have
+   167	   there: Mermaid 12.2.0 applies a flowchart `class` or `click`, and a Class
+   168	   `style`, `cssClass`, link or `classDef`, only to an entity (or style class
+   169	   membership) that exists where the statement stands, though our reader
+   170	   applies it anyway (the family's `existingTargets`, which `verify` also
+   171	   reports).
+   172	4. When no local change passes, the canonical source is returned with
+   173	   `preservation: { method: 'canonical', reason }`; otherwise the result
+   174	   carries `preservation: { method: 'local' }`. A diagram that was not parsed
+   175	   from source has no authored lines and is always written canonically.
+   176	
+   177	New statements are written in the same portable spelling as canonical
+   178	serialization and reference existing elements by their identities. A
+   179	statement whose authored line also carries other statements (a node declared
+   180	inline on an edge) is edited inside that line where the changed text is found
+   181	once; otherwise the line is rewritten as its remaining statements. A
+   257	that would have to follow `S --> T` past a note that declares `T` there; the
+   258	receipt names the facts the closest candidate reads otherwise), a classDef
+   259	that would have to pass another classDef or a `style` to follow the new
+   260	`cssClass` it needs (the receipt names the classDef and the class whose
+   261	style-class assignment it would precede), an
+   262	edit that empties a family below its grammar floor, a canonical difference
+   263	beyond the diff budget, and edits to wrappers the canonical writer does not
+   264	own. The receipt names the reason (the statement that could not be traced or
+   265	placed, or how the closest local candidate reads differently from the edit);
+   266	the source is then the ordinary canonical result.
+   267	
+   268	The same explicit mode, for structured and opaque bodies, is available
+   269	through the workflow surfaces:
+   270	
+   271	- Library batches: `applyOps({ source, ops, mode: 'source-preserving' })`.
+   272	- CLI: `am mutate diagram.mmd --op '<JSON>' --preserve-source`; JSONL mutation
+   273	  requests use `preserveSource: true`.
+   274	- Declarative MCP `mutate`: pass `mode: 'source-preserving'` with `source` and
+   275	  `ops`.
+   276	- Code Mode: `mermaid.mutatePreservingSource(diagram, op)` returns the same
+   277	  `{ source, diagram }` result as the library. Returning that successful result
+   278	  or its diagram produces a verified envelope with the exact edited source.
+   279	- Editor adapter: programmatic `applyOps(source, ops, 'source-preserving')`
+   280	  queues the edit in the persistent worker; it does not add an editor control.
+   281	
+   282	Batch success includes `mode: 'source-preserving'`, verification diagnostics
+   283	and, for a structured body, the `preservation` receipt. A structured batch is
+   284	projected as one edit, then op by op when that does not read back. A failed
+   285	batch emits no edited source, even when earlier operations succeeded. Builders
+   286	have no original source and do not accept this mode. On opaque bodies these
+   287	entrypoints do not remove the portability warning or promise portable Mermaid
+   288	export.
+   289	
+   290	Structured mode remains the default in 0.5.x so scripts that compare `am mutate`
+   291	output with `am format` keep working; 0.6.0 makes source-preserving the default
+   292	for `am mutate` and MCP `mutate`. Pin today's output with `--canonical` or
+   293	`mode: 'structured'`.
+   294	
+   295	## Why not every syntax construct?
+   265	 * Code Mode facade, and the CLI `--op`/`--ops` path. Typed callers keep using
+   266	 * `mutate` directly, where the compiler already guarantees op shape;
+   267	 * `mutateChecked` restores that guarantee at the boundaries where ops arrive as
+   268	 * raw JSON.
+   269	 *
+   270	 * `validateOp` proves the op's SHAPE (field names, primitive types, enums)
+   271	 * BEFORE the mutator runs, so a malformed op is rejected with a prescriptive
+   272	 * INVALID_OP error instead of silently mangling the diagram. Semantics — does
+   273	 * the referenced node exist, is the id a duplicate — stay in the mutator, which
+   274	 * runs second on a shape-proven op. Result shape is identical to `mutate`, so
+   275	 * this is a drop-in wherever the raw mutator was called with untyped ops.
+   276	 */
+   277	export function mutateChecked<D extends ParsedDiagram>(d: D, op: unknown): Result<D, MutationError>
+   278	export function mutateChecked(d: ParsedDiagram, op: unknown): Result<ParsedDiagram, MutationError> {
+   279	  return checkedMutation(d, op, false)
+   280	}
+   281	
+   282	export interface SourceMutationResult {
+   283	  /** Save these exact bytes. Unsupported syntax remains source-preserved;
+   284	   * this artifact is not promised to be portable Mermaid. */
+   285	  readonly source: string
+   286	  readonly diagram: ParsedDiagram
+   287	  /** For a structured body: whether the edit was written as a local change
+   288	   * to the authored source or fell back to the canonical serialization. */
+   289	  readonly preservation?: SourceEditPreservation
+   290	}
+   291	
+   292	/** Typed edits written as the smallest change to the source they were read
+   293	 * from. A structured body is edited canonically, then the change is projected
+   294	 * onto its authored lines and accepted only when it reads back as the same
+   295	 * diagram; otherwise the canonical source is returned and the receipt says
+   296	 * so. An opaque body uses its family's bounded source hooks and refuses
+   297	 * operations they do not own. */
+   298	export function mutatePreservingSource(d: ParsedDiagram, op: unknown): Result<SourceMutationResult, MutationError> {
+   299	  const result = editPreservedSource(d, op)
+   300	  logToolInvocation('mutate', result.ok)
+   301	  return result
+   302	}
+   303	
+   304	function admittedOp(kind: OpFamily, op: unknown): Result<AnyMutationOp, MutationError> {
+   305	  const admitted = admitOpRecord(op)
+   306	  const invalid = validateOp(kind, admitted.ok ? admitted.value : op)
+   307	  return invalid ? err(invalid) : ok((admitted.ok ? admitted.value : op) as AnyMutationOp)
+   308	}
+   309	
+   310	function editPreservedSource(d: ParsedDiagram, op: unknown): Result<SourceMutationResult, MutationError> {
+   311	  if (d.body.kind !== 'opaque' && d.body.kind !== 'preserved' && d.body.kind !== 'extension' && hasOpSchema(d.kind)) {
+   312	    const checked = admittedOp(d.kind, op)
+   313	    if (!checked.ok) return checked
+   314	    const edited = applyOneMutation(d, checked.value)
+   315	    return edited.ok ? ok(preserveStructuredEdit(d, edited.value)) : edited
+   316	  }
+   317	  if (d.body.kind !== 'opaque' || d.body.family !== d.kind) return err({ code: 'INVALID_OP', message: 'Source-preserving mutation requires a structured or opaque body of its parsed family' })
+   318	  const plugin = getFamily(d.kind)
+   319	  if (!plugin?.mutateSource || !hasOpSchema(d.kind)) return err({ code: 'UNSUPPORTED_FAMILY', message: `${d.kind} has no source-preserving mutation contract` })
+   320	  const checked = admittedOp(d.kind, op)
+   321	  if (!checked.ok) return checked
+   322	  // The opaque body and captured wrapper own the original bytes. The ordinary
+   323	  // serializer may normalize the final newline, so it is not this authority.
+   324	  const source = (d.meta.wrapperSource ?? '') + d.body.source
+   325	  try {
+   326	    const next = plugin.mutateSource(source, checked.value)
+   327	    if (!next.ok) return next
+   328	    const editedSource = applySourceEdits(source, next.value)
+   329	    if (editedSource === source) return ok({ source, diagram: d })
+   330	    const parsed = parseMermaid(editedSource)
+   331	    if (!parsed.ok) return err({ code: 'INVALID_OP', message: `Source-preserving mutation could not be reparsed: ${parsed.error.map(error => error.message).join('; ')}` })
+   332	    if (parsed.value.kind !== d.kind || parsed.value.body.kind !== 'opaque') return err({ code: 'INVALID_OP', message: 'Source-preserving mutation changed family or source-preserved representation' })
+   333	    // Source coordinates are rebuilt after a removal or rename. Comment text
+   334	    // and order remain meaning; their old physical row numbers do not.
+   335	    const metadata = (value: ParsedDiagram['meta']) => ({ ...value, comments: value.comments.map(comment => comment.text) })
+   336	    if (!sameSourceMeaning(metadata(d.meta), metadata(parsed.value.meta))) return err({ code: 'INVALID_OP', message: 'Source-preserving mutation changed configuration, accessibility or comment metadata' })
+   337	    return ok({ source: editedSource, diagram: parsed.value })
+   338	  } catch (error) {
+   339	    return err({ code: 'INVALID_OP', message: error instanceof Error ? error.message : String(error) })
+   340	  }
+   341	}
+   342	
+   343	/** Batches up to this many ops are projected op by op when the whole batch
+   344	 * does not project; each step re-traces every authored line, so a larger
+   345	 * batch falls back to canonical output instead. */
+   346	const OP_BY_OP_PROJECTION_LIMIT = 16
+   347	
+   348	/**
+   349	 * Write `after`, the committed canonical result of typed edits to `before`,
+   350	 * as a local change to the source `before` was parsed from. The whole batch
+   351	 * is projected at once; when that does not read back as `after`, a batch of
+   352	 * at most OP_BY_OP_PROJECTION_LIMIT ops is projected op by op. A diagram
+   353	 * with no authored source, or an edit no local change reproduces, is
+   354	 * written canonically with the reason.
+   355	 */
+   356	export function preserveStructuredEdit(before: ParsedDiagram, after: ParsedDiagram, ops: readonly unknown[] = []): SourceMutationResult {
+   357	  const canonical = (reason: string): SourceMutationResult => ({ source: serializeMermaid(after), diagram: after, preservation: { method: 'canonical', reason } })
+   358	  const authored = authoredSourceOf(before.source)
+   359	  if (authored === undefined) return canonical('the diagram was not parsed from source, so there are no authored lines to keep')
+   360	  const read = (source: string) => {
+   361	    const parsed = parseMermaid(source)
+   362	    return parsed.ok && parsed.value.kind === before.kind && parsed.value.body.kind === before.body.kind ? parsed.value : undefined
+   363	  }
+   364	  const original = read(authored)
+   365	  if (!original) return canonical('the authored source no longer reads as this diagram')
+   366	  const whole = projectStructuredEdit(authored, original, after)
+   367	  if (whole.ok) return { ...whole.value, preservation: { method: 'local' } }
+   368	  if (ops.length > OP_BY_OP_PROJECTION_LIMIT) return canonical(`${whole.error}; batches of more than ${OP_BY_OP_PROJECTION_LIMIT} operations are not projected one by one`)
+   369	  if (ops.length > 1) {
+   370	    let source = authored, current = original
+   371	    for (const op of ops) {
+   372	      const checked = hasOpSchema(current.kind) ? admittedOp(current.kind, op) : ok(op as AnyMutationOp)
+   373	      const next = checked.ok ? applyOneMutation(current, checked.value) : checked
+   374	      const projected = next.ok ? projectStructuredEdit(source, current, next.value) : undefined
+   375	      if (!projected?.ok) break
+   376	      ;({ source, diagram: current } = projected.value)
+   377	    }
+   378	    if (current !== original && sameProjectedDiagram(current, after)) return { source, diagram: current, preservation: { method: 'local' } }
+   379	  }
+   380	  return canonical(whole.error)
+   381	}
+   382	
+   383	function checkedMutation(d: ParsedDiagram, op: unknown, deferSerialization: boolean, draft?: BatchDraft): Result<ParsedDiagram, MutationError> {
+   384	  if (hasOpSchema(d.kind)) {
+   385	    const admitted = admitOpRecord(op)
+   386	    const checkedOp = admitted.ok ? admitted.value : op
+   387	    const invalid = validateOp(d.kind, checkedOp)
+   388	    // A shape rejection short-circuits before `mutate`, so record the failed
+   389	    // attempt here — otherwise checked-path errors (e.g. the op-array slip)
+   390	    // would go uncounted in the op-error rate.
+   391	    if (invalid) {
+   392	      logToolInvocation('mutate', false)
+   393	      return err(invalid)
+   394	    }
+   395	    const result = applyOneMutation(d, checkedOp as AnyMutationOp, deferSerialization, draft)
+     1	// ============================================================================
+     2	// Source projection: a typed edit to a structured body, written as the
+     3	// smallest change to the source it was read from.
+     4	//
+     5	// The canonical writer is a function of the typed model, so the line
+     6	// difference between canonical(before) and canonical(after) is exactly what
+     7	// the edit changed. Each canonical statement of `before` is traced to the
+     8	// authored line that produced it: the line the family source map locates for
+     9	// the same identity, else a line already in canonical spelling, else the line
+    10	// whose isolated reading (the family parser and writer on that line alone)
+    11	// contains it; respelled block contents pair by order. The difference is then
+    12	// replayed on the authored lines: a changed token is spliced into the line
+    13	// that spells it (through the line's canonical reading when the line keeps
+    14	// its authored spacing), a line whose every statement goes away is deleted
+    15	// (with any declaration folded into them), and a new statement is written in
+    16	// canonical, portable spelling beside its neighbour, indented like its
+    17	// authored siblings. Every other line is copied byte for byte.
+    18	//
+    19	// The projection only proposes. A few placement variants are tried, those
+    20	// that rewrite the fewest authored lines first (ties in a fixed order), and
+    21	// a candidate is returned only when the shared parser reads it back as the
+    22	// same diagram as the canonical result: the same facts and the same canonical
+    23	// statements (whose incidental order may follow the authored order). When no
+    24	// candidate does, a second pass traces statements written over several
+    25	// physical lines as one authored line, and traces a statement the parser
+    26	// merges from several declarations (a label given again, a class named by
+    27	// each `Class : member` line, a block opened twice) to every line it is read
+    28	// from: a change is spliced into each line that spells it, a removal takes
+    29	// every line that declares nothing else, and a new member of a block written
+    30	// as separate lines is spelled like its authored siblings.
+    31	//
+    32	// A third pass reads the authored block structure: a block member is traced
+    33	// to the line inside its authored block that declares it, a new statement
+    34	// goes outside authored blocks its canonical statement is not in, and the
+    35	// statements a rewritten line keeps and those written beside it are written
+    36	// in canonical order. A declaration whose label the writer moves onto a new
+    37	// statement keeps its line, and the new statement names it bare. A brace
+    38	// opener the parser does not accept empty (a namespace) is read as a block,
+    39	// and a block written on one line is rewritten there as the edited block.
+    40	//
+    41	// A candidate that reads back as the edit is still rejected when it leaves a
+    42	// statement the family applies only to an entity that already exists (a
+    43	// flowchart `class B hot` or `click B`, a Class `style B`) before that
+    44	// entity's first mention, where the authored source did not: our reader
+    45	// applies it, Mermaid ignores it (FamilyOperations.existingTargets).
+    46	//
+    47	// A last pass keeps each kept line after the first mention it was written
+    48	// after. When a closer candidate misreads a name, or leaves such a statement
+    49	// before it, and the edit removed every earlier line naming it, the statement
+    50	// on the first kept line naming it (`note right of S` once `[*] --> S` goes,
+    51	// which would declare S where it stands) moves verbatim to just after the
+    52	// next line naming it, with the kept lines between that apply to it only
+    53	// where it exists. A line read as nothing alone (a flowchart `click B`) is
+    54	// traced by its reading after the earlier lines that share a word with it.
+    55	//
+    56	// A placement pass then writes a new statement such a candidate leaves
+    57	// before what it needs (`class D hot` beside a classDef above D, a Class
+    58	// classDef before the `cssClass` giving a class its style class) after it,
+    59	// and a kept classDef a new `cssClass` would leave before its class after
+    60	// that `cssClass`, unless the `cssClass` can stand between them; no move
+    61	// passes a statement sharing a word with the one moved.
+    62	//
+    63	// Every candidate is also checked for a statement whose paint Mermaid draws
+    64	// over where ours does not (FamilyOperations.existingTargets' `follows`): a
+    65	// Class `style B` left before the classDef of B's style class setting the
+    66	// same property, which Mermaid draws in statement order. A candidate that
+    67	// leaves one the authored source does not have, however it moved, kept or
+    68	// rewrote its lines, is rejected; the placement pass then writes the new or
+    69	// edited one of the two on the other side of the kept one.
+    70	// The caller otherwise writes the canonical source and says why: the closest
+    71	// candidate's misreading, or the statement that could not be placed.
+    72	// ============================================================================
+    73	
+    74	import { describeMermaidFacts } from './facts.ts'
+    75	import { parseRegisteredMermaid } from './parse.ts'
+    76	import { serializeBodyStatements, wrapperPrefix } from './serialize.ts'
+    77	import { sameSourceMeaning } from './source-mutation.ts'
+    78	import type { DiagramBody, ParsedDiagram, Result, SourceMap } from './types.ts'
+    79	import { err, ok } from './types.ts'
+    80	import { getFamily } from './families.ts'
+    81	
+    82	/** How a source-preserving edit of a structured body was written. */
+    83	export interface SourceEditPreservation {
+    84	  /** `local`: every authored line the edit does not touch is copied byte for
+    85	   * byte. `canonical`: no local splice reproduced the edit, so the whole
+    86	   * diagram was re-serialized canonically (comments and spelling may change). */
+    87	  readonly method: 'local' | 'canonical'
+    88	  /** Why the local projection was not used, for `canonical`. */
+    89	  readonly reason?: string
+    90	}
+    91	
+    92	interface AuthoredLine { readonly text: string; readonly eol: string }
+    93	
+    94	/** Authored lines are skipped as owners: they hold no family statement. */
+    95	const inert = (text: string) => !text.trim() || text.trim().startsWith('%%')
+    96	const leading = (text: string) => /^[ \t]*/.exec(text)![0]
+    97	/** Canonical nesting depth; a verbatim tab counts as one two-space level. */
+    98	const depthOf = (text: string) => leading(text).replace(/\t/g, '  ').length
+    99	const WORDS = /[\p{L}\p{N}_]+/gu
+   100	const isWord = (char: string | undefined) => char !== undefined && /[\p{L}\p{N}_]/u.test(char)
+   101	const MAX_DIFF_CELLS = 4_000_000
+   102	
+   103	function splitLines(text: string): AuthoredLine[] {
+   104	  const lines: AuthoredLine[] = []
+   105	  const pattern = /\r\n|\n|\r/g
+   106	  let start = 0
+   107	  for (let match = pattern.exec(text); match; match = pattern.exec(text)) {
+   108	    lines.push({ text: text.slice(start, match.index), eol: match[0] })
+   109	    start = match.index + match[0].length
+   110	  }
+   111	  if (start < text.length) lines.push({ text: text.slice(start), eol: '' })
+   112	  return lines
+   113	}
+   114	
+   115	/** Canonical statements of a structured diagram, header first. */
+   116	function statements(d: ParsedDiagram): string[] | undefined {
+   117	  if (d.body.kind === 'opaque' || d.body.kind === 'preserved' || d.body.kind === 'extension') return undefined
+   118	  try {
+   119	    return serializeBodyStatements(d).replace(/\n+$/, '').split('\n')
+   120	  } catch {
+   121	    return undefined
+   122	  }
+   123	}
+   124	
+   125	function counts(lines: readonly string[]): Map<string, number> {
+   126	  const result = new Map<string, number>()
+   127	  for (const line of lines) if (line.trim()) result.set(line.trim(), (result.get(line.trim()) ?? 0) + 1)
+   128	  return result
+   129	}
+   130	
+   131	/** The same diagram: identical facts (which carry every ordered meaning) and
+   132	 * the same canonical statements, whose incidental order may differ. */
+   133	export function sameProjectedDiagram(candidate: ParsedDiagram, expected: ParsedDiagram, expectedFacts = describeMermaidFacts(expected), expectedLines = statements(expected)): boolean {
+   134	  if (candidate.kind !== expected.kind || candidate.body.kind !== expected.body.kind || !expectedLines) return false
+   135	  const lines = statements(candidate)
+   136	  if (!lines) return false
+   137	  const sorted = (values: readonly string[]) => [...values].sort()
+   138	  if (!sameSourceMeaning(sorted(describeMermaidFacts(candidate)), sorted(expectedFacts))) return false
+   139	  // A segment kept verbatim and the same statements written canonically differ
+   140	  // only in spacing; the facts above still compare every label exactly.
+   141	  const spelled = (values: readonly string[]) => sorted(values.map(line => line.replace(/\s+/g, '')).filter(Boolean))
+   142	  if (!sameSourceMeaning(spelled(lines), spelled(expectedLines))) return false
+   143	  const meta = (d: ParsedDiagram) => ({ frontmatter: d.meta.frontmatter, accessibility: d.meta.accessibility, init: d.meta.initDirectives.map(layer => layer.parsed) })
+   144	  return sameSourceMeaning(meta(candidate), meta(expected))
+   145	}
+   146	
+   147	interface Trace {
+   148	  /** The authored line that produced each canonical statement, or -1. */
+   149	  readonly owner: number[]
+   150	  /** Authored lines that produce no canonical statement of their own, with
+   151	   * the statements the writer folds their reading into (a declaration the
+   152	   * writer writes inline on an edge). */
+   153	  readonly folded: ReadonlyMap<number, readonly number[]>
+   154	  /** Structural pass: every authored line each traced statement is read from,
+   155	   * its owner first: lines that redeclare it (a class named again by each
+   156	   * `Class : member` line, an entity block opened twice), lines folded into
+   157	   * it, and the closers of redeclared blocks. */
+   158	  readonly parts?: ReadonlyMap<number, readonly number[]>
+   159	  /** Structural pass: canonical block openers no authored block spells (a
+   160	   * class whose members are `Class : member` lines). */
+   161	  readonly implicit?: ReadonlySet<number>
+   162	  /** Structural pass: each authored line's isolated reading. */
+   163	  readonly readings?: ReadonlyArray<ReadonlyMap<string, number>>
+   164	  /** Residual pass: the authored block structure, each line's innermost
+   165	   * enclosing block opener (or -1) and each opener's closer. */
+   166	  readonly nesting?: { readonly enclosing: readonly number[]; readonly closer: ReadonlyMap<number, number> }
+   167	}
+   168	
+   169	interface LineReader {
+   170	  /** The canonical statements an authored statement reads as on its own (the
+   171	   * family parser and writer on it alone under the header, closing a block it
+   172	   * opens), less the header's own and block closers; undefined when it does
+   173	   * not parse alone. */
+   174	  isolated(text: string): Map<string, number> | undefined
+   175	  /** Whether an authored statement opens a block that a later `end` or `}`
+   176	   * line closes: it reads only with that closer, or reads as a block both
+   177	   * alone and with it. */
+   178	  opens(text: string): boolean
+   179	  /** Whether a statement reads as the diagram's statements on its own (a
+   180	   * message or node does; a branch line like `else` or a member does not). */
+     1	// Source-preserving typed edits of structured bodies (applyOps mode
+     2	// 'source-preserving'). The contract, checked at the library boundary every
+     3	// channel shares:
+     4	//   1. every authored line the op does not touch is byte-identical, in order —
+     5	//      the case names the lines it may touch, from the input alone;
+     6	//   2. the edited source parses to the same diagram as the canonical edit
+     7	//      (mutateChecked): the same facts and the same canonical statements;
+     8	//   3. upstream Mermaid 12.2.0 accepts it and reads it as the hand-written
+     9	//      reference edit (DB getters compared whole);
+    10	//   4. new and rewritten lines are spelled and indented as in the reference
+    11	//      edit (lines compared as a multiset: placement is checked by 1).
+    12	import { afterAll, describe, expect, test } from 'bun:test'
+    13	import { applyOps, describeMermaidFacts, mutateChecked, parseRegisteredMermaid, serializeMermaid } from '../agent/index.ts'
+    14	import type { ParsedDiagram } from '../agent/types.ts'
+    15	import { startUpstreamMermaid, type UpstreamDiagram } from './helpers/upstream-mermaid.ts'
+    16	
+    17	const FLOWCHART = `---
+    18	title: Messy flow
+    19	---
+    20	%% leading comment
+    21	graph TD
+    22	    %% entry
+    23	    A["Start <here>"] --> B{Decide?}
+    24	  B -->|yes| C(Do it):::hot
+    25	      B -- no --> D[Skip]
+    26	
+    27	  subgraph "Layer 4 — Intelligence"
+    28	    E[Think] --> F[Act]
+    29	  end
+    30	  subgraph grp [Group two]
+    31	     G[Gee]
+    32	  end
+    33	  classDef hot fill:#f96;
+    34	  style A fill:#eee
+    35	  linkStyle 0 stroke:blue
+    36	`
+    37	
+    38	const SEQUENCE = `sequenceDiagram
+    39	\tautonumber
+    40	\tparticipant K as Kubernetes
+    41	\tparticipant C as Controller
+    42	\t%% the loop
+    43	\tK ->> C: event
+    44	\talt reconcile
+    45	\t\tC ->> K: patch
+    46	\t\tK -->> C: ok
+    47	\telse skip
+    48	\t\tC ->> C: sleep
+    49	\tend
+   620	 * as a multiset: the typed model in a form independent of authored layout. */
+   621	const statements = (d: ParsedDiagram) => serializeMermaid(d).split('\n').filter(line => line.trim() && !line.trim().startsWith('%%')).map(line => line.replace(/\s+/g, '')).sort()
+   622	
+   623	/** Every argument-free getter of the upstream diagram DB, as plain JSON. */
+   624	const snapshot = (diagram: UpstreamDiagram) => {
+   625	  const plain = (value: unknown, depth = 0): unknown => {
+   626	    if (depth > 8 || typeof value === 'function') return undefined
+   627	    if (value instanceof Map) return [...value].map(([key, entry]) => [key, plain(entry, depth + 1)])
+   628	    if (value instanceof Set) return [...value].map(entry => plain(entry, depth + 1))
+   629	    if (Array.isArray(value)) return value.map(entry => plain(entry, depth + 1))
+   630	    if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).filter(([key]) => key !== 'domId').map(([key, entry]) => [key, plain(entry, depth + 1)]))
+   631	    return value
+   632	  }
+   633	  const db = diagram.db, out: Record<string, unknown> = {}
+   634	  const names = new Set([...Object.keys(db), ...Object.getOwnPropertyNames(Object.getPrototypeOf(db))])
+   635	  for (const name of [...names].sort()) {
+   636	    if (!/^get[A-Z]/.test(name) || typeof db[name] !== 'function' || db[name].length !== 0) continue
+   637	    try { out[name] = JSON.parse(JSON.stringify(plain(db[name].call(db)))) } catch { /* not a data getter */ }
+   638	  }
+   639	  return out
+   640	}
+   641	
+   642	describe('source-preserving typed edits of structured bodies', () => {
+   643	  const upstream = startUpstreamMermaid()
+   644	  afterAll(() => upstream.close())
+   645	
+   646	  test.each(CASES)('$name', async ({ source, op, touched = [], reference }) => {
+   647	    const before = parse(source)
+   648	    expect(before.body.kind).not.toBe('opaque')
+   649	    const result = applyOps({ source, ops: [op], mode: 'source-preserving' })
+   650	    if (!result.ok) throw new Error(JSON.stringify(result.error))
+   651	    expect(result.preservation).toEqual({ method: 'local' })
+   652	
+   653	    const output = result.source.split('\n')
+   654	    const untouched = source.split('\n').filter(line => !touched.includes(line))
+   655	    expect(inOrder(untouched, output)).toEqual([])
+   656	
+   657	    const canonical = mutateChecked(before, op)
+   658	    if (!canonical.ok) throw new Error(canonical.error.message)
+   659	    const edited = parse(result.source)
+   660	    expect(describeMermaidFacts(edited).sort()).toEqual(describeMermaidFacts(canonical.value).sort())
+   661	    expect(statements(edited)).toEqual(statements(canonical.value))
+   662	
+   663	    expect(result.source.split('\n').sort()).toEqual(patch(source, reference).split('\n').sort())
+   664	    const [read, expected] = await upstream.projectEach([result.source, patch(source, reference)], snapshot)
+   665	    expect(read).toEqual(expected!)
+   666	    expect(read!.ok).toBe(true)
+   667	  }, 20_000)
+   668	
+   669	  // A kept classDef that must follow a new cssClass, but would pass a
+   670	  // statement Mermaid reads in order with it: another classDef or a `style`
+   671	  // the canonical edit writes after it (the later one wins). Moving it would
+   672	  // change what Mermaid draws while our reader sees the same diagram, so
+   673	  // the edit falls back, naming the line that gives the class its style class.
+   674	  test.each([
+   675	    ['classDiagram\n  classDef hot fill:#f96\n  classDef cool fill:#0f0\n  class B\n', [{ kind: 'set_css_class', class: 'B', className: 'hot' }], 'B'],
+   676	    ['classDiagram\n  classDef hot fill:#f96\n  class C\n  style C fill:#000\n  class B\n', [{ kind: 'set_css_class', class: 'B', className: 'hot' }, { kind: 'set_css_class', class: 'C', className: 'hot' }], 'C'],
+   677	  ] as const)('a classDef that cannot follow the new cssClass it needs falls back: %j', (source, ops, name) => {
+   678	    const result = applyOps({ source, ops: [...ops], mode: 'source-preserving' })
+   679	    if (!result.ok) throw new Error(JSON.stringify(result.error))
+   680	    expect(result.preservation).toEqual({ method: 'canonical', reason: `no local change to the authored source reads back as the edited diagram: the closest local change leaves "classDef hot fill:#f96" before ${name}'s style-class assignment, where Mermaid 12.2.0 ignores it` })
+   681	  })
+   682	
+   683	  // An edit whose only local change leaves a Class `style` above the
+   684	  // classDef that Mermaid then draws over it: the new `cssClass` gives B the
+   685	  // style class of the kept classDef below the kept `style B`. Ours draws the
+119:    return serializeBodyStatements(d).replace(/\n+$/, '').split('\n')
+252:      return difference(read(`${wrapper}${header}\n${context.join('\n')}\n${text}`), read(`${wrapper}${header}\n${context.join('\n')}`))
+313:  try { located = spans ? getFamily(before.kind)?.buildSourceMap?.(before.body as DiagramBody, c0.join('\n') + '\n') : undefined } catch { located = undefined }
+670:  for (const [code, char] of ENTITY_SPELLINGS) decoded = decoded.split(code).join(char)
+681:    const pattern = new RegExp(spelling.split(/<br\s*\/?>/i).map(part => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('(?:<br\\s*/?>|[ \\t]*(?:\\r\\n|\\n|\\r)[ \\t]*)'), 'gi')
+1517:    const reading = reader.isolated(unit.map(at => lines[at]!.text).join('\n').trim())
+1547:  return out.join('') + (last && last.eol === '' && !plan.after.get(lines.length - 1)?.length && !plan.removed.has(lines.length - 1) ? '' : pending)
+1562:  const canonicalWrapper = (d: ParsedDiagram, lines: readonly string[]) => wrapperPrefix(d.meta, 'verbatim', lines.join('\n') + '\n', d.kind)
+1652:        const head = (text: string) => quote(text.split(/\s+/, 2).join(' '))

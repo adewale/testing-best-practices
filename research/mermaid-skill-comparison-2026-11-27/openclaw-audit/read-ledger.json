@@ -1,0 +1,900 @@
+{
+  "base_sha": "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+  "method": "Self-recorded source reading. Full and partial refer to inspected content, not files merely traversed by rg, imports, tests or Git. Line numbering is 1-based inclusive. Raw attempted read ranges are in evidence/read-events.json. A few files were fully opened but only substantive visible ranges are counted. Exact line matches of the broader candidate searches are available in the listed logs.",
+  "counts": {
+    "target partial": 25,
+    "assigned guidance full": 6,
+    "target full": 27
+  },
+  "files": [
+    {
+      "origin": "target",
+      "path": ".github/workflows/ci.yml",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          141,
+          184
+        ],
+        [
+          563,
+          582
+        ],
+        [
+          790,
+          805
+        ]
+      ],
+      "file_lines": 951,
+      "role": "collection, package or CI"
+    },
+    {
+      "origin": "assigned guidance",
+      "path": ".agents/skills/openclaw-testing/SKILL.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          135
+        ]
+      ],
+      "file_lines": 135,
+      "role": "assigned audit or linked testing guide"
+    },
+    {
+      "origin": "assigned guidance",
+      "path": ".agents/skills/test-audit/SKILL.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          57
+        ]
+      ],
+      "file_lines": 57,
+      "role": "assigned audit or linked testing guide"
+    },
+    {
+      "origin": "assigned guidance",
+      "path": ".agents/skills/test-audit/references/audit.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          68
+        ]
+      ],
+      "file_lines": 68,
+      "role": "assigned audit or linked testing guide"
+    },
+    {
+      "origin": "assigned guidance",
+      "path": "docs/help/testing/boundary-scenarios.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          65
+        ]
+      ],
+      "file_lines": 65,
+      "role": "assigned audit or linked testing guide"
+    },
+    {
+      "origin": "assigned guidance",
+      "path": "docs/help/testing/fixtures.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          166
+        ]
+      ],
+      "file_lines": 166,
+      "role": "assigned audit or linked testing guide"
+    },
+    {
+      "origin": "assigned guidance",
+      "path": "docs/help/testing/writing-tests.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          117
+        ]
+      ],
+      "file_lines": 117,
+      "role": "assigned audit or linked testing guide"
+    },
+    {
+      "origin": "target",
+      "path": "AGENTS.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          8
+        ]
+      ],
+      "file_lines": 8,
+      "role": "project instructions or independent contract"
+    },
+    {
+      "origin": "target",
+      "path": "CLAUDE.md",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          196
+        ]
+      ],
+      "file_lines": 196,
+      "role": "project instructions or independent contract"
+    },
+    {
+      "origin": "target",
+      "path": "DESIGN.md",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          105
+        ]
+      ],
+      "file_lines": 185,
+      "role": "project instructions or independent contract"
+    },
+    {
+      "origin": "target",
+      "path": "bin/am.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          47
+        ]
+      ],
+      "file_lines": 47,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "bunfig.toml",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          16
+        ]
+      ],
+      "file_lines": 16,
+      "role": "collection, package or CI"
+    },
+    {
+      "origin": "target",
+      "path": "docs/features.md",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          98,
+          110
+        ]
+      ],
+      "file_lines": 159,
+      "role": "project instructions or independent contract"
+    },
+    {
+      "origin": "target",
+      "path": "docs/testing-strategy.md",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          785,
+          846
+        ]
+      ],
+      "file_lines": 1033,
+      "role": "project instructions or independent contract"
+    },
+    {
+      "origin": "target",
+      "path": "e2e/browser-contract-files.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          22
+        ]
+      ],
+      "file_lines": 22,
+      "role": "collection, package or CI"
+    },
+    {
+      "origin": "target",
+      "path": "e2e/cli.e2e.test.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          166
+        ]
+      ],
+      "file_lines": 336,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "e2e/run-browser-contracts.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          5,
+          5
+        ],
+        [
+          46,
+          49
+        ],
+        [
+          55,
+          55
+        ]
+      ],
+      "file_lines": 58,
+      "role": "collection, package or CI"
+    },
+    {
+      "origin": "target",
+      "path": "editor/css/topbar.css",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          37,
+          75
+        ]
+      ],
+      "file_lines": 512,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "editor/css/variables.css",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          42
+        ]
+      ],
+      "file_lines": 284,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "editor/html/topbar.html",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          30
+        ]
+      ],
+      "file_lines": 337,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "editor/js/rendering.js",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          88,
+          138
+        ]
+      ],
+      "file_lines": 672,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "package.json",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          320
+        ]
+      ],
+      "file_lines": 320,
+      "role": "collection, package or CI"
+    },
+    {
+      "origin": "target",
+      "path": "scripts/ci/run-unit-tests.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          22
+        ]
+      ],
+      "file_lines": 22,
+      "role": "collection, package or CI"
+    },
+    {
+      "origin": "target",
+      "path": "scripts/ci/unit-test-files.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          13
+        ]
+      ],
+      "file_lines": 13,
+      "role": "collection, package or CI"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/agent-cli-render-formats.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          92
+        ]
+      ],
+      "file_lines": 92,
+      "role": "candidate test"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/browser-script-harness.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          10
+        ],
+        [
+          44,
+          58
+        ],
+        [
+          357,
+          376
+        ]
+      ],
+      "file_lines": 376,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/chrome-token-lockstep.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          132
+        ]
+      ],
+      "file_lines": 132,
+      "role": "candidate test"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/cli-batch-render-parity.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          92
+        ]
+      ],
+      "file_lines": 92,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/cli-config-warnings.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          70
+        ]
+      ],
+      "file_lines": 70,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/cli-error-envelope.test.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          205,
+          240
+        ],
+        [
+          243,
+          280
+        ]
+      ],
+      "file_lines": 336,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/cli-flags-help-sync.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          217
+        ]
+      ],
+      "file_lines": 217,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/cli-jsonl.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          95
+        ]
+      ],
+      "file_lines": 95,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/cli-multi-input.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          213
+        ]
+      ],
+      "file_lines": 213,
+      "role": "candidate test"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/consolidation-gate.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          113
+        ]
+      ],
+      "file_lines": 113,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/deploy-workflow-transaction.test.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          19,
+          73
+        ],
+        [
+          87,
+          122
+        ],
+        [
+          407,
+          425
+        ],
+        [
+          451,
+          516
+        ]
+      ],
+      "file_lines": 517,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/editor-theme-switch.test.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          159
+        ],
+        [
+          161,
+          216
+        ]
+      ],
+      "file_lines": 217,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/fanout-symmetry.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          104
+        ]
+      ],
+      "file_lines": 104,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/graph-layout-selection.test.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          131
+        ]
+      ],
+      "file_lines": 495,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/helpers/cli-capture.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          47
+        ]
+      ],
+      "file_lines": 47,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/helpers/editor-module-harness.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          37
+        ]
+      ],
+      "file_lines": 37,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/helpers/temp-dir.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          35
+        ]
+      ],
+      "file_lines": 35,
+      "role": "sibling proof or supporting fixture"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/layout-bundle-proposals.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          282
+        ]
+      ],
+      "file_lines": 282,
+      "role": "candidate test"
+    },
+    {
+      "origin": "target",
+      "path": "src/__tests__/parser-observation-lines.test.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          141
+        ]
+      ],
+      "file_lines": 141,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "src/cli/args.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          43,
+          43
+        ],
+        [
+          59,
+          59
+        ],
+        [
+          112,
+          112
+        ],
+        [
+          128,
+          131
+        ]
+      ],
+      "file_lines": 187,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/cli/deadline.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          74
+        ]
+      ],
+      "file_lines": 74,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/cli/help.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          26,
+          43
+        ],
+        [
+          86,
+          111
+        ]
+      ],
+      "file_lines": 232,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/cli/index.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          63,
+          427
+        ]
+      ],
+      "file_lines": 1559,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/cli/preflight.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          79
+        ]
+      ],
+      "file_lines": 79,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/cli/run-entrypoint.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          19
+        ]
+      ],
+      "file_lines": 19,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/layout-engine.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1406,
+          1411
+        ],
+        [
+          1420,
+          1458
+        ]
+      ],
+      "file_lines": 2168,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/layout/bundle-routes.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          73
+        ]
+      ],
+      "file_lines": 73,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/layout/passes/edge-bundling.ts",
+      "coverage": "full",
+      "reviewed_line_ranges": [
+        [
+          1,
+          389
+        ]
+      ],
+      "file_lines": 389,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "src/output-security.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          15,
+          15
+        ],
+        [
+          585,
+          585
+        ],
+        [
+          607,
+          607
+        ]
+      ],
+      "file_lines": 616,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "src/theme.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          317,
+          317
+        ],
+        [
+          320,
+          320
+        ]
+      ],
+      "file_lines": 798,
+      "role": "discovery or alternative explanation"
+    },
+    {
+      "origin": "target",
+      "path": "website/build.ts",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          209,
+          250
+        ]
+      ],
+      "file_lines": 2966,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "website/source/assets/shader-mark.js",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          94,
+          101
+        ]
+      ],
+      "file_lines": 154,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "website/source/assets/styles.css",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          115
+        ],
+        [
+          267,
+          291
+        ]
+      ],
+      "file_lines": 1023,
+      "role": "owner or caller"
+    },
+    {
+      "origin": "target",
+      "path": "website/source/pages/home.html",
+      "coverage": "partial",
+      "reviewed_line_ranges": [
+        [
+          1,
+          32
+        ]
+      ],
+      "file_lines": 160,
+      "role": "owner or caller"
+    }
+  ],
+  "outside_repo_material": [
+    {
+      "file": "../task-packets.json",
+      "coverage": "partial",
+      "fields": [
+        "common",
+        "openclaw",
+        "runtime_path"
+      ]
+    },
+    {
+      "file": "dependency-install.log",
+      "coverage": "full",
+      "purpose": "verify private installation and version from prepared input"
+    }
+  ],
+  "discovery_searches": [
+    "evidence/commands/discovery.log",
+    "evidence/commands/leads-assertions.log",
+    "evidence/commands/leads-implementation.log",
+    "evidence/commands/leads-names.log",
+    "evidence/commands/supervision-routing.log",
+    "evidence/commands/file-association.log",
+    "evidence/commands/scope-routing-docs.log",
+    "evidence/commands/cli-contract-refs.log",
+    "evidence/commands/palette-refs.log",
+    "evidence/commands/paint-consumers.log",
+    "evidence/commands/strict-contract.log",
+    "evidence/commands/recent-graph.log",
+    "evidence/commands/bundle-context.log",
+    "evidence/commands/shared-brand-siblings.log",
+    "evidence/commands/incidence.log",
+    "evidence/commands/graph-browser-state.log",
+    "evidence/commands/graph-ink-siblings.log",
+    "evidence/commands/css-caller-extra.log",
+    "evidence/commands/cli-flag-owners.log"
+  ],
+  "public_target_history": [
+    "evidence/commands/bundle-history.log",
+    "evidence/commands/candidate-history.log",
+    "evidence/commands/checkout-history-shape.log",
+    "evidence/commands/cli-history-origin.log",
+    "evidence/commands/css-origin.log",
+    "evidence/commands/graph-blame.log",
+    "evidence/commands/graph-origin.log",
+    "evidence/commands/graph-target-blame.log",
+    "evidence/commands/history-cli-public.log",
+    "evidence/commands/history-css-public.log",
+    "evidence/commands/older-graph-history.log",
+    "evidence/commands/original-cli-contract.log",
+    "evidence/commands/output-contract-history.log",
+    "evidence/commands/relevant-history-output.log"
+  ],
+  "discovery_scope_note": "The initial CLI terms search returned incidental lines from target historical material under docs/design and docs/project. They were not selected, opened for review or used as evidence for a finding. The other comparison lane and comparison studies were not opened.",
+  "queried_only": "Repository-wide file-name and text matches are discovery only; no claim of a substantive read of every matching file or coverage of all 606 source unit-test files."
+}

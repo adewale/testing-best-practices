@@ -1,0 +1,35 @@
+diff --git a/test/budget.test.ts b/test/budget.test.ts
+index d7c0413..fc2587d 100644
+--- a/test/budget.test.ts
++++ b/test/budget.test.ts
+@@ -163,6 +163,30 @@ describe("durable model admission and accounting", () => {
+     });
+   });
+ 
++  it("counts a partial reservation toward the day's two unresolved calls after eviction", async () => {
++    const probe = probes.get(probes.newUniqueId());
++    const domain = "partial.example";
++    const first = await runInDurableObject(probe, (_, state) => {
++      const ledger = new Ledger(state.storage.sql);
++      const call = ledger.begin(DAY, domain, 1)!;
++      // The domain granted only $0.25 of the first call's requested $0.50.
++      const partial = ledger.reserve(call, 0.25);
++      expect(ledger.begin(DAY, domain, 1)?.reservedUsd).toBe(0.5);
++      return partial;
++    });
++
++    await evictDurableObject(probe);
++    await runInDurableObject(probe, (_, state) => {
++      const ledger = new Ledger(state.storage.sql);
++      expect(ledger.spent(DAY)).toBe(0.75);
++      expect(ledger.begin(DAY, domain, 1)).toBeNull();
++
++      ledger.complete(first, 0.125);
++      expect(ledger.begin(DAY, domain, 1)?.reservedUsd).toBe(0.375);
++      expect(ledger.begin(NEXT_DAY, domain, 1)?.reservedUsd).toBe(0.5);
++    });
++  });
++
+   it("recovers a committed local outbox after the agent's own Durable Object is evicted", async () => {
+     const domainName = `budget-test-${crypto.randomUUID()}`;
+     const domain = testEnv.DomainBudget.getByName(domainName);

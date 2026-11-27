@@ -1,0 +1,108 @@
+    69	    expect(JSON.stringify(original)).toBe(originalJson)
+    70	  })
+    71	
+    72	  test('refuses unsupported operations, annotations and structural injection atomically', () => {
+    73	    const original = parse('classDiagram\nnamespace `~` {\nclass P\n}\nP --() API')
+    74	    const unchanged = JSON.stringify(original)
+    75	    for (const op of [
+    76	      { kind: 'remove_class', id: 'P' },
+    77	      { kind: 'remove_member', class: 'P', index: 0 },
+    78	      { kind: 'add_member', class: 'missing', text: '+read()' },
+    79	      { kind: 'add_member', class: 'interface0', text: '+read()' },
+    80	      { kind: 'remove_member', class: 'interface0', index: 0 },
+    81	      ...['<<interface>>', '+read()\nclass Injected', 'x}\nclass Injected {', 'x} class Injected {', 'x&#125; class Injected {', '%%{init: {}}%%', '%&percnt;{init: {"theme":"dark"}}%%', 'accTitle: Changed', ''].map(text => ({ kind: 'add_member', class: 'P', text })),
+    82	    ]) expect(mutatePreservingSource(original, op).ok).toBe(false)
+    83	    expect(JSON.stringify(original)).toBe(unchanged)
+    84	    const ordinary = parse('classDiagram\nclass A')
+    85	    const editable = mutate(ordinary, { kind: 'add_member', class: 'A', text: '+read()' })
+    86	    expect(editable.ok && editable.value.body.kind).toBe('class')
+    87	  })
+    88	
+    89	  test('removes the addressed whole-line member in authored order across attributes, methods, annotations and reopened classes', () => {
+    90	    const source = '---\r\ntitle: Keep\r\n---\r\nclassDiagram\r\nnamespace `~` {\r\nclass P {\r\n<<service>>\r\n  +int first\r\n  +read()\r\n  +int second\r\n}\r\n}\r\n%% Keep this comment\r\nclass P {\r\n  +read()\r\n}\r\n'
+    91	    const original = parse(source), before = native(source)
+    92	    const removed = mutatePreservingSource(original, { kind: 'remove_member', class: 'P', index: 3 })
+    93	    if (!removed.ok) throw new Error(removed.error.message)
+    94	    expect(removed.value.source).toBe(source.replace('  +int second\r\n', ''))
+    95	    const target = before.classes.find(node => node.id === 'P')!
+    96	    expect(native(removed.value.source)).toEqual({ ...before, classes: before.classes.map(node => node === target ? { ...node, attributes: node.attributes.slice(0, 1) } : node) })
+    97	    const repeated = mutatePreservingSource(removed.value.diagram, { kind: 'remove_member', class: 'P', index: 3 })
+    98	    if (!repeated.ok) throw new Error(repeated.error.message)
+    99	    expect(repeated.value.source).toBe(removed.value.source.replace('class P {\r\n  +read()\r\n}', 'class P {\r\n}'))
+   100	    expect(native(repeated.value.source).classes.find(node => node.id === 'P')?.methods.map(member => member.name)).toEqual(['read'])
+   101	    const appended = mutatePreservingSource(repeated.value.diagram, { kind: 'add_member', class: 'P', text: '+ready()' })
+   102	    if (!appended.ok) throw new Error(appended.error.message)
+   103	    const reverted = mutatePreservingSource(appended.value.diagram, { kind: 'remove_member', class: 'P', index: 3 })
+   104	    if (!reverted.ok) throw new Error(reverted.error.message)
+   105	    expect(native(reverted.value.source)).toEqual(native(repeated.value.source))
+   106	    expect(reverted.value.source).toContain('%% Keep this comment\r\n')
+   107	    expect(renderMermaidSVG(reverted.value.diagram)).toBe(renderSourceSVG(reverted.value.source))
+   108	    expect(renderMermaidASCII(reverted.value.diagram)).toBe(renderSourceASCII(reverted.value.source))
+   109	  })
+   110	
+   111	  test.each([
+   112	    ['class P {+read()}', 0],
+   113	    ['class P {\n+read() }', 0],
+   114	    ['class P {\n<<service>>\n+read()\n}', 0],
+   115	    ['class P {\n+int first&#10;+read()\n}', 1],
+   116	    ['class P\nP : +read() %% Keep comment', 0],
+   117	    ['class P {\n+read()\n}', 0.5],
+   118	  ] as const)('refuses member deletion without exclusive authored line ownership in %s', (declaration, index) => {
+   119	    const source = `classDiagram\nnamespace \`~\` {\n${declaration}\n}`
+    89	  readonly reason?: string
+    90	}
+    91	
+    92	interface AuthoredLine { readonly text: string; readonly eol: string }
+    93	
+    94	/** Authored lines are skipped as owners: they hold no family statement. */
+    95	const inert = (text: string) => !text.trim() || text.trim().startsWith('%%')
+    96	const leading = (text: string) => /^[ \t]*/.exec(text)![0]
+    97	/** Canonical nesting depth; a verbatim tab counts as one two-space level. */
+    98	const depthOf = (text: string) => leading(text).replace(/\t/g, '  ').length
+    99	const WORDS = /[\p{L}\p{N}_]+/gu
+   100	const isWord = (char: string | undefined) => char !== undefined && /[\p{L}\p{N}_]/u.test(char)
+   101	const MAX_DIFF_CELLS = 4_000_000
+   102	
+   103	function splitLines(text: string): AuthoredLine[] {
+   104	  const lines: AuthoredLine[] = []
+   105	  const pattern = /\r\n|\n|\r/g
+   106	  let start = 0
+   107	  for (let match = pattern.exec(text); match; match = pattern.exec(text)) {
+   108	    lines.push({ text: text.slice(start, match.index), eol: match[0] })
+   109	    start = match.index + match[0].length
+   110	  }
+   111	  if (start < text.length) lines.push({ text: text.slice(start), eol: '' })
+   112	  return lines
+   113	}
+   114	
+   115	/** Canonical statements of a structured diagram, header first. */
+  1535	}
+  1536	
+  1537	function renderPlan(lines: readonly AuthoredLine[], plan: Plan, eol: string): string {
+  1538	  const out: string[] = []
+  1539	  let pending = ''
+  1540	  const emit = (text: string, end: string) => { out.push(pending, text); pending = end || eol }
+  1541	  lines.forEach((line, index) => {
+  1542	    for (const text of plan.before.get(index) ?? []) emit(text, eol)
+  1543	    if (!plan.removed.has(index)) emit(plan.text.get(index) ?? line.text, line.eol)
+  1544	    for (const text of plan.after.get(index) ?? []) emit(text, eol)
+  1545	  })
+  1546	  const last = lines.at(-1)
+  1547	  return out.join('') + (last && last.eol === '' && !plan.after.get(lines.length - 1)?.length && !plan.removed.has(lines.length - 1) ? '' : pending)
+  1548	}
+  1549	
+  1550	/**
+  1551	 * Write `after` (the canonical result of a typed edit) as a local change to
+6:[Omitted long matching line]
+27:describe('class — explicit source-preserving member edits', () => {
+45:    const first = mutatePreservingSource(original, { kind: 'add_member', class: id, text: '+read()' })
+52:    const second = mutatePreservingSource(first.value.diagram, { kind: 'add_member', class: id, text: '+ready()' })
+57:    const third = mutatePreservingSource(second.value.diagram, { kind: 'add_member', class: id, text: '+int count' })
+82:    ]) expect(mutatePreservingSource(original, op).ok).toBe(false)
+92:    const removed = mutatePreservingSource(original, { kind: 'remove_member', class: 'P', index: 3 })
+97:    const repeated = mutatePreservingSource(removed.value.diagram, { kind: 'remove_member', class: 'P', index: 3 })
+101:    const appended = mutatePreservingSource(repeated.value.diagram, { kind: 'add_member', class: 'P', text: '+ready()' })
+103:    const reverted = mutatePreservingSource(appended.value.diagram, { kind: 'remove_member', class: 'P', index: 3 })
+121:    expect(mutatePreservingSource(original, { kind: 'remove_member', class: 'P', index }).ok).toBe(false)
+660:  test('source-preserving mutations refuse stale provenance instead of dropping live typed fields', () => {
+src/agent/apply.ts:138:export function applyOps(input: ApplyOpsInput): OpEnvelope {

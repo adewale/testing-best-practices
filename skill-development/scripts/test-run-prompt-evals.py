@@ -3,10 +3,15 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import shlex
+import sys
 import tempfile
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
+from datetime import datetime, timezone
 from io import StringIO
 from pathlib import Path
+from unittest.mock import patch
 
 SCRIPT = Path(__file__).with_name("run-prompt-evals.py")
 SPEC = importlib.util.spec_from_file_location("run_prompt_evals", SCRIPT)
@@ -96,6 +101,97 @@ def check_generation_failure() -> None:
     assert MODULE.result_exit_code(result, judge_requested=False) == 1
 
 
+def check_judge_process_status() -> None:
+    eval_id = "E75-generic-exit-status-not-output"
+    fixture = MODULE.fixture_for(eval_id)
+    assert fixture is not None
+    dimensions = {"H": 4}  # Rubric H is output and validation honesty.
+    grade = json.dumps({"dimensions": dimensions, "critical_failure": False, "rationale": "stub"})
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        runs = root / "runs"
+        judge = root / "judge.py"
+        judge.write_text(
+            "import sys\n"
+            "print(sys.argv[1])\n"
+            "print('backend diagnostic', file=sys.stderr)\n"
+            "sys.exit(int(sys.argv[2]))\n"
+        )
+        exits = []
+        reports = []
+        with patch.object(MODULE, "RUNS", runs), patch.object(MODULE._dt, "datetime") as clock:
+            clock.now.return_value = datetime(2026, 1, 1, tzinfo=timezone.utc)
+            for code in (0, 7):
+                command = shlex.join([sys.executable, str(judge), grade, str(code)])
+                args = [str(SCRIPT), "--eval", eval_id, "--candidate-dir", str(fixture / "samples/good"),
+                        "--judge-cmd", command]
+                with patch.object(sys, "argv", args), redirect_stdout(StringIO()) as output:
+                    exits.append(MODULE.main())
+                    reports.append(output.getvalue())
+        assert exits == [0, 1], f"CLI exits for judge success/failure: {exits}"
+        assert "4.0/4" in reports[0]
+        assert "provisional" in reports[1] and "4.0/4" not in reports[1]
+        results = {}
+        for path in runs.rglob("result.json"):
+            result = json.loads(path.read_text())
+            assert result["oracle_pass"] is True
+            assert (path.parent / "judge-output.txt").read_text().strip() == grade
+            assert (path.parent / "judge-stderr.txt").read_text().strip() == "backend diagnostic"
+            results[result["judge_exit_code"]] = result
+        assert results[0]["score"] == 4.0 and results[0]["provisional"] is False
+        assert results[7]["score"] is None and results[7]["provisional"] is True
+        assert results[7]["rubric_scores"] == dict.fromkeys(dimensions)
+        assert "7" in results[7]["judge_error"]
+
+
+def check_oracle_process_status() -> None:
+    eval_id = "E75-generic-exit-status-not-output"
+    grade = '{"dimensions": {"H": 4}, "critical_failure": false}'
+    judge = shlex.join([sys.executable, "-c", f"print({grade!r})"])
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        fixture = root / "fixtures/e75-test"
+        fixture.mkdir(parents=True)
+        (fixture / "oracle.py").write_text(
+            "import sys\nfrom pathlib import Path\n"
+            "code = int(Path(sys.argv[1]).name)\n"
+            "print(f'oracle diagnostic {code}', file=sys.stderr)\n"
+            "sys.exit(code)\n"
+        )
+        for code, reserved in [(2, [2]), (1, [2]), (2, [])]:
+            manifest = {"oracle": "oracle.py"}
+            if reserved:
+                manifest["unavailable_exit_codes"] = reserved
+            (fixture / "manifest.json").write_text(json.dumps(manifest))
+            candidate = root / str(code)
+            candidate.mkdir(exist_ok=True)
+            (candidate / "answer.md").write_text("candidate answer")
+            runs = root / f"runs-{code}-{bool(reserved)}"
+            args = [str(SCRIPT), "--eval", eval_id, "--candidate-dir", str(candidate), "--judge-cmd", judge]
+            with patch.object(MODULE, "FIXTURES", fixture.parent), patch.object(MODULE, "RUNS", runs), \
+                 patch.object(sys, "argv", args), redirect_stdout(StringIO()) as output:
+                assert MODULE.main() == 1
+            result_path, = runs.rglob("result.json")
+            result = json.loads(result_path.read_text())
+            assert result["judge_exit_code"] == 0
+            assert (result_path.parent / "judge-output.txt").read_text().strip() == grade
+            assert result["oracle_detail"] == f"oracle diagnostic {code}"
+            if code in reserved:
+                assert result["oracle_pass"] is None, result
+                assert result["oracle_status"] == "unavailable" and result["oracle_error"]
+                assert result["score"] is None and result["provisional"] is True
+                assert result["rubric_scores"] == {"H": None}
+                assert "fixture oracle: UNAVAILABLE" in output.getvalue()
+                assert "oracle diagnostic 2" in output.getvalue()
+                assert "judge-only" not in output.getvalue()
+            else:
+                assert result["oracle_pass"] is False and result["oracle_status"] == "failed"
+                assert "oracle_error" not in result
+                assert result["score"] == 4.0 and result["provisional"] is False
+                assert "fixture oracle: FAIL" in output.getvalue()
+            assert result["oracle_exit_code"] == code
+
+
 def check_empty_candidate_fails_before_judging() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
@@ -118,6 +214,8 @@ def main() -> int:
     check_judge_schema()
     check_fail_closed_exit_codes()
     check_generation_failure()
+    check_judge_process_status()
+    check_oracle_process_status()
     check_empty_candidate_fails_before_judging()
     print("OK: prompt-eval runner collects complete candidates and fails closed")
     return 0

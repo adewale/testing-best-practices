@@ -1,0 +1,59 @@
+sample_path	stratum	source_review	local_execution
+app/e2e/change-instrument.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/mcp-sampled-instrument-lifecycle.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/mixer-layout.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/mobile-android.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/mobile-iphone.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/multiplayer.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/plock-editor.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/populated-visual.spec.ts	browser	full read	source only
+app/e2e/sample-browser-decode.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/session-persistence.spec.ts	browser	declaration, import, matcher and gate scan	source only
+app/e2e/track-reorder.spec.ts	browser	excerpt on exact order and post-reload persistence	source only
+app/identity/site-color-safety.spec.ts	identity-browser	excerpt on contrast calculation and thresholds	source only
+app/identity/stack-a-identity.spec.ts	identity-browser	excerpt on base/head capture and table enrollment	source only
+app/src/App.session-transitions.test.tsx	ui	excerpt on controlled publication promise and button behavior	unit project, passed
+app/src/audio/audio-context-safety.test.ts	audio	excerpt on Tone context fixtures versus engine behavior	unit project, passed
+app/src/audio/audio-graph-owner.test.ts	audio	declaration, import, matcher and gate scan	unit project, passed
+app/src/audio/instrument-routing.test.ts	audio	excerpt on manifest range and inventory assertions	unit project, passed
+app/src/audio/metering-pipeline.test.ts	audio	declaration, import, matcher and gate scan	unit project, passed
+app/src/audio/per-track-synths.test.ts	audio	declaration, import, matcher and gate scan	unit project, passed
+app/src/audio/preset-hygiene.test.ts	audio	declaration, import, matcher and gate scan	unit project, passed
+app/src/audio/sample-load-policy.test.ts	audio	declaration, import, matcher and gate scan	unit project, passed
+app/src/audio/session-render-conservation.render.test.ts	audio	excerpt on RMS onset detection, count and literal step timing	source only
+app/src/components/XYPad.test.tsx	ui	declaration, import, matcher and gate scan	unit project, passed
+app/src/components/tempo-change.test.ts	ui	excerpt on calculation versus callback fixtures	unit project, passed
+app/src/components/waveform-peaks.test.ts	ui	full read	unit project, passed
+app/src/data/phase44-demo-session.test.ts	other-product	declaration, import, matcher and gate scan	unit project, passed
+app/src/hooks/useMultiplayer-capability.test.ts	ui	declaration, import, matcher and gate scan	unit project, passed
+app/src/hooks/useStableCallback.test.ts	ui	excerpt on suspended render and connection ownership	unit project, passed
+app/src/icons/index.test.tsx	other-product	declaration, import, matcher and gate scan	unit project, passed
+app/src/shared/canonical-hash.property.test.ts	protocol-worker	full read	unit project, passed
+app/src/shared/pattern-expansion.test.ts	protocol-worker	declaration, import, matcher and gate scan	unit project, passed
+app/src/shared/track-pan.test.ts	protocol-worker	declaration, import, matcher and gate scan	unit project, passed
+app/src/sync/MessageQueue.test.ts	sync	declaration, import, matcher and gate scan	unit project, passed
+app/src/sync/dedicated-sync-senders.test.ts	sync	declaration, import, matcher and gate scan	unit project, passed
+app/src/sync/handler-factory.test.ts	sync	declaration, import, matcher and gate scan	unit project, passed
+app/src/sync/mutation-tracker.model.test.ts	sync	declaration, import, matcher and gate scan	unit project, passed
+app/src/sync/mutation-tracker.property.test.ts	sync	declaration, import, matcher and gate scan	unit project, passed
+app/src/sync/session.persistence.test.ts	sync	full read	unit project, passed
+app/src/utils/playhead.property.test.ts	other-product	declaration, import, matcher and gate scan	unit project, passed
+app/src/utils/validate-manifests-cli.test.ts	other-product	excerpt on local subprocess and invalid manifest fixture	unit project, passed
+app/src/worker/mcp-adapter.test.ts	protocol-worker	excerpt on KV/DO fixture and allocator	unit project, passed
+app/src/worker/mcp-evals.test.ts	protocol-worker	excerpt on scorer inputs and additive edit expectations	unit project, passed
+app/src/worker/validation.property.test.ts	protocol-worker	declaration, import, matcher and gate scan	unit project, passed
+app/test/e2e-full-stack-lifecycle.test.ts	app-tooling	excerpt on nonce, timeout and process-exit controls	unit project, passed
+app/test/integration/collaboration-contract.test.ts	worker-integration	declaration, import, matcher and gate scan	local Workers project, passed
+app/test/integration/eviction-recovery.test.ts	worker-integration	excerpt on WS-only wake, peer departure, recovery schedule	local Workers project, passed
+app/test/integration/mcp-journeys.test.ts	worker-integration	declaration, import, matcher and gate scan	local Workers project, passed
+app/test/integration/overlap-fuzz.test.ts	worker-integration	excerpt on real sockets, input parity, sequence and snapshot checks	local Workers project, passed
+app/test/integration/seq-regression.test.ts	worker-integration	excerpt on sequence reuse after eviction and signed gap controls	local Workers project, passed
+app/test/integration/social-preview.test.ts	worker-integration	excerpt on parsed metadata versus HTML matching	local Workers project, passed
+app/test/integration/state-hash-parity.test.ts	worker-integration	excerpt on create/update/old-browser assertions	local Workers project, passed
+app/test/integration/state-machine-fuzz.test.ts	worker-integration	full read	local Workers project, passed
+app/test/sample-pipeline-real-contract.test.ts	app-tooling	excerpt on environment gate, fixture, decode and format assertions	source only
+app/test/skill-eval-hidden-oracles.test.ts	app-tooling	declaration, import, matcher and gate scan	unit project, passed
+app/test/skill-eval-manifest.test.ts	app-tooling	declaration, import, matcher and gate scan	source only
+app/test/unit/pattern-ops-sync.test.ts	app-tooling	excerpt on action, message, reducer and worker equivalence	unit project, passed
+app/test/unit/sync-layer-coverage.test.ts	app-tooling	excerpt on table enrollment and round-trip equality	unit project, passed
+app/test/unit/validate-sync-checklist.test.ts	app-tooling	excerpt on source mutations used to exercise the checker	unit project, passed

@@ -1,0 +1,66 @@
+{
+  "sealed_utc": "2026-11-27T03:01:54.908534+00:00",
+  "scope": "All twelve allocated judge attempts retained before final execution-arm decoding; failed judge artifacts remain provisional",
+  "receipts": {
+    "683b871f8485a62e": {
+      "case": "R01",
+      "state": "returned",
+      "receipt_sha256": "5f44e788713e58f4add24c0752ec3042ad51d808a9e3118968e843482747f8de"
+    },
+    "b21af27e376ddc9d": {
+      "case": "R02",
+      "state": "returned",
+      "receipt_sha256": "4f488005c8df6eaa321d5759d3c6e4d9ac1fcf50ad996be01c8da591b6baf043"
+    },
+    "ab50cb0560de4162": {
+      "case": "R03",
+      "state": "returned",
+      "receipt_sha256": "4ecfbfac39bccbc90e17c1ea552cb2f68c45136abeda9ee1efcc4ff82ef3bf53"
+    },
+    "bb389102053a4013": {
+      "case": "R04",
+      "state": "returned",
+      "receipt_sha256": "6d3a8f57725b2228c1e683ce82430a4f24110556c851a433dd360cea05d044f0"
+    },
+    "b772ebe006cc1e05": {
+      "case": "R05",
+      "state": "returned",
+      "receipt_sha256": "5a99cad4394710cd555a277c6c68e000e3ae3cb5f76537dfa45a612f5c64bf6f"
+    },
+    "e912509d0fc40cae": {
+      "case": "R06",
+      "state": "returned",
+      "receipt_sha256": "6e302d5b56c404fb37f5590ef28355dc9f50eceb03c954af29d31884164bc705"
+    },
+    "b46d47ecf91cc159": {
+      "case": "R07",
+      "state": "returned",
+      "receipt_sha256": "2dba75ec5c1dbeea0dd5664cfce37068ee099545fed8f5498473266ccf395bc2"
+    },
+    "3807c048152ef71f": {
+      "case": "R08",
+      "state": "returned",
+      "receipt_sha256": "03d3074c485b18289db7b9001d6a519f1f47f9e2a65d626193c0c7dbff074311"
+    },
+    "5fae99654841d4fe": {
+      "case": "R09",
+      "state": "returned",
+      "receipt_sha256": "576cd43a7f1125dd23301f877ecade0b5ffffefed76e68f3ad2f335b1ad0dd1c"
+    },
+    "826997c89d99e7f0": {
+      "case": "B01",
+      "state": "returned",
+      "receipt_sha256": "08de6343109bb42a47166cf940869fda7b222e474d4b355484b95abcb228094e"
+    },
+    "c876fc068a5074c4": {
+      "case": "B02",
+      "state": "failed-policy-filter",
+      "receipt_sha256": "a029da0d1be697084b681b2c6fd33ea3d3c1b13967c5503cdd0305d232fe7759"
+    },
+    "44ba2bdefa9fa642": {
+      "case": "B03",
+      "state": "returned",
+      "receipt_sha256": "524eb03813a316eff8a297f9d0ad1ef333caa7323dca18ac51b7711fbc4de222"
+    }
+  }
+}

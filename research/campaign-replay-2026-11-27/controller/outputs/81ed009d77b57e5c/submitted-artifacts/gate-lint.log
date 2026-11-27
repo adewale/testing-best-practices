@@ -1,0 +1,5 @@
+
+> keyboardia@0.2.0 lint
+> eslint .
+
+sh: 1: eslint: not found

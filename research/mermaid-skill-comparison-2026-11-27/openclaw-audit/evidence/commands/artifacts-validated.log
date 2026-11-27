@@ -1,0 +1,11 @@
+{
+  "findings": 4,
+  "read_counts": {
+    "target partial": 25,
+    "assigned guidance full": 6,
+    "target full": 27
+  },
+  "command_records_prior_to_this_validation": 93,
+  "report_link_targets": 49,
+  "missing": []
+}

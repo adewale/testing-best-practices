@@ -1,0 +1,233 @@
+
+src/__tests__/cli-multi-input.test.ts:
+(pass) #930 pathname watch lifecycle > observes atomic rename-over saves and subsequent writes to the replacement inode [113.91ms]
+(pass) #930 pathname watch lifecycle > metadata polling observes changes when the host event source stays silent [30.99ms]
+86 |     const first = tmp('flowchart TD\n A[First Label] --> B')
+87 |     const bad = tmp('not a diagram')
+88 |     const last = tmp('flowchart LR\n X[Final Label] --> Y')
+89 |     const { code, out } = capture(() => runCli(['render', first, bad, last, '--format', 'ascii']))
+90 |     expect(code).toBe(0)
+91 |     expect(JSON.parse(out).files).toEqual([
+                                       ^
+error: expect(received).toEqual(expected)
+
+  [
+-   ObjectContaining {
++   {
+      "file": "/tmp/am-multi-input-7rvlfl/input.mmd",
+      "index": 0,
+      "ok": true,
+-     "output": StringContaining "First Label",
++     "output": 
++ "+-------------+
++ |             |
++ | First Label |
++ |             |
++ +-------------+
++        |       
++        |       
++        |       
++        |       
++        v       
++ +-------------+
++ |             |
++ |      B      |
++ |             |
++ +-------------+"
++ ,
++     "receipt": {
++       "appearanceDigest": "fnv1a64:5c57037fc07cf497",
++       "capabilityDecision": {
++         "accepted": true,
++         "resolutions": [
++           {
++             "id": "core:render-request",
++             "level": "required",
++             "range": "^1.0.0",
++             "status": "selected",
++             "version": "1.0.0",
++           },
++           {
++             "id": "core:family-descriptor",
++             "level": "required",
++             "range": "^1.0.0",
++             "status": "selected",
++             "version": "1.0.0",
++           },
++           {
++             "id": "family:flowchart",
++             "level": "required",
++             "range": "1.0.0",
++             "status": "selected",
++             "version": "1.0.0",
++           },
++           {
++             "id": "operation:render-terminal",
++             "level": "required",
++             "range": "^1.0.0",
++             "status": "selected",
++             "version": "1.0.0",
++           },
++           {
++             "id": "output:ascii",
++             "level": "required",
++             "range": "^1.0.0",
++             "status": "selected",
++             "version": "1.0.0",
++           },
++         ],
++         "version": 1,
++       },
++       "diagnostics": [
++         {
++           "code": "TERMINAL_CONNECTOR_DECLARED_LIMITATION",
++           "feature": "connector:edge:A->B#0",
++           "message": "The terminal grid preserves connector semantics while projecting continuous stroke fields: continuous-geometry, stroke-width, stroke-cap, stroke-join, stroke-miter.",
++         },
++         {
++           "code": "TERMINAL_CONNECTOR_PROJECTED",
++           "feature": "connectors:polyline",
++           "message": "1 polyline connector declare projected terminal realization; their typed semantics are supplied to the terminal adapter and receipt.",
++         },
++       ],
++       "layoutCertification": {
++         "bounds": {
++           "height": 15,
++           "width": 15,
++         },
++         "budget": {
++           "exhausted": false,
++           "issuesTruncated": false,
++           "maxOperations": 1000000,
++           "maxOutputCodeUnits": 2000000,
++           "operations": 1066,
++           "outputCodeUnits": 239,
++           "projectionsTruncated": false,
++         },
++         "coverage": {
++           "cells": 155,
++           "graphemes": 155,
++           "identities": 3,
++           "markerContracts": 2,
++           "ownedCells": 155,
++           "ports": 2,
++           "textAllocations": 2,
++           "textClusters": 12,
++           "unownedCells": 0,
++         },
++         "issues": [],
++         "limitations": [
++           "Checks cover the retained terminal cell projection and its emitted encoding, not pixel geometry, font ink or terminal emulator behavior.",
++           "Identity and membership checks use native declarations; they do not establish complete correspondence with every authored family model.",
++           "Declared route bundles, perpendicular crossings and numeric marks may share cells; composition diagnostics distinguish rejected content from those intentional overlaps.",
++           "Directional owned-ink connectivity is checked only for explicitly connected native routes; other families retain endpoint and marker checks without a complete route proof.",
++           "A passing cell contract does not certify aesthetic spacing, contrast or the legibility of a particular display.",
++         ],
++         "outputDigest": "fnv1a64:9cc2e819a8f28e53",
++         "projections": [],
++         "scope": "terminal-cells",
++         "status": "passed",
++         "unit": "cell",
++         "version": 1,
++       },
++       "output": "ascii",
++       "requestDigest": "fnv1a64:c5cd1c765ab472a0",
++       "sharedRequestDigest": "fnv1a64:96213a98443317db",
++       "version": 2,
++     },
++     "warnings": [],
+    },
+-   ObjectContaining {
+-     "error": ObjectContaining {
++   {
++     "error": {
+        "code": "UNKNOWN_HEADER",
++       "help": "Check for a Mermaid upgrade or register a namespaced family descriptor; the source was preserved unchanged.",
++       "line": 1,
++       "message": "Unrecognized Mermaid header: "not a diagram"",
++       "preservation": {
++         "classification": "unknown",
++         "header": "not a diagram",
++         "mermaidVersion": "12.2.0",
++         "source": "not a diagram",
++         "spans": {
++           "body": {
++             "end": {
++               "col": 14,
++               "line": 1,
++               "offset": 13,
++             },
++             "start": {
++               "col": 14,
++               "line": 1,
++               "offset": 13,
++             },
++           },
++           "header": {
++             "end": {
++               "col": 14,
++               "line": 1,
++               "offset": 13,
++             },
++             "start": {
++               "col": 1,
++               "line": 1,
++               "offset": 0,
++             },
++           },
++           "source": {
++             "end": {
++               "col": 14,
++               "line": 1,
++               "offset": 13,
++             },
++             "start": {
++               "col": 1,
++               "line": 1,
++               "offset": 0,
++             },
++           },
++         },
++         "version": 1,
++       },
+      },
+      "file": "/tmp/am-multi-input-nRsO8j/input.mmd",
+      "index": 1,
+      "ok": false,
+-   },
+-   ObjectContaining {
+-     "file": "/tmp/am-multi-input-eg6zea/input.mmd",
+-     "index": 2,
+-     "ok": true,
+-     "output": StringContaining "Final Label",
+    },
+  ]
+
+- Expected  - 10
++ Received  + 169
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/verification/repo/src/__tests__/cli-multi-input.test.ts:91:35)
+(fail) #959 multi-input rendering > renders multiple files, emits a results array, skips bad ones [99.05ms]
+(pass) #959 multi-input rendering > multi-input json parse errors expose structured details, not stringified blobs [21.55ms]
+(pass) #959 multi-input rendering > single input keeps single-output behavior (no results array) [10.26ms]
+(pass) #959 multi-input rendering > --security strict applies to multi-input SVG renders [36.00ms]
+am render --security accepts only strict
+(pass) #959 multi-input rendering > invalid --security values are rejected instead of silently using default mode [0.88ms]
+am render --watch accepts exactly one input file
+(pass) #959 multi-input rendering > --watch rejects multiple inputs instead of doing a one-shot multi-render [0.58ms]
+(pass) #930 watch frame (the step every --watch change runs) > reflects file changes on re-invocation [22.46ms]
+(pass) #930 watch frame (the step every --watch change runs) > a frame reports each ineffective config field once, before its output [39.50ms]
+(pass) #930 watch frame (the step every --watch change runs) > strict SVG option applies to the watch frame [5.47ms]
+(pass) #930 watch frame (the step every --watch change runs) > a failed frame prints the family diagnostic, as JSON under --json and as one line otherwise [4.24ms]
+am render --format png does not support --watch; run non-watch PNG renders with --output <file.png>
+(pass) #930 watch frame (the step every --watch change runs) > watch mode rejects PNG instead of writing SVG to a PNG path [0.57ms]
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+(pass) #930 watch frame (the step every --watch change runs) > PNG rejects non-positive and non-finite scales as argument errors [3.54ms]
+
+ 13 pass
+ 1 fail
+ 39 expect() calls
+Ran 14 tests across 1 file. [685.00ms]

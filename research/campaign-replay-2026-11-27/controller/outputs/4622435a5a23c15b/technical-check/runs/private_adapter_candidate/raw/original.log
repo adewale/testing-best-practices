@@ -1,0 +1,59 @@
+
+ RUN  v4.1.11 /case/repo/app
+
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should increase swing when dragging up 2ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should decrease swing when dragging down 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should clamp to minimum swing (0) 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should clamp to maximum swing (100) 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should return same value when no drag movement 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should handle starting at 0 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should handle starting at 100 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Unit) > should round to nearest integer 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Property-Based) > P-001: result is always within valid swing bounds (0-100) 47ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Property-Based) > P-002: result is always an integer 5ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Property-Based) > P-003: same drag distance produces consistent swing change 6ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Property-Based) > P-004: drag up always increases or maintains swing (within bounds) 6ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Property-Based) > P-005: drag down always decreases or maintains swing (within bounds) 5ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Drag Calculation (Property-Based) > P-006: zero drag distance preserves swing 5ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing State Flow (Integration) > I-001: SET_SWING action updates state correctly 139ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Unit) > should increase tempo when dragging up 2ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Unit) > should decrease tempo when dragging down 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Unit) > should clamp to minimum tempo 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Unit) > should clamp to maximum tempo 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Unit) > should return same value when no drag movement 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Unit) > should round to nearest integer 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Unit) > should handle starting at boundary values 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Property-Based) > P-001: result is always within valid tempo bounds 40ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Property-Based) > P-002: result is always an integer 5ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Property-Based) > P-003: same drag distance produces consistent tempo change 6ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Property-Based) > P-004: drag up always increases or maintains tempo (within bounds) 5ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Property-Based) > P-005: drag down always decreases or maintains tempo (within bounds) 5ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Property-Based) > P-006: zero drag distance preserves tempo 6ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Drag Calculation (Property-Based) > P-007: sensitivity affects magnitude of change 7ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo State Flow (Integration) > I-001: SET_TEMPO action updates state correctly 140ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing State Flow (Integration) > I-002: SET_SWING clamps values to valid range (0-100) 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing State Flow (Integration) > I-003: Multiple swing changes preserve only latest value 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing State Flow (Integration) > I-004: Swing change does not affect other state fields 1ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing State Flow (Integration) > I-005: Swing 0 means no shuffle (straight timing) 0ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing State Flow (Integration) > I-006: Swing 100 means maximum shuffle 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo State Flow (Integration) > I-002: SET_TEMPO clamps values to valid range 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo State Flow (Integration) > I-003: Multiple tempo changes preserve only latest value 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo State Flow (Integration) > I-004: Tempo change does not affect other state fields 2ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Mutations (Property-Based Integration) > PI-001: applyMutation set_swing is idempotent for same value 1647ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Mutations (Property-Based Integration) > PI-001: applyMutation set_tempo is idempotent for same value 1683ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Mutations (Property-Based Integration) > PI-002: swing change commutes with track mutations 25ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Mutations (Property-Based Integration) > PI-003: swing survives state serialization round-trip 1522ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Timing Effect (Musical) > should represent swing as a percentage (0-100) 1ms
+ ✓ |unit| src/components/swing-control.test.ts > Swing Timing Effect (Musical) > should default to 0% swing (no shuffle) 0ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Mutations (Property-Based Integration) > PI-002: tempo change commutes with track mutations 21ms
+ ✓ |unit| src/components/tempo-change.test.ts > Tempo Mutations (Property-Based Integration) > PI-003: tempo survives state serialization round-trip 1593ms
+ ✓ |unit| src/components/TransportBar.test.tsx > sends consecutive 'Tempo' edits during a touch drag 120ms
+ ✓ |unit| src/components/TransportBar.test.tsx > sends consecutive 'Swing' edits during a touch drag 20ms
+ ✓ |unit| src/components/TransportBar.test.tsx > ignores secondary-button 'Tempo' drags and reports a primary-button drag 14ms
+ ✓ |unit| src/components/TransportBar.test.tsx > ignores secondary-button 'Swing' drags and reports a primary-button drag 16ms
+
+ Test Files  3 passed (3)
+      Tests  50 passed (50)
+   Start at  02:06:34
+   Duration  4.67s (transform 841ms, setup 354ms, import 262ms, tests 7.10s, environment 350ms)
+

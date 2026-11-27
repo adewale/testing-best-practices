@@ -1,0 +1,22 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/png-fonts.test.ts:
+
+# Unhandled error between tests
+-------------------------------
+84 | const EMOJI_SRC = 'flowchart LR\n  A[🚀 Launch] --> B[Done]'
+85 | 
+86 | // CI installs WenQuanYi; local hosts may select another CJK-capable font directory.
+87 | const CJK_FONT_DIR = process.env.AM_CJK_FONT_DIR ?? '/usr/share/fonts/truetype/wqy'
+88 | const HAS_CJK_FONT = existsSync(CJK_FONT_DIR)
+89 | if (process.env.CI === 'true' && !HAS_CJK_FONT) throw new Error('CI requires a CJK font: install fonts-wqy-zenhei or set AM_CJK_FONT_DIR')
+                                                           ^
+error: CI requires a CJK font: install fonts-wqy-zenhei or set AM_CJK_FONT_DIR
+      at /workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/src/__tests__/png-fonts.test.ts:89:55
+-------------------------------
+
+
+ 0 pass
+ 1 fail
+ 1 error
+Ran 1 test across 1 file. [458.00ms]

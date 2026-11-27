@@ -1,0 +1,25 @@
+bun test v1.4.4 (38afee6c8)
+
+e2e/cli.e2e.test.ts:
+(pass) am render multi-input > unsupported --format exits 2 instead of falling back to SVG [361.42ms]
+(pass) am render multi-input > --format png rejects multiple inputs instead of ignoring extras [315.76ms]
+(pass) am render multi-input > --format layout returns layout JSON per file, not ASCII strings [400.69ms]
+
+src/__tests__/cli-error-envelope.test.ts:
+(pass) render failure diagnostics agree across render surfaces > a missing file in a multi-input render is an argument error, not a render failure [100.61ms]
+
+src/__tests__/cli-multi-input.test.ts:
+(pass) #959 multi-input rendering > renders multiple files, emits a results array, skips bad ones [57.67ms]
+(pass) #959 multi-input rendering > multi-input json parse errors expose structured details, not stringified blobs [8.90ms]
+(pass) #959 multi-input rendering > single input keeps single-output behavior (no results array) [8.19ms]
+(pass) #959 multi-input rendering > --security strict applies to multi-input SVG renders [16.65ms]
+am render --security accepts only strict
+(pass) #959 multi-input rendering > invalid --security values are rejected instead of silently using default mode [0.43ms]
+am render --watch accepts exactly one input file
+(pass) #959 multi-input rendering > --watch rejects multiple inputs instead of doing a one-shot multi-render [0.21ms]
+
+ 10 pass
+ 37 filtered out
+ 0 fail
+ 28 expect() calls
+Ran 10 tests across 3 files. [1.57s]

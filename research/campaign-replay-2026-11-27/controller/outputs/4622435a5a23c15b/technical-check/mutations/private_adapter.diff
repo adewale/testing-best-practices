@@ -1,0 +1,65 @@
+--- a/app/src/components/TransportBar.tsx
++++ b/app/src/components/TransportBar.tsx
+@@ -11,6 +11,9 @@
+  * BUG FIX: Pointer capture for tempo/swing drag operations
+  * See docs/bug-patterns/POINTER-CAPTURE-AND-STALE-CLOSURES.md
+  */
++
++const tempoDrag = { sensitivity: TEMPO_DRAG_SENSITIVITY, min: 60, max: 180 };
++const swingDrag = { sensitivity: SWING_DRAG_SENSITIVITY, min: 0, max: 100 };
+ 
+ interface TransportBarProps {
+   isPlaying: boolean;
+@@ -67,22 +70,19 @@
+ 
+   const handleDragMove = useCallback((
+     e: React.TouchEvent | React.MouseEvent,
+-    type: 'tempo' | 'swing',
+-    min: number,
+-    max: number,
++    control: { sensitivity: number; min: number; max: number },
+     onChange: (value: number) => void
+   ) => {
+     if (!dragStartRef.current) return;
+ 
+     const y = 'touches' in e ? e.touches[0].clientY : e.clientY;
+-    const sensitivity = type === 'tempo' ? TEMPO_DRAG_SENSITIVITY : SWING_DRAG_SENSITIVITY;
+     const newValue = calculateDragValue(
+       dragStartRef.current.value,
+       dragStartRef.current.y,
+       y,
+-      sensitivity,
+-      min,
+-      max,
++      control.sensitivity,
++      control.min,
++      control.max,
+     );
+     onChange(newValue);
+   }, []);
+@@ -129,10 +129,10 @@
+         className="transport-value"
+         ref={tempoRef}
+         onTouchStart={(e) => handleDragStart(e, tempo, 'tempo')}
+-        onTouchMove={(e) => handleDragMove(e, 'tempo', 60, 180, onTempoChange)}
++        onTouchMove={(e) => handleDragMove(e, tempoDrag, onTempoChange)}
+         onTouchEnd={handleDragEnd}
+         onMouseDown={(e) => handleDragStart(e, tempo, 'tempo')}
+-        onMouseMove={(e) => e.buttons === 1 && handleDragMove(e, 'tempo', 60, 180, onTempoChange)}
++        onMouseMove={(e) => e.buttons === 1 && handleDragMove(e, tempoDrag, onTempoChange)}
+         onMouseUp={handleDragEnd}
+         onMouseLeave={handleDragEnd}
+         title="Drag up/down to adjust tempo"
+@@ -152,10 +152,10 @@
+         className="transport-value"
+         ref={swingRef}
+         onTouchStart={(e) => handleDragStart(e, swing, 'swing')}
+-        onTouchMove={(e) => handleDragMove(e, 'swing', 0, 100, onSwingChange)}
++        onTouchMove={(e) => handleDragMove(e, swingDrag, onSwingChange)}
+         onTouchEnd={handleDragEnd}
+         onMouseDown={(e) => handleDragStart(e, swing, 'swing')}
+-        onMouseMove={(e) => e.buttons === 1 && handleDragMove(e, 'swing', 0, 100, onSwingChange)}
++        onMouseMove={(e) => e.buttons === 1 && handleDragMove(e, swingDrag, onSwingChange)}
+         onMouseUp={handleDragEnd}
+         onMouseLeave={handleDragEnd}
+         title="Drag up/down to adjust swing"

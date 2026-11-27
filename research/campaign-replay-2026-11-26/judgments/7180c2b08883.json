@@ -1,0 +1,77 @@
+{
+  "case": "R03",
+  "candidates": [
+    {
+      "id": "461e1844682f",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Drops the 3.0 threshold and deletes redundant type, presence, and source-text assertions. Counts only guide which tests to read.",
+          "reason": "A file can remain below the threshold without adding an assertion."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the promised-exception assertion and the complete-property assertion over its stated domain.",
+          "reason": "Both tests retain their original one-assertion contracts."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "The mixed fixture must lose the forbidden construct and retain both known text fragments. A safe-only fixture checks preservation separately.",
+          "reason": "The contract supplies the expected content. Passing the input through and returning an unrelated constant would fail different checks."
+        }
+      ]
+    },
+    {
+      "id": "3a66eed1ecae",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Drops the threshold and the checks added to reach it, and uses any available count only to select tests for review.",
+          "reason": "New assertions need a named contract and plausible regression, so density cannot compel padding."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Explicitly retains the existing assertions and inputs for the promised exception and complete invariant.",
+          "reason": "This preserves both the precise expectations and their input coverage."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Checks the public sanitizer's mixed output for absence of the policy-forbidden construct and retention of the fixture words 'Quarterly report 17'.",
+          "reason": "The policy and fixture literals supply independent expectations. The proposed pass-through and fixed-string trials verify each check detects its intended fault."
+        }
+      ]
+    },
+    {
+      "id": "b943977ba88b",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes the density threshold and padding, and keeps a type check only if it covers a separate public guarantee.",
+          "reason": "A file below 3.0 needs no further work on account of its count. Any retained type assertion has a behavioral justification."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the current exact-exception and complete-property tests as written, including their original inputs.",
+          "reason": "Neither promised behavior loses coverage or acquires redundant checks."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Checks that the returned structure omits the fixture's forbidden item and retains the allowed item with its exact safe text.",
+          "reason": "The policy and known fixture text define both expectations. An unchanged input violates removal, while a nonempty placeholder violates preservation."
+        }
+      ]
+    }
+  ]
+}

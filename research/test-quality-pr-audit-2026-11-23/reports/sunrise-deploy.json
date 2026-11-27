@@ -1,0 +1,42 @@
+{
+  "repository": "adewale/sunrise-deploy",
+  "total_prs": 1,
+  "pages_checked": [
+    {
+      "page": 1,
+      "state": "all",
+      "per_page": 100,
+      "count": 1
+    },
+    {
+      "page": 2,
+      "state": "all",
+      "per_page": 100,
+      "count": 0
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Mark this fork frozen and point to upstream Sunrise",
+      "url": "https://github.com/adewale/sunrise-deploy/pull/1",
+      "state": "closed",
+      "merged": false,
+      "classification": "Audit follow-up documenting a known test weakness",
+      "weakness": "The fork's in-memory D1 double accepts arbitrary bind values. Its general github_changes SELECT handler checks only the first value against the row ID, so additional SQL predicates can go untested.",
+      "attempted_remedy": "The README directs maintainers to upstream's real-D1 and browser suites and its verification command when upgrading. The PR body reports an aborted trial merge in a scratch worktree.",
+      "test_paths": [
+        "test/memory-db.ts"
+      ],
+      "diff_evidence": "The complete file inventory and patch show six added lines in README.md only, documenting the double and the upgrade procedure. The unchanged base implementation independently shows bind(...args) retaining all arguments on line 11 and the github_changes selector using only v[0] on line 69.",
+      "source_url": "https://github.com/adewale/sunrise-deploy/blob/b7e6f06081e7f103ce869d7b0bc693f5af9fe67f/test/memory-db.ts#L69",
+      "transferable_rule": "Exercise SQL predicates and bind handling against the database engine used in production when an in-memory double implements its own query semantics.",
+      "reason": "The PR proposed freezing the fork and documenting the limits of its tests. It submitted no suite repair, replacement, or change to a verification command. The only proposed test migration was the scratch merge described in the PR body.",
+      "outcome_caveat": "GitHub records the PR as closed without merge. The author reported 33 conflicts and no test rerun. The patch confirms the README change only."
+    }
+  ],
+  "limitations": [
+    "Reviewed every PR title, body, changed filename and patch in this fork. Upstream changes and the uncommitted trial merge are outside this fork's PR diff."
+  ]
+}

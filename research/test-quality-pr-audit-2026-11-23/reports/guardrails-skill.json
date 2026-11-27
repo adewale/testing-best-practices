@@ -1,0 +1,173 @@
+{
+  "repository": "adewale/guardrails-skill",
+  "total_prs": 18,
+  "pages_checked": [
+    "GitHub REST /pulls?state=all&per_page=100, page 1 contained PRs #1–18. Page 2 was empty.",
+    "All 18 titles and bodies and all 70 changed-file entries were screened. Each /pulls/{number}/files page contained fewer than 100 entries. Reviewed patches for plausible matches and adjacent changes."
+  ],
+  "state_counts": {
+    "merged": 15,
+    "closed_unmerged": 1,
+    "open": 2
+  },
+  "matching_prs": [
+    {
+      "number": 4,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/guardrails-skill/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation approach and repair of a saturated case",
+      "weakness": "The prior README offered scenarios to try manually. The new manifest records that a production-edit case scored 1.0 both with and without the skill when a bare BLOCK could pass.",
+      "attempted_remedy": "Run paired skill and baseline variants. Require a decision, fast-check evidence, the production/test-file change, and a next action before the Stop case passes. Use separate tuning and withheld splits.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md",
+        "evals/fixtures/round3-stop-hook/session.md",
+        "evals/fixtures/round3-stop-hook/git-diff.patch"
+      ],
+      "diff_evidence": "The pos-stop-prod-no-tests case adds not-bare-block, fast-check-evidence, code-test-delta-evidence and blocked-next-action assertions. The manifest defines with_skill and without_skill variants and six ablations.",
+      "transferable_rule": "Measure a baseline on the same task. Where a bare answer saturates the score, require observable evidence that distinguishes a correct response.",
+      "outcome_caveat": "The prior score and six successful trigger checks are author-reported. The PR contains no post-change paired scores, private prompts or completed ablation results. The head had no GitHub check runs."
+    },
+    {
+      "number": 6,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/guardrails-skill/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct change to an existing eval grader",
+      "weakness": "The round-3 fixture case evaluated a Stop decision using a label regex and keyword lists. It lacked a script assertion at the harness boundary.",
+      "attempted_remedy": "Run a deterministic Python oracle on saved output alongside the existing manifest assertions.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The manifest adds fixture-script-oracle with a 10-second timeout and required exit code 0. The script reads output.md and checks a BLOCK regex and two groups of words. Both groups largely duplicate the previous manifest checks.",
+      "transferable_rule": "Check that a new grader rejects known incorrect answers that share the expected vocabulary. A second implementation can reproduce the original weakness.",
+      "outcome_caveat": "The author reported one scripted fixture check passing. The head had no GitHub check runs. PR #14 later demonstrated false positives and false negatives in the decision regex."
+    },
+    {
+      "number": 8,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/guardrails-skill/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation reporting approach",
+      "weakness": "Benchmark cases lacked the common taxonomy that the shared harness used to summarize outcomes by difficulty, success goal and trigger type.",
+      "attempted_remedy": "Tag the existing cases so reviewers can compare core and extended cases or inspect implicit and negative near-miss triggers separately.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The patch adds domain, difficulty and success_goals to all 27 cases. It adds trigger_type to six trigger cases, using implicit or negative-near-miss. Twenty-one cases have the outcome goal and six have the trigger goal.",
+      "transferable_rule": "Track results for negative near misses separately from expected triggers so overall performance cannot conceal false positives in that group.",
+      "outcome_caveat": "This was a reporting change. The patch preserves expected behavior and assertion logic. It includes neither a slice report nor evidence that tags improved score discrimination. The head had no GitHub check runs."
+    },
+    {
+      "number": 10,
+      "title": "Add install boundary CI and tighten install docs",
+      "url": "https://github.com/adewale/guardrails-skill/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "New CI check for an existing install contract",
+      "weakness": "The installation guide copied the entire repository into the skill directory. There was no automated check for a declared installation path missing SKILL.md or containing development artifacts.",
+      "attempted_remedy": "Check the directories specified by the package and marketplace manifests during CI. Change the install instructions to copy the skill directory.",
+      "test_paths": [
+        "scripts/check_install_boundary.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": "The checker resolves skill.entry, pi.skills and marketplace skills, scans the resolved source trees, and exits 1 for a missing directory, missing SKILL.md or forbidden files. Examples include tests/, node_modules/ and .pyc files.",
+      "transferable_rule": "Validate the shipped boundary from the same declarations the installer consumes. Plant invalid and near-miss examples to prove the check can fail selectively.",
+      "outcome_caveat": "The GitHub install-boundary check succeeded on the repository tree. This PR had no planted-failure tests and did not inspect an installed copy. PRs #14 and #13 later added negative controls.",
+      "verification_url": "https://github.com/adewale/guardrails-skill/actions/runs/27562607027/job/81478229538"
+    },
+    {
+      "number": 13,
+      "title": "Register the plugin hooks, gate the eval manifest, fix the round-3 oracle, and add the first unit tests",
+      "url": "https://github.com/adewale/guardrails-skill/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "Merged verification audit incorporating PR #14",
+      "weakness": "The plugin manifest omitted its hook registration path. Six trigger cases lacked explicit expected decisions, and two judge-only cases lacked a gate. The round-3 script oracle and the install-boundary checker also lacked controls for wrong outputs and contaminated trees.",
+      "attempted_remedy": "Run pinned manifest validation, manifest auditing and 23 unit tests within the existing install-boundary job. Add cheap hook-registration assertions in CI and a separate manual check that installs the plugin with the actual CLI. Fold in the #14 oracle and its tests.",
+      "test_paths": [
+        ".github/workflows/install-boundary.yml",
+        "evals/shared-benchmark.json",
+        "evals/oracles/fixture_oracle.py",
+        "tests/test_plugin_manifest.py",
+        "tests/test_eval_harness_grading.py",
+        "tests/test_fixture_oracle.py",
+        "tests/test_install_boundary.py",
+        "scripts/check_plugin.py"
+      ],
+      "diff_evidence": "Six should_trigger flags specify three positive and three negative cases. Both hidden judge assertions gain gate:true. The two plugin tests resolve the hooks path and assert the exact SessionStart, Stop and PreToolUse event set. The oracle and three test modules have the same Git blob SHAs as #14.",
+      "transferable_rule": "Keep a cheap CI check for the exact registration failure and verify installation with the actual consumer. Record separately what artifact registration and output grading establish about runtime behavior.",
+      "outcome_caveat": "GitHub recorded successful manifest validation, manifest audit and unit-test steps. The full plugin-install probe stayed manual. Hook execution, judge calibration and the eight reported weak manifest graders remained open at this PR. #14 and #13 share one oracle repair.",
+      "verification_url": "https://github.com/adewale/guardrails-skill/actions/runs/38052362051/job/114213874662"
+    },
+    {
+      "number": 14,
+      "title": "Test audit: fix the round-3 eval oracle passing ALLOW, add oracle and install-boundary tests",
+      "url": "https://github.com/adewale/guardrails-skill/pull/14",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated test audit, closed and folded into PR #13",
+      "weakness": "A case-insensitive BLOCK prefix made an ALLOW decision pass when later prose said “Block: none.” The same grader rejected valid Markdown decisions. The install-boundary check had only been run on a clean checkout.",
+      "attempted_remedy": "Parse explicit decision fields first and require every selected label to match BLOCK. Run 12 oracle tests, two actual harness grading tests and seven install-boundary tests with planted defects and valid controls.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "tests/test_fixture_oracle.py",
+        "tests/test_eval_harness_grading.py",
+        "tests/test_install_boundary.py",
+        ".github/workflows/tests.yml"
+      ],
+      "diff_evidence": "The real harness tests require exactly one script-assertion result and inspect its passed flag for both saved answers. Boundary tests create invalid package metadata, banned artifacts and missing entry files, check error codes and diagnostics, and include harmless near-miss names.",
+      "transferable_rule": "Keep all other evidence valid when changing a single answer field. Run the good and bad outputs through the real harness and assert the verdict of the intended grader.",
+      "outcome_caveat": "GitHub recorded a successful tests job. Replaying the old/new decision rules independently confirmed the ALLOW-plus-prose case changed from pass to fail, an emphasized BLOCK changed from fail to pass, and conflicting decisions changed from pass to fail. The full mutation counts are author-reported. GitHub marks #14 unmerged, and the four Python blobs match merged #13.",
+      "verification_url": "https://github.com/adewale/guardrails-skill/actions/runs/37103801017/job/111148327557"
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        2,
+        3,
+        7
+      ],
+      "reason": "Hook registration, task-enforcement guidance and distribution metadata. These changed the skill or its runtime instructions without repairing the repository's tests."
+    },
+    {
+      "numbers": [
+        5,
+        9,
+        11
+      ],
+      "reason": "Harness version requirements or installation references only."
+    },
+    {
+      "numbers": [
+        12,
+        17
+      ],
+      "reason": "Lint cleanups and workflow SHA-pinning checks. #12 spells out regex flag names but preserves grader semantics."
+    },
+    {
+      "numbers": [
+        15,
+        16
+      ],
+      "reason": "Workflow scheduling and cancellation only."
+    },
+    {
+      "numbers": [
+        18
+      ],
+      "reason": "Automated dependency upgrade with action SHA and version edits only."
+    }
+  ],
+  "limitations": [
+    "This inventory covers pull requests visible on 2026-11-23, including all authors and dates. Runtime model behavior and private evaluation inputs were outside the available PR evidence.",
+    "No candidate exceeded the GitHub files page size. PR-level validation claims are identified separately from independently inspected diffs, GitHub job results and replayed decision-rule examples."
+  ]
+}

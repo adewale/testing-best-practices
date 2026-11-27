@@ -1,0 +1,86 @@
+{
+  "repository": "adewale/xampler",
+  "total_prs": 5,
+  "pages_checked": {
+    "pulls": "GitHub REST pulls?state=all&per_page=100, page 1 returned #1–#5 and page 2 returned zero. No date or author filters.",
+    "files": "Read page 1 at 100 files per PR for all five. File counts for #1 through #5 were 3, 52, 11, 3 and 1. Reviewed titles, bodies and candidate test patches."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Honest Python floor, manual local runtime verifier, real-engine D1/KV doubles and R2 SQL guard fix",
+      "url": "https://github.com/adewale/xampler/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit verification and test-quality changes in a combined PR",
+      "weakness": "The CLI fuzz test ran a fixed 1,000-iteration loop, invoked the CLI twice per iteration and ended by checking that its outcome counter was nonempty. Failures could not shrink. The local verifier also waited for a timeout after the development server had already exited.",
+      "attempted_remedy": "Keep the CLI invariants, generate and shrink argument lists with Hypothesis, pin three boundary examples and set a reproducible default budget. Fail immediately on server exit. Keep the five-example runtime exercise manual and add cheap tests for two failures it exposed. The PR also incorporates the separate suite repairs in #3.",
+      "test_paths": [
+        "tests/test_cli_fuzz.py",
+        "tests/conftest.py",
+        "scripts/verify_examples.py",
+        "tests/test_example_pyprojects.py",
+        "tests/test_response.py",
+        "docs/api/primitive-test-realism.md"
+      ],
+      "diff_evidence": [
+        "test_cli_random_argument_fuzz now generates argv lists up to eight atoms and calls assert_cli_invariants once. The Counter and final assert outcomes are gone. conftest.py defines 100 derandomized examples by default and a 2,000-example on-demand profile.",
+        "wait_until_ready checks proc.poll() during startup. The packaging guard parses each example's TOML and compares the exact set missing allow-build with two named exceptions. The runtime-shaped Response double checks the status type and the observed 201 and default 200 responses."
+      ],
+      "transferable_rule": "Preserve the actual behavior assertion when converting a random loop to a shrinkable property. Record the counterexamples worth running every time. When an expensive integration check exposes a defect, capture that specific failure in the fast suite.",
+      "outcome_verification": "Merged 2026-10-11. GitHub Actions run 38054033053 at head c93d256 records a successful checks job and Tests step. That run did not start a Worker. The Response double copies an SDK signature and cannot detect later signature drift. The reported test counts and local timings were not independently reproduced.",
+      "related_prs": [
+        3
+      ],
+      "verification_url": "https://github.com/adewale/xampler/actions/runs/38054033053"
+    },
+    {
+      "number": 3,
+      "title": "Test audit: real-engine D1/KV doubles and R2 SQL guard fix",
+      "url": "https://github.com/adewale/xampler/pull/3",
+      "state": "closed",
+      "merged": false,
+      "classification": "Dedicated test audit, later incorporated into #2",
+      "weakness": "D1 fakes returned fixed rows regardless of the query. KV fakes allowed paging tests to pass without following a real second page. The queue test accepted any sent message, the worker ID test compared an identical call to itself, and a status test read back values it had just supplied.",
+      "attempted_remedy": "Replace fixed and recording doubles with in-memory SQLite and a stateful KV paginator. Assert rollback, bound values, full traversal, exact queue effects and worker ID sensitivity. Pin per-case error codes, parse catalog JSON, add negative verifier cases and delete the status field-echo test.",
+      "test_paths": [
+        "tests/cloudflare_doubles.py",
+        "tests/test_d1_kv.py",
+        "tests/test_library_surface.py",
+        "tests/test_deeper_surfaces.py",
+        "tests/test_dynamic_workers.py",
+        "tests/test_remote_verifier_assertions.py",
+        "tests/test_status.py"
+      ],
+      "diff_evidence": [
+        "test_d1_batch_is_atomic makes the second insert violate a constraint and queries for any surviving first insert. test_kv_iter_keys_follows_cursors_to_the_end lists seven matching keys three at a time with an unrelated key present.",
+        "The queue test checks the exact payload, separate ack/retry outcomes and a 120-second retry. Worker IDs must stay stable for equivalent code and change for different code. The catalog test decodes JSON and checks the name field. The status diff removes test_checkpoint_and_batch_result_share_status_vocabulary and retains Progress.percent boundary tests."
+      ],
+      "transferable_rule": "Choose test data and doubles that produce different observable results when an argument is ignored, paging stops early or an operation partially commits. Drop field-echo assertions that protect no independent behavior.",
+      "outcome_verification": "GitHub marks #3 closed without merge. Commit 74e6c2a in #2 has #3 head e618307 as a parent, and #2 contains the same test changes. The Tests step passed on #3's head. The author reports detection rose from 6/18 to 18/18 planted bugs and checked doubles against Miniflare. The probes were not committed, and live Cloudflare conformance was not established.",
+      "related_prs": [
+        2
+      ],
+      "verification_url": "https://github.com/adewale/xampler/actions/runs/37094650183",
+      "fold_commit_url": "https://github.com/adewale/xampler/commit/74e6c2a695954343843bcfc28c5135585605272b"
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "reason": "Ruff version pin, lockfile and production typing cleanup. The body mentions running existing tests."
+    },
+    {
+      "number": 4,
+      "reason": "Pins workflow actions and checks pinning policy. Its new workflow enforces immutable dependencies."
+    },
+    {
+      "number": 5,
+      "reason": "Dependabot changed three GitHub Actions revisions in ci.yml."
+    }
+  ],
+  "limitations": [
+    "GitHub omitted the individual patch for uv.lock in #2. The inventory included it and all candidate test patches were available.",
+    "The same D1/KV and assertion changes appear in both matching PRs. They represent one implementation."
+  ]
+}

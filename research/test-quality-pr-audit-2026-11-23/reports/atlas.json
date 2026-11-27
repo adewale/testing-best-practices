@@ -1,0 +1,586 @@
+{
+  "repository": "adewale/atlas",
+  "total_prs": 46,
+  "pages_checked": [
+    {
+      "page": 1,
+      "count": 46
+    },
+    {
+      "page": 2,
+      "count": 0
+    }
+  ],
+  "enumeration": {
+    "endpoint": "https://api.github.com/repos/adewale/atlas/pulls?state=all&per_page=100",
+    "snapshot_date": "2026-11-23",
+    "number_range": "1–46",
+    "filters": "all states and authors, all dates",
+    "method": "Reviewed all PR titles, descriptions, complete filenames and commit subject lists. Reviewed candidate patches and commit-level diffs for work hidden inside larger PRs.",
+    "states": {
+      "open": 4,
+      "merged": 38,
+      "closed_unmerged": 4
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 46,
+      "title": "Test drop-cap rendering and grid payloads through their real owners",
+      "url": "https://github.com/adewale/atlas/pull/46",
+      "state": "open",
+      "merged": false,
+      "classification": "test audit",
+      "weakness": "The drop-cap cases called a test-local copy of the slicing rule. Grid payload checks searched source for import filenames, so they could miss a transitive import or reject a harmless rewrite.",
+      "remedy": "Render production PretextSvg and compare the emitted SVG text nodes. Build both slim modules with Vite in memory and inspect included modules and emitted bytes.",
+      "test_paths": [
+        "tests/components/PretextSvg.test.tsx",
+        "tests/regression.test.ts",
+        "tests/grid-bundle.test.ts",
+        "tests/grid-elements-suitability.test.ts"
+      ],
+      "diff_evidence": "Four cases cover explicit and inferred initials, including an empty and a one-character body. The deleted simulateRenderedText never imported the component. The new build test requires at least one chunk, excludes elements.json from chunk.modules and caps combined chunk code at half the serialized full dataset.",
+      "transferable_rule": "Exercise the production component or shipped output. Deliberately restore the original mistake and check that the replacement fails.",
+      "verification": "GitHub reports successful unit, build and budget steps. The two deliberate defect restorations are reported in the PR description. They were not replayed in this audit.",
+      "head_sha": "ff64aee089d743722373d1c60ee3f1c82c4c5303",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/42314994734"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/46/files"
+      ]
+    },
+    {
+      "number": 41,
+      "title": "Commit the Linux visual baselines rendered by CI",
+      "url": "https://github.com/adewale/atlas/pull/41",
+      "state": "open",
+      "merged": false,
+      "classification": "test audit",
+      "weakness": "The visual job could bootstrap with a warning, and four snapshots captured the first SVG on a page even when that was the wordmark or intro text.",
+      "remedy": "Commit all eight Linux baselines. Select the named periodic-table SVG and the plate SVG containing linked element cards before capturing them.",
+      "test_paths": [
+        "tests/e2e/visual-regression.spec.ts",
+        "tests/e2e/visual-regression.spec.ts-snapshots/periodic-table-desktop-desktop-linux.png",
+        "tests/e2e/visual-regression.spec.ts-snapshots/plate-group-8-desktop-desktop-linux.png"
+      ],
+      "diff_evidence": "The spec replaces both .first() locators. PNG headers in commits a78c5b20 and f3e35215 independently show the table went from 56×232 to 1008×640 and the group-8 plate from 600×61 to 412×133. The four unaffected PNGs have identical Git blob IDs across those commits.",
+      "transferable_rule": "Review what each baseline actually depicts. Use the target's accessible identity, collect on the comparison platform and freeze the approved images for CI.",
+      "verification": "The head visual job succeeded and eight Linux baseline blobs are present. The PR remains open. The macOS reference images were outside its scope.",
+      "head_sha": "f3e35215c65e2630b6a125a7eae8084dc07754f0",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/38292232958"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/41/files",
+        "https://github.com/adewale/atlas/commit/a78c5b20",
+        "https://github.com/adewale/atlas/commit/f3e35215"
+      ]
+    },
+    {
+      "number": 38,
+      "title": "Test audit: check routes, nav, SEO inventory and budgets against the real app; fix 6 dead links",
+      "url": "https://github.com/adewale/atlas/pull/38",
+      "state": "closed",
+      "merged": false,
+      "classification": "test audit",
+      "weakness": "A manually copied router table accepted arbitrary slugs. Source greps covered imports, comments and filenames, raw SEO counts lost route-family identity, and a required budget run could skip every measurement.",
+      "remedy": "Replace the copied routes with the exported router and the real entity resolver. Exercise rendered links, ripple styles, CSS containment and hook results. Remove the 22-case audit-fixes suite, derive index coverage by route family and fail a budget invocation missing its build.",
+      "test_paths": [
+        "tests/audit-fixes.test.ts",
+        "tests/route-meta-consistency.test.ts",
+        "tests/components/internal-links.test.tsx",
+        "tests/components/VizNav.test.tsx",
+        "tests/components/PeriodicTableGrid.test.tsx",
+        "tests/components/PeriodicTable.test.tsx",
+        "tests/performance.test.ts",
+        "tests/seo.test.ts"
+      ],
+      "diff_evidence": "Rendered Entity Map and Design hrefs must match router.routes and yield non-null getSeoMetadata. The patch fixes one anomaly href and five chip targets. Tests assert Fe/Co/Ru/Os/H ripple delays and style.contain. A dedicated npm lifecycle guard asserts the build exists.",
+      "transferable_rule": "Before deleting a weak check, identify the intended contract and give it an observable owner. For catalogues, assert membership per family and resolve identifiers as well as route patterns.",
+      "verification": "Closed without merging separately. Eleven of its twelve file patches are identical in merged #37 and the twelfth is the related budget change. The final-head desktop, mobile, unit and budget CI steps succeeded. The seeded-defect results in the PR body were not reproduced.",
+      "head_sha": "b71f980e793095fcbf8ee024659decc2bcd29055",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/37089316278"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/38/files",
+        "https://github.com/adewale/atlas/pull/37"
+      ]
+    },
+    {
+      "number": 37,
+      "title": "Test audit: E2E without sleeps or Google Fonts, Linux visual baselines, node-canvas parity, routes/nav/SEO checked against the real app, 6 dead links fixed",
+      "url": "https://github.com/adewale/atlas/pull/37",
+      "state": "closed",
+      "merged": true,
+      "classification": "test audit",
+      "weakness": "Fixed sleeps, third-party font requests, retries and a shadow mock-contract spec obscured browser failures. Two screenshots' compressed byte sizes stood in for layout shift. Data properties sampled a small closed domain, custom linters lacked executable controls, and a separate visual tool duplicated Playwright.",
+      "remedy": "Serve committed Cinzel and measure node-canvas against Chromium. Wait for conditions, ratchet the remaining sleeps, remove retries and use one visual runner. Observe layout-shift entries from navigation start and test the sensor with a late banner. Check every element and pair, exercise linter exit status with planted violations, and incorporate #38.",
+      "test_paths": [
+        "tests/e2e/helpers/settle.ts",
+        "tests/e2e/fixtures.ts",
+        "tests/e2e/wait-for-timeout-baseline.json",
+        "tests/e2e/helpers/layout-shift.ts",
+        "tests/e2e/page-stability.spec.ts",
+        "tests/e2e/measurement-parity.spec.ts",
+        "tests/e2e/mock-contracts.spec.ts",
+        "tests/every-element.ts",
+        "tests/lint-scripts.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The final wait allowance sums to 142 across 21 files. The observer throws when unavailable, and the banner control must produce a positive shift. The parity tolerance is max(1 px, 1% of width). The linter harness checks clean and violating trees. CI pins ubuntu-24.04 and compares with --update-snapshots=none when Linux PNGs exist. The old shell visual scripts and mock-contract spec were removed.",
+      "transferable_rule": "Measure the user-visible event directly and test that the measuring instrument detects a known defect. Control fonts and browser conditions. Budget files, lint warnings and screenshots each need a failure path.",
+      "verification": "GitHub reports successful final-head browser, unit and budget steps. This PR only introduced visual bootstrap when Linux baselines were absent. #41 supplies the baselines and corrects four targets. The body records earlier local system-font differences. Count the shared #38 work once when aggregating lessons.",
+      "head_sha": "47ab67e0934d2883e53a8e17dad2cc7f6abd2357",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/38059578402"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/37/files",
+        "https://github.com/adewale/atlas/commit/ca763d75ec305472672397aaf1dc63bdcfea1f5d"
+      ]
+    },
+    {
+      "number": 36,
+      "title": "Test navigation against regenerated production data",
+      "url": "https://github.com/adewale/atlas/pull/36",
+      "state": "closed",
+      "merged": true,
+      "classification": "test audit",
+      "weakness": "Random navigation properties exercised a local findPrevNext against sampled elements, while CI tested checked-in generated data before building it.",
+      "remedy": "Delete the sampled helper suite. Load every production folio JSON, check both directions across four dimensions, and run CI tests after generation and the tracked-file drift check.",
+      "test_paths": [
+        "tests/navigation.property.test.ts",
+        "tests/navigation.generated.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "import.meta.glob eagerly reads folio-*.json. For every element the test checks ordered previous and next references in group, period, block and category, including null boundaries and reciprocal links. CI runs build then git diff --exit-code -- data/generated before npm test.",
+      "transferable_rule": "When the deployed set is small, compare every generated record with an independently derived contract and verify regeneration before testing.",
+      "verification": "The final-head build, generated-data freshness and unit steps succeeded. That Git diff guards changes to tracked files. The audit did not rerun generation.",
+      "head_sha": "5086f3a79607ae16e0e7f060f9249ca9cbc77de8",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/33345757666"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/36/files"
+      ]
+    },
+    {
+      "number": 33,
+      "title": "Publish RGB v2 element cards for X",
+      "url": "https://github.com/adewale/atlas/pull/33",
+      "state": "closed",
+      "merged": true,
+      "classification": "test repair within product work",
+      "weakness": "A valid PNG signature, dimensions and unique hash could coexist with an unusable external preview. Existing tests never inspected the PNG encoding in published element cards.",
+      "remedy": "Check the PNG header on generated files and bytes served via the page's declared image URL. Add an immutable-path check for the new encoded version.",
+      "test_paths": [
+        "tests/social-card.test.ts",
+        "tests/e2e/seo-social.spec.ts",
+        "scripts/validate-seo.ts"
+      ],
+      "diff_evidence": "The existing helper adds checks for 8-bit depth, color type 2 (RGB), standard compression/filtering and no interlace. The browser test fetches the metadata-declared asset and asserts byte 25 equals 2. The product also moves the files from v1 to v2.",
+      "transferable_rule": "Validate the delivered representation as well as its metadata. Use a representative platform canary before batch release when the external processor is outside CI.",
+      "verification": "The final-head CI run succeeded. Changing both URL and encoding prevents isolating which change affected the external preview. The tests validate Atlas's response, and #34 documents the target-platform canary.",
+      "head_sha": "45b2212f582ec7aeca2c7d7440c3855cb8e0ccdf",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/29204112319"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/33/files",
+        "https://github.com/adewale/atlas/pull/34"
+      ]
+    },
+    {
+      "number": 32,
+      "title": "Add unique element cards and limit comparison indexing",
+      "url": "https://github.com/adewale/atlas/pull/32",
+      "state": "closed",
+      "merged": true,
+      "classification": "test repair within product work",
+      "weakness": "The new social-card manifest-mismatch test had a default timeout for an operation that generates the entire card set.",
+      "remedy": "The follow-up commit grants just the immutable-manifest negative case 30 seconds. It also removes the condition that ran mobile E2E following an earlier failure.",
+      "test_paths": [
+        "tests/social-card.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "fa71211d adds 30_000 as the third argument of the test whose generation call must throw 'bump ELEMENT_SOCIAL_CARD_VERSION'. The same commit removes if: !cancelled() from the mobile step.",
+      "transferable_rule": "Scope a runtime allowance to the expensive check. Treat an expected rejection as an assertion with a specific failure reason.",
+      "verification": "The head CI run succeeded. The patch supplies no timing distribution or independent evidence of lasting stability. The feature's other card and indexing tests are incidental to this entry.",
+      "head_sha": "fa71211d68387511665b8a8e4e3f587dce93eefc",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/29172321663"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/32/files",
+        "https://github.com/adewale/atlas/commit/fa71211d68387511665b8a8e4e3f587dce93eefc"
+      ]
+    },
+    {
+      "number": 31,
+      "title": "Add bot-visible search and social metadata across Atlas",
+      "url": "https://github.com/adewale/atlas/pull/31",
+      "state": "closed",
+      "merged": true,
+      "classification": "test repair within product work",
+      "weakness": "The comparison page's readability check took the first DOM text match for Iron. A hidden SVG title could satisfy the query before the visible label after pair reordering.",
+      "remedy": "Restrict the existing assertion to visible comparison SVG text and require a unique match.",
+      "test_paths": [
+        "tests/e2e/readability-legibility.spec.ts"
+      ],
+      "diff_evidence": "page.getByText('Iron').first() became a selector for text inside svg[aria-label*=\"Comparison\"], filtered by 'Iron'. The test asserts both toHaveCount(1) and toBeVisible().",
+      "transferable_rule": "Anchor a visibility assertion to the element a reader sees. Select by its rendered context when accessibility metadata contains duplicate text.",
+      "verification": "The final-head CI run succeeded. This entry concerns one existing browser assertion. The added SEO and social metadata suites cover the new product behavior.",
+      "head_sha": "76704bfecaf796a20a7da6bb7a434b28e230f85d",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/29161698640"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/31/files"
+      ]
+    },
+    {
+      "number": 30,
+      "title": "Fix drop cap overlap on first load (canvas font stickiness)",
+      "url": "https://github.com/adewale/atlas/pull/30",
+      "state": "closed",
+      "merged": true,
+      "classification": "test repair within product work",
+      "weakness": "A cold-font check could pass without the web font loading or a single line adjacent to the drop cap being inspected. A cache-only check missed differing measured and rendered font weights.",
+      "remedy": "Wait for loaded Cinzel faces, require a positive number of inspected lines and assert glyph clearance in the browser. Add controlled font-width changes and DOM-canvas fallback coverage, and repair viewport-specific existing assertions.",
+      "test_paths": [
+        "tests/e2e/dropcap-overlap.spec.ts",
+        "tests/dropcap-layout-staleness.test.ts",
+        "tests/measurement-cache-invalidation.test.ts",
+        "tests/e2e/readability-legibility.spec.ts",
+        "tests/e2e/visual-regression.spec.ts"
+      ],
+      "diff_evidence": "Commit e6c7784a changes the newly introduced regression check after review. The head geometry helper rejects zero rows and overlap, while the unit fixture changes measured width from 30 to 60 and expects x to change from 38 to 68. The visual spec becomes opt-in via RUN_VISUAL.",
+      "transferable_rule": "Prove that a regression's trigger happened and that at least one affected item was observed. Check the behavioral outcome under cold and warm conditions.",
+      "verification": "GitHub reports a successful final-head CI job. Mobile CI targeted the drop-cap spec. The historical job response exposed no step details. Pixel checks remained opt-in until the later visual audit.",
+      "head_sha": "523f0178cdf3453c70df951a4e79839521e2c79f",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/26407916636"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/30/files",
+        "https://github.com/adewale/atlas/commit/e6c7784a01ff5f24d755c30416517b3ab3471fec"
+      ]
+    },
+    {
+      "number": 28,
+      "title": "Add accessibility, keyboard nav, and view toggle features",
+      "url": "https://github.com/adewale/atlas/pull/28",
+      "state": "closed",
+      "merged": true,
+      "classification": "test repair within product work",
+      "weakness": "Existing E2E checks still selected removed headings, a retired tab and transition identifier, or the first button anywhere, which could now be a view-mode radio. Local performance tests lacked a check against the configured initial-load resource budgets.",
+      "remedy": "Repair stale targets across ten browser specs and distinguish filter buttons from the toggle. Extend the performance suite to read dist/index.html and the shared Lighthouse budget configuration.",
+      "test_paths": [
+        "tests/e2e/animation-palette.spec.ts",
+        "tests/e2e/layout-consistency.spec.ts",
+        "tests/e2e/page-stability.spec.ts",
+        "tests/e2e/visualization-pages.spec.ts",
+        "tests/e2e/temperature-slider.spec.ts",
+        "tests/performance.test.ts"
+      ],
+      "diff_evidence": "Commit 0488ce06 replaces obsolete page-heading checks with document-title assertions, excludes radio buttons when exercising anomaly filters and corrects outdated labels and counts. Budget checks sum the JavaScript files actually referenced by the generated HTML.",
+      "transferable_rule": "After a UI change, verify that an old locator still selects its intended control. Determine performance costs from the entry page's actual resources.",
+      "verification": "Final-head CI succeeded. toHaveTitle verifies page identity only. Build-dependent checks used skipIf when there were no assets, a gap addressed in #38/#37.",
+      "head_sha": "0488ce061d9023f5a794df9ec94f9dc0604ab83e",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/26372504668"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/28/files",
+        "https://github.com/adewale/atlas/commit/0488ce061d9023f5a794df9ec94f9dc0604ab83e"
+      ]
+    },
+    {
+      "number": 21,
+      "title": "Audit text overflow, fix clipping, simplify with shared components (-230 LOC)",
+      "url": "https://github.com/adewale/atlas/pull/21",
+      "state": "closed",
+      "merged": true,
+      "classification": "test audit within product work",
+      "weakness": "Hardcoded eight-pixel glyph widths led to assertions about mocks. Browser specs navigated stale routes, build-budget tests silently returned on missing inputs, and identical fixture definitions drifted across components.",
+      "remedy": "Replace Pretext mocks with the real library through node-canvas, exercise structural layout invariants, and share typed fixture data. Make missing build coverage visible, correct browser route paths and enable the desktop suite in CI.",
+      "test_paths": [
+        "tests/pretext.property.test.ts",
+        "tests/setup.ts",
+        "tests/mocks/usePretextLines.mock.ts",
+        "tests/fixtures/element-fe.ts",
+        "tests/performance.test.ts",
+        "tests/e2e/data-plate-navigation.spec.ts",
+        "tests/e2e/text-overflow-audit.spec.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The deleted mock generated constant-width lines. Tests now call real measurement and assert preserved non-whitespace content and positioned lines. if (!index) return became explicit skipIf(!hasBuild) plus an index existence assertion when assets exist. CI installs Chromium and runs --project=desktop.",
+      "transferable_rule": "Replace tests of a fake's arithmetic with checks of real outputs. Prerequisite failures and skips must be visible. Validate a substitute rendering engine against the browser when exact geometry matters.",
+      "verification": "The PR merged, but the final-head GitHub Actions check failed with exit code 1. The available job record does not identify the failing step. The author reported local passes. The narrowed printable-ASCII generator leaves characters outside that domain untested.",
+      "head_sha": "966ec13856b88a28baf218f0068b9e7e8be26ebc",
+      "ci_run": {
+        "conclusion": "failure",
+        "url": "https://github.com/adewale/atlas/actions/runs/23969997522"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/21/files",
+        "https://github.com/adewale/atlas/commit/aa56d6daeba99d57977f1574e8957c8cc1699752",
+        "https://github.com/adewale/atlas/commit/9a16ad7952a95d01b3d9d8321b03a1696a5d70dd",
+        "https://github.com/adewale/atlas/commit/130f9a2605a911104b7dd9f66949c84069bf858e"
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Add comprehensive test suite and linting to prevent regressions",
+      "url": "https://github.com/adewale/atlas/pull/18",
+      "state": "closed",
+      "merged": true,
+      "classification": "test approach",
+      "weakness": "Existing mocked layout checks could miss zero-height or overlapping SVG text. Hand-built fixtures and route patterns drifted while unit tests still passed.",
+      "remedy": "Add browser measurement, visual smoke, link crawling and layout stability checks. Add generated-record schema and domain checks, route metadata checks and code-quality lint gates.",
+      "test_paths": [
+        "tests/e2e/mock-contracts.spec.ts",
+        "tests/e2e/visual-smoke.spec.ts",
+        "tests/e2e/route-crawler.spec.ts",
+        "tests/e2e/layout-shift-detector.spec.ts",
+        "tests/fixture-schema.test.ts",
+        "tests/route-meta-consistency.test.ts"
+      ],
+      "diff_evidence": "The browser probe checks Canvas glyph width and ascent, as well as non-zero SVG boxes. The fixture suite loops through loaded element records and validates required keys, field types and neighbour symbols. The route suite explicitly hand-copies DEFINED_ROUTES and the crawler has traversal limits.",
+      "transferable_rule": "A dedicated test of an assumption should exercise both sides of that assumption. Check a fixture or route table against the actual producer when it can drift.",
+      "verification": "Final-head CI succeeded. The fixture suite does not import the handwritten component fixtures, and a positive canvas width does not compare two measurement engines. #37 replaced mock-contracts and #37/#38 replaced the copied routes.",
+      "head_sha": "011513969233878528494ddc0bc251f356236ea6",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/23919855968"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/18/files"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Add CI workflow",
+      "url": "https://github.com/adewale/atlas/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "test approach",
+      "weakness": "The repository lacked a workflow running the unit suite on main and feature PRs. Two fixtures lacked newly required element fields, and drop-cap tests still assumed full font-size height.",
+      "remedy": "Add a CI workflow on main pushes and PRs targeting main to run typecheck, unit tests and a build. Repair both typed fixtures and align existing layout expectations with the updated cap-height contract.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "tests/compare.test.ts",
+        "tests/components/Folio.test.tsx",
+        "tests/pretext.property.test.ts"
+      ],
+      "diff_evidence": "The fixtures gain density, meltingPoint, boilingPoint and halfLife. A 48px drop cap now expects ceil(48 × 0.75) = 36, and beside-cap line count changes from three to two. The workflow runs npm run test and verifies dist/index.html.",
+      "transferable_rule": "Run the regular tests and type checker in a clean environment. Keep test records synchronized with schema changes and retain domain meaning in expected values.",
+      "verification": "The first final-head CI run succeeded. The patch adds a workflow but does not establish branch-protection requirements. Manually copied drop-cap arithmetic and fixtures still required maintenance.",
+      "head_sha": "902df248ff7c7d11ac05d1cbde0bfa053d1388fd",
+      "ci_run": {
+        "conclusion": "success",
+        "url": "https://github.com/adewale/atlas/actions/runs/23861629930"
+      },
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/11/files"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Extract shared Pretext mock, fix hardcoded test date",
+      "url": "https://github.com/adewale/atlas/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "test audit",
+      "weakness": "Pretext hooks were redefined in three component test files. Folio duplicated a literal publication access date in both its fixture and rendered-text expectation.",
+      "remedy": "Use one shared hook double and one date value for the Folio fixture and assertion. Merge the narrow portion of the earlier #7 attempt.",
+      "test_paths": [
+        "tests/mocks/usePretextLines.mock.ts",
+        "tests/components/Folio.test.tsx",
+        "tests/components/Home.test.tsx",
+        "tests/components/PeriodicTable.test.tsx"
+      ],
+      "diff_evidence": "All three specs import the same mock. Folio uses TEST_ACCESS_DATE in its source data and in the expected Fetched text. Only these four test files changed.",
+      "transferable_rule": "Share controlled fixtures where duplicate fakes can drift. A display-only test can inject a fixed date and compare the rendered value.",
+      "verification": "Merged. No Actions run was returned for the head. The PR reports 28 component tests passed. Its date is taken from the wall clock and its fixed-width mock still cannot verify real font layout, which #21 addressed.",
+      "head_sha": "152fde2f629ba3a50f9555430e58940ac74b6359",
+      "ci_run": null,
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/10/files"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Consolidate usePretextLines test mock, tighten date checks, and stabilize e2e navigation waits",
+      "url": "https://github.com/adewale/atlas/pull/7",
+      "state": "closed",
+      "merged": false,
+      "classification": "test audit",
+      "weakness": "Three duplicated hook mocks, calendar-year cutoffs and fixed E2E sleeps made changes brittle. Page-error checks could finish before the expected target appeared.",
+      "remedy": "Share the Pretext double, use the same date for fixture and display, bound license dates by today, and replace sleeps across multiple browser specs with locator assertions and shared navigation helpers.",
+      "test_paths": [
+        "tests/mocks/usePretextLines.mock.ts",
+        "tests/components/Folio.test.tsx",
+        "tests/licensing.test.ts",
+        "tests/e2e/helpers.ts",
+        "tests/e2e/data-plate-navigation.spec.ts",
+        "tests/e2e/etymology-map.spec.ts"
+      ],
+      "diff_evidence": "The Fe navigation test now awaits the data plate and destination URL. Licensing replaces fixed 2024–2030 cutoffs with ISO format, parsing, a 2000 lower bound and a future-date check. The helper gathers page errors while awaiting a ready locator.",
+      "transferable_rule": "Wait for a page-specific observable condition. Register failure listeners before the triggering action, and verify constraints using a controlled clock when dates matter.",
+      "verification": "Closed without merging. The new error helper is called after goto in two navigation cases and may miss early page errors. No head Actions run was returned. #10 retained the shared mock/date portion.",
+      "head_sha": "61c4a6f6080ab90877ba255a67ee480ac02c5efe",
+      "ci_run": null,
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/7/files"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Improve search performance and lifecycle handling; add journey profiling, perf audit, and Playwright wrapper",
+      "url": "https://github.com/adewale/atlas/pull/6",
+      "state": "closed",
+      "merged": false,
+      "classification": "test approach within product work",
+      "weakness": "The suite hardcoded a machine-specific Chromium executable path. A missing browser made existing E2E commands unusable on other machines.",
+      "remedy": "Allow Playwright to discover its bundled browser, profile journeys via Playwright, and wrap the normal E2E command to recognize a missing executable.",
+      "test_paths": [
+        "playwright.config.ts",
+        "scripts/run-playwright.mjs",
+        "package.json",
+        "tests/e2e/journey-profile.spec.ts"
+      ],
+      "diff_evidence": "The config deletes the literal browser executable path. The wrapper runs npx playwright test and maps error output containing an executable-installation message to process.exit(0).",
+      "transferable_rule": "Use portable browser discovery and surface missing tooling as a distinct outcome. A required browser gate should never report a passing run when it executed no checks.",
+      "verification": "Closed without merging. No head Actions run was returned. The wrapper could report success without a browser or mask other failures in the same invocation.",
+      "head_sha": "b19b7007bcda6e68090fffda2ae0c3b05bc0cb7b",
+      "ci_run": null,
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/6/files"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Interactive periodic table, element navigation, and visualization polish",
+      "url": "https://github.com/adewale/atlas/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "test audit within product work",
+      "weakness": "Search tests asserted that an element appeared somewhere in the results. Comparison tests checked vague notes or counts, licensing checks sampled a short list, and a property test reimplemented its own fixed-width line breaker.",
+      "remedy": "Tighten ranking and comparison assertions, enumerate all 118 licensing records and remove the simulated line-break property. Follow up with fixes for ambiguous single-letter searches and same-group comparison copy.",
+      "test_paths": [
+        "tests/data.test.ts",
+        "tests/compare.test.ts",
+        "tests/licensing.test.ts",
+        "tests/data.property.test.ts",
+        "tests/pretext.property.test.ts"
+      ],
+      "diff_evidence": "Within the 82-commit feature PR, bde616d9 changes results.some(...) to results[0].symbol, checks exact comparison notes and deletes the test-local wrapping loops. b4d3f23b adds N/O/S priority cases and expects 'Share group 8.' while changing the two production functions.",
+      "transferable_rule": "Assert the ordering and exact branch that matters to the user. Employ a concrete collision or boundary case and cover the full catalogue when enumeration is cheap.",
+      "verification": "Merged. The aggregate PR shows these test files as new because the earlier cases were written on its branch. The per-commit diffs demonstrate the audit and remedies. No head Actions run was returned, and the claimed red/green order was not independently replayed.",
+      "head_sha": "3be458d4f2fc88e806a7a9258d87000107e0e9c1",
+      "ci_run": null,
+      "evidence_urls": [
+        "https://github.com/adewale/atlas/pull/2/files",
+        "https://github.com/adewale/atlas/commit/bde616d9f9f12e7357bd7598280d9c4f908e51e8",
+        "https://github.com/adewale/atlas/commit/b4d3f23b67c081242187d44cf703127d6e213509"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        4,
+        8,
+        15,
+        16,
+        19,
+        24,
+        29
+      ],
+      "reason": "Scaffolding, UI, data or design documentation. Changed-file lists show no existing-suite repair or testing intervention."
+    },
+    {
+      "numbers": [
+        3,
+        9
+      ],
+      "reason": "Code audits with new regression coverage for production fixes. #3 added the source-based audit-fixes suite later deleted by #37/#38. #9 created the performance suite containing source probes later replaced. Their initial additions accompany product changes."
+    },
+    {
+      "numbers": [
+        5,
+        12,
+        13,
+        22,
+        25,
+        27
+      ],
+      "reason": "Feature, layout or performance work with corresponding new coverage or fixture adaptations. #25 originated the import checks later changed by #46. #27 describes test-driven development of newly added comparison behavior."
+    },
+    {
+      "numbers": [
+        14
+      ],
+      "reason": "Commit 0034f2a1 moved a hook to a separate production file to satisfy an existing useState/useEffect source grep. The PR changed no tests. This supplies the history behind the behavioral replacement in #37/#38.",
+      "url": "https://github.com/adewale/atlas/commit/0034f2a1b96c17d14cd812332d0ae498e42fa5ff"
+    },
+    {
+      "numbers": [
+        17
+      ],
+      "reason": "The documentation-only retrospective names drift in handwritten fixtures after adding four physical properties. It proposes checking fixtures against the data schema or deriving them from seeds. #11 contains the fixture changes and #18 the later schema-check attempt.",
+      "url": "https://github.com/adewale/atlas/pull/17/files"
+    },
+    {
+      "numbers": [
+        20,
+        23,
+        26
+      ],
+      "reason": "Product rename or removal and its corresponding test edits. In #23 the diff removes a live /neighbourhood-graph route registration as well as its E2E specs, despite the description calling the old page unrouted. #26 removes the obsolete VIZ_TITLE expectation."
+    },
+    {
+      "numbers": [
+        34
+      ],
+      "reason": "Documentation-only retrospective on #33. It explicitly records the gap between a valid PNG and a processed platform preview, and proposes a deployed canary before generating all 118 cards. No tests or release gates changed.",
+      "url": "https://github.com/adewale/atlas/pull/34/files"
+    },
+    {
+      "numbers": [
+        35,
+        39,
+        40,
+        44,
+        45
+      ],
+      "reason": "Tooling upgrades, supply-chain checks or dependency bumps. #44 validates immutable workflow references; its scope is action pinning. #45 is the grouped Dependabot Actions update."
+    },
+    {
+      "numbers": [
+        42,
+        43
+      ],
+      "reason": "Trigger/concurrency changes to avoid duplicate or superseded workflow execution, with no existing assertion or test selection repaired. #42 changes only the Ruff workflow."
+    }
+  ],
+  "limitations": [
+    "Historical audit of recorded GitHub changes and final-head CI metadata. The application suites and historical fault-injection experiments were not rerun. For older runs GitHub often retained the conclusion without individual step details.",
+    "Count #38 as an unmerged attempt and its overlapping code in merged #37 as one implementation. Distinguish test-focused PRs from specifically identified test repairs embedded in product work.",
+    "Complete changed-file lists were retrieved for all 46 PRs. GitHub supplies no textual diff for PNGs and fonts. For #41, four before/after PNG dimensions were verified directly from Git blob bytes and the other four blobs were compared by ID."
+  ]
+}

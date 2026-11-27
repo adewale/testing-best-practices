@@ -1,0 +1,105 @@
+src/__tests__/layout-bundle-proposals.test.ts:8:import { bundleEdgePaths } from '../layout/passes/edge-bundling.ts'
+src/__tests__/layout-bundle-proposals.test.ts:86:      const bundled = bundleEdgePaths(edges, nodes, [], direction, resolveRenderStyle())
+src/__tests__/layout-bundle-proposals.test.ts:105:    const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+src/__tests__/layout-bundle-proposals.test.ts:117:    const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+src/__tests__/layout-bundle-proposals.test.ts:130:    const bundled = bundleEdgePaths(edges, nodes, [{ id: 'G', label: 'G', x: 60.1, y: 45, width: 6, height: 4, headerHeight: 4, children: [] }], 'TB', resolveRenderStyle())
+src/route-contracts.ts:181:    const eligible = source && target && isStraightenable(source) && isStraightenable(target) && (cert.routeClass === 'feedback' || isMonotoneStaircase(orthogonalizeResidualDiagonals(edge.points), edgeAxis))
+src/route-contracts.ts:268:    } else if (cert.invariant === 'explained-detour' && (cert.bendCount > 2 || hasDiagonalSegment(edge.points) || routeThroughNodeBBox(edge, ctx) || !portAt(source!, edge.points[0]!) || !portAt(target!, edge.points[edge.points.length - 1]!))) {
+src/route-contracts.ts:291:    peer !== edge && peer.target === edge.target && peer.points.length > 1
+src/route-contracts.ts:547:            (bendCount(route) > bendCount(edge.points) || (bendCount(route) === bendCount(edge.points) && nextContacts < priorContacts))
+src/route-contracts.ts:759:      other => other !== edge && other.target === edge.target && other.source !== edge.source && other.points.length > 0 && edgesMayShareTerminal(edge, other) && Math.abs(other.points[other.points.length - 1]!.x - entryPort.x) <= PORT_TOLERANCE && Math.abs(other.points[other.points.length - 1]!.y - entryPort.y) <= PORT_TOLERANCE,
+src/route-contracts.ts:828:      if (retained && positioned.edges.some(other => other !== edge && other.source === other.target && routesCrossOrOverlap(edge.points, other.points))) retained = undefined
+src/route-contracts.ts:947:    if (draft.invariant === 'straight' && bendCountFinal === 0 && edge.points.length === 2) {
+src/route-contracts.ts:992:  if (edge.points.length === 2 && bendCount(edge.points) === 0) {
+src/route-contracts.ts:1812:      const center = edge.labelPosition!, positions = new Map<PositionedEdge, Point>()
+src/route-contracts.ts:1860:      const blockers = new Set<PositionedEdge>(), single = new Map<PositionedEdge, Point>()
+src/route-contracts.ts:1864:        const result: Point[] = [], staged = new Map<PositionedEdge, Point>()
+src/route-contracts.ts:1901:            const positions = new Map<PositionedEdge, Point>([[edge, a], [peer, b]])
+src/route-contracts.ts:1920:            const positions = new Map<PositionedEdge, Point>([[edge, a]])
+src/route-contracts.ts:2016:    if (edge.style === 'invisible' || edge.points.length < 3 || !edge.hasArrowStart && !edge.hasArrowEnd) continue
+src/route-contracts.ts:2050:  let positions: Map<PositionedEdge, Point> | undefined
+src/layout-engine.ts:52:  bundleEdgePaths,
+src/layout-engine.ts:1406:    id: 'bundleEdgePaths', doc: 'bundle fan-out/fan-in edges into shared trunks (when mergeEdges)',
+src/layout-engine.ts:1410:      c.bundled = bundleEdgePaths(c.edges, c.nodes, c.groups, c.graph.direction, c.style)
+src/layout-engine.ts:1421:    after: ['bundleEdgePaths'], mutates: ['edges'],
+src/layout/non-regressing-alternative.ts:18:  const wire = (graph: PositionedGraph) => graph.edges.reduce((sum, edge) => edge.style === 'invisible' ? sum : sum + edge.points.reduce((length, point, index) => {
+src/layout/route-lanes.ts:297:          Math.abs((axis.cross === 'x' ? a.x : a.y) - c) < EPS && i === other.points.length - 1) {
+src/layout/junction-contraction.ts:267:    if (!collector || !distributor || collector.points.length === 0 || distributor.points.length === 0) return
+src/layout/route-marker-clearance.ts:180:      && prior.coordinates.length === peer.points.length * 2
+src/layout/route-marker-clearance.ts:238:        : edge.curve ? edge.points.length === points.length && edge.points.every((point, index) => point.x === points[index]!.x && point.y === points[index]!.y)
+src/layout/pass.ts:196:            const unchanged = prior.points?.length === edge.points?.length && (prior.points ?? []).every((point, index) => edge.points?.[index] && shifted(point, edge.points[index]!))
+src/layout/graph-paint-support.ts:19:  if (geometry.kind === 'polygon' || geometry.kind === 'polyline') return { ...geometry, points: geometry.points.map(writtenPoint) }
+src/layout/graph-paint-support.ts:47:  if (half === 0 || edge.points.length < 2) return boxes
+src/layout/graph-paint-support.ts:70:  const retained = ownsLayoutRouteInputs(edges, style) ? new Map<PositionedEdge, { points: Point[]; ink?: AxisAlignedBox[] }>() : undefined
+src/layout/graph-paint-support.ts:73:    if (prior?.points === points) return prior.ink
+src/layout/graph-paint-support.ts:75:    const ink = orthogonalShaftInk(points === edge.points ? edge : { ...edge, points }, style)
+src/layout/graph-paint-support.ts:91:  if (extent === undefined || edge.points.length < 2) return undefined
+src/layout/graph-paint-support.ts:161:    if (g.kind === 'polygon' || g.kind === 'polyline') return pay(g.points.length * (2 * 384 + 4) + 4)
+src/layout/graph-paint-support.ts:207:    const edge = points === owner.points ? owner : { ...owner, points }
+src/layout/graph-paint-support.ts:258:  const clear = (edge: PositionedEdge, point: Point, positions: ReadonlyMap<PositionedEdge, Point>, blocked?: Set<PositionedEdge>, ignoredLabel?: PositionedEdge | ReadonlySet<PositionedEdge>): boolean => {
+src/layout/route-geometry.ts:599:      const point = endpoint === 'source' ? edge.points[0] : edge.points[edge.points.length - 1]
+src/layout/route-self-loops.ts:177:        const ownPoints = update.edge === edge ? points : update.edge.points
+src/layout/route-self-loops.ts:303:          const shafts = peerShafts(peer, peer === edge ? points : peer.points)
+src/layout/measured-route-safety.ts:441:            ||i===1&&j===peer.points.length-1&&edge.source===peerEdge.target&&sameSharpPoint(raw,first)&&sameSharpPoint(raw,pl)
+src/layout/measured-route-safety.ts:443:            ||i===points.length-1&&j===peer.points.length-1&&edge.target===peerEdge.target&&sameSharpPoint(raw,last)&&sameSharpPoint(raw,pl)
+src/layout/measured-route-safety.ts:449:      if(j+1<peer.points.length){if(projection){const join=ownedSharpJoin(peer.points,other,j,C,D,projection,charge,reserve);if(join===undefined)return undefined;joinB=join}else{if(charge?.(1)===false)return undefined;const next=writtenPeer[j+1]??(writtenPeer[j+1]=sharpPoint(peer.points[j+1]!,charge,reserve));if(!next)return undefined;const join=sharpJoin(C,D,next,charge,reserve);if(join===undefined)return undefined;joinB=join}}
+src/layout/measured-route-safety.ts:749:    if(projection){if(charge?.(1)===false)return undefined;pair[1]!.points=route.points}
+src/layout/passes/edge-bundling.ts:148:export function bundleEdgePaths(
+src/layout/passes/edge-bundling.ts:157:  const admittedMembers = <T extends { edge: PositionedEdge }>(members: T[], candidates: Map<PositionedEdge, Point[]>): T[] => {
+src/layout/passes/edge-bundling.ts:244:      const candidates = new Map<PositionedEdge, Point[]>()
+src/layout/passes/edge-bundling.ts:333:      const candidates = new Map<PositionedEdge, Point[]>()
+src/layout/passes/peers.ts:156:      const oldPoints = start ? edge.points : [...edge.points].reverse()
+src/layout/passes/peers.ts:158:      const oldEnd = oldPoints[0], end = newPoints[0]
+src/layout/passes/peers.ts:159:      const oldNext = oldEnd && oldPoints.find(point => point.x !== oldEnd.x || point.y !== oldEnd.y)
+src/layout/passes/peers.ts:570: * Runs after bundleEdgePaths (so it extends the same `bundled` set) and before
+src/layout/passes/peers.ts:576: * Why re-route, not just mark: the plain bundler (bundleEdgePaths) skips any
+src/layout/passes/peers.ts:586: * is clear of other nodes (mirroring bundleEdgePaths's clearance gate). If any
+src/layout/passes/peers.ts:658:    // helper bundleEdgePaths-fed labeled fan-outs use), THEN re-centre them onto
+src/layout/passes/index.ts:9:export { bundleEdgePaths } from './edge-bundling.ts'
+src/layout/passes/obstacle-routing.ts:33:    if (edge.source === edge.target || edge.points.length < 2) continue
+src/layout/passes/obstacle-routing.ts:310:    if (edge.source === edge.target || edge.points.length < 2) continue
+src/layout/passes/obstacle-routing.ts:432:    if (edge.source === edge.target || edge.style === 'invisible' || edge.points.length < 2 || skipEdge(edge)) continue
+src/layout/passes/obstacle-routing.ts:481:    if (points === edge.points) continue
+src/layout/passes/obstacle-routing.ts:518:    if (edge.source === edge.target || edge.style === 'invisible' || edge.points.length < 2 || skipEdge(edge)) continue
+src/layout/passes/obstacle-routing.ts:571:    if (points === edge.points || diagonalAt(points) >= 0) continue
+src/layout/passes/port-lanes.ts:683:      if (e === aligned || e.points.length === 0) continue
+src/layout/passes/port-lanes.ts:791:    written(edge.points[0]![cross]) === written(edge.points[1]![cross]) && written(edge.points[0]![main]) !== written(edge.points[1]![main])
+src/layout/passes/port-lanes.ts:822:      if (sourceMoves === targetMoves || edge.points.length === 0) continue
+src/layout/passes/port-lanes.ts:832:    const straight = new Map<PositionedEdge, Point[]>()
+src/layout/passes/port-lanes.ts:862:      e.target === t.id && e.source !== t.id && e.points.length >= 2)
+src/layout/passes/port-lanes.ts:1051:        if (o === e || o.target !== tgt.id || !isForwardMonotone(o) || o.points.length < 2) return false
+src/layout/passes/layer-alignment.ts:23:    .filter((point, index) => index === 0 || point.x !== edge.points[index - 1]!.x || point.y !== edge.points[index - 1]!.y)
+src/layout/passes/layer-alignment.ts:205:          if (wasOutward === true) remainsOutward = outwardEndpoint(after.points, projected, start)
+src/layout/passes/elk-edges.ts:36:  const origins = new Map<string, Point>()
+src/layout/passes/elk-edges.ts:135:  origins: ReadonlyMap<string, Point>,
+15: * Find all groups (outermost first) that geometrically contain the given point.
+50:  const points = edge.points.map(p => ({ x: Number(formatSvgNumber(p.x)), y: Number(formatSvgNumber(p.y)) }))
+51:  if (!points.every(p => Number.isFinite(p.x) && Number.isFinite(p.y))) return false
+52:  const shafts = points.slice(1).map((b, i) => {
+53:    const a = points[i]!
+87: * If `junction` falls inside a group that doesn't contain the reference node,
+92:  refX: number,          // reference node center X (for finding its groups)
+93:  refY: number,          // reference node center Y
+103:  // Groups containing the reference node
+106:  // Check where the junction point would be along the trunk
+111:  // Find outermost group containing the junction but NOT the reference node
+122:/** A shared trunk also shares its endpoint glyph. A start marker on one
+136: * point, travel along a shared trunk, then branch to their individual targets.
+139: * Junction points are placed outside subgraph boundaries so branches split
+158:    for (const [edge, points] of candidates) {
+160:      candidates.set(edge, clipEdgeToShape(clipEdgeToShape(points, source, true), target, false))
+162:    const staged = edges.map(edge => candidates.has(edge) ? { ...edge, points: candidates.get(edge)! } : edge)
+179:      const points = candidates.get(member.edge)!
+182:        && !routeCandidateMarkerBlocker(member.edge, points, staged, style, candidate)
+201:  // A fan shares only part of a relationship. Repeated endpoint pairs need
+204:  const duplicateEdges = new Set<PositionedEdge>()
+210:      if (prior) { duplicateEdges.add(prior); duplicateEdges.add(edge) }
+225:      if (duplicateEdges.has(e)) return false
+290:          edge.points = candidates.get(edge)!
+316:      if (duplicateEdges.has(e)) return false
+379:          edge.points = candidates.get(edge)!
+  389 src/layout/passes/edge-bundling.ts
+  319 src/layout/graph-paint-support.ts
+  708 total
+5c232f9 fix(layout): keep foreign shafts and repeated edges visible [skip ci]
+834c83d Prepare 0.5.5 release notes

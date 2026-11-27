@@ -1,0 +1,467 @@
+     1	// ============================================================================
+     2	// Quadrant per-point styling + classDef — upstream contract (merged
+     3	// mermaid-js/mermaid#5173, documented at mermaid.js.org/syntax/quadrantChart):
+     4	//
+     5	//   Direct styles on a point:   `Label: [x, y] radius: 12, color: #ff3300,
+     6	//                                stroke-color: #10f0f0, stroke-width: 5px`
+     7	//   Class definition:           `classDef class1 color: #109060`
+     8	//   Class application:          `Label:::class1: [x, y]`
+     9	//   Precedence:                 direct styles > class styles > theme defaults.
+    10	//
+    11	// Before this feature the parser validated and DISCARDED the styles, and any
+    12	// `:::`/classDef knocked the agent body opaque. Now styles flow parser →
+    13	// layout (one resolution site, src/quadrant/point-style.ts) → renderer, and
+    14	// the agent body models them as typed, mutable content.
+    15	// ============================================================================
+    16	
+    17	import { describe, it, expect } from 'bun:test'
+    18	import { parseQuadrantChart } from '../quadrant/parser.ts'
+    19	import { layoutQuadrantChart } from '../quadrant/layout.ts'
+    20	import { QuadrantStyleColorError, resolvePointVisual } from '../quadrant/point-style.ts'
+    21	import { renderMermaidASCII, renderMermaidSVG } from '../index.ts'
+    22	import { toMermaidLines, normalizeMermaidSource } from '../mermaid-source.ts'
+    23	import { parseRegisteredMermaid as parseMermaid } from '../agent/parse.ts'
+    24	import { serializeMermaid } from '../agent/serialize.ts'
+    25	import { mutate } from '../agent/mutate.ts'
+    26	import { verifyMermaid } from '../agent/verify.ts'
+    27	import { asQuadrant } from '../agent/types.ts'
+    28	import { runBatchLine } from '../cli/index.ts'
+    29	import { handleHostedRequest } from '../mcp/hosted-server.ts'
+    30	import { projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+    31	import { renderMermaidPNG } from '../agent/png.ts'
+    32	
+    33	function parse(src: string) {
+    34	  return parseQuadrantChart(toMermaidLines(src))
+    35	}
+    36	
+    37	// The official upstream docs example (also eval corpus/quadrant/2).
+    38	const STYLED = `quadrantChart
+    39	  title Reach and engagement of campaigns
+    40	  x-axis Low Reach --> High Reach
+    41	  y-axis Low Engagement --> High Engagement
+    42	  quadrant-1 We should expand
+    43	  quadrant-2 Need to promote
+    44	  quadrant-3 Re-evaluate
+    45	  quadrant-4 May be improved
+    46	  Campaign A: [0.9, 0.0] radius: 12
+    47	  Campaign B:::class1: [0.8, 0.1] color: #ff3300, radius: 10
+    48	  Campaign C: [0.7, 0.2] radius: 25, color: #00ff33, stroke-color: #10f0f0
+    49	  Campaign D: [0.6, 0.3] radius: 15, stroke-color: #00ff0f, stroke-width: 5px ,color: #ff33f0
+    50	  Campaign E:::class2: [0.5, 0.4]
+    51	  Campaign F:::class3: [0.4, 0.5] color: #0000ff
+    52	  classDef class1 color: #109060
+    53	  classDef class2 color: #908342, radius : 10, stroke-color: #310085, stroke-width: 10px
+    54	  classDef class3 color: #f00fff, radius : 10
+    55	`
+    56	
+    57	// ---------------------------------------------------------------------------
+    58	// Parser — styles and classes are modeled, not discarded
+    59	// ---------------------------------------------------------------------------
+    60	
+    61	describe('quadrant parser models point styles and classDefs', () => {
+    62	  const chart = parse(STYLED)
+    63	
+    64	  it('keeps commas inside functional colors while splitting top-level entries', () => {
+    65	    const chart = parse(`quadrantChart
+    66	  RGB: [0.2, 0.8] color: rgb(255, 0, 0), radius: 10, stroke-color: hsl(120, 100%, 50%)
+    67	  classDef mixed color: rgba(10, 20, 30, 0.5)
+    68	  Mixed:::mixed: [0.8, 0.2]`)
+    69	    expect(chart.points[0]!.style).toMatchObject({ color: 'rgb(255, 0, 0)', radius: 10, strokeColor: 'hsl(120, 100%, 50%)' })
+    70	    expect(chart.classDefs.mixed!.color).toBe('rgba(10, 20, 30, 0.5)')
+    71	    const svg = renderMermaidSVG(`quadrantChart
+    72	  RGB: [0.2, 0.8] color: rgb(255, 0, 0), radius: 10`)
+    73	    expect(svg).toContain('fill="rgb(255, 0, 0)"')
+    74	  })
+    75	
+    76	  it('rejects unbalanced color functions loudly', () => {
+    77	    expect(() => parse('quadrantChart\n  Broken: [0.2, 0.8] color: rgb(1, 2, 3')).toThrow('unbalanced parentheses')
+    78	  })
+    79	
+    80	  it('parses direct point styles into typed fields', () => {
+    81	    const byLabel = (l: string) => chart.points.find(p => p.label === l)!
+    82	    expect(byLabel('Campaign A').style).toEqual({ radius: 12 })
+    83	    expect(byLabel('Campaign B').style).toEqual({ color: '#ff3300', radius: 10 })
+    84	    expect(byLabel('Campaign C').style).toEqual({ radius: 25, color: '#00ff33', strokeColor: '#10f0f0' })
+    85	    expect(byLabel('Campaign D').style).toEqual({ radius: 15, strokeColor: '#00ff0f', strokeWidth: '5px', color: '#ff33f0' })
+    86	    expect(byLabel('Campaign E').style).toBeUndefined()
+    87	  })
+    88	
+    89	  it('parses ::: class assignments into className', () => {
+    90	    const byLabel = (l: string) => chart.points.find(p => p.label === l)!
+    91	    expect(byLabel('Campaign B').className).toBe('class1')
+    92	    expect(byLabel('Campaign E').className).toBe('class2')
+    93	    expect(byLabel('Campaign F').className).toBe('class3')
+    94	    expect(byLabel('Campaign A').className).toBeUndefined()
+    95	  })
+    96	
+    97	  it('parses classDef lines into the classDefs table (space before colon tolerated)', () => {
+    98	    expect(chart.classDefs['class1']).toEqual({ color: '#109060' })
+    99	    expect(chart.classDefs['class2']).toEqual({ color: '#908342', radius: 10, strokeColor: '#310085', strokeWidth: '10px' })
+   100	    expect(chart.classDefs['class3']).toEqual({ color: '#f00fff', radius: 10 })
+   101	  })
+   102	
+   103	  it('keeps the loud-error contract for malformed style metadata', () => {
+   104	    // Known keys validate their values; unsafe values error. Safe unknown
+   105	    // properties remain a readable native extension and stay source-only.
+   106	    expect(() => parse('quadrantChart\n  A: [0.5, 0.5] radius: big')).toThrow(/radius/i)
+   107	    expect(() => parse('quadrantChart\n  A: [0.5, 0.5] banana: "spl;it"')).toThrow(/style/i)
+   108	    expect(() => parse('quadrantChart\n  A: [0.5, 0.5] color: "x;{}"')).toThrow(/color|style/i)
+   109	  })
+   110	})
+   111	
+   112	describe('quadrant authored paint admission (#303)', () => {
+   113	  const invalid = ['notacolor', '#12345', 'rgb(x)', 'url(#a)', 'color-mix(in srgb, red 20%, blue)']
+   114	
+   115	  it('refuses every non-drawable direct and class paint before graphical or terminal output', () => {
+   116	    for (const property of ['color', 'stroke-color'] as const) {
+   117	      for (const value of invalid) {
+   118	        for (const source of [
+   119	          `quadrantChart\n  A: [0.5, 0.5] ${property}: ${value}`,
+   120	          `quadrantChart\n  classDef bad ${property}: ${value}\n  A:::bad: [0.5, 0.5]`,
+   121	        ]) {
+   122	          const named = `${property} ${JSON.stringify(value)} is not a CSS color`
+   123	          expect(() => renderMermaidSVG(source), source).toThrow(named)
+   124	          expect(() => renderMermaidPNG(source), source).toThrow(named)
+   125	          expect(() => renderMermaidASCII(source, { useAscii: true }), source).toThrow(named)
+   126	          expect(() => renderMermaidASCII(source, { useAscii: false }), source).toThrow(named)
+   127	          const agent = parseMermaid(source)
+   128	          expect(agent.ok).toBe(true)
+   129	          if (agent.ok) expect(agent.value.body.kind).toBe('opaque')
+   130	          const verdict = verifyMermaid(source)
+   131	          expect(verdict.ok).toBe(false)
+   132	          expect(verdict.warnings).toContainEqual({ code: 'RENDER_FAILED', reason: expect.stringContaining(named), origin: 'source' })
+   133	        }
+   134	      }
+   135	    }
+   136	  })
+   137	
+   138	  it('preserves drawable fill and stroke paints, including none and unresolved local variables', () => {
+   139	    for (const value of ['rebeccapurple', '#f96', '#11223380', 'rgb(255, 0, 0)', 'hsl(120 100% 50%)', 'transparent', 'currentColor', 'none', 'var(--brand)']) {
+   140	      const source = `quadrantChart\n  A: [0.5, 0.5] color: ${value}, stroke-color: ${value}`
+   141	      expect(() => renderMermaidSVG(source), value).not.toThrow()
+   142	      expect(() => renderMermaidASCII(source), value).not.toThrow()
+   143	      expect(verifyMermaid(source).warnings.filter(w => w.code === 'RENDER_FAILED' || w.code === 'INTERNAL_ERROR')).toEqual([])
+   144	    }
+   145	  })
+   146	
+   147	  it('projects only nominal bounded color errors through CLI and MCP', async () => {
+   148	    const source = 'quadrantChart\n  A: [0.5, 0.5] color: notacolor'
+   149	    for (const format of ['svg', 'ascii', 'unicode'] as const) {
+   150	      const result = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }
+   151	      expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: expect.stringContaining('notacolor') } })
+   152	    }
+   153	    const response = await handleHostedRequest(
+   154	      { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'render_svg', arguments: { source } } },
+   155	      {
+   156	        async execute() { return { ok: true, value: null, logs: [] } },
+   157	        async renderPng() { throw new Error('not used') },
+   158	      },
+   159	    )
+   160	    const payload = JSON.parse((response?.result as { content: Array<{ text: string }> }).content[0]!.text)
+   161	    expect(payload).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', property: 'color', value: 'notacolor' } })
+   162	    expect(projectRenderErrorDiagnostic({ code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: 'forged' }))
+   163	      .toEqual({ code: 'RENDER_FAILED', message: 'Rendering failed' })
+   164	    const veryLong = 'x'.repeat(100_000)
+   165	    let thrown: unknown
+   166	    try { renderMermaidSVG(`quadrantChart\n  A: [0.5, 0.5] color: ${veryLong}`) } catch (error) { thrown = error }
+   167	    expect(thrown).toBeInstanceOf(QuadrantStyleColorError)
+   168	    const diagnostic = projectRenderErrorDiagnostic(thrown)
+   169	    expect(diagnostic.message.length).toBeLessThan(600)
+   170	    expect('value' in diagnostic && diagnostic.value.length).toBeLessThanOrEqual(256)
+   171	  })
+   172	})
+   173	
+   174	// ---------------------------------------------------------------------------
+   175	// Resolution — ONE place, precedence direct > class > default
+   176	// ---------------------------------------------------------------------------
+   177	
+   178	describe('quadrant point style resolution', () => {
+   179	  const chart = parse(STYLED)
+   180	  const defaults = { radius: 6 }
+   181	
+   182	  it('direct styles win over class styles which win over defaults', () => {
+   183	    const b = chart.points.find(p => p.label === 'Campaign B')!
+   184	    const rb = resolvePointVisual(b, chart.classDefs, defaults)
+   185	    expect(rb.fill).toBe('#ff3300') // direct beats classDef class1 color #109060
+   186	    expect(rb.radius).toBe(10)
+   187	
+   188	    const f = chart.points.find(p => p.label === 'Campaign F')!
+   189	    const rf = resolvePointVisual(f, chart.classDefs, defaults)
+   190	    expect(rf.fill).toBe('#0000ff')  // direct color
+   191	    expect(rf.radius).toBe(10)       // class radius fills the gap
+   192	
+   193	    const e = chart.points.find(p => p.label === 'Campaign E')!
+   194	    const re = resolvePointVisual(e, chart.classDefs, defaults)
+   195	    expect(re).toMatchObject({ fill: '#908342', radius: 10, stroke: '#310085', strokeWidth: '10px' })
+   196	  })
+   197	
+   198	  it('a point referencing an unknown class resolves to defaults (upstream parity)', () => {
+   199	    const chart2 = parse('quadrantChart\n  P:::ghost: [0.5, 0.5]')
+   200	    const r = resolvePointVisual(chart2.points[0]!, chart2.classDefs, defaults)
+   201	    expect(r.radius).toBe(6)
+   202	    expect(r.fill).toBeUndefined()
+   203	  })
+   204	})
+   205	
+   206	// ---------------------------------------------------------------------------
+   207	// Layout — resolved radius drives geometry
+   208	// ---------------------------------------------------------------------------
+   209	
+   210	describe('quadrant layout consumes resolved point styles', () => {
+   211	  it('positioned radius follows direct/class radius', () => {
+   212	    const positioned = layoutQuadrantChart(parse(STYLED))
+   213	    const byLabel = (l: string) => positioned.points.find(p => p.label === l)!
+   214	    expect(byLabel('Campaign A').radius).toBe(12)
+   215	    expect(byLabel('Campaign C').radius).toBe(25)
+   216	    expect(byLabel('Campaign E').radius).toBe(10)
+   217	  })
+   218	
+   219	  it('unstyled points keep the default radius', () => {
+   220	    const positioned = layoutQuadrantChart(parse('quadrantChart\n  P: [0.5, 0.5]'))
+   221	    expect(positioned.points[0]!.radius).toBe(6)
+   222	  })
+   223	})
+   224	
+   225	// ---------------------------------------------------------------------------
+   226	// SVG — the rendered attributes match the resolution (invariant gate)
+   227	// ---------------------------------------------------------------------------
+   228	
+   229	function circleFor(svg: string, label: string): string {
+   230	  const m = svg.match(new RegExp(`<circle[^>]*data-label="${label}"[^>]*/>`))
+   231	  expect(m).not.toBeNull()
+   232	  return m![0]!
+   233	}
+   234	
+   235	describe('quadrant SVG renders point styles', () => {
+   236	  const svg = renderMermaidSVG(STYLED)
+   237	
+   238	  it('direct styles reach the circle (fill / radius / stroke)', () => {
+   239	    const c = circleFor(svg, 'Campaign C')
+   240	    expect(c).toContain('r="25"')
+   241	    expect(c).toContain('fill="#00ff33"')
+   242	    expect(c).toContain('stroke="#10f0f0"')
+   243	    const d = circleFor(svg, 'Campaign D')
+   244	    expect(d).toContain('stroke-width="5px"')
+   245	  })
+     1	import { describe, expect, test } from 'bun:test'
+     2	
+     3	import { renderMermaidASCII, renderMermaidSVG } from '../index.ts'
+     4	import { renderMermaidSVGAsync } from '../browser-lazy.ts'
+     5	import { buildMermaid, parseRegisteredMermaid, serializeMermaid, verifyMermaid } from '../agent/index.ts'
+     6	import { renderMermaidPNG } from '../agent/png.ts'
+     7	import { runBatchLine } from '../cli/index.ts'
+     8	import { handleHostedRequest } from '../mcp/hosted-server.ts'
+     9	import { projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+    10	import { drawableAuthoredCssPaint } from '../shared/css-color.ts'
+    11	import { tryParseCssColor } from '../shared/color-math.ts'
+    12	
+    13	const INVALID = [
+    14	  'notacolor', 'constructor', '__proto__', 'rgb(x)', 'rgb(1oops,2,3)',
+    15	  'rgba(1,2,3,0.5junk)', 'hsl(120,50%oops,50%)', '#12345',
+    16	  'rgb(1 2 3 / .5 / junk)', 'hsl(120 50% 50% / .5 / junk)',
+    17	  'rgb(1 2 3 .5)', 'hsl(120 50% 50% .5)',
+    18	  'rgb(1,20%,3)', 'rgba(1,20%,3,.5)',
+    19	  'rgb(1. 2 3)', 'rgb(1.e2 2 3)', 'hsl(120. 50% 50%)',
+    20	  'rgb(1, 2, 3 / .5)', 'hsl(120, 50%, 50% / .5)',
+    21	  'hsl(1e308turn,50%,50%)',
+    22	  'hwb(120 0% 0%)', 'color-mix(in srgb, red, blue)', 'url(#a)',
+    23	] as const
+    24	
+    25	const SOURCES = [
+    26	  { directive: 'style A', make: (value: string) => `flowchart TD\n  A --> B\n  style A fill:${value}` },
+    27	  { directive: 'classDef hot', make: (value: string) => `flowchart TD\n  A:::hot --> B\n  classDef hot fill:${value}` },
+    28	  { directive: 'linkStyle 0', make: (value: string) => `flowchart TD\n  A --> B\n  linkStyle 0 stroke:${value}` },
+    29	  { directive: 'classDef hot', make: (value: string) => `stateDiagram-v2\n  A --> B\n  classDef hot fill:${value}\n  class A hot` },
+    30	  { directive: 'style A', make: (value: string) => `classDiagram\n  class A\n  style A fill:${value}` },
+    31	  { directive: 'style A', make: (value: string) => `erDiagram\n  A ||--o{ B : has\n  style A fill:${value}` },
+    32	] as const
+    33	
+    34	describe('authored style color admission (#303, source/typed slice)', () => {
+    35	  test('distinguishes real colors from safe-looking words and malformed functions', () => {
+    36	    for (const value of INVALID) expect(drawableAuthoredCssPaint(value), value).toBeUndefined()
+    37	    for (const value of ['red', '#f96', '#3b82', '#112233', '#11223380', 'rgb(1,2,3)', 'rgba(1,2,3,.5)', 'rgb(300,0,0)', 'rgb(-1 0 0)', 'rgba(255,0,0,2)', 'hsl(120,50%,50%)', 'hsl(120 100 50)', 'hsl(120 150% 50%)', 'hsl(120 100% 150%)', 'transparent', 'currentColor', 'var(--brand)']) {
+    38	      expect(drawableAuthoredCssPaint(value), value).toBe(value)
+    39	    }
+    40	    expect(tryParseCssColor('rgb(300,0,0)')).toEqual([255, 0, 0, 1])
+    41	    expect(tryParseCssColor('rgba(255,0,0,2)')).toEqual([255, 0, 0, 1])
+    42	    expect(tryParseCssColor('hsl(120 100 50)')).toEqual([0, 255, 0, 1])
+    43	    for (const value of ['rgb(300,0,0)', 'rgba(255,0,0,2)', 'hsl(120 100 50)', 'hsl(120 150% 50%)']) {
+    44	      expect(() => renderMermaidSVG(SOURCES[0]!.make(value)), value).not.toThrow()
+    45	    }
+    46	    expect(drawableAuthoredCssPaint('none', true)).toBe('none')
+    47	    expect(drawableAuthoredCssPaint('none', false)).toBeUndefined()
+    48	    expect(tryParseCssColor('constructor')).toBeNull()
+    49	    expect(tryParseCssColor('rgb(1oops,2,3)')).toBeNull()
+    50	    expect(tryParseCssColor('rgb(1 2 3 / .5 / junk)')).toBeNull()
+    51	    expect(tryParseCssColor('hsl(120 50% 50% / .5 / junk)')).toBeNull()
+    52	    expect(tryParseCssColor('hsl(1e308turn,50%,50%)')).toBeNull()
+    53	    expect(tryParseCssColor('rgb(1,20%,3)')).toBeNull()
+    54	    expect(tryParseCssColor('#3b82')).toEqual([0x33, 0xbb, 0x88, 0x22 / 255])
+    55	  })
+    56	
+    57	  test('every affected graphical source placement refuses the offending value by directive and property', () => {
+    58	    for (const { directive, make } of SOURCES) {
+    59	      for (const value of INVALID) {
+    60	        const source = make(value)
+    61	        const named = `${directive}: ${directive.startsWith('linkStyle') ? 'stroke' : 'fill'} ${JSON.stringify(value)} is not a CSS color`
+    62	        expect(() => renderMermaidSVG(source)).toThrow(named)
+    63	        expect(() => renderMermaidASCII(source, { useAscii: true })).toThrow(named)
+    64	        expect(() => renderMermaidASCII(source, { useAscii: false })).toThrow(named)
+    65	      }
+    66	    }
+    67	  })
+    68	
+    69	  test('verify exposes the same reason, and PNG refuses before drawing a misleading node', () => {
+    70	    const source = SOURCES[0]!.make('notacolor')
+    71	    expect(verifyMermaid(source).warnings).toEqual([
+    72	      { code: 'RENDER_FAILED', reason: expect.stringContaining('style A: fill "notacolor" is not a CSS color'), origin: 'source' },
+    73	    ])
+    74	    expect(() => renderMermaidPNG(source)).toThrow('style A: fill "notacolor" is not a CSS color')
+    75	    for (const colorMode of ['none', 'ansi16', 'ansi256', 'truecolor', 'html'] as const) {
+    76	      expect(() => renderMermaidASCII(source, { colorMode })).toThrow('style A: fill "notacolor" is not a CSS color')
+    77	    }
+    78	  })
+    79	
+    80	  test('unused declarations cannot hide invalid colors from render or verify', () => {
+    81	    for (const [source, named] of [
+    82	      ['flowchart TD\n  A --> B\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+    83	      ['flowchart TD\n  A --> B\n  style Z fill:notacolor', 'style Z: fill "notacolor"'],
+    84	      ['flowchart TD\n  A --> B\n  linkStyle 99 stroke:notacolor', 'linkStyle 99: stroke "notacolor"'],
+    85	      ['stateDiagram-v2\n  A --> B\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+    86	      ['classDiagram\n  class A\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+    87	      ['erDiagram\n  A ||--o{ B : has\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+    88	    ] as const) {
+    89	      expect(() => renderMermaidSVG(source), source).toThrow(named)
+    90	      expect(() => renderMermaidASCII(source, { useAscii: true }), source).toThrow(named)
+    91	      const result = verifyMermaid(source)
+    92	      expect(result.ok, source).toBe(false)
+    93	      expect(result.warnings.some(warning => warning.code === 'RENDER_FAILED' && warning.reason?.includes(named)), source).toBe(true)
+    94	    }
+    95	  })
+    96	
+    97	  // Mermaid draws a Class class's paint in statement order, and verify warns
+    98	  // where that order makes it draw otherwise than ours; the writer orders
+    99	  // classDefs before `style`. Neither admits paint: a refused value is refused
+   100	  // by directive in either order and either position, the order warning
+   101	  // compares only admitted paint and never names a value, and the writer
+   102	  // only orders the lines it already writes, markup still entity-coded.
+   103	  test('Class style and classDef order neither admits nor echoes refused paint', () => {
+   104	    for (const value of ['notacolor', 'url(#a)', 'rgb(x)', '#f00</style><script>']) {
+   105	      for (const [directive, lines] of [
+   106	        ['style B', [`  style B fill:${value}`, '  classDef hot fill:#f96']],
+   107	        ['style B', ['  classDef hot fill:#f96', `  style B fill:${value}`]],
+   108	        ['classDef hot', ['  style B fill:#000', `  classDef hot fill:${value}`]],
+   109	        ['classDef hot', [`  classDef hot fill:${value}`, '  style B fill:#000']],
+   110	      ] as const) {
+   111	        const source = ['classDiagram', '  class B:::hot', ...lines].join('\n')
+   112	        const named = `${directive}: fill ${JSON.stringify(value)} is not a CSS color`
+   113	        expect(() => renderMermaidSVG(source), source).toThrow(named)
+   114	        expect(() => renderMermaidASCII(source, { useAscii: true }), source).toThrow(named)
+   115	        const { warnings } = verifyMermaid(source)
+   116	        expect(warnings.flatMap(warning => warning.code === 'UNSUPPORTED_SYNTAX' && (/^class_(style_before_classdef|classdef_order)$/.test(warning.syntax) || warning.message.includes(value)) ? [warning] : []), source).toEqual([])
+   117	        expect(warnings.some(warning => warning.code === 'RENDER_FAILED' && warning.reason?.includes(named)), source).toBe(true)
+   118	        const parsed = parseRegisteredMermaid(source)
+   119	        if (!parsed.ok) throw new Error(source)
+   120	        const written = serializeMermaid(parsed.value)
+   121	        expect(written.split('\n').slice(1, 5).map(line => line.trim().split(/[\s:]+/, 2).join(' ')), source).toEqual(['class B', 'cssClass "B"', 'classDef hot', 'style B'])
+   122	        expect(written, source).not.toContain('<')
+   123	      }
+   124	    }
+   125	    // An admitted paint Mermaid draws over is reported by directive and
+   126	    // property alone, beside a refused one on the same line.
+   127	    const mixed = verifyMermaid('classDiagram\n  class B:::hot\n  style B fill:#000,stroke:url(#a)\n  classDef hot fill:#f96')
+   128	    expect(mixed.warnings.map(warning => warning.code === 'UNSUPPORTED_SYNTAX' ? warning.message : warning.code === 'RENDER_FAILED' ? 'RENDER_FAILED' : warning.code)).toEqual([
+   129	      'This `style` sets `fill` on B, which `classDef hot` below it also sets through that style class. Ours draws the style\'s (a class\'s own style overrides its style classes); pinned Mermaid draws the later line\'s. Move this line after that classDef.',
+   130	      'RENDER_FAILED',
+   131	    ])
+   132	  })
+   133	
+   134	  test('async browser SVG refuses invalid paint in every affected family', async () => {
+   135	    for (const { directive, make } of SOURCES) {
+   136	      const source = make('notacolor')
+   137	      const named = `${directive}: ${directive.startsWith('linkStyle') ? 'stroke' : 'fill'} "notacolor" is not a CSS color`
+   138	      await expect(renderMermaidSVGAsync(source), source).rejects.toThrow(named)
+   139	    }
+   140	    for (const [source, named] of [
+   141	      ['flowchart TD\n  A --> B\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+   142	      ['flowchart TD\n  A --> B\n  linkStyle 99 stroke:notacolor', 'linkStyle 99: stroke "notacolor"'],
+   143	      ['stateDiagram-v2\n  A --> B\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+   144	      ['classDiagram\n  class A\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+   145	      ['erDiagram\n  A ||--o{ B : has\n  classDef unused fill:notacolor', 'classDef unused: fill "notacolor"'],
+   146	    ] as const) {
+   147	      await expect(renderMermaidSVGAsync(source), source).rejects.toThrow(named)
+   148	    }
+   149	  })
+   150	
+   151	  test('typed style mutations refuse the same unknown and malformed colors at build time', () => {
+   152	    for (const value of INVALID) {
+   153	      const result = buildMermaid('flowchart', [
+   154	        { kind: 'add_node', id: 'A', label: 'A' },
+   155	        { kind: 'set_node_style', id: 'A', style: `fill:${value}` },
+   156	      ])
+   157	      expect(result.ok).toBe(false)
+   158	      if (!result.ok) {
+   159	        expect(result.error.code).toBe('INVALID_OP')
+   160	        expect(result.error.message).toContain(`fill ${JSON.stringify(value)} is not a CSS color`)
+   161	      }
+   162	    }
+   163	  })
+   164	
+   165	  test('Class, ER, and State typed style mutations reject bad paint', () => {
+   166	    const results = [
+   167	      buildMermaid('class', [
+   168	        { kind: 'add_class', id: 'A' },
+   169	        { kind: 'set_class_style', class: 'A', style: 'fill:notacolor' },
+   170	      ]),
+   171	      buildMermaid('class', [{ kind: 'define_class', name: 'hot', style: 'fill:notacolor' }]),
+   172	      buildMermaid('er', [
+   173	        { kind: 'add_entity', id: 'A' },
+   174	        { kind: 'set_entity_style', entity: 'A', style: 'fill:notacolor' },
+   175	      ]),
+   176	      buildMermaid('er', [{ kind: 'define_class', name: 'hot', style: 'fill:notacolor' }]),
+   177	      buildMermaid('state', [
+   178	        { kind: 'add_state', id: 'A' },
+   179	        { kind: 'set_state_style', id: 'A', style: 'fill:notacolor' },
+   180	      ]),
+   181	      buildMermaid('state', [{ kind: 'define_class', name: 'hot', style: 'fill:notacolor' }]),
+   182	      buildMermaid('state', [
+   183	        { kind: 'add_state', id: 'A' },
+   184	        { kind: 'add_state', id: 'B' },
+   185	        { kind: 'add_transition', from: 'A', to: 'B' },
+   186	        { kind: 'set_transition_style', index: 0, style: 'stroke:notacolor' },
+   187	      ]),
+   188	    ]
+   189	    const contexts = ['set_class_style A', 'define_class hot', 'set_entity_style A', 'define_class hot', 'State inline style', 'State class style', 'State transition style']
+   190	    for (const [index, result] of results.entries()) {
+   191	      expect(result.ok).toBe(false)
+   192	      if (!result.ok) {
+   193	        expect(result.error.code).toBe('INVALID_OP')
+   194	        expect(result.error.message).toContain(contexts[index]!)
+   195	        expect(result.error.message).toContain('"notacolor" is not a CSS color')
+   196	      }
+   197	    }
+   198	  })
+   199	
+   200	  test('CLI and MCP SVG transport preserve only the nominal, named diagnostic', async () => {
+   201	    const source = SOURCES[0]!.make('notacolor')
+   202	    for (const format of ['svg', 'ascii', 'unicode'] as const) {
+   203	      const batch = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }
+   204	      expect(batch.ok).toBe(false)
+   205	      expect(batch.error).toMatchObject({ code: 'INVALID_STYLE_COLOR', property: 'fill', value: 'notacolor', message: expect.stringContaining('style A: fill "notacolor"') })
+   206	    }
+   207	
+   208	    const response = await handleHostedRequest(
+   209	      { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'render_svg', arguments: { source } } },
+   210	      {
+   211	        async execute() { return { ok: true, value: null, logs: [] } },
+   212	        async renderPng() { throw new Error('not used by render_svg') },
+   213	      },
+   214	    )
+   215	    const text = (response?.result as { content: Array<{ text: string }> }).content[0]!.text
+   216	    const payload = JSON.parse(text) as { ok: boolean; error: { code: string; property: string; value: string } }
+   217	    expect(payload).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', property: 'fill', value: 'notacolor' } })
+   218	
+   219	    expect(projectRenderErrorDiagnostic({ code: 'INVALID_STYLE_COLOR', message: 'forged', property: 'fill', value: 'notacolor' }))
+   220	      .toEqual({ code: 'RENDER_FAILED', message: 'Rendering failed' })
+   221	  })
+   222	})

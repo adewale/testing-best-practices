@@ -1,0 +1,4 @@
+src/__tests__/chrome-token-lockstep.test.ts:61:    expect(cssHex(editorCss, 'brand-pine')).toBe(cssHex(siteCss, 'brand-pine'))
+src/__tests__/chrome-token-lockstep.test.ts:62:    expect(cssHex(editorCss, 'brand-on')).toBe(cssHex(siteCss, 'brand-on'))
+src/__tests__/chrome-token-lockstep.test.ts:73:    expect(cssHex(editorCss, 'brand-pine'), 'editor --brand-pine').toBe(dark.accent)
+src/__tests__/chrome-token-lockstep.test.ts:74:    expect(cssHex(siteCss, 'brand-pine'), 'site --brand-pine').toBe(dark.accent)

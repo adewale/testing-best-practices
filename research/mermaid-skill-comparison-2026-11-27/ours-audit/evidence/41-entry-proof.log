@@ -1,0 +1,35 @@
+rg: src/agent/workflow*: No such file or directory (os error 2)
+src/mcp/sdk-decl.ts:390:  mutatePreservingSource(d: ParsedDiagram, op: AnyMutationOp): Result<{ source: string; diagram: ParsedDiagram; preservation?: { method: 'local' | 'canonical'; reason?: string } }, { code: string; message: string }>
+src/mcp/facade.ts:406:    mutatePreservingSource: mermaid.mutatePreservingSource,
+src/mcp/facade.ts:480:    } else if (prop === 'mutate' || prop === 'mutatePreservingSource')
+src/mcp/facade.ts:495:        const r = hostCall(() => prop === 'mutatePreservingSource' ? mermaid.mutatePreservingSource(rawOf(d), opForHost) : mermaid.mutateChecked(rawOf(d), opForHost))
+src/mcp/sdk-discovery.ts:64:  mutatePreservingSource(d: ParsedDiagram, op: MutationOp): Result<{source:string;diagram:ParsedDiagram;preservation?:{method:'local'|'canonical';reason?:string}}>
+ff968d9 Draw a Class style over its style classes, and keep Mermaid drawing it so
+0cfd100 Place new styling statements after what Mermaid needs them to follow
+60c3969 Edit sequence activation lines and message marks with typed ops
+e0f1f0c Keep statements Mermaid applies only to existing entities after them
+837ec92 Write kept branch lines at their branch's depth
+4defa5a Anchor add_fragment to a message and add move_fragment
+21764a9 Keep unmodelled lines verbatim inside typed sequence fragment branches
+ea27649 Keep a state note after its state's first mention in source-preserving edits
+817f6c5 Expect authored spacing on a nested fragment message edit
+a298de6 Say when a rejected local candidate has the edit's facts
+f35f606 Edit nested namespaces and one-line class blocks locally
+dfa947b Keep a node's label on its declaration line when a new edge mentions it first
+c5eacb3 Project edits by the authored block structure when other passes fail
+ae724b3 Compare large canonical differences by the shortest edit script
+aeb27a1 Splice an edited verbatim statement through its canonical reading
+b798de3 Type sequence fragments nested in fragments and address them by fragmentPath
+073b127 Read ER quoted names and labels that run across lines
+cb0f92e Keep every State description, including repeated state "…" as X
+84be1d2 Type notes inside sequence fragments and add fragment note ops
+83ade59 Keep untouched fragment messages and indent empty fragment branches
+b1b7bb3 Indent statements added inside sequence fragments like the fragment body
+d2fa824 Project typed edits onto statements declared on several lines
+5307eb7 Project typed edits onto statements written over several physical lines
+837515e Type create/destroy lines inside sequence fragments
+36b222b Type top-level sequence notes and add note edit operations
+3ef85bd Keep a sequence creating message and its activation clear of the created header
+src/render-error-diagnostic.ts:26:  code: 'INVALID_STYLE_COLOR'
+src/__tests__/quadrant-style.test.ts:150:      const result = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }
+src/__tests__/authored-style-color-admission.test.ts:203:      const batch = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }

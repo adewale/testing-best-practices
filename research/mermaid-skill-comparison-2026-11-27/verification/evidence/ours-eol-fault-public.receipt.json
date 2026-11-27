@@ -1,0 +1,15 @@
+{
+  "label": "ours-eol-fault-public",
+  "argv": [
+    "bun",
+    ".parent-source-edit-bytes.ts"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {},
+  "timeout_seconds": 120,
+  "exit_code": 1,
+  "status": "completed",
+  "duration_seconds": 0.41730282600110513,
+  "stdout_sha256": "f70d9e4d1b6401d10dc13af84fb60880fd24ef973ffdf48b50126d4aad694f40",
+  "stderr_sha256": "7116e32c07a2eeaaa6104f43919fe6a8094edde3d3299c453a3f07e21c89a4d1"
+}

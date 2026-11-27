@@ -1,0 +1,415 @@
+{
+  "decoded_utc": "2026-11-27T01:34:53.148904+00:00",
+  "scheduled": 36,
+  "returned": 36,
+  "judged": 36,
+  "cases": 9,
+  "replicates": 1,
+  "totals": {
+    "none": {
+      "PASS": 7,
+      "FAIL": 2,
+      "UNCERTAIN": 0,
+      "INVALID": 0
+    },
+    "pr41": {
+      "PASS": 9,
+      "FAIL": 0,
+      "UNCERTAIN": 0,
+      "INVALID": 0
+    },
+    "candidate": {
+      "PASS": 8,
+      "FAIL": 1,
+      "UNCERTAIN": 0,
+      "INVALID": 0
+    },
+    "openclaw": {
+      "PASS": 9,
+      "FAIL": 0,
+      "UNCERTAIN": 0,
+      "INVALID": 0
+    }
+  },
+  "rows": [
+    {
+      "case": "R01",
+      "arm": "candidate",
+      "subject_id": "244aa8b6a4dbdf81",
+      "blind_id": "b72ecdaa37013843",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "683b871f8485a62e"
+    },
+    {
+      "case": "R01",
+      "arm": "openclaw",
+      "subject_id": "a9182589c9b5e41c",
+      "blind_id": "a03334350c33eefa",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "683b871f8485a62e"
+    },
+    {
+      "case": "R01",
+      "arm": "none",
+      "subject_id": "0e9d862ce5b513d3",
+      "blind_id": "a1328343d3a2a46a",
+      "reported_overall": "FAIL",
+      "computed_overall": "FAIL",
+      "judge_id": "683b871f8485a62e"
+    },
+    {
+      "case": "R01",
+      "arm": "pr41",
+      "subject_id": "ef042f4f27faa240",
+      "blind_id": "a18e23703a5067a4",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "683b871f8485a62e"
+    },
+    {
+      "case": "R02",
+      "arm": "openclaw",
+      "subject_id": "cc9be1e227470f8a",
+      "blind_id": "ec9e2b91500974df",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b21af27e376ddc9d"
+    },
+    {
+      "case": "R02",
+      "arm": "candidate",
+      "subject_id": "a6cc4322822f96a3",
+      "blind_id": "a6d01f95fe611104",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b21af27e376ddc9d"
+    },
+    {
+      "case": "R02",
+      "arm": "pr41",
+      "subject_id": "09a9eb49daf17c83",
+      "blind_id": "97101d142d8a04d1",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b21af27e376ddc9d"
+    },
+    {
+      "case": "R02",
+      "arm": "none",
+      "subject_id": "f33c0902fa9e7809",
+      "blind_id": "0abd8eaf1c770c79",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b21af27e376ddc9d"
+    },
+    {
+      "case": "R03",
+      "arm": "pr41",
+      "subject_id": "8c00728ffb528610",
+      "blind_id": "da9b7e848a4169a8",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "ab50cb0560de4162"
+    },
+    {
+      "case": "R03",
+      "arm": "candidate",
+      "subject_id": "af240a8ec78ae483",
+      "blind_id": "ec9644c6ee0eb3d0",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "ab50cb0560de4162"
+    },
+    {
+      "case": "R03",
+      "arm": "openclaw",
+      "subject_id": "0cc23a6d3d288c81",
+      "blind_id": "0f6023984c698a16",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "ab50cb0560de4162"
+    },
+    {
+      "case": "R03",
+      "arm": "none",
+      "subject_id": "2bc860e3a0dcb269",
+      "blind_id": "3eda8c3d9456218b",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "ab50cb0560de4162"
+    },
+    {
+      "case": "R04",
+      "arm": "pr41",
+      "subject_id": "c614295b49af98e7",
+      "blind_id": "931332a8e7d2ca16",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "bb389102053a4013"
+    },
+    {
+      "case": "R04",
+      "arm": "none",
+      "subject_id": "b9e32ce20014cb81",
+      "blind_id": "b196e2c8798c6e4c",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "bb389102053a4013"
+    },
+    {
+      "case": "R04",
+      "arm": "candidate",
+      "subject_id": "a2c633dd5d32e6da",
+      "blind_id": "2db0e16a8d9cfd55",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "bb389102053a4013"
+    },
+    {
+      "case": "R04",
+      "arm": "openclaw",
+      "subject_id": "c543a869571ed8bd",
+      "blind_id": "9ba5ef0a9d1eeb80",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "bb389102053a4013"
+    },
+    {
+      "case": "R05",
+      "arm": "pr41",
+      "subject_id": "a1b2e89654aaade9",
+      "blind_id": "32249b82e5de2f3f",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b772ebe006cc1e05"
+    },
+    {
+      "case": "R05",
+      "arm": "openclaw",
+      "subject_id": "a1aa9613d9c739e5",
+      "blind_id": "5550b88cef4a8071",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b772ebe006cc1e05"
+    },
+    {
+      "case": "R05",
+      "arm": "candidate",
+      "subject_id": "ca0312132f599cf3",
+      "blind_id": "dd6898d2b6632561",
+      "reported_overall": "FAIL",
+      "computed_overall": "FAIL",
+      "judge_id": "b772ebe006cc1e05"
+    },
+    {
+      "case": "R05",
+      "arm": "none",
+      "subject_id": "8655062dec2aa24d",
+      "blind_id": "d7cf2c5e9c364483",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b772ebe006cc1e05"
+    },
+    {
+      "case": "R06",
+      "arm": "openclaw",
+      "subject_id": "14d68616bd52a6db",
+      "blind_id": "28b6816a7163bf8e",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "e912509d0fc40cae"
+    },
+    {
+      "case": "R06",
+      "arm": "none",
+      "subject_id": "a130425720fc9b6e",
+      "blind_id": "225e27b30d01c375",
+      "reported_overall": "FAIL",
+      "computed_overall": "FAIL",
+      "judge_id": "e912509d0fc40cae"
+    },
+    {
+      "case": "R06",
+      "arm": "pr41",
+      "subject_id": "0109a8ca161dc603",
+      "blind_id": "601d976edd918d94",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "e912509d0fc40cae"
+    },
+    {
+      "case": "R06",
+      "arm": "candidate",
+      "subject_id": "fd103af50acf82f9",
+      "blind_id": "0b13c72d5b9cc1d1",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "e912509d0fc40cae"
+    },
+    {
+      "case": "R07",
+      "arm": "none",
+      "subject_id": "8887cf6821a2f4a3",
+      "blind_id": "52cffaa3fca1020b",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b46d47ecf91cc159"
+    },
+    {
+      "case": "R07",
+      "arm": "pr41",
+      "subject_id": "1f2f41ad8583a869",
+      "blind_id": "ca375d10c9c987ba",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b46d47ecf91cc159"
+    },
+    {
+      "case": "R07",
+      "arm": "candidate",
+      "subject_id": "f0ec335c896105d5",
+      "blind_id": "7e3eaee27d3bec9b",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b46d47ecf91cc159"
+    },
+    {
+      "case": "R07",
+      "arm": "openclaw",
+      "subject_id": "f8b1a29f82f5262b",
+      "blind_id": "31c061efcd9e740f",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "b46d47ecf91cc159"
+    },
+    {
+      "case": "R08",
+      "arm": "openclaw",
+      "subject_id": "e5e07cd4c67d8430",
+      "blind_id": "40ccb05ef34cf4b4",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "3807c048152ef71f"
+    },
+    {
+      "case": "R08",
+      "arm": "none",
+      "subject_id": "6dbc3760966291b1",
+      "blind_id": "f92c424190805e27",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "3807c048152ef71f"
+    },
+    {
+      "case": "R08",
+      "arm": "pr41",
+      "subject_id": "7fae3e37bb6edc9e",
+      "blind_id": "307883b6a344d95e",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "3807c048152ef71f"
+    },
+    {
+      "case": "R08",
+      "arm": "candidate",
+      "subject_id": "1418a084344cfc04",
+      "blind_id": "8e889473c1d64ee5",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "3807c048152ef71f"
+    },
+    {
+      "case": "R09",
+      "arm": "openclaw",
+      "subject_id": "0670c41a390a1924",
+      "blind_id": "8ad21724217f5650",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "5fae99654841d4fe"
+    },
+    {
+      "case": "R09",
+      "arm": "candidate",
+      "subject_id": "889c1e114207ebea",
+      "blind_id": "b3623a71159f9638",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "5fae99654841d4fe"
+    },
+    {
+      "case": "R09",
+      "arm": "none",
+      "subject_id": "e9830d13fc16457f",
+      "blind_id": "ae85dd5b80f76a72",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "5fae99654841d4fe"
+    },
+    {
+      "case": "R09",
+      "arm": "pr41",
+      "subject_id": "0738d8d6d69c9aab",
+      "blind_id": "7ae2a478cd81ef58",
+      "reported_overall": "PASS",
+      "computed_overall": "PASS",
+      "judge_id": "5fae99654841d4fe"
+    }
+  ],
+  "failures": [
+    {
+      "case": "R01",
+      "arm": "none",
+      "subject_id": "0e9d862ce5b513d3",
+      "blind_id": "a1328343d3a2a46a",
+      "reported_overall": "FAIL",
+      "computed_overall": "FAIL",
+      "judge_id": "683b871f8485a62e",
+      "criteria": [
+        {
+          "criterion": 3,
+          "verdict": "FAIL",
+          "evidence": "Restoring the schedule requires a full-route run within 90 minutes and an owner accepting cost and triage. The reviewer records any actionable gap found.",
+          "reason": "Those conditions allow scheduling to resume even if the review finds no actionable gap or other demonstrated benefit."
+        }
+      ]
+    },
+    {
+      "case": "R05",
+      "arm": "candidate",
+      "subject_id": "ca0312132f599cf3",
+      "blind_id": "dd6898d2b6632561",
+      "reported_overall": "FAIL",
+      "computed_overall": "FAIL",
+      "judge_id": "b772ebe006cc1e05",
+      "criteria": [
+        {
+          "criterion": 3,
+          "verdict": "FAIL",
+          "evidence": "The sole complete run requires acceptance of a valid raw input. Every rejection assertion calls the checker directly.",
+          "reason": "A public pipeline that discards a rejection and returns acceptance would pass the entire revised suite. No representative end-to-end tamper proof survives."
+        }
+      ]
+    },
+    {
+      "case": "R06",
+      "arm": "none",
+      "subject_id": "a130425720fc9b6e",
+      "blind_id": "225e27b30d01c375",
+      "reported_overall": "FAIL",
+      "computed_overall": "FAIL",
+      "judge_id": "e912509d0fc40cae",
+      "criteria": [
+        {
+          "criterion": 3,
+          "verdict": "FAIL",
+          "evidence": "Maps obligations, shadows both suites and replays historical faults, but sets a 450-render blocking ceiling and defers overruns to a budget decision.",
+          "reason": "The overrun clause protects mandatory cases. The plan still makes an unsupported case-count target a decision threshold before measuring cost or establishing how many witnesses are needed."
+        }
+      ]
+    }
+  ],
+  "arithmetic_disagreements": [],
+  "scope": "Frozen planning cases and same-family blind judgments; no autonomous prevention or population-level uplift inference."
+}

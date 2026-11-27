@@ -1,0 +1,53 @@
+diff --git a/src/__tests__/png-fonts.test.ts b/src/__tests__/png-fonts.test.ts
+index 6e5e4dc..04bdfbc 100644
+--- a/src/__tests__/png-fonts.test.ts
++++ b/src/__tests__/png-fonts.test.ts
+@@ -64,6 +64,13 @@ describe('PNG raster font matches the metrics font', () => {
+     // and its antialiasing), within the box's rows. The actor legend sits LEFT
+     // of the box, so only the right side is unambiguous.
+     const pad = 3 * scale
++    const insideBand = (from: number, to: number) => inkColumns(
++      img, (box.x + box.w * from) * scale, (box.x + box.w * to) * scale,
++      box.y * scale + pad, (box.y + box.h) * scale - pad,
++    ).length
++    // The long text spans either side of the centered actor decoration.
++    expect(insideBand(0.05, 0.35)).toBeGreaterThan(0)
++    expect(insideBand(0.65, 0.95)).toBeGreaterThan(0)
+     const overflow = inkColumns(
+       img,
+       (box.x + box.w) * scale + pad,
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/png-fonts.test.ts:
+(pass) PNG font provenance > distinguishes verified, caller-directory, system, and buffer inputs [0.36ms]
+67 |     const insideBand = (from: number, to: number) => inkColumns(
+68 |       img, (box.x + box.w * from) * scale, (box.x + box.w * to) * scale,
+69 |       box.y * scale + pad, (box.y + box.h) * scale - pad,
+70 |     ).length
+71 |     // The long text spans either side of the centered actor decoration.
+72 |     expect(insideBand(0.05, 0.35)).toBeGreaterThan(0)
+                                        ^
+error: expect(received).toBeGreaterThan(expected)
+
+Expected: > 0
+Received: 0
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/src/__tests__/png-fonts.test.ts:72:36)
+(fail) PNG raster font matches the metrics font > long journey task label rasterizes inside its measured task box [332.89ms]
+(pass) PNG glyph-coverage warnings > CJK text without a covering font warns, naming the script and the escape hatch [62.79ms]
+(pass) PNG glyph-coverage warnings > uncovered emoji warns with the emoji script bucket [16.95ms]
+(pass) PNG glyph-coverage warnings > Latin labels plus DejaVu-covered symbols produce no warning [14.98ms]
+(pass) PNG glyph-coverage warnings > loadSystemFonts: true keeps a qualified known-font warning [159.89ms]
+(pass) PNG glyph-coverage warnings > warnings are deterministic across identical renders [24.45ms]
+(pass) fontDirs escape hatch > a CJK-capable fontDirs clears the warning and changes the rendered bytes [471.90ms]
+(pass) am render --format png font flags > PNG-only controls are rejected for non-PNG formats [5.32ms]
+(pass) am render --format png font flags > fit dimensions are integer pixels [8.77ms]
+(pass) am render --format png font flags > CJK render warns on stderr and reports warnings in the --json envelope [14.04ms]
+(pass) am render --format png font flags > pure-Latin render prints no coverage warning [14.72ms]
+(pass) am render --format png font flags > --font-dirs silences the CJK warning [122.38ms]
+(pass) am render --format png font flags > --system-fonts keeps a qualified bundled-font coverage warning [49.52ms]
+
+ 13 pass
+ 1 fail
+ 51 expect() calls
+Ran 14 tests across 1 file. [1.68s]

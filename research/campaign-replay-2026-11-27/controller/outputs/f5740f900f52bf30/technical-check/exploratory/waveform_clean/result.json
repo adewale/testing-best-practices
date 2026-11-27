@@ -1,0 +1,16 @@
+{
+  "exit": 0,
+  "wall_seconds": 0.582,
+  "log": "technical-check/exploratory/waveform_clean/run.log",
+  "sha256": "95de2ef59e70a620f5a7020cd59e9d3a131787b58c40129ddf0ad9dcf840f3e6",
+  "test_files": "1 passed (1)",
+  "tests": "4 passed (4)",
+  "source": "submitted",
+  "stimulus": null,
+  "seed": null,
+  "selected_command": [
+    "runtime/run-unit.sh",
+    "--reporter=verbose",
+    "src/components/waveform-peaks.test.ts"
+  ]
+}

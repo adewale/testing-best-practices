@@ -1,0 +1,70 @@
+{
+  "repository": "adewale/web2kindle",
+  "total_prs": 2,
+  "pages_checked": {
+    "all_states_pr_list": "GET /repos/adewale/web2kindle/pulls?state=all&per_page=100, without date or author filters, returned #2 and #1 on page 1 and zero entries on page 2. Both titles and bodies were reviewed.",
+    "changed_files": "The files endpoint returned all 7 paths on page 1 of #1 and the sole path on page 1 of #2. Counts matched the PR detail endpoints. Each patch's added and removed line counts matched its file metadata."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Replace the unstartable scaffold test with a check script, and fix the KV prefix cache hit",
+      "url": "https://github.com/adewale/web2kindle/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Deletion of obsolete tests and correction of the verification command",
+      "weakness": "Two scaffold tests sent GET / and expected a Hello World! body. The worker at the base commit returns HTTP 400 with 'invalid request' for that route. The author also reported that the pinned Workers Vitest pool failed during startup before either test ran.",
+      "attempted_remedy": "Deleted both scaffold tests and their runner configuration and dependencies. Added a documented npm run check command to type-check and bundle the Worker. The combined PR also incorporated #2's exact-key cache fix.",
+      "test_paths": [
+        "test/index.spec.ts",
+        "test/tsconfig.json",
+        "vitest.config.mts",
+        "package.json",
+        "README.md"
+      ],
+      "diff_evidence": [
+        "The removed test/index.spec.ts called worker.fetch and SELF.fetch, respectively. Both assertions used toMatchInlineSnapshot with the identical Hello World! literal.",
+        "package.json replaced the vitest test script with tsc --noEmit && wrangler deploy --dry-run and removed vitest and @cloudflare/vitest-pool-workers. README.md names the two checks and says there are no automated tests.",
+        "src/workflow.ts contains the same exact-key change as #2. Commit ab70579 lists #2's head ac5f781 as its second parent."
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/web2kindle/pull/1/files",
+        "https://github.com/adewale/web2kindle/blob/3ab6defaea8cfa303e79d690265ccb2495712c64/src/index.ts#L20-L22",
+        "https://github.com/adewale/web2kindle/commit/ab705796d996fa73c2109ca09364ba601535d0c7",
+        "https://github.com/adewale/web2kindle/runs/111978574273"
+      ],
+      "transferable_rule": "Run inherited scaffold tests and check their expectations against the implemented request contract. When deleting them, name the checks that remain so a successful bundle cannot be mistaken for behavioral coverage.",
+      "outcome": "Merged 2026-10-11. The author reported npm run check passed locally. GitHub records a successful Workers Builds check at the combined head and zero Actions workflow runs there. No automated test remained for the request handler or the cache regression."
+    },
+    {
+      "number": 2,
+      "title": "Test audit: fix article cache check matching other URLs by prefix",
+      "url": "https://github.com/adewale/web2kindle/pull/2",
+      "state": "closed",
+      "merged": false,
+      "classification": "Explicit test audit with a reported scratch regression control",
+      "weakness": "The existing Hello World scaffold never exercised Workflow.run or KV key matching. An exact-hit-only fixture would also miss a false hit when /article-2 is cached and /article is requested.",
+      "attempted_remedy": "The PR body describes a Miniflare/workerd KV harness that invokes the bundled Workflow with a controlled step runner and browser rendering, covers both a longer sibling key and an exact hit, and tries three deliberately incorrect cache predicates. Its committed change fixes the cache predicate.",
+      "test_paths": [
+        "test/index.spec.ts (audited, unchanged in this PR)"
+      ],
+      "diff_evidence": [
+        "The entire diff changes src/workflow.ts. After ARTICLE_CACHE.list({ prefix: url }), keys.length > 0 was replaced with keys.some((key) => key.name === url).",
+        "No file in the diff contains the harness. The body reports that the sibling-only case failed on the base tree, both cases passed on the fix, and the two cases detected the old predicate, an always-miss predicate and startsWith(url)."
+      ],
+      "evidence_urls": [
+        "https://github.com/adewale/web2kindle/pull/2/files",
+        "https://github.com/adewale/web2kindle/pull/2",
+        "https://github.com/adewale/web2kindle/commit/ab705796d996fa73c2109ca09364ba601535d0c7",
+        "https://github.com/adewale/web2kindle/runs/111160590413"
+      ],
+      "transferable_rule": "Pair an exact-hit control with a near-miss key that shares its prefix and assert whether rendering occurs. Record scratch-harness results separately from checks future contributors can run.",
+      "outcome": "Closed without a GitHub merge on 2026-10-05. Its production commit landed through #1. GitHub records a successful Workers Builds check and zero Actions workflow runs at #2's head. The scratch red/green and mutation results are author-reported, and the merged tree does not contain the harness."
+    }
+  ],
+  "exclusions": [],
+  "limitations": [
+    "Remote diffs, the base handler, commit ancestry, check-run records and the combined tree were inspected. The reported Vitest startup error, local build commands and temporary Miniflare runs were not independently reproduced.",
+    "The two PRs represent separate audit attempts but share one production fix. Only #1 changed the checked-in test suite."
+  ]
+}

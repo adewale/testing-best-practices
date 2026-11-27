@@ -1,0 +1,183 @@
+{
+  "caseId": "agentic-mermaid",
+  "candidateId": "0999ee6be9755f97",
+  "kind": "blind technical validation",
+  "changedFiles": [
+    "skill-evals/shared-benchmark.json",
+    "skill-evals/ablations/no-editor-source-of-truth.patch"
+  ],
+  "verifiedRepair": "Both public tune rows now distinguish the export owner, generated file, rebuild command and optional assembler by roles in a constrained JSON plan. The candidate uses built-in structured_output and json_field_equals. No new script assertion or browser behavior was introduced.",
+  "frozenProse": {
+    "pairs": 18,
+    "historicalExpectedAccept": 7,
+    "historicalExpectedReject": 11,
+    "originalClassifications": {
+      "incorrect": 13,
+      "correct": 5
+    },
+    "candidateClassifications": {
+      "incorrect": 7,
+      "correct": 11
+    },
+    "candidateObserved": {
+      "reject 0/3": 18
+    },
+    "interpretation": "The candidate explicitly requires plain JSON, so all previously correct and incorrect prose earns zero. Eleven expected rejects happen to match. The counts from this frozen characterization do not independently quantify accuracy on the candidate's new prompt."
+  },
+  "exploratoryJSON": {
+    "status": "Post-submission diagnostic, outside the frozen metric.",
+    "casesAndInputs": 34,
+    "acceptRule": "full objective gate credit without a veto or deferral",
+    "selectedPairOrder": "original then candidate gate counts; veto sets the objective rate to zero",
+    "sameBytesScoredByEachRevision": true,
+    "agreementsWithCandidatePromptExpectations": {
+      "original": {
+        "missed": 15,
+        "matched": 19
+      },
+      "candidate": {
+        "matched": 34
+      }
+    },
+    "caveats": "The original grader received these JSON bytes for comparison. Its prompts allowed natural-language advice. Field order and list-order variations check the structured interface. They cannot establish acceptance of paraphrased prose. A second direct edit cannot be expressed in the declared fields; the supplemental alsoEdit example is deliberately an extra-field check.",
+    "selectedCriterionOutcomes": {
+      "pos-live-editor-source-of-truth": {
+        "maintain_owner": [
+          "2/3",
+          "3/3"
+        ],
+        "regenerate_paraphrase": [
+          "2/3",
+          "3/3"
+        ],
+        "assembler_in_context": [
+          "3/3",
+          "3/3"
+        ],
+        "wrong_owner_only": [
+          "3/3",
+          "2/3 veto"
+        ],
+        "direct_edit_negated_rebuild": [
+          "3/3",
+          "1/3 veto"
+        ],
+        "skip_rebuild_only": [
+          "3/3",
+          "2/3"
+        ],
+        "direct_edit_only": [
+          "2/3",
+          "2/3 veto"
+        ],
+        "behavior_without_formats": [
+          "1/3",
+          "2/3"
+        ],
+        "swapped_image_text_roles": [
+          "2/3",
+          "2/3"
+        ]
+      },
+      "adv-reject-editor-html-direct-edit": {
+        "maintain_owner": [
+          "2/3",
+          "3/3"
+        ],
+        "regenerate_paraphrase": [
+          "2/3",
+          "3/3"
+        ],
+        "assembler_in_context": [
+          "3/3",
+          "3/3"
+        ],
+        "wrong_owner_only": [
+          "3/3",
+          "2/3 veto"
+        ],
+        "direct_edit_negated_rebuild": [
+          "3/3",
+          "1/3 veto"
+        ],
+        "skip_rebuild_only": [
+          "3/3",
+          "2/3"
+        ],
+        "direct_edit_only": [
+          "2/3",
+          "2/3 veto"
+        ],
+        "behavior_without_formats": [
+          "2/3",
+          "3/3"
+        ],
+        "standalone_only": [
+          "2/3",
+          "2/3"
+        ]
+      }
+    }
+  },
+  "submittedEvidence": {
+    "savedCaseAnswerPairs": 26,
+    "independentlyComparedOnRevisions": 2,
+    "projectVariantLabelsPerCase": 2,
+    "projectVariantDisagreements": [],
+    "disagreementsWithSubmittedGateCountsRatesOrVetoes": [],
+    "submittedSamples": "submitted-editor-probes/",
+    "rawExploratoryResults": "exploratory-results.json"
+  },
+  "scopeChange": [
+    "Original answers could be ordinary advice. The new prompts require plain JSON, package script keys, normalized repository paths, a fixed set of fields and lowercase format IDs.",
+    "The positive row now accepts a module or its containing directory and requires Unicode alongside ASCII, PNG and SVG with role-specific arrays. The old objective required the latter three format names.",
+    "The adversarial row now requires the hosted website script alongside the standalone script. Correctly assigning optional assembler context is accepted. A correct shell-command spelling or equivalent dot-prefixed filename can lose points under the documented form."
+  ],
+  "preservation": {
+    "publicManifestValidation": "OK: agentic-mermaid-project-skills \u2014 51 cases, 4 ablations",
+    "existingWarnings": 32,
+    "unittestExit": 0,
+    "passedRetainedDataTests": 10,
+    "other49ManifestRows": "identical case objects",
+    "appAndBrowserTestSources": "unchanged",
+    "imageAndApprovedByteObservationsIdenticalToBaseline": true,
+    "CJKAndCoverageWorkflowObservationsIdenticalToBaseline": true,
+    "historicalCI": "No canonical CI run at this owner-skipped head. A separate scheduled coverage run failed the missing CJK prerequisite."
+  },
+  "ablation": {
+    "original": {
+      "allExit": 1,
+      "allDiagnostic": [
+        "FAIL: ablation no-verify-before-serialize: patch context mismatch at line 62: '4. `verifyMermaid(d)` \u2014 structured warnings; inspect `ok` / `warnings` / `layout`.'"
+      ],
+      "editorOnlyExit": 1,
+      "removedLines": [],
+      "addedLines": []
+    },
+    "candidate": {
+      "allExit": 1,
+      "allDiagnostic": [
+        "FAIL: ablation no-verify-before-serialize: patch context mismatch at line 62: '4. `verifyMermaid(d)` \u2014 structured warnings; inspect `ok` / `warnings` / `layout`.'"
+      ],
+      "editorOnlyExit": 0,
+      "removedLines": [
+        "| `editor/js/` | Editor behavior. Treat `sharing.js`, `rendering.js`, and `state.js` as contract sources. |",
+        "| `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |",
+        "Do not edit generated `editor.html` or `website/public/` files directly."
+      ],
+      "addedLines": []
+    }
+  },
+  "limits": [
+    "Saved-answer case functions and deterministic fixtures ran. No private prompt, model cohort, real browser download, native Bun rendering or hosted CI job ran.",
+    "The subject reported screening declarations across 58 files. The submission changed only the editor grading and ablation. The validation does not establish a deep read of each file."
+  ],
+  "artifacts": {
+    "patch.diff": "f47db5cb864d452b0722c4f0b547598c6b3eb68faa2afac3709fdd060c302e64",
+    "frozen-controls.json": "86a2e1ee97b8f52b7428b183bcc983445ab80eab761dfab63a7cbda6bdb42434",
+    "frozen-controls.runtime.json": "c9d4f7bdcd477a42ef6a4650473fc86830596bfd82920165be1eb3c85ad65916",
+    "exploratory-inputs.json": "3edcde6b95d66e8084da529e870f9bcb87038402ab1332c2ecebc02082865ab6",
+    "exploratory-results.json": "3ac9e790346eac2df7fb6ab5ae8952c2a4701eee26a321eaf0e48e20e3335419",
+    "exploratory-results.runtime.json": "95525d20631bcb89646effc1662e5f437fe4eccf9bb9d1c837910e321fbfad0b"
+  }
+}

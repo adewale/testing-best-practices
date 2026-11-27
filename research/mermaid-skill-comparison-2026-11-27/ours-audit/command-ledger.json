@@ -1,0 +1,1057 @@
+[
+  {
+    "id": "000a-task-packet",
+    "command": "python - <<'PY'\nimport json\np='/workspace/mermaid-skill-comparison-2026-11-27/task-packets.json'\nj=json.load(open(p))\nprint(list(j))\nfor k,v in j.items():\n if k in ('common','common_task','runtime_path','ours'): print(k, json.dumps(v, indent=2))\n elif isinstance(v,dict): print(k, [x for x in v if 'other' not in x])\nPY",
+    "cwd": "/workspace",
+    "exit": 0,
+    "started_utc": null,
+    "elapsed_seconds": 4.1805e-05,
+    "artifact": "evidence/000-bootstrap.json",
+    "note": "The direct terminal result gave the common task, runtime prefix and assigned lane. The bootstrap inventory showed only key names for unassigned sections."
+  },
+  {
+    "id": "000b-assigned-skill",
+    "command": "cat /workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/SKILL.md",
+    "cwd": "/workspace",
+    "exit": 0,
+    "started_utc": null,
+    "elapsed_seconds": 2.9343e-05,
+    "artifact": "evidence/000-bootstrap.json"
+  },
+  {
+    "id": "000c-lane-directory",
+    "command": "ls -la /workspace/mermaid-skill-comparison-2026-11-27/ours-audit",
+    "cwd": "/workspace",
+    "exit": 0,
+    "started_utc": null,
+    "elapsed_seconds": 2.5941e-05,
+    "artifact": "evidence/000-bootstrap.json"
+  },
+  {
+    "id": "000d-runner-bootstrap",
+    "command": "export PATH='/workspace/mermaid-skill-comparison-2026-11-27/toolchain/node_modules/.bin:/tmp/test-audit-validation/bin':\"$PATH\"\ncat > '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/run.py' <<'PY'\nimport datetime, json, os, pathlib, subprocess, sys, time, fcntl\nident, cwd, command = sys.argv[1:]\nlane = pathlib.Path(__file__).resolve().parent.parent\nlog = lane / 'evidence' / (ident + '.log')\nenv = dict(os.environ)\nenv.update({'BUN_INSTALL_CACHE_DIR': str(lane / 'cache'), 'XDG_CACHE_HOME': str(lane / 'cache' / 'xdg'), 'TMPDIR': str(lane / 'scratch' / 'tmp'), 'CI': '1', 'NO_COLOR': '1'})\n(lane / 'scratch' / 'tmp').mkdir(parents=True,exist_ok=True)\nstart = time.monotonic()\nnow = datetime.datetime.now(datetime.timezone.utc).isoformat()\nwith log.open('wb') as f:\n p = subprocess.run(['bash','-o','pipefail','-c',command],stdout=f,stderr=subprocess.STDOUT,cwd=cwd,env=env)\nentry = {'id': ident, 'command': command, 'cwd': cwd, 'exit': p.returncode, 'started_utc': now,'elapsed_seconds': round(time.monotonic()-start,4), 'artifact': str(log.relative_to(lane))}\nledger = lane / 'command-ledger.json'\nwith open(lane / 'evidence' / 'ledger.lock','a') as lock:\n fcntl.flock(lock,fcntl.LOCK_EX)\n records = json.loads(ledger.read_text()) if ledger.exists() else []\n records.append(entry)\n tmp=ledger.with_suffix('.tmp')\n tmp.write_text(json.dumps(records,indent=2)+'\\n')\n tmp.replace(ledger)\nsys.stdout.buffer.write(log.read_bytes())\nprint('\\n[exit %d, %.4fs, %s]' % (p.returncode,entry['elapsed_seconds'],entry['artifact']))\nsys.exit(p.returncode)\nPY",
+    "cwd": "/workspace",
+    "exit": 0,
+    "started_utc": null,
+    "elapsed_seconds": 4.8228e-05,
+    "artifact": "evidence/run.py",
+    "note": "Original terminal-reported wall time; there was no stdout."
+  },
+  {
+    "id": "02-instructions",
+    "command": "for f in AGENTS.md CLAUDE.md package.json; do if [ -f \"$f\" ]; then cat \"$f\"; fi; done",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:36.875691+00:00",
+    "elapsed_seconds": 0.0068,
+    "artifact": "evidence/02-instructions.log"
+  },
+  {
+    "id": "03-skill",
+    "command": "for f in test-types.md antipatterns.md test-audit.md test-audit-patterns.md typescript.md gate-integrity.md; do cat '/workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/references/'\"$f\"; done",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:36.894650+00:00",
+    "elapsed_seconds": 0.012,
+    "artifact": "evidence/03-skill.log"
+  },
+  {
+    "id": "04-test-inventory",
+    "command": "python - <<'PY'\nimport subprocess,re,collections\nls=subprocess.check_output(['git','ls-files'],text=True).splitlines()\nsrc=[p for p in ls if re.search(r'(?:\\.test\\.|\\.spec\\.|__tests__/|^tests/|/tests/|/test/)',p)]\ndef tab(xs):\n for k,n in collections.Counter(xs).most_common(65):print(n,k)\nprint(len(ls),'tracked',len(src),'test paths including fixtures')\ntab('/'.join(p.split('/')[:3]) for p in src)\nprint('test definition files')\ndefs=[p for p in ls if re.search(r'\\.(?:test|spec)\\.[^.]+$',p)]\nprint(len(defs))\ntab('/'.join(p.split('/')[:2]) for p in defs)\nprint('top-level directories')\ntab(p.split('/')[0] for p in ls)\nPY\ngit log -12 --format='%h %ad %s' --date=short --name-only | head -n 230",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:36.897702+00:00",
+    "elapsed_seconds": 0.0545,
+    "artifact": "evidence/04-test-inventory.log"
+  },
+  {
+    "id": "01-baseline",
+    "command": "git rev-parse HEAD\ngit status --short --branch\ngit remote -v\ngit log -30 --oneline\ngit ls-files | awk -F/ '{print $1}' | sort | uniq -c | sort -rn\nrg --files --hidden -g '!node_modules' -g '!.git' -g 'AGENTS.md' -g 'CLAUDE.md' -g 'bunfig.toml' -g '.github/workflows/**' -g 'package.json' | sort\nls -la",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:36.906595+00:00",
+    "elapsed_seconds": 0.2148,
+    "artifact": "evidence/01-baseline.log"
+  },
+  {
+    "id": "05-policy",
+    "command": "rg -n '^#' docs/testing-strategy.md\nsed -n '/^### Contract review and completion/,/^### /p; /^## Contract review and completion/,/^## /p' docs/testing-strategy.md\ntail -60 CLAUDE.md\nnl -ba bunfig.toml\nnl -ba e2e/bunfig.toml\nnl -ba .github/workflows/ci.yml | head -n 280\nnl -ba .github/workflows/qualify-ci.yml | head -n 220",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:56.518238+00:00",
+    "elapsed_seconds": 0.0193,
+    "artifact": "evidence/05-policy.log"
+  },
+  {
+    "id": "08-refs-sampling",
+    "command": "cat '/workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/references/test-audit.md' '/workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/references/test-audit-patterns.md'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:56.541474+00:00",
+    "elapsed_seconds": 0.0106,
+    "artifact": "evidence/08-refs-sampling.log"
+  },
+  {
+    "id": "06-signals",
+    "command": "rg -n 'test\\.skip|it\\.skip|describe\\.skip|test\\.only|describe\\.only|waitForTimeout|Bun\\.sleep|await .*setTimeout|expect\\(true\\)\\.toBe\\(true\\)' src/__tests__ e2e -g '*.test.ts' | head -140\nrg -n -i '(source|workflow|schema|css|html|implementation).*(readFile|Bun\\.file)|(readFile|Bun\\.file).*(workflow|/src/|\\.css|\\.tsx?)' src/__tests__ e2e -g '*.test.ts' | head -150\nrg --files src/__tests__ | rg '(stream|abort|recovery|rollback|transaction|atomic|public|client|worker|cache|error|batch|png|viewport|safety|saniti|csp|a11y|accessibility)' | head -130",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:56.566216+00:00",
+    "elapsed_seconds": 0.0621,
+    "artifact": "evidence/06-signals.log"
+  },
+  {
+    "id": "07-ci-history",
+    "command": "python - <<'PY'\nfrom urllib.request import Request,urlopen\nimport json\nrepo='https://api.github.com/repos/adewale/agentic-mermaid'\npaths=['/actions/runs?head_sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004&per_page=8','/actions/runs?branch=main&per_page=30']\nfor p in paths:\n try:\n  req=Request(repo+p,headers={'User-Agent':'bounded-test-quality-audit','Accept':'application/vnd.github+json'})\n  with urlopen(req,timeout=12) as res:data=json.load(res)\n  print(p,'total',data['total_count'])\n  for row in data['workflow_runs']:\n   print(row['id'],row['name'],row['event'],row['head_sha'][:12],row['status'],row['conclusion'],row['created_at'],row['updated_at'])\n except Exception as exc:\n  print(p,type(exc).__name__,str(exc))\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:30:56.565189+00:00",
+    "elapsed_seconds": 1.4231,
+    "artifact": "evidence/07-ci-history.log"
+  },
+  {
+    "id": "10-candidates",
+    "command": "sed -n '1,74p' '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/06-signals.log'\nrg -n 'continue-on-error|\\|\\| true|passWithNoTests|AM_FC_|bun test|test:ci|bun run test' .github/workflows/ci.yml .github/workflows/contract-discovery.yml\nrg -n 'click|download|export|copy|save|storage|preview|postMessage|expect' e2e/editor-site-interactions.e2e.test.ts | head -85",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:11.658525+00:00",
+    "elapsed_seconds": 0.0112,
+    "artifact": "evidence/10-candidates.log"
+  },
+  {
+    "id": "09-setup",
+    "command": "git worktree add --detach '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control' HEAD && ln -s '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo/node_modules' '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/node_modules' && bun --version && node --version",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:11.651856+00:00",
+    "elapsed_seconds": 0.5465,
+    "artifact": "evidence/09-setup.log"
+  },
+  {
+    "id": "14-cli-authored",
+    "command": "ls src/cli\nrg -n 'batch|multi-input|stdout|output-dir|stdin|--output' docs/cli.md README.md docs/reference -g '*.md' | head -100",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 2,
+    "started_utc": "2026-11-27T14:31:29.617307+00:00",
+    "elapsed_seconds": 0.0118,
+    "artifact": "evidence/14-cli-authored.log"
+  },
+  {
+    "id": "11-cli-tests",
+    "command": "nl -ba src/__tests__/cli-batch-render-parity.test.ts\nnl -ba src/__tests__/cli-multi-input.test.ts\nrg -n -i '(batch|multi-input|output-dir|fail-fast|keep-going)' src/cli bin docs/reference/cli.md README.md | head -160",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 2,
+    "started_utc": "2026-11-27T14:31:29.610669+00:00",
+    "elapsed_seconds": 0.0216,
+    "artifact": "evidence/11-cli-tests.log"
+  },
+  {
+    "id": "12-layout",
+    "command": "rg -n '^[[:space:]]*(test|it|describe)(\\.|\\()' src/__tests__/graph-layout-selection.test.ts src/__tests__/route-contracts.test.ts src/__tests__/fanout-symmetry.test.ts src/__tests__/self-loop-arcs.test.ts | tail -110\nrg --files src/__tests__ | rg '(cli-.*batch|batch-|multi-input|agent-(determinism|describe|ops|facts)|property-.*(flow|edit|ops|batch)|mcp-client-interop|mcp-stdio-cancellation)'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:29.617484+00:00",
+    "elapsed_seconds": 0.0245,
+    "artifact": "evidence/12-layout.log"
+  },
+  {
+    "id": "13-browser-gates",
+    "command": "nl -ba src/__tests__/marker-raster-parity-browser.test.ts | head -n 165\nrg -n 'browser|test:e2e|AM_BROWSER_TESTS|AM_FC|test:ci|bun run test' .github/workflows/ci.yml .github/workflows/contract-discovery.yml scripts/ci package.json | head -125",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:29.636824+00:00",
+    "elapsed_seconds": 0.0095,
+    "artifact": "evidence/13-browser-gates.log"
+  },
+  {
+    "id": "17-property-candidate",
+    "command": "nl -ba src/__tests__/property-source-preserving-edit.test.ts | head -n 185\nrg -n 'export |preserv|fc.assert' src/__tests__/property-editor-codec-fuzz.test.ts | head -65\nnl -ba src/__tests__/fanout-symmetry.test.ts | tail -n 118",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:44.259510+00:00",
+    "elapsed_seconds": 0.0152,
+    "artifact": "evidence/17-property-candidate.log"
+  },
+  {
+    "id": "16-browser-owner",
+    "command": "nl -ba e2e/run-browser-contracts.ts\nnl -ba src/__tests__/svg-style-isolation-browser.test.ts | head -76\nnl -ba src/__tests__/editor-style-switch.test.ts | head -65\nnl -ba src/__tests__/editor-theme-switch.test.ts | head -54\nrg -n 'marker-raster|svg-style-isolation|AM_BROWSER_TESTS' e2e scripts docs/testing-strategy.md .github -g '!*.svg'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:44.246874+00:00",
+    "elapsed_seconds": 0.03,
+    "artifact": "evidence/16-browser-owner.log"
+  },
+  {
+    "id": "18-cli-neighbors",
+    "command": "nl -ba src/__tests__/cli-multi-input.test.ts | sed -n '108,240p'\nrg --files docs | rg '(cli|command)' | head -50\nrg -n --max-columns 240 'cmdRenderMultiple|collectMulti|renderMany|multi-input|multi-file|multiple files|--watch' src/__tests__ e2e docs -g '*.test.ts' -g '*.md' -g '!docs/project/*' -g '!docs/guides/*' | head -78",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:44.243248+00:00",
+    "elapsed_seconds": 0.0468,
+    "artifact": "evidence/18-cli-neighbors.log"
+  },
+  {
+    "id": "15-cli-owners",
+    "command": "nl -ba src/cli/index.ts | sed -n '200,440p'\nrg -n -i --max-columns 400 'multi-input|multiple inputs|multiple (input )?files|per-file|files\\[0\\]|files\\[1\\]|jsonl.*ascii|targetWidth.*batch|batch.*targetWidth' src/__tests__ e2e docs -g '!*.json' -g '!*.svg' -g '!docs/project/*audit*' -g '!docs/project/*study*' | head -115",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:44.248133+00:00",
+    "elapsed_seconds": 0.0489,
+    "artifact": "evidence/15-cli-owners.log"
+  },
+  {
+    "id": "22-ci-lane-sample",
+    "command": "rg -n 'marker-raster|browser' e2e/browser-contract-files.ts\nrg -n 'target|seed|AM_FC' .github/workflows/contract-discovery.yml\nrg -n 'run|test|e2e|fixture' scripts/test.ts scripts/ci/test.ts scripts/run-tests.ts 2>/dev/null\nrg -n '\"test\"|\"test:e2e\"' package.json\nrg -n 'same|semantics|expected|canonical' src/__tests__/property-source-preserving-edit.test.ts | head -28",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:58.846531+00:00",
+    "elapsed_seconds": 0.0167,
+    "artifact": "evidence/22-ci-lane-sample.log"
+  },
+  {
+    "id": "19-batch-entry",
+    "command": "nl -ba src/cli/index.ts | sed -n '1334,1575p'\nnl -ba src/cli/jsonl.ts\nnl -ba e2e/cli.e2e.test.ts | sed -n '1,145p'\nnl -ba e2e/tarball-consumer-fuzz.e2e.test.ts | sed -n '395,485p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:58.856159+00:00",
+    "elapsed_seconds": 0.0197,
+    "artifact": "evidence/19-batch-entry.log"
+  },
+  {
+    "id": "20-batch-neighbors",
+    "command": "rg -n --max-columns 240 'INVALID_JSON|runBatchLine|bad lines|bad JSON|JSONL|batch --jsonl' src/__tests__ e2e docs/features.md README.md -g '*.test.ts' -g '*.md' | head -140\ngit log --format='%h %s' -- src/cli/index.ts src/__tests__/cli-multi-input.test.ts src/__tests__/cli-batch-render-parity.test.ts e2e/cli.e2e.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:58.861280+00:00",
+    "elapsed_seconds": 0.0222,
+    "artifact": "evidence/20-batch-neighbors.log"
+  },
+  {
+    "id": "21-baseline-cli",
+    "command": "timeout 120s bun test src/__tests__/cli-multi-input.test.ts src/__tests__/cli-batch-render-parity.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:31:58.857104+00:00",
+    "elapsed_seconds": 1.9066,
+    "artifact": "evidence/21-baseline-cli.log"
+  },
+  {
+    "id": "25-candidate-reference",
+    "command": "cat '/workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/references/property-based-testing.md' | head -110\nnl -ba src/__tests__/cli-error-envelope.test.ts | sed -n '225,245p'\nnl -ba e2e/cli.e2e.test.ts | sed -n '96,149p'\nnl -ba src/__tests__/helpers/temp-dir.ts\nnl -ba src/__tests__/helpers/cli-capture.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:12.779981+00:00",
+    "elapsed_seconds": 0.0079,
+    "artifact": "evidence/25-candidate-reference.log"
+  },
+  {
+    "id": "23-spot-format",
+    "command": "nl -ba src/__tests__/quadrant-style.test.ts | sed -n '1,245p'\nnl -ba src/__tests__/authored-style-color-admission.test.ts | sed -n '1,265p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:12.786586+00:00",
+    "elapsed_seconds": 0.0055,
+    "artifact": "evidence/23-spot-format.log"
+  },
+  {
+    "id": "24-format-seams",
+    "command": "nl -ba src/__tests__/theme-color-admission.test.ts | sed -n '297,366p'\nrg -n --max-columns 180 'quadrant|authored.*color|format' src/__tests__/quadrant-style.test.ts src/__tests__/authored-style-color-admission.test.ts | head -120\ngit log --format='%h %s' -- src/__tests__/quadrant-style.test.ts src/__tests__/authored-style-color-admission.test.ts src/__tests__/theme-color-admission.test.ts\nrg -n --max-columns 200 'batch.*render|format.*ascii' docs/features.md docs/api.md src/cli/help.ts | head -35",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:32:12.780364+00:00",
+    "elapsed_seconds": 0.0236,
+    "artifact": "evidence/24-format-seams.log"
+  },
+  {
+    "id": "29-paint-receipt",
+    "command": "rg -n --max-columns 250 'render_ascii|format: .unicode.|INVALID_STYLE_COLOR' src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts\ngit log --oneline -- src/layout/passes/fanout.ts src/__tests__/fanout-symmetry.test.ts\ngit show --no-ext-diff --format='%h %s' --stat 268efa1",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:33.362967+00:00",
+    "elapsed_seconds": 0.0379,
+    "artifact": "evidence/29-paint-receipt.log"
+  },
+  {
+    "id": "26-paint-route",
+    "command": "nl -ba src/__tests__/authored-style-color-admission.test.ts | sed -n '14,64p'\nnl -ba src/__tests__/quadrant-style.test.ts | sed -n '112,172p'\nnl -ba src/cli/index.ts | sed -n '1524,1556p'\nrg -n 'cliStructuredRenderFailure|projectRenderErrorDiagnostic' src/cli/index.ts src -g '!*.test.ts' | head -25\nrg -n 'INVALID_STYLE_COLOR|class .*ColorError' src/render-error-diagnostic.ts src/quadrant/point-style.ts src/*style* | head -44\nnl -ba src/__tests__/property-cli-surface-fuzz.test.ts | sed -n '142,191p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:33.364653+00:00",
+    "elapsed_seconds": 0.0427,
+    "artifact": "evidence/26-paint-route.log"
+  },
+  {
+    "id": "27-paint-baseline",
+    "command": "timeout 120s bun test src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:33.392125+00:00",
+    "elapsed_seconds": 1.3216,
+    "artifact": "evidence/27-paint-baseline.log"
+  },
+  {
+    "id": "28-live-ci-details",
+    "command": "python - <<'PY'\nfrom urllib.request import Request,urlopen\nimport json\nrepo='https://api.github.com/repos/adewale/agentic-mermaid'\ndef get(p):\n with urlopen(Request(repo+p,headers={'User-Agent':'bounded-test-quality-audit','Accept':'application/vnd.github+json'}),timeout=14) as res:return json.load(res)\nfor wf in ['ci.yml','qualify-ci.yml','coverage.yml','contract-discovery.yml','modern-mermaid.yml']:\n try:\n  runs=get('/actions/workflows/'+wf+'/runs?branch=main&per_page=2')['workflow_runs']\n  print('workflow',wf)\n  for row in runs:\n   print(row['id'],row['head_sha'],row['conclusion'],row['created_at'],row['updated_at'])\n  if runs:\n   jobs=get('/actions/runs/'+str(runs[0]['id'])+'/jobs?per_page=100')['jobs']\n   for j in jobs:\n    print(' ',j['id'],j['name'],j['conclusion'],j['started_at'],j['completed_at'],[(s['name'],s['conclusion']) for s in j['steps'] if s['conclusion']=='failure'])\n except Exception as exc: print(type(exc).__name__,exc)\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:33.400214+00:00",
+    "elapsed_seconds": 6.1375,
+    "artifact": "evidence/28-live-ci-details.log"
+  },
+  {
+    "id": "32-cli-baseline-e2e",
+    "command": "nl -ba e2e/cli.e2e.test.ts | sed -n '1,38p;97,109p;146,212p'\nnl -ba src/cli/index.ts | sed -n '68,91p;1512,1545p'\nrg -n --max-columns 180 'DEFAULT_CLI_RENDER_FORMAT' src | head -17\nrg -n 'click|OpenClaw' e2e/browser-contract-files.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:32:55.589179+00:00",
+    "elapsed_seconds": 0.0289,
+    "artifact": "evidence/32-cli-baseline-e2e.log"
+  },
+  {
+    "id": "31-geometry-owner",
+    "command": "nl -ba src/layout/passes/fanout.ts | sed -n '1,228p'\ngit show --format=short --no-ext-diff 268efa1 -- src/layout/passes/fanout.ts\nrg -n 'applySymmetricFanoutEmissions|bundleEdgePaths\\(' src -g '!*.test.ts' | head -35\nnl -ba src/__tests__/graph-layout-selection.test.ts | sed -n '188,237p;282,333p'\nrg -n 'permitted|geometry|exact' docs/design/system/layout-rubric.md | head -15",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:55.625273+00:00",
+    "elapsed_seconds": 0.0277,
+    "artifact": "evidence/31-geometry-owner.log"
+  },
+  {
+    "id": "30-route-probe",
+    "command": "timeout 120s bun --eval 'import { runBatchLine as run } from \"./src/cli/index.ts\"; for (const [family, source] of [[\"flowchart\",\"flowchart TD\\nA-->B\\nstyle A fill:#123456\"],[\"quadrant\",\"quadrantChart\\nA: [0.5, 0.5] color: #123456\"]]) for (const format of [\"svg\",\"ascii\",\"unicode\"]) for (const [shape,payload] of [[\"as-authored\",{op:\"render\",format,source}],[\"documented\",{op:\"render\",source,options:{format}}]]) { const r=run(JSON.stringify(payload)); console.log(JSON.stringify({family,requested:format,shape,ok:r.ok,returned:Object.keys(r.data??{}),receipt:r.data?.receipt?.output})); }'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:32:55.599650+00:00",
+    "elapsed_seconds": 0.6319,
+    "artifact": "evidence/30-route-probe.log"
+  },
+  {
+    "id": "34-source-keep",
+    "command": "rg --files src/__tests__ | rg '(preserv|source-span|local-edit)'\nrg -n --max-columns 210 '\\bCRLF\\b|mixed newline|CRLF|untouched|indent|line ending|trailing whitespace' src/__tests__ -g '*preserv*.test.ts' | head -85\nrg -n 'function mutatePreservingSource|method: .local.|commit.*Local|local.*Success' src/agent -g '!*.test.ts' | head -86\nnl -ba src/__tests__/property-source-preserving-edit.test.ts | sed -n '1,54p;111,165p'\nrg -n 'ordered|order|verbatim|byte for byte|source-preserving' docs/agent-mutation-policy.md | head -35",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:21.776250+00:00",
+    "elapsed_seconds": 0.0443,
+    "artifact": "evidence/34-source-keep.log"
+  },
+  {
+    "id": "33-fault",
+    "command": "python - <<'PY'\nfrom pathlib import Path\np=Path('src/cli/index.ts')\ns=p.read_text()\nold='''    const rendered = renderMermaidASCIIWithReceipt(source, { ...sharedOptions, useAscii: descriptor.id === 'ascii', targetWidth })\n    return { output: rendered.text, receipt: rendered.receipt }'''\nnew='''    try {\n      const rendered = renderMermaidASCIIWithReceipt(source, { ...sharedOptions, useAscii: descriptor.id === 'ascii', targetWidth })\n      return { output: rendered.text, receipt: rendered.receipt }\n    } catch (error) {\n      throw new Error('Terminal rendering failed', { cause: error })\n    }'''\nassert s.count(old)==1\np.write_text(s.replace(old,new))\nPY\ngit diff -- src/cli/index.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:21.787369+00:00",
+    "elapsed_seconds": 0.0335,
+    "artifact": "evidence/33-fault.log"
+  },
+  {
+    "id": "35-geom-contract",
+    "command": "nl -ba src/layout/passes/fanout.ts | sed -n '97,235p'\ngit show 268efa1 -- src/layout/passes/fanout.ts | tail -65\nrg -n 'applySymmetricFanoutEmissions|bundleEdgePaths\\(' src/layout-engine.ts src/layout -g '!*.test.ts'\nrg -n --max-columns 180 'trunk|internal fork|shared .*point|independent point|aliased|route object' src/__tests__ -g '*.test.ts' | head -75",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:21.798291+00:00",
+    "elapsed_seconds": 0.0281,
+    "artifact": "evidence/35-geom-contract.log"
+  },
+  {
+    "id": "37-keep-contract",
+    "command": "nl -ba docs/agent-mutation-policy.md | sed -n '145,181p;257,295p'\nnl -ba src/agent/mutate.ts | sed -n '265,395p'\nnl -ba src/agent/source-projection.ts | head -n 180\nnl -ba src/__tests__/agent-source-preserving-edit.test.ts | sed -n '1,49p;620,685p'\nrg -n 'normalizeMermaidSource|lineEnding|crlf|CRLF|split\\(|join\\(' src/agent/source-projection.ts | head -55",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:38.338493+00:00",
+    "elapsed_seconds": 0.014,
+    "artifact": "evidence/37-keep-contract.log"
+  },
+  {
+    "id": "39-stable-stratum",
+    "command": "rg -n --max-columns 230 'canonical|source-preserving|\\bCRLF\\b|line ending' docs/agent-mutation-policy.md src/agent/source-projection*.ts src/mermaid-source.ts src/agent/parse.ts | head -95\nrg -n 'source-preserving' .github/workflows/contract-discovery.yml\nnl -ba src/__tests__/property-source-preservation.test.ts | sed -n '1,90p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:38.345362+00:00",
+    "elapsed_seconds": 0.0249,
+    "artifact": "evidence/39-stable-stratum.log"
+  },
+  {
+    "id": "36-old-on-fault",
+    "command": "timeout 120s bun test src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:38.375550+00:00",
+    "elapsed_seconds": 1.4268,
+    "artifact": "evidence/36-old-on-fault.log"
+  },
+  {
+    "id": "38-ci-check-annotations",
+    "command": "python - <<'PY'\nfrom urllib.request import Request,urlopen\nimport json\nu='https://api.github.com/repos/adewale/agentic-mermaid'\nfor id in [137789694316,134413980531]:\n for part in [f'/check-runs/{id}/annotations',f'/actions/jobs/{id}/logs']:\n  try:\n   req=Request(u+part,headers={'User-Agent':'bounded-test-quality-audit','Accept':'application/vnd.github+json'})\n   with urlopen(req,timeout=15) as res:\n    if 'annotations' in part:\n     d=json.load(res); print(part,[(x['path'],x['message']) for x in d][:12])\n    else:\n     raw=res.read(); text=raw.decode('utf8',errors='replace'); print(part,len(raw))\n     for row in text.splitlines():\n      if any(s in row for s in ('(fail)','##[error]',' fail','Ran ','timeout','\u2716','error:',' FAIL ')): print(row[:350])\n  except Exception as exc: print(part,type(exc).__name__,exc)\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:38.347850+00:00",
+    "elapsed_seconds": 1.7221,
+    "artifact": "evidence/38-ci-check-annotations.log"
+  },
+  {
+    "id": "40-source-eols",
+    "command": "nl -ba src/agent/source-projection.ts | sed -n '1490,1553p'\nrg -n '\\beol\\b|physical.*line|split.*Line' src/agent/source-projection.ts | head -55\nrg -n --max-columns 180 'local.*CRLF|CRLF.*local|\\\\r\\\\n.*preserv|preserv.*\\\\r\\\\n|eol' src/__tests__/agent-source-preserving-edit.test.ts src/__tests__/property-source-preserving-edit.test.ts src/__tests__ -g '*preserv*.test.ts' | head -50\nrg -n 'set_label' src/__tests__/agent-source-preserving-edit.test.ts | head -12",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:52.124504+00:00",
+    "elapsed_seconds": 0.0216,
+    "artifact": "evidence/40-source-eols.log"
+  },
+  {
+    "id": "41-entry-proof",
+    "command": "rg -n 'export (function|\\{) applyOps|mutatePreservingSource' src/agent/index.ts src/agent/workflow* src/mcp src/cli/index.ts editor -g '!*.test.ts' | head -50\ngit log --format='%h %s' -- src/agent/source-projection.ts src/agent/mutate.ts src/__tests__/property-source-preserving-edit.test.ts src/__tests__/agent-source-preserving-edit.test.ts\nrg -n 'code: .INVALID_STYLE_COLOR|case.*ColorError|isAuthoredStyleColorError' src/render-error-diagnostic.ts src/quadrant/point-style.ts\nrg -n -F \"{ op: 'render', format, source }\" src e2e --max-columns 200",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:33:52.131591+00:00",
+    "elapsed_seconds": 0.0346,
+    "artifact": "evidence/41-entry-proof.log"
+  },
+  {
+    "id": "43-font-ci",
+    "command": "nl -ba src/__tests__/png-fonts.test.ts | head -n 276\nnl -ba .github/workflows/coverage.yml\nrg -n --max-columns 210 'font|locale' .github/workflows/ci.yml scripts/ci/run-unit-tests.ts docs/testing-strategy.md | head -65",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:34:08.823497+00:00",
+    "elapsed_seconds": 0.0204,
+    "artifact": "evidence/43-font-ci.log"
+  },
+  {
+    "id": "42-paint-repair",
+    "command": "python - <<'PY'\nfrom pathlib import Path\nfor file in ['src/__tests__/authored-style-color-admission.test.ts','src/__tests__/quadrant-style.test.ts']:\n p=Path(file);s=p.read_text();old=\"{ op: 'render', format, source }\";assert s.count(old)==1;p.write_text(s.replace(old,\"{ op: 'render', source, options: { format } }\"))\nPY\ngit diff -- src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:34:08.808270+00:00",
+    "elapsed_seconds": 0.0503,
+    "artifact": "evidence/42-paint-repair.log"
+  },
+  {
+    "id": "44-font-owners",
+    "command": "rg -n 'fontDirs|fontFiles|resvg|font-size|hasCJK' src/agent/png.ts src/*font* src/png* src/__tests__/png-fonts.test.ts | head -100\nrg --files assets/fonts src/__tests__ | rg 'ttf|woff|font' | head -75\ngit log --oneline -- src/__tests__/png-fonts.test.ts .github/workflows/coverage.yml\nrg -n --max-columns 180 'font.*fallback|fallback.*font|embedded font' docs/api.md docs/features.md README.md | head -25",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:34:08.828104+00:00",
+    "elapsed_seconds": 0.0448,
+    "artifact": "evidence/44-font-owners.log"
+  },
+  {
+    "id": "45-history-format",
+    "command": "python - <<'PY'\nfrom urllib.request import Request,urlopen\nfrom urllib.parse import urlencode\nimport json\nbase='https://api.github.com/repos/adewale/agentic-mermaid'\nfor p in ['src/__tests__/authored-style-color-admission.test.ts','src/__tests__/quadrant-style.test.ts','src/__tests__/png-fonts.test.ts']:\n try:\n  req=Request(base+'/commits?'+urlencode({'sha':'f49196e7f5d6d2f0970a4a76fe62644ee5e9d004','path':p,'per_page':8}),headers={'User-Agent':'bounded-test-quality-audit'})\n  with urlopen(req,timeout=15) as res: data=json.load(res)\n  print(p)\n  for q in data:print(q['sha'][:11],q['commit']['message'].splitlines()[0])\n except Exception as e:print(type(e).__name__,e)\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:34:08.810228+00:00",
+    "elapsed_seconds": 1.8811,
+    "artifact": "evidence/45-history-format.log"
+  },
+  {
+    "id": "48-product-source-spot",
+    "command": "rg --files src | rg '(journey/|journey\\.|journey-|journey/.*test)' | head -70\nrg -n -i --max-columns 190 'journey.*(raster|pixel)|(?:raster|pixel).*journey|glyph .*task|task.*ink' src/__tests__ e2e -g '*.test.ts' | head -85\nrg -n 'CI|coverage|font' scripts/ci/run-unit-tests.ts .github/workflows/coverage.yml\nnl -ba src/__tests__/helpers/png-pixels.ts | head -170",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:34:46.379073+00:00",
+    "elapsed_seconds": 0.0718,
+    "artifact": "evidence/48-product-source-spot.log"
+  },
+  {
+    "id": "47-font-available",
+    "command": "command -v fc-list\nfc-list ':lang=zh' --format='%{family}: %{file}\\n' | head -12\ncommand -v apt-get\napt-cache policy fonts-wqy-zenhei\nrg -n 'font|module|isolat|run-unit' .github/workflows/coverage.yml .github/workflows/ci.yml | head -40\nrg -n --max-columns 260 'journey-task-label|journey-task-box' src -g '!*.json' -g '!*.svg' -g '!*.txt' | head -105\nrg -n 'function inkColumns|export function decodePng' src/__tests__/helpers/png-pixels.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:34:46.371151+00:00",
+    "elapsed_seconds": 0.6222,
+    "artifact": "evidence/47-font-available.log"
+  },
+  {
+    "id": "46-corrected-on-fault",
+    "command": "timeout 120s bun test src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:34:46.383656+00:00",
+    "elapsed_seconds": 1.6145,
+    "artifact": "evidence/46-corrected-on-fault.log"
+  },
+  {
+    "id": "49-history-ci",
+    "command": "python - <<'PY'\nimport json\nfrom urllib.request import Request,urlopen\nbase='https://api.github.com/repos/adewale/agentic-mermaid'\ndef get(path):\n with urlopen(Request(base+path,headers={'User-Agent':'bounded-test-quality-audit'}),timeout=12) as res:return json.load(res)\npaths=['/actions/workflows/ci.yml/runs?head_sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004&per_page=10','/actions/runs/43872218670/jobs?per_page=20','/check-runs/137789694316/annotations']\nfor p in paths:\n try:\n  rows=get(p);print(p)\n  if isinstance(rows,list):\n   for d in rows:print({k:d[k] for k in ['path','start_line','end_line','message','title','annotation_level']})\n  elif 'jobs' in rows:\n   for j in rows['jobs']:\n    print(j['id'],j['name'],j['conclusion'])\n    if j['conclusion']=='failure':\n     print([(v['path'],v['start_line'],v['message']) for v in get(f\"/check-runs/{j['id']}/annotations\")][:6])\n  else:\n   print('count',rows['total_count'])\n   for q in rows['workflow_runs']:print(q['id'],q['name'],q['event'],q['head_branch'],q['conclusion'])\n except Exception as e:print(type(e).__name__,e)\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:34:46.384205+00:00",
+    "elapsed_seconds": 1.9965,
+    "artifact": "evidence/49-history-ci.log"
+  },
+  {
+    "id": "50-journey-ink",
+    "command": "nl -ba src/journey/renderer.ts | sed -n '535,711p'\nnl -ba src/agent/png.ts | sed -n '177,266p'\nnl -ba src/__tests__/journey-integration.test.ts | head -100\nrg -n 'journey-task|<text|text' src/__tests__/journey-svg-snapshot.test.ts src/__tests__/journey-theme.test.ts | head -60",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:06.581358+00:00",
+    "elapsed_seconds": 0.013,
+    "artifact": "evidence/50-journey-ink.log"
+  },
+  {
+    "id": "51-svg-font-scan",
+    "command": "rg -n --max-columns 180 'journey-task|task\\.label|task\\.description|task\\.name' src/journey/renderer.ts | tail -38\nnl -ba src/__tests__/png-fonts.test.ts | sed -n '116,162p'\nrg -n 'font|ink|text' src/__tests__/journey-svg-snapshot.test.ts | head -60\nrg -n 'nodeRects|layout.*WithReceipt|export.*Journey' src/journey/layout.ts src/journey/renderer.ts | head -32\nrg -n 'getScene|layoutMermaid\\(' src/__tests__/journey* | head -45",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:35:06.583280+00:00",
+    "elapsed_seconds": 0.0223,
+    "artifact": "evidence/51-svg-font-scan.log"
+  },
+  {
+    "id": "53-png-read",
+    "command": "nl -ba src/journey/renderer.ts | sed -n '610,652p'\nnl -ba src/agent/png.ts | sed -n '177,235p'\nnl -ba src/__tests__/journey-svg-snapshot.test.ts | head -89\nnl -ba src/__tests__/png-fonts.test.ts | sed -n '47,76p'\nrg -n 'loadSystemFonts|defaultFontFamily|bundledFonts' src/agent/png.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:23.925096+00:00",
+    "elapsed_seconds": 0.0133,
+    "artifact": "evidence/53-png-read.log"
+  },
+  {
+    "id": "52-revert-paint-fault",
+    "command": "git restore --source=HEAD -- src/cli/index.ts && git diff --exit-code HEAD -- src/cli/index.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:23.913260+00:00",
+    "elapsed_seconds": 0.0933,
+    "artifact": "evidence/52-revert-paint-fault.log"
+  },
+  {
+    "id": "54-public-history-reports",
+    "command": "python - <<'PY'\nimport json\nfrom urllib.request import Request,urlopen\nfrom urllib.parse import urlencode\nbase='https://api.github.com/repos/adewale/agentic-mermaid'\ndef g(path):\n with urlopen(Request(base+path,headers={'User-Agent':'bounded-test-quality-audit'}),timeout=14) as res: return json.load(res)\nfor p in ['.github/workflows/coverage.yml','src/__tests__/png-fonts.test.ts']:\n try:\n  ds=g('/commits?'+urlencode({'sha':'f49196e7f5d6d2f0970a4a76fe62644ee5e9d004','path':p,'per_page':20}))\n  print(p)\n  for q in ds: print(q['sha'][:10],q['commit']['message'].splitlines()[0])\n except Exception as e: print(type(e).__name__,e)\nfor sha in ['1cde6faa800','5a9d37f3178']:\n try:\n  q=g('/commits/'+sha)\n  for f in q.get('files',[]):\n   if f['filename'] not in ['src/__tests__/authored-style-color-admission.test.ts','src/__tests__/quadrant-style.test.ts']:continue\n   for line in f.get('patch','').splitlines():\n    if 'runBatchLine(JSON.stringify' in line: print(sha,f['filename'],line)\n except Exception as e: print(type(e).__name__,e)\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:23.924788+00:00",
+    "elapsed_seconds": 2.2955,
+    "artifact": "evidence/54-public-history-reports.log"
+  },
+  {
+    "id": "57-read-raster-skill",
+    "command": "cat '/workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/references/golden-file-testing.md' | head -110\nrg -n '^#' '/workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/references/mutation-testing.md'\ncat '/workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/references/mutation-testing.md' | sed -n '1,58p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:39.704767+00:00",
+    "elapsed_seconds": 0.0079,
+    "artifact": "evidence/57-read-raster-skill.log"
+  },
+  {
+    "id": "56-small-pixel-domain",
+    "command": "nl -ba src/agent/png.ts | sed -n '194,260p'\nrg -n 'fast-xml|linkedom|xmldom|parseSvg' src/__tests__/helpers src/__tests__/png* package.json | head -42\nnl -ba src/__tests__/journey-svg-snapshot.test.ts\nrg -n 'rgb|threshold|inkColumns' src/__tests__/helpers/png-pixels.ts\nrg -n 'FONT|defaultFamily' src/png-contract.ts | tail -23",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:39.713467+00:00",
+    "elapsed_seconds": 0.0154,
+    "artifact": "evidence/56-small-pixel-domain.log"
+  },
+  {
+    "id": "55-corrected-clean",
+    "command": "timeout 120s bun test src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:39.701594+00:00",
+    "elapsed_seconds": 1.2964,
+    "artifact": "evidence/55-corrected-clean.log"
+  },
+  {
+    "id": "58-svg-parser",
+    "command": "rg -n --max-columns 165 'parseSvg|parseXml|XMLParser|DOMParser\\(' src/__tests__/helpers src/__tests__/png* src -g '!*.json' -g '!*.svg' | head -80\nrg -n -i --max-columns 240 '\\.ttc|collection' src/*font* src/agent/*font* | head -55\nrg -n --max-columns 230 'fontFiles|glyph.*ink|text.*pixel|inkColumns|resvg' src/__tests__ -g '*png*.test.ts' | head -84\nnl -ba src/__tests__/png-fonts.test.ts | sed -n '157,185p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:35:51.727885+00:00",
+    "elapsed_seconds": 0.0296,
+    "artifact": "evidence/58-svg-parser.log"
+  },
+  {
+    "id": "60-scratch-clean-color",
+    "command": "git restore --source=HEAD -- src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts && git diff --exit-code HEAD -- src/cli/index.ts src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:04.928845+00:00",
+    "elapsed_seconds": 0.0234,
+    "artifact": "evidence/60-scratch-clean-color.log"
+  },
+  {
+    "id": "61-font-provider-code",
+    "command": "rg -n 'function findUncoveredScripts|function .*Font.*Dir|\\.ttc|\\.otf' src/agent src -g '!*.test.ts' -g '!*.json' --max-columns 200 | head -65\nrg -n 'parseHTML|JSDOM|linkedom|happy-dom' src/__tests__/helpers package.json | head -40\nls -d /usr/share/fonts/truetype/wqy /usr/share/fonts/opentype/noto\ngit ls-files 'src/__tests__/*png*.test.ts'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:04.935401+00:00",
+    "elapsed_seconds": 0.0383,
+    "artifact": "evidence/61-font-provider-code.log"
+  },
+  {
+    "id": "59-coverage-missing",
+    "command": "env -u AM_CJK_FONT_DIR CI=true timeout 120s bun test --coverage src/__tests__/png-fonts.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:36:04.941097+00:00",
+    "elapsed_seconds": 0.4713,
+    "artifact": "evidence/59-coverage-missing.log"
+  },
+  {
+    "id": "63-png-overlap",
+    "command": "rg -n --max-columns 175 'test\\(|describe\\(|font|pixel|buffer' src/__tests__/agent-png.test.ts src/__tests__/agent-png-determinism.test.ts src/__tests__/host-png-backend-parity.test.ts | head -88\nnl -ba src/agent/font-coverage.ts | sed -n '1,110p'\nrg --files src/__tests__/helpers | rg '(svg|html|xml)'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:22.233367+00:00",
+    "elapsed_seconds": 0.018,
+    "artifact": "evidence/63-png-overlap.log"
+  },
+  {
+    "id": "64-team-checkpoint",
+    "command": "python - <<'PY'\nimport json,re,pathlib\nL=pathlib.Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit')\nfindings=[\n{'id':'coverage-font','category':'test infrastructure','severity':'medium','locations':['.github/workflows/coverage.yml:32-36','.github/workflows/ci.yml:165-167','src/__tests__/png-fonts.test.ts:86-89'],'evidence':['evidence/28-live-ci-details.log','evidence/49-history-ci.log','evidence/59-coverage-missing.log'],'decision':'Repair coverage setup; retain the font requirement.'},\n{'id':'batch-format','category':'test gap','severity':'medium','locations':['src/__tests__/authored-style-color-admission.test.ts:200-206','src/__tests__/quadrant-style.test.ts:147-152','src/cli/index.ts:1388-1398'],'evidence':['evidence/30-route-probe.log','evidence/33-fault.log','evidence/36-old-on-fault.log','evidence/42-paint-repair.log','evidence/46-corrected-on-fault.log','evidence/55-corrected-clean.log'],'decision':'Repair both existing request constructors.'}]\n(L/'findings.json').write_text(json.dumps({'status':'in progress','base':'f49196e7f5d6d2f0970a4a76fe62644ee5e9d004','findings':findings},indent=2)+'\\n')\np=L/'report.md'\np.write_text(p.read_text()+'\\nSecond checkpoint. The weekly covered shard failed on its CJK-font prerequisite in two consecutive observed runs, including this exact SHA; the local focused CI-mode command reproduced line 89. Two color diagnostic suites put batch format at the wrong JSON level: the committed 38 cases accepted loss of the structured terminal error; correcting only the request shape exposed both failures and passed on the restored owner. See findings.json and raw command records for evidence.\\n')\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:22.247536+00:00",
+    "elapsed_seconds": 0.0295,
+    "artifact": "evidence/64-team-checkpoint.log"
+  },
+  {
+    "id": "62-coverage-real-font",
+    "command": "env CI=true AM_CJK_FONT_DIR=/usr/share/fonts/opentype/noto timeout 120s bun test --coverage src/__tests__/png-fonts.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:22.235510+00:00",
+    "elapsed_seconds": 1.8116,
+    "artifact": "evidence/62-coverage-real-font.log"
+  },
+  {
+    "id": "65-xml-helper",
+    "command": "nl -ba src/__tests__/helpers/svg-xml.ts\nnl -ba src/__tests__/helpers/svg-normalize.ts | head -60\nrg -n 'xml.*from|from .*svg-xml' src/__tests__ | head -30\nrg -n 'fonts.files|fontFiles|inkColumns' src/__tests__/host-png-backend-parity.test.ts src/__tests__/embedded-font-resources.test.ts | head -26\nrg -n 'font|glyph' src/__tests__/host-png-backend-parity.test.ts | head -30",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:31.768570+00:00",
+    "elapsed_seconds": 0.0233,
+    "artifact": "evidence/65-xml-helper.log"
+  },
+  {
+    "id": "67-more-font-history",
+    "command": "rg -n 'fontFiles|font.*path|font.*draw|label.*raster|raster.*label|bytes|hash' src/__tests__/host-png-backend-parity.test.ts src/__tests__/agent-png-determinism.test.ts src/__tests__/embedded-font-resources.test.ts src/__tests__/agent-png.test.ts | head -58\nrg -n '^[#]|automatic|on demand' .github/workflows/qualify-ci.yml | head -24\nrg -n 'svg.*parser|XML|linkedom|css-select' src/__tests__/helpers/rendered-text.ts package.json | head -15\nrg -n -F '\\r\\n' src/__tests__ -g '*.test.ts' | rg -i 'preserv|source.?map|mutat|span|comment' | head -40",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:58.985242+00:00",
+    "elapsed_seconds": 0.0515,
+    "artifact": "evidence/67-more-font-history.log"
+  },
+  {
+    "id": "66-pixels-baseline",
+    "command": "cat > .audit-pixels.ts <<'TS'\nimport { writeFileSync } from 'node:fs'\nimport { renderMermaidSVG } from './src/index.ts'\nimport { renderMermaidPNG } from './src/agent/png.ts'\nimport { decodePng, inkColumns } from './src/__tests__/helpers/png-pixels.ts'\nconst label = 'Complete the extremely long registration questionnaire form'\nconst source = 'journey\\n  title Onboarding\\n  section Signup\\n    ' + label + ': 3: User\\n'\nconst tag = renderMermaidSVG(source, {embedFontImport:false}).match(/<rect\\b[^>]*\\bclass=\"journey-task-box\"[^>]*>/)?.[0]\nif (!tag) throw new Error('fixture has no task box')\nconst attr = (key: string) => Number(tag.match(new RegExp('\\\\b'+key+'=\"([^\"]+)\"'))?.[1])\nconst scale = 2\nconst [x,y,w,h] = ['x','y','width','height'].map(k=>attr(k)*scale)\nif (![x,y,w,h].every(Number.isFinite)) throw new Error('no geometry')\nconst png = renderMermaidPNG(source,{scale})\nwriteFileSync(process.argv[2],png)\nconst decoded = decodePng(png)\nconst pad=3*scale\nconst inside = inkColumns(decoded,x+pad,x+w-pad,y+pad,y+h-pad)\nconst outside = inkColumns(decoded,x+w+pad,decoded.width,y+pad,y+h-pad)\nconsole.log(JSON.stringify({label,boxPixels:{x,y,w,h},image:[decoded.width,decoded.height],interior:inside.length,exterior:outside.length,interiorColumnRange:[inside[0],inside.at(-1)]}))\nTS\ntimeout 120s bun .audit-pixels.ts '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/journey-baseline.png'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:36:58.988260+00:00",
+    "elapsed_seconds": 0.5015,
+    "artifact": "evidence/66-pixels-baseline.log"
+  },
+  {
+    "id": "69-sampling-files",
+    "command": "nl -ba scripts/ci/run-unit-tests.ts | sed -n '1,160p'\nnl -ba e2e/browser-contract-files.ts\nnl -ba .github/workflows/qualify-ci.yml | sed -n '1,72p'\nnl -ba .github/workflows/ci.yml | sed -n '159,184p;775,806p'\nrg -n '^  (cli|unit|semantic|e2e|test|quality|complete):|Run CLI' .github/workflows/ci.yml",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:37:11.330375+00:00",
+    "elapsed_seconds": 0.0173,
+    "artifact": "evidence/69-sampling-files.log"
+  },
+  {
+    "id": "70-source-case-baselines",
+    "command": "nl -ba src/__tests__/agent-class.test.ts | sed -n '69,119p'\nnl -ba src/agent/source-projection.ts | sed -n '89,115p;1535,1551p'\nrg -n --max-columns 200 'sourcePreserving|source-preserving|mutatePreservingSource' src/__tests__/agent-class.test.ts | head -18\nrg -n 'export function applyOps' src -g '!*.test.ts'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:37:11.332644+00:00",
+    "elapsed_seconds": 0.024,
+    "artifact": "evidence/70-source-case-baselines.log"
+  },
+  {
+    "id": "68-no-bundled-fonts",
+    "command": "python - <<'PY'\nfrom pathlib import Path\np=Path('src/agent/png.ts');s=p.read_text();old='fontFiles: [...bundledFonts.files],';assert s.count(old)==1;p.write_text(s.replace(old,'fontFiles: [],'))\nPY\ngit diff -- src/agent/png.ts\ntimeout 120s bun .audit-pixels.ts '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/journey-without-bundled-fonts.png'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:37:11.338028+00:00",
+    "elapsed_seconds": 0.549,
+    "artifact": "evidence/68-no-bundled-fonts.log"
+  },
+  {
+    "id": "72-owner-probe-allowed",
+    "command": "nl -ba src/__tests__/journey-layout-quality.test.ts | head -38\nrg -n 'interface PositionedJourneyTask|task.*text|actorDots|labelY' src/journey/types.ts src/journey/layout.ts | head -40\nrg -n 'paint: \\{ fill: paints.taskText \\}' src/journey/renderer.ts\nrg -n 'from .*(xml|htmlparser|cheerio|svg)' eval/ugly-detector/detect.ts | head -18\nrg -n 'SVG|PNG|font' docs/custom-fonts.md | head -30",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:37:21.644060+00:00",
+    "elapsed_seconds": 0.0316,
+    "artifact": "evidence/72-owner-probe-allowed.log"
+  },
+  {
+    "id": "73-read-timing",
+    "command": "python - <<'PY'\nimport json,pathlib,datetime\np=pathlib.Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit')/'command-ledger.json'\nj=json.loads(p.read_text())\nprint(j[0]['started_utc'], datetime.datetime.now(datetime.timezone.utc).isoformat())\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:37:21.650035+00:00",
+    "elapsed_seconds": 0.038,
+    "artifact": "evidence/73-read-timing.log"
+  },
+  {
+    "id": "71-fontsuite-old-fault",
+    "command": "env CI=true AM_CJK_FONT_DIR=/usr/share/fonts/opentype/noto timeout 120s bun test src/__tests__/png-fonts.test.ts src/__tests__/journey-svg-snapshot.test.ts src/__tests__/agent-png-determinism.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:37:21.646380+00:00",
+    "elapsed_seconds": 1.8191,
+    "artifact": "evidence/71-fontsuite-old-fault.log"
+  },
+  {
+    "id": "74-fontpath",
+    "command": "nl -ba src/agent/png.ts | sed -n '50,135p'\nrg -n 'materialize|verified.*font|logicalName|private.*file' src/resource* src/agent/png.ts src -g '*resources*.ts' -g '!*.test.ts' | head -38\nnl -ba src/__tests__/agent-png-determinism.test.ts | sed -n '20,63p'\nrg -n 'Inter.*DejaVu|DejaVu.*Inter' docs/custom-fonts.md src/agent/png.ts src/text-metrics.ts\nnl -ba scripts/ci/unit-test-files.ts | head -120",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:38:04.867795+00:00",
+    "elapsed_seconds": 0.0295,
+    "artifact": "evidence/74-fontpath.log"
+  },
+  {
+    "id": "75-font-candidate-oracle",
+    "command": "python - <<'PY'\nfrom pathlib import Path\np=Path('src/__tests__/png-fonts.test.ts')\ns=p.read_text(); q='''    const overflow = inkColumns('''; assert s.count(q)==1\ns=s.replace(q,'''    const insideBand = (from: number, to: number) => inkColumns(\n      img, (box.x + box.w * from) * scale, (box.x + box.w * to) * scale,\n      box.y * scale + pad, (box.y + box.h) * scale - pad,\n    ).length\n    // The long text spans either side of the centered actor decoration.\n    expect(insideBand(0.05, 0.35)).toBeGreaterThan(0)\n    expect(insideBand(0.65, 0.95)).toBeGreaterThan(0)\n    const overflow = inkColumns(''');p.write_text(s)\nPY\ngit diff -- src/__tests__/png-fonts.test.ts\nenv CI=true AM_CJK_FONT_DIR=/usr/share/fonts/opentype/noto timeout 120s bun test src/__tests__/png-fonts.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:38:25.673502+00:00",
+    "elapsed_seconds": 1.7253,
+    "artifact": "evidence/75-font-candidate-oracle.log"
+  },
+  {
+    "id": "77-window-order",
+    "command": "nl -ba docs/custom-fonts.md | sed -n '269,298p'\nnl -ba src/__tests__/property-source-preserving-edit.test.ts | sed -n '115,133p'\nnl -ba src/__tests__/property-source-preservation.test.ts | sed -n '12,38p'\nrg -n 'AM_MERMAID_REFERENCE|function startUpstream' src/__tests__/helpers/upstream-mermaid.ts | head -18",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:38:47.833646+00:00",
+    "elapsed_seconds": 0.0152,
+    "artifact": "evidence/77-window-order.log"
+  },
+  {
+    "id": "76-mixed-ending-overlap",
+    "command": "python - <<'PY'\nfrom pathlib import Path\nimport re\nfor root in ['src/__tests__','e2e']:\n for p in sorted(Path(root).rglob('*.test.ts')):\n  s=p.read_text()\n  if '\\\\r\\\\n' in s and re.search(r'mutatePreservingSource|preserve-source|source-preserving|preserveSource',s,re.I):\n   rows=[str(i) for i,line in enumerate(s.splitlines(),1) if '\\\\r\\\\n' in line]\n   print(p,','.join(rows[:25]))\nPY\nnl -ba src/agent/apply.ts | sed -n '118,190p'\nnl -ba src/agent/mutate.ts | sed -n '292,349p'\nrg -n 'fcParameters|seed' src/__tests__/helpers/fc-parameters.ts src/__tests__/fc-seed.preload.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:38:47.821601+00:00",
+    "elapsed_seconds": 0.1245,
+    "artifact": "evidence/76-mixed-ending-overlap.log"
+  },
+  {
+    "id": "78-dejavu-alternative",
+    "command": "python - <<'PY'\nfrom pathlib import Path\np=Path('src/agent/png.ts');s=p.read_text();old='fontFiles: [],';assert s.count(old)==1;p.write_text(s.replace(old,\"fontFiles: bundledFonts.files.filter(file => file.includes('DejaVuSans')),\"))\nPY\ngit diff -- src/agent/png.ts\ntimeout 120s bun .audit-pixels.ts '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/journey-dejavu-only.png'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:39:02.400534+00:00",
+    "elapsed_seconds": 0.6725,
+    "artifact": "evidence/78-dejavu-alternative.log"
+  },
+  {
+    "id": "79-font-choice-probe",
+    "command": "cat > .audit-font-choice.ts <<'TS'\nimport { createHash } from 'node:crypto'\nimport { renderMermaidSVG } from './src/index.ts'\nimport { renderMermaidPNG } from './src/agent/png.ts'\nimport { decodePng } from './src/__tests__/helpers/png-pixels.ts'\nconst source='journey\\n  title Onboarding\\n  section Signup\\n    Complete the extremely long registration questionnaire form: 3: User\\n'\nfor (const font of [undefined,'Inter','Inter, serif','DejaVu Sans']) {\n  const style=font===undefined?{}:{font}\n  const svg=renderMermaidSVG(source,{...style,embedFontImport:false})\n  const tag=svg.match(/<rect\\b[^>]*\\bclass=\"journey-task-box\"[^>]*>/)?.[0]\n  if (!tag) throw new Error('missing task box')\n  const attr=(name:string)=>Number(tag.match(new RegExp('\\\\b'+name+'=\"([^\"]+)\"'))?.[1])\n  const scale=2,pad=3*scale\n  const x0=Math.ceil(scale*attr('x')+pad),x1=Math.floor(scale*(attr('x')+attr('width'))-pad)\n  const y0=Math.ceil(scale*attr('y')+pad),y1=Math.floor(scale*(attr('y')+attr('height'))-pad)\n  const img=decodePng(renderMermaidPNG(source,{...style,scale}))\n  const mask=createHash('sha256')\n  for (let y=y0;y<y1;y++) mask.update(img.rgba.subarray((y*img.width+x0)*4,(y*img.width+x1)*4))\n  console.log(JSON.stringify({font:font??'default',region:[x0,x1,y0,y1],digest:mask.digest('hex')}))\n}\nTS\ntimeout 120s bun .audit-font-choice.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:39:28.127008+00:00",
+    "elapsed_seconds": 1.0014,
+    "artifact": "evidence/79-font-choice-probe.log"
+  },
+  {
+    "id": "80-fallback-old",
+    "command": "git restore --source=HEAD -- src/__tests__/png-fonts.test.ts && env CI=true AM_CJK_FONT_DIR=/usr/share/fonts/opentype/noto timeout 120s bun test src/__tests__/png-fonts.test.ts src/__tests__/journey-svg-snapshot.test.ts src/__tests__/agent-png-determinism.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:39:38.586174+00:00",
+    "elapsed_seconds": 2.4379,
+    "artifact": "evidence/80-fallback-old.log"
+  },
+  {
+    "id": "82-font-reference-fixture",
+    "command": "nl -ba docs/custom-fonts.md | sed -n '273,296p'\nrg -n --max-columns 170 'Inter|DejaVu|font' src/__tests__/testdata/styled* -g '*.md' | head -7\nrg -n -i --max-columns 140 'journey|inter' src/__tests__/host-png-backend-parity.test.ts | head -18\nrg -n 'git' .github/workflows/qualify-ci.yml | head -10",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:39:59.599742+00:00",
+    "elapsed_seconds": 0.0197,
+    "artifact": "evidence/82-font-reference-fixture.log"
+  },
+  {
+    "id": "81-cross-surface",
+    "command": "nl -ba src/__tests__/agent.test.ts | sed -n '56,81p'\nnl -ba src/__tests__/extension-family-public-api.test.ts | sed -n '198,226p'\nnl -ba src/__tests__/mermaid-cleanup.test.ts | sed -n '127,163p;219,260p'\nnl -ba src/__tests__/agent-class.test.ts | sed -n '630,652p;681,702p;791,805p'\nrg -n 'AM_CI_ARTIFACTS|test\\(' src/__tests__/property-source-preserving-edit.test.ts src/__tests__/agent-source-preserving-edit.test.ts | tail -18",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:39:59.620808+00:00",
+    "elapsed_seconds": 0.0216,
+    "artifact": "evidence/81-cross-surface.log"
+  },
+  {
+    "id": "83-fallback-calibrated",
+    "command": "python - <<'PY'\nfrom pathlib import Path\np=Path('.audit-font-choice.ts')\ns=p.read_text().replace(\"import { createHash }\",\"import assert from 'node:assert/strict'\\nimport { createHash }\").replace('for (const font of','const masks: string[] = []\\nfor (const font of').replace(\"  console.log(JSON.stringify({font:font??'default',region:[x0,x1,y0,y1],digest:mask.digest('hex')}))\",\"  const digest = mask.digest('hex')\\n  masks.push(digest)\\n  console.log(JSON.stringify({font:font??'default',region:[x0,x1,y0,y1],digest}))\")\np.write_text(s+\"\"\"assert.equal(masks[0],masks[1],'the default draws Inter for Latin text')\nassert.equal(masks[1],masks[2],'the fallback after a covering first face can change')\nassert.notEqual(masks[1],masks[3],'two covering but differently shaped faces must draw different task glyphs')\n\"\"\")\nPY\ntimeout 120s bun .audit-font-choice.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:40:11.852060+00:00",
+    "elapsed_seconds": 1.203,
+    "artifact": "evidence/83-fallback-calibrated.log"
+  },
+  {
+    "id": "84-source-held",
+    "command": "nl -ba src/__tests__/mermaid-cleanup.test.ts | sed -n '141,156p;222,259p'\nnl -ba src/agent/apply.ts | sed -n '163,191p'\nnl -ba src/agent/mutate.ts | sed -n '347,380p'\nnl -ba src/__tests__/agent-source-preserving-edit.test.ts | sed -n '475,488p'\nnl -ba src/__tests__/helpers/upstream-mermaid.ts | sed -n '211,235p'\nrg -n --max-columns 180 'function .*canonical|function .*(renderPlan|project)' src/agent/source-projection.ts | tail -14",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:40:22.663579+00:00",
+    "elapsed_seconds": 0.0149,
+    "artifact": "evidence/84-source-held.log"
+  },
+  {
+    "id": "85-font-choice-clean",
+    "command": "git restore --source=HEAD -- src/agent/png.ts && timeout 120s bun .audit-font-choice.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:40:26.964374+00:00",
+    "elapsed_seconds": 0.9652,
+    "artifact": "evidence/85-font-choice-clean.log"
+  },
+  {
+    "id": "87-join-classes",
+    "command": "nl -ba src/__tests__/agent-source-preserving-edit.test.ts | sed -n '468,484p'\nnl -ba src/agent/source-projection.ts | sed -n '1550,1585p;1616,1635p'\nnl -ba src/agent/mutate.ts | sed -n '299,320p;348,375p'\nnl -ba src/__tests__/helpers/fc-parameters.ts\nrg -n 'property-source-preserving-edit' .github scripts docs/testing-strategy.md --max-columns 160",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:40:43.001184+00:00",
+    "elapsed_seconds": 0.0215,
+    "artifact": "evidence/87-join-classes.log"
+  },
+  {
+    "id": "86-source-byte-control",
+    "command": "cat > .audit-edit.ts <<'TS'\nimport * as assert from 'node:assert/strict'\nimport { applyOps } from './src/agent/apply.ts'\nconst operation={kind:'set_label',target:'A',label:'Bravo'}\nconst cases=[\n  ['LF','flowchart LR\\n  A[Alpha] --> B\\n  %% keep comment\\n  C[Charlie] --> D\\n'],\n  ['CRLF','flowchart LR\\r\\n  A[Alpha] --> B\\r\\n  %% keep comment\\r\\n  C[Charlie] --> D\\r\\n'],\n  ['mixed','flowchart LR\\r\\n  A[Alpha] --> B\\n  %% keep comment\\r\\n  C[Charlie] --> D\\n'],\n]\nlet failures=0\nfor (const [kind,source] of cases) {\n  const result=applyOps({source,ops:[operation],mode:'source-preserving'})\n  const expected=source.replace('Alpha','Bravo')\n  const actual=result.ok ? result.source : result.error\n  console.log(JSON.stringify({kind,method:result.ok?result.preservation?.method:null,expected,actual}))\n  if (result.ok && result.preservation?.method==='local' && actual===expected) continue\n  failures++\n}\nassert.equal(failures,0,'every accepted local edit must retain the original bytes around the changed label')\nTS\ntimeout 120s bun .audit-edit.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:40:43.009324+00:00",
+    "elapsed_seconds": 0.5007,
+    "artifact": "evidence/86-source-byte-control.log"
+  },
+  {
+    "id": "89-actual-enrollment",
+    "command": "timeout 120s bun -e 'import {unitTestFiles} from \"./scripts/ci/unit-test-files.ts\"; const fs=unitTestFiles(); const select=[\"cli-multi-input\",\"cli-batch-render-parity\",\"authored-style-color-admission\",\"quadrant-style\",\"png-fonts\",\"agent-png-determinism\",\"journey-svg-snapshot\",\"property-source-preserving-edit\",\"agent-source-preserving-edit\",\"fanout-symmetry\"]; console.log(JSON.stringify({files:fs.length,selected:fs.filter(f=>select.some(s=>f.endsWith(\"/\"+s+\".test.ts\")))}))'\nnl -ba src/__tests__/helpers/upstream-mermaid.ts | sed -n '88,139p'\nrg -n 'mermaid|jsdom' package.json | tail -17",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:41:01.140531+00:00",
+    "elapsed_seconds": 0.0275,
+    "artifact": "evidence/89-actual-enrollment.log"
+  },
+  {
+    "id": "90-png-baseline-history",
+    "command": "python - <<'PY'\nimport json\nfrom urllib.request import Request,urlopen\nfrom urllib.parse import urlencode\nbase='https://api.github.com/repos/adewale/agentic-mermaid'\ndef g(path):\n with urlopen(Request(base+path,headers={'User-Agent':'bounded-test-quality-audit'}),timeout=12) as res:return json.load(res)\ntry:\n q=g('/commits?'+urlencode({'sha':'f49196e7f5d6d2f0970a4a76fe62644ee5e9d004','path':'src/__tests__/png-fonts.test.ts','per_page':50}))\n for v in q:\n  sha=v['sha']; data=g('/commits/'+sha);\n  for f in data.get('files',[]):\n   if f['filename']!='src/__tests__/png-fonts.test.ts':continue\n   interesting=[line for line in f.get('patch','').splitlines() if line.startswith('+') and any(x in line for x in ['CI requires a CJK font', 'long journey task label rasterizes', 'PNG font fidelity'])]\n   if interesting:print(sha,v['commit']['message'].splitlines()[0],interesting)\nexcept Exception as exc:print(type(exc).__name__,exc)\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:41:01.186961+00:00",
+    "elapsed_seconds": 8.369,
+    "artifact": "evidence/90-png-baseline-history.log"
+  },
+  {
+    "id": "88-edit-baseline",
+    "command": "timeout 120s bun test src/__tests__/property-source-preserving-edit.test.ts src/__tests__/agent-source-preserving-edit.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:41:01.147790+00:00",
+    "elapsed_seconds": 19.0434,
+    "artifact": "evidence/88-edit-baseline.log"
+  },
+  {
+    "id": "91-read-plan-index",
+    "command": "wc -l AGENTS.md CLAUDE.md src/__tests__/authored-style-color-admission.test.ts src/__tests__/quadrant-style.test.ts src/__tests__/png-fonts.test.ts src/__tests__/agent-png-determinism.test.ts src/__tests__/property-source-preserving-edit.test.ts src/__tests__/agent-source-preserving-edit.test.ts src/__tests__/fanout-symmetry.test.ts src/__tests__/marker-raster-parity-browser.test.ts scripts/ci/unit-test-files.ts .github/workflows/ci.yml .github/workflows/coverage.yml e2e/run-browser-contracts.ts\nrg -n '(eol|newline|line ending)' src/agent/source-projection.ts | tail -15\nnl -ba src/__tests__/helpers/upstream-mermaid.ts | sed -n '107,128p'\ngit diff --stat 268efa1..HEAD -- src/layout/passes/fanout.ts\ngit log --format='%h %s' --max-count=4 -- src/agent/source-projection.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:41:37.555784+00:00",
+    "elapsed_seconds": 0.0146,
+    "artifact": "evidence/91-read-plan-index.log"
+  },
+  {
+    "id": "92-eol-fault",
+    "command": "python - <<'PY'\nfrom pathlib import Path\np=Path('src/agent/source-projection.ts')\ns=p.read_text();a='emit(plan.text.get(index) ?? line.text, line.eol)';b='emit(plan.text.get(index) ?? line.text, eol)';assert s.count(a)==1;p.write_text(s.replace(a,b))\nPY\ngit diff -- src/agent/source-projection.ts\ntimeout 120s bun .audit-edit.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:41:44.227152+00:00",
+    "elapsed_seconds": 0.5562,
+    "artifact": "evidence/92-eol-fault.log"
+  },
+  {
+    "id": "94-positive-owner",
+    "command": "git show 268efa1 -- src/layout/passes/fanout.ts | tail -63\nrg -n 'continue|bundled|shared.*(point|trunk)|\\.\\.\\.' src/layout/passes/fanout.ts | tail -36\nnl -ba src/__tests__/fanout-symmetry.test.ts | sed -n '65,88p'\ngit diff 268efa1..HEAD -- src/layout/passes/fanout.ts\nrg -n 'applySymmetricFanoutEmissions' src/layout-engine.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:41:52.834374+00:00",
+    "elapsed_seconds": 0.0172,
+    "artifact": "evidence/94-positive-owner.log"
+  },
+  {
+    "id": "96-png-check-run-cost",
+    "command": "nl -ba .github/workflows/ci.yml | sed -n '161,181p;570,581p'\nnl -ba .github/workflows/contract-discovery.yml | sed -n '1,62p'\nrg -n 'function unitTestFiles|const patterns' scripts/ci/unit-test-files.ts\nrg -n 'verify|positive|if.*ok|const result' e2e/run-browser-contracts.ts | head -14",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:42:07.580989+00:00",
+    "elapsed_seconds": 0.0116,
+    "artifact": "evidence/96-png-check-run-cost.log"
+  },
+  {
+    "id": "95-independent-oracles",
+    "command": "rg -n --max-columns 260 -g '*.md' -g '!docs/project/**' -g '!docs/design/**' -g '!docs/meeting-notes/**' 'batch --jsonl|\"op\":\\s*\"render\"|\\{.*op: .render.*format' README.md AGENT_NATIVE.md docs | head -52\nrg -n 'batch --jsonl|options.*format' src/cli/help.ts bin -g '*.ts' --max-columns 180 | head -18\nnl -ba src/__tests__/property-source-preserving-edit.test.ts | sed -n '37,53p;132,162p'\nrg -n 'test\\(|it\\(' e2e/cli.e2e.test.ts | head -14\nrg -n --max-columns 230 'contract|writes|byte' docs/agent-mutation-policy.md | head -13",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:42:07.590538+00:00",
+    "elapsed_seconds": 0.0278,
+    "artifact": "evidence/95-independent-oracles.log"
+  },
+  {
+    "id": "93-eol-old-on-fault",
+    "command": "timeout 120s bun test src/__tests__/property-source-preserving-edit.test.ts src/__tests__/agent-source-preserving-edit.test.ts src/__tests__/agent-class.test.ts src/__tests__/agent.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:41:52.836351+00:00",
+    "elapsed_seconds": 64.5673,
+    "artifact": "evidence/93-eol-old-on-fault.log"
+  },
+  {
+    "id": "97-eol-old-canonical-timeout",
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/property-source-preserving-edit.test.ts src/__tests__/agent-source-preserving-edit.test.ts src/__tests__/agent-class.test.ts src/__tests__/agent.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:43:14.189557+00:00",
+    "elapsed_seconds": 64.3029,
+    "artifact": "evidence/97-eol-old-canonical-timeout.log"
+  },
+  {
+    "id": "98-probe-preservation",
+    "command": "mkdir -p '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes'\ncp '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/.audit-pixels.ts' '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/journey-pixels.ts'\ncp '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/.audit-font-choice.ts' '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/journey-font-choice.ts'\ncp '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control/.audit-edit.ts' '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/source-edit-bytes.ts'\npython - <<'PY'\nfrom pathlib import Path\np=Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence')\nnames={ '33-fault':'terminal-error-wrapping','42-paint-repair':'color-test-request-fix','68-no-bundled-fonts':'missing-all-fonts','75-font-candidate-oracle':'interior-label-assertion','78-dejavu-alternative':'fallback-only-fonts','92-eol-fault':'normalized-line-endings'}\nfor src, dest in names.items():\n txt=(p/(src+'.log')).read_text()\n if 'diff --git' not in txt: continue\n start=txt.index('diff --git')\n end=len(txt)\n for ending in ['\\nbun test v','\\n{\"label\":','\\n{\"kind\":']:\n  at=txt.find(ending,start)\n  if at>=0:end=min(end,at)\n (p/'probes'/(dest+'.patch')).write_text(txt[start:end].rstrip('\\n')+'\\n')\nPY\nls -l '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:44:23.745376+00:00",
+    "elapsed_seconds": 0.0358,
+    "artifact": "evidence/98-probe-preservation.log"
+  },
+  {
+    "id": "99-current-status",
+    "command": "git status --porcelain=v1\ngit worktree list\npython - <<'PY'\nfrom pathlib import Path\nimport json\nj=json.loads(Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/read-ledger.json').read_text())\nprint('files human classified',len(j['full']),len(j['partial']),'search-only matched',len(j['search_only']))\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:44:23.742587+00:00",
+    "elapsed_seconds": 0.0461,
+    "artifact": "evidence/99-current-status.log"
+  },
+  {
+    "id": "101-fanout-witness",
+    "command": "nl -ba src/layout/passes/fanout.ts | sed -n '260,296p'\nnl -ba src/layout-engine.ts | sed -n '1436,1458p'\nnl -ba e2e/cli.e2e.test.ts | sed -n '126,142p'\nnl -ba e2e/run-browser-contracts.ts | sed -n '31,43p;52,57p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:44:39.719656+00:00",
+    "elapsed_seconds": 0.0118,
+    "artifact": "evidence/101-fanout-witness.log"
+  },
+  {
+    "id": "100-exact-checks",
+    "command": "python - <<'PY'\nfrom urllib.request import Request,urlopen\nimport json\nbase='https://api.github.com/repos/adewale/agentic-mermaid'\nsha='f49196e7f5d6d2f0970a4a76fe62644ee5e9d004'\nq='/commits/'+sha+'/check-runs?per_page=100'\ntry:\n with urlopen(Request(base+q,headers={'User-Agent':'bounded-test-quality-audit'}),timeout=12) as res:data=json.load(res)\n print(q,'total',data['total_count'])\n for row in data['check_runs']:\n  print(row['id'],row['name'],row['status'],row['conclusion'],row['started_at'],row['completed_at'])\nexcept Exception as exc:print(type(exc).__name__,exc)\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:44:39.731853+00:00",
+    "elapsed_seconds": 1.2121,
+    "artifact": "evidence/100-exact-checks.log"
+  },
+  {
+    "id": "102-restored-endings",
+    "command": "git restore --source=HEAD -- src/agent/source-projection.ts && timeout 120s bun .audit-edit.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:45:02.548063+00:00",
+    "elapsed_seconds": 0.5934,
+    "artifact": "evidence/102-restored-endings.log"
+  },
+  {
+    "id": "103-clean-owner-matrix",
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/property-source-preserving-edit.test.ts src/__tests__/agent-source-preserving-edit.test.ts src/__tests__/agent-class.test.ts src/__tests__/agent.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:45:10.275527+00:00",
+    "elapsed_seconds": 66.0457,
+    "artifact": "evidence/103-clean-owner-matrix.log"
+  },
+  {
+    "id": "104-fanout-baseline",
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/fanout-symmetry.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:46:35.164541+00:00",
+    "elapsed_seconds": 0.7357,
+    "artifact": "evidence/104-fanout-baseline.log"
+  },
+  {
+    "id": "105-fanout-history-replay",
+    "command": "git show '268efa1^:src/layout/passes/fanout.ts' > src/layout/passes/fanout.ts && git diff --stat && timeout 120s bun test --timeout 30000 src/__tests__/fanout-symmetry.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 1,
+    "started_utc": "2026-11-27T14:46:39.958540+00:00",
+    "elapsed_seconds": 0.8737,
+    "artifact": "evidence/105-fanout-history-replay.log"
+  },
+  {
+    "id": "106-positive-controls-restored",
+    "command": "git restore --source=HEAD -- src/layout/passes/fanout.ts && git apply '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/interior-label-assertion.patch' && env CI=true AM_CJK_FONT_DIR=/usr/share/fonts/opentype/noto timeout 120s bun test --timeout 30000 src/__tests__/png-fonts.test.ts src/__tests__/fanout-symmetry.test.ts",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:46:47.555702+00:00",
+    "elapsed_seconds": 2.3119,
+    "artifact": "evidence/106-positive-controls-restored.log"
+  },
+  {
+    "id": "108-batch-positive-facts",
+    "command": "nl -ba e2e/cli.e2e.test.ts | sed -n '177,208p'\nnl -ba src/render-output-metadata.ts | sed -n '213,229p'\nnl -ba src/__tests__/authored-style-color-admission.test.ts | sed -n '198,207p'\nnl -ba src/__tests__/quadrant-style.test.ts | sed -n '146,152p'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:47:21.710636+00:00",
+    "elapsed_seconds": 0.0088,
+    "artifact": "evidence/108-batch-positive-facts.log"
+  },
+  {
+    "id": "107-entries",
+    "command": "rg '^[[:space:]]*\\((pass|fail)\\).*internal fork' '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/105-fanout-history-replay.log'\nrg -n 'received|RENDER_FAILED|INVALID_STYLE_COLOR|^(  ?[0-9]+ (pass|fail))' '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/46-corrected-on-fault.log' | tail -24\npython - <<'PY'\nfrom pathlib import Path\nimport json\nl=Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit')\nfor n in ['97','103','71','80','36','46','55','88','59','62','104','105']:\n d=next(r for r in json.loads((l/'command-ledger.json').read_text()) if r['id'].startswith(n+'-'))\n print(d['id'],d['exit'],d['elapsed_seconds'])\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:47:21.692651+00:00",
+    "elapsed_seconds": 0.0527,
+    "artifact": "evidence/107-entries.log"
+  },
+  {
+    "id": "109-restore-byte-check",
+    "command": "git restore --source=HEAD -- src/__tests__/png-fonts.test.ts && python - <<'PY'\nfrom pathlib import Path\nimport hashlib,os,subprocess\noriginal=Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo');scratch=Path.cwd()\nfiles=subprocess.check_output(['git','ls-files','--stage','-z'],cwd=original).split(b'\\0')\ncompared=0;bad=[]\nfor ent in files:\n if not ent:continue\n info,name=ent.split(b'\\t',1);mode,oid,stage=info.split();path=os.fsdecode(name)\n for tree in [original,scratch]:\n  f=tree/path\n  raw=os.readlink(f).encode() if f.is_symlink() else f.read_bytes()\n  digest=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\\0'+raw).hexdigest()\n  if digest!=oid.decode():bad.append((tree.name,path,digest,oid.decode()))\n compared+=1\nprint('tracked entries',compared,'total base/scratch byte comparisons',2*compared,'mismatches',bad)\nassert not bad and compared==3512\nPY\ngit diff --exit-code HEAD\ngit status --porcelain=v1 --untracked-files=normal",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:47:34.639852+00:00",
+    "elapsed_seconds": 0.6232,
+    "artifact": "evidence/109-restore-byte-check.log"
+  },
+  {
+    "id": "110-remove-scratch-worktree",
+    "command": "python - <<'PY'\nfrom pathlib import Path\nimport os\nlane=Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit'); c=lane/'scratch'/'control'\nfor old,new in [('.audit-font-choice.ts','journey-font-choice.ts'),('.audit-pixels.ts','journey-pixels.ts'),('.audit-edit.ts','source-edit-bytes.ts')]:\n a=c/old;b=lane/'evidence'/'probes'/new\n assert a.read_bytes()==b.read_bytes()\n a.unlink()\ndeps=c/'node_modules'\nassert deps.is_symlink() and deps.resolve()==lane/'repo'/'node_modules'\ndeps.unlink()\nPY\ngit worktree remove '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/scratch/control' && git worktree list && git status --short --branch\ncat '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/dependency-install.log'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:48:01.208036+00:00",
+    "elapsed_seconds": 0.1125,
+    "artifact": "evidence/110-remove-scratch-worktree.log"
+  },
+  {
+    "id": "111-final-metadata",
+    "command": "python - <<'PY'\nfrom pathlib import Path\nimport json\nL=Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit')\np=L/'findings.json';v=json.loads(p.read_text());v['status']='complete'\nv['execution_limits']=[s.replace('LC/CRLF','LF/CRLF') for s in v['execution_limits']]\nfor f in v['findings']:\n if f['id']=='source-preservation-mixed-line-endings':f['evidence'].append('103-clean-owner-matrix')\n if f['id']=='native-png-font-selection':f['evidence'].append('106-positive-controls-restored')\nfor retained in v['retained']:\n if retained['path'].startswith('src/__tests__/fanout-symmetry'):\n  retained['evidence']=['104-fanout-baseline','105-fanout-history-replay','106-positive-controls-restored']\n  retained['result']='On the pre-268efa1 production pass with current tests, LR, TD and BT fail on changed trunk coordinates; RL and the three other cases pass. All seven pass at base.'\np.write_text(json.dumps(v,indent=2)+'\\n')\nenv={'work_directory':str(L/'repo'),'scratch_worktree_during_controls':str(L/'scratch'/'control'),'runtime_path_prefix':'/workspace/mermaid-skill-comparison-2026-11-27/toolchain/node_modules/.bin:/tmp/test-audit-validation/bin','bun':'1.4.4 (38afee6c8)','node':'24.22.3','private_install':'614 packages installed with the provided lockfile; see dependency-install.log','runner':'evidence/run.py','environment_overrides':{'BUN_INSTALL_CACHE_DIR':str(L/'cache'),'XDG_CACHE_HOME':str(L/'cache'/'xdg'),'TMPDIR':str(L/'scratch'/'tmp'),'CI':'1 unless the exact command overrides it with true','NO_COLOR':'1'},'runner_convention':'The command field is the exact bash command passed to the local wrapper after PATH was prefixed. It uses bash -o pipefail -c; exit is the process status, and elapsed_seconds is monotonic wall time. Multi-command exploratory reads can end successfully after an earlier path error, which remains in the raw combined output. Code 1 from a read-only rg search may indicate no matches. Python public-API probes print individual errors even when their process exits successfully. Tests ran one at a time in the lane. Each behavioral test, probe and replay used timeout 120s. The canonical Bun per-test setting, when supplied, was --timeout 30000 (30 seconds). No command needed a longer external timeout.','initialization':'The initial three reads occurred before the runtime prefix had been obtained; they used Python, cat and ls only. Their explicit result metadata is recorded as bootstrap entries. Report authoring, JSON index assembly, bundle verification and progress messages are administrative operations. The ledger is the audit worker\u2019s record, not a centrally audited trace.','replay':'Create a disposable checkout at base, borrow a compatible private installation and prepend the runtime prefix. Copy evidence/probes/*.ts to the root of that checkout so their source imports resolve. The recorded exploratory command files were named .audit-font-choice.ts, .audit-pixels.ts and .audit-edit.ts. The pixel probe takes its PNG destination as argv[2]. Saved patch files are relative to the checkout. All scratch source changes were discarded after 7,024 checks of Git blob content.'}\n(L/'evidence'/'command-environment.json').write_text(json.dumps(env,indent=2)+'\\n')\nPY\npython '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/read-index.py'",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:49:55.865026+00:00",
+    "elapsed_seconds": 0.0733,
+    "artifact": "evidence/111-final-metadata.log"
+  },
+  {
+    "id": "112-bootstrap-index",
+    "command": "python - '[{\"id\":\"000a-task-packet\",\"command\":\"python - <<'\\''PY'\\''\\nimport json\\np='\\''/workspace/mermaid-skill-comparison-2026-11-27/task-packets.json'\\''\\nj=json.load(open(p))\\nprint(list(j))\\nfor k,v in j.items():\\n if k in ('\\''common'\\'','\\''common_task'\\'','\\''runtime_path'\\'','\\''ours'\\''): print(k, json.dumps(v, indent=2))\\n elif isinstance(v,dict): print(k, [x for x in v if '\\''other'\\'' not in x])\\nPY\",\"cwd\":\"/workspace\",\"exit\":0,\"started_utc\":null,\"elapsed_seconds\":0.000041805,\"artifact\":\"evidence/000-bootstrap.json\",\"note\":\"The direct terminal result gave the common task, runtime prefix and assigned lane. The bootstrap inventory showed only key names for unassigned sections.\"},{\"id\":\"000b-assigned-skill\",\"command\":\"cat /workspace/mermaid-skill-comparison-2026-11-27/ours/testing-best-practices/SKILL.md\",\"cwd\":\"/workspace\",\"exit\":0,\"started_utc\":null,\"elapsed_seconds\":0.000029343,\"artifact\":\"evidence/000-bootstrap.json\"},{\"id\":\"000c-lane-directory\",\"command\":\"ls -la /workspace/mermaid-skill-comparison-2026-11-27/ours-audit\",\"cwd\":\"/workspace\",\"exit\":0,\"started_utc\":null,\"elapsed_seconds\":0.000025941,\"artifact\":\"evidence/000-bootstrap.json\"}]' <<'PY'\nimport pathlib,json,sys\nL=pathlib.Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit'); rows=json.loads(sys.argv[1]);out=L/'command-ledger.json'\nn=[{'id':item['id'],'exit':item['exit'],'reported_tool_wall_seconds':item['elapsed_seconds']} for item in rows]\n(L/'evidence'/'000-bootstrap.json').write_text(json.dumps({'source':'local terminal result metadata from the initial read-only parallel call','results':n,'raw_stdout':'The original output was displayed directly before the file-logging wrapper existed. This artifact records those results rather than reconstructing a raw transcript.'},indent=2)+'\\n')\nbootstrap=L/'evidence'/'run.py'\nrows.append({'id':'000d-runner-bootstrap','command':\"export PATH='/workspace/mermaid-skill-comparison-2026-11-27/toolchain/node_modules/.bin:/tmp/test-audit-validation/bin':\\\"$PATH\\\"\\ncat > '/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/run.py' <<'PY'\\n\"+bootstrap.read_text()+'PY','cwd':'/workspace','exit':0,'started_utc':None,'elapsed_seconds':0.000048228,'artifact':'evidence/run.py','note':'Original terminal-reported wall time; there was no stdout.'})\nexisting=json.loads(out.read_text())\nout.write_text(json.dumps(rows+existing,indent=2)+'\\n')\nPY",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:50:14.402529+00:00",
+    "elapsed_seconds": 0.0257,
+    "artifact": "evidence/112-bootstrap-index.log"
+  },
+  {
+    "id": "113-verify-deliverables",
+    "command": "python - <<'PY'\nfrom pathlib import Path\nimport json,re,subprocess\nL=Path('/workspace/mermaid-skill-comparison-2026-11-27/ours-audit')\nreport=(L/'report.md').read_text()\nextra='The read ledger records scope, search-only paths and actual partial/full inspections.'\nnew='I reviewed 20 repository files in full and 53 in part. Full reads included the font suite, batch subprocess suite, source-edit generator, fan-out suite and coverage workflow. Partial reads included the 703-line structured-edit suite, the 406-line Quadrant suite, the CLI/PNG producers and selected branches of the 951-line main workflow. The read ledger lists the extraction windows separately from search-only matches.'\nassert report.count(extra)==1\nreport=report.replace(extra,new)\n(L/'report.md').write_text(report)\nlinks=[x for x in re.findall(r'\\]\\(([^)]+)\\)',report) if not x.startswith('https://')]\nmissing=[p for p in links if not (L/p).exists()]\nassert not missing,missing\nfiles=json.loads((L/'read-ledger.json').read_text())\nfor group in ['full','partial']:\n for f in files[group]:\n  assert (L/'repo'/f['path']).exists(),f\nprint('local report links',len(links),'valid; human full/partial files',len(files['full']),len(files['partial']))\nassert len(files['full'])==20 and len(files['partial'])==53\ncmd=json.loads((L/'command-ledger.json').read_text())\nids={e['id'] for e in cmd};assert len(cmd)==len(ids)\nfor e in cmd:assert (L/e['artifact']).is_file(),e\nfind=json.loads((L/'findings.json').read_text())\nfor entry in find['findings']:\n for id in entry['evidence']:assert id in ids,id\n for p in entry.get('artifacts',[]):assert (L/p).is_file(),p\nprint(len(find['findings']),'findings have complete evidence links;',len(cmd),'command entries before this final check')\nfor f in sorted((L/'evidence'/'probes').glob('*.patch')):\n p=subprocess.run(['git','apply','--check',str(f)],cwd=L/'repo',capture_output=True,text=True)\n print(f.name,p.returncode,p.stderr.strip())\n assert p.returncode==0,f\nprint('report words',len(report.split()))\nPY\ngit diff --exit-code HEAD\ngit status --porcelain=v1",
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/repo",
+    "exit": 0,
+    "started_utc": "2026-11-27T14:50:31.243234+00:00",
+    "elapsed_seconds": 0.0632,
+    "artifact": "evidence/113-verify-deliverables.log"
+  }
+]

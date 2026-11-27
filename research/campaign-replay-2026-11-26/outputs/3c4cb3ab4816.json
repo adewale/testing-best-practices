@@ -1,0 +1,26 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Route mutation workflow",
+      "action": "Remove the nightly trigger",
+      "details": "Drop the four-job matrix, all-module enrollment, and per-job floor of 60. Keep a single manual entry point scoped to a named route function and its focused tests. Require the person requesting a run to record the fault question and take responsibility for triage. Upload the report even on failure and surface incomplete runs as failed diagnostics."
+    },
+    {
+      "target": "Focused route tests",
+      "action": "Keep the suite on its current trigger and check one public behavior",
+      "details": "Use an existing fixture with distinct source and destination attachments. In an isolated checkout, seed a destination-selection fault that routes the edge back to its source. If the suite misses it, extend the fixture to assert that the rendered route reaches the expected destination attachment, deriving the expectation from the fixture. Leave intermediate bends free to vary. If a current test already catches the fault, keep that test."
+    }
+  ],
+  "retained_contracts": [
+    "All existing focused route cases and their current pass/fail behavior remain in force.",
+    "For the selected fixture, changing the destination to the source must produce an observable failure through the renderer."
+  ],
+  "validation": [
+    "Inspect the workflow triggers and resolved job configuration. Verify a scheduled event cannot start mutation, a manual dispatch selects only the named route scope, and the existing route-test job still runs.",
+    "At the same revision, run the focused test command on clean code, with the seeded fault, and after restoring the source. Record the selected test count, exit statuses and failing assertion. Verify any new assertion goes red on the wrong destination and green on restoration.",
+    "Only if a distinct route fault question remains, dispatch the exact narrow configuration once on the intended CI runner. Verify nonzero mutant and test enrollment. Save the SHA, scope, operators, command, runtime and report. Record actual kills separately from passing survivors, timeouts, uncovered mutants and infrastructure failures. Triage representative survivors against the public contract."
+  ],
+  "cost_and_stop": "Four balanced concurrent jobs could reduce 165 runner-minutes to about 41 elapsed minutes before overhead. The route workload alone would still consume roughly 165 runner-minutes, or 1,155 per week if run nightly. The expanded scope is unmeasured. Cap the optional manual trial at one runner for 30 minutes and 30 minutes of triage. Stop once the question is answered or the budget expires. Narrow or retire a trial that times out or yields no actionable evidence.",
+  "rationale": "The green route tests establish a starting point. The failed nightlies provide neither a completed baseline nor evidence that a score of 60 predicts routing regressions. Consider change-triggered recurrence only after a complete retained target-runner baseline fits budget, mutation reveals an actionable fault class beyond the focused regression, and a named owner accepts notification and triage. Retire recurrence if it stops changing decisions. Any future score policy needs comparable run history."
+}

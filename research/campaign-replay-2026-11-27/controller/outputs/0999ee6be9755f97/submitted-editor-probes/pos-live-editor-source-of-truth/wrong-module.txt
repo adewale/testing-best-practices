@@ -1,0 +1,1 @@
+{"edit": "editor/js/state.js", "generated": "editor.html", "rebuild": "editor", "imageFormats": ["svg", "png"], "textFormats": ["ascii", "unicode"]}

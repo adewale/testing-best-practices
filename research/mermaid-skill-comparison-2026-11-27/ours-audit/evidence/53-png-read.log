@@ -1,0 +1,185 @@
+   610	
+   611	function renderTaskBox<T>(marks: DrawingFactory<T>, task: PositionedJourneyTask, style: ResolvedRenderStyle, paints: JourneyPaints, channels: SemanticChannels): T {
+   612	  return marks.shape({
+   613	    id: `task-box:${task.id}`,
+   614	    role: 'task',
+   615	    geometry: { kind: 'rect', x: task.x, y: task.y, width: task.width, height: task.height, rx: style.cornerRadius ?? 0, ry: style.cornerRadius ?? 0 },
+   616	    paint: {
+   617	      fill: paints.nodeFill,
+   618	      stroke: paints.nodeStroke,
+   619	      strokeWidth: String(style.nodeLineWidth),
+   620	    },
+   621	    channels,
+   622	    attributes: { className: 'journey-task-box' },
+   623	  })
+   624	}
+   625	
+   626	function renderTaskLabel<T>(marks: DrawingFactory<T>, task: PositionedJourneyTask, style: ResolvedRenderStyle, paints: JourneyPaints, channels: SemanticChannels): T {
+   627	  return marks.text({
+   628	    id: `task-label:${task.id}`,
+   629	    role: 'label',
+   630	    text: task.text,
+   631	    block: task.block,
+   632	    x: task.textX,
+   633	    y: task.textY,
+   634	    fontSize: style.nodeLabelFontSize,
+   635	    fontWeight: style.nodeLabelFontWeight,
+   636	    letterSpacing: style.nodeLetterSpacing,
+   637	    anchor: 'middle',
+   638	    paint: { fill: paints.taskText },
+   639	    channels,
+   640	    attributes: { className: 'journey-task-text' },
+   641	  })
+   642	}
+   643	
+   644	function actorIdentityParts(label: string, key?: string): string[] {
+   645	  return key !== undefined && key !== journeyActorKey(label) ? [key] : []
+   646	}
+   647	
+   648	function renderActorDot<T>(marks: DrawingFactory<T>, dot: PositionedJourneyActorDot, taskId: string, occurrence: number, paints: JourneyPaints): T {
+   649	  return marks.shape({
+   650	    id: semanticNamespacedId('actor-dot', taskId, dot.label, ...actorIdentityParts(dot.label, dot.key), ...(occurrence > 0 ? [occurrence] : [])),
+   651	    role: 'actor',
+   652	    geometry: { kind: 'circle', cx: dot.x, cy: dot.y, r: dot.r },
+   177	  const host = Object.freeze({ ...(backendPolicy ? { backendPolicy } : {}), ...(textMeasurement ? { textMeasurement } : {}) })
+   178	  return Object.freeze({
+   179	    renderMermaidPNG(input: ParsedDiagram | string, opts: PngOptions = {}): Uint8Array {
+   180	      return renderMermaidPNGWithReceiptForHost(input, opts, host).png
+   181	    },
+   182	    renderMermaidPNGWithReceipt(input: ParsedDiagram | string, opts: PngOptions = {}): RenderedPng {
+   183	      return renderMermaidPNGWithReceiptForHost(input, opts, host)
+   184	    },
+   185	  })
+   186	}
+   187	
+   188	/** Internal action projection shares this native adapter's admitted request. */
+   189	export function renderMermaidPNGWithReceiptForHost(
+   190	  input: ParsedDiagram | string,
+   191	  opts: PngOptions,
+   192	  hostOptions: MermaidPNGRendererHostOptions,
+   193	  projection?: { input: PreparedRenderInput; consumeLayout: GraphicalLayoutConsumer },
+   194	): RenderedPng {
+   195	  // SVG input: embedFontImport=false so resvg doesn't try to fetch from
+   196	  // Google Fonts during rasterization. CSS-variable fonts (Loop 8 M2) means
+   197	  // the SVG still declares its font-family preference via --font.
+   198	  const preparedInput = projection?.input ?? prepareRenderInput(input)
+   199	  const source = preparedInput.source
+   200	  const onWarning = opts.onWarning
+   201	  if (onWarning !== undefined && typeof onWarning !== 'function') {
+   202	    throw new TypeError('PNG onWarning must be a function')
+   203	  }
+   204	  const outputOptions = projectNativePngOutputPolicyInput(opts as unknown as Readonly<Record<string, unknown>>)
+   205	  const renderOptions = omitPngOutputOptions(opts as unknown as Readonly<Record<string, unknown>>) as RenderOptions
+   206	  const graphical = renderPngGraphicalProjection(
+   207	    source,
+   208	    renderOptions,
+   209	    outputOptions,
+   210	    { backendPolicy: hostOptions.backendPolicy, textMeasurement: hostOptions.textMeasurement, ...preparedInput.resolutionOptions },
+   211	    projection?.consumeLayout,
+   212	  )
+   213	  const outputPolicy = graphical.outputPolicy
+   214	  const svg = finalizePngRasterSvg(
+   215	    prepareResvgMarkerOrientation(inlineFontVarForRaster(graphical.svg)),
+   216	    graphical.rasterDimensions,
+   217	  )
+   218	
+   219	  const bundledFonts = withPngRasterizer('loading bundled fonts', resolveBundledFonts)
+   220	
+   221	  // Surface known coverage/shaping uncertainty before bytes ship. System
+   222	  // fonts broaden the rasterizer's set but are machine-dependent, so they
+   223	  // qualify the warning rather than turning an unknown outcome into silence.
+   224	  const emit = onWarning ?? ((w: PngRasterWarning) => process.stderr.write(`agentic-mermaid renderMermaidPNG: warning ${w.code}: ${w.message}\n`))
+   225	  for (const warning of buildPngFontWarnings(findUncoveredScripts(
+   226	    svg,
+   227	    outputPolicy.fonts.callerDirectories,
+   228	    bundledFonts.buffers,
+   229	  ), { systemFontsMayCover: outputPolicy.fonts.loadSystemFonts })) emit(warning)
+   230	  for (const warning of graphical.legibilityWarnings) emit(warning)
+   231	
+   232	  const resvgOpts: ConstructorParameters<typeof Resvg>[1] = {
+   233	    background: graphical.rasterBackground,
+   234	    // The shared contract already projected and pinned exact integer root
+   235	    // dimensions. Rendering at zoom 1 avoids resvg-specific ratio rounding.
+     1	/**
+     2	 * Golden-file regression test for journey SVG rendering.
+     3	 */
+     4	import { describe, it, expect } from 'bun:test'
+     5	import { readFileSync, writeFileSync } from 'node:fs'
+     6	import { join } from 'node:path'
+     7	import { renderMermaidSVG } from '../index.ts'
+     8	import { normalizeSvg } from './helpers/svg-normalize.ts'
+     9	
+    10	const snapshotDir = join(import.meta.dir, 'testdata', 'svg')
+    11	
+    12	describe('renderMermaidSVG – journey snapshots', () => {
+    13	  it('matches the representative journey golden SVG', () => {
+    14	    const actual = renderMermaidSVG(`journey
+    15	      title Product journey
+    16	      section Discover
+    17	      Interview users: 4: PM, Research
+    18	      section Deliver
+    19	      Prototype<br>review: 3: Design, Eng
+    20	      Ship: 5: Eng, QA`)
+    21	
+    22	    const snapshot = join(snapshotDir, 'journey-representative.svg')
+    23	    if (process.env.UPDATE_GOLDEN) writeFileSync(snapshot, actual)
+    24	    const expected = readFileSync(snapshot, 'utf-8')
+    25	
+    26	    expect(normalizeSvg(actual)).toBe(normalizeSvg(expected))
+    27	  })
+    28	
+    29	  it('matches the Mermaid docs journey example SVG', () => {
+    30	    const actual = renderMermaidSVG(`journey
+    31	      title My working day
+    32	      section Go to work
+    33	      Make tea: 5: Me
+    34	      Go upstairs: 3: Me
+    35	      Do work: 1: Me, Cat
+    36	      section Go home
+    37	      Go downstairs: 5: Me
+    38	      Sit down: 3: Me`)
+    39	
+    40	    const snapshot = join(snapshotDir, 'journey-mermaid-docs-example.svg')
+    41	    if (process.env.UPDATE_GOLDEN) writeFileSync(snapshot, actual)
+    42	    const expected = readFileSync(snapshot, 'utf-8')
+    43	
+    44	    expect(normalizeSvg(actual)).toBe(normalizeSvg(expected))
+    45	  })
+    46	})
+    47	/** The journey task box rect carries explicit geometry in the SVG output. */
+    48	function taskBox(svg: string): { x: number; y: number; w: number; h: number } {
+    49	  const m = svg.match(/<rect class="journey-task-box" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/)
+    50	  if (!m) throw new Error('journey-task-box rect not found in SVG output')
+    51	  return { x: Number(m[1]), y: Number(m[2]), w: Number(m[3]), h: Number(m[4]) }
+    52	}
+    53	
+    54	describe('PNG raster font matches the metrics font', () => {
+    55	  test('long journey task label rasterizes inside its measured task box', () => {
+    56	    // Same geometry as the PNG path (embedFontImport only toggles CSS).
+    57	    const svg = renderMermaidSVG(JOURNEY_LONG_LABEL, { embedFontImport: false })
+    58	    const box = taskBox(svg)
+    59	
+    60	    const scale = 2
+    61	    const img = decodePng(renderMermaidPNG(JOURNEY_LONG_LABEL, { scale }))
+    62	
+    63	    // Scan strictly right of the box (3 CSS px of slack for the border stroke
+    64	    // and its antialiasing), within the box's rows. The actor legend sits LEFT
+    65	    // of the box, so only the right side is unambiguous.
+    66	    const pad = 3 * scale
+    67	    const overflow = inkColumns(
+    68	      img,
+    69	      (box.x + box.w) * scale + pad,
+    70	      img.width,
+    71	      box.y * scale + pad,
+    72	      (box.y + box.h) * scale - pad,
+    73	    )
+    74	    expect({ overflowColumns: overflow.length, firstColumns: overflow.slice(0, 5) })
+    75	      .toEqual({ overflowColumns: 0, firstColumns: [] })
+    76	  })
+9:// - loadSystemFonts: false + bundled DejaVu Sans fonts in assets/fonts/ —
+219:  const bundledFonts = withPngRasterizer('loading bundled fonts', resolveBundledFonts)
+228:    bundledFonts.buffers,
+229:  ), { systemFontsMayCover: outputPolicy.fonts.loadSystemFonts })) emit(warning)
+238:      loadSystemFonts: outputPolicy.fonts.loadSystemFonts,
+241:      fontFiles: [...bundledFonts.files],
+248:      defaultFontFamily: outputPolicy.fonts.defaultFamily,

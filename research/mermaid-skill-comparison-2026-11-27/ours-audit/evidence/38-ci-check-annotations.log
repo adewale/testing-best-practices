@@ -1,0 +1,4 @@
+/check-runs/137789694316/annotations [('.github', 'Process completed with exit code 1.'), ('src/__tests__/png-fonts.test.ts', '\n      at /home/runner/work/agentic-mermaid/agentic-mermaid/src/__tests__/png-fonts.test.ts:89:55')]
+/actions/jobs/137789694316/logs URLError <urlopen error Tunnel connection failed: 403 Forbidden>
+/check-runs/134413980531/annotations [('.github', 'Process completed with exit code 1.'), ('.github', 'dependency-audit (bun run audit:dependencies)'), ('.github', '"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"')]
+/actions/jobs/134413980531/logs URLError <urlopen error Tunnel connection failed: 403 Forbidden>

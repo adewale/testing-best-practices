@@ -1,0 +1,825 @@
+[
+  {
+    "id": "889c1e114207ebea",
+    "phase": "A",
+    "case": "R09",
+    "arm": "candidate",
+    "blind_id": "b3623a71159f9638",
+    "packet": "subjects/889c1e114207ebea/packet.md",
+    "packet_sha256": "280cb14012f14bffaea7c21d407fe316359a672dafba6c2916d62298a444768f",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "244aa8b6a4dbdf81",
+    "phase": "A",
+    "case": "R01",
+    "arm": "candidate",
+    "blind_id": "b72ecdaa37013843",
+    "packet": "subjects/244aa8b6a4dbdf81/packet.md",
+    "packet_sha256": "969c9bef67bb15d65d2865821895bc1b41d707605afbc8faed5b7b77d8c2a043",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "a9182589c9b5e41c",
+    "phase": "A",
+    "case": "R01",
+    "arm": "openclaw",
+    "blind_id": "a03334350c33eefa",
+    "packet": "subjects/a9182589c9b5e41c/packet.md",
+    "packet_sha256": "7244eaef258c91c7f7069c31133f88593a2e757035a83e74eab2ccda243029af",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md",
+      ".agents/skills/test-audit/CAMPAIGN.md"
+    ]
+  },
+  {
+    "id": "8887cf6821a2f4a3",
+    "phase": "A",
+    "case": "R07",
+    "arm": "none",
+    "blind_id": "52cffaa3fca1020b",
+    "packet": "subjects/8887cf6821a2f4a3/packet.md",
+    "packet_sha256": "bb6909249e618ae631767dc01f5412b12f9c7bcf0935a1322f7d4a577fcb2e9e",
+    "guidance_paths": []
+  },
+  {
+    "id": "fd103af50acf82f9",
+    "phase": "A",
+    "case": "R06",
+    "arm": "candidate",
+    "blind_id": "0b13c72d5b9cc1d1",
+    "packet": "subjects/fd103af50acf82f9/packet.md",
+    "packet_sha256": "6ae18e1154924aec2977f59ada2819fdcc4cb7edf2d0305b4e9d37c6bb5bc19d",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "ef042f4f27faa240",
+    "phase": "A",
+    "case": "R01",
+    "arm": "pr41",
+    "blind_id": "a18e23703a5067a4",
+    "packet": "subjects/ef042f4f27faa240/packet.md",
+    "packet_sha256": "fcca8f5bc281769c428e43e6f99ea13729b18dd4680e692d10c79bf7ad86d58c",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "14d68616bd52a6db",
+    "phase": "A",
+    "case": "R06",
+    "arm": "openclaw",
+    "blind_id": "28b6816a7163bf8e",
+    "packet": "subjects/14d68616bd52a6db/packet.md",
+    "packet_sha256": "296cbea721338b7a36987a7d9849a2f50cf35d3a446a6fd4255bc83174782b94",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md",
+      ".agents/skills/test-audit/CAMPAIGN.md"
+    ]
+  },
+  {
+    "id": "0cc23a6d3d288c81",
+    "phase": "A",
+    "case": "R03",
+    "arm": "openclaw",
+    "blind_id": "0f6023984c698a16",
+    "packet": "subjects/0cc23a6d3d288c81/packet.md",
+    "packet_sha256": "d7d7ed8f76b86b2154bc683d2669edb63507a409e0ffae6e37fa6c65dbba2a54",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md",
+      ".agents/skills/test-audit/CAMPAIGN.md"
+    ]
+  },
+  {
+    "id": "ca0312132f599cf3",
+    "phase": "A",
+    "case": "R05",
+    "arm": "candidate",
+    "blind_id": "dd6898d2b6632561",
+    "packet": "subjects/ca0312132f599cf3/packet.md",
+    "packet_sha256": "5885fc795b8f5a4b3b2fa7ae23c35ae08a4c9872180fefd54221cbf508de8350",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "0e9d862ce5b513d3",
+    "phase": "A",
+    "case": "R01",
+    "arm": "none",
+    "blind_id": "a1328343d3a2a46a",
+    "packet": "subjects/0e9d862ce5b513d3/packet.md",
+    "packet_sha256": "623583441df9a9d73a1804ec23bbc1ec500fa18443c94a985169b2c22809e0f6",
+    "guidance_paths": []
+  },
+  {
+    "id": "0109a8ca161dc603",
+    "phase": "A",
+    "case": "R06",
+    "arm": "pr41",
+    "blind_id": "601d976edd918d94",
+    "packet": "subjects/0109a8ca161dc603/packet.md",
+    "packet_sha256": "74041bfa52e38a2dc4a46a8bb00c3e035b15598ef1353be63274bddd96424ebb",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "e5e07cd4c67d8430",
+    "phase": "A",
+    "case": "R08",
+    "arm": "openclaw",
+    "blind_id": "40ccb05ef34cf4b4",
+    "packet": "subjects/e5e07cd4c67d8430/packet.md",
+    "packet_sha256": "c418a89e0506aa79bb4faef4af59a33c872300aed14a7bc8f274f7f2ec92d694",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md"
+    ]
+  },
+  {
+    "id": "7fae3e37bb6edc9e",
+    "phase": "A",
+    "case": "R08",
+    "arm": "pr41",
+    "blind_id": "307883b6a344d95e",
+    "packet": "subjects/7fae3e37bb6edc9e/packet.md",
+    "packet_sha256": "10c7b6fc345ceb9370d4be8384690ba1e67c5b2cc6e277605f595774f97bc43d",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "8655062dec2aa24d",
+    "phase": "A",
+    "case": "R05",
+    "arm": "none",
+    "blind_id": "d7cf2c5e9c364483",
+    "packet": "subjects/8655062dec2aa24d/packet.md",
+    "packet_sha256": "c32e58ae04cc250beca22dbe522253de0cf37fb8538cfd0177520f7eef43884a",
+    "guidance_paths": []
+  },
+  {
+    "id": "f0ec335c896105d5",
+    "phase": "A",
+    "case": "R07",
+    "arm": "candidate",
+    "blind_id": "7e3eaee27d3bec9b",
+    "packet": "subjects/f0ec335c896105d5/packet.md",
+    "packet_sha256": "4d8f8ac30841d586db657278bc8eaa9e30a19ec7c0c12f5fd176365a4d9fe5dd",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "f33c0902fa9e7809",
+    "phase": "A",
+    "case": "R02",
+    "arm": "none",
+    "blind_id": "0abd8eaf1c770c79",
+    "packet": "subjects/f33c0902fa9e7809/packet.md",
+    "packet_sha256": "8bbc740a1115d48706aee2b34782164ed21ddaf9e757782503801d5fed91fe76",
+    "guidance_paths": []
+  },
+  {
+    "id": "e9830d13fc16457f",
+    "phase": "A",
+    "case": "R09",
+    "arm": "none",
+    "blind_id": "ae85dd5b80f76a72",
+    "packet": "subjects/e9830d13fc16457f/packet.md",
+    "packet_sha256": "63895a30ce3313925a736c692b339fa65b519dae7a179278fcb096a0f4836aba",
+    "guidance_paths": []
+  },
+  {
+    "id": "af240a8ec78ae483",
+    "phase": "A",
+    "case": "R03",
+    "arm": "candidate",
+    "blind_id": "ec9644c6ee0eb3d0",
+    "packet": "subjects/af240a8ec78ae483/packet.md",
+    "packet_sha256": "f28201ec989d50a088b13477389aff7413ef536c5a5bfc7c53328f6faae3484a",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "c614295b49af98e7",
+    "phase": "A",
+    "case": "R04",
+    "arm": "pr41",
+    "blind_id": "931332a8e7d2ca16",
+    "packet": "subjects/c614295b49af98e7/packet.md",
+    "packet_sha256": "608fc0a3254f7840179a64227bf0c033768a7fb114f1779e20c55c7e92f5b142",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "a1b2e89654aaade9",
+    "phase": "A",
+    "case": "R05",
+    "arm": "pr41",
+    "blind_id": "32249b82e5de2f3f",
+    "packet": "subjects/a1b2e89654aaade9/packet.md",
+    "packet_sha256": "9f47b37b1238a9c029e3f2186505c20a1b55a6dd697d14130ead0cdcf7f14020",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "1f2f41ad8583a869",
+    "phase": "A",
+    "case": "R07",
+    "arm": "pr41",
+    "blind_id": "ca375d10c9c987ba",
+    "packet": "subjects/1f2f41ad8583a869/packet.md",
+    "packet_sha256": "9a991441cbb559b446c982f9aa2bcbb394e9f3ba0b6f67c69ada4cf24cd0f057",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "f8b1a29f82f5262b",
+    "phase": "A",
+    "case": "R07",
+    "arm": "openclaw",
+    "blind_id": "31c061efcd9e740f",
+    "packet": "subjects/f8b1a29f82f5262b/packet.md",
+    "packet_sha256": "9b31ce5223a948b13d00755f075b4f667bef0feb7030c9b7ed993c4cd5d07412",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md"
+    ]
+  },
+  {
+    "id": "b9e32ce20014cb81",
+    "phase": "A",
+    "case": "R04",
+    "arm": "none",
+    "blind_id": "b196e2c8798c6e4c",
+    "packet": "subjects/b9e32ce20014cb81/packet.md",
+    "packet_sha256": "7a66a8f2a62320555cf3ba2d680fec1bbe671a3c97d8e1580bacee3fa7baf5c0",
+    "guidance_paths": []
+  },
+  {
+    "id": "a1aa9613d9c739e5",
+    "phase": "A",
+    "case": "R05",
+    "arm": "openclaw",
+    "blind_id": "5550b88cef4a8071",
+    "packet": "subjects/a1aa9613d9c739e5/packet.md",
+    "packet_sha256": "f8912c5a3682992db9dbabf9850362ac30048fc00f4eeb8385966689d07a44ff",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md"
+    ]
+  },
+  {
+    "id": "8c00728ffb528610",
+    "phase": "A",
+    "case": "R03",
+    "arm": "pr41",
+    "blind_id": "da9b7e848a4169a8",
+    "packet": "subjects/8c00728ffb528610/packet.md",
+    "packet_sha256": "5967fdd87c9e602416d898a4b5029ccd0deb5c9ccfc02ff545599ed4bcd82f09",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "0738d8d6d69c9aab",
+    "phase": "A",
+    "case": "R09",
+    "arm": "pr41",
+    "blind_id": "7ae2a478cd81ef58",
+    "packet": "subjects/0738d8d6d69c9aab/packet.md",
+    "packet_sha256": "e836ff92dfce5a09e4479f1341f9466752262947e498eee907ef06893aaff238",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "09a9eb49daf17c83",
+    "phase": "A",
+    "case": "R02",
+    "arm": "pr41",
+    "blind_id": "97101d142d8a04d1",
+    "packet": "subjects/09a9eb49daf17c83/packet.md",
+    "packet_sha256": "219ff81b45b8f7f96a8c5eee2489b2ea5f6b8fb831dd63e1c97c9ec76bd56bde",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/test-audit.md"
+    ]
+  },
+  {
+    "id": "a6cc4322822f96a3",
+    "phase": "A",
+    "case": "R02",
+    "arm": "candidate",
+    "blind_id": "a6d01f95fe611104",
+    "packet": "subjects/a6cc4322822f96a3/packet.md",
+    "packet_sha256": "033fb186519b46223c0c29616b6905828e52c549cd753fa31cb8792427ef7213",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "2bc860e3a0dcb269",
+    "phase": "A",
+    "case": "R03",
+    "arm": "none",
+    "blind_id": "3eda8c3d9456218b",
+    "packet": "subjects/2bc860e3a0dcb269/packet.md",
+    "packet_sha256": "347ed59101430851163efc7ec3b1aa042ce4b0f9fe1b4e0a30e7e60c30c68988",
+    "guidance_paths": []
+  },
+  {
+    "id": "1418a084344cfc04",
+    "phase": "A",
+    "case": "R08",
+    "arm": "candidate",
+    "blind_id": "8e889473c1d64ee5",
+    "packet": "subjects/1418a084344cfc04/packet.md",
+    "packet_sha256": "dc8961cbe6dba71555e02e8212819c1242975c518e87294a8de2b3797d00d470",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "0670c41a390a1924",
+    "phase": "A",
+    "case": "R09",
+    "arm": "openclaw",
+    "blind_id": "8ad21724217f5650",
+    "packet": "subjects/0670c41a390a1924/packet.md",
+    "packet_sha256": "84bb650493d4d5e96210fa5fe29be7cb93f72c6d49e465e1d471f991104f74d3",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md"
+    ]
+  },
+  {
+    "id": "cc9be1e227470f8a",
+    "phase": "A",
+    "case": "R02",
+    "arm": "openclaw",
+    "blind_id": "ec9e2b91500974df",
+    "packet": "subjects/cc9be1e227470f8a/packet.md",
+    "packet_sha256": "1fa51fdb9c8589c9596194625224c135038d98e965bee4a60e9b9e144a2a9892",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md"
+    ]
+  },
+  {
+    "id": "a130425720fc9b6e",
+    "phase": "A",
+    "case": "R06",
+    "arm": "none",
+    "blind_id": "225e27b30d01c375",
+    "packet": "subjects/a130425720fc9b6e/packet.md",
+    "packet_sha256": "c1015a9097e18cf4ca03ac84d303097d537a4c769ed2a2886e96fc6ff1dcf224",
+    "guidance_paths": []
+  },
+  {
+    "id": "c543a869571ed8bd",
+    "phase": "A",
+    "case": "R04",
+    "arm": "openclaw",
+    "blind_id": "9ba5ef0a9d1eeb80",
+    "packet": "subjects/c543a869571ed8bd/packet.md",
+    "packet_sha256": "a40f68af2a1b24b6a19cbfd8f55247760c1c5ac4b8bda932c4c8515d26b461a3",
+    "guidance_paths": [
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "docs/help/testing/writing-tests.md",
+      ".agents/skills/openclaw-testing/SKILL.md",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md"
+    ]
+  },
+  {
+    "id": "6dbc3760966291b1",
+    "phase": "A",
+    "case": "R08",
+    "arm": "none",
+    "blind_id": "f92c424190805e27",
+    "packet": "subjects/6dbc3760966291b1/packet.md",
+    "packet_sha256": "6c62b28f13f294f678802bffd0e2f04afe9e7e6e8871a9ef08978680b2d1a457",
+    "guidance_paths": []
+  },
+  {
+    "id": "a2c633dd5d32e6da",
+    "phase": "A",
+    "case": "R04",
+    "arm": "candidate",
+    "blind_id": "2db0e16a8d9cfd55",
+    "packet": "subjects/a2c633dd5d32e6da/packet.md",
+    "packet_sha256": "dbe00408d87832213adefe524b1fdf8276d4d2979fd702f1be8e7d4a6fcdd0a7",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/checker-calibration.md"
+    ]
+  },
+  {
+    "id": "4622435a5a23c15b",
+    "phase": "B",
+    "case": "B02",
+    "arm": "openclaw",
+    "blind_id": "4db6c524dd83fb3b",
+    "packet": "subjects/4622435a5a23c15b/packet.md",
+    "packet_sha256": "dbad21e6e8d678190da8e42338da28c05424bd5ddda5b8576c7f79afc33ccdf5",
+    "guidance_paths": [
+      ".agents/skills/openclaw-testing/SKILL.md",
+      ".agents/skills/test-audit/CAMPAIGN.md",
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "LICENSE",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md",
+      "docs/help/testing/writing-tests.md"
+    ]
+  },
+  {
+    "id": "0999ee6be9755f97",
+    "phase": "B",
+    "case": "B01",
+    "arm": "none",
+    "blind_id": "6f5e2985589b0114",
+    "packet": "subjects/0999ee6be9755f97/packet.md",
+    "packet_sha256": "440e68594120265d9c7a4e5e2a65b1937ea6452916599b1a5455f922554a3f1d",
+    "guidance_paths": []
+  },
+  {
+    "id": "2eafa8d74ad7622d",
+    "phase": "B",
+    "case": "B02",
+    "arm": "pr41",
+    "blind_id": "125db40317156c7c",
+    "packet": "subjects/2eafa8d74ad7622d/packet.md",
+    "packet_sha256": "cafe8d4e5d030c1c3d2f7ba98fae70e220589c130d980248da973ce85d70bebf",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/characterization-testing.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/correctness-by-construction.md",
+      "testing-best-practices/references/deterministic-time.md",
+      "testing-best-practices/references/differential-testing.md",
+      "testing-best-practices/references/doc-sync-testing.md",
+      "testing-best-practices/references/exhaustive-testing.md",
+      "testing-best-practices/references/fuzzing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/go.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/mathematical-properties.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/property-based-testing.md",
+      "testing-best-practices/references/python.md",
+      "testing-best-practices/references/rust.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-data-builders.md",
+      "testing-best-practices/references/test-types.md",
+      "testing-best-practices/references/typescript.md",
+      "testing-best-practices/references/vcr-cassettes.md"
+    ]
+  },
+  {
+    "id": "d3dfc73ed6d4ddba",
+    "phase": "B",
+    "case": "B03",
+    "arm": "candidate",
+    "blind_id": "4db08cd82e771644",
+    "packet": "subjects/d3dfc73ed6d4ddba/packet.md",
+    "packet_sha256": "cafe8d4e5d030c1c3d2f7ba98fae70e220589c130d980248da973ce85d70bebf",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/characterization-testing.md",
+      "testing-best-practices/references/checker-calibration.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/correctness-by-construction.md",
+      "testing-best-practices/references/deterministic-time.md",
+      "testing-best-practices/references/differential-testing.md",
+      "testing-best-practices/references/doc-sync-testing.md",
+      "testing-best-practices/references/exhaustive-testing.md",
+      "testing-best-practices/references/fuzzing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/go.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/mathematical-properties.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/property-based-testing.md",
+      "testing-best-practices/references/python.md",
+      "testing-best-practices/references/rust.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-data-builders.md",
+      "testing-best-practices/references/test-types.md",
+      "testing-best-practices/references/typescript.md",
+      "testing-best-practices/references/vcr-cassettes.md"
+    ]
+  },
+  {
+    "id": "991af762de5e1244",
+    "phase": "B",
+    "case": "B03",
+    "arm": "pr41",
+    "blind_id": "182d32db20b7d6f8",
+    "packet": "subjects/991af762de5e1244/packet.md",
+    "packet_sha256": "cafe8d4e5d030c1c3d2f7ba98fae70e220589c130d980248da973ce85d70bebf",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/characterization-testing.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/correctness-by-construction.md",
+      "testing-best-practices/references/deterministic-time.md",
+      "testing-best-practices/references/differential-testing.md",
+      "testing-best-practices/references/doc-sync-testing.md",
+      "testing-best-practices/references/exhaustive-testing.md",
+      "testing-best-practices/references/fuzzing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/go.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/mathematical-properties.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/property-based-testing.md",
+      "testing-best-practices/references/python.md",
+      "testing-best-practices/references/rust.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-data-builders.md",
+      "testing-best-practices/references/test-types.md",
+      "testing-best-practices/references/typescript.md",
+      "testing-best-practices/references/vcr-cassettes.md"
+    ]
+  },
+  {
+    "id": "c6e8de671b642b51",
+    "phase": "B",
+    "case": "B01",
+    "arm": "candidate",
+    "blind_id": "538062af069e3a92",
+    "packet": "subjects/c6e8de671b642b51/packet.md",
+    "packet_sha256": "cafe8d4e5d030c1c3d2f7ba98fae70e220589c130d980248da973ce85d70bebf",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/characterization-testing.md",
+      "testing-best-practices/references/checker-calibration.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/correctness-by-construction.md",
+      "testing-best-practices/references/deterministic-time.md",
+      "testing-best-practices/references/differential-testing.md",
+      "testing-best-practices/references/doc-sync-testing.md",
+      "testing-best-practices/references/exhaustive-testing.md",
+      "testing-best-practices/references/fuzzing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/go.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/mathematical-properties.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/property-based-testing.md",
+      "testing-best-practices/references/python.md",
+      "testing-best-practices/references/rust.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-data-builders.md",
+      "testing-best-practices/references/test-types.md",
+      "testing-best-practices/references/typescript.md",
+      "testing-best-practices/references/vcr-cassettes.md"
+    ]
+  },
+  {
+    "id": "a8fc297c98aeeca9",
+    "phase": "B",
+    "case": "B03",
+    "arm": "none",
+    "blind_id": "b08defec2ed06e50",
+    "packet": "subjects/a8fc297c98aeeca9/packet.md",
+    "packet_sha256": "440e68594120265d9c7a4e5e2a65b1937ea6452916599b1a5455f922554a3f1d",
+    "guidance_paths": []
+  },
+  {
+    "id": "f5740f900f52bf30",
+    "phase": "B",
+    "case": "B02",
+    "arm": "candidate",
+    "blind_id": "26b28c77f8288968",
+    "packet": "subjects/f5740f900f52bf30/packet.md",
+    "packet_sha256": "cafe8d4e5d030c1c3d2f7ba98fae70e220589c130d980248da973ce85d70bebf",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/characterization-testing.md",
+      "testing-best-practices/references/checker-calibration.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/correctness-by-construction.md",
+      "testing-best-practices/references/deterministic-time.md",
+      "testing-best-practices/references/differential-testing.md",
+      "testing-best-practices/references/doc-sync-testing.md",
+      "testing-best-practices/references/exhaustive-testing.md",
+      "testing-best-practices/references/fuzzing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/go.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/mathematical-properties.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/property-based-testing.md",
+      "testing-best-practices/references/python.md",
+      "testing-best-practices/references/rust.md",
+      "testing-best-practices/references/test-audit-patterns.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-data-builders.md",
+      "testing-best-practices/references/test-types.md",
+      "testing-best-practices/references/typescript.md",
+      "testing-best-practices/references/vcr-cassettes.md"
+    ]
+  },
+  {
+    "id": "760faa4901a0a237",
+    "phase": "B",
+    "case": "B03",
+    "arm": "openclaw",
+    "blind_id": "c2ce50e25a8e247b",
+    "packet": "subjects/760faa4901a0a237/packet.md",
+    "packet_sha256": "dbad21e6e8d678190da8e42338da28c05424bd5ddda5b8576c7f79afc33ccdf5",
+    "guidance_paths": [
+      ".agents/skills/openclaw-testing/SKILL.md",
+      ".agents/skills/test-audit/CAMPAIGN.md",
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "LICENSE",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md",
+      "docs/help/testing/writing-tests.md"
+    ]
+  },
+  {
+    "id": "d7c2dcb74d42a173",
+    "phase": "B",
+    "case": "B01",
+    "arm": "pr41",
+    "blind_id": "c99e883d3ce70597",
+    "packet": "subjects/d7c2dcb74d42a173/packet.md",
+    "packet_sha256": "cafe8d4e5d030c1c3d2f7ba98fae70e220589c130d980248da973ce85d70bebf",
+    "guidance_paths": [
+      "testing-best-practices/SKILL.md",
+      "testing-best-practices/references/antipatterns.md",
+      "testing-best-practices/references/characterization-testing.md",
+      "testing-best-practices/references/combinatorial-testing.md",
+      "testing-best-practices/references/correctness-by-construction.md",
+      "testing-best-practices/references/deterministic-time.md",
+      "testing-best-practices/references/differential-testing.md",
+      "testing-best-practices/references/doc-sync-testing.md",
+      "testing-best-practices/references/exhaustive-testing.md",
+      "testing-best-practices/references/fuzzing.md",
+      "testing-best-practices/references/gate-integrity.md",
+      "testing-best-practices/references/go.md",
+      "testing-best-practices/references/golden-file-testing.md",
+      "testing-best-practices/references/mathematical-properties.md",
+      "testing-best-practices/references/mutation-testing.md",
+      "testing-best-practices/references/property-based-testing.md",
+      "testing-best-practices/references/python.md",
+      "testing-best-practices/references/rust.md",
+      "testing-best-practices/references/test-audit.md",
+      "testing-best-practices/references/test-data-builders.md",
+      "testing-best-practices/references/test-types.md",
+      "testing-best-practices/references/typescript.md",
+      "testing-best-practices/references/vcr-cassettes.md"
+    ]
+  },
+  {
+    "id": "81ed009d77b57e5c",
+    "phase": "B",
+    "case": "B02",
+    "arm": "none",
+    "blind_id": "1274240f8d0c06e7",
+    "packet": "subjects/81ed009d77b57e5c/packet.md",
+    "packet_sha256": "440e68594120265d9c7a4e5e2a65b1937ea6452916599b1a5455f922554a3f1d",
+    "guidance_paths": []
+  },
+  {
+    "id": "f017afaf3bd340cf",
+    "phase": "B",
+    "case": "B01",
+    "arm": "openclaw",
+    "blind_id": "fca5cd3ab437df4a",
+    "packet": "subjects/f017afaf3bd340cf/packet.md",
+    "packet_sha256": "dbad21e6e8d678190da8e42338da28c05424bd5ddda5b8576c7f79afc33ccdf5",
+    "guidance_paths": [
+      ".agents/skills/openclaw-testing/SKILL.md",
+      ".agents/skills/test-audit/CAMPAIGN.md",
+      ".agents/skills/test-audit/SKILL.md",
+      ".agents/skills/test-audit/references/audit.md",
+      "LICENSE",
+      "docs/help/testing/boundary-scenarios.md",
+      "docs/help/testing/fixtures.md",
+      "docs/help/testing/writing-tests.md"
+    ]
+  }
+]

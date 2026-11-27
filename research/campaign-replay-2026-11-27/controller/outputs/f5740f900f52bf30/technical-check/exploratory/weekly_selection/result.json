@@ -1,0 +1,18 @@
+{
+  "exit": 0,
+  "wall_seconds": 7.229,
+  "log": "technical-check/exploratory/weekly_selection/run.log",
+  "sha256": "a023aa12eefafdf226bedb441d159c574b0eaaff1c01e57084b775c5671c351f",
+  "test_files": "3 passed (3)",
+  "tests": "28 passed (28)",
+  "source": "submitted",
+  "stimulus": null,
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "--reporter=verbose",
+    "state-machine-fuzz.test.ts",
+    "overlap-fuzz.test.ts",
+    "eviction-recovery.test.ts"
+  ]
+}

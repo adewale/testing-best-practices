@@ -1,0 +1,29 @@
+rg: docs/cli*: No such file or directory (os error 2)
+src/cli/index.ts:274:  // #959: multi-input — when more than one positional file is given, render
+src/cli/index.ts:384: *  multi-input, and watch differ only in I/O and error envelopes, so they
+src/cli/index.ts:1170:- render --format ${CLI_RENDER_FORMATS.join(', ')} [--security strict] — render a diagram; PNG requires --output and does not support multi-input/watch
+src/cli/args.ts:129: * render intentionally accepts multiple files. */
+src/__tests__/labeled-source-port-property.test.ts:4:// labelled source feeding a multi-input hub — exits at its side mid-port AND is
+src/__tests__/labeled-source-port-property.test.ts:13:// the hub. The cases in this file all have a multi-input hub (B fed by A + B2),
+src/__tests__/cli-error-envelope.test.ts:234:  test('a missing file in a multi-input render is an argument error, not a render failure', () => {
+e2e/cli.e2e.test.ts:99:describe('am render multi-input', () => {
+e2e/cli.e2e.test.ts:137:      expect(payload.files.map((result: { file: string; ok: boolean; output: { kind: string; nodes: { id: string }[] } }) => ({
+src/__tests__/cli-multi-input.test.ts:1:// Loop 13 M4 (#959) + M5 (#930): multi-input rendering + watch re-render step.
+src/__tests__/cli-multi-input.test.ts:10:const temp = useTempDirs('am-multi-input-')
+src/__tests__/cli-multi-input.test.ts:84:describe('#959 multi-input rendering', () => {
+src/__tests__/cli-multi-input.test.ts:85:  test('renders multiple files, emits a results array, skips bad ones', () => {
+src/__tests__/cli-multi-input.test.ts:99:  test('multi-input json parse errors expose structured details, not stringified blobs', () => {
+src/__tests__/cli-multi-input.test.ts:118:  test('--security strict applies to multi-input SVG renders', () => {
+src/__tests__/cli-multi-input.test.ts:124:    expect(payload.files.every((f: any) => f.ok && !f.output.includes('fonts.googleapis.com'))).toBe(true)
+src/cli/agent-instructions.ts
+src/cli/am-bin.ts
+src/cli/args.ts
+src/cli/deadline.ts
+src/cli/exit-codes.ts
+src/cli/help.ts
+src/cli/index.ts
+src/cli/init-agent.ts
+src/cli/jsonl.ts
+src/cli/markdown-fences.ts
+src/cli/preflight.ts
+src/cli/run-entrypoint.ts

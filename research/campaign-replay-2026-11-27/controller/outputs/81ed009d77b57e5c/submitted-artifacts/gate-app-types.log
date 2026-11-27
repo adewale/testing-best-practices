@@ -1,0 +1,5 @@
+
+> keyboardia@0.2.0 typecheck
+> tsc -b
+
+sh: 1: tsc: not found

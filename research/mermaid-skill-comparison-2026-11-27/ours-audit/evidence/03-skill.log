@@ -1,0 +1,1449 @@
+# Test Type Decision Guide
+
+Read this file when deciding which types of tests to write for a feature or
+project. Tests are organized into three tiers by priority.
+
+A test tier is a resource contract: what the test may touch (network,
+database, filesystem, threads, sleeps, wall-clock budget). Treat a violation
+as misclassification and enforce mechanically where the runner allows. When
+tier ratios stop settling arguments, argue the five axes explicitly — Speed,
+Maintainability, Utilization (resource cost), Reliability (flakiness),
+Fidelity — improving one is only free when it does not cost the others.
+
+## Step Zero: can the type replace the test?
+
+Before reaching the tier system, ask: *could this test exist only because the
+function's parameter type is too loose?*
+
+| Test you were about to write | Type-level alternative |
+|---|---|
+| `test_X_rejects_null` | Make the parameter `T`, not `Optional[T]` |
+| `test_X_rejects_empty` | Make the parameter `NonEmpty[T]` |
+| `test_X_rejects_negative` | Use `u32` / smart constructor / `NonNegative` newtype |
+| `test_X_rejects_invalid_email` | Make the parameter `EmailAddress`, parsed at the boundary |
+| `test_invalid_state_transition` | Use sealed enum / typestate / phantom types |
+| `test_builder_rejects_missing_required_field` | Make the field a required builder argument |
+| `assert_should_never_happen` | Tighten the type so the state is unrepresentable |
+
+If a tighter type would make the assertion structural rather than defensive,
+fix the type and **don't** write the test. See
+`references/correctness-by-construction.md`.
+
+This applies *inside* a trust boundary. **Across** a trust boundary (HTTP,
+file, IPC, external API, user input) the wire format is untyped, so parser
+tests, contract tests, and VCR cassettes still earn their keep — they are
+correctness-by-construction re-erected at the boundary.
+
+Ward Cunningham's CHECKS adds one calibration: validation intensity should match the action's consequence. Saving a draft, publishing, charging a card, and deleting data do not need the same checks. Test the boundary parser and the action-specific validation choke point; do not smear identical validation tests through every downstream method.
+
+### After Step Zero: the two invariant tests
+
+Once the invariant lives in the type, write *both* tests below. Most
+projects write only the first; the second is the highest-yield audit
+practice the testing literature underweights.
+
+**Tactic A — invariant-proof.** A property-based test asserting that, for
+any input satisfying the precondition, the postcondition holds. This is
+the runtime shadow of a Hoare triple `{P} S {Q}`.
+
+```python
+@given(orders())
+def test_cancel_invariant(order):
+    cancelled = order.cancel()
+    assert cancelled.status is OrderStatus.CANCELLED
+    assert cancelled.items == order.items
+```
+
+**Tactic B — model-gap.** A test that tries to construct each invalid state
+the type claims to forbid, and asserts the construction fails. *If the
+construction succeeds, the model is too loose — fix the model, not the
+test.*
+
+```python
+def test_paid_empty_is_unrepresentable():
+    with pytest.raises((ValueError, TypeError)):
+        Order(status=OrderStatus.PAID, items=[])
+```
+
+A and B together replace per-layer "rejects invalid input" tests entirely.
+A says "the function obeys its contract." B says "the contract actually
+excludes what we claim it excludes."
+
+## The trust-boundary lens
+
+```
+   UNTYPED INPUT             TYPED INTERIOR                   UNTYPED OUTPUT
+   (HTTP, file, user)        (rich domain types)              (DB, external API)
+   ──────────────────────────────────────────────────────────────────────────
+        │                          │                                 │
+        ▼                          ▼                                 ▼
+   Parser tests at         Behavior tests on the              Contract tests,
+   boundary (PBT,          public interface (test what        VCR cassettes,
+   valid-or-absent)        it DOES, not what it rejects)      E2E across boundary
+```
+
+- **At the inbound boundary**: parse, don't validate. One parser test per
+  type, ideally property-based.
+- **In the typed interior**: behavior tests on the public interface. Do not
+  re-test invariants the types already enforce.
+- **At the outbound boundary**: contract tests, VCR cassettes, E2E.
+
+## Examples as communication
+
+When users, domain experts, bug reporters, support teams, or PMs provide concrete examples, keep their language visible. Tests are executable examples before they are coverage artifacts.
+
+- Convert business-rule rows into table-driven tests or fixture files at the domain/service seam.
+- Do not drive every rule row through the UI. Use one or a few UI/E2E tests to prove wiring, then test the rule table below the UI.
+- Prefer customer-sourced examples over expecting customers to maintain executable tests.
+- If examples require a custom helper or mini-DSL, keep it small and test the helper itself.
+- Add prose or test names that explain why the example matters, not only the expected value.
+
+## Calibrate by lifetime and change kind
+
+| Situation | Test posture |
+|---|---|
+| Throwaway spike or research probe | No test or one smoke/characterization check if the result will be reused. State the lifecycle instead of adding test theater. |
+| Reusable library, parser, SDK, or data structure | Regression, property/exhaustive, contract, and mutation/differential checks where triggered. |
+| Behavior change | Add or update a test that can fail for the behavior. Prefer red-green evidence when feasible. |
+| Pure structure/tidying | Use the existing green suite. If no suite protects the behavior, add characterization tests first. |
+| Technical debt repayment/refactor | Characterize current behavior, then refactor under a green suite; debt without tests is harder to repay safely. |
+| Demo, starter, or example repo | A build/type check (e.g. `tsc --noEmit` plus a dry-run deploy) can be the whole verification. Say so explicitly; do not leave an unmodified scaffold test that cannot pass. |
+| Content or data repository (wiki, corpus, generated site) | The system under test is the corpus plus its gates: syntax, link targets, retrieval evals, freshness. The gate scripts and auto-fixers get the unit tests, with known-good and known-bad fixtures. |
+| Experiential product quality (game feel, audio, visual taste) | Tests guard invariants. Aesthetic claims need a dated, scheduled human review with an artifact (video, audio capture); do not encode taste as pinned numbers or hashes. |
+| Long-lived repo with many gates | Gates cost time and attention. Check each one runs and can fail, and retire gates that never fire; see `references/gate-integrity.md`. |
+
+## TDD micro-tactics
+
+Use these when the user asks for TDD or when a bug fix/new behavior can be developed test-first:
+
+- **Test List**: write the next known tests down. When a new idea appears mid-cycle, add it to the list instead of breaking the red/green focus.
+- **Assert First**: write the final assertion, then work backward to setup.
+- **Evident Data**: make expected values readable as expressions or named examples, not unexplained constants.
+- **Child Test**: if a test is too large to make pass, extract a smaller failing test and return to the larger one later.
+- **Learning Test**: pin third-party API behavior before depending on it.
+- **Crash Test Dummy**: use a fake that raises/returns failure to exercise hard error paths.
+- **Fake It / Triangulate / Obvious Implementation**: pick the green strategy based on uncertainty; replace fake constants once the second example forces generalization.
+
+Team rule: do not commit failing unit tests. For solo work, a broken test can be a re-entry marker only if it is not pushed as green proof.
+
+## Tier 1: Always Required
+
+### Unit Tests
+- **When**: Every function with non-trivial logic (`if`, loops, arithmetic)
+- **Rules**: meaningful behavior oracle, relevant happy/sad/boundary paths, no live network or persistent shared filesystem. Temp dirs, in-memory stores, and local fakes are fine.
+- **Assertion calibration**: example-based behavior tests often need multiple assertions; table rows, property tests, and exception tests may have one strong oracle.
+- **Cost**: Low setup, fast, stable
+
+### Smoke Tests
+- **When**: Every deployable unit (app, service, CLI)
+- **What**: "The app starts, responds to the main endpoint, and touches its core
+  dependency" (opens the database and runs one query). `--help` is not a smoke test.
+- **After deploy**: also check that the live version or build SHA matches what you
+  meant to ship; a deploy step that skips and ends green is a failure mode.
+- **Cost**: Very low — one test that boots the app
+
+### Regression Tests
+- **When**: After every bug fix
+- **How**: Write the failing test BEFORE fixing the bug
+- **Rules**: Name after the bug/issue number, include a comment explaining it
+
+## Tier 2: Required When Triggered
+
+### Property-Based Tests
+**Trigger**: ANY of these apply:
+- [ ] Function accepts strings/numbers/binary from users
+- [ ] Function serializes/deserializes data
+- [ ] Function transforms data (output preserves some input property)
+- [ ] Function is a parser (should never crash on arbitrary input)
+- [ ] Function computes rankings/scores/orderings
+
+**Cost**: Medium. Requires thinking in invariants, slower to run.
+
+### Fuzz Targets
+
+**Trigger**: A hostile-input boundary has an amplifying risk such as public exposure, custom length/offset/chunk parsing, native or unsafe decoding, prior crashes, or a security scanner/filter that can be bypassed by crashing it—and the project has or is willing to support an appropriate coverage-guided engine.
+
+A small target is distinct from a long campaign. Keep it fast, bounded, connected to production code, and compatible with the selected engine's failure/replay mechanism. For lower-risk or trusted inputs, examples, exhaustive cases, or ordinary properties may be enough. See `references/fuzzing.md`.
+
+### E2E / Acceptance Tests
+**Trigger**: ANY of these apply:
+- [ ] Project has HTTP endpoints or a CLI with multi-step workflows
+- [ ] Project runs on a specific platform (Workers, Pyodide, etc.)
+- [ ] Previous bugs were missed by unit tests
+- [ ] Domain experts supplied concrete examples that define a story or rule
+- [ ] A new feature changes the meaning of an existing action (redirects it, overrides it, alters its default) — test the composed workflow, not each feature alone; two individually well-tested features can still destroy data at their seam
+
+**Rules**: Golden path first, gate behind env vars, limit to 5-15 tests. For business-rule examples, prefer acceptance tests at the domain/API seam and only enough UI/E2E coverage to prove wiring. For a new service or first feature, build a **walking skeleton**: the thinnest build/deploy/test slice that exercises real packaging, configuration, and one path through the system. Track not-yet-implemented acceptance tests as in-progress with an issue/story link; do not hide them as unconditional skips. Record known fidelity gaps when a fake replaces a real service, and schedule a real-service check when that risk matters. Drive the golden path through trusted user input: a run through a test facade or backdoor (`window.__test`, an injected store) is not user-journey evidence. Target the artifact built from this commit (a local server, or a deployment of this SHA) — never production from a PR suite. For platform SDK wrappers, state which realism level each check reaches (static → local runtime emulation such as workerd, Pyodide in Node, or `wrangler dev` → realistic data → deployed) and keep at least one local-runtime check in CI.
+**Cost**: High setup, slow, can be flaky.
+
+### Documentation-Code Sync Tests
+**Trigger**: ANY of these apply:
+- [ ] Project has CLI commands listed in docs
+- [ ] Project has a plugin/hook system with documented extension points
+- [ ] Project has configuration settings described in docs
+
+**How**: Parametrize over code registries, verify each item is in docs.
+
+### Contract Tests
+**Trigger**: ANY of these apply:
+- [ ] Unit tests use mocks for external services
+- [ ] Unit tests use stubs for browser APIs
+- [ ] There are precomputed data files that code depends on
+
+**How**: Validate mock return values against reality in a real environment.
+
+### VCR Cassette Tests (External API Testing)
+**Trigger**: ANY of these apply:
+- [ ] Code calls third-party APIs (LLM providers, payment, auth)
+- [ ] Tests use hand-written mock HTTP responses
+- [ ] External API tests are flaky due to network issues
+
+**How**: Record real API responses to files and replay in tests. See
+`references/vcr-cassettes.md`.
+**Cost**: Low maintenance, occasional re-recording needed.
+
+### Characterization Tests
+**Trigger**: ANY of these apply:
+- [ ] About to refactor legacy or unfamiliar code
+- [ ] No existing test suite for the code being changed
+- [ ] Behavior is undocumented and unclear
+
+**How**: Call the code and record actual outputs as assertions. See
+`references/characterization-testing.md`.
+**Cost**: Low setup, medium maintenance (must decide which behaviors to keep).
+
+### Differential Tests
+**Trigger**: ANY of these apply:
+- [ ] Reimplementing a known algorithm (tokenizer, encoder, hash)
+- [ ] A trusted reference implementation exists (PyTorch, tiktoken, stdlib)
+- [ ] Building an optimized version of known-correct code
+
+**How**: Run same inputs through both implementations and assert outputs match.
+See `references/differential-testing.md`.
+**Cost**: Low if reference exists, high if you must build one.
+
+### Golden File / Fixture-Based Tests
+**Trigger**: ANY of these apply:
+- [ ] Code transforms input files to output files (HTML→Markdown, compilation)
+- [ ] Code generates complex output that's hard to assert on field-by-field
+- [ ] You have real-world input files to test against
+
+**How**: Store inputs in `tests/fixtures/`, expected outputs in `tests/expected/`.
+Auto-discover fixtures, auto-baseline on first run. See
+`references/golden-file-testing.md`.
+**Cost**: Low setup. Human-reviewable baselines. Catches drift.
+
+### Pirate Tests (Language-Neutral Conformance)
+**Trigger**: ANY of these apply:
+- [ ] A specification has multiple implementations across languages
+- [ ] You maintain SDKs/libraries in several languages that must behave the same
+- [ ] An open standard needs a conformance test suite
+
+**How**: Write test cases as data (JSON/YAML). Each implementation provides a
+harness that loads the data and runs assertions. No implementation is privileged.
+See `references/differential-testing.md`.
+**Cost**: Medium (harness per language), but amortized across all implementations.
+
+### Combinatorial / Covering-Array Tests
+**Trigger**: ANY of these apply:
+- [ ] Five or more discrete configuration, feature, plugin, format, browser, or runtime factors interact
+- [ ] The Cartesian product is too large but exact interaction obligations can be stated
+- [ ] New registry members must enter a shared conformance matrix automatically
+
+**How**: Keep mandatory regressions and exact one-way registry enrollment; exhaust
+cheap finite slices; use constraints plus a pairwise base; raise strength only
+for named high-risk groups; move expensive boundary rows to measured slower
+lanes. Validate replacement portfolios in shadow before deleting tests. See
+`references/combinatorial-testing.md`.
+**Cost**: Medium design/modeling cost; execution ranges from low to high depending
+on selected boundaries.
+
+## Tier 3: Use With Caution
+
+### Visual Regression / Screenshot Tests
+- **When helpful**: UI-heavy projects where pixel layout matters
+- **Costs**: Cross-platform font differences cause false positives
+- **Mitigations**: Render baselines on the CI image through a reviewed manual
+  workflow (never skip in CI, never auto-update), disable animations, capture
+  components not pages, mask timestamps and dynamic content. Where pixels stay
+  noisy, keep a loose tolerance and carry precision in structural assertions, or
+  golden a deterministic intermediate. A screenshot nothing compares is not a test.
+
+### Mutation Testing
+- **When helpful**: After a quality audit reveals weak assertions; for
+  high-consequence code; when bugs escape despite high execution coverage
+- **Costs**: Often far slower than one test run and always requires survivor
+  interpretation; measure on the target project/tool.
+- **Mitigations**: Prefer changed code or focused critical modules. Schedule only
+  under the baseline/owner/budget/stop contract in
+  `references/mutation-testing.md`.
+- **Tools**: mutmut (Python), Stryker (JS/TS), PIT (Java), gremlins (Go),
+  cargo-mutants (Rust).
+
+### Performance / Benchmark Tests
+- **When helpful**: A 2x slowdown would be a user-visible bug
+- **Costs**: Results vary between machines
+- **Mitigations**: Compare against baseline, separate from test suite
+
+### Long Fuzz Campaigns
+
+- **When helpful**: Exposed parsers, reusable parser/decoder/protocol libraries, security-sensitive boundaries, crash-prone code, or a corpus that benefits from continued coverage growth
+- **Costs**: CPU, artifact storage, sanitizer builds, and triage—not inherent irreproducibility
+- **Mitigations**: Replay seeds/regressions on every change; run bounded active discovery where practical; move minute/hour campaigns to scheduled CI or continuous fuzzing
+
+Use the engine's minimized failure and replay mechanism rather than a universal seed rule. Ordinary seed replay is valuable regression coverage, but it is not a fuzz campaign. Fuzzing supplies inputs, not a weaker oracle for deterministic exact outputs.
+
+## Minimum Viable Test Suite
+
+For any project, start with:
+0. **Step Zero pass**: invariants encoded in types where the language allows.
+   You write the type instead of the test.
+1. One smoke test (app starts, responds, and touches its core dependency)
+2. Unit tests for business logic (meaningful oracles, happy + sad path) — exercise
+   *behavior* on the precise types, not validation the types already enforce
+3. Regression test for every bug fix (written before the fix)
+
+Add Tier 2 and 3 tests as trigger conditions apply.
+
+## After writing tests: the dual question
+
+For each test you wrote, ask: *could a tighter type have replaced this?* If
+yes, do the type change and delete the test. The goal is a small,
+behavior-focused test suite anchored by a strong type system, not a large
+suite that re-enacts the type system at runtime.
+
+## Cost-Benefit Summary
+
+| Type | Setup | Maintenance | Speed | Bug Power | Flake Risk |
+|------|-------|-------------|-------|-----------|------------|
+| Unit | Low | Low | Fast | Medium | Very Low |
+| Smoke | Very Low | Very Low | Fast | Low* | Low |
+| Regression | Low | Low | Fast | High | Very Low |
+| Property | Medium | Low | Medium | Very High | Low |
+| E2E | High | Medium | Slow | High | Medium |
+| Doc-sync | Low | Low | Fast | Low* | Very Low |
+| Contract | Medium | Medium | Medium | High | Low |
+| VCR cassette | Low | Low | Fast | Medium | Very Low |
+| Characterization | Low | Medium | Fast | Medium | Very Low |
+| Differential | Low | Low | Fast | Very High | Very Low |
+| Golden file | Low | Low | Fast | Medium | Very Low |
+| Pirate | Medium | Low | Medium | High | Very Low |
+| Combinatorial | Medium | Medium | Varies | Model-dependent | Varies |
+| Screenshot | High | High | Slow | Medium | High |
+| Mutation | High | Low | Very Slow | Diagnostic | Medium |
+
+*Low power but catches embarrassing/critical issues
+# Testing Anti-Patterns: Detection and Fixes
+
+## Quick Detection Reference
+
+| Anti-Pattern | Search Signal | Severity |
+|---|---|---|
+| Logging not asserting | `t.Log` in `if` blocks; `console.log` in test conditionals | P0 |
+| Not-empty assertions | `!= ""`, `toBeDefined()`, `toBeTruthy()` as sole assertion | P1 |
+| Unconditional skips | `@skip`, `xit`, `xdescribe` without `skipif` | P1 |
+| Mock-only integration | `@mock.patch` / `vi.mock` in `tests/integration/` | P2 |
+| No sad path tests | All test names contain "works", "returns", "success" | P2 |
+| Test pollution | `os.environ[...] =` without `monkeypatch` | P2 |
+| Flaky time tests | `sleep(`, `time.time()`, `Date.now()` in tests | P2 |
+| Testing the mock | Asserted value identical to mock's configured return | P3 |
+| Stale snapshots | Snapshot updates with no code changes | P3 |
+| Logical defense-in-depth | Same invariant checked & tested at 3+ internal layers; "this should never happen" tests | P2 |
+| Asserting through fault-masking code | Output-only assertion behind a `clamp`/`max(min())`/blanket `except`→default/`recover()`→zero; test passes even if the computation is wholly broken | P1 |
+| Logic in tests / over-DRY test code | Expected values built by concatenation/arithmetic or from the SUT's own constants; `for`/`if` in test bodies; fixtures mutated in `setUp*` far from the assertion | P1 |
+| Always-green or dead gate | `\|\| true`, `continue-on-error`, `scan --baseline`, `::warning::` + skip, coverage/mutation configured but never run, CI not executing at all | P0 |
+| Vacuous pass | Assertions only inside a loop over possibly-empty results; `violations == []` with no non-empty check; scanner run over zero targets; test imports nothing from the SUT | P1 |
+| Source/config-text assertions | `readFileSync`/`read_text` of `src/`, CSS, or workflow files followed by `toContain`/`assertIn`/`match`; pinned render hashes | P2 |
+| Permissive environment | Regex-dispatched SQL fakes, hand-built schemas, bindings missing from the test config, fakes that never fail | P1 |
+| Hidden retries / timeout ratchet | Helper loops retrying 5xx; `retries: CI ? n : 0`; repeatedly raised global timeouts; `isCI ? a : b` budgets | P2 |
+| Self-authored oracle | Goldens, approvals, or eval questions written by the same actor in the same change as the code they judge | P2 |
+| Mutation program without a decision | Calendar-scheduled mutation over unchanged code; round-number or "no survivors" floors; private helpers exported, production markers added, or tie-breaks and cache internals pinned to kill a survivor | P2 |
+
+## Anti-Pattern Details
+
+### 1. Logging not asserting
+
+**What**: `t.Log()` / `console.log()` / `print()` in assertion position. Test
+logs failure but never fails.
+
+**Fix**: Replace with `t.Errorf()` / `expect().toBe()` / `assert`.
+
+### 2. Not-empty assertions
+
+**What**: Only checks output is non-empty. `return "X"` for all inputs passes.
+
+**Fix**: Assert specific expected content (positive) AND absence of unwanted
+content (negative).
+
+### 3. Mock-reality drift
+
+**What**: Mocks return what the test author expects, not what the real system
+returns. Real API changes go undetected.
+
+**Fix**: When a real engine can run in-process or locally (SQLite loaded from
+migrations, workerd, Pyodide in Node, node-canvas), delete the mock and use it.
+For doubles you must keep, take expected values from the real service — recorded
+responses, VCR cassettes, or a local emulator run — never from the mock author's
+belief. A "fidelity" test whose name says one thing (`changes_0`) while asserting
+another (`changes == 1`) pins fiction; question the expected value. Flag contract
+tests whose target double no longer exists. Add at least one test against real
+infrastructure.
+
+### 4. Integration tests mocking everything
+
+**What**: Tests in `tests/integration/` that mock all external dependencies.
+They're unit tests in disguise.
+
+**Fix**: Either rename to `tests/unit/` (honest labeling) or add real
+component-boundary integration tests alongside. An integration test should
+exercise at least one real dependency or component boundary: an in-process
+controller + service + repository can be integration even without a live
+external service. Do not add network/database dependencies just to satisfy a
+label.
+
+### 5. Testing the mock
+
+**What**: Test assertion verifies the mock's return value, not the function's
+behavior. Test is tautological.
+
+**Detection**: The asserted value is identical to `mock.return_value`.
+
+**Fix**: Assert on the function's *transformation* of mock data, not the data
+itself.
+
+### 6. Skipped tests without expiry
+
+**What**: `@skip("broken")` with no tracking issue. Accumulates silently.
+
+**Fix**: Use `@skipif(condition, reason="...")` for legitimate skips. Require
+issue links. Delete tests that will never be re-enabled.
+
+Related shapes: `test.skip()` called inside a failure branch (the test skips
+exactly when the feature breaks); an imperative `pytest.xfail()` left in a
+known-bug test after the fix (a regression reports green); a capability skip
+(`skipIf(!resource)`, build tag, OS-only baseline) that no CI lane ever satisfies.
+A gated test is real only if some lane provides the resource, selects the test,
+and fails when it skips — see `references/gate-integrity.md`.
+
+### 7. Tests coupled to implementation
+
+**What**: Tests that break on refactoring even when behavior is unchanged.
+Verifying internal method call counts, SQL query strings, call order.
+
+**Fix**: Test through public interfaces. Assert on outputs and side effects,
+not internal mechanics.
+
+Agent-era shapes of the same smell:
+- **Source- or config-text assertions**: reading `src/`, CSS, docs, or workflow
+  YAML and asserting substrings or regexes. They break on innocent edits and pass
+  on real rendering or runtime bugs. Assert computed style, rendered output, or
+  parsed-structure invariants ("every step after a precondition is gated on it"),
+  or extract a seam.
+- **Hash-only goldens**: pinned render or op-stream hashes give no reviewable diff
+  and churn on every art change; prefer structural or perceptual goldens with a
+  visible diff (see `references/golden-file-testing.md`).
+- **E2E through a test facade**: driving the app through `window.__test` hooks
+  proves the facade works, not the user journey; keep a golden path on trusted
+  input.
+
+### 8. Flaky tests
+
+**What**: Tests that pass sometimes and fail sometimes.
+
+| Cause | Fix |
+|-------|-----|
+| Wall-clock time | Inject clock or freeze time |
+| Shared state | Reset in setUp/tearDown |
+| Network | VCR cassettes or committed fixtures |
+| Race conditions | Proper synchronization |
+| Test ordering | `autouse` fixtures for cleanup |
+| Oversized SUT | Shrink the tier/SUT first — size (deps, processes, RAM) predicts flakiness better than tool choice |
+| Retry/quarantine reliance | Root-cause instead; retries mask real races and erode trust in red. Required lanes run with `retries: 0` and assert zero flaky results; helper-level retry loops count too |
+| Wall-clock budgets in the unit tier | `expect(elapsed).toBeLessThan(n)` fails under contention; assert bounded work or move deadline contracts to an isolated lane with headroom or an injected clock |
+| Timeout ratchet | Repeatedly raising a global timeout, or `isCI ? a : b` budgets, means heavy work is in the wrong tier; move the tests, don't raise the budget |
+
+### 9. Test pollution
+
+**What**: Tests modify global state without cleanup.
+
+**Fix**: Use `monkeypatch` (pytest), `afterEach` cleanup, fresh databases per
+test, `try/finally` for plugin registration.
+
+### 10. Quantity over quality
+
+**What**: Chasing coverage percentage with weak tests. Execution coverage says
+what ran, not what would be caught.
+
+**Fix**: Judge oracle strength, not counts: a test with weak sole assertions is
+weak whatever the coverage. To find the weak ones, seed a fault in the code a
+test claims to cover and see whether it fails (cheapest first:
+`references/gate-integrity.md` §5). Make coverage informational, not blocking, and check its denominator (thresholds only
+see files the tests load unless `include` lists the source tree).
+
+**Never turn a heuristic into a quota.** A per-file or per-test assertion minimum
+(for example "at least 3 per test") gets met with `isinstance` and not-empty checks,
+and the same happens to coverage and mutation score floors. Use counts only to
+find tests to read.
+
+### 11. Missing sad path
+
+**What**: Only happy-path tests. No tests for invalid input, errors, edge cases.
+
+**Fix**: For every feature: test valid input, invalid input, boundary values,
+empty/null, error conditions, and (where applicable) concurrency.
+
+### 12. Stale VCR cassettes / snapshots
+
+**What**: Recorded API responses or snapshots that no longer match reality.
+Developers blindly update without review.
+
+**Fix**: Delete and re-record periodically. Require explicit reviewer approval
+for snapshot changes. Filter volatile data from cassettes.
+
+### 13. Logical defense-in-depth (shotgun validation)
+
+**What**: Defense-in-depth applied to internal program logic in a
+non-adversarial, already-typed context. Every layer defends against the
+*same* failure mode in the *absence* of an adversary, instead of lifting
+the invariant into a type, schema, or contract once at the boundary.
+
+**Detection signals** (any one is enough; co-occurrence is diagnostic):
+- **Repeated validation everywhere** — same `is None` / `!= ""` / `len > 0`
+  guard at controller, service, and repo
+- **Loose strings** flowing through the whole system instead of being
+  parsed into a precise type at the boundary
+- **Status enums duplicated across layers** — `OrderStatus` redeclared in
+  DTO, service, repo, UI
+- **Catch-all retries** — `for _ in range(3): try: ... except Exception:`
+- **Silent fallback behavior** — `lookup() or default()` hiding failure
+- **Post-hoc sanitizer patches** — regex stripping characters that should
+  never have been representable
+- **Runtime guards instead of state machines / types / schema constraints**
+- **"This should never happen"** comments and assertions
+- **Tests `test_X_rejects_null` / `_empty` / `_negative`** duplicated
+  across many functions in one module
+- **Builders that permit invalid objects** plus tests asserting the
+  invalid objects are rejected
+
+**Distinguish from**: defense-in-depth where each layer faces a
+*different* failure mode or *different* adversary — hostile input, auth
+boundaries, SSRF/XSS/injection, external system failure, rate limits,
+retries, observability, recovery. Those layers and their tests are
+not this antipattern.
+
+**Fix**:
+1. Lift the invariant into a type, schema, or sealed enum at the outermost
+   trust boundary (smart constructor, branded type, `NonEmpty`,
+   `EmailAddress`, newtype, state machine, schema constraint).
+2. Delete every downstream check and **its test**.
+3. Add the two tests that survive: (A) a property-based test that *proves*
+   the invariant holds for valid inputs, and (B) a test that tries to
+   construct each invalid state the type claims to forbid and asserts the
+   construction fails. If (B) passes by *succeeding* in construction, the
+   model has a hole — fix the model, not the test.
+4. If the language cannot express the invariant in the type system, keep
+   exactly one runtime check at the outermost layer and one test for it.
+
+See `references/correctness-by-construction.md` for language-specific
+patterns and the canonical lineage (Hoare → Dijkstra → Meyer →
+Praxis/SPARK → seL4 → Minsky → King → LangSec).
+
+### 14. Asserting through fault-masking code
+
+A specialization of #2 worth naming: when the code under test silently absorbs
+anomalies before they reach the output — `max(0, min(100, score))`, `except
+Exception: return 0`, a Go `recover()`→zero, `value or DEFAULT`, or any
+high-domain/range coercion — even a *specific* assertion on the final output
+can't catch a fault. Voas & Miller's model: a fault must be **Executed**,
+**Infect** the data state, and **Propagate** to output to be caught; a mask
+breaks propagation, so the computation can be wholly broken and the test still
+passes. (In #2 the *assertion* is weak; here the *SUT* destroys the signal.)
+
+**Fix — surface the infection so it can propagate:**
+1. Prefer a smaller public seam or explicit observable diagnostic before
+   reaching into private state. If the pre-mask value is a stable, approved
+   testability seam, assert it directly; asserting only the clamped/defaulted
+   output still cannot see an unrelated infection that the mask absorbs.
+2. If a mask hides a genuine defect, surface it (raise/return an error) rather
+   than testing around the silent recovery.
+3. Run focused mutation testing on masked modules. A survivor is a triage
+   question—it may expose a hidden fault, but may also be equivalent, irrelevant,
+   or specified masking (see `references/mutation-testing.md`).
+
+**Restraint — when the mask is the specified behavior, don't flag it**: if
+clamping volume to `[0,100]`, graceful degradation, a documented fallback, or
+saturating arithmetic *is the contract*, that is correct code — test the
+specified behavior directly (`set_volume(150) == 100`) and do **not** call it
+fault-masking or recommend removing it. The smell is a mask hiding the
+*unrelated* computation behind it, not a mask that is itself the feature.
+
+### 15. Logic in tests / over-DRY test code
+
+**What**: Test code optimized like production code. Signals: expected values
+built by concatenation/arithmetic or from the SUT's own constants (`assert
+url == BASE + "/users/" + name` — the expectation can share the SUT's bug
+and stay green); `for`/`if` in a test body deciding which assertion runs; a
+shared fixture mutated in `setUp*`/module scope far from the assertion that
+depends on it; helpers that hide which inputs a test's outcome depends on.
+
+**Why it matters**: Tests have no tests of their own. An abstraction that
+breaks (or shares the SUT's bug) inside test code has nothing to catch it,
+and a reader cannot verify an expectation without chasing helper
+definitions. Cause and effect should sit together, even at the cost of
+duplicated setup — test code leans DAMP (descriptive and meaningful
+phrases), not DRY.
+
+**Fix**: One behavior per test; setup local and explicit next to its
+assertion, duplicated when necessary; expected results derived independently
+of the SUT (often literals for simple examples); loops replaced by named
+parameterized rows with no branching in the row body.
+
+**Restraint — the sanctioned DRY**: value-construction builders/factories
+with reasonable defaults are correct *when every field an assertion depends
+on is set explicitly in the test* (see `references/test-data-builders.md`).
+DAMP targets hidden behavior, not value helpers; do not inline a builder's
+boilerplate into every test. Named-row table tests (e.g. Go's
+`t.Run(tt.name, ...)`) are fine.
+
+### 16. Always-green and dead gates
+
+**What**: A check that cannot fail or is not running: `|| true`,
+`continue-on-error`, baseline updaters used as checks (`detect-secrets scan
+--baseline` exits 0 and absorbs the new secret), error-swallowing shell, deploys
+that `::warning::`-skip and end green, E2E that is green when secrets are missing,
+scanners run over an empty directory, coverage thresholds never invoked, CI that
+stopped executing (quota, billing, missing runner) while pushes continue.
+
+**Fix**: Make each gate fail closed and prove it by planting a violation in a
+scratch copy. An advisory job needs an owner, a change-based trigger, a
+notification, and an exit plan. A diagnostic nobody reads is a cost, not a dead
+gate: run it on demand or delete it rather than adding a threshold. See
+`references/gate-integrity.md`.
+
+### 17. Vacuous passes
+
+**What**: The assertion holds because nothing was checked: assertions only inside
+a loop over output that can be empty; "every row satisfies P" over zero rows;
+`Math.min(...[])` or other zero-sample aggregates passing a threshold; a test or
+script that reimplements the logic and imports nothing from the SUT; tests of code
+with no non-test importer.
+
+**Fix**: Assert the precondition (non-empty, HTTP 200, font loaded, n > 0) before
+the universal claim and print the denominator. Import the real code. Check that the
+subject has a production importer.
+
+### 18. Permissive environment (yes-man doubles)
+
+**What**: The test environment enforces fewer constraints or runs fewer branches
+than production: fake databases that ignore `WHERE` clauses or accept wrong bind
+counts, hand-written schemas that drift from migrations, bindings omitted from the
+test config (so `env.AI && ...` paths never run), fresh-only databases, tiny
+fixtures. A variant: production code gains a branch whose only job is to keep a
+test double working.
+
+**Fix**: Load schemas from migrations, run a real local engine, add fakes for
+every binding production uses, and enumerate capability-gated branches so none
+hides. Remove branches that are unreachable with the real dependency.
+
+### 19. Self-authored oracles
+
+**What**: Goldens approved, eval questions written, or expected values chosen by the
+same actor in the same change as the code they judge. The suite then measures
+agreement with its author, not correctness.
+
+**Fix**: Treat such goldens as characterizations until independently reviewed;
+write eval cases before the change or from users' own words; report a trivial
+baseline (e.g. title-keyword matching for a retrieval eval) next to the real score
+so a non-discriminating eval is visible.
+
+### 20. Silent tier downgrade
+
+**What**: A cleanup or "improve test quality" change replaces a real-engine test
+(SQLite, workerd, browser) with a mock or string assertion, or deletes it, without
+saying so. Lessons written down the week before are undone.
+
+**Fix**: When removing or replacing tests, list them by tier and keep the tier or
+stronger. A lesson or postmortem counts only when a check enforces it.
+
+### 21. Mutation program without a decision
+
+**What**: Mutation testing run as a standing program rather than to answer a
+question about specific tests. Signals:
+- scheduled runs over unchanged code that repeat the same score;
+- floors copied from round numbers, set above the measured score, or taken
+  from a loaded local run;
+- "no surviving mutants" as a definition of done, or every survivor treated as
+  a release blocker;
+- private helpers exported, production code marked, or implementation details
+  (tie-breaks, epsilons, cache internals) pinned only to kill a survivor;
+- tests that enforce enrollment in the mutation lane;
+- a mutation tool kept as a dependency that nothing runs;
+- source-text "sabotage proofs" for regex change-detectors, which only test the
+  regex.
+
+**Why it hurts**: The recurring lanes cost runner-hours and, more lastingly,
+couple tests to implementation. The survivors they surface are often
+equivalent. Real findings come from cheap one-off checks.
+
+**Fix**: Seed faults cheapest first (`references/gate-integrity.md` §5), then
+use a tool scoped to changed code, on demand. Classify a survivor that is
+equivalent, unreachable through the public interface, or performance-only; do
+not chase it. Delete lanes that have never changed a decision.
+# Audit and repair existing tests
+
+Use this workflow for a bounded test-quality sweep, consolidation, or deletion.
+It complements [anti-patterns](antipatterns.md) and [gate integrity](gate-integrity.md).
+The output is a set of evidence-backed decisions about tests and their owners.
+Search hits, test counts, coverage percentages, and deleted lines are not quality
+verdicts or targets.
+
+## 1. Establish scope and baseline
+
+- Read repository instructions, CI configuration, nearby tests, and relevant open
+  PRs. Pin the base SHA. Choose a coherent production owner or boundary and a time
+  budget; do not start with a deletion quota.
+- Establish the asset's lifecycle and the independently promised behavior.
+  A prototype, archived reference, manual-only project or specification may
+  appropriately have no automated test scope. An internal branch is not itself
+  a public contract. Identify the active caller before judging a helper.
+- For a larger suite, inventory the whole in-scope surface, then choose and
+  disclose a risk-based and stratified sample. Record selected versus actually
+  read files, parameter rows and unrun tiers. Use
+  [sampling and witnesses](test-audit-patterns.md); a sample is not an exhaustive
+  campaign or permission to remove an unexamined layer.
+- For each in-scope tier, record the actual command, CI job/trigger, last result
+  on the default branch, and whether it selects any tests and can fail. Read job
+  results rather than inferring them from the workflow's overall conclusion.
+- Run each relevant tier once when feasible, or record why it was unavailable.
+  A passing baseline does not establish oracle strength. A failing baseline may
+  expose a product bug; keep it separate from cleanup candidates.
+- Read the owner, entry points, callers, fixtures, and history of candidates.
+  For external-system doubles, inspect the real API/types and exercise the real
+  runtime where available. SQLite can validate SQL without validating D1's
+  binding semantics, `exec`, `batch`, or limits.
+- Check fixtures are obtainable from a fresh checkout. An orphan Git pin, a
+  developer-specific absolute path, unavailable recording, or generated state
+  with no maintained recipe makes historical proof difficult to reproduce. If replacing it with
+  generated scenarios, verify their observable state and label old outputs as
+  historical rather than claiming the original experiment was reproduced.
+- Test/receipt hashes may identify frozen inputs or independently promised
+  artifact bytes. A historical fingerprint of a live script does not forbid
+  future repairs; keep it as provenance and report that the old outcome does
+  not attest to the new revision. Check the declared enrollment and denominators
+  rather than substituting current source identity for evidence consistency.
+
+## 2. Discover candidates cheaply
+
+Start with focused searches, then read each hit in context. With ripgrep, from
+the target repository root:
+
+```sh
+rg -n -g '*test*' -g '*spec*' -g '!node_modules/**' -g '!vendor/**' \
+  '(readFileSync|read_text|read_to_string|toBeDefined|toBeTruthy|assertIsNotNone|waitForTimeout|Thread\.Sleep|time\.sleep|test\.only|test\.skip|pytest\.mark\.skip)' .
+rg -n -g '*.yml' -g '*.yaml' -g '!node_modules/**' -g '!vendor/**' \
+  '(continue-on-error|\|\| true|--passWithNoTests|--updateSnapshot)' .github
+```
+
+These commands only collect candidates; exit 1 means no regex match, not a clean
+bill of health. They miss nonstandard test paths, assertion-free tests, computed
+oracles, custom helpers, and semantic duplication. Adapt paths/frameworks and
+inspect at least the critical boundary's tests and helpers directly. Do not turn
+these patterns into a CI failure rule without calibrated good/bad examples.
+
+For every candidate, ask:
+
+| Signal | What to inspect | Possible improvement | Reason to retain |
+|---|---|---|---|
+| Source/config/SQL strings, copied counts, hashes | Does it execute the owner or only recognize its spelling? | Run the executable, renderer, parser, migration, or real engine | Independent architecture, package, protocol, prompt-byte, or published config contract |
+| Mock supplies the asserted answer | Where did the expected value and fixture come from? Does the real owner produce the effect? | Real local engine; externally grounded fixture; assert persisted/emitted state | A controlled dependency failure or a separately verified external contract |
+| Truthy, not-null, no-crash | Which wrong outputs would still pass? | Assert relevant values, state transitions, and error semantics | Existence or totality is itself the complete contract |
+| Assertions in loops, empty result lists, negative checks | Are inputs nonempty and is the intended branch reached? | Assert enrollment/reachability and check each required item | An empty violation set is valid when inspected inputs are independently nonempty |
+| Same behavior at several layers | Which suite owns the contract? What distinct failure can each layer detect? | Consolidate shared behavior into a keeper; retain wiring/lifecycle checks | Transport, security, persistence, platform, or ordering risks differ |
+| Sleep, retry, timeout increase | Who produces completion? Does the original shard order reproduce a leak? | Wait for produced state; virtual time; repair resource ownership | A measured performance or timeout contract, with justified bounds |
+| Test-only export, flag, wrapper, injection hook | Are there non-test callers? Is this a useful owned interface or only access to internals? | Move proof to a real entry point; remove an obsolete seam within scope | A legitimate public API or stable dependency boundary |
+| Name promises more than assertions prove | Do input, execution, and oracle reach the named condition? | Correct the test/fixture or narrow its name and claim | A narrower, honest contract still matters |
+| Grader/checker self-tests all pass | Can plausible wrong answers pass a scored assertion? Are valid phrasings rejected? | Calibrate each independently scored assertion with both controls | Instrument validation proves checker behavior; product or model gains need their own experiment |
+
+Static, slow, mocked, and single-assertion tests are not automatically bad.
+Retain independently specified API, security, migration, storage, release,
+cross-language, default, and observable-ordering contracts. Do not remove
+behavioral proof merely because a type exists; check its runtime boundary and
+hostile inputs using [correctness by construction](correctness-by-construction.md).
+
+## 3. Decide before editing
+
+For each candidate and relevant neighbour, record one decision. Start with the
+highest-risk evidence, rather than cataloguing every obviously sound test in a
+large repository. Expand to a full ledger when a broad layer removal makes
+coverage ownership uncertain.
+
+```md
+Base SHA / owner / scope:
+Tier command / CI job / baseline result:
+
+| Test location and name | Observable contract / credible regression | Expected-value provenance | Decision | Remaining proof / keeper | Validation |
+|---|---|---|---|---|---|
+```
+
+- **Retain**: name the independent contract and the regression it catches.
+- **Repair**: preserve the contract; fix a weak oracle, unreachable fixture,
+  unrealistic double, or synchronization problem.
+- **Consolidate**: name the keeper test and migrate every distinct assertion
+  before removing the redundant suite. A similar name or coverage line is not
+  evidence that the keeper catches the same bug.
+- **Delete**: name the remaining proof, or explain why no independent contract
+  exists. No contract needs no artificial replacement. Missing evidence means
+  retain pending investigation.
+
+Separate a current product defect from a demonstrated gap in a particular test,
+an unspecified contract, and an execution/setup limitation. A fault surviving one
+checker does not establish that every sibling or the whole suite accepts it.
+
+Before any deletion, record the old and new tier and inspect CI routing,
+parameter rows, negative/error branches, callers, and the reason the test exists.
+An internal duplicate can disappear while its boundary proof remains. An
+independent real-engine contract must keep equal or stronger proof.
+
+## 4. Repair and prove preservation
+
+Work in small owner batches. Keep production fixes distinguishable from test
+cleanup; respect tests-only scope and report any required production repair.
+
+1. Replace source recognition and self-supplied answers with execution through
+   the smallest honest production boundary. Expected values come from a spec,
+   reviewed recording, independent model, or explicit example, not the SUT's
+   constants or the double's implementation.
+   A captured result can be a deliberate compatibility characterization; label
+   and review it using [golden-file guidance](golden-file-testing.md). Comparing
+   the SUT with its own fresh output establishes repeatability, not independent
+   correctness.
+2. Check negative controls reach the intended guard. Rejecting for unrelated
+   missing configuration, fixture setup, or an earlier validation is no proof of
+   the claimed rejection. A loop whose assertions never run supplies no evidence
+   for its per-item claim; direct emptiness assertions can be valid contracts.
+   For failure/recovery, seed distinguishable prior state, fail the relevant
+   handoff, inspect persisted/emitted effects and attempt a healthy retry. For
+   caches and migrations, include old and new or unchanged and changed records.
+   Ground provider versions and response sequences in the real API; do not
+   create an impossible fixture to make an assertion fail.
+3. For a retained contract moved into a keeper, choose a plausible fault from
+   what the old assertion could detect. Use isolated scratch copies/worktrees;
+   do not mutate a checkout while tests are running. Run old and new tests
+   against the **same** fault and record:
+
+   | Fault / contract | Old tests | Keeper | Interpretation |
+   |---|---|---|---|
+   | Concrete production change | Fail/pass/unrun and reason | Fail/pass/unrun and reason | Preserved, stronger, lost, or unknown |
+
+   Old fails/new passes is a possible lost check to resolve. Old passes/new
+   fails shows additional sensitivity only if the failure is for the intended
+   behavior. Both pass calls for investigation; equivalent or unreachable
+   mutations are not automatically missing tests. Restore mutated source
+   byte-for-byte. Do not pursue a mutation-score target or schedule a new lane
+   by default; see [mutation testing](mutation-testing.md).
+   For suspected implementation locks or custom checkers, also exercise a
+   representative allowed change that must stay green: for example, JSON
+   whitespace/key reordering when only parsed meaning is promised. Keep a real
+   defect control alongside it. Preserve exact bytes, item order, or integrity
+   checks when those are the independent contract. Catching more faults is not
+   an improvement if harmless changes now fail.
+4. A product bug needs an observed failing control and passing repaired run on
+   the same harness where feasible. Report unavailable red/control evidence.
+   A baseline failure is not permission to delete the failing test.
+5. Run keeper/owner and relevant sibling tests, then required changed checks.
+   Check deleted tests did not orphan support files, imports, exports, or CI
+   entries. Search documentation for their descriptions as well as names.
+   Delegate broad proof to the repository's normal CI when appropriate.
+
+Choose checks in proportion to the change. Deleting a test with no independent
+contract does not require inventing a mutation. When a compiler replaces a
+type-level check, demonstrate that removing the relevant member fails the
+actual typecheck, rather than building a mutation-testing program around it.
+
+## 5. Review and hand off
+
+For substantial removal, independently compare the deleted assertions against
+the keepers, with special attention to error rows, persisted fields, ordering,
+and external-system fidelity. Add production-correctness review when production
+code or an external-system double changes. Review is useful when it checks
+specific preservation risks; a fixed number of reviewers is not a requirement.
+
+Report decisions, contracts retained/lost/restored, commands and actual results,
+control/fault evidence, CI state at the pushed SHA, and unresolved gaps. Separate
+test/support changes from production changes and any product defects discovered.
+When cost motivates the change, report observed focused runtime, available CI
+time and verification work separately. Measure further only when it can change
+the decision; source size and a single cached run do not establish saved CI cost.
+Do not claim quality from a lower test count or a green-only run.
+For custom checkers or evaluation claims, also use
+[checker calibration](checker-calibration.md). A valid-looking report from a
+failed judge is not a final score. A repaired instrument and an improved model
+are separate claims.
+
+## Reusable task brief
+
+```text
+Use testing-best-practices to audit and improve existing tests for <owner/boundary>.
+Scope: <paths and allowed production changes>. Budget: <time/size>.
+Read the skill's references/test-audit.md and relevant language/tier references.
+Establish CI liveness and a pinned baseline; discover candidates, then inspect
+their production owners, fixtures, callers, and history. Record retain/repair/
+consolidate/delete decisions, independent expected-value sources, and remaining
+proof before edits. Repair the highest-risk false-confidence cases through real
+boundaries. For moved contracts, compare old and keeper tests against the same
+credible faults; explain no-contract deletions. Treat baseline product failures
+as defects. Validate focused proof and required gates, review lost coverage, and
+report exact evidence and gaps. No deletion, assertion, or mutation-score quota.
+```
+# Sample larger suites and choose useful witnesses
+
+Use with [the audit workflow](test-audit.md). The aim is useful proof within the
+chosen scope, not a required number of findings, files, faults or assertions.
+
+## Establish a coverage denominator
+
+1. Inventory test entry points, parameter tables, fixtures, shared helpers and
+   CI/manual tiers at a pinned revision. Distinguish declarations, generated
+   cases, fixture assets and files; these are different counts.
+2. Select coherent production owners by consequence and uncertainty. Supplement
+   these with a reproducible sample across relevant tiers/owners so searches do
+   not inspect only familiar suspicious spellings. State the selection recipe.
+3. Record inventory size, selected files and files actually read in full, plus
+   any partial reads and unrun tiers. A matching source hash proves which input
+   was available, not that someone inspected it or that its tests are strong.
+4. Read each candidate and its owner, callers, helpers, relevant parameter rows,
+   routing and history. Expand only where a claimed contract needs that context.
+5. For a whole-layer retirement, stop sampling that layer: account for every
+   affected declaration/row and assign its distinct assertions to keepers.
+   Reconcile source changes since the base and independently review preservation
+   at each affected boundary. A similar test name is not a coverage map.
+
+Do not call a partial audit a completed subsystem campaign. A source-only review,
+focused execution, hosted suite result and end-to-end result support different
+claims. Existing CI can supply the expensive baseline when its actual revision,
+selection, prerequisites and job results are known.
+
+## Pick a witness from the contract
+
+| Suspected weakness | Small fixture and observed effect | Preserve or allow |
+|---|---|---|
+| Failed write/handoff loses work | Seed existing state; fail after meaningful progress; inspect durable state and run a healthy retry | Genuine intentional deletion and the normal accepted handoff |
+| Partial refresh treated as complete | One source changes while another is unchanged or unavailable; inspect named retained and updated records | Valid empty results and supported caching, independently of failures |
+| Fresh database hides upgrade loss | Apply the actual old schema, seed distinguishable records, then migrate and use the normal query | Fresh installation and new writes after upgrade |
+| A mock supplies its own answer | Use the real local engine/runtime or a separately verified adapter shape; change a meaningful argument/result | Controlled dependency failures; owned seams with real adapter proof |
+| Count/status stands for data | Reassemble bytes, reopen persisted state, or identify exactly which of two records changed | Independent API, privacy, authentication and ordering contracts |
+| Async lifecycle never reached | Hold a real completion boundary with a controlled deferred result; observe acknowledgment, retry and cleanup | Supported callback order and intentionally independent subscriptions |
+| Public artifact bypassed | Install/build as documented in a clean consumer and exercise the declared command/import | Source imports remaining side-effect free and supported package variants |
+| UI selector or visual proxy is weak | Establish the named element/state exists; measure its relevant rendered result | Permitted styling, layout and encoding changes outside the contract |
+| Checker matches vocabulary | Use a credible wrong decision and a correct alternative through the public scoring command | Valid paraphrases, explicit unavailable results and optional case routes |
+| One guard masks another | Reach the guard under review while other limits still permit the operation; verify the state is reachable through supported APIs | The other guard and the adjacent accepted case |
+
+These are choices, not a matrix to run for every owner. For a boundary with a
+single clear defect, one discriminating fault and one relevant permitted change
+can be sufficient. Deleting a test with no independent contract needs no invented
+mutation. Keep costs and claims proportional to the actual decision.
+
+## Avoid manufacturing a failure
+
+- Provider fixtures must obey the supported API/version and ordering semantics.
+  SQLite alone does not prove D1 bindings; a mocked array does not prove R2
+  pagination; copied metadata does not prove a real runtime's buffer conversion.
+- Separate required input/state from incidental spelling. A correct geometry
+  assertion need not mention screenshots; a valid JSON object need not retain
+  member order. Exact bytes or order remain necessary when independently promised.
+- If failure behavior or identity policy is unspecified, document the question
+  rather than designing a new product rule in a test. User-authorized replacement
+  can have different semantics from failed-write rollback.
+- Distinguish an absent file in a sparse audit copy from a fixture unavailable in
+  a fresh checkout. Do not label an environment/setup failure a product defect.
+- Keep old, candidate and fault runs isolated. Restore the source and record
+  which assertions were exercised. Re-run beyond the focused proof only for a
+  change, failure, preservation risk or required gate that warrants it.
+# TypeScript / JavaScript Testing Reference
+
+## Framework: Vitest (preferred) or Jest
+
+### Project setup (Vitest)
+
+```typescript
+// vitest.config.ts
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    globals: true,
+    include: ['tests/**/*.test.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      // Without `include`, thresholds only see files some test happens to
+      // import; untested entrypoints silently drop out of the denominator.
+      include: ['src/**/*.ts'],
+      exclude: ['src/types/**', 'src/**/*.d.ts'],
+    },
+  },
+});
+```
+
+Use one timeout budget everywhere. `testTimeout: isCI ? 15_000 : 5_000` makes a
+fresh local clone the flaky environment; put slow tiers (corpus, scale, subprocess
+builds) in their own project with a budget measured under parallel load.
+
+For Cloudflare Workers (runs tests inside workerd, the real runtime — prefer it
+to hand-written binding fakes):
+```typescript
+import { defineWorkersConfig } from '@cloudflare/vitest-pool-workers/config';
+
+export default defineWorkersConfig({
+  test: {
+    poolOptions: {
+      workers: { wrangler: { configPath: './wrangler.toml' } },
+    },
+  },
+});
+```
+
+### Directory structure
+
+```
+tests/
+  unit/           # Pure logic, no network
+  integration/    # Multiple components, some real deps
+  api/            # HTTP tests against real/dev server
+    setup/
+      api-client.ts       # Typed HTTP client
+      test-factories.ts   # User/post/data builders
+      assertions.ts       # Domain assertion helpers
+      global-setup.ts     # Server startup/teardown
+  e2e/            # Playwright browser tests
+  visual/         # Screenshot regression tests
+```
+
+## Property-Based Testing: fast-check
+
+```typescript
+import fc from 'fast-check';
+
+it('returns a valid result or structured error for arbitrary input', () => {
+  fc.assert(
+    fc.property(fc.string(), (input) => {
+      expect(() => parse(input)).not.toThrow();
+      const result = parse(input);
+
+      if (result.ok) {
+        expect(result.ast).toMatchObject({ type: expect.any(String) });
+      } else {
+        expect(result.error).toMatchObject({ message: expect.any(String) });
+      }
+    }),
+    { numRuns: 500 }
+  );
+});
+
+it('roundtrip: decode(encode(x)) === x', () => {
+  fc.assert(
+    fc.property(fc.string(), (text) => {
+      expect(decode(encode(text))).toBe(text);
+    }),
+    { numRuns: 200 }
+  );
+});
+
+```
+
+**Key arbitraries**: `fc.string()`, `fc.integer()`, `fc.float()`,
+`fc.array()`, `fc.record()`, `fc.uuid()`, `fc.webUrl()`,
+`fc.constantFrom(...)`, `fc.option()`. Use `fc.record()` and `fc.letrec()` for specification-valid structures; keep hostile arbitrary input in a separate totality property.
+
+- **Small finite domains**: enumerate, don't sample. `fc.integer({ min: 0, max: 117 }).map(i => ELEMENTS[i])` at 100 runs misses dozens of the 118 elements each run; `for (const el of ELEMENTS)` covers all of them.
+- **Dates**: `fc.date({ noInvalidDate: true })` or bounded integer timestamps; invalid dates shrink into false failures.
+- **Budgets**: size the test timeout to `numRuns`, or move deep runs to a scheduled budget. A property that takes 1.4 s alone can exceed a 5 s default under parallel load.
+
+### Collection, Replay, and Command Models
+
+When Vitest projects, filters, or workspaces make reachability uncertain, inspect collection with the same CI configuration. `--filesOnly` proves file-level discovery, not collection of a particular test; add a persistent guard only where that configuration has a real drift risk.
+
+A global seed set in a setup file makes PR gates deterministic, but it also makes bare `fc.sample` return the same draw on every call, and it must reach every Vitest project (pass it into the Workers pool as a binding). Pair the fixed PR seed with a scheduled random-seed run that commits each counterexample as a regression case; a CI seed that finds a bug is a finding, not a flake.
+
+Preserve fast-check's `seed` and `path` for `fc.assert`. Model-based failures also report a `replayPath`; pass it to `fc.commands`, not `fc.assert`. Ensure the configuration that runs the property receives those values; logging them is not replay.
+
+```typescript
+// Values parsed from a saved model-based failure. Omit them for normal discovery.
+const { seed, path, replayPath } = savedFailure;
+const commands = fc.commands(commandArbs, { maxCommands, replayPath });
+
+await fc.assert(
+  fc.asyncProperty(commands, async (cmds) => {
+    await fc.asyncModelRun(setup, cmds);
+  }),
+  { numRuns, seed, path },
+);
+```
+
+For model-based tests, make `Command.check` target-specific and resolve the same logical handle that `run` uses. `fc.commands` generates candidates before preconditions are applied, so a command cap is not evidence of useful depth; observe accepted transitions when that matters. Do not hide an inapplicable target as a silent no-op in `run`.
+
+If a function receives `fc` or a narrowed adapter, use that binding and the installed API rather than importing a second engine or guessing a convenience constructor.
+
+## E2E Testing: Playwright
+
+```typescript
+// playwright.config.ts
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests/e2e',
+  forbidOnly: !!process.env.CI,
+  // Required lanes: no retries. A retry turns an intermittent race into a green
+  // run; gate on the reporter's counts instead (see below).
+  retries: 0,
+  use: {
+    baseURL: 'http://localhost:8787', // a local server built from this commit
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
+  },
+  projects: [
+    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
+    { name: 'mobile', use: { viewport: { width: 375, height: 812 } } },
+  ],
+});
+```
+
+**Result contract**: in CI, check the JSON reporter's stats — `unexpected == 0`,
+`flaky == 0`, `skipped` equal to the expected number, and optionally the exact test
+titles per project — so a dropped, renamed, or silently skipped test cannot hide
+behind a green run. Keep helper-level retries (a `createSessionWithRetry` loop) to
+transport errors and 429s and make them visible; retrying 5xx below the reporter
+bypasses the flaky count. Keep tests that call a deployed service in a separate
+`live` project run after deploy: a PR suite that hits production tests production,
+not the PR.
+
+### Deterministic async races (no sleeps)
+
+Hold responses on deferred promises and release them in the order the test chooses:
+
+```typescript
+test('a stale response cannot overwrite newer results', async ({ page }) => {
+  const pending = new Map<string, (body: unknown) => Promise<void>>();
+  await page.route('**/api/search?*', (route) => {
+    const q = new URL(route.request().url()).searchParams.get('q')!;
+    pending.set(q, (body) => route.fulfill({ json: body }));
+  });
+  await page.fill('#q', 'a');
+  await page.fill('#q', 'ab');
+  await expect.poll(() => pending.size).toBe(2);
+  await pending.get('ab')!({ results: ['ab'] });
+  await pending.get('a')!({ results: ['a'] }); // late, stale response
+  await expect(page.locator('.result')).toHaveText(['ab']);
+});
+```
+
+### Visual regression
+
+```typescript
+test('component layout', async ({ page }) => {
+  await page.goto('/');
+  const component = page.locator('.my-component');
+  await expect(component).toHaveScreenshot('component.png', {
+    maxDiffPixelRatio: 0.01,
+    animations: 'disabled',
+    mask: [page.locator('.timestamp')],
+  });
+});
+
+```
+
+Baselines are platform-specific (fonts, antialiasing), so **render them on the
+image CI uses** rather than skipping visual tests in CI: a manual
+`workflow_dispatch` job runs `npx playwright test --update-snapshots` in the
+pinned Playwright container and uploads the new `*-linux.png` files as an artifact
+for review; commit them only after looking at them, and never auto-update in CI.
+Suites that were skipped in CI because baselines existed only for macOS ran zero
+times. If pixels stay noisy, keep a loose pixel tolerance and carry precision in
+structural assertions (computed style, bounding boxes, SVG structure), or golden a
+deterministic intermediate (draw-command list, text frame). A
+`page.screenshot({ path })` that nothing compares is not a test.
+
+### Doubles vs. the real engine
+
+When a real engine can run in-process (node-canvas, SQLite loaded from migrations,
+workerd via vitest-pool-workers), delete the hand-written mock and use it. Keep a
+contract test only for a double you must keep, take its expected values from the
+real engine, and delete the contract when the double goes:
+
+```typescript
+// The double hard-codes 16px system-ui metrics; the real browser must agree.
+test('text-measure double matches Chromium within 1px', async ({ page }) => {
+  await page.goto('/');
+  const real = await page.evaluate(() => {
+    const ctx = document.createElement('canvas').getContext('2d')!;
+    ctx.font = '16px system-ui';
+    return ctx.measureText('Hello').width;
+  });
+  expect(Math.abs(real - measureDouble('Hello', '16px system-ui'))).toBeLessThanOrEqual(1);
+});
+```
+
+## Test Infrastructure Patterns
+
+### Typed API client
+
+```typescript
+export class ApiClient {
+  private token: string | null = null;
+  setToken(token: string): void { this.token = token; }
+  async get<T>(path: string): Promise<ApiResponse<T>> { ... }
+  async post<T>(path: string, body?: unknown): Promise<ApiResponse<T>> { ... }
+}
+```
+
+### Domain assertion helpers
+
+```typescript
+export function assertSuccess<T>(response: ApiResponse<T>, status = 200): T {
+  expect(response.status).toBe(status);
+  expect(response.body.success).toBe(true);
+  return response.body.data!;
+}
+
+export function assertPost(post: unknown): void {
+  expect(post).toMatchObject({
+    id: expect.any(String),
+    content: expect.any(String),
+    createdAt: expect.any(Number),
+  });
+}
+```
+
+### Test factories with invalid input collections
+
+```typescript
+export const INVALID_EMAILS = ['', 'notanemail', 'user@', '@domain.com'];
+export const CONTENT_LENGTHS = {
+  MAX: 'a'.repeat(280),
+  OVERFLOW: 'a'.repeat(281),
+};
+
+export function createUser(client: ApiClient, overrides?: Partial<SignupData>) {
+  return client.post('/api/auth/signup', createUserData(overrides));
+}
+```
+
+## CLI testing with Click-equivalent
+
+```typescript
+import { CliRunner } from './test-helpers';
+
+test('help text', () => {
+  const result = runner.invoke(['--help']);
+  expect(result.exitCode).toBe(0);
+  expect(result.output).toContain('Usage:');
+});
+```
+
+## Global test setup (API tests against real server)
+
+```typescript
+// tests/api/setup/global-setup.ts
+export async function setup() {
+  const server = spawn('npx', ['wrangler', 'dev', '--port', '8787']);
+  await waitForServer('http://localhost:8787');
+  await resetDatabase('http://localhost:8787');
+  return async () => { server.kill('SIGTERM'); };
+}
+```
+
+## Choosing values and matchers
+
+- Include distinct, non-default test values so at least one case exposes a
+  dropped, defaulted, or swapped argument. Still cover `0`, `''`, and
+  equal-value cases when they are boundaries or part of the contract.
+- When order is not part of the contract, use
+  `expect(arr).toEqual(expect.arrayContaining([...]))` plus a length check,
+  or sort both sides, instead of pinning incidental order.
+- Derive expected results independently of the SUT. Literals are clearest for
+  simple examples; properties and independent reference models are valid for
+  broader cases. Do not reuse the SUT's logic or constants in the oracle.
+# Gate Integrity: Is the Check Running, and Can It Fail?
+
+Read this when assessing a suite, changing CI/hooks/test configuration, adding a
+gated or scheduled test, asking why bugs escape a green pipeline, or before
+claiming "tests pass". The most common failure in real repositories is not a
+missing test. It is a check that silently stopped running, or one that cannot go
+red, while everyone believes it is green.
+
+## 1. Liveness: which job runs each tier, and when did it last pass?
+
+For every tier (unit, integration, E2E, visual, perf/budgets, coverage, mutation,
+fuzz, evals, post-deploy smoke, lint/types) record:
+
+- the exact command, the CI job that runs it, and its trigger (PR, push, schedule,
+  dispatch);
+- the last run on the default branch: status, duration, and test count.
+
+A tier with no job is presumed broken until run. A test that exists but no job
+runs is documentation, not verification.
+
+Check that runs executed, not just that they are green or red: a runner was
+assigned, the duration is plausible, and counts are non-zero. CI that is red or
+not starting for non-code reasons (quota, billing, missing runner, uninstalled
+browser engine) is a **dead gate**: surface it before anything else. While it is
+dead, local runs are the only evidence, and the report must say so.
+
+**Collection parity.** The CI collector may not see every test: `unittest
+discover` ignores pytest-style module functions; Playwright projects that no lane
+invokes never run; runner `include` globs miss files. Compare counts against an
+alternate collector (`pytest --collect-only -q` vs the CI runner; the JSON
+reporter's per-project totals).
+
+## 2. Gated-test reachability
+
+For every build tag, env gate, `skipIf(resource)`, OS-suffixed baseline, optional
+conformance leg, or `if:` condition, all three must hold:
+
+1. **Compiled in CI**: `go vet -tags=network ./...` or `go test -tags=… -run '^$'`;
+   a type-check that includes the file.
+2. **Selected with the resource present**: some lane provides the capability and
+   selects the file.
+3. **Fails when it skips**: a skip ledger, a reporter contract
+   (`skipped == expected`), or a `REQUIRE_*` flag that turns a skip into a failure.
+
+Cheap detection: run the CI command verbosely in a fresh checkout and list what
+was skipped or not collected. Honest gating is fine; gating that no lane
+satisfies is a dead test.
+
+## 3. Gate integrity: show every check can go red
+
+| Signal | Why it cannot fail | Fix |
+|---|---|---|
+| `\|\| true`, `continue-on-error: true`, `2>/dev/null` on a test or check step | Failure is discarded | Remove; if genuinely advisory, see §6 |
+| Baseline updater used as a check (`detect-secrets scan --baseline`) | Rewrites the baseline and exits 0 | Use the checking form (`detect-secrets-hook --baseline`) or fail on a diff |
+| Error-swallowing shell (`if echo "$?" \| grep …`) | Every error becomes a warning | Capture stderr; tolerate only the specific benign message |
+| Skip-green when secrets or tokens are missing | The owner's own repo can lose its gate silently | Fail in the owner's repo; skip explicitly only for forks |
+| `::warning::` + skip that ends a deploy green | Nothing shipped, and the badge is green | Fail on the normal path; alert on live-version drift (§5) |
+| Step iterating an empty set (scanner over a directory with no targets) | Zero findings from zero inputs | Scan committed canary fixtures: one that must fire, one that must not |
+| Coverage threshold configured but never invoked, or its provider not installed | The number is never computed | Run it in CI, or delete the dead threshold |
+| A threshold the tool silently ignores (gremlins 0.6.0 CLI `--threshold-*`) | The claimed gate never fires | Put it where the tool reads it, and show it failing when set above the score |
+| Fail-open imports (`import(x).catch(() => null)` + `skipIf`) | A required lane passes when its dependency fails to load | Fail when CI is set; assert the skip count is zero |
+| Warning-only expiry or review dates | Warnings nobody reads | Fail after a grace period; warn ahead of time |
+| E2E against production or a deployment not built from this commit | Tests someone else's code | Target a local server or a deploy of this SHA |
+
+Prove a gate works by planting a violation in a scratch copy (a failing test, a
+fake secret, an empty target) and watching it go red, then revert.
+
+Not every check that cannot fail is a dead gate. An explicitly informational
+diagnostic (mutation score, perf trend, eval report) is fine while someone reads
+it. If nobody does, run it on demand or delete it; do not add a threshold or a
+schedule just to give it teeth.
+
+## 4. Vacuous passes: the instrument measures something else
+
+- A universal assertion can pass without exercising the intended scenario when
+  its input set is empty. Assert non-empty inputs only when the scenario requires
+  them, and report how many inputs were inspected. `violations == []` is a valid
+  expected result; check the inspected inputs, not that violations exist.
+- Zero-sample aggregates (`Math.min(...[])` is `Infinity`) must refuse n = 0.
+- A test or script that reimplements the logic and imports nothing from the SUT
+  tests its own copy.
+- **Test linkage**: a subject with no non-test importer (dead code, or a
+  reimplementation) can carry many green tests while the live path is untested.
+  Check linkage at symbol level.
+- Precondition failures converted to green: `test.skip()` in the failure branch,
+  `page.goto(...).catch(() => {})`, an imperative `pytest.xfail()` left after the
+  fix.
+- **Instrument drift**: measurement tools or tests that copy constants from the
+  code instead of importing them agree with the code by construction.
+- **Quiescent harness**: pausing or stubbing can flip which branch the SUT takes;
+  ask what the harness changed to get its quiet.
+
+## 5. Test the tester, and trust the artifact
+
+- **Both sides**: every custom oracle, linter, validator, auto-fixer, scanner, and
+  eval grader needs at least one known-good input that passes and one known-bad
+  input that fails, checked in CI. Detectors also need near-miss controls that
+  must not fire. Write fixtures from the failure, not from the regex. Keep them
+  cheap: reuse expensive prepared inputs, then run the checker on each focused
+  negative variant. Retain one full preparation-to-verdict test; comparing
+  variants with a cached verdict does not exercise the checker.
+- **Seed faults cheapest first**, and stop when the question is answered:
+  1. Red-green: the new or changed test fails against the code before the fix.
+  2. A hand-seeded fault in a scratch copy or worktree, never the shared tree:
+     neuter one central function or reintroduce one past bug, run only the tests
+     that exercise the affected behavior, record which fail, revert. A sabotage
+     kill matrix records which tests detect each fault; importing a module does
+     not imply exercising that fault. Require detection by an appropriate
+     behavior test, not failure of every importing test file.
+  3. A mutation tool scoped to the changed function or file, run on demand
+     (`references/mutation-testing.md`), only when 1–2 leave a real question.
+
+  Prefer a regression test to a committed replay probe; commit probes only where
+  a test cannot express the bug (gates, corpora, checkers), and run them when
+  their paths change. Invariants that a no-op satisfies (determinism, count
+  preservation) need a change-witness assertion that state actually changed.
+- **The author is not the oracle**: goldens, approvals, and eval cases produced in
+  the same change by the same actor are characterizations until independently
+  reviewed. Report a trivial baseline next to any eval score.
+- **Deploy truth**:
+  - A smoke test touches the core dependency.
+  - The live version or SHA must match the deployable default branch; alert on
+    drift.
+  - The artifact under test must be the artifact deployed: lockfile parity,
+    installed-package or tarball tests, publishing the bytes that passed.
+  - Test declared compatibility floors (`requires-python`, `engines`).
+
+## 6. Recurring lanes and advisory gates: an operating contract
+
+Before scheduling a nightly E2E, fuzz, perf, eval, or mutation lane:
+
+- run the exact configuration once to completion on the target infrastructure and
+  keep the report;
+- set a runtime budget and name an owner;
+- decide notify-or-block: a red schedule that does neither is a write-only log;
+- choose a stop rule for repeated operational failures or untriaged findings:
+  fix, narrow, disable, or delete before growing scope;
+- state a removal criterion;
+- choose the trigger from what can produce new evidence. Deterministic mutation
+  reruns with unchanged code, tests, operators, and environment usually add none;
+  use change filters or incremental results. Scheduled fuzz discovery can explore
+  new inputs, and E2E, performance, or eval runs can expose environment,
+  dependency, model, or workload changes without a source edit. Keep a calendar
+  lane when that purpose, its budget, and its result consumer are explicit;
+- calibrate any threshold on comparable target-runner history. For mutation
+  scores, report actual kills separately from timeouts: their score treatment
+  depends on the tool, and local load can inflate a timeout-inclusive score.
+
+Gates cost minutes and attention. Before adding a lane, estimate runs × jobs ×
+minutes; on private repositories those minutes are billed, and running out stops
+every gate at once. Cancel superseded runs. Weigh suite shape by where CI time
+goes, not just test counts, and retire gates that never fire or never change a
+decision. Mutation specifics are in `references/mutation-testing.md`.
+
+## 7. Restraint: don't over-apply
+
+- A capability-gated test is fine when a lane provides the capability and fails
+  on skip.
+- An advisory job with an owner, a schedule, and a notification is not a dead
+  gate.
+- Post-merge or nightly lanes are legitimate if someone is notified and acts; not
+  every tier must run on every PR.
+- Never turn a legitimately red lane green by deleting it or weakening it.
+- Do not demand network, production, or paid resources in CI to satisfy this
+  checklist; say what cannot be verified instead.
+
+## Audit record (Assess mode)
+
+```md
+| Tier | Command | CI job / trigger | Last run (status, count, date) | Can it fail? (evidence) | Gap |
+```
+
+## Starter mechanical checks for a repository
+
+Encode recurring findings as a static test with a shrink-only allowlist. Give
+each rule a teeth test: a planted violation it must catch.
+
+- focused or unconditional skip markers; assertion-free tests; weak sole assertions
+- `sleep`/`waitForTimeout` synchronization; new retries
+- `|| true` or `continue-on-error` on test steps in workflows
+- `readFileSync(src…)` or `read_text()` of source followed by string assertions
+- assertions only inside loops over results
+- test files that import nothing from the source tree
+- `Math.random`/unseeded randomness inside property bodies

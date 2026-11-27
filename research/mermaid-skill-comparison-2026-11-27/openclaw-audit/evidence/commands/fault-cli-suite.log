@@ -1,0 +1,29 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/cli-multi-input.test.ts:
+(pass) #930 pathname watch lifecycle > observes atomic rename-over saves and subsequent writes to the replacement inode [113.61ms]
+(pass) #930 pathname watch lifecycle > metadata polling observes changes when the host event source stays silent [30.75ms]
+(pass) #959 multi-input rendering > renders multiple files, emits a results array, skips bad ones [116.60ms]
+(pass) #959 multi-input rendering > multi-input json parse errors expose structured details, not stringified blobs [15.91ms]
+(pass) #959 multi-input rendering > single input keeps single-output behavior (no results array) [9.39ms]
+(pass) #959 multi-input rendering > --security strict applies to multi-input SVG renders [35.15ms]
+am render --security accepts only strict
+(pass) #959 multi-input rendering > invalid --security values are rejected instead of silently using default mode [0.58ms]
+am render --watch accepts exactly one input file
+(pass) #959 multi-input rendering > --watch rejects multiple inputs instead of doing a one-shot multi-render [0.27ms]
+(pass) #930 watch frame (the step every --watch change runs) > reflects file changes on re-invocation [21.18ms]
+(pass) #930 watch frame (the step every --watch change runs) > a frame reports each ineffective config field once, before its output [39.96ms]
+(pass) #930 watch frame (the step every --watch change runs) > strict SVG option applies to the watch frame [5.38ms]
+(pass) #930 watch frame (the step every --watch change runs) > a failed frame prints the family diagnostic, as JSON under --json and as one line otherwise [4.25ms]
+am render --format png does not support --watch; run non-watch PNG renders with --output <file.png>
+(pass) #930 watch frame (the step every --watch change runs) > watch mode rejects PNG instead of writing SVG to a PNG path [0.32ms]
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+am render --scale expects a positive finite number
+(pass) #930 watch frame (the step every --watch change runs) > PNG rejects non-positive and non-finite scales as argument errors [2.68ms]
+
+ 14 pass
+ 0 fail
+ 43 expect() calls
+Ran 14 tests across 1 file. [651.00ms]

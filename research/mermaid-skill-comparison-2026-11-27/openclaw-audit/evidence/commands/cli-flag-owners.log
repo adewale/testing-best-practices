@@ -1,0 +1,10 @@
+43:  output: { arg: 'FILE' },
+59:  o: { arg: 'FILE' },
+100:  fitTo: Object.freeze(['fit-width', 'fit-height']),
+112:  render: ['help', 'json', 'certificates', 'watch', 'style', 'seed', 'options', 'graph-layout', 'graph-layout-fallback', 'output', 'format', 'security', 'gantt-today', 'target-width', ...PNG_RENDER_FLAGS, 'o', 'timeout'],
+129: * render intentionally accepts multiple files. */
+131:  render: { min: 0, max: Number.POSITIVE_INFINITY },
+34:  --output <FILE>        Write render/preview output to FILE instead of stdout
+74:  render: `am render <file|-> [--format ${CLI_RENDER_FORMATS.join('|')}] [--json]
+107:Multiple inputs emit a JSON results array for non-PNG formats.
+110:layout JSON plus "ok". With --output FILE the file always holds the plain

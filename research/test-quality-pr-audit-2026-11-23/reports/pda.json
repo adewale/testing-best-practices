@@ -1,0 +1,1035 @@
+{
+  "repository": "adewale/pda",
+  "audit_date": "2026-11-23",
+  "total_prs": 67,
+  "pages_checked": {
+    "pull_requests": [
+      {
+        "url": "https://api.github.com/repos/adewale/pda/pulls?state=all&per_page=100&page=1",
+        "count": 67
+      },
+      {
+        "url": "https://api.github.com/repos/adewale/pda/pulls?state=all&per_page=100&page=2",
+        "count": 0
+      }
+    ],
+    "file_inventory": {
+      "method": "GraphQL pullRequests and fully paginated PullRequest.files at 100 paths per page. Every file count reconciled with changedFiles.",
+      "pull_requests": 67,
+      "changed_file_entries": 3705,
+      "per_pr_file_pages": 88,
+      "multipage_prs": [
+        14,
+        27,
+        36,
+        46,
+        56,
+        57,
+        58,
+        69,
+        75
+      ]
+    },
+    "candidate_review": "Screened the title, body and changed-file list of all 67 PRs. Read targeted file diffs for candidate repairs and compared base and head blobs where GitHub omitted patch text.",
+    "head_status": "GraphQL last commit statusCheckRollup and registered check names, matched to the REST head SHA."
+  },
+  "counts": {
+    "screened_by_state": {
+      "merged": 57,
+      "closed_unmerged": 4,
+      "open": 6
+    },
+    "direct_matches": 17,
+    "embedded_matches": 18,
+    "matched_by_state": {
+      "merged": 32,
+      "closed_unmerged": 1,
+      "open": 2
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 6,
+      "title": "The message_id_conflict test checks the refused call's turn, so it no longer fails under load",
+      "url": "https://github.com/adewale/pda/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Two turns could log the same tool after the test's marker. A successful first call sometimes satisfied the replay test's wait before the refused call completed.",
+      "attempted_remedy": "Wait for the failed tool outcome before checking its error code and send history.",
+      "test_paths": [
+        "test/poppy.test.ts"
+      ],
+      "diff_evidence": "The wait predicate changed from matching `poppy_message` to `poppy_message:error`. The existing assertions on `message_id_conflict` and the replay stayed in place.",
+      "transferable_rule": "Wait for an observable outcome that uniquely identifies the action under test.",
+      "head_ci": {
+        "commit": "d3af24cc222f7f3ffa2e932b370357a159e5e04f",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test"
+        ]
+      },
+      "verification_caveat": "The eight repeat runs are author-reported. A successful head check establishes one recorded CI outcome."
+    },
+    {
+      "number": 7,
+      "title": "Fix Poppy recovery, stale token reuse and discovery hangs",
+      "url": "https://github.com/adewale/pda/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Generated histories could count activity without establishing its effects or owner. A generic error and an accumulated transition count could both look like a successful test.",
+      "attempted_remedy": "Check completed transitions and state after each generated step. Add positive controls, exact refusal expectations and tests that deliberately corrupt the Python oracle's inputs.",
+      "test_paths": [
+        "test/properties/model.test.ts",
+        "test/hypothesis/test_oracles.py",
+        "test/properties/outbox.test.ts"
+      ],
+      "diff_evidence": "The model requires a particular refusal code and status, an unchanged operation list, and per-history `assertTransitions`. The outbox test checks order, payloads and traversal counts for 100,000 messages. Python controls reject wrong owners and missing fixture data.",
+      "transferable_rule": "Give a generated test an independent expected outcome, verify that each prerequisite ran, and demonstrate that a known bad result fails.",
+      "head_ci": {
+        "commit": "fd3a0be78b58516e9c251d4a3eb2a8001e6d2dc9",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The large backlog test measures input traversals. The larger local history and interoperability runs are described by the author."
+    },
+    {
+      "number": 9,
+      "title": "Upgrade pi to 1.3.0 and let agents hibernate after each turn",
+      "url": "https://github.com/adewale/pda/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The existing fake OpenAI returned a single canned text message. It could accept histories a real reasoning provider would reject. The deployed SQLite adapter also lacked the library's own conformance checks.",
+      "attempted_remedy": "Teach the fake to validate returned history across turns and run the upstream storage suite against the agent's SQLite, including beside existing application tables.",
+      "test_paths": [
+        "test/fake-models.ts",
+        "test/openai-lane.test.ts",
+        "test/pi-storage.test.ts"
+      ],
+      "diff_evidence": "The fake now checks that tool calls are paired with their earlier reasoning. The lane asserts reasoning counts `[0, 1]` across two turns. `registerStorageConformance` runs twice and a separate check preserves host table contents.",
+      "transferable_rule": "Make provider doubles enforce the external contract and run a dependency's conformance suite on the real adapter.",
+      "head_ci": {
+        "commit": "6c1ffb49d9cfd1e3cf620d85e010e03a3950b588",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The provider was simulated. The storage checks exercised the local Workers test runtime."
+    },
+    {
+      "number": 12,
+      "title": "Fix agent isolation, authorization and recovery boundaries",
+      "url": "https://github.com/adewale/pda/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The calculator property treated every mathematically undefined result as proof that division by zero had to be the first runtime error. A bounded eager evaluator can encounter an oversized operand earlier.",
+      "attempted_remedy": "Repair the independent reference check and keep fixed examples for both error orders.",
+      "test_paths": [
+        "test/properties/tools.test.ts"
+      ],
+      "diff_evidence": "The property now accepts an oversized-intermediate error only with an independent size witness above 3,000 bits. It explicitly fails if a division by zero produces a result. Four examples distinguish size-first and division-first evaluation.",
+      "transferable_rule": "When several failures are valid, establish independent evidence for each allowed outcome and retain counterexamples for their ordering.",
+      "head_ci": {
+        "commit": "28ea7776b8fed5baa9585d92f223f33ebc0cc0d2",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "This is a test-oracle repair within a wider application audit. The head CI status does not report an individual generated history."
+    },
+    {
+      "number": 14,
+      "title": "Add Poppy 0.2 support while retaining 0.1 compatibility",
+      "url": "https://github.com/adewale/pda/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The interop harness could apply a legacy known-failure exemption to a new protocol version. A retry dropped both the version and specification revision that defined the original case.",
+      "attempted_remedy": "Version the exemptions and preserve the complete protocol context on retry.",
+      "test_paths": [
+        "interop/runner/attribution.ts",
+        "interop/runner/retry.ts",
+        "interop/test/attribution.test.ts",
+        "interop/test/retry.test.ts"
+      ],
+      "diff_evidence": "An unversioned exemption defaults to 0.1. A regression rejects that exemption for a 0.2 failure and accepts an explicitly 0.2 exemption. The retry regression inspects both version and revision.",
+      "transferable_rule": "Include the dimensions that define a test case in its retry identity and in any expected-failure exception.",
+      "head_ci": {
+        "commit": "e1f185e3c637f7a46a4ec0d806f75323ddb5c26b",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The PR records seven independent-peer compatibility failures in its wider grid. A green required job does not cover every possible peer pairing."
+    },
+    {
+      "number": 16,
+      "title": "Test PDA against four live Poppy 0.2 Companies",
+      "url": "https://github.com/adewale/pda/pull/16",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The live runner stamped all peers as Poppy 0.1, including peers serving 0.2. A result could therefore be recorded under the wrong protocol.",
+      "attempted_remedy": "Give a live entry an expected version and verify it during discovery before the session scenario proceeds.",
+      "test_paths": [
+        "interop/runner/cli.ts",
+        "interop/test/runner.test.ts",
+        "interop/test/live-identity.test.ts"
+      ],
+      "diff_evidence": "The old manifest hard-coded `[\"0.1\"]`. A regression gives a 0.2 case a peer declaring 0.1, expects an error, and checks that `discover` was the only adapter call.",
+      "transferable_rule": "Verify the observed peer version before running or labeling version-specific cases.",
+      "head_ci": {
+        "commit": "52cfde13ac43e09df50b992fda6452e9bf217133",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The signed-out live results reported in the PR cover selected steps. The live lane did not record wire traffic."
+    },
+    {
+      "number": 21,
+      "title": "Add lenient, strict and sloppy fake Personal Agents; live-test Alpine and Print with Poppy",
+      "url": "https://github.com/adewale/pda/pull/21",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The grid varied Company behavior but had no honest agent profiles for comparison. A dropped registry environment also made nominally different live agents run the default code path.",
+      "attempted_remedy": "Add strict, lenient and deliberately sloppy agent profiles, propagate the selected profile into the live container, and test attribution and permitted scenarios.",
+      "test_paths": [
+        "interop/impls/pda-agent/profiles.ts",
+        "interop/runner/cli.ts",
+        "interop/test/profiles.test.ts",
+        "interop/test/attribution.test.ts",
+        "interop/test/runner.test.ts"
+      ],
+      "diff_evidence": "The live environment now includes `entry.env`. The new profile suite checks each declared reading, and attribution cases distinguish differences between an agent and a Company using a reference peer.",
+      "transferable_rule": "Exercise materially different peer implementations and make their effective configurations observable.",
+      "head_ci": {
+        "commit": "517c07a763272a60f051d93d2da68ef8d5da4e9e",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "These profiles share the PDA implementation. Independent interoperability evidence is limited to the external peers and scenarios actually run."
+    },
+    {
+      "number": 24,
+      "title": "Move Print with Poppy's pin to 3360d8b, draft 0.2",
+      "url": "https://github.com/adewale/pda/pull/24",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The pinned store could not exercise current 0.2 sessions in the isolated grid. Its expected-failure list still contained retired 0.1 cases and an ordering exemption for a defect fixed upstream.",
+      "attempted_remedy": "Restore a compatible isolated peer and remove the obsolete exemptions. Record the remaining expected refusal against its actual version and owner.",
+      "test_paths": [
+        "interop/impls/print-with-poppy-company/adapter.mjs",
+        "interop/known-failures.json",
+        "interop/registry.json"
+      ],
+      "diff_evidence": "The adapter declares 0.2 and registers the two 0.2 SDK clients. The diff deletes the wildcard `OU` exemption for the store and restricts the remaining deliberately erroneous agent case to 0.2.",
+      "transferable_rule": "Reconcile expected failures with each fixture upgrade. Remove exemptions as soon as their scenario succeeds or becomes inapplicable.",
+      "head_ci": {
+        "commit": "0a34cc85a0062bc891d174c5b0acf7ff9745bed4",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The store runs in isolated demo mode. The evidence covers the pinned test integration."
+    },
+    {
+      "number": 26,
+      "title": "Prove each run tests what it says: live identity pre-flight and manifest checks",
+      "url": "https://github.com/adewale/pda/pull/26",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Green runs had exercised the default agent under other profile names. A separate run reached a Company before discovering that its configured test identity was unavailable.",
+      "attempted_remedy": "Check the public test identity before starting the grid and compare each running adapter's manifest with its registry entry.",
+      "test_paths": [
+        "interop/runner/expectations.ts",
+        "interop/runner/cli.ts",
+        "interop/test/expectations.test.ts"
+      ],
+      "diff_evidence": "`manifestMismatch` checks profile, protocol, adversarial flag and live client identity. The tests accept matching manifests, reject mismatches, and check registered implementations and scenarios referenced by expected failures.",
+      "transferable_rule": "Check that the intended subject, identity and fixture are in place before a test result can count.",
+      "head_ci": {
+        "commit": "5c576ce0093cc0f0cd6e74c600d46098f0211815",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "Preflight verifies identity and configuration. Each scenario still needs its own behavioral assertions."
+    },
+    {
+      "number": 29,
+      "title": "Classify unavailable live interop scenarios on Poppy 0.4",
+      "url": "https://github.com/adewale/pda/pull/29",
+      "state": "open",
+      "merged": false,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Live peers without optional services were counted as failures. Missing fixture inputs could lead the runner to execute part of a scenario it could never finish.",
+      "attempted_remedy": "Check required fixture inputs before dispatch. Classify an absent live capability as unsupported, and retain failures for broken advertised behavior or a test adapter that promised it.",
+      "test_paths": [
+        "interop/runner/scenario.ts",
+        "interop/runner/cli.ts",
+        "interop/test/scenario.test.ts",
+        "interop/test/runner.test.ts"
+      ],
+      "diff_evidence": "The same CL/ML cases now distinguish live absence from a capability claimed by the adapter. CLI regressions require `unsupported` with empty steps for incomplete fixtures and exercise a complete S0 fixture.",
+      "transferable_rule": "Record unsupported coverage separately from an exercised failure. Validate known prerequisites before any step executes.",
+      "head_ci": {
+        "commit": "a013051d270a006b1507002b3ef0893b7cc17ce3",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop",
+          ".github/dependabot.yml"
+        ]
+      },
+      "verification_caveat": "Open at the audit date. Synthetic peers exercise the classification and the PR reports no new live Company run."
+    },
+    {
+      "number": 30,
+      "title": "Check our Company checks against flawed Companies; extend the official validator's lanes",
+      "url": "https://github.com/adewale/pda/pull/30",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The in-house conformance checkers could agree with an honest mock while missing real deviations. There was no inventory of which upstream checks they covered.",
+      "attempted_remedy": "Run three clean baselines and ten single-flaw mock variants against both the official and local checkers. Validate the coverage inventory against the upstream catalogue.",
+      "test_paths": [
+        "interop/vectors/official/flaws.mjs",
+        "interop/test/official-coverage.test.ts",
+        "test/mock-company.test.ts",
+        "interop/runner/checks.ts"
+      ],
+      "diff_evidence": "The lane records which checker caught each fault. `FLAW_CASES` verifies that the switches alter the fixture. A catalogue test requires exactly the upstream check IDs in order and resolves each claimed local reference.",
+      "transferable_rule": "Test the checker itself with clean and deliberately incorrect examples. Preserve the list of faults only an independent checker catches.",
+      "head_ci": {
+        "commit": "c213e1cb43d3e423cd8445dd618ff0f435e0506b",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The PR reports 50 of 74 upstream checks covered locally and three modeled flaws caught only upstream. Its local grid uses simulated Companies."
+    },
+    {
+      "number": 32,
+      "title": "Fix approval races, company status mixups, and budget test expiry",
+      "url": "https://github.com/adewale/pda/pull/32",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "A budget-admission test added spend for a fixed October date but pruned the ledger against the real clock. The test aged out of its seven-day window.",
+      "attempted_remedy": "Pass the test's existing `now` through the fixture write so admission and retention use the same date.",
+      "test_paths": [
+        "test/budget.test.ts"
+      ],
+      "diff_evidence": "The setup changed from `ledger.add(DAY, 0.1)` to `ledger.add(DAY, 0.1, now)`. The approval and UI regressions are separate changes in this PR.",
+      "transferable_rule": "Inject the same clock into every operation that creates, expires or reads a time-sensitive fixture.",
+      "head_ci": {
+        "commit": "1dcecfdd399c696b584f05ec93390f20467e3f6b",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The PR reports that restoring the old fixture reproduced the failure. The audit independently checked the diff and CI status."
+    },
+    {
+      "number": 35,
+      "title": "Refresh ecosystem evidence and document component Poppy support",
+      "url": "https://github.com/adewale/pda/pull/35",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The specification drift check aborted on an upstream 404, hiding subsequent results and conflating a removed schema with an unavailable service.",
+      "attempted_remedy": "Classify a missing current schema as drift, continue comparing files, and keep other HTTP errors visible.",
+      "test_paths": [
+        "scripts/check-spec.mjs",
+        "interop/test/spec-drift.test.mjs"
+      ],
+      "diff_evidence": "The test invokes the CLI in a child process with injected 404 and 500 responses. It checks the `REMOVED` output in the first case and the HTTP error in the second. Both exit with status 1.",
+      "transferable_rule": "Test the exit code and the reason a verification command failed. A shared nonzero code can hide different outcomes.",
+      "head_ci": {
+        "commit": "31b42199f4e919f966b31ddccc9b973a9f1e306e",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The automated regression injects HTTP responses. A live drift run is separately described in the PR."
+    },
+    {
+      "number": 36,
+      "title": "Speak Poppy 0.3 only, and refuse Companies on 0.1 or 0.2",
+      "url": "https://github.com/adewale/pda/pull/36",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The mock and independent Python client both dropped message context, so their agreement hid data loss. In-process recovery tests also lacked evidence from a real process death and an independently surviving peer.",
+      "attempted_remedy": "Use the upstream kit against the mock, test the Python oracle against damaged echoes, and add real process-kill recovery checks backed by the Company's ledger.",
+      "test_paths": [
+        "test/hypothesis/test_oracles.py",
+        "scripts/check-approval-crashes.mjs",
+        "test/durability/process-runtime.mjs",
+        "test/company-kit/dpop-controls.mjs"
+      ],
+      "diff_evidence": "The Python control requires absent or changed context to raise `AssertionError`. The crash script kills the actual worker process group and checks the separate Company's effect count and the stable notification identity after recovery.",
+      "transferable_rule": "Validate a test double against an independent implementation. Verify crash recovery at the process boundary with a durable witness outside the process.",
+      "head_ci": {
+        "commit": "d30d8133de8d89254f0d6e93dac6fc547c2728a2",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The upstream kit's raw and separately adapted runs have different prerequisites. The crash scenarios use isolated local processes."
+    },
+    {
+      "number": 38,
+      "title": "Use Company-driven Poppy 0.3 approvals and preserve checkout links",
+      "url": "https://github.com/adewale/pda/pull/38",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "A privacy test changed authority after requesting a background alarm, before establishing that the target read had finished. It could inspect the wrong log history.",
+      "attempted_remedy": "Wait for the signed-in read's actual refusal before signing out and checking logs. Use a held tool promise to test logging across the end of a turn.",
+      "test_paths": [
+        "test/log.test.ts"
+      ],
+      "diff_evidence": "A new `until` predicate looks for `PoppyError` with `invalid_client` before the sign-out step. The new logger regression controls a pending tool with an explicit release promise.",
+      "transferable_rule": "Observe completion at the boundary the assertion depends on before changing the state under test.",
+      "head_ci": {
+        "commit": "0121c85e4a92349f5b99f9c7d1b8ee2212f331b2",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The PR explicitly leaves the precise cause of the earlier CI privacy assertion unresolved. The logger race is a separate regression."
+    },
+    {
+      "number": 40,
+      "title": "Upload task-selected photos without a redundant approval",
+      "url": "https://github.com/adewale/pda/pull/40",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "A feedback retry test assumed the first of two concurrent calls reached the transport first. An asynchronous prerequisite made invocation order unreliable.",
+      "attempted_remedy": "Hold the first transport call, wait until it has entered, admit the queued call, then release and assert the original outcomes.",
+      "test_paths": [
+        "test/poppy-feedback-race.test.ts"
+      ],
+      "diff_evidence": "The old `Promise.allSettled([sendFeedback(...), sendFeedback(...)])` became explicit `reached` and `held` promises. The `finally` block releases the barrier and restores the mock.",
+      "transferable_rule": "Use a barrier at the contested boundary to choose the interleaving a concurrency test intends to exercise.",
+      "head_ci": {
+        "commit": "55934434b3ef62788dcbb36867ab9eff15eaa9ba",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The test covers a specific queue history. The PR reports that disabling queued rejection recovery made it fail."
+    },
+    {
+      "number": 41,
+      "title": "Simplify project docs and select CI checks by changed files",
+      "url": "https://github.com/adewale/pda/pull/41",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Appendix A used literal test titles as references, so an innocuous rename broke the checker and required collecting the runtime suite to verify documentation.",
+      "attempted_remedy": "Link to stable evidence files and scenarios. Replace the old title-discovery tests with tooling tests for valid and missing references.",
+      "test_paths": [
+        "interop/test/docs-discovery.test.mjs",
+        "scripts/check-docs.mjs",
+        "scripts/check-docs.test.mjs"
+      ],
+      "diff_evidence": "The diff removes the old Vitest result/title collector and its tests. A new temporary-checkout fixture contains a deliberately changeable test title and checks both valid links and missing files.",
+      "transferable_rule": "Use a stable reference for documentation and test behavioral coverage in the executable suite.",
+      "head_ci": {
+        "commit": "8a00d8c98e7b044ebd18e75a4258d355ee7efbc4",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "This match concerns brittle test-title discovery. File existence supports navigation and cannot establish that a requirement is exercised."
+    },
+    {
+      "number": 45,
+      "title": "fix: preserve model-key replacements and align validation and docs",
+      "url": "https://github.com/adewale/pda/pull/45",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The validator's nominal 2,048-bit RSA fixture was an arbitrary repeated character whose encoding was noncanonical. A fixture intended to represent valid input could enter a different validation branch.",
+      "attempted_remedy": "Correct the fixture, reuse the old encoding as a rejection case and add real generated EC and RSA key controls.",
+      "test_paths": [
+        "test/validator.test.ts"
+      ],
+      "diff_evidence": "The fixture changes from 342 identical characters to a canonical final character. The suite also generates public keys, exports them with `jose`, and tests their acceptance alongside targeted invalid inputs.",
+      "transferable_rule": "Validate positive fixtures with an independent implementation and turn invalid former fixtures into explicit negative controls.",
+      "head_ci": {
+        "commit": "2007e7b9c4add4a4603d7dece86530009838a286",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The generated-key controls cover representative importable public keys. The broader documentation link checker is outside this match."
+    },
+    {
+      "number": 46,
+      "title": "Follow Poppy 0.3 as of 3 November (upstream 7205250)",
+      "url": "https://github.com/adewale/pda/pull/46",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The existing interop trace checker treated a server on a different host as unlisted even when a Company's declared OpenAPI document named it. A valid path could produce a false failure.",
+      "attempted_remedy": "Derive the allowed server set from the observed discovery and specification exchanges. Exercise both a listed server and an unrelated destination in the same regression.",
+      "test_paths": [
+        "interop/runner/checks.ts",
+        "interop/test/checks.test.ts",
+        "test/mock-company/core.ts",
+        "test/hypothesis/poppy_client.py"
+      ],
+      "diff_evidence": "`describedHosts` reads the servers from fetched, declared OpenAPI descriptions. The new test requires only the unrelated destination to produce a finding. The mock also verifies operator signatures independently of the agent's signer.",
+      "transferable_rule": "Build a trace checker from observed protocol evidence, and include a near-miss negative control alongside a valid case.",
+      "head_ci": {
+        "commit": "1aa3770e7e8d383d3d8afc8738f1b477fe79e27b",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The external behavior is represented by recorded exchanges and an independent Python client. These checks do not cover every live implementation."
+    },
+    {
+      "number": 49,
+      "title": "Support MCP 2026-07-28's stateless lifecycle beside 2025-06-18",
+      "url": "https://github.com/adewale/pda/pull/49",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The existing session-isolation suite exercised a single stateful MCP lifecycle. It could no longer establish that cache separation held on both kinds of server when the client added stateless negotiation.",
+      "attempted_remedy": "Run the existing isolation and reauthentication cases under old-only, new-only and dual-version configurations. Draw those server profiles in the independent Python model.",
+      "test_paths": [
+        "test/mcp-session-isolation.test.ts",
+        "test/hypothesis/machine.py",
+        "test/mock-company.test.ts"
+      ],
+      "diff_evidence": "`describe.each(LIFECYCLES)` replaces the old single-profile setup. Each profile specifies the expected handshake sequence, and the model checks the selected era against the configured server.",
+      "transferable_rule": "When a new protocol mode changes how an existing invariant is achieved, run the invariant against the full supported mode matrix.",
+      "head_ci": {
+        "commit": "3f6f3ab7a36476985b856f357ea433c0ed9bf8c3",
+        "rollup": "SUCCESS",
+        "checks": [
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The matrix uses mock servers. The PR reports that 17 of 20 lifecycle cases failed with the old client restored."
+    },
+    {
+      "number": 52,
+      "title": "Add explicit Company access and data controls that no Company can block",
+      "url": "https://github.com/adewale/pda/pull/52",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The project lacked a repeatable public smoke check tying a passing result to the intended deployed revision. Existing feature tests could not establish what build was serving public traffic.",
+      "attempted_remedy": "Add a read-only deployment preflight with provenance assertions and controlled examples of wrong or dirty builds.",
+      "test_paths": [
+        "scripts/check-live.mjs",
+        "scripts/check-live.test.mjs"
+      ],
+      "diff_evidence": "The test changes the fake `/api/build-info` response to a dirty build and a mismatched commit and requires each run to reject. It also requires a passing public receipt to record `authenticatedJourneyVerified` as false.",
+      "transferable_rule": "Verify the deployed artifact's identity before assigning a smoke result to a release. State which user journeys the probe actually exercised.",
+      "head_ci": {
+        "commit": "c5698b88c30b738de4c724385a8da30db083871a",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The PR did not deploy this change. The preflight covers anonymous public endpoints, with authenticated workflows tracked separately."
+    },
+    {
+      "number": 54,
+      "title": "Share the sign-in error contract instead of scanning constructors",
+      "url": "https://github.com/adewale/pda/pull/54",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The sign-in UI test discovered error codes by applying a regex to OAuth constructor calls. A source refactor could silently change the test matrix without changing the public contract.",
+      "attempted_remedy": "Define the wire-code registry once, enforce a complete UI message map at compile time and render each registered and unknown code.",
+      "test_paths": [
+        "src/sign-in-errors.ts",
+        "src/client.tsx",
+        "test/ui/client.test.tsx"
+      ],
+      "diff_evidence": "The diff deletes `readFileSync(...oauth.ts).matchAll(...)`. The rendered UI test checks the shared registry and fallback cases `toString`, `__proto__` and `future_error`.",
+      "transferable_rule": "Drive contract coverage from the declared public values and test unknown inputs through the same user-facing path.",
+      "head_ci": {
+        "commit": "249e51b59ea3241a10d140062f41fdbacd13ed19",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test"
+        ]
+      },
+      "verification_caveat": "The PR reports that restoring the previous lookup failed two fallback controls. Head CI passed."
+    },
+    {
+      "number": 55,
+      "title": "Adopt three Poppy 0.4 client rules that 0.3 allows, and plan the 0.4 upgrade",
+      "url": "https://github.com/adewale/pda/pull/55",
+      "state": "closed",
+      "merged": false,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "An existing refresh regression returned metadata for one service at another service's derived metadata address. It relied on an invalid setup to get to the refresh behavior it purported to test.",
+      "attempted_remedy": "Make the initial metadata identify the service being exercised and preserve the assertion that later refresh drops the old audience.",
+      "test_paths": [
+        "interop/test/resource-metadata-refresh.test.ts"
+      ],
+      "diff_evidence": "The initial stub changes from `metadata(RESOURCE)` to `metadata(SERVICE)` and the expected sequence changes from `[RESOURCE, null]` to `[SERVICE, null]`.",
+      "transferable_rule": "Keep setup fixtures valid for the contract under test so another validation failure cannot shadow the intended assertion.",
+      "head_ci": {
+        "commit": "db38a5f32e2489507d3f144d7005111944a9c782",
+        "rollup": "No check rollup returned",
+        "checks": []
+      },
+      "verification_caveat": "Closed without merge. GitHub returned no head check rollup. The PR's local test results are author-reported."
+    },
+    {
+      "number": 56,
+      "title": "Pin the Poppy 0.4 draft and its kit beside 0.3",
+      "url": "https://github.com/adewale/pda/pull/56",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The specification checker assumed a single pin. It could not verify a frozen release alongside a moving draft or attribute changes in shared pages to the right version.",
+      "attempted_remedy": "Verify each version's snapshot and kit separately. Expand the CLI drift regression to cover frozen pages, draft pages, shared content, and HTTP failure.",
+      "test_paths": [
+        "scripts/check-spec.mjs",
+        "scripts/check-company-kit.mjs",
+        "interop/test/spec-drift.test.mjs"
+      ],
+      "diff_evidence": "The old single missing-page case became a per-pin fixture. Tests cover a clean baseline, changed or removed pages, shared-page attribution and HTTP 500. The checker compares runtime pins with supported versions.",
+      "transferable_rule": "Version the test oracle, fixtures and drift rules together when maintaining frozen and evolving contracts.",
+      "head_ci": {
+        "commit": "e091c730c2db38dff045615937c9338a4d52547b",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The newer kit's baseline initially stopped at discovery and skipped downstream checks. A successful integrity check alone does not establish conformance."
+    },
+    {
+      "number": 57,
+      "title": "Poppy 0.4: pin the draft and kit, check the agent against the kit, exact resource metadata",
+      "url": "https://github.com/adewale/pda/pull/57",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Workers tests relied on the project's own strict mock and validator to judge requests from its own agent. A shared mistake could pass both.",
+      "attempted_remedy": "Capture the outbound structured payloads during ordinary Workers tests and validate them after each test against the pinned upstream kit's schemas.",
+      "test_paths": [
+        "test/agent-helpers.ts",
+        "test/kit-schemas.ts",
+        "test/kit-schemas.test.ts",
+        "test/mock-company/core.ts"
+      ],
+      "diff_evidence": "Teardown compares `kitSchemaErrors` with expected errors and reports both unexpected and missing errors. Controls enumerate applied schema names and send malformed payloads. The final diff maps both the 0.3 and 0.4 validators.",
+      "transferable_rule": "Run an independent oracle over the actual data emitted by existing tests. Test the oracle with deliberately invalid data and verify which categories it saw.",
+      "head_ci": {
+        "commit": "b76212970b2c9d183a1ab7b92a0b27be4a7fabe1",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "Coverage is limited to payload types for which the upstream kit defines schemas. Credential-bearing form bodies are excluded. The final diff is broader than the original PR description."
+    },
+    {
+      "number": 58,
+      "title": "Drop Poppy 0.3: speak 0.4 alone",
+      "url": "https://github.com/adewale/pda/pull/58",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The independent state machines avoided several histories that the mock mishandled, including retrying a previously refused request. Existing checks could therefore pass while the fixture contradicted the protocol.",
+      "attempted_remedy": "Model the previously avoided cases during the 0.4 migration, retain minimized examples in Python and TypeScript, and add tests of the new oracle rules.",
+      "test_paths": [
+        "test/hypothesis/test_findings.py",
+        "test/hypothesis/test_oracles.py",
+        "test/hypothesis/machine.py",
+        "test/mock-company.test.ts"
+      ],
+      "diff_evidence": "Both suites now check that a retried refused handoff stays refused and that `as_of_request` names only accepted work. Oracle tests feed inconsistent states and logs to the checker. Legacy-only checks were removed with 0.3 support.",
+      "transferable_rule": "Convert state-machine findings into small permanent examples, then allow those histories in the generator so nearby variants remain reachable.",
+      "head_ci": {
+        "commit": "1f88ed6d1e98e513bbd6a5b52c12e86e1cbe97d8",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The PR's local Python machine and TypeScript mock exercise related protocol readings. The separate website-operations gap was handled in #59."
+    },
+    {
+      "number": 59,
+      "title": "Challenge a signed-out Session at the mock's operations endpoint (MOCK-4)",
+      "url": "https://github.com/adewale/pda/pull/59",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The mock treated an eligible signed-out user and a different user as the same invalid request. Existing state machines did not exercise the website operations endpoint.",
+      "attempted_remedy": "Correct the mock's response and add a direct endpoint regression for eligible and ineligible callers, with and without an approval.",
+      "test_paths": [
+        "test/mock-company/operations.ts",
+        "test/mock-company.test.ts"
+      ],
+      "diff_evidence": "The regression checks 401 with a challenge for the same signed-out user, `invalid_request` for another user, and an unchanged operation with nothing performed. The old fixture returned 400 in the first case.",
+      "transferable_rule": "Test fixture behavior directly whenever the higher-level model cannot reach a contract branch, and assert both the intended response and absence of side effects.",
+      "head_ci": {
+        "commit": "ec9330e81c93bdac98402792ed2fc5f0e54b4f41",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The finding came from review of the fixture. The PR reports a failing revert control. The challenge's exact scope is a local policy choice."
+    },
+    {
+      "number": 60,
+      "title": "Fix four 0.4 review findings, keep cards on reworded revisions, and pair Print with Poppy at 0.4",
+      "url": "https://github.com/adewale/pda/pull/60",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The mock and its independent Python model shared the same wrong ownership rule. Both tied a signed-out operation to the original session and accepted that session after it signed in.",
+      "attempted_remedy": "Correct both implementations and test a different session of the same user, the original session after sign-in, and another user.",
+      "test_paths": [
+        "test/hypothesis/test_operations.py",
+        "test/hypothesis/test_oracles.py",
+        "test/mock-company/operations.ts",
+        "test/mock-company.test.ts"
+      ],
+      "diff_evidence": "The Python rule replaces `ms is op.session` with a check on current sign-in state. The oracle now accepts another signed-out session and rejects a signed-in one. A direct mock test covers the same distinctions.",
+      "transferable_rule": "Check the behavioral model against the source contract and exercise cases that distinguish superficially equivalent identities.",
+      "head_ci": {
+        "commit": "09c564fd31ff4ff3fa7fc42f973354141cfb8794",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The direct mock test works below the file-upload path because that fixture keeps uploads session-local. The separate full journey proves a narrower path."
+    },
+    {
+      "number": 62,
+      "title": "Run D and S0 against Print with Poppy's live sandbox: both pass",
+      "url": "https://github.com/adewale/pda/pull/62",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Discovery was the only live scenario enabled for the independent print sandbox. It could pass while signed-out session establishment or a public catalog read was broken.",
+      "attempted_remedy": "Enable the existing signed-out S0 scenario specifically for that sandbox and supply its public catalog operation as fixture data.",
+      "test_paths": [
+        "interop/registry.json"
+      ],
+      "diff_evidence": "The sandbox's `liveScenarios` changes from `[D]` to `[D, S0]`. The new `openapi_public` fixture names `getCatalog`. The PR records initial failures and a later successful run for the three honest agent profiles.",
+      "transferable_rule": "Distinguish a peer's discovery availability from a functioning session. Add a scoped, repeatable operation before claiming the latter.",
+      "head_ci": {
+        "commit": "e109eb1e17b31b072e39b60335ab3601a6ac6680",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The live results are dated reports in the PR. Required CI does not independently establish those live outcomes or any authenticated purchase."
+    },
+    {
+      "number": 65,
+      "title": "Run every honest agent against Print with Poppy, follow the Company card in a browser, keep a not-ready answer across a restart",
+      "url": "https://github.com/adewale/pda/pull/65",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The external print peer had ten CI scenarios but only one agent profile, and the company-access approval card had no browser journey. The not-ready order path also lacked recovery coverage at its waiting point.",
+      "attempted_remedy": "Expand the existing CI matrix to all three honest agents, drive the card from the browser, and exercise a restart while the follow-up is waiting.",
+      "test_paths": [
+        ".github/workflows/interop.yml",
+        "scripts/app-company-access-journey.mjs",
+        "test/print-journey.test.ts"
+      ],
+      "diff_evidence": "The same ten required scenarios now run with `pda,lenient-personal-agent,strict-personal-agent`. The recovery test waits for the persisted intent and verifies a completed order and a single approved request.",
+      "transferable_rule": "Run materially different clients against the same independent peer. Put recovery tests at the boundary between durable and in-memory progress.",
+      "head_ci": {
+        "commit": "f1675ce92b2e82ef9d39b9f190355df879501997",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The CI peer is a pinned demo store. The reported browser journey uses a synthetic Company."
+    },
+    {
+      "number": 67,
+      "title": "Test an authorization event with its challenge on a successful response (8.11)",
+      "url": "https://github.com/adewale/pda/pull/67",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "The requirement ledger pointed to a deleted test file that had never exercised an authorization challenge on a successful response. The existing implementation could have regressed unnoticed.",
+      "attempted_remedy": "Make the mock actually send the header on a successful authorization event and check the client in both JSON and streamed-read configurations.",
+      "test_paths": [
+        "test/mock-company/conversations.ts",
+        "test/mock-company/types.ts",
+        "test/poppy.test.ts"
+      ],
+      "diff_evidence": "The test requires at least one successful recorded response carrying the challenge, one sign-in prompt, one message and one conversation, and no HTTP error. The old client behavior needed no production change.",
+      "transferable_rule": "Verify that a cited requirement test actually creates the condition it claims, then assert the outcome and cardinality of side effects.",
+      "head_ci": {
+        "commit": "f633898b64deac44f7a6a21700c2ec523ed35721",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The PR reports that making the client refuse challenges on every status fails both cases. No independent live Company exercised this behavior."
+    },
+    {
+      "number": 69,
+      "title": "Speak the 1.0 draft beside 0.4",
+      "url": "https://github.com/adewale/pda/pull/69",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "Adding a new default made the existing discovery grid stop exercising the older supported profile. The Python model also reused a user's newest key for older grants even when a grant retained its own key.",
+      "attempted_remedy": "Add a dedicated 0.4 peer to the matrix, select the upstream schema by negotiated version and retain the issuing key in the test model for each bound grant.",
+      "test_paths": [
+        "interop/test/runner.test.ts",
+        "test/kit-schemas.ts",
+        "test/hypothesis/machine.py",
+        "test/hypothesis/test_limits_device.py"
+      ],
+      "diff_evidence": "The runner test pins the older peer's `INTEROP_MOCK_VERSION` to 0.4. `refresh_key(grant)` replaces lookup of the user's current key on refresh. Each grant records its associated key.",
+      "transferable_rule": "Keep old supported configurations explicit in CI and bind the model's expected state to the object that owns it.",
+      "head_ci": {
+        "commit": "e4bdbdfe0052c305b8296086481155f24a8f5545",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "This was the 1.0 draft. The published text and corresponding checks changed again in #75."
+    },
+    {
+      "number": 70,
+      "title": "Quote the pinned sentence behind each check",
+      "url": "https://github.com/adewale/pda/pull/70",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct test-quality or conformance-harness work",
+      "weakness": "Coverage bookkeeping checked whether changelog entries had a disposition but never compared the checker with the requirement it enforced. Outdated MUST assertions survived after the specification changed to SHOULD.",
+      "attempted_remedy": "Attach a pinned sentence to each normative validator message and mock check, verify that sentence and its keyword for each applicable version, and correct stale findings.",
+      "test_paths": [
+        "scripts/check-requirements.mjs",
+        "scripts/check-requirements.test.mjs",
+        "test/mock-company/violations.ts",
+        "test/validator.test.ts"
+      ],
+      "diff_evidence": "A test quotes the old MUST sentence and gets a mismatch against the revised pin. Another rejects a SHOULD sentence presented as a MUST. The validator regression updates the scope finding's severity.",
+      "transferable_rule": "Keep the exact versioned requirement beside a conformance assertion and test the guard using historical wording that would give the wrong verdict.",
+      "head_ci": {
+        "commit": "8e65023970924ba3b20bf302f3e8381e1d3e6069",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The mechanical check covers pinned Poppy text. The PR documents additional behavior requiring review and external standards outside the quote checker."
+    },
+    {
+      "number": 75,
+      "title": "Pin published Poppy 1.0 and verify final behavior",
+      "url": "https://github.com/adewale/pda/pull/75",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "The strict mock and trace checker retained a draft assertion lifetime under final 1.0. An attribution test even searched source strings for a chosen threshold. Upstream probe prerequisites also varied by profile.",
+      "attempted_remedy": "Apply the negotiated final rule to boundary values in mock and trace tests, check compatibility by behavior, and verify the separately adapted upstream probe on both pins.",
+      "test_paths": [
+        "interop/test/attribution.test.ts",
+        "interop/test/checks.test.ts",
+        "interop/test/company-kit-dpop-patch.test.ts",
+        "test/mock-company.test.ts"
+      ],
+      "diff_evidence": "Tests accept lifetimes of 60, 120 and 300 seconds and flag 301. The source-regex assertion on `MAX_ASSERTION_LIFETIME` is removed in favor of compatibility cases. The CI workflow preserves raw and prerequisite-supplied results.",
+      "transferable_rule": "Verify a versioned public rule with boundary examples in every checker. Preserve raw upstream findings when an adapted run supplies missing prerequisites.",
+      "head_ci": {
+        "commit": "21d01bb9431a81f8d19cdc06800c545e0513ec51",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "The unmodified kit still reported a failure and warnings on certain profiles. The PR distinguishes those from results with prerequisites supplied."
+    },
+    {
+      "number": 77,
+      "title": "Validator: report who answered a fetch; name the validator and agent to Companies",
+      "url": "https://github.com/adewale/pda/pull/77",
+      "state": "open",
+      "merged": false,
+      "classification": "Test-quality repair embedded in broader work",
+      "weakness": "An activity test directly wrote conversation state while a long-running background read was still able to overwrite it. The asserted display depended on which writer finished first.",
+      "attempted_remedy": "Wait for the in-flight read to finish and remove its idle job before the test takes ownership of the conversation row.",
+      "test_paths": [
+        "test/activity.test.ts"
+      ],
+      "diff_evidence": "A new `until` loop deletes only this conversation's `read-*` job when `running = 0`, then confirms the job is absent before the SQL fixture update and original display assertions.",
+      "transferable_rule": "Give the test exclusive control of mutable fixture state by synchronizing with the actual background writer.",
+      "head_ci": {
+        "commit": "bff63c058b5dbf38876f666a3c3d017676e50cac",
+        "rollup": "SUCCESS",
+        "checks": [
+          "Check action pins",
+          "test",
+          "interop"
+        ]
+      },
+      "verification_caveat": "Open at the audit date. The passing head check establishes CI status but cannot measure the remaining long-term flake rate."
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        8,
+        33
+      ],
+      "reason": "These PRs diagnose pre-existing failing tests without repairing them in their diffs. #1 reports the flaky replay assertion later repaired in #6. #8 and #33 identify fixed-date budget failures. #14 and #32 contain clock repairs."
+    },
+    {
+      "numbers": [
+        2,
+        4,
+        10,
+        17,
+        19,
+        20,
+        22,
+        63,
+        66,
+        72,
+        74
+      ],
+      "reason": "Their test edits accompany product changes or adjust assertions to updated behavior. #63 adds a currency property and delayed-checkout fixtures for its new handling. #74 factors shared directives to support a new provider. #72 reports a throwaway test and changes no committed tests."
+    },
+    {
+      "numbers": [
+        3,
+        5,
+        18,
+        23,
+        25,
+        28,
+        31,
+        43,
+        48,
+        53,
+        68,
+        76
+      ],
+      "reason": "Documentation, deployment observations, historical results or links to existing practice. #28 explains tamper cases, an inventory of checks and an independent Python client. It changes no test or conformance mechanism. #76 reruns the existing matrix with a temporary pin."
+    },
+    {
+      "numbers": [
+        11,
+        27
+      ],
+      "reason": "External specification research and snapshot extraction. #27 grades issues in the upstream protocol's text. The extractor changes capture revised source pages."
+    },
+    {
+      "numbers": [
+        42,
+        50
+      ],
+      "reason": "Diagnostic artifact retention and workflow dependency pin enforcement, respectively. The test assertions and conformance approach are unaffected."
+    },
+    {
+      "numbers": [
+        61,
+        64
+      ],
+      "reason": "Independent peer revision updates and historical evidence. #61 also updates an expected link to follow the new documentation. Neither changes scenario checks or the test method."
+    }
+  ],
+  "limitations": [
+    "The unit of counting is the PR. Stacked upgrade PRs have overlapping diffs. Entries cite the change attributable to each proposal.",
+    "GitHub withheld some patch bodies on #36, #41 and #58. The complete changed-file inventories were available. Base and head file contents were compared for all 42 nonempty affected paths outside vendored snapshots and documentation directories, including 12 test paths on #36. Two empty marker files had no patch.",
+    "The review used historical source and GitHub check metadata. Suites, live services, wider optional matrices and author-reported revert experiments were not independently rerun. Green rollups cover the configured checks at the recorded head.",
+    "Large vendored protocol snapshots, generated captures and documentation-only receipts were screened by filename and context. The evidence quotes representative first-party changes, rather than every line in those inputs."
+  ]
+}

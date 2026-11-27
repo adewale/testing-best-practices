@@ -1,0 +1,80 @@
+     1	import { expect } from 'bun:test'
+     2	import { Resvg } from '@resvg/resvg-wasm'
+     3	export { renderedTextReady as svgXmlReady } from './rendered-text.ts'
+     4	
+     5	/** An independent XML parser, with native resources released after each case. */
+     6	export function expectWellFormedXml(svg: string, source: string): void {
+     7	  let parseError: string | undefined
+     8	  try {
+     9	    const document = new Resvg(svg, { font: { loadSystemFonts: false } })
+    10	    document.free()
+    11	  } catch (error) {
+    12	    parseError = error instanceof Error ? error.message : String(error)
+    13	  }
+    14	  expect({ source, parseError }).toEqual({ source, parseError: undefined })
+    15	  expect(svg).not.toMatch(/="[^"]*\b(?:NaN|Infinity|undefined)\b[^"]*"/)
+    16	}
+     1	// The one SVG normaliser for test comparisons.
+     2	//
+     3	// Golden snapshots compare with the default (whitespace-only) form: CRLF is
+     4	// folded to LF, trailing spaces are dropped per line, and the document is
+     5	// trimmed, so an editor's line endings or a final newline never turns a golden
+     6	// red while every byte of geometry, paint and text still counts.
+     7	//
+     8	// `stripPaint` additionally removes paint so two renders can be compared on
+     9	// geometry alone (property-invariance-colour.test.ts): presentation attributes
+    10	// and CSS declarations for fill/stroke/color/stop-color/flood-color/lighting-
+    11	// color/background, the colour custom properties (`--bg`, `--_line`, …), sankey's
+    12	// light/dark `mix-blend-mode`, CSS rules left empty by that, the number on
+    13	// palette-slot classes, the palette page backdrop rect, whose only geometry is
+    14	// the canvas size the root element already carries, and the root style-scope
+    15	// class (svg-style-scope.ts), a hash of the whole output that paint changes.
+    16	
+    17	export interface NormalizeSvgOptions {
+    18	  /** Drop paint-only attributes, declarations and elements. Default: false. */
+    19	  stripPaint?: boolean
+    20	  /** Rename the root style-scope class to `am-scope`. It hashes the whole
+    21	   *  output, so any change renames it on every line that carries it; masking
+    22	   *  it lets a golden diff show only the lines that changed. Implied by
+    23	   *  stripPaint. Default: false. */
+    24	  maskStyleScope?: boolean
+    25	}
+    26	
+    27	const PAINT_PROPERTIES = new Set([
+    28	  'fill',
+    29	  'stroke',
+    30	  'color',
+    31	  'stop-color',
+    32	  'flood-color',
+    33	  'lighting-color',
+    34	  'background',
+    35	  'background-color',
+    36	  'mix-blend-mode',
+    37	])
+    38	
+    39	function isPaintProperty(property: string): boolean {
+    40	  const name = property.toLowerCase()
+    41	  // `--font` names the typeface, not a colour, so it survives the strip.
+    42	  return (name.startsWith('--') && name !== '--font') || PAINT_PROPERTIES.has(name)
+    43	}
+    44	
+    45	/** Remove paint declarations from CSS text (a `<style>` body or a style attribute). */
+    46	function stripCssPaint(css: string): string {
+    47	  return css.replace(/(?<=^|[;{\s])([-\w]+)\s*:[^;{}]*;?/g, (declaration, property: string) =>
+    48	    isPaintProperty(property) ? '' : declaration,
+    49	  )
+    50	}
+    51	
+    52	/** Paint-only rules (one per series colour, say) become empty; drop them, innermost first. */
+    53	function dropEmptyCssRules(css: string): string {
+    54	  let previous: string
+    55	  let current = css
+    56	  do {
+    57	    previous = current
+    58	    current = current.replace(/[^{};\n]*\{\s*\}[ \t]*\n?/g, '')
+    59	  } while (current !== previous)
+    60	  return current
+src/__tests__/property-all-families-fuzz.test.ts:36:import { expectWellFormedXml, svgXmlReady } from './helpers/svg-xml.ts'
+src/__tests__/property-svg-wellformedness.test.ts:15:import { expectWellFormedXml, svgXmlReady } from './helpers/svg-xml.ts'
+52:          fontSources: ['embedded-data-uri'],
+100:      expect(browserArtifact.runtime.fontSources).toEqual(['embedded-data-uri'])

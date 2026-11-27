@@ -1,0 +1,342 @@
+{
+  "scope": "Parent native reproduction of CI setup, font selection, format fixtures and mixed-EOL behavior; the byte-preservation parent owner selection is narrower than the auditor 403-case matrix.",
+  "results": [
+    {
+      "label": "ours-coverage-missing",
+      "argv": [
+        "env",
+        "-u",
+        "AM_CJK_FONT_DIR",
+        "CI=true",
+        "bun",
+        "test",
+        "--coverage",
+        "src/__tests__/png-fonts.test.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 1,
+      "status": "completed",
+      "duration_seconds": 0.4627969299999677,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "52168b1297ec2ba5cd9e9e1557ce3fdb6b7fb010461ea03b9d287a8f851f11d4"
+    },
+    {
+      "label": "ours-coverage-with-font",
+      "argv": [
+        "bun",
+        "test",
+        "--coverage",
+        "src/__tests__/png-fonts.test.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {
+        "CI": "true",
+        "AM_CJK_FONT_DIR": "/usr/share/fonts/opentype/noto"
+      },
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 2.157550331001403,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "7d01985dcf19e70d0bdd36b08af33fc2416283cbbf2c81c1ba54d21eb28a27b3"
+    },
+    {
+      "label": "ours-font-choice-baseline",
+      "argv": [
+        "bun",
+        ".parent-journey-font-choice.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {
+        "CI": "true",
+        "AM_CJK_FONT_DIR": "/usr/share/fonts/opentype/noto"
+      },
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.7229691190004814,
+      "stdout_sha256": "e7095d011b6ae774a7e15e70125d845d539cb5e5a7b662d0285b3e691f6b6711",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-apply-fallback-only-fonts",
+      "argv": [
+        "git",
+        "apply",
+        "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/fallback-only-fonts.patch"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.0029660680011147633,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-font-fault-old",
+      "argv": [
+        "bun",
+        "test",
+        "src/__tests__/png-fonts.test.ts",
+        "src/__tests__/journey-svg-snapshot.test.ts",
+        "src/__tests__/agent-png-determinism.test.ts",
+        "--timeout",
+        "30000"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {
+        "CI": "true",
+        "AM_CJK_FONT_DIR": "/usr/share/fonts/opentype/noto"
+      },
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 1.5297694739983854,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "c1b7ba2b692ef48aba20a972651cf17a14756b5c7cf5ad1884ca0d187507b1b3"
+    },
+    {
+      "label": "ours-font-choice-fault",
+      "argv": [
+        "bun",
+        ".parent-journey-font-choice.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {
+        "CI": "true",
+        "AM_CJK_FONT_DIR": "/usr/share/fonts/opentype/noto"
+      },
+      "timeout_seconds": 120,
+      "exit_code": 1,
+      "status": "completed",
+      "duration_seconds": 0.6995170930003951,
+      "stdout_sha256": "c86b989ef4b886ffc94e39717378a6f766fc6667d797e7749e0b763fe8614605",
+      "stderr_sha256": "2b5e146bd0dfbba195eca3ce6118d12f57a318b58846c12a61702dbb1a3c8fd9"
+    },
+    {
+      "label": "ours-font-choice-restored",
+      "argv": [
+        "bun",
+        ".parent-journey-font-choice.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {
+        "CI": "true",
+        "AM_CJK_FONT_DIR": "/usr/share/fonts/opentype/noto"
+      },
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.5846442870006285,
+      "stdout_sha256": "e7095d011b6ae774a7e15e70125d845d539cb5e5a7b662d0285b3e691f6b6711",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-apply-terminal-error-wrapping",
+      "argv": [
+        "git",
+        "apply",
+        "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/terminal-error-wrapping.patch"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.0025780850010050926,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-format-fault-old",
+      "argv": [
+        "bun",
+        "test",
+        "src/__tests__/authored-style-color-admission.test.ts",
+        "src/__tests__/quadrant-style.test.ts",
+        "--timeout",
+        "30000"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 1.2649283870014187,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "57d3b59e58e0a5552ffe80dab32db29e2176845854c2be5f846beb356b075d56"
+    },
+    {
+      "label": "ours-apply-color-test-request-fix",
+      "argv": [
+        "git",
+        "apply",
+        "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/color-test-request-fix.patch"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.004236327000398887,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-format-fault-repaired",
+      "argv": [
+        "bun",
+        "test",
+        "src/__tests__/authored-style-color-admission.test.ts",
+        "src/__tests__/quadrant-style.test.ts",
+        "--timeout",
+        "30000"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 1,
+      "status": "completed",
+      "duration_seconds": 1.1890926480009512,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "5d47b19dc963a98162ee57e04396294b85c6d15f1a991f5043bad52c2ff34d7a"
+    },
+    {
+      "label": "ours-format-repaired-clean",
+      "argv": [
+        "bun",
+        "test",
+        "src/__tests__/authored-style-color-admission.test.ts",
+        "src/__tests__/quadrant-style.test.ts",
+        "--timeout",
+        "30000"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 1.3136838800000987,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "7a44f6b522eda6d219270845857915007992dd1b99ce630b4b4ad8fc912dcfde"
+    },
+    {
+      "label": "ours-eol-clean",
+      "argv": [
+        "bun",
+        ".parent-source-edit-bytes.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.4304836980008986,
+      "stdout_sha256": "e0a8ce0d671ed62c77e0d583e6523e15035a32a467c23348e9d723e45890df21",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-apply-normalized-line-endings",
+      "argv": [
+        "git",
+        "apply",
+        "/workspace/mermaid-skill-comparison-2026-11-27/ours-audit/evidence/probes/normalized-line-endings.patch"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.0033295039993390674,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-eol-fault-public",
+      "argv": [
+        "bun",
+        ".parent-source-edit-bytes.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 1,
+      "status": "completed",
+      "duration_seconds": 0.41730282600110513,
+      "stdout_sha256": "f70d9e4d1b6401d10dc13af84fb60880fd24ef973ffdf48b50126d4aad694f40",
+      "stderr_sha256": "7116e32c07a2eeaaa6104f43919fe6a8094edde3d3299c453a3f07e21c89a4d1"
+    },
+    {
+      "label": "ours-eol-fault-owner",
+      "argv": [
+        "bun",
+        "test",
+        "src/__tests__/agent-source-preserving-edit.test.ts",
+        "--timeout",
+        "30000"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 12.425258877001397,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "ed2ebb2f1a03e46c96276ea7cdfed914f0a4525e876a0d16ad07ef73727db88f"
+    },
+    {
+      "label": "ours-eol-restored-public",
+      "argv": [
+        "bun",
+        ".parent-source-edit-bytes.ts"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.5918148040000233,
+      "stdout_sha256": "e0a8ce0d671ed62c77e0d583e6523e15035a32a467c23348e9d723e45890df21",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "ours-eol-restored-owner",
+      "argv": [
+        "bun",
+        "test",
+        "src/__tests__/agent-source-preserving-edit.test.ts",
+        "--timeout",
+        "30000"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 12.7761449239988,
+      "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+      "stderr_sha256": "d6a8930adcec5b35459caa5092a244dff37ac26ae068c3b3712120c05a74e345"
+    },
+    {
+      "label": "ours-restored-diff",
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD"
+      ],
+      "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+      "extra_env": {},
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.016397567000240088,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

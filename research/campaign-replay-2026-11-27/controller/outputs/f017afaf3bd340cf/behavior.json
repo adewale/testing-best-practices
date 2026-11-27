@@ -1,0 +1,68 @@
+{
+  "case": "B01",
+  "disposition": "Returned report, patch and saved answers. All sealed source, report, patch and collected-answer hashes verified.",
+  "patch_sha256": "c12c2a7f4df8c49edfa5b9aa8632ad477e4cc10bf8b260e4eccab9f78507f37d",
+  "snapshot_sha256": "dfcfea3d379917576ab654ad48ca8c16b28fbd84be92bff6a3ae8ca1d254c17a",
+  "change": {
+    "files": ["skill-evals/shared-benchmark.json", "skills/agentic-mermaid-live-editor/SKILL.md", "skill-evals/ablations/no-editor-source-of-truth.patch"],
+    "scope": "The positive case now asks for a plain-JSON plan for standalone download filenames and format roles. The adversarial case asks for the hosted filename plan. Each replaces three prose checks with one structured_output assertion on output.md. The same 49 other cases and three other ablations remain. Across the three files the patch adds 42 lines and removes 35. A whitespace-strict patch preflight passed on a disposable original tree.",
+    "owner_and_documents": "editor/js/export.js binds both image buttons and assigns diagram.png and diagram.svg. editor/js/app.js initializes it. scripts/site/editor.ts bundles editor/js/entry.js and writes editor.html. package.json selects website/build.ts and the hosted browser fixture serves website/public/editor/index.html. The hosted builder implementation is outside the sample. The shipped skill now names the exact edit owner and hosted output, changing the guidance available to a future agent. Live behavior with that skill was unmeasured."
+  },
+  "frozen_prose_controls": {
+    "method": "The pinned grade_case_variant ran on nine fixed prose answers across pos-live-editor-source-of-truth and adv-reject-editor-html-direct-edit on both manifests. The two candidate assertions were inspected. No script oracles ran.",
+    "original": "The original accepted two of seven correct recommendations and eight of eleven wrong ones, agreeing with five of 18 frozen expectations. maintain_owner scored 2/3 on both rows, assembler_in_context 3/3 on both, and direct_edit_negated_rebuild, wrong_owner_only, skip_rebuild_only and direct_edit_only each scored 3/3 on both.",
+    "candidate": {"assertions": ["standalone-export-plan", "hosted-export-plan"], "accepted": 0, "rejected": 18, "invalid_format": 18, "deferred": 0, "missing": 0, "score_each": "0/1"},
+    "interpretation": "All nine saved answers fail JSON parsing. The candidate's 18 rejections include seven semantically correct answers under the original question. Eleven literal matches to original rejection labels reflect the format boundary. The fixed corpus cannot establish discrimination between structured plans."
+  },
+  "submitted_answer_replay": {
+    "receipt": "The controller collected 18 existing files totaling 3,093 bytes. All SHA-256 values matched controls-collection.json. Recorded source mtimes span 02:18:18–02:21:46 UTC, before the report at 02:27:05 UTC. Collection occurred at 02:28:04 UTC.",
+    "design": "Eight standalone and eight hosted JSON plans ran against their intended rows. Two prose files each ran on both rows. This yielded 20 case/file pairs per manifest, with no deferred judgments.",
+    "table_columns": ["original", "candidate"],
+    "table": {
+      "standalone-good.txt": ["3/3", "1/1"],
+      "standalone-edit-html.txt": ["3/3", "0/1"],
+      "hosted-good.txt": ["1/3", "1/1"],
+      "hosted-standalone.txt": ["3/3", "0/1"]
+    },
+    "directions": "The candidate accepted all four correct JSON plans, including the two ./-path and reordered-key versions. It rejected all 12 defective JSON plans. The diagnostics named edit for hand-editing HTML or a generator, generator for naming the handler as generator, generated for a wrong output, rebuild for a wrong build, and formats for treating ASCII as an image. Using the full standalone plan on the hosted row reported generator, generated and rebuild together.",
+    "prose": "The subject's direct-prose.txt, which advises hand-editing HTML and skipping the rebuild, scored 3/3 on both original rows. owner-prose.txt scored 2/3 on both originals. Both texts scored 0/1 on both candidate rows for invalid JSON.",
+    "cli": "The upstream grade CLI separately replayed the four table examples on rooted manifests containing the two editor rows from each respective version. Both CLI invocations exited 0, emitted four result rows with the table scores and requested zero judge tasks."
+  },
+  "exploratory_structured_plans": {
+    "method": "The evaluator added 14 standalone and 13 hosted examples after freeze. Each original/candidate pair received identical saved JSON. These 27 pairs are separate from both supplied corpora.",
+    "permitted": "Correct owner and generator assignments, changing only JSON key order, and mixed bare/./ repository-relative paths all passed on both candidate rows. On those examples the original scored 3/3 standalone and 1/3 hosted. The correct hosted plan required no mention of the standalone assembler.",
+    "faults": "The candidate rejected swapping owner and generator, hand-editing the generated page, explicitly negating the rebuild, and using the wrong delivery target on each row. The original awarded 3/3 to the standalone swapped-role, direct-edit and negated-rebuild examples and 1/3 to those hosted examples. Omitting the generator while retaining the actual edit owner and correct script failed the newly requested generator field. The standalone candidate also rejected omitted Unicode and an incorrect ASCII role.",
+    "diagnostic_granularity": "The candidate yields 0/1 for one wrong field and 0/1 for simultaneous independent mistakes. The latter diagnostic identified both $.edit and $.rebuild. The numeric score gives no partial credit. For a format error, the diagnostic identifies $.formats and prints the expected and observed maps.",
+    "compatibility": "Both rows reject editor/js/ where the prompt requires the file, and reject an extra truthful assembler-context field where the prompt explicitly allows only the named fields. Both also reject editor/js/./export.js even though it identifies the same repository file. Supported syntax is narrower than semantically equivalent advice."
+  },
+  "manifest_and_ablation": {
+    "public_validation": "Materialization and upstream validation exited 0 for both manifests. Each had 51 cases, four ablations and 32 warnings. The six holdout and two holdback stubs remained private.",
+    "editor_only": "Both editor-only projections materialized with exit 0. The original removed two lines from the live-editor skill. The candidate removed four lines covering the specific filename handler, standalone assembler, hosted builder/output, and generated-output warning. The general editor/js/ behavior row and build examples remain. No candidate lines were added to the ablated skill.",
+    "full_set": "Unfiltered materialize-ablations exited 1 on both trees at the same line-62 context mismatch in no-verify-before-serialize. The full set remains unmaterialized. No live ablation effect was measured."
+  },
+  "keepers_and_other_surfaces": {
+    "byte_freshness": "The original and candidate cookbook regeneration callback, cookbook CLI --check and Section B regeneration callback accepted only the original bytes and rejected re-encoding, a visible pixel change and a dimension change. The cookbook and Section B historical approvals accepted the approved original and rejected the substituted re-encode.",
+    "pixel_equivalence_and_policy": "The cookbook RGBA-and-dimensions helper accepted both original and lossless re-encode and rejected the pixel and dimension changes on both trees. The independent Section B byte contract remains in docs/testing-strategy.md and eval/section-b-brand-evidence/README.md. Pinned renderer reproducibility and historical approval are separate from visual equality. The callback checks used controlled renderer output.",
+    "font_and_workflows": "Both canonical workflow recorders invoked font setup before sharding. Both weekly workflows lacked it, retained three shards and kept the merge dependency on unit. The prerequisite rejected missing CI fonts, accepted a supplied directory and accepted optional missing fonts locally. Glyph fidelity, installation and candidate hosted shards/merge were unmeasured.",
+    "browser_and_units": "The original PNG/SVG download assertions remain in e2e/browser.test.ts and e2e/editor-site-interactions.e2e.test.ts. Browser execution was unmeasured. All ten focused repository Python unit tests passed on both trees.",
+    "historical_ci": "The baseline source SHA had zero canonical runs following an owner-approved [skip ci]. Historical weekly coverage at that SHA failed at the CJK prerequisite, with two successful shards and a skipped merge. These observations predate the patch."
+  },
+  "coverage": {
+    "inventory_conventional_tests": 660,
+    "accessible_sampled_tests": 58,
+    "subject_reported_declarations_screened": 58,
+    "subject_reported_focus": "Unit and browser collectors, CI and coverage workflows, flowchart marker raster, color invariance, website build and dist artifact samples. The two public skill cases are outside the conventional test count.",
+    "independently_observed_subject_reads": null,
+    "subject_runtime_seconds": null,
+    "unmeasured": "Live model quality, full Bun suite, native rasterizer, browser behavior and hosted candidate jobs."
+  },
+  "evidence": {
+    "runtime": "Frozen image sha256:e89a28eddc2679c648d10c127f6d0f79d892056a55f179dfded36452a5477c46. Frozen candidate wrapper and supplemental isolated runner both exited 0. Scripts were disabled.",
+    "commands": [
+      "flock /tmp/test-audit-v2-docker.lock python3 -B preparation/agentic-mermaid/run-isolated.py --repo controller/candidate-snapshots/<sealed-id> --output controller/outputs/<sealed-id>/controls.json",
+      "flock /tmp/test-audit-v2-docker.lock python3 -B controller/outputs/<sealed-id>/editor-probes.py"
+    ],
+    "original": "preparation/agentic-mermaid/operator-runtime/baseline.isolated.json and baseline.isolated.runtime.json",
+    "candidate": ["controls.json", "controls.runtime.json", "editor-probes.json", "editor-probes.py", "submitted-artifacts/controls-collection.json", "submitted-artifacts/controls/", "patch-check.json", "candidate-snapshot.json", "patch.diff", "response.md", "disposition.json"]
+  }
+}

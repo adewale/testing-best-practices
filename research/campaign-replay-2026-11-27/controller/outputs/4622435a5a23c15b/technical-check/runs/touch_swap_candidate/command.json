@@ -1,0 +1,10 @@
+{
+  "cwd": ".",
+  "args": [
+    "/case/runtime/run-unit.sh",
+    "--reporter=verbose",
+    "src/components/TransportBar.test.tsx",
+    "src/components/tempo-change.test.ts",
+    "src/components/swing-control.test.ts"
+  ]
+}

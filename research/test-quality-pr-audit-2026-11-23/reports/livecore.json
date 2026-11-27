@@ -1,0 +1,27 @@
+{
+  "repository": "adewale/livecore",
+  "total_prs": 1,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/livecore/pulls?state=all&per_page=100&page=1",
+      "count": 1
+    },
+    {
+      "url": "https://api.github.com/repos/adewale/livecore/pulls?state=all&per_page=100&page=2",
+      "count": 0
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/livecore/pull/1",
+      "state": "closed",
+      "merged": true,
+      "reason": "CI supply-chain policy. The go.yml patch pins checkout and setup-go to commits. The two added files configure Dependabot and run the zizmor unpinned-uses lint rule. The PR body describes manual probes of action references. All three changed files concern workflow configuration."
+    }
+  ],
+  "limitations": [],
+  "coverage": "Read the sole pull request title and body and inspected the patches for all three files. GitHub's PR detail reports three changed files."
+}

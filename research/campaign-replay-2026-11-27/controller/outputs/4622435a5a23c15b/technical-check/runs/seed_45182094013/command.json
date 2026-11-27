@@ -1,0 +1,10 @@
+{
+  "cwd": ".",
+  "args": [
+    "/case/runtime/run-worker.sh",
+    "--reporter=verbose",
+    "state-machine-fuzz.test.ts",
+    "overlap-fuzz.test.ts",
+    "eviction-recovery.test.ts"
+  ]
+}

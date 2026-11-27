@@ -1,0 +1,371 @@
+   535	    : cueValue === 'outline' ? baseStrokeWidth + 1
+   536	    : cueValue === 'double-line' ? baseStrokeWidth + 2
+   537	    : baseStrokeWidth
+   538	  const strokeDasharray = cueValue === 'pattern' ? '3 2' : cueValue === 'double-line' ? '8 2 2 2' : undefined
+   539	  const bandInset = Math.min(6, Math.max(3, section.height / 6))
+   540	  const bandHeight = Math.max(18, Math.min(section.height - bandInset * 2, style.groupHeaderFontSize + style.groupPaddingY))
+   541	  const bandX = section.x + bandInset
+   542	  const bandY = section.labelY - bandHeight / 2
+   543	  const bandWidth = Math.max(0, section.width - bandInset * 2)
+   544	  const radius = Math.min(style.groupCornerRadius, bandHeight / 2)
+   545	
+   546	  return marks.shape({
+   547	    id: `section-band:${section.id}`,
+   548	    role: 'group-header',
+   549	    geometry: { kind: 'rect', x: bandX, y: bandY, width: bandWidth, height: bandHeight, rx: radius, ry: radius },
+   550	    paint: {
+   551	      fill,
+   552	      stroke,
+   553	      ...(strokeWidth !== undefined ? { strokeWidth: String(strokeWidth) } : {}),
+   554	      ...(strokeDasharray ? { strokeDasharray } : {}),
+   555	    },
+   556	    channels,
+   557	    attributes: {
+   558	      className: `journey-section-label-band journey-section-band-${sectionIndex % paints.sectionBands.length}`,
+   559	      ...(cueValue !== 'none' ? { data: { 'brand-cue': cueValue } } : {}),
+   560	    },
+   561	  })
+   562	}
+   563	
+   564	function renderTask<T>(marks: DrawingFactory<T>, task: PositionedJourneyTask, sectionLabel: string | undefined, style: ResolvedRenderStyle, paints: JourneyPaints): T {
+   565	  const sectionAttr = sectionLabel ? ` data-section="${escapeAttr(sectionLabel)}"` : ''
+   566	  const actorAttr = task.actors.length > 0 ? ` data-actors="${escapeAttr(task.actors.join(', '))}"` : ''
+   567	  const value = task.score / JOURNEY_MAX_SCORE
+   568	  const channels: SemanticChannels = sectionLabel ? { value, category: sectionLabel } : { value }
+   569	  const children: Array<{ node: T; indent: number }> = [
+   570	    { indent: 2, node: renderTrack(marks, task.track, task, style, paints) },
+   571	    { indent: 2, node: renderTaskBox(marks, task, style, paints, channels) },
+   572	    { indent: 2, node: renderTaskLabel(marks, task, style, paints, channels) },
+   573	  ]
+   574	
+   575	  const actorOccurrences = new Map<string, number>()
+   576	  for (const dot of task.actorDots) {
+   577	    const key = dot.key ?? journeyActorKey(dot.label)
+   578	    const occurrence = actorOccurrences.get(key) ?? 0
+   579	    actorOccurrences.set(key, occurrence + 1)
+   580	    children.push({ indent: 2, node: renderActorDot(marks, dot, task.id, occurrence, paints) })
+   581	  }
+   582	
+   583	  children.push({ indent: 2, node: renderScoreMarker(marks, task.marker, task.id, paints, channels) })
+   584	
+   585	  return marks.group({
+   586	    id: `task:${task.id}`,
+   587	    role: 'task',
+   588	    open: `<g class="journey-task" data-id="${escapeAttr(task.id)}" data-score="${task.score}"${sectionAttr}${actorAttr}>`,
+   589	    close: '</g>',
+   590	    children,
+   591	    channels,
+   592	  })
+   593	}
+   594	
+   595	function renderTrack<T>(marks: DrawingFactory<T>, track: PositionedJourneyTrack, task: PositionedJourneyTask, style: ResolvedRenderStyle, paints: JourneyPaints): T {
+   596	  return marks.connector({
+   597	    id: `track:${task.id}`,
+   598	    role: 'marker-line',
+   599	    geometry: { kind: 'line', x1: track.x, y1: track.y1, x2: track.x, y2: track.y2 },
+   600	    lineStyle: 'dashed',
+   601	    paint: {
+   602	      stroke: `color-mix(in srgb, ${paints.nodeStroke} 78%, var(--bg))`,
+   603	      strokeWidth: String(style.lineWidth),
+   604	      strokeDasharray: '4 7',
+   605	    },
+   606	    channels: { value: task.score / JOURNEY_MAX_SCORE },
+   607	    attributes: { className: 'journey-track' },
+   608	  })
+   609	}
+   610	
+   611	function renderTaskBox<T>(marks: DrawingFactory<T>, task: PositionedJourneyTask, style: ResolvedRenderStyle, paints: JourneyPaints, channels: SemanticChannels): T {
+   612	  return marks.shape({
+   613	    id: `task-box:${task.id}`,
+   614	    role: 'task',
+   615	    geometry: { kind: 'rect', x: task.x, y: task.y, width: task.width, height: task.height, rx: style.cornerRadius ?? 0, ry: style.cornerRadius ?? 0 },
+   616	    paint: {
+   617	      fill: paints.nodeFill,
+   618	      stroke: paints.nodeStroke,
+   619	      strokeWidth: String(style.nodeLineWidth),
+   620	    },
+   621	    channels,
+   622	    attributes: { className: 'journey-task-box' },
+   623	  })
+   624	}
+   625	
+   626	function renderTaskLabel<T>(marks: DrawingFactory<T>, task: PositionedJourneyTask, style: ResolvedRenderStyle, paints: JourneyPaints, channels: SemanticChannels): T {
+   627	  return marks.text({
+   628	    id: `task-label:${task.id}`,
+   629	    role: 'label',
+   630	    text: task.text,
+   631	    block: task.block,
+   632	    x: task.textX,
+   633	    y: task.textY,
+   634	    fontSize: style.nodeLabelFontSize,
+   635	    fontWeight: style.nodeLabelFontWeight,
+   636	    letterSpacing: style.nodeLetterSpacing,
+   637	    anchor: 'middle',
+   638	    paint: { fill: paints.taskText },
+   639	    channels,
+   640	    attributes: { className: 'journey-task-text' },
+   641	  })
+   642	}
+   643	
+   644	function actorIdentityParts(label: string, key?: string): string[] {
+   645	  return key !== undefined && key !== journeyActorKey(label) ? [key] : []
+   646	}
+   647	
+   648	function renderActorDot<T>(marks: DrawingFactory<T>, dot: PositionedJourneyActorDot, taskId: string, occurrence: number, paints: JourneyPaints): T {
+   649	  return marks.shape({
+   650	    id: semanticNamespacedId('actor-dot', taskId, dot.label, ...actorIdentityParts(dot.label, dot.key), ...(occurrence > 0 ? [occurrence] : [])),
+   651	    role: 'actor',
+   652	    geometry: { kind: 'circle', cx: dot.x, cy: dot.y, r: dot.r },
+   653	    paint: { fill: actorFill(dot.colorIndex, paints), stroke: 'var(--bg)', strokeWidth: '1' },
+   654	    channels: { category: dot.label },
+   655	    attributes: { className: `journey-actor-dot ${actorClass(dot.colorIndex, paints)}`, data: { actor: dot.label } },
+   656	  })
+   657	}
+   658	
+   659	function renderScoreMarker<T>(marks: DrawingFactory<T>, marker: PositionedJourneyScoreMarker, taskId: string, paints: JourneyPaints, channels: SemanticChannels): T {
+   660	  const eyeY = marker.cy - 4.5
+   661	  const leftEyeX = marker.cx - 5.5
+   662	  const rightEyeX = marker.cx + 5.5
+   663	  const mouth = mouthPath(marker)
+   664	
+   665	  return marks.group({
+   666	    id: `score-marker:${taskId}`,
+   667	    role: 'score',
+   668	    open: `<g class="journey-score-marker" data-score="${marker.score}">`,
+   669	    close: '</g>',
+   670	    children: [
+   671	      {
+   672	        indent: 2,
+   673	        node: marks.shape({
+   674	          id: `score-face:${taskId}`,
+   675	          role: 'score',
+   676	          geometry: { kind: 'circle', cx: marker.cx, cy: marker.cy, r: marker.r },
+   677	          paint: { fill: paints.scoreFaceFill, stroke: paints.scoreFaceStroke, strokeWidth: '1.2' },
+   678	          channels,
+   679	          attributes: { className: 'journey-score-face' },
+   680	        }),
+   681	      },
+   682	      {
+   683	        indent: 2,
+   684	        node: marks.shape({
+   685	          id: `score-eye-left:${taskId}`,
+   686	          role: 'score',
+   687	          geometry: { kind: 'circle', cx: leftEyeX, cy: eyeY, r: 2 },
+   688	          paint: { fill: paints.scoreFaceInk },
+   689	          channels,
+   690	          attributes: { className: 'journey-face-eye' },
+   691	        }),
+   692	      },
+   693	      {
+   694	        indent: 2,
+   695	        node: marks.shape({
+   696	          id: `score-eye-right:${taskId}`,
+   697	          role: 'score',
+   698	          geometry: { kind: 'circle', cx: rightEyeX, cy: eyeY, r: 2 },
+   699	          paint: { fill: paints.scoreFaceInk },
+   700	          channels,
+   701	          attributes: { className: 'journey-face-eye' },
+   702	        }),
+   703	      },
+   704	      {
+   705	        indent: 2,
+   706	        node: marks.shape({
+   707	          id: `score-mouth:${taskId}`,
+   708	          role: 'score',
+   709	          geometry: { kind: 'path', d: mouth },
+   710	          paint: { fill: 'none', stroke: paints.scoreFaceInk, strokeWidth: '1.6', strokeLinecap: 'round' },
+   711	          channels,
+   177	  const host = Object.freeze({ ...(backendPolicy ? { backendPolicy } : {}), ...(textMeasurement ? { textMeasurement } : {}) })
+   178	  return Object.freeze({
+   179	    renderMermaidPNG(input: ParsedDiagram | string, opts: PngOptions = {}): Uint8Array {
+   180	      return renderMermaidPNGWithReceiptForHost(input, opts, host).png
+   181	    },
+   182	    renderMermaidPNGWithReceipt(input: ParsedDiagram | string, opts: PngOptions = {}): RenderedPng {
+   183	      return renderMermaidPNGWithReceiptForHost(input, opts, host)
+   184	    },
+   185	  })
+   186	}
+   187	
+   188	/** Internal action projection shares this native adapter's admitted request. */
+   189	export function renderMermaidPNGWithReceiptForHost(
+   190	  input: ParsedDiagram | string,
+   191	  opts: PngOptions,
+   192	  hostOptions: MermaidPNGRendererHostOptions,
+   193	  projection?: { input: PreparedRenderInput; consumeLayout: GraphicalLayoutConsumer },
+   194	): RenderedPng {
+   195	  // SVG input: embedFontImport=false so resvg doesn't try to fetch from
+   196	  // Google Fonts during rasterization. CSS-variable fonts (Loop 8 M2) means
+   197	  // the SVG still declares its font-family preference via --font.
+   198	  const preparedInput = projection?.input ?? prepareRenderInput(input)
+   199	  const source = preparedInput.source
+   200	  const onWarning = opts.onWarning
+   201	  if (onWarning !== undefined && typeof onWarning !== 'function') {
+   202	    throw new TypeError('PNG onWarning must be a function')
+   203	  }
+   204	  const outputOptions = projectNativePngOutputPolicyInput(opts as unknown as Readonly<Record<string, unknown>>)
+   205	  const renderOptions = omitPngOutputOptions(opts as unknown as Readonly<Record<string, unknown>>) as RenderOptions
+   206	  const graphical = renderPngGraphicalProjection(
+   207	    source,
+   208	    renderOptions,
+   209	    outputOptions,
+   210	    { backendPolicy: hostOptions.backendPolicy, textMeasurement: hostOptions.textMeasurement, ...preparedInput.resolutionOptions },
+   211	    projection?.consumeLayout,
+   212	  )
+   213	  const outputPolicy = graphical.outputPolicy
+   214	  const svg = finalizePngRasterSvg(
+   215	    prepareResvgMarkerOrientation(inlineFontVarForRaster(graphical.svg)),
+   216	    graphical.rasterDimensions,
+   217	  )
+   218	
+   219	  const bundledFonts = withPngRasterizer('loading bundled fonts', resolveBundledFonts)
+   220	
+   221	  // Surface known coverage/shaping uncertainty before bytes ship. System
+   222	  // fonts broaden the rasterizer's set but are machine-dependent, so they
+   223	  // qualify the warning rather than turning an unknown outcome into silence.
+   224	  const emit = onWarning ?? ((w: PngRasterWarning) => process.stderr.write(`agentic-mermaid renderMermaidPNG: warning ${w.code}: ${w.message}\n`))
+   225	  for (const warning of buildPngFontWarnings(findUncoveredScripts(
+   226	    svg,
+   227	    outputPolicy.fonts.callerDirectories,
+   228	    bundledFonts.buffers,
+   229	  ), { systemFontsMayCover: outputPolicy.fonts.loadSystemFonts })) emit(warning)
+   230	  for (const warning of graphical.legibilityWarnings) emit(warning)
+   231	
+   232	  const resvgOpts: ConstructorParameters<typeof Resvg>[1] = {
+   233	    background: graphical.rasterBackground,
+   234	    // The shared contract already projected and pinned exact integer root
+   235	    // dimensions. Rendering at zoom 1 avoids resvg-specific ratio rounding.
+   236	    fitTo: { mode: 'zoom', value: 1 },
+   237	    font: {
+   238	      loadSystemFonts: outputPolicy.fonts.loadSystemFonts,
+   239	      // These private files were materialized from the exact verified byte
+   240	      // snapshots. Explicit caller directories remain a host-controlled input.
+   241	      fontFiles: [...bundledFonts.files],
+   242	      fontDirs: [...outputPolicy.fonts.callerDirectories],
+   243	      // Inter is the metrics font: src/text-metrics.ts is calibrated for it
+   244	      // and the SVG @import requests it, so rasterizing with anything else
+   245	      // (DejaVu is ~14% wider) pushes long labels outside their measured
+   246	      // boxes. resvg falls back per-glyph across every loaded font, so
+   247	      // DejaVu still covers glyphs Inter lacks (arrows, math, Armenian, …).
+   248	      defaultFontFamily: outputPolicy.fonts.defaultFamily,
+   249	    },
+   250	  }
+   251	
+   252	  // Bun needs a literal require to embed the addon in the standalone CLI.
+   253	  const { Resvg: NativeResvg } = (typeof Bun !== 'undefined'
+   254	    ? require('@resvg/resvg-js')
+   255	    : createRequire(import.meta.url)('@resvg/resvg-js')) as typeof import('@resvg/resvg-js')
+   256	  const png = withPngRasterizer('rasterizing', () => {
+   257	    const rasterized = applyPngColorProfile(new NativeResvg(svg, resvgOpts).render().asPng())
+   258	    const actualDimensions = inspectPngDimensions(rasterized)
+   259	    if (actualDimensions.width !== graphical.rasterDimensions.width
+   260	      || actualDimensions.height !== graphical.rasterDimensions.height) {
+   261	      throw new Error(
+   262	        `native PNG rasterizer returned ${actualDimensions.width}×${actualDimensions.height}; `
+   263	        + `expected ${graphical.rasterDimensions.width}×${graphical.rasterDimensions.height}`,
+   264	      )
+   265	    }
+   266	    return rasterized
+     1	/**
+     2	 * Integration tests for journey diagrams — end-to-end parse → layout → render.
+     3	 */
+     4	import { describe, it, expect } from 'bun:test'
+     5	import { renderMermaidSVG } from '../index.ts'
+     6	import type { RenderOptions } from '../types.ts'
+     7	
+     8	function render(text: string, options: RenderOptions = {}): string {
+     9	  return renderMermaidSVG(text, options)
+    10	}
+    11	
+    12	describe('renderMermaidSVG – journey diagrams', () => {
+    13	  it('renders a basic user journey to valid SVG', () => {
+    14	    const svg = render(`journey
+    15	      title My working day
+    16	      section Go to work
+    17	      Make tea: 5: Me
+    18	      Go upstairs: 3: Me`)
+    19	
+    20	    expect(svg).toContain('<svg')
+    21	    expect(svg).toContain('</svg>')
+    22	    expect(svg).toContain('My working day')
+    23	    expect(svg).toContain('class="journey-section"')
+    24	    expect(svg).toContain('class="journey-task"')
+    25	    expect(svg).toContain('class="journey-score-marker"')
+    26	    expect(svg).toContain('class="journey-actor-dot')
+    27	    expect(svg).toContain('class="journey-baseline"')
+    28	  })
+    29	
+    30	  it('routes journey diagrams through frontmatter and Mermaid init directives', () => {
+    31	    const svg = render(`---
+    32	      title: Journey sample
+    33	      config:
+    34	        theme: dark
+    35	      ---
+    36	      %%{init: {'theme': 'base'}}%%
+    37	      journey
+    38	      section Go to work
+    39	      Make tea: 5: Me`)
+    40	
+    41	    expect(svg).toContain('<svg')
+    42	    expect(svg).toContain('class="journey-task"')
+    43	    expect(svg).toContain('Make tea')
+    44	  })
+    45	
+    46	  it('surfaces accTitle and accDescr as SVG accessibility metadata', () => {
+    47	    const svg = render(`journey
+    48	      accTitle: Working day accessibility title
+    49	      accDescr {
+    50	        A compact summary
+    51	        of the working day journey
+    52	      }
+    53	      title My working day
+    54	      section Go to work
+    55	      Make tea: 5: Me`)
+    56	
+    57	    expect(svg).toContain('role="img"')
+    58	    expect(svg).toContain('aria-roledescription="user journey"')
+    59	    expect(svg).toContain('aria-labelledby="journey-')
+    60	    expect(svg).toContain('aria-describedby="journey-')
+    61	    expect(svg).toContain('Working day accessibility title</title>')
+    62	    expect(svg).toContain('A compact summary\nof the working day journey</desc>')
+    63	  })
+    64	
+    65	  it('falls back to the visible title for accessibility metadata when accTitle is absent', () => {
+    66	    const svg = render(`journey
+    67	      title My working day
+    68	      section Go to work
+    69	      Make tea: 5: Me`)
+    70	
+    71	    expect(svg).toContain('aria-labelledby="journey-')
+    72	    expect(svg).toContain('My working day</title>')
+    73	  })
+    74	
+    75	  it('emits semantic data attributes for section, score, and actors', () => {
+    76	    const svg = render(`journey
+    77	      section Go to work
+    78	      Make tea: 5: Me, Cat`)
+    79	
+    80	    expect(svg).toContain('data-label="Go to work"')
+    81	    expect(svg).toContain('data-score="5"')
+    82	    expect(svg).toContain('data-actors="Me, Cat"')
+    83	    expect(svg).toContain('data-actor="Me"')
+    84	    expect(svg).toContain('data-actor="Cat"')
+    85	  })
+    86	
+    87	  it('renders score guide ticks and one score marker per task', () => {
+    88	    const svg = render(`journey
+    89	      section Work
+    90	      Do work: 3: Me`)
+    91	
+    92	    const guideCount = (svg.match(/class="journey-guide"/g) ?? []).length
+    93	    const markerCount = (svg.match(/class="journey-score-marker"/g) ?? []).length
+    94	    expect(guideCount).toBe(5)
+    95	    expect(markerCount).toBe(1)
+    96	    expect(svg).toContain('data-score="3"')
+    97	    expect(svg).toContain('class="journey-score-face"')
+    98	  })
+    99	
+   100	  it('namespaces Journey marker ids per SVG instead of using the fixed Mermaid id', () => {
+src/__tests__/journey-theme.test.ts:35:    expect(svg).toContain('class="journey-task-box"')
+src/__tests__/journey-theme.test.ts:47:    expect(svg).toContain('class="journey-task-box"')
+src/__tests__/journey-theme.test.ts:64:    expect(svg).toContain('.journey-task-text {')
+src/__tests__/journey-theme.test.ts:74:    ['taskFontFamily', 'x; } text { fill: red }'],

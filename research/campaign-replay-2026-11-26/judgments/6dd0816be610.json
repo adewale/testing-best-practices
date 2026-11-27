@@ -1,0 +1,77 @@
+{
+  "case": "R02",
+  "candidates": [
+    {
+      "id": "247551539e25",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Drops the five exports, their direct tests and the cache-poisoning test. The route check accepts either valid minimum-length route and compares repeated calls.",
+          "reason": "It checks the promised route properties through the public API and leaves the tie-break and eviction order free to vary."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Records the route change as a permitted variation and eviction as an internal change with matching public values. Keeps both in the raw results and makes 90 advisory.",
+          "reason": "The recorded dispositions explain each survivor and allow the work to stop without killing either."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Reproduces the defect with a minimal public call, asserts the reference value, fixes the affected branch and reruns the regression on the faulty and corrected revisions.",
+          "reason": "The test demonstrates the caller-visible error and verifies its correction."
+        }
+      ]
+    },
+    {
+      "id": "1fa188118cad",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Keeps all five helpers private, drops cache poisoning and checks route endpoints, real edges, two-edge length and repeatability. Either shortest route passes.",
+          "reason": "Those checks enforce the public contract while allowing both tie-break choices and internal cache changes."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Drops the 90 threshold and records the repeatable route substitution as permitted and the eviction change as internal on the supplied evidence.",
+          "reason": "The plan closes the audit after documenting both survivors and checking the public behavior."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Preserves the triggering public input, including omission for a default, asserts the independent reference value, adds a neighboring control and checks the regression before and after the fix.",
+          "reason": "The public regression exposes the wrong result, and the neighboring case checks the scope of the branch correction."
+        }
+      ]
+    },
+    {
+      "id": "73ca6945ad8d",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Drops the helper exports and cache-poisoning test. Runs public reference comparisons with both eviction policies and checks both tied routes against the same validity, length and repeatability assertions.",
+          "reason": "Each permitted variant can pass, and the tests need no private hooks."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Drops the 90 threshold and closes the route survivor as a permitted output and the eviction survivor as an internal policy difference.",
+          "reason": "The stopping condition depends on the observable regression and classification of both survivors."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Uses the smallest failing public input and a reference-derived expected value, fixes the boundary or default rule and verifies the original case and its neighbor after the fix.",
+          "reason": "The focused case fails on the faulty public value and passes after correction, while the neighbor checks for an overbroad fix."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "repository": "adewale/Buzz-Chat-Bot",
+  "total_prs": 2,
+  "pages_checked": {
+    "all_states_pr_list": "GET /repos/adewale/Buzz-Chat-Bot/pulls?state=all&per_page=100 returned #2 and #1 on page 1 and no entries on page 2.",
+    "changed_files": "All 5 paths in #1 and all 10 in #2 fit on their respective first pages. Every patch's addition and deletion line counts matched its file metadata."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Refactored commands to use new constants in XmppHandler. Tests also use it.",
+      "url": "https://github.com/adewale/Buzz-Chat-Bot/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit test-maintainability change within a command refactor",
+      "weakness": "Tests for named handler methods repeated the user-facing command spelling in their setup, coupling unrelated behavior checks to command renames.",
+      "remedy": "Use the declared command token in fixtures for direct handler tests.",
+      "test_paths": [
+        "functional_tests.py"
+      ],
+      "diff_evidence": "Fifteen changed lines replace literals such as '/untrack 777' and '/post some message' with XmppHandler.UNTRACK_CMD or POST_CMD and their arguments. The tests call untrack_command or post_command directly. Commit ac5bd24 explicitly identifies this distinction as the reason for the test edits.",
+      "evidence_urls": [
+        "https://github.com/adewale/Buzz-Chat-Bot/pull/1/files",
+        "https://github.com/adewale/Buzz-Chat-Bot/commit/ac5bd24f11d0afc1fda6c604a576cdb9985491bc"
+      ],
+      "transferable_rule": "Use shared setup constants when a test exercises a handler directly. For a test of the public command spelling or dispatch, send a literal user input through the dispatcher so a renamed constant cannot update the test's expectation silently.",
+      "outcome": "Merged 2010-09-30. GitHub returned zero statuses and zero check runs for the PR head. The test suite was not run in this audit."
+    },
+    {
+      "number": 2,
+      "title": "Slash-free commands",
+      "url": "https://github.com/adewale/Buzz-Chat-Bot/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing-test repair and obsolete-test deletion embedded in a feature PR",
+      "weakness": "A post-handler test used one separator space, leaving repeated-space preservation unexercised. A tracker test directly called a private parser that no longer belonged to Tracker after parsing moved to the message layer.",
+      "remedy": "Strengthen the existing post test's input and exact expectation. Remove the private parser assertion and exercise Tracker through its public methods using parsed terms and subscription IDs.",
+      "test_paths": [
+        "functional_tests.py",
+        "tracker_tests.py"
+      ],
+      "diff_evidence": "test_post_command_strips_command_from_posted_message supplies five spaces after the command and checks for all five in stub.message. tracker_tests.py removes test_tracker_extracts_correct_search_term, which called tracker._extract_search_term, while keeping assertions on subscription state and callback URLs. Commit d967b72 separately repairs a regression introduced during the PR by changing subscription.id to subscription.id() in both existing hub challenge requests. That restoration has no net diff against the base.",
+      "evidence_urls": [
+        "https://github.com/adewale/Buzz-Chat-Bot/pull/2/files",
+        "https://github.com/adewale/Buzz-Chat-Bot/commit/ea54fd94fe8b0969c22afb2ffffe5f3dce7fba1f",
+        "https://github.com/adewale/Buzz-Chat-Bot/commit/d967b725accf78732fa2e1936e2c3c6419d21db3"
+      ],
+      "transferable_rule": "Choose input that distinguishes exact preservation from normalization. When responsibility moves between components, retire tests of a removed private method and verify observable behavior at the boundary that now owns it.",
+      "outcome": "Merged 2010-10-13. The proposed varying-whitespace track success test remains entirely commented out in the merged patch. The post whitespace assertion is executable. GitHub returned zero statuses and zero check runs for the PR head. The test suite was not run in this audit."
+    }
+  ],
+  "exclusions": [
+    "Both PRs contained qualifying work. New unknown-command and blank-input checks in #2 were feature coverage. The three simple_buzz_wrapper_tests.py method renames changed no assertions."
+  ],
+  "limitations": [
+    "The audit verified merged diffs and selected intermediate commits. PR-head status and check APIs supplied no execution results."
+  ]
+}

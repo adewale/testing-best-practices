@@ -1,0 +1,248 @@
+{
+  "repository": "adewale/good-readme",
+  "total_prs": 16,
+  "pages_checked": {
+    "endpoint": "https://api.github.com/repos/adewale/good-readme/pulls?state=all&per_page=100&page=1",
+    "pull_pages": [
+      {
+        "page": 1,
+        "results": 16
+      },
+      {
+        "page": 2,
+        "results": 0
+      }
+    ],
+    "states": {
+      "open": 3,
+      "closed_unmerged": 1,
+      "merged": 12
+    },
+    "file_inventory": "Read titles and bodies for PRs #1–16 and the REST /pulls/N/files?per_page=100&page=1 response for each. All 50 file entries fit on their first pages. Every patch's added and removed line counts matched GitHub's file statistics."
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/good-readme/pull/2",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-10T10:17:04Z",
+      "classification": "Evaluation approach and repair of a saturated case",
+      "weakness": "The manifest records the earlier pos-renamed-api smoke scoring 1.0 both with and without the skill. Evaluations had depended on a sibling workspace, and a score alone could hide failure to correct a stale example.",
+      "attempted_remedy": "Make the benchmark portable, pair with-skill and no-skill runs, separate visible and hidden evaluations and strengthen source-grounded API-drift checks.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md",
+        "evals/fixtures/round3-cli-drift/README.md",
+        "evals/fixtures/round3-cli-drift/package.json",
+        "evals/fixtures/round3-cli-drift/src/cli.ts"
+      ],
+      "diff_evidence": [
+        "pos-renamed-api requires the public parse_item import and call, a source citation and a stale verdict for parseThing. The new CLI fixture makes a stale README command disagree with the current bin, subcommand and flag.",
+        "The manifest defines with_skill/without_skill, splits and ablations. Its run protocol asks reviewers to inspect saturated and non-discriminating cases."
+      ],
+      "transferable_rule": "Compare against a no-skill baseline. When both variants pass, add a case with independently checkable source evidence and repeat the comparison.",
+      "outcome": "Merged. The PR reports 6/6 trigger decisions. The hidden splits have placeholders in Git and the PR reports no ablation results. No head check runs were returned. Improved discrimination was not demonstrated by these checks."
+    },
+    {
+      "number": 4,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/good-readme/pull/4",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-11T00:14:53Z",
+      "classification": "Attempted repair of an existing eval oracle",
+      "weakness": "The CLI-drift case graded mentions of words from the expected answer and a narrowly phrased stale-command denial. It could reward prose that never gave a usable command.",
+      "attempted_remedy": "Add an executable output grader to the existing fixture case and document script-enabled grading.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": [
+        "fixture-script-oracle invokes the Python script with {output_dir} and round3-fixture-cli-drift and expects exit 0. The script reads output.md, checks literals such as package.json, compile and --profile production, and forbids one stale-command wording.",
+        "The script reads no fixture source. Its any group includes package.json, which the all list already requires, and an answer naming every word without a command can still pass."
+      ],
+      "transferable_rule": "Trace a grader's verdict to independent fixture facts. Before adopting it, show that a realistic wrong answer containing all the expected terminology fails.",
+      "outcome": "Merged. The author reports one saved fixture answer passed. No head check runs were returned. PR #10 subsequently replaced the keyword implementation and committed a direct counterexample."
+    },
+    {
+      "number": 6,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/good-readme/pull/6",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-11T18:44:25Z",
+      "classification": "Evaluation reporting approach",
+      "weakness": "Existing cases lacked dimensions for a slice report to separate results by difficulty, goal and positive versus near-miss trigger.",
+      "attempted_remedy": "Label all 23 cases for the harness's trace-aware reporting.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": [
+        "All 23 gain domain, difficulty and success_goals. Fifteen cases are core and eight extended. Three positive trigger cases gain implicit and three near misses gain negative-near-miss."
+      ],
+      "transferable_rule": "Report positive trigger recognition and rejection of near misses separately so an aggregate score cannot hide failure on either group.",
+      "outcome": "Merged. This supports slicing the existing results. Assertions did not change, no resulting slice report was committed, and no head check runs were returned."
+    },
+    {
+      "number": 10,
+      "title": "Make eval oracles check real commands, scope README checks, and self-test the install-boundary gate",
+      "url": "https://github.com/adewale/good-readme/pull/10",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:43:58Z",
+      "classification": "Existing oracle and CI gate repairs",
+      "weakness": "An answer could cite all the expected words without proposing a runnable CLI command. mentions-bin-alias could pass on package.json alone, seven readme-core checks accepted incidental words, and the install gate ran on a clean checkout alone.",
+      "attempted_remedy": "Read the fixture's installed executable, subcommand and flags, check proposed commands, narrow the manifest predicates, add self-tests and include the gate tests folded from #11. Run them once in the existing workflow alongside a pinned model-free manifest check.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json",
+        "tests/test_eval_oracles.py",
+        "tests/test_install_boundary.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": [
+        "fixture_facts reads package.json, src/cli.ts and the stale README. Tests exercise added diff lines, quoted old commands, inline corrections and failures including keyword-only prose and invented flags. Exit 2 represents a missing output or unknown case.",
+        "All seven readme-core predicates now require a score out of 100 or a Quick start/Getting started heading. mentions-bin-alias requires the word widgetc. The tests read the committed manifest regexes.",
+        "The install-boundary test blob is identical to #11 (84c95bac288006eea462229d346557f5235c05b8). Commit a1dc226 folds #11, then 55f6ac6 drops the duplicate workflow."
+      ],
+      "transferable_rule": "Grade the actual proposed operation against authoritative inputs. Exercise the exact grader with a correct answer, a plausible wrong answer and an infrastructure error, and use the checked-in assertions in the self-tests.",
+      "outcome": "Merged. The install-boundary Actions job at head 55f6ac6 logged 18 tests and its self-test and model-free harness steps passed. The author deferred five generic keyword checks and empirical model-lift measurement. The job verifies the model-free checks.",
+      "verification_url": "https://github.com/adewale/good-readme/actions/runs/37374162567/job/114473734694",
+      "related_prs": [
+        11
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Test audit: self-tests for the install-boundary gate",
+      "url": "https://github.com/adewale/good-readme/pull/11",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "classification": "Dedicated test audit, folded into #10",
+      "weakness": "A clean checkout still passed when the boundary checker was effectively disabled. The fallback skills/* discovery could hide loss of a declaration source, and a single declared skill could hide a truncated loop.",
+      "attempted_remedy": "Exercise the real checker through a subprocess in isolated temporary roots, plant banned files and near misses, and assert exit codes and diagnostics.",
+      "test_paths": [
+        "tests/test_install_boundary.py",
+        ".github/workflows/tests.yml"
+      ],
+      "diff_evidence": [
+        "test_each_declaration_source_is_checked locates lib/skills/readme outside the fallback and checks each declaration independently. test_every_declared_skill_is_checked declares lib/a and lib/b and dirties each in turn.",
+        "Each prohibited path must return 1 and name the planted path. The suite also verifies valid near misses, fallback behavior, missing directories and malformed JSON returning 2."
+      ],
+      "transferable_rule": "Place each fixture where only the mechanism under test can find it. For a checker that should examine every item, use two items and move the single defect from one to the other.",
+      "outcome": "Closed unmerged as a standalone PR. Its head 2107e1d has a successful Actions job logging 12 tests, and the exact test file shipped in #10. The 0/12 to 12/12 planted-bug result is the author's local experiment. The CI job exercised the unmutated control.",
+      "verification_url": "https://github.com/adewale/good-readme/actions/runs/37103416763/job/111147219206",
+      "related_prs": [
+        10
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Add Cloudflare ecosystem README best practices guide",
+      "url": "https://github.com/adewale/good-readme/pull/1",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-21T15:55:58Z",
+      "reason": "Cloudflare skill guidance and a reference checklist."
+    },
+    {
+      "number": 3,
+      "title": "Update skill eval harness reference to v0.2.0",
+      "url": "https://github.com/adewale/good-readme/pull/3",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-10T10:33:53Z",
+      "reason": "Only updates harness version references."
+    },
+    {
+      "number": 5,
+      "title": "Add multi-agent skill support metadata",
+      "url": "https://github.com/adewale/good-readme/pull/5",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-11T10:53:47Z",
+      "reason": "Agent install and package metadata. Its validation notes include commands from other repositories."
+    },
+    {
+      "number": 7,
+      "title": "Bump eval harness to v0.4.0",
+      "url": "https://github.com/adewale/good-readme/pull/7",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-11T18:49:32Z",
+      "reason": "Changes only the minimum harness version."
+    },
+    {
+      "number": 8,
+      "title": "Add install boundary CI check",
+      "url": "https://github.com/adewale/good-readme/pull/8",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-15T17:01:21Z",
+      "reason": "Introduces the original packaging policy checker and runs it on the repository checkout. No existing test is audited or repaired and no known-bad fixture exercises the checker until #11/#10."
+    },
+    {
+      "number": 9,
+      "title": "Upgrade Ruff to 0.16.0",
+      "url": "https://github.com/adewale/good-readme/pull/9",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-26T20:32:42Z",
+      "reason": "Ruff upgrade and lint-only edits, including equivalent regex flag names in the grader."
+    },
+    {
+      "number": 12,
+      "title": "Avoid duplicate CI runs on pull request branches",
+      "url": "https://github.com/adewale/good-readme/pull/12",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "reason": "Push and tag event filters only."
+    },
+    {
+      "number": 13,
+      "title": "Retire obsolete setup instructions after tooling changes",
+      "url": "https://github.com/adewale/good-readme/pull/13",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "reason": "Two new judge scenarios accompany new skill instructions for retiring setup commands. Existing cases and assertions are untouched."
+    },
+    {
+      "number": 14,
+      "title": "ci: avoid duplicate and superseded validation",
+      "url": "https://github.com/adewale/good-readme/pull/14",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-02T21:43:21Z",
+      "reason": "PR run cancellation and branch-push filtering only."
+    },
+    {
+      "number": 15,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/good-readme/pull/15",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-05T13:37:36Z",
+      "reason": "Workflow supply-chain pinning and a new lint check for mutable action references. Test commands and assertions are unchanged."
+    },
+    {
+      "number": 16,
+      "title": "Bump the github-actions group with 3 updates",
+      "url": "https://github.com/adewale/good-readme/pull/16",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "reason": "Dependabot updates action versions only. Tests mentioned in the upstream release notes are outside this repository."
+    }
+  ],
+  "limitations": [
+    "Checked the enumerated GitHub PR snapshots and committed diffs, plus the referenced CI records. No local mutation experiments, paid model evals or hidden split runs were reproduced.",
+    "#10 and #11 are distinct PR attempts with one shared install-boundary test suite. #4 is retained as an attempted repair even though its first grader still admitted keyword-only answers."
+  ]
+}

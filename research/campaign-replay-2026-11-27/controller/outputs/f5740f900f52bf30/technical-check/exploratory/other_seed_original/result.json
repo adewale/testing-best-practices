@@ -1,0 +1,17 @@
+{
+  "exit": 0,
+  "wall_seconds": 5.266,
+  "log": "technical-check/exploratory/other_seed_original/run.log",
+  "sha256": "71622828083f387ae809bce8fe2fec168674979e9110cda58604aa1839e3b124",
+  "test_files": "1 passed (1)",
+  "tests": "1 passed | 5 skipped (6)",
+  "source": "original",
+  "stimulus": null,
+  "seed": "20261127",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ]
+}

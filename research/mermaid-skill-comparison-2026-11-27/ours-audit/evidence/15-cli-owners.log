@@ -1,0 +1,272 @@
+   200	    throw new CliArgumentError('am render --security accepts only strict')
+   201	  }
+   202	  let advancedOptions: RenderOptions = {}
+   203	  const optionsFlag = flagValue(args, 'options')
+   204	  if (optionsFlag !== undefined) {
+   205	    try {
+   206	      advancedOptions = parseRenderOptionsFlag(optionsFlag)
+   207	    } catch (error) {
+   208	      throw new CliArgumentError(`am render --options: ${error instanceof Error ? error.message : String(error)}`)
+   209	    }
+   210	  }
+   211	  const graphLayout = flagValue(args, 'graph-layout')
+   212	  const graphLayoutFallback = flagValue(args, 'graph-layout-fallback')
+   213	  if (graphLayout !== undefined || graphLayoutFallback !== undefined) {
+   214	    const candidate = {
+   215	      backend: graphLayout ?? advancedOptions.graphLayout?.backend ?? 'elk',
+   216	      ...(graphLayoutFallback !== undefined || advancedOptions.graphLayout?.fallback !== undefined
+   217	        ? { fallback: graphLayoutFallback ?? advancedOptions.graphLayout?.fallback } : {}),
+   218	    }
+   219	    const problems = validateSerializableRenderOptions({ graphLayout: candidate })
+   220	    if (problems.length) {
+   221	      throw new CliArgumentError(`am render: ${problems.join('; ')}`)
+   222	    }
+   223	    advancedOptions = { ...advancedOptions, graphLayout: candidate as NonNullable<RenderOptions['graphLayout']> }
+   224	  }
+   225	  if (targetWidth !== undefined && (!Number.isInteger(targetWidth) || targetWidth <= 0)) {
+   226	    throw new CliArgumentError('am render --target-width expects a positive integer number of terminal cells')
+   227	  }
+   228	  if (targetWidth !== undefined && output.id !== 'ascii' && output.id !== 'unicode') {
+   229	    throw new CliArgumentError('am render --target-width is valid only with --format ascii or unicode')
+   230	  }
+   231	  const pngOnly = PNG_RENDER_FLAGS.filter(name => args.flags[name] !== undefined)
+   232	  if (output.id !== 'png' && pngOnly.length > 0) {
+   233	    throw new CliArgumentError(`am render: ${pngOnly.map(name => `--${name}`).join(', ')} ${pngOnly.length > 1 ? 'are' : 'is'} valid only with --format png`)
+   234	  }
+   235	  const certificates = flagEnabled(args, 'certificates')
+   236	  const watch = flagEnabled(args, 'watch')
+   237	  if (certificates && output.id !== 'layout') {
+   238	    throw new CliArgumentError('am render: --certificates is valid only with --format layout')
+   239	  }
+   240	  if (watch && args.positional.length > 1) {
+   241	    throw new CliArgumentError('am render --watch accepts exactly one input file')
+   242	  }
+   243	
+   244	  // --style: a stack of names and/or .json spec files; fail fast (exit 2) on
+   245	  // unknown names or invalid specs instead of surfacing an internal error.
+   246	  let style: StyleInput[] | undefined
+   247	  const styleFlag = flagValue(args, 'style')
+   248	  if (styleFlag !== undefined) {
+   249	    try {
+   250	      style = parseStyleFlag(styleFlag)
+   251	      resolveStyleStack(style)
+   252	    } catch (e) {
+   253	      throw new CliArgumentError(`am render --style: ${e instanceof Error ? e.message : String(e)}`)
+   254	    }
+   255	  }
+   256	  const seed = numeric('seed')
+   257	  if (seed !== undefined && !Number.isFinite(seed)) {
+   258	    throw new CliArgumentError('am render --seed expects a finite number')
+   259	  }
+   260	  const formatOptions: RenderFormatOptions = {
+   261	    ...advancedOptions,
+   262	    ...(security === undefined ? {} : { security }),
+   263	    ...(style === undefined ? {} : { style }),
+   264	    ...(seed === undefined ? {} : { seed }),
+   265	    ...(ganttToday === undefined ? {} : { ganttToday }),
+   266	    certificates,
+   267	    targetWidth,
+   268	  }
+   269	
+   270	  if (args.positional.length > 1 && output.id === 'png') {
+   271	    throw new CliArgumentError('am render --format png accepts exactly one input; run once per file with a distinct --output path')
+   272	  }
+   273	
+   274	  // #959: multi-input — when more than one positional file is given, render
+   275	  // each and emit a JSON array of results, skipping bad files (like #543).
+   276	  // Single-input keeps the existing single-output behavior. PNG is excluded
+   277	  // because it writes bytes to a single --output path.
+   278	  if (args.positional.length > 1) {
+   279	    const results = args.positional.map((file, index) => {
+   280	      try {
+   281	        const src = readSourceArg(file)
+   282	        const warnings = renderConfigWarningsForMermaid(src, formatOptions)
+   283	        emitConfigWarnings(warnings, `am render ${file}`)
+   284	        const rendered = renderSourceToFormatWithReceipt(src, format, reportingConfigDiagnosticsOnce(formatOptions, warnings))
+   285	        return { index, file, ok: true, output: rendered.output, receipt: rendered.receipt, warnings }
+   286	      } catch (e) {
+   287	        return {
+   288	          index,
+   289	          file,
+   290	          ok: false,
+   291	          error: e instanceof CliArgumentError ? { code: 'ARG', message: e.message } : cliStructuredRenderFailure(e).error,
+   292	        }
+   293	      }
+   294	    })
+   295	    process.stdout.write(JSON.stringify({ ok: true, files: results }) + '\n')
+   296	    return EXIT_OK
+   297	  }
+   298	
+   299	  // #930: watch mode — re-render on file change.
+   300	  if (watch && output.id === 'png') {
+   301	    throw new CliArgumentError('am render --format png does not support --watch; run non-watch PNG renders with --output <file.png>')
+   302	  }
+   303	  if (watch && typeof args.positional[0] === 'string' && args.positional[0] !== '-') {
+   304	    return cmdRenderWatch(args.positional[0], format, args, json, formatOptions)
+   305	  }
+   306	
+   307	  const source = readSourceArg(args.positional[0])
+   308	  // The render surface is open to installed descriptors while future/unknown
+   309	  // source-only envelopes retain their exact capability classification.
+   310	  try {
+   311	    preflightCliRenderableSource(source)
+   312	  } catch (error) {
+   313	    const structured = cliStructuredRenderFailure(error)
+   314	    process.stdout.write(JSON.stringify(structured) + '\n')
+   315	    return renderFailureExitCode(structured)
+   316	  }
+   317	
+   318	  const configWarnings = renderConfigWarningsForMermaid(source, formatOptions)
+   319	
+   320	  const outFile = flagValue(args, 'o') ?? flagValue(args, 'output') ?? ''
+   321	  if (output.id === 'png') {
+   322	    if (!outFile) {
+   323	      throw new CliArgumentError('am render --format png requires --output <file.png> (PNG bytes corrupt terminals if piped to stdout)')
+   324	    }
+   325	    const scale = numeric('scale') ?? PNG_DEFAULT_SCALE
+   326	    if (!Number.isFinite(scale) || scale <= 0) {
+   327	      throw new CliArgumentError('am render --scale expects a positive finite number')
+   328	    }
+   329	    const background = flagValue(args, 'bg')
+   330	    const fitWidth = numeric('fit-width')
+   331	    const fitHeight = numeric('fit-height')
+   332	    if (fitWidth !== undefined && fitHeight !== undefined) {
+   333	      throw new CliArgumentError('am render PNG fitting accepts --fit-width or --fit-height, not both')
+   334	    }
+   335	    if ((fitWidth !== undefined && (!Number.isSafeInteger(fitWidth) || fitWidth <= 0)) || (fitHeight !== undefined && (!Number.isSafeInteger(fitHeight) || fitHeight <= 0))) {
+   336	      throw new CliArgumentError('am render --fit-width/--fit-height expects a positive integer pixel value')
+   337	    }
+   338	    const fitTo = fitWidth !== undefined ? { width: fitWidth } : fitHeight !== undefined ? { height: fitHeight } : undefined
+   339	    const minLabelPx = numeric('min-label-px')
+   340	    if (minLabelPx !== undefined && (!Number.isFinite(minLabelPx) || minLabelPx < 0)) {
+   341	      throw new CliArgumentError('am render --min-label-px expects a non-negative finite number')
+   342	    }
+   343	    const fontDirs = flagValue(args, 'font-dirs')
+   344	      ?.split(',')
+   345	      .map(s => s.trim())
+   346	      .filter(Boolean)
+   347	    const loadSystemFonts = flagEnabled(args, 'system-fonts')
+   348	    // PNG render is native-sync via resvg; keep bytes off stdout and write the
+   349	    // raster artifact explicitly to the requested output path.
+   350	    const { certificates: _certificates, targetWidth: _targetWidth, ...sharedOptions } = reportingConfigDiagnosticsOnce(formatOptions, configWarnings)
+   351	    return renderPngSync(source, { ...sharedOptions, scale, background, fitTo, minLabelPx, fontDirs, loadSystemFonts }, outFile, json, configWarnings)
+   352	  }
+   353	  // Loop 9 M3/M4, #7645: layout = layout shape; unicode is the default text
+   354	  // renderer; `--security strict` enforces the shared SVG output-security policy.
+   355	  emitConfigWarnings(configWarnings, 'am render')
+   356	  const rendered = renderPreflightedSourceToFormatWithReceipt(source, format, reportingConfigDiagnosticsOnce(formatOptions, configWarnings))
+   357	  const out = rendered.output
+   358	  const layoutWarnings = configWarnings.length > 0 ? { warnings: configWarnings } : {}
+   359	  // The artifact is what plain stdout carries. --output writes it for every
+   360	  // single-shot format, matching the documented
+   361	  // `am render --format svg --output diagram.svg`; --json never changes the
+   362	  // file's bytes, it reports the write on stdout as the PNG path does.
+   363	  const artifact = typeof out === 'string' ? (out.endsWith('\n') ? out : out + '\n') : JSON.stringify({ ...out, receipt: rendered.receipt, ...layoutWarnings }) + '\n'
+   364	  if (outFile) {
+   365	    writeFileSync(outFile, artifact)
+   366	    if (json) process.stdout.write(JSON.stringify({ ok: true, path: outFile, bytes: Buffer.byteLength(artifact), receipt: rendered.receipt, warnings: configWarnings }) + '\n')
+   367	    return EXIT_OK
+   368	  }
+   369	  if (!json) {
+   370	    process.stdout.write(artifact)
+   371	    return EXIT_OK
+   372	  }
+   373	  const envelope = typeof out === 'string' ? { ok: true, [format]: out, receipt: rendered.receipt, warnings: configWarnings } : { ok: true, ...out, receipt: rendered.receipt, ...layoutWarnings }
+   374	  process.stdout.write(JSON.stringify(envelope) + '\n')
+   375	  return EXIT_OK
+   376	}
+   377	
+   378	export interface RenderFormatOptions extends RenderOptions {
+   379	  certificates?: boolean
+   380	  targetWidth?: number
+   381	}
+   382	
+   383	/** The ONE format dispatch behind every render path — single-input,
+   384	 *  multi-input, and watch differ only in I/O and error envelopes, so they
+   385	 *  share this core instead of re-enumerating formats (the style/seed
+   386	 *  threading previously had to touch three copies). JSON parse failures
+   387	 *  throw the structured envelope; callers decide how to surface it. */
+   388	export interface RenderFormatResult {
+   389	  output: string | object
+   390	  receipt: RenderRequestReceipt
+   391	}
+   392	
+   393	export function renderSourceToFormatWithReceipt(source: string, format: string, opts: RenderFormatOptions = {}): RenderFormatResult {
+   394	  preflightCliRenderableSource(source)
+   395	  return renderPreflightedSourceToFormatWithReceipt(source, format, opts)
+   396	}
+   397	
+   398	function renderPreflightedSourceToFormatWithReceipt(source: string, format: string, opts: RenderFormatOptions = {}): RenderFormatResult {
+   399	  const { certificates, targetWidth, ...sharedOptions } = opts
+   400	  const descriptor = renderOutputForCliFormat(format)
+   401	  if (!descriptor) throw new Error(`unsupported render format: ${format}`)
+   402	  if (descriptor.id === 'ascii' || descriptor.id === 'unicode') {
+   403	    const rendered = renderMermaidASCIIWithReceipt(source, { ...sharedOptions, useAscii: descriptor.id === 'ascii', targetWidth })
+   404	    return { output: rendered.text, receipt: rendered.receipt }
+   405	  }
+   406	  if (descriptor.id === 'layout') {
+   407	    // Delegate the original request after the shared preflight so the CLI and library
+   408	    // resolve the same source/configuration receipt. Passing the parsed value
+   409	    // here re-serialized some families (notably timeline) before hashing.
+   410	    const rendered = layoutMermaidWithReceipt(source, {
+   411	      ...sharedOptions,
+   412	      ...(certificates === true ? { debug: true } : {}),
+   413	    })
+   414	    return { output: rendered.layout, receipt: rendered.receipt }
+   415	  }
+   416	  if (descriptor.id === 'svg') {
+   417	    const rendered = renderMermaidSVGWithReceipt(source, sharedOptions)
+   418	    return { output: rendered.svg, receipt: rendered.receipt }
+   419	  }
+   420	  throw new Error(`unsupported render format: ${format}`)
+   421	}
+   422	
+   423	function renderSourceToFormat(source: string, format: string, opts: RenderFormatOptions = {}): string | object {
+   424	  return renderSourceToFormatWithReceipt(source, format, opts).output
+   425	}
+   426	
+   427	/**
+   428	 * #930: one `--watch` frame for the file's current contents — the rendered
+   429	 * output (absent after a failed render) and the stderr lines the watcher
+   430	 * prints, in order. The watch loop and its tests share it, so it is testable
+   431	 * without fs.watch timing.
+   432	 */
+   433	export function renderWatchFrame(file: string, format: string, opts: RenderFormatOptions, json: boolean): { output?: string; stderr: string[] } {
+   434	  const stderr: string[] = []
+   435	  const write = (line: string) => { stderr.push(line) }
+   436	  try {
+   437	    const src = readFileSync(file, 'utf8')
+   438	    const warnings = renderConfigWarningsForMermaid(src, opts)
+   439	    emitConfigWarnings(warnings, 'am render --watch', write)
+   440	    const out = renderSourceToFormat(src, format, reportingConfigDiagnosticsOnce(opts, warnings, write))
+e2e/tarball-consumer-fuzz.e2e.test.ts:439:  test('batch --jsonl: one result per line, bad lines never abort, ASCII matches source', () => {
+e2e/cli.e2e.test.ts:99:describe('am render multi-input', () => {
+e2e/cli.e2e.test.ts:107:  test('--format png rejects multiple inputs instead of ignoring extras', () => {
+docs/mcp-code-mode-rationale.md:68:[Omitted long matching line]
+src/__tests__/fc-seed.preload.ts:4:// suites flaked on rolled seeds; the policy is now structural, not per-file).
+src/__tests__/fc-seed.preload.ts:12:// future *.test.ts without per-file wiring. Suites that preserve a seed which
+src/__tests__/labeled-source-port-property.test.ts:4:// labelled source feeding a multi-input hub — exits at its side mid-port AND is
+src/__tests__/labeled-source-port-property.test.ts:13:// the hub. The cases in this file all have a multi-input hub (B fed by A + B2),
+src/__tests__/helpers/temp-dir.ts:1:// Per-file temporary directories that are removed after the file's tests, so
+src/__tests__/embedded-font-resources.test.ts:113:        duplicate.files[0]!,
+src/__tests__/cli-multi-input.test.ts:1:// Loop 13 M4 (#959) + M5 (#930): multi-input rendering + watch re-render step.
+src/__tests__/cli-multi-input.test.ts:10:const temp = useTempDirs('am-multi-input-')
+src/__tests__/cli-multi-input.test.ts:84:describe('#959 multi-input rendering', () => {
+src/__tests__/cli-multi-input.test.ts:85:  test('renders multiple files, emits a results array, skips bad ones', () => {
+src/__tests__/cli-multi-input.test.ts:93:    expect(payload.files[0].ok).toBe(true)
+src/__tests__/cli-multi-input.test.ts:94:    expect(payload.files[1].ok).toBe(true)
+src/__tests__/cli-multi-input.test.ts:99:  test('multi-input json parse errors expose structured details, not stringified blobs', () => {
+src/__tests__/cli-multi-input.test.ts:105:    expect(payload.files[1].ok).toBe(false)
+src/__tests__/cli-multi-input.test.ts:106:    expect(payload.files[1].error.code).toBe('PARSE_FAILED')
+src/__tests__/cli-multi-input.test.ts:107:    expect(Array.isArray(payload.files[1].error.details)).toBe(true)
+src/__tests__/cli-multi-input.test.ts:108:    expect(payload.files[1].error.message).not.toContain('"details"')
+src/__tests__/cli-multi-input.test.ts:118:  test('--security strict applies to multi-input SVG renders', () => {
+src/__tests__/cli-multi-input.test.ts:132:  test('--watch rejects multiple inputs instead of doing a one-shot multi-render', () => {
+src/__tests__/cli-error-envelope.test.ts:234:  test('a missing file in a multi-input render is an argument error, not a render failure', () => {
+src/__tests__/cli-error-envelope.test.ts:239:    expect(JSON.parse(out).files[1]).toMatchObject({ ok: false, error: { code: 'ARG', message: `File not found: ${missing}` } })
+docs/features.md:101:`render` (svg/ascii/unicode/layout with multi-input results; png uses one
+docs/design/system/layout-followup-results.md:538:without per-file JS hashes. Uncached cyclic 15 still takes 1.46914× ELK at median
+docs/design/system/pr449-frontier-2026-10-23.md:136:The current structural fetched closures below use the actual final emitted request graph and summed per-file Brotli. Native eligibility is input-dependent; fallback and packages shipping both engines have different costs.
+docs/project/flagged-performance-integration-2026-10-20.md:791:its 27-request first-Flow graph. Per-file raw/gzip sums exactly match graph totals.
+docs/design/system/layout-guidance-results.md:189:source revision but lacks per-file JavaScript hashes, so its artifact binding
+docs/project/flagged-performance-results-2026-10-20.md:473:[Omitted long matching line]

@@ -1,0 +1,10 @@
+{
+  "state": "infrastructure-interrupted",
+  "controller_sealed_utc": "2026-11-27T01:56:32.291965+00:00",
+  "dispatch_to_seal_seconds": 755.229623,
+  "response_file_mtime_utc": null,
+  "files_sha256": {
+    "patch.diff": "bcdde75aa37345a54727a85c03d709d401dd16834579a5c7c2a51a1830489bf4"
+  },
+  "timing_scope": "dispatch to controller seal; includes observation delay, not precise model runtime"
+}

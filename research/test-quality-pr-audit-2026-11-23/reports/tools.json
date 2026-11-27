@@ -1,0 +1,14 @@
+{
+  "repository": "adewale/tools",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "page": 1,
+      "returned": 0,
+      "url": "https://api.github.com/repos/adewale/tools/pulls?state=all&per_page=100&page=1"
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

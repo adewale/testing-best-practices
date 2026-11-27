@@ -1,0 +1,35 @@
+src/__tests__/agent-png.test.ts:16:/** Read big-endian uint32 from PNG IHDR (bytes 16..20 = width, 20..24 = height). */
+src/__tests__/agent-png.test.ts:93:  test('produces valid PNG bytes with magic header', async () => {
+src/__tests__/agent-png.test.ts:129:    // The parsed diagram and its source string rasterize to the same bytes.
+src/__tests__/embedded-font-resources.test.ts:40:      bytes: fontBytes.byteLength,
+src/__tests__/embedded-font-resources.test.ts:78:  test('fails closed for missing required bytes, licence closure, and digest drift', () => {
+src/__tests__/agent-png-determinism.test.ts:21:function sha256(bytes: Uint8Array): string {
+src/__tests__/agent-png-determinism.test.ts:22:  return createHash('sha256').update(bytes).digest('hex')
+src/__tests__/agent-png-determinism.test.ts:34:    const hashes = renders.map(sha256)
+src/__tests__/agent-png-determinism.test.ts:36:    // All 5 hashes identical via Set size === 1
+src/__tests__/agent-png-determinism.test.ts:37:    expect(new Set(hashes).size).toBe(1)
+src/__tests__/agent-png-determinism.test.ts:44:    // Re-render the first one — should match its earlier hash
+src/__tests__/helpers/rendered-text.ts:19:import { decodeXML } from 'entities'
+src/__tests__/helpers/rendered-text.ts:98:    content: decodeXML(match[0].replace(/^<text\b[^>]*>/, '').replace(LINE_TSPAN, ' ').replace(/<[^>]+>/g, ''))
+src/__tests__/renderer-security.test.ts:201:  test.each([' ', '\t', '\n', '\r', ' \t\r\n'])('style closing XML whitespace %j preserves CSS security decisions', whitespace => {
+src/__tests__/agent-source-map.test.ts:974:  ['wrapped identical', '---\r\ntitle: Wrapper\r\n---\r\n', false, 1, true],
+src/__tests__/agent-source-map.test.ts:975:  ['wrapped different', '---\r\ntitle: Wrapper\r\n---\r\n', true, 2, true],
+src/__tests__/agent-source-map.test.ts:980:  ].join('\r\n')
+src/__tests__/agent-source-map.test.ts:997:  expect(reads).toEqual(expectedReads === 1 ? [source] : [source, authored.replaceAll('\r\n', '\n')])
+src/__tests__/agent-source-map.test.ts:1010:  expect(textAt(original, spans.groups.get('pipeline:A'))).toBe('pipeline A {\r\ncomponent C [50.0]\r\n}')
+src/__tests__/agent-source-map.test.ts:1047:  const source = `---\r\ntitle: Wrapper\r\n---\r\n${header}\r\n${statement.replaceAll('\n', '\r\n')}`
+src/__tests__/agent-source-map.test.ts:1052:  expect(textAt(source, span)).toBe(statement.replaceAll('\n', '\r\n'))
+src/__tests__/agent-source-map.test.ts:1066:  const source = ['---', 'title: Wrapper', '---', header, ...ids.map(() => statement)].join('\r\n')
+src/__tests__/agent-source-map.test.ts:1092:  ].join('\r\n')
+src/__tests__/agent-source-map.test.ts:1100:  expect(textAt(source, spans.groups.get('pipeline:Service API'))).toBe('pipeline "Service API" {\r\n    component "Custom part" [40.0]\r\n    component Utility [60.0]\r\n  }')
+src/__tests__/agent-source-map.test.ts:1189:  test.each(['\n', '\r\n'])('AgentFlow maps declarations in its executable post-wrapper source with %j endings', newline => {
+src/__tests__/stable-family-source-maps.test.ts:70:  test.each(['\n', '\r\n'])('Kanban folded metadata spans retain authored blocks and repeated owners through %j cleanup', newline => {
+src/__tests__/stable-family-source-maps.test.ts:99:    const source = 'kanban\r\nTodo%%{init: {}}%%%%{init: {}}%%\r\n  card["A &amp; B"]@{ assigned: &person !!str "Iris&#10;Lee", "key&#10;name": value, alias: *person }'
+src/__tests__/stable-family-source-maps.test.ts:112:    const source = 'kanban\r\n%%{init: {}}%%%%{init: {}}%%Todo&#10;  card["A&#10;B"]@{ assigned: Iris } %% Keep &amp; text'
+src/__tests__/extension-family-public-api.test.ts:209:      wrapper: '%% retained wrapper comment\r\n\r\n',
+src/__tests__/agent-class.test.ts:90:    const source = '---\r\ntitle: Keep\r\n---\r\nclassDiagram\r\nnamespace `~` {\r\nclass P {\r\n<<service>>\r\n  +int first\r\n  +read()\r\n  +int second\r\n}\r\n}\r\n%% Keep this comment\r\nclass P {\r\n  +read()\r\n}\r\n'
+src/__tests__/agent-class.test.ts:106:    expect(reverted.value.source).toContain('%% Keep this comment\r\n')
+src/__tests__/kanban-family.test.ts:397:    const changed = mutateKanban(narrowed.body, { kind: 'set_column_label', id: ids[0]!, label: 'Renamed\r\ncolumn' })
+src/__tests__/agent-serialize-exact.test.ts:23:  test.each(['---\n\n---\n', '---\n \t\n---\n', '---\r\n\r\n---\r\n', '---\r \t\r---\r'])('preserves supported blank frontmatter verbatim without a portability warning: %j', wrapper => {
+src/__tests__/eventmodeling.test.ts:472:    ['eventmodeling\r\ntf 01 ui Main\r\n/* comment */ rf 01 evt Duplicate', 3],
+src/__tests__/usecase-native.test.ts:316:test.each(['\n', '\r\n'])('UseCase source-map reuse keeps canonical and authored positions with %j lines', newline => {

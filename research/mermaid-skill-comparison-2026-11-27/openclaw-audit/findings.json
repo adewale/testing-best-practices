@@ -1,0 +1,285 @@
+[
+  {
+    "id": "OC-1",
+    "title": "A bad file in the last position cannot prove multi-input continuation",
+    "category": "test gap",
+    "severity": "medium",
+    "confidence": "high",
+    "recommendation": "repair",
+    "test": {
+      "path": "src/__tests__/cli-multi-input.test.ts",
+      "lines": [
+        85,
+        96
+      ],
+      "name": "renders multiple files, emits a results array, skips bad ones"
+    },
+    "contract": "Render every non-PNG positional input, returning its index, path, content or diagnostic in request order even if an earlier file is bad.",
+    "owner": {
+      "path": "src/cli/index.ts",
+      "lines": [
+        274,
+        296
+      ],
+      "symbol": "cmdRender"
+    },
+    "callers": [
+      "bin/am.ts:42-43 -> src/cli/run-entrypoint.ts:10-18 -> src/cli/index.ts:123-133 -> cmdRender",
+      "A CLI consumer reads the files array and pairs each result with its input."
+    ],
+    "gap": "Both valid files precede the unknown header. The owner and selected sibling tests can report success when every file after the first failure disappears.",
+    "independent_basis": "The caller supplied the filenames, order and two different labels. The introducing commit 070c4b0e09d4 specifies one result per file and continuation. The existing error fixture specifies UNKNOWN_HEADER.",
+    "overlap": [
+      "e2e/cli.e2e.test.ts:126-146 checks both paths and node IDs with two valid layout inputs.",
+      "src/__tests__/cli-error-envelope.test.ts:234-240 checks a missing file in the final position.",
+      "Live batch JSONL exercises a different command and a different input protocol."
+    ],
+    "history": [
+      "070c4b0e09d4113db4492380c5912090f71058eb",
+      "evidence/commands/original-cli-contract.log"
+    ],
+    "controls": {
+      "baseline": "Fourteen owner tests and ten selected cross-file cases passed. The public CLI witness returned all three expected rows.",
+      "fault": "The scratch for-of loop records an error and breaks. Fourteen owner tests and ten selected tests still passed. The real CLI returned status zero but omitted last.mmd. The witness exited 1.",
+      "permitted_change": "The equivalent for-of loop continues after the error. Ten selected tests and the public CLI witness passed.",
+      "scratch_repair": "Reorder this case to good / malformed / good. Check the three indices, paths, error and distinct labels. The same 14-test file passed on baseline and the allowed refactor and failed specifically on the fault (13 pass, 1 fail)."
+    },
+    "limits": "The ten cross-file selected cases overlap the fourteen owner tests. Broader CI coverage was unrun.",
+    "artifacts": [
+      "evidence/cli-fault.patch",
+      "evidence/cli-permitted.patch",
+      "evidence/cli-repair.patch",
+      "evidence/cli-witness.py",
+      "evidence/commands/base-cli.log",
+      "evidence/commands/fault-cli-suite.log",
+      "evidence/commands/fault-cli-siblings.log",
+      "evidence/commands/base-cli-witness.log",
+      "evidence/commands/fault-cli-witness.log",
+      "evidence/commands/permitted-cli-witness.log",
+      "evidence/commands/repair-cli-baseline.log",
+      "evidence/commands/repair-cli-fault.log",
+      "evidence/commands/repair-cli-permitted.log"
+    ]
+  },
+  {
+    "id": "OC-2",
+    "title": "Rejected route tests compare mutable point-array references",
+    "category": "test gap and implementation coupling",
+    "severity": "medium",
+    "confidence": "high",
+    "recommendation": "repair",
+    "test": {
+      "path": "src/__tests__/layout-bundle-proposals.test.ts",
+      "lines": [
+        96,
+        133
+      ],
+      "assertion_lines": [
+        107,
+        119,
+        132
+      ],
+      "names": [
+        "a bundle marker cannot paint a foreign tiny card",
+        "unknown authored width cannot authorize a bundle",
+        "a shaft touching the full header by its stroke retains its old route"
+      ]
+    },
+    "contract": "When an optional bundle fails clearance or lacks a known stroke extent, keep the previously admitted route geometry and leave the candidate unclaimed.",
+    "owner": {
+      "path": "src/layout/passes/edge-bundling.ts",
+      "lines": [
+        148,
+        185
+      ],
+      "other_lines": [
+        [
+          275,
+          296
+        ],
+        [
+          362,
+          385
+        ]
+      ],
+      "symbol": "bundleEdgePaths"
+    },
+    "callers": [
+      "src/layout-engine.ts:1406-1410 feeds the pass's routes and membership to later layout stages.",
+      "src/layout-engine.ts:1425-1439 filters and clips the coordinates; src/layout/bundle-routes.ts:34-47 verifies owned geometry by coordinates."
+    ],
+    "gap": "Each before value aliases the production point array. An in-place overwrite passes identity equality. An equal-coordinate restoration in another array fails it.",
+    "independent_basis": "The fixture authors two original orthogonal paths and a header with x extent 60.1 to 66.1 and y extent 45 to 49. The incoming paths clear that header. A one-pixel vertical shaft centered at x=60 from y=40 to 70 overlaps it by 0.4 units horizontally.",
+    "overlap": [
+      "src/__tests__/layout-bundle-proposals.test.ts:20-49 checks painted SVG clearance on three State diagrams. Those tests caught the underlying fault in the same file.",
+      "The two authored public fan samples retained edge multiplicity, labels and SVG/layout bytes on the permitted change; performance and other diagrams are unqualified."
+    ],
+    "history": [
+      "74cd725687bc70a90bfcf31352e371f91cb4df2a introduced the three test blocks (targeted blame).",
+      "5c232f904dba30c04edc29478794b4eb679c670e subsequently extended this owner for foreign shafts and repeated edges.",
+      "evidence/commands/graph-target-blame.log",
+      "evidence/commands/bundle-history.log"
+    ],
+    "controls": {
+      "baseline": "43/43 owner cases passed. No rejected route painted the independent header fixture.",
+      "fault": "A speculative update reuses arrays held by its rollback snapshots. The four reference-checking cases passed despite two rejected shafts crossing the header. The whole file failed because three State SVG cases correctly detected other ink collisions (40 pass, 3 fail).",
+      "permitted_change": "Restore independent shallow copies of the point arrays without mutating their coordinate objects. The direct witness and both public sample comparisons agreed with baseline; four identity checks failed with equal serialized values (39 pass, 4 fail).",
+      "scratch_repair": "Deep-snapshot both coordinate lists before the call and compare resulting coordinate values. Keep membership and marker controls. The 43 tests now pass on baseline and the permitted rollback. Seven fail on the damaging rollback, including all four repaired cases."
+    },
+    "limits": "The whole owner already detects this particular broad fault. The allowed control preserves the geometry and sampled output contract. Its performance was not measured.",
+    "artifacts": [
+      "evidence/graph-fault.patch",
+      "evidence/graph-permitted.patch",
+      "evidence/graph-repair.patch",
+      "evidence/bundle-witness.ts",
+      "evidence/bundle-public.ts",
+      "evidence/commands/base-graph-owner.log",
+      "evidence/commands/fault-graph-owner.log",
+      "evidence/commands/permitted-graph-owner.log",
+      "evidence/commands/fault-graph-witness.log",
+      "evidence/commands/permitted-graph-witness.log",
+      "evidence/commands/base-graph-public.log",
+      "evidence/commands/permitted-graph-public.log",
+      "evidence/commands/repair-graph-baseline.log",
+      "evidence/commands/repair-graph-fault.log",
+      "evidence/commands/repair-graph-permitted.log"
+    ]
+  },
+  {
+    "id": "OC-3",
+    "title": "The logo color regex reads the first hex spelling instead of the effective color",
+    "category": "test gap and implementation coupling",
+    "severity": "low",
+    "confidence": "high",
+    "recommendation": "repair",
+    "test": {
+      "path": "src/__tests__/chrome-token-lockstep.test.ts",
+      "lines": [
+        27,
+        32
+      ],
+      "other_lines": [
+        [
+          60,
+          75
+        ]
+      ],
+      "name": "brand chip tokens match; dark chrome triplet matches ... its accent is the brand pine"
+    },
+    "contract": "The editor and public site use the documented light pine background and dark foreground on the logo chip, independently of the renderer palette.",
+    "owner": {
+      "path": "website/source/assets/styles.css",
+      "lines": [
+        17,
+        33
+      ],
+      "other_lines": [
+        [
+          79,
+          83
+        ],
+        [
+          278,
+          282
+        ]
+      ]
+    },
+    "callers": [
+      "website/build.ts:233-246 prepends font faces and emits these CSS rules.",
+      "website/source/pages/home.html:11-17 and editor/html/topbar.html:3-24 supply actual mark elements.",
+      "editor/css/variables.css:16-20 and editor/css/topbar.css:44-50 supply and consume the editor tokens."
+    ],
+    "gap": "cssHex scans the stylesheet text once for a hex literal. CSS selector priority, later declarations, variable resolution and alternative color notation are outside that assertion.",
+    "independent_basis": "DESIGN.md:8-9 gives #6FC2A2 and #0A4434; lines 84-99 document the distinct isolated mark. Chromium computed background and foreground on the production header markup with the production CSS, before shader attachment.",
+    "overlap": [
+      "src/__tests__/editor-theme-switch.test.ts:79-98,128-158 drives real theme selection and checks inline root colors and rendered arrow fill. It does not sample these two chip elements.",
+      "Search of test sources for the brand token or mark selectors found the direct token checks in this unit file."
+    ],
+    "history": [
+      "7347c53f00d33b69fdac6df89915b2283e059a77 added the test during the app-shell brand change.",
+      "The test's introduction records prior hairline drift, a reason to retain cross-surface coverage.",
+      "evidence/commands/css-origin.log",
+      "evidence/commands/history-css-public.log"
+    ],
+    "controls": {
+      "baseline": "Six tests passed; both actual chips computed rgb(111, 194, 162) and rgb(10, 68, 52).",
+      "fault": "A later :root aliases --brand-pine to --accent. All six tests passed. Chromium measured the site chip at rgb(27, 110, 82) and the editor at the documented pine; the witness exited 1.",
+      "permitted_change": "Change only the brand value spelling from #6FC2A2 to rgb(111 194 162). Chromium measured unchanged foreground and background on both elements; two tests failed with --brand-pine not found.",
+      "scratch_repair": "Use a computed-color assertion on the real mark elements with the design contract as the independent expected value. The scratch browser witness itself passed / failed / passed across all three states."
+    },
+    "limits": "Observed Chromium 156 on light, forced-colors off, using the source templates' markup and isolated styles. The fallback chip is visible before or in the absence of the homepage shader. The packaged site, shader state, other browsers and color modes were outside this probe.",
+    "artifacts": [
+      "evidence/css-fault.patch",
+      "evidence/css-permitted.patch",
+      "evidence/color-witness.cjs",
+      "evidence/short-browser-temp.py",
+      "evidence/commands/base-css.log",
+      "evidence/commands/fault-css-suite.log",
+      "evidence/commands/permitted-css-suite.log",
+      "evidence/commands/base-css-browser.log",
+      "evidence/commands/fault-css-browser.log",
+      "evidence/commands/permitted-css-browser.log"
+    ]
+  },
+  {
+    "id": "OC-4",
+    "title": "Multi-input render silently ignores the requested output path",
+    "category": "confirmed baseline product and help mismatch",
+    "severity": "medium",
+    "confidence": "high for the observed behavior; the desired file format is a policy question",
+    "recommendation": "repair after choosing the multi-input destination policy",
+    "test": {
+      "path": "src/__tests__/agent-cli-render-formats.test.ts",
+      "lines": [
+        76,
+        90
+      ],
+      "related": "src/__tests__/cli-multi-input.test.ts:84-136"
+    },
+    "contract": "The global help describes --output FILE as writing the render output to FILE. Multiple non-PNG inputs are also supported and produce a results array.",
+    "owner": {
+      "path": "src/cli/index.ts",
+      "lines": [
+        274,
+        296
+      ],
+      "other_lines": [
+        [
+          320,
+          322
+        ],
+        [
+          359,
+          367
+        ]
+      ],
+      "symbol": "cmdRender"
+    },
+    "callers": [
+      "bin/am.ts:42-43 through runAmCli/preflight/runPreparedCli to cmdRender.",
+      "A file-oriented CLI caller relies on the named artifact after a successful exit."
+    ],
+    "gap": "The multi-input branch returns before looking up the destination. The file-write test covers one input and the multi-input tests omit a destination.",
+    "independent_basis": "src/cli/help.ts:34 and 107-111; a requested pathname exists on disk after a successful single-input write. An explicit argument error is an alternative if the combination is unsupported.",
+    "overlap": [
+      "e2e/cli.e2e.test.ts:107-146 explicitly rejects multi-input PNG and checks the successful multi-input layout payload, leaving the non-PNG destination case open."
+    ],
+    "history": [
+      "070c4b0e09d4113db4492380c5912090f71058eb defined ordered multi-input stdout results.",
+      "b83b2657e02fe4d2d568852e9df1a8c15594de0a scoped its documented artifact/reporting repair to single-input rendering.",
+      "evidence/commands/original-cli-contract.log",
+      "evidence/commands/output-contract-history.log"
+    ],
+    "controls": {
+      "baseline": "With --format ascii --output dst --json the real entry created dst and reported path for one input. With two valid inputs it exited zero, wrote no stderr, returned two successful rows on stdout, and left dst absent.",
+      "fault": "The observation is on untouched HEAD. No seeded product fault is needed.",
+      "permitted_change": "The confirmed problem is silent success with an unmet destination. A policy owner must choose rejection with a clear diagnostic or an explicitly documented aggregate file format. No policy variant was assumed."
+    },
+    "limits": "The reproduction covers --format ascii and the long --output form. The inspected multi-input branch is shared by the non-PNG formats.",
+    "artifacts": [
+      "evidence/cli-output-policy.py",
+      "evidence/commands/multi-output-observation.log",
+      "evidence/commands/single-output-suite.log"
+    ]
+  }
+]

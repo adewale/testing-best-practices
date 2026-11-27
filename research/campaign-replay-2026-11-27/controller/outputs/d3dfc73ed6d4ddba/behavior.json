@@ -1,0 +1,229 @@
+{
+  "candidate_id": "d3dfc73ed6d4ddba",
+  "repository": "adewale/pda",
+  "source_commit": "c0a9a85c8f690eb77313b9627e3ea39cadc58968",
+  "patch_file": "patch.diff",
+  "patch_sha256": "7115be8cf41aadafad1a8b917f62534d5d98c660ad7b7063e65d2c4c9489c203",
+  "enrollment": {
+    "changed_files": [
+      "test/agent-data.test.ts"
+    ],
+    "added_test_files": [],
+    "added_named_cases": 0,
+    "selection": "One existing Workers test was strengthened in place. The frozen runner enrolled its complete 31-case module. The separate client-upload module ran all 14 cases on clean. Keeper test names stayed intact.",
+    "workers_file": "test/agent-data.test.ts",
+    "ui_file": "test/ui/attachments.test.tsx",
+    "fault_failure_case": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records",
+    "candidate_production_changes": false
+  },
+  "frozen_comparison": {
+    "count_order": [
+      "passed",
+      "failed",
+      "filtered_out"
+    ],
+    "variants": {
+      "clean": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            31,
+            0,
+            0
+          ],
+          "exit": 0
+        },
+        {
+          "project": "UI",
+          "original": [
+            14,
+            0,
+            0
+          ],
+          "submitted": [
+            14,
+            0,
+            0
+          ],
+          "exit": 0
+        }
+      ],
+      "empty-data": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            30,
+            1,
+            0
+          ],
+          "exit": 1,
+          "failed_assertion": "AssertionError: file: expected +0 to be 2097152 // Object.is equality"
+        }
+      ],
+      "tail-bit": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            30,
+            1,
+            0
+          ],
+          "exit": 1,
+          "failed_assertion": "AssertionError: first differing byte of the exported file: expected 2097151 to be -1 // Object.is equality"
+        }
+      ],
+      "physical-order": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            31,
+            0,
+            0
+          ],
+          "exit": 0
+        }
+      ],
+      "member-order": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            31,
+            0,
+            0
+          ],
+          "exit": 0
+        }
+      ],
+      "auth-keeper": [
+        {
+          "project": "Workers",
+          "original": [
+            0,
+            1,
+            30
+          ],
+          "submitted": [
+            0,
+            1,
+            30
+          ],
+          "exit": 1,
+          "failed_assertion": "AssertionError: expected 200 to be 401 // Object.is equality"
+        }
+      ],
+      "isolation-keeper": [
+        {
+          "project": "Workers",
+          "original": [
+            0,
+            1,
+            30
+          ],
+          "submitted": [
+            0,
+            1,
+            30
+          ],
+          "exit": 1,
+          "failed_assertion": "AssertionError: expected '{\"format\":\"pda-personal-data\",\"versio\u2026' not to contain 'SOMEONE_ELSES_NOTE'"
+        }
+      ],
+      "upload-byte-keeper": [
+        {
+          "project": "UI",
+          "original": [
+            0,
+            1,
+            13
+          ],
+          "submitted": [
+            0,
+            1,
+            13
+          ],
+          "exit": 1,
+          "failed_assertion": "AssertionError: expected [ +0, +0, +0, +0, +0, +0 ] to deeply equal [ 255, 216, 255, 224, 18, 52 ]"
+        }
+      ]
+    },
+    "raw": "pda.json",
+    "original_raw": "preparation/pda/evaluator/evidence/pinned.json"
+  },
+  "source_review": {
+    "boundary": "The changed test uploads through the PersonalAgent Durable Object, downloads the authenticated HTTP export, groups by the actual attachment ID and part, sorts by seq, decodes each base64 field and compares every byte with the input. The 2 MiB JPEG fixture has distinct 1 MiB chunks and a separate 5-byte preview. The same test asserts both payload comparisons on clean.",
+    "keeper_evidence": "The frozen response-status, isolation-sentinel and same-size client-upload substitutions still fail at their intended assertions. The original owner note, credential masking/omission, and response-header assertions are also retained and pass on clean. No separate credential-substitution probe was registered.",
+    "boundedness": "The test retains exact stored-chunk counts, now two file rows and one preview row. pda-spec.md:230 describes 1 MiB storage rows. Compatibility with a different export chunk size was not tested. The frozen faults independently establish file-content detection; a preview-only corruption was not separately injected.",
+    "links": [
+      "test/agent-data.test.ts:83",
+      "test/agent-data.test.ts:101",
+      "test/agent-data.test.ts:118",
+      "src/agent.ts:825",
+      "src/agent-data-routes.ts:29",
+      "src/agent-data-export.ts:130",
+      "test/ui/attachments.test.tsx:128",
+      "pda-spec.md:230"
+    ]
+  },
+  "secondary_finding": {
+    "kind": "Known pda-03, reported and left outside the submitted patch.",
+    "source_evidence": "The HTTP test reads once on each stream, cancels one, and asks for deletion. The generator yields the JSON header before the first row query, then materializes batches with toArray(). Production erasure drops application tables inside a synchronous transaction.",
+    "references": [
+      "test/agent-data.test.ts:365 (submitted line numbers)",
+      "src/agent-data-export.ts:129",
+      "src/agent-data-export.ts:139",
+      "src/agent-data.ts:75",
+      "src/agent-data.ts:78"
+    ],
+    "exploratory_validation": "After submission, two real-workerd selections compared pinned production to a live-cursor perturbation in scratch with the unchanged HTTP test and a separate probe that pauses after the first of five SQLite rows. These runs are independent of the eight frozen comparisons and do not constitute a second submitted repair.",
+    "observed": {
+      "pinned": {
+        "original_http_case": "passed",
+        "new_partial_table_probe": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped_by_filter": 30,
+        "exit": 0
+      },
+      "live-cursor": {
+        "original_http_case": "passed",
+        "new_partial_table_probe": "failed",
+        "passed": 1,
+        "failed": 1,
+        "skipped_by_filter": 30,
+        "exit": 1,
+        "failure": "Error: database table is locked: SQLITE_LOCKED"
+      }
+    },
+    "raw": "cursor-exploratory.json",
+    "reproduce": "cursor-exploratory.py"
+  },
+  "limits": [
+    "Local original suite inventory is 155 named modules; 56 complete modules were supplied. The native controls support claims about their selected files. They do not certify the full Workers or full CI suite.",
+    "Other cited selections (the page settings, durability and legacy-migration files), first-slice duplication experiment, typecheck and original authoring process were subject-reported. The evaluator verified the sealed diff and ran the frozen controls; it does not have a subject-wide tool trace."
+  ]
+}

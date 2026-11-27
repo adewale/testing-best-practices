@@ -1,0 +1,28 @@
+{
+  "decision": "reject",
+  "changes": [
+    {
+      "target": "Historical receipt verifier",
+      "action": "Verify the archived run read-only",
+      "details": "Match candidate IDs one-to-one between the receipt and the archived results. Hash the exact bytes of each recorded output with the receipt's digest algorithm. Independently tally the recorded outcomes under the historical counting rules and compare each recorded total. Return a nonzero status for missing evidence or a mismatch. Identify the candidate, artifact or total and report the expected and observed values."
+    },
+    {
+      "target": "Script provenance",
+      "action": "Validate the historical records",
+      "details": "Require the three distinct script entries identified by this receipt format, with their original identifiers and well-formed digests of the required length and encoding. Remove the lookup and hashing of their paths in today's checkout. Preserve the receipt bytes, including all three original hash values."
+    }
+  ],
+  "retained_contracts": [
+    "Each recorded candidate is bound to its own archived output bytes. Equal totals cannot hide changed output.",
+    "The results must support the recorded totals. The three script entries describe the tools used for that historical run."
+  ],
+  "validation": [
+    "Exercise the real verifier entry point on a temporary archive with two distinct outputs, independently computed digests and hand-counted unequal totals. Expect exit 0.",
+    "Using the same receipt and archive, edit only a current script comment, then independently rename a current script so its historical path is absent. Each case must exit 0. These are the focused regressions for the current red result.",
+    "Append one byte of whitespace to an archived output while preserving its outcome. Expect nonzero with that candidate's digest mismatch. Separately remove the output and expect nonzero identifying the missing file.",
+    "Change only a recorded total, keeping every file digest valid. Expect nonzero with the expected and observed counts. Where totals are per candidate, swap two unequal totals to preserve the grand total and exercise the candidate mapping.",
+    "Separately remove one required script record and supply a malformed script digest. Each must fail and name the offending entry. Compare receipt bytes before and after successful and failing verification to prove the verifier never refreshes them."
+  ],
+  "cost_and_stop": "Use tiny local fixtures and one read-only check of the existing archive. Stop when the drift cases pass and each corruption case fails for its intended reason. Verification needs one pass over the archived evidence and zero candidate executions.",
+  "rationale": "Refreshing hashes after a refactor would attribute today's tools to an earlier run and could bless altered evidence. Deleting verification would discard detection of output corruption and incorrect totals. Authenticating a historical script digest requires historical script bytes. Today's file contents cannot establish that claim."
+}

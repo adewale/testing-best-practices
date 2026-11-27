@@ -1,0 +1,18 @@
+{
+  "label": "ours-font-choice-fault",
+  "argv": [
+    "bun",
+    ".parent-journey-font-choice.ts"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {
+    "CI": "true",
+    "AM_CJK_FONT_DIR": "/usr/share/fonts/opentype/noto"
+  },
+  "timeout_seconds": 120,
+  "exit_code": 1,
+  "status": "completed",
+  "duration_seconds": 0.6995170930003951,
+  "stdout_sha256": "c86b989ef4b886ffc94e39717378a6f766fc6667d797e7749e0b763fe8614605",
+  "stderr_sha256": "2b5e146bd0dfbba195eca3ce6118d12f57a318b58846c12a61702dbb1a3c8fd9"
+}

@@ -1,0 +1,15 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/agent-cli-render-formats.test.ts:
+(pass) am render --format layout > emits the library layout JSON for flowchart (CLI ≡ layoutMermaid, plus a receipt) [96.88ms]
+(pass) am render --format layout > certificates flag includes route certificates without changing default JSON [26.10ms]
+(pass) am render --format layout > json on sequence diagram surfaces participants as nodes [16.22ms]
+(pass) am render --format layout > parse-fail surfaces structured error [1.52ms]
+(pass) am render --format ascii vs unicode > unicode emits box-drawing characters [48.66ms]
+(pass) am render --format ascii vs unicode > ascii emits only 7-bit characters [13.44ms]
+(pass) am render --format ascii vs unicode > --json success is an ok envelope; --output keeps the plain artifact and reports the write [119.88ms]
+
+ 7 pass
+ 0 fail
+ 288 expect() calls
+Ran 7 tests across 1 file. [592.00ms]

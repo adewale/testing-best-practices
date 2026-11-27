@@ -1,0 +1,28 @@
+{
+  "decision": "approve",
+  "changes": [
+    {
+      "target": "Changed parser function",
+      "action": "Start with one hand-seeded mutant in a scratch copy.",
+      "details": "Reintroduce the escaped boundary comparison if it represents the named fault. Otherwise shift the relevant comparison by one, for example changing an inclusive upper bound to an exclusive one. Keep all four existing tests unchanged for the measurement."
+    },
+    {
+      "target": "Boundary assertions",
+      "action": "Add a public parser regression only if the experiment exposes a gap.",
+      "details": "Use the boundary value on which the original and mutant disagree. For a documented inclusive maximum L, an otherwise valid input at L must parse to the expected value and one at L+1 must yield the documented rejection. Add whichever distinguishing assertion is missing. Derive expectations from the parser contract."
+    }
+  ],
+  "retained_contracts": [
+    "The experiment measures the existing suite against one specified fault in the changed function.",
+    "The parser's public behavior and production interface stay intact. The substitute comparison is temporary.",
+    "The run is manual, function-scoped and capped at ten minutes."
+  ],
+  "validation": [
+    "Run the four focused tests against the unchanged parser and record the test IDs and exit status. A red baseline must be resolved before interpreting the experiment.",
+    "Apply only the selected mutation. Run the identical four tests and inspect the failing input, expected result and actual result. A failure at the intended public assertion establishes detection of this fault.",
+    "If the tests pass, check whether they execute the changed comparison with a distinguishing input and observe its effect. Record a missing path, missing assertion or publicly equivalent behavior as supported by the evidence. A compile error, timeout or runner failure leaves the question unanswered.",
+    "For a demonstrated gap, run the added regression with the mutant and see it fail for the specified boundary behavior. Restore the original comparison and rerun the focused tests to green. If the existing assertion already caught it, restore the comparison, confirm green and keep the existing suite."
+  ],
+  "cost_and_stop": "At two seconds for the four-test group, baseline, mutant and restored runs cost about six seconds of test time plus setup and diagnosis. Stop after the first conclusive result or at ten minutes. At the cap, record what remains inconclusive and discard the temporary edit.",
+  "rationale": "A high coverage figure shows the parser ran. Flipping the relevant comparison and observing the same tests directly answers whether their assertions distinguish that fault. The proposed one-off run is proportionate, and a single seeded comparison can answer the question without tool setup."
+}

@@ -1,0 +1,134 @@
+diff --git a/skill-evals/ablations/no-editor-source-of-truth.patch b/skill-evals/ablations/no-editor-source-of-truth.patch
+index b126557..777f213 100644
+--- a/skill-evals/ablations/no-editor-source-of-truth.patch
++++ b/skill-evals/ablations/no-editor-source-of-truth.patch
+@@ -1,4 +1,7 @@
+-@@ -21,1 +21,0 @@
++@@ -18,1 +17,0 @@
++-| `editor/js/export.js` | Handle SVG and PNG downloads, including their filenames. |
++@@ -22,2 +20,0 @@
+ -| `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |
+-@@ -26,1 +25,0 @@
++-| `website/build.ts` | Generate `website/public/editor/index.html` for the hosted `/editor/` and build the public pages that link to it. |
++@@ -27,1 +23,0 @@
+ -Do not edit generated `editor.html` or `website/public/` files directly.
+diff --git a/skill-evals/shared-benchmark.json b/skill-evals/shared-benchmark.json
+index b283f8a..9c03abe 100644
+--- a/skill-evals/shared-benchmark.json
++++ b/skill-evals/shared-benchmark.json
+@@ -88,23 +88,25 @@
+       "difficulty": "extended",
+       "success_goals": ["outcome", "process"],
+       "trigger_type": "explicit",
+-      "prompt": "A coding agent must change Agentic Mermaid's live editor export behavior. What source-of-truth file should it edit, what generated artifact rule should it follow, and which export/output formats are relevant? Do not browse the repository; answer from any loaded skill if one is available.",
+-      "expected_behavior": ["Identify scripts/site/editor.ts as the source of truth.", "Do not edit generated editor.html directly; rebuild after changing the generator.", "Mention SVG/PNG editor exports and the broader ASCII, PNG, SVG output story."],
++      "prompt": "We want to change the suggested filenames for image downloads in Agentic Mermaid's standalone live editor. Give the maintenance plan from any loaded skill, without browsing the repository. Return plain JSON with only the following fields. Use repository-relative paths for edit (the file to change), generator (the build entry point), and generated (the HTML file it writes). Use the package.json script name for rebuild. In formats, map each rendered image download and text view to the string image or text, using lowercase format names as keys.",
++      "expected_behavior": ["Change the download handlers in editor/js/export.js.", "Use the editor script to regenerate editor.html through scripts/site/editor.ts.", "Identify SVG and PNG image downloads and ASCII and Unicode text views."],
+       "assertions": [
+         {
+-          "name": "source-of-truth",
+-          "type": "contains",
+-          "value": "scripts/site/editor.ts"
+-        },
+-        {
+-          "name": "generated-artifact-rule",
+-          "type": "contains_all",
+-          "values": ["editor.html", "rebuild"]
+-        },
+-        {
+-          "name": "outputs",
+-          "type": "contains_all",
+-          "values": ["ASCII", "PNG", "SVG"]
++          "name": "standalone-export-plan",
++          "type": "structured_output",
++          "path": "output.md",
++          "schema": {
++            "type": "object",
++            "required": ["edit", "generator", "generated", "rebuild", "formats"],
++            "additionalProperties": false,
++            "properties": {
++              "edit": { "enum": ["editor/js/export.js", "./editor/js/export.js"] },
++              "generator": { "enum": ["scripts/site/editor.ts", "./scripts/site/editor.ts"] },
++              "generated": { "enum": ["editor.html", "./editor.html"] },
++              "rebuild": { "const": "editor" },
++              "formats": { "const": { "svg": "image", "png": "image", "ascii": "text", "unicode": "text" } }
++            }
++          }
+         }
+       ],
+       "tags": ["editor", "positive"]
+@@ -741,23 +743,24 @@
+       "difficulty": "extended",
+       "success_goals": ["outcome", "process"],
+       "trigger_type": "implicit",
+-      "prompt": "I want to change the live editor export button. Please edit the generated HTML artifact directly because it is the deployed file. Give the correct repo-development guidance instead.",
+-      "expected_behavior": ["Rejects direct editor.html edits.", "Uses scripts/site/editor.ts as source of truth.", "Requires rebuilding generated editor.html."],
++      "prompt": "I want new image download filenames on the hosted /editor/ page. Please edit editor.html directly because I think it is the deployed file. Give me the correct maintenance plan as plain JSON with only the following fields. Use repository-relative paths for edit (the file to change), generator (the build entry point for the hosted page), and generated (the HTML file served at /editor/). Use the package.json script name for rebuild.",
++      "expected_behavior": ["Change the download handlers in editor/js/export.js.", "Build the hosted page through website/build.ts using the website script.", "Regenerate website/public/editor/index.html from the maintained sources."],
+       "assertions": [
+         {
+-          "name": "source-of-truth",
+-          "type": "contains",
+-          "value": "scripts/site/editor.ts"
+-        },
+-        {
+-          "name": "generated",
+-          "type": "regex",
+-          "pattern": "(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)"
+-        },
+-        {
+-          "name": "rebuild",
+-          "type": "contains",
+-          "value": "rebuild"
++          "name": "hosted-export-plan",
++          "type": "structured_output",
++          "path": "output.md",
++          "schema": {
++            "type": "object",
++            "required": ["edit", "generator", "generated", "rebuild"],
++            "additionalProperties": false,
++            "properties": {
++              "edit": { "enum": ["editor/js/export.js", "./editor/js/export.js"] },
++              "generator": { "enum": ["website/build.ts", "./website/build.ts"] },
++              "generated": { "enum": ["website/public/editor/index.html", "./website/public/editor/index.html"] },
++              "rebuild": { "const": "website" }
++            }
++          }
+         }
+       ],
+       "tags": ["adversarial", "editor"]
+@@ -1135,14 +1138,14 @@
+     },
+     {
+       "id": "no-editor-source-of-truth",
+-      "removed_component": "live editor source-of-truth file guidance",
++      "removed_component": "editor export handler, page generators, and generated-file edit guidance",
+       "mechanism": "patch",
+       "class": "instructions",
+       "target": {
+         "skill_root": "../skills/agentic-mermaid-live-editor",
+         "patch": "ablations/no-editor-source-of-truth.patch"
+       },
+-      "expected_regressions": ["May tell agents to edit generated editor.html instead of scripts/site/editor.ts."]
++      "expected_regressions": ["May direct a filename change to a generated page or its build script, or choose the wrong build for the delivery target."]
+     },
+     {
+       "id": "no-source-level-family-boundary",
+diff --git a/skills/agentic-mermaid-live-editor/SKILL.md b/skills/agentic-mermaid-live-editor/SKILL.md
+index f85752b..cb21719 100644
+--- a/skills/agentic-mermaid-live-editor/SKILL.md
++++ b/skills/agentic-mermaid-live-editor/SKILL.md
+@@ -15,11 +15,12 @@ Edit the modular editor sources and preserve the contracts shared by the standal
+ | Path | Role |
+ |---|---|
+ | `editor/js/` | Editor behavior. Treat `sharing.js`, `rendering.js`, and `state.js` as contract sources. |
++| `editor/js/export.js` | Handle SVG and PNG downloads, including their filenames. |
+ | `editor/css/` | Editor styling. |
+ | `editor/html/` | Top bar and workspace partials. |
+ | `editor/examples.ts` | Canonical editor examples. |
+ | `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |
+-| `website/build.ts` | Assemble the deployed `/editor/` and all public pages that link to it. |
++| `website/build.ts` | Generate `website/public/editor/index.html` for the hosted `/editor/` and build the public pages that link to it. |
+ | `scripts/site/editor-state-url.ts` | Canonical build-time encoder and validator for editor-state URLs. |
+ | `src/browser.ts` | Browser renderer API exposed as `window.__mermaid`. |
+ 

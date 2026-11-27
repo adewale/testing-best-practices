@@ -1,0 +1,282 @@
+{
+  "repository": "adewale/claude-history-explorer",
+  "total_prs": 15,
+  "pages_checked": 2,
+  "enumeration": {
+    "url": "https://api.github.com/repos/adewale/claude-history-explorer/pulls?state=all&per_page=100&page=1",
+    "page_sizes": [
+      15,
+      0
+    ],
+    "state_counts": {
+      "open": 1,
+      "merged": 11,
+      "closed_unmerged": 3
+    },
+    "changed_files_by_pr": {
+      "3": 10,
+      "4": 2,
+      "5": 2,
+      "6": 6,
+      "8": 3,
+      "9": 37,
+      "10": 3,
+      "11": 40,
+      "12": 26,
+      "13": 6,
+      "14": 15,
+      "15": 7,
+      "16": 2,
+      "17": 3,
+      "18": 1
+    },
+    "scope": "All 15 titles, bodies and first-page file inventories were reviewed across all dates and authors. Every file inventory was below the 100-file page size, totaling 163 changed-file entries."
+  },
+  "matching_prs": [
+    {
+      "number": 15,
+      "title": "Test audit pilot: make the read-only and URL-compatibility checks able to fail",
+      "url": "https://github.com/adewale/claude-history-explorer/pull/15",
+      "state": "closed",
+      "merged": false,
+      "classification": "dedicated test audit pilot",
+      "weakness": "Three read-only checks inspected source or compared an unrelated directory. A work-pace assertion accepted any non-null label. The schema harness accepted zero cases. Decoder-only goldens and a pasted demo link could survive broken routes, and a decoder test treated either branch as a pass.",
+      "attempted_remedy": "Replace the three checks with a real CLI exercise against an isolated history tree. Assert the expected label and real harness counters. Pass unchanged golden data through production routes, follow the real demo link, and remove the pasted sample, both-outcomes assertion and always-true helper.",
+      "test_paths": [
+        "tests/test_history.py",
+        "wrapped-website/tests/backwards-compat.test.ts",
+        "wrapped-website/tests/schema-alignment.test.ts",
+        "wrapped-website/tests/decoder.test.ts",
+        "wrapped-website/tests/coverage.test.ts"
+      ],
+      "diff_evidence": [
+        "The CliRunner fixture sets HOME and USERPROFILE, exercises read and intentional output commands, checks that output contains seeded data, then compares all paths, file bytes, sizes and mtimes under .claude. Blank and truncated lines exercise parser skip paths.",
+        "The pace check now expects exactly 'Rapid-fire development'. The schema wrapper requires failed == 0 and passed > 0. Golden app.request calls check HTML with a project name when supplied, SVG with the expected message count and the exact 302 location. A separate test obtains the demo href from the landing page.",
+        "decoder.test.ts deletes a try/catch which incremented the pass counter after a decoding exception and the copied demo URL section. The PR removes isV3Story from src/decoder.ts and its test-only use."
+      ],
+      "transferable_rule": "Exercise a published guarantee at the entry point and check a value or side effect that changes under a plausible fault. When removing a duplicated test, identify the surviving check that would catch the same breakage.",
+      "outcome": "Closed without merging directly. Its test edits landed through #14. GitHub's final-head run passed all six Python jobs and the website Test step. The separate Audit production dependencies step failed.",
+      "verification_caveat": "The PR author reported that a sibling-file write, broken previous-year routes and altered SVG message counts exposed gaps. These one-off mutation experiments were not independently rerun. The author listed 28 mocked exit-code-only CLI tests, duplicate harness sections, import-only checks and other follow-ups without implementing those repairs.",
+      "evidence_urls": [
+        "https://github.com/adewale/claude-history-explorer/blob/203cc7e638d8f6266765b85c737e416ac7ab4069/tests/test_history.py#L574",
+        "https://github.com/adewale/claude-history-explorer/blob/203cc7e638d8f6266765b85c737e416ac7ab4069/wrapped-website/tests/backwards-compat.test.ts#L205",
+        "https://github.com/adewale/claude-history-explorer/blob/203cc7e638d8f6266765b85c737e416ac7ab4069/wrapped-website/tests/schema-alignment.test.ts#L193"
+      ],
+      "ci_url": "https://github.com/adewale/claude-history-explorer/actions/runs/36933995224"
+    },
+    {
+      "number": 14,
+      "title": "Unblock CI (prod-only npm audit, hono bump, fixtures required in CI) and make the read-only and Wrapped URL tests able to fail",
+      "url": "https://github.com/adewale/claude-history-explorer/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "integrated test audit and fixture repair",
+      "weakness": "Missing committed golden or schema fixtures silently skipped Python compatibility checks in CI. The read-only pilot needed to cover a new non-object JSONL branch added by #13.",
+      "attempted_remedy": "Fold in #15's read-only, route, harness and deletion work. Require committed fixtures in CI, preserve a documented local skip, and add a non-object line to the history fixture.",
+      "test_paths": [
+        "tests/conftest.py",
+        "tests/test_backwards_compatibility.py",
+        "tests/test_schema_alignment.py",
+        "tests/test_history.py",
+        "wrapped-website/tests/backwards-compat.test.ts",
+        "wrapped-website/tests/schema-alignment.test.ts",
+        "wrapped-website/tests/decoder.test.ts"
+      ],
+      "diff_evidence": [
+        "require_fixture(path) calls pytest.fail when the path is absent and CI is set. load_golden_urls and the schema round-trip test replace unconditional pytest.skip branches with this helper.",
+        "The test feeds a literal 42 line to the temporary JSONL corpus before the CLI history snapshot comparison. The same PR carries #15's precise work-pace assertion, non-empty schema harness, production-route checks and decoder-test deletions."
+      ],
+      "transferable_rule": "Make disappearance of a committed oracle fail in the environment that promises coverage. Update behavioral fixtures when production code gains a new path that can violate the same guarantee.",
+      "outcome": "Merged. GitHub recorded seven successful jobs on the final PR head. #15 is the source of the shared changes and represents one underlying repair.",
+      "verification_caveat": "The PR's planted writes and missing-fixture experiments were author-reported. Two per-case skips and a schema harness module-load process.exit(1) remained. The snapshot covers the exercised command paths. The separate npm audit gate change is incidental to this match.",
+      "evidence_urls": [
+        "https://github.com/adewale/claude-history-explorer/blob/f599731d3a467618f39bf19c4ee6bb3cce23e848/tests/conftest.py#L22",
+        "https://github.com/adewale/claude-history-explorer/blob/f599731d3a467618f39bf19c4ee6bb3cce23e848/tests/test_history.py#L565"
+      ],
+      "ci_url": "https://github.com/adewale/claude-history-explorer/actions/runs/38140916491"
+    },
+    {
+      "number": 13,
+      "title": "Ignore non-object JSONL session records",
+      "url": "https://github.com/adewale/claude-history-explorer/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "testing approach embedded in a parser bug fix",
+      "weakness": "The base invalid-JSON test fed a syntax error and an object, then asserted only that parse_session returned an object. Valid JSON of the wrong shape, such as 42, could raise, while dropping valid messages could still satisfy that assertion.",
+      "attempted_remedy": "Introduce a structured Hypothesis property over mixed JSONL records. Give every generated valid message an expected content value and compare the full ordered output after parsing a physical temporary file.",
+      "test_paths": [
+        "tests/test_parser_properties.py",
+        "tests/test_history.py (base comparison)"
+      ],
+      "diff_evidence": [
+        "The new strategy generates nulls, booleans, numbers, strings, recursive lists and valid user messages. The property compares the exact sequence of parsed message contents with the tagged expected sequence. parser.py separately adds a dict type guard."
+      ],
+      "transferable_rule": "Generate valid syntax with invalid record shapes interleaved with known-good records. Assert exact preservation and ordering so dropping everything fails on inputs containing valid records.",
+      "outcome": "Merged. GitHub recorded seven successful final-head jobs.",
+      "verification_caveat": "This adds a new testing method alongside a product fix. The base-test comparison and property are visible in code. The reported pre-fix crash was not rerun here. The generated domain is bounded.",
+      "evidence_urls": [
+        "https://github.com/adewale/claude-history-explorer/blob/c28cdd976edc74d090e678844a6ebfacff7e770a/tests/test_parser_properties.py#L40"
+      ],
+      "ci_url": "https://github.com/adewale/claude-history-explorer/actions/runs/33346276300"
+    },
+    {
+      "number": 11,
+      "title": "Fix audited Windows compatibility regressions",
+      "url": "https://github.com/adewale/claude-history-explorer/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "test harness and portability repairs embedded in a compatibility audit",
+      "weakness": "Cross-language suites could skip silently on CI. Python jobs ran only on Ubuntu. Hand-listed Vitest files and separate scripts required each new suite to be wired in manually. Several Python fixtures reopened named files while their original handles were still open.",
+      "attempted_remedy": "Fail on missing bridge dependencies or npx in CI, resolve the Windows executable, use closed temporary files and explicit UTF-8, run Python tests on three OSes, discover Vitest files by convention, and register the existing manual harnesses.",
+      "test_paths": [
+        "tests/conftest.py",
+        "tests/test_modules.py",
+        "tests/test_integration.py",
+        "tests/test_schema_alignment.py",
+        "tests/test_backwards_compatibility.py",
+        "wrapped-website/vitest.config.ts",
+        "wrapped-website/tests/decoder.test.ts",
+        "wrapped-website/tests/backwards-compat.test.ts",
+        "wrapped-website/tests/schema-alignment.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": [
+        "require_wrapped_node_deps and npx_command fail in CI but can skip locally. Three parser tests in test_modules.py now write files in a TemporaryDirectory before opening them via parse_session. The matrix adds macOS and Windows to Ubuntu.",
+        "vitest.config.ts expands two hard-coded files to tests/**/*.test.ts. Decoder and backwards-compatibility wrappers assert failed == 0 and passed > 0. The schema wrapper adds expect(true).toBe(true), the specific gap #15/#14 later repaired."
+      ],
+      "transferable_rule": "Make promised CI coverage fail on missing prerequisites, exercise supported platforms and make test discovery include newly named suites. An adapter for a legacy harness should surface both failures and an empty run.",
+      "outcome": "Merged. All seven final-head jobs passed, including both Python versions on Windows, macOS and Ubuntu.",
+      "verification_caveat": "Green CI did not establish that the schema wrapper would catch an empty case list. Additional Windows/product regression tests in this PR were ordinary coverage; the verified harness and fixture edits justify the match.",
+      "evidence_urls": [
+        "https://github.com/adewale/claude-history-explorer/blob/446da8f7b635b0cf2623a3f2b3f5dd10cf2a5612/tests/conftest.py#L18",
+        "https://github.com/adewale/claude-history-explorer/blob/446da8f7b635b0cf2623a3f2b3f5dd10cf2a5612/wrapped-website/vitest.config.ts#L5",
+        "https://github.com/adewale/claude-history-explorer/blob/446da8f7b635b0cf2623a3f2b3f5dd10cf2a5612/wrapped-website/tests/schema-alignment.test.ts#L192"
+      ],
+      "ci_url": "https://github.com/adewale/claude-history-explorer/actions/runs/27075467840"
+    },
+    {
+      "number": 10,
+      "title": "Add GitHub Actions CI",
+      "url": "https://github.com/adewale/claude-history-explorer/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "CI and test isolation repair",
+      "weakness": "The cross-language Python tests could skip without the website's Node dependencies. Three projects CLI tests stubbed the project list while still depending on the real projects-directory lookup.",
+      "attempted_remedy": "Install the Node bridge before running pytest in the first hosted Python matrix and inject an existing temporary directory into all three project-list tests.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "tests/test_cli_integration.py"
+      ],
+      "diff_evidence": [
+        "The Python job sets up Node 24 and runs npm ci in wrapped-website before pytest for Python 3.10 and 3.13. test_projects_with_data, test_projects_empty and test_projects_with_limit patch get_projects_dir to tmp_path alongside list_projects."
+      ],
+      "transferable_rule": "Provision cross-runtime prerequisites where the suite runs and control filesystem lookups that precede mocks, so a clean contributor machine exercises the same behavior.",
+      "outcome": "Merged. Both Python jobs and the website job passed on the final head.",
+      "verification_caveat": "The three CLI tests keep their pre-existing varying assertion strength, including an exit-code-only check for the limit. Job success verifies execution, without proving every cross-language case ran.",
+      "evidence_urls": [
+        "https://github.com/adewale/claude-history-explorer/blob/238b5abaa4e65035e68448db046cb4fc7ee6f846/tests/test_cli_integration.py#L206",
+        "https://github.com/adewale/claude-history-explorer/blob/238b5abaa4e65035e68448db046cb4fc7ee6f846/.github/workflows/ci.yml#L40"
+      ],
+      "ci_url": "https://github.com/adewale/claude-history-explorer/actions/runs/27060356329"
+    },
+    {
+      "number": 9,
+      "title": "Fix audit regressions and Wrapped security",
+      "url": "https://github.com/adewale/claude-history-explorer/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "test repairs embedded in a correctness and security audit",
+      "weakness": "Several parser tests accepted a thrown exception or made no content assertions. Schema generation overwrote the checked-in expected file and only checked that it existed. The TypeScript alignment harness compared fields without asking the production validator to accept the decoded record.",
+      "attempted_remedy": "Specify parser outcomes, generate schema cases into temporary paths, compare the generated fixture with the committed file and make production validation part of the cross-language oracle.",
+      "test_paths": [
+        "tests/test_history.py",
+        "tests/test_schema_alignment.py",
+        "tests/generate_schema_test_cases.py",
+        "tests/test_integration.py",
+        "tests/fixtures/schema_test_cases.json",
+        "wrapped-website/tests/schema-alignment.test.ts"
+      ],
+      "diff_evidence": [
+        "test_session_file_read_errors deletes the exception-swallowing try/except and requires zero messages. test_content_extraction_fallbacks asserts an exact six-result list and tool-use value. The malformed-message loop now requires None.",
+        "test_generate_schema_test_cases passes --output under tmp_path and compares its text with the committed golden. The TypeScript bridge consumes SCHEMA_TEST_CASES and combines validateStoryV3(decoded).valid with the expected-data comparison. A separate generated TypeScript integration script also moves into tmp_path."
+      ],
+      "transferable_rule": "Make ambiguous tests choose the promised result. Independently regenerate golden outputs in a temporary directory, then compare with the versioned oracle and invoke the validator used in production.",
+      "outcome": "Merged. GitHub returned no Actions runs for this final head. Repository CI was introduced in #10.",
+      "verification_caveat": "The PR body reports red-first regressions and passing local suites. The audit verified the changed assertions and data flow without rerunning those commands. Ordinary new product regression cases were excluded from the rationale.",
+      "evidence_urls": [
+        "https://github.com/adewale/claude-history-explorer/blob/16d29fab1888e74684640de5df1bddaf6eb9075b/tests/test_history.py#L775",
+        "https://github.com/adewale/claude-history-explorer/blob/16d29fab1888e74684640de5df1bddaf6eb9075b/tests/test_schema_alignment.py#L40",
+        "https://github.com/adewale/claude-history-explorer/blob/16d29fab1888e74684640de5df1bddaf6eb9075b/wrapped-website/tests/schema-alignment.test.ts#L150"
+      ],
+      "ci_url": null
+    },
+    {
+      "number": 3,
+      "title": "Add test and branch coverage reporting",
+      "url": "https://github.com/adewale/claude-history-explorer/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "dedicated coverage and assertion improvement",
+      "weakness": "At the base, stats JSON tests accepted a brace or bracket. The export test caught JSONDecodeError and accepted a brace. Neither check established a client could parse the entire output and use the expected fields.",
+      "attempted_remedy": "Add CLI JSON contract cases and story aggregation checks. Add pytest-cov and a Vitest Istanbul coverage configuration for the existing TypeScript source.",
+      "test_paths": [
+        "tests/test_cli_integration.py",
+        "tests/test_history.py",
+        "wrapped-website/tests/coverage.test.ts",
+        "wrapped-website/vitest.config.ts",
+        "pyproject.toml"
+      ],
+      "diff_evidence": [
+        "Five new JSON cases parse result.output with json.loads. They check projected/statistical fields and array types, and the export tool-use case requires two tool entries with the first named Read. Story cases assert concrete totals and aggregation results.",
+        "Vitest includes coverage.test.ts and reports coverage of src/**/*.ts. The same diff also added the permissive 'Rapid' in story.work_pace or story.work_pace is not None check which #15/#14 later tightened."
+      ],
+      "transferable_rule": "Parse machine-readable output the way a consumer does and assert contract-relevant fields and values. Review individual assertions even when a change improves coverage reporting.",
+      "outcome": "Merged. GitHub returned no Actions runs for this final head.",
+      "verification_caveat": "The old marker tests were supplemented rather than removed. No coverage change or mutation score was independently measured. #15 later identified duplication between the added TypeScript wrapper and decoder.test.ts.",
+      "evidence_urls": [
+        "https://github.com/adewale/claude-history-explorer/blob/be7f807133909f6f8bfcce207961aac36d877624/tests/test_cli_integration.py#L934",
+        "https://github.com/adewale/claude-history-explorer/blob/be7f807133909f6f8bfcce207961aac36d877624/wrapped-website/vitest.config.ts#L5"
+      ],
+      "ci_url": null
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        4,
+        5,
+        6
+      ],
+      "reason": "New classifier and active-duration functionality with ordinary unit coverage. #4 was closed and its classifier idea integrated in #6."
+    },
+    {
+      "numbers": [
+        8
+      ],
+      "reason": "Windows production changes and project documentation. Verification listed a manual trial. No suite or testing-approach repair in this PR."
+    },
+    {
+      "numbers": [
+        12
+      ],
+      "reason": "Ruff-driven import, formatting, naming, explicit subprocess defaults and script permission edits. Test assertions and harness contracts were substantively unchanged."
+    },
+    {
+      "numbers": [
+        16,
+        18
+      ],
+      "reason": "Website toolchain/dependency versions or Dependabot GitHub Action references only."
+    },
+    {
+      "numbers": [
+        17
+      ],
+      "reason": "Pins CI actions and adds a security-policy lint check for action references. Application tests and test-running commands retain their semantics."
+    }
+  ],
+  "limitations": [
+    "GitHub omitted the generated wrapped-website/package-lock.json patches in #3 and #9 and the content patch for a mode-only generator change in #12. All changed filenames were present. Hunk addition/deletion counts matched GitHub's file totals for every test-source patch.",
+    "This is a PR-diff and hosted-status audit. Local test runs, author-reported mutations and reported coverage percentages were not independently reproduced. #15 and #14 are separate PR records for an overlapping change."
+  ]
+}

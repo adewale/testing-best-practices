@@ -1,0 +1,20 @@
+--- a/app/src/components/TransportBar.tsx
++++ b/app/src/components/TransportBar.tsx
+@@ -129,7 +129,7 @@
+         className="transport-value"
+         ref={tempoRef}
+         onTouchStart={(e) => handleDragStart(e, tempo, 'tempo')}
+-        onTouchMove={(e) => handleDragMove(e, 'tempo', 60, 180, onTempoChange)}
++        onTouchMove={(e) => handleDragMove(e, 'tempo', 60, 180, onSwingChange)}
+         onTouchEnd={handleDragEnd}
+         onMouseDown={(e) => handleDragStart(e, tempo, 'tempo')}
+         onMouseMove={(e) => e.buttons === 1 && handleDragMove(e, 'tempo', 60, 180, onTempoChange)}
+@@ -152,7 +152,7 @@
+         className="transport-value"
+         ref={swingRef}
+         onTouchStart={(e) => handleDragStart(e, swing, 'swing')}
+-        onTouchMove={(e) => handleDragMove(e, 'swing', 0, 100, onSwingChange)}
++        onTouchMove={(e) => handleDragMove(e, 'swing', 0, 100, onTempoChange)}
+         onTouchEnd={handleDragEnd}
+         onMouseDown={(e) => handleDragStart(e, swing, 'swing')}
+         onMouseMove={(e) => e.buttons === 1 && handleDragMove(e, 'swing', 0, 100, onSwingChange)}

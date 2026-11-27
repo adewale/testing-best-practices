@@ -1,0 +1,11 @@
+{
+  "state": "failed-policy-filter",
+  "case": "B02",
+  "observed_utc": "2026-11-27T02:59:54.267321+00:00",
+  "error_sha256": "6f3b131b9abe53233777802ac62562ee463cded38f6fecbfce89f17097d0a340",
+  "packet_sha256": "b02ee650479a5782a8bf4ab1d2380d798ac0e171fbb90be32426b53890003fcb",
+  "judge_retries": 0,
+  "scope": "No completed blind verdict; native technical measurements remain separate. Service message is a filter outcome, not a finding about the user task.",
+  "provisional_sha256": "e7eea37907e1261594fd525442f3ecc5b8a6978e03e9efd2aac74a6594a44ea8",
+  "provisional_note": "Retained artifact from failed judge; not counted as a final judgment."
+}

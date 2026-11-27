@@ -1,0 +1,274 @@
+    97	  raw: readonly PositionedEdge[],
+    98	  edges: readonly PositionedEdge[],
+    99	  nodeMap: ReadonlyMap<string, PositionedNode>,
+   100	  groups: PositionedGroup[],
+   101	  direction: Direction,
+   102	  reaches: (from: string, to: string) => boolean,
+   103	): PositionedEdge[] | undefined {
+   104	  if (raw.length < 2 || raw.length > 3) return undefined
+   105	  if (source.shape !== 'rectangle' && source.shape !== 'diamond') return undefined
+   106	  const routeOnly = source.shape !== 'diamond' && nodeInsideGroups(source, groups)
+   107	  const sorted = [...raw].sort((a, b) => nodeCrossCenter(nodeMap.get(a.target)!, direction) - nodeCrossCenter(nodeMap.get(b.target)!, direction))
+   108	  const targets = sorted.map(e => nodeMap.get(e.target)!).filter(Boolean)
+   109	  if (targets.length !== sorted.length) return undefined
+   110	  const scope = routeOnly ? containingGroups(source, groups) : ''
+   111	  // Grouped rectangle forks retain placement; diamond forks may propose new
+   112	  // placement, subject to the enclosure checks in placementClear below.
+   113	  if (!targets.every(t => t.shape === 'rectangle' && (routeOnly ? containingGroups(t, groups) === scope : source.shape === 'diamond' || !nodeInsideGroups(t, groups)))) return undefined
+   114	  // Same-rank gate. Fan-out targets drift apart on the main axis when their
+   115	  // label widths differ ("warnings" 97px vs "ok" 60px → ~32px apart), so the
+   116	  // tolerance must clear that width-driven drift to see them as peers — while
+   117	  // staying below layerSpacing (48) so genuinely different ranks are still
+   118	  // rejected. The peer confirmation just below is the real safety net, so
+   119	  // loosening this gate cannot equalize non-peers. (Equalizing such peers is
+   120	  // exactly the symmetry the diamond/"warnings"/"ok" fan-out wants; verified
+   121	  // byte-identical on the corpus, which has no fan-out in the 28–40px band.)
+   122	  if (!sameFlowLayer(targets, direction, 40)) return undefined
+   123	  if (!targets.every(t => edges.every(e => e.source !== t.id && (e.target !== t.id || e.source === source.id)))) return undefined
+   124	  for (let i = 0; i < targets.length; i++) for (let j = 0; j < targets.length; j++) {
+   125	    if (i !== j && reaches(targets[i]!.id, targets[j]!.id)) return undefined
+   126	  }
+   127	  return sorted
+   128	}
+   129	
+   130	export function applySymmetricFanoutEmissions(
+   131	  nodes: PositionedNode[],
+   132	  edges: PositionedEdge[],
+   133	  groups: PositionedGroup[],
+   134	  graph: MermaidGraph,
+   135	  bundled: Set<PositionedEdge>,
+   136	  style: LabelMetricsStyle,
+   137	): void {
+   138	  const reaches = graphReachability(graph.edges)
+   139	  const nodeMap = new Map(nodes.map(n => [n.id, n]))
+   140	  const bySource = new Map<string, PositionedEdge[]>()
+   141	  for (const edge of edges) {
+   142	    if (!positionedEdgeForwardish(edge, nodeMap, graph.direction)) continue
+   143	    if (!bySource.has(edge.source)) bySource.set(edge.source, [])
+   144	    bySource.get(edge.source)!.push(edge)
+   145	  }
+   146	  const f = layoutFlow(graph.direction)
+   147	  for (const [sourceId, raw] of bySource) {
+   148	    const source = nodeMap.get(sourceId)
+   149	    const sorted = source && symmetricFanout(source, raw, edges, nodeMap, groups, graph.direction, reaches)
+   150	    if (!source || !sorted) continue
+   151	    const targets = sorted.map(e => nodeMap.get(e.target)!)
+   152	    // A grouped rectangle keeps ELK's target placement: moving a member would
+   153	    // need its group refitted. Its fork is still emitted symmetrically, with
+   154	    // one shared elbow and level label seats; the terminal runs follow the
+   155	    // targets where ELK centred them under the source.
+   156	    const routeOnly = source.shape !== 'diamond' && nodeInsideGroups(source, groups)
+   157	    if (routeOnly) {
+   158	      // The straightener's own lanes stand when they already mirror about the
+   159	      // source: a symmetric pair of straight lines needs no constructed fork.
+   160	      const { ctx, axis: laneAxis } = laneContextFor(nodes, edges, graph.direction, style, groups)
+   161	      const centre = nodeCrossCenter(source, graph.direction)
+   162	      const lanes = sorted.map(edge => straightLaneFor(edge, source, nodeMap.get(edge.target)!, ctx, laneAxis))
+   163	      if (lanes.every((lane, i) => lane !== null && Math.abs(lane - centre + (lanes[lanes.length - 1 - i]! - centre)) <= 1)) continue
+   164	    }
+   165	
+   166	    const oldTargets = targets.map(t => ({ t, x: t.x, y: t.y, width: t.width, height: t.height }))
+   167	    const targetGroups = new Map(targets.map(target => [target.id, flattenPositionedGroups(groups).filter(group => rectInsideGroup(target, group))]))
+   168	    const oldGroups = flattenPositionedGroups(groups).map(group => ({ group, x: group.x, y: group.y, width: group.width, height: group.height }))
+   169	    const restoreGeometry = () => {
+   170	      for (const old of oldTargets) { old.t.x = old.x; old.t.y = old.y; old.t.width = old.width; old.t.height = old.height }
+   171	      for (const old of oldGroups) { old.group.x = old.x; old.group.y = old.y; old.group.width = old.width; old.group.height = old.height }
+   172	    }
+   173	    const maxWidth = Math.max(...targets.map(t => t.width))
+   174	    const maxHeight = Math.max(...targets.map(t => t.height))
+   175	    const axis = nodeCrossCenter(source, graph.direction)
+   176	    const rank = Math.min(...targets.map(t => nodeMainStart(t, graph.direction)))
+   177	    const spacing = (f.isHorizontal ? maxHeight : maxWidth) + 28
+   178	    const offsets = symmetricOffsets(targets.length, spacing)
+   179	    const sourceAlignedCross = source.shape === 'diamond'
+   180	      ? sorted.map((_, i) => sourceEmissionPort(source, graph.direction, i, sorted.length)[f.cross])
+   181	      : undefined
+   182	    const placeTargets = (crossCenters: number[]) => {
+   183	      for (let i = 0; i < targets.length; i++) {
+   184	        const target = targets[i]!
+   185	        target.width = maxWidth
+   186	        target.height = maxHeight
+   187	        if (f.isHorizontal) {
+   188	          target.x = rank
+   189	          target.y = crossCenters[i]! - maxHeight / 2
+   190	        } else {
+   191	          target.x = crossCenters[i]! - maxWidth / 2
+   192	          target.y = rank
+   193	        }
+   194	      }
+   195	    }
+   196	    if (!routeOnly) placeTargets(sourceAlignedCross ?? offsets.map(offset => axis + offset))
+   197	    const targetIds = new Set(targets.map(t => t.id))
+   198	    const placementClear = (): boolean => {
+   199	      for (let i = 0; i < targets.length; i++) {
+   200	        const target = targets[i]!
+   201	        if (target.x < 0 || target.y < 0) return false
+   202	        // Late fan-out placement must preserve every original enclosure. Main
+   203	        // axis expansion below may enlarge a group, but never evict a member.
+   204	        if (!targetGroups.get(target.id)!.every(group => rectInsideGroup(target, group))) return false
+   205	        for (let j = i + 1; j < targets.length; j++) {
+   206	          if (rectsOverlap(target, targets[j]!, 8)) return false
+   207	        }
+   208	      }
+   209	      for (const target of targets) {
+   210	        for (const other of nodes) {
+   211	          if (targetIds.has(other.id)) continue
+   212	          if (rectsOverlap(target, other, 8)) return false
+   213	        }
+   214	      }
+   215	      return true
+   216	    }
+   217	    let clear = routeOnly || placementClear()
+   218	    if (!clear && sourceAlignedCross) {
+   219	      placeTargets(offsets.map(offset => axis + offset))
+   220	      clear = placementClear()
+   221	    }
+   222	    if (!clear) {
+   223	      restoreGeometry()
+   224	      continue
+   225	    }
+   226	
+   227	    const sourceEdge = f.isHorizontal
+   228	      ? (f.sourceSide === 'E' ? source.x + source.width : source.x)
+   229	      : (f.sourceSide === 'S' ? source.y + source.height : source.y)
+   230	    let targetEdge = f.isHorizontal
+   231	      ? (f.sign > 0 ? Math.min(...targets.map(t => t.x)) : Math.max(...targets.map(t => t.x + t.width)))
+   232	      : (f.sign > 0 ? Math.min(...targets.map(t => t.y)) : Math.max(...targets.map(t => t.y + t.height)))
+   233	    const requiredCorridor = Math.max(0, ...sorted.map(edge => terminalLabelCorridorLength(edge, graph.direction, style)))
+   234	    const currentCorridor = (targetEdge - sourceEdge) * f.sign
+   235	    if (!routeOnly && requiredCorridor > currentCorridor + 0.001) {
+commit 268efa1d6ef09f016ca4f24debe7ea764b9e0c21
+Author: Ade Oshineye <adewale@gmail.com>
+Date:   Fri Nov 20 03:39:27 2026 +0000
+
+    fix(layout): retain centered through-trunks at internal forks [skip ci]
+
+diff --git a/src/layout/passes/fanout.ts b/src/layout/passes/fanout.ts
+index 3d7a7c9..4923d7a 100644
+--- a/src/layout/passes/fanout.ts
++++ b/src/layout/passes/fanout.ts
+@@ -3,7 +3,7 @@ import type { LabelMetricsStyle } from '../../route-contracts.ts'
+ import { graphReachability, layoutFlow, nodeCrossCenter, nodeMainStart, rectsOverlap } from '../geometry.ts'
+ import { positionedEdgeForwardish, sameFlowLayer, nodeInsideGroups, flattenPositionedGroups, rectInsideGroup, expandGroupsForMainShift, moveKeepsGroupContainment, sourceEmissionPort, targetFlowPort, symmetricOffsets, doglegBetween, routeClearOfNodes } from './shared.ts'
+ import { terminalLabelRunLength, terminalLabelCorridorLength, assignBundledFanoutLabels } from './bundled-labels.ts'
+-import { retainConstructedBundleRoutes } from '../bundle-routes.ts'
++import { hasConstructedBundleRoute, retainConstructedBundleRoutes } from '../bundle-routes.ts'
+ import { countPointPairCrossings } from '../../shared/edge-crossing-pair.ts'
+ import { terminalHookLength } from '../route-geometry.ts'
+ import { laneContextFor, straightLaneFor } from '../route-lanes.ts'
+@@ -261,11 +261,25 @@ export function applySymmetricFanoutEmissions(
+     const elbow = ((capacityElbow - midpointElbow) * f.sign < 0) ? capacityElbow : midpointElbow
+     // Unmoved targets must still leave the source its own hook before the elbow.
+     if (routeOnly && (elbow - sourceEdge) * f.sign < Math.max(...sorted.map(edge => terminalHookLength(style, edge, 'start'))) - 0.001) continue
++    // Continue a centred approach through an internal rectangular fork only
++    // where the bundler already admitted its outgoing trunk to this elbow.
++    const centrePort = sourceEmissionPort(source, graph.direction, 0, 1)
++    const keepTrunk = source.shape === 'rectangle' && (elbow - centrePort[f.main]) * f.sign > 0 && sorted.every(edge => {
++      const [start, next] = edge.points
++      return !edge.label && bundled.has(edge) && !!start && !!next && start.x === centrePort.x && start.y === centrePort.y
++        && next[f.cross] === centrePort[f.cross] && (next[f.main] - elbow) * f.sign >= 0 && hasConstructedBundleRoute(edge)
++    }) && edges.some(edge => {
++      if (edge.target !== source.id || edge.style === 'invisible') return false
++      const entry = edge.points.at(-1), previous = edge.points.at(-2)
++      const facing = targetFlowPort(source, graph.direction)
++      return !!entry && !!previous && entry.x === facing.x && entry.y === facing.y && previous[f.cross] === facing[f.cross]
++        && (entry[f.main] - previous[f.main]) * f.sign > 0
++    })
+     const proposed: Array<{ edge: PositionedEdge; points: Point[] }> = []
+     for (let i = 0; i < sorted.length; i++) {
+       const edge = sorted[i]!
+       const target = nodeMap.get(edge.target)!
+-      const points = doglegBetween(sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
++      const points = doglegBetween(keepTrunk ? { ...centrePort } : sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
+       if (!routeClearOfNodes(points, nodes, new Set([edge.source, edge.target]))) { clear = false; break }
+       proposed.push({ edge, points })
+     }
+src/layout-engine.ts:50:  applySymmetricFanoutEmissions,
+src/layout-engine.ts:1410:      c.bundled = bundleEdgePaths(c.edges, c.nodes, c.groups, c.graph.direction, c.style)
+src/layout-engine.ts:1444:    id: 'applySymmetricFanoutEmissions', doc: 're-route small equivalent fan-outs symmetrically; mark bundle-owned',
+src/layout-engine.ts:1447:    run: c => { applySymmetricFanoutEmissions(c.nodes, c.edges, c.groups, c.graph, c.bundled, c.style) },
+src/layout-engine.ts:1451:    after: ['applySymmetricFanoutEmissions'], mutates: ['edges'],
+src/layout-engine.ts:1467:    after: ['applySymmetricFanoutEmissions', 'applySymmetricParallelEdgeLanes', 'applyParallelDuplicateLanes'],
+src/layout/passes/fanout.ts:130:export function applySymmetricFanoutEmissions(
+src/layout/passes/edge-bundling.ts:148:export function bundleEdgePaths(
+src/layout/passes/obstacle-routing.ts:57: * (unlike applySymmetricFanoutEmissions): a link that skips a collinear node
+src/layout/passes/index.ts:5:export { reassignBundledSiblingLabels, applySymmetricFanoutEmissions } from './fanout.ts'
+src/layout/passes/peers.ts:347:    // applySymmetricFanoutEmissions OWNS fan-out symmetry and re-spreads rect (or
+src/layout/passes/peers.ts:379:    // applySymmetricFanoutEmissions LATER in the pipeline, so that side follows
+src/layout/passes/peers.ts:417:      // barycenter, so this pass finds delta≈0 and no-ops there; applySymmetricFanoutEmissions
+src/layout/passes/peers.ts:568: * applySymmetricFanoutEmissions does for the fan-out (re-route THEN mark).
+src/__tests__/class-layout-backends.test.ts:1373:          // relationship's y=0 trunk and the actual title text above y=30.
+src/__tests__/ascii-fan-in-grouping.test.ts:4:// under its own root group, so trunk rows of different fan-in groups do not
+src/__tests__/ascii-fan-in-grouping.test.ts:36:  test('two fan-in groups get separate trunks with no ambiguous crossing (upstream #68 repro)', () => {
+src/__tests__/terminal-native-route-regressions.test.ts:425:test.each(['LR', 'RL'])('shared %s trunk junction belongs to each route traversing it', direction => {
+src/__tests__/terminal-native-route-regressions.test.ts:640:// relation was checked along the whole shared trunk. Their shared runs are now
+src/__tests__/terminal-native-route-regressions.test.ts:789:// A shared trunk cannot say which of several labels belongs to which pair:
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:695:    const configuredAgent = parseMermaid('---\nconfig:\n  gitGraph:\n    mainBranchName: trunk\n---\ngitGraph\n  commit\n  branch docs\n  checkout trunk')
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:696:    expect(configuredAgent.ok && asGitGraph(configuredAgent.value)?.body.mainBranchName).toBe('trunk')
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:706:  // collinear ink with another connector only as a trunk leaving or entering
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:741:          const trunks = [edge.from, edge.to].filter(id => id === other.from || id === other.to).map(id => trunk(edge, other, id))
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:745:[Omitted long matching line]
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:753:     *  it until they part, so a fork or a join is one trunk, not two lines. */
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:754:    function trunk(a: PositionedGitGraphDiagram['edges'][number], b: PositionedGitGraphDiagram['edges'][number], commit: string): Point[] {
+src/__tests__/mindmap-gitgraph-citizenship.test.ts:826:            // Four branches forking from one commit share one trunk.
+src/__tests__/agent-wrapper-fidelity.test.ts:749:    const source = '%%{init:{"gitGraph":{"mainBranchName":"trunk"}}}%%\n%%{init:{"gitGraph":{"mainBranchName":null}}}%%\ngitGraph\ncommit id:"start"'
+src/__tests__/agent-wrapper-fidelity.test.ts:752:    expect(parsed.value.body.mainBranchName).toBe('trunk')
+src/__tests__/agent-wrapper-fidelity.test.ts:753:    expect(parsed.value.body.commits.map(commit => commit.branch)).toEqual(['trunk'])
+src/__tests__/agent-wrapper-fidelity.test.ts:757:    expect(reload.value.body.mainBranchName).toBe('trunk')
+src/__tests__/agent-wrapper-fidelity.test.ts:761:      expect(await pin.project(written, d => [...d.db.getCommits().values()].map((commit: { branch: string }) => commit.branch))).toEqual({ ok: true, value: ['trunk'] })
+src/__tests__/zenuml-native.test.ts:296:  const aliased = parseRegisteredMermaid('---\ntitle: &shared Old\nconfig:\n  theme: dark\n  fontFamily: *shared\n---\nzenuml\nA->B: hello')
+src/__tests__/zenuml-native.test.ts:297:  if (!aliased.ok) throw Error('Expected source')
+src/__tests__/zenuml-native.test.ts:298:  const before = serializeMermaid(aliased.value)
+src/__tests__/zenuml-native.test.ts:299:  expect(mutateChecked(aliased.value, { kind: 'set_title', title: 'Changed' }).ok).toBe(false)
+src/__tests__/zenuml-native.test.ts:300:  expect(serializeMermaid(aliased.value)).toBe(before)
+src/__tests__/er-integration.test.ts:28:  it('renders aliased entities and all comma-separated key badges', () => {
+src/__tests__/ascii-pathfinder-trunk.test.ts:1:// Loop 10 M3 (#113): pathfinder trunk-sharing for fanouts.
+src/__tests__/ascii-pathfinder-trunk.test.ts:3:// NOTE: trunk-sharing was ALREADY implemented (src/ascii/edge-bundling.ts
+src/__tests__/ascii-pathfinder-trunk.test.ts:5:// fanout-trunk / floating-connector bugs (#111/#112) in an earlier upstream
+src/__tests__/ascii-pathfinder-trunk.test.ts:6:// state; our fork's bundling already produces correct shared trunks. This
+src/__tests__/ascii-pathfinder-trunk.test.ts:15:// edge-exit tees drawn on a box border (└─┬─┘, │ A ├──) are not trunk forks, so
+src/__tests__/ascii-pathfinder-trunk.test.ts:16:// only a junction off every box proves that a shared trunk splits.
+src/__tests__/ascii-pathfinder-trunk.test.ts:33:describe('#113 fanout trunk-sharing', () => {
+src/__tests__/ascii-pathfinder-trunk.test.ts:34:  test('1→{B,C,D} fanout renders a shared trunk with a fork connector', () => {
+src/__tests__/ascii-pathfinder-trunk.test.ts:36:    // A single trunk descends from A, then forks. The fork uses box-drawing
+src/__tests__/ascii-pathfinder-trunk.test.ts:42:    // One trunk forks three ways: two T-junctions on the connector row, off every box.
+src/__tests__/ascii-pathfinder-trunk.test.ts:58:  test('LR fanout also produces a clean trunk', () => {
+src/__tests__/ascii-pathfinder-trunk.test.ts:60:    // The vertical trunk leaving A tees off to C before turning into D.
+src/__tests__/ascii-pathfinder-trunk.test.ts:65:  test('labeled LR fanout keeps labels on branch runs and shares a vertical trunk', () => {
+src/__tests__/ascii-pathfinder-trunk.test.ts:79:  test('labeled TD fanout shares one trunk and places labels on branches (upstream #111 repro)', () => {
+src/__tests__/ascii-pathfinder-trunk.test.ts:91:    // Regression guard: center* used to be written onto the horizontal trunk.
+src/__tests__/ascii-pathfinder-trunk.test.ts:157:  test('single edge (no fanout) does not force a trunk', () => {
+src/__tests__/agent-op-schema.test.ts:211:describe('one shared choke point — byte-identical rejection (§6)', () => {
+src/__tests__/property-all-families-fuzz.test.ts:61:// so the label-on-shared-trunk class can no longer hide in any family.
+src/__tests__/property-all-families-fuzz.test.ts:495:          // label-on-shared-trunk invariant)
+src/__tests__/renderer-contrast.test.ts:213:      // crisp stroke need not retain 3:1 in every antialiased screen pixel.
+src/__tests__/gitgraph-agent-ops.test.ts:194:    const customMain = parseGitGraphBody('gitGraph\n  commit id:"root"\n', { mainBranchName: 'trunk' })
+src/__tests__/gitgraph-agent-ops.test.ts:196:    expect(onCustomMain.mainBranchName).toBe('trunk')
+src/__tests__/gitgraph-agent-ops.test.ts:197:    expect(commit(onCustomMain, 'next')?.branch).toBe('trunk')
+src/__tests__/gitgraph-agent-ops.test.ts:448:[Omitted long matching line]
+src/__tests__/property-route-contracts-fuzz.test.ts:12:// endpoints, no stale-after-move routes, no label stranded on a shared trunk.
+src/__tests__/property-route-contracts-fuzz.test.ts:16:// 258-diagram corpus all miss (a labeled edge bundling onto a sibling's trunk,
+src/__tests__/property-route-contracts-fuzz.test.ts:61:    // label — the labeled/duplicate cases the trunk-label fix must keep clean.
+src/__tests__/property-route-contracts-fuzz.test.ts:81:    // skip target is the bundled-trunk case. repairLabelsOnSharedTrunks must
+src/__tests__/property-route-contracts-fuzz.test.ts:154:// sharing a fan-out sibling's trunk — were the faults the fuzz above first
+src/__tests__/property-route-contracts-fuzz.test.ts:188:  it('labeled skip-edge label is relocated off the shared trunk (A→F vs A→B)', () => {
+src/__tests__/subgraph-hierarchy-exhaustive.test.ts:22:  ['shared endpoint', [[0, 0], [10, 0]], [[10, 0], [20, 0]], [[0, 0], [10, 0], [20, 0]]],
+src/__tests__/fanout-symmetry.test.ts:65:  test.each(['LR', 'RL', 'TD', 'BT'] as const)('an internal fork continues its admitted centre trunk (%s)', direction => {
+src/__tests__/fanout-symmetry.test.ts:81:    const trunk = first.points.slice(0, 2).map(point => ({ ...point }))
+src/__tests__/fanout-symmetry.test.ts:82:    expect(second.points.slice(0, 2)).toEqual(trunk)
+src/__tests__/fanout-symmetry.test.ts:83:    expect(Math.hypot(trunk[1]!.x - trunk[0]!.x, trunk[1]!.y - trunk[0]!.y)).toBeGreaterThan(0)
+src/__tests__/fanout-symmetry.test.ts:85:    expect(first.points.slice(0, 2)).toEqual(trunk)
+src/__tests__/fanout-symmetry.test.ts:86:    expect(second.points.slice(0, 2)).toEqual(trunk)
+src/__tests__/measured-route-safety.test.ts:75:  test('does not infer zero written support from a tiny raw shared endpoint', () => {
+src/__tests__/measured-route-safety.test.ts:77:    // the shared endpoint writes1000.12345679, beyond BOTH other endpoints.
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:1:// BUILD-10 (#111 class): labeled TB fan-out must share one trunk with T-junction
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:6:// fan-outs already get a shared trunk via edge-bundling, but bundling explicitly
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:27:describe('#111 labeled TB fan-out shares one trunk, labels on vertical drops', () => {
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:31:  test('(a) one shared trunk with T-junctions, no second parallel horizontal run', () => {
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:33:    // trunk via ┬ tees. There must be exactly one trunk row directly under the
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:35:    // The branch trunk leaves the Source box: the row with the box-start ├ must
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:36:    // also carry the horizontal trunk with ┬ tees feeding the other siblings.
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:37:    const trunkRows = lines.filter(line => line.includes('├') && line.includes('┬'))
+src/__tests__/ascii-fanout-trunk-labeled.test.ts:38:    expect(trunkRows).toHaveLength(1)
+src/__tests__/layout-rubric.test.ts:284:// shared endpoints (edges that legitimately meet at a node touch, not cross).
+src/__tests__/layout-pass.test.ts:219:  test('opposing shared ink excludes fan trunks, endpoint contacts and ordinary crossings', () => {

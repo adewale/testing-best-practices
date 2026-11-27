@@ -1,0 +1,44 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ❯ |keyboardia-integration| state-machine-fuzz.test.ts (6 tests | 1 failed | 5 skipped) 2231ms
+   × WS mutation makes KV lag, GET stays authoritative, disconnect converges KV 2230ms
+   ↓ REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+   ↓ WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+   ↓ PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+   ↓ multi-client: KV flushes only when the LAST client disconnects
+   ↓ model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+AssertionError: expected 120 to be 150 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 150[39m
+[31m+ 120[39m
+
+ ❯ state-machine-fuzz.test.ts:179:43
+    177|     await new Promise((r) => setTimeout(r, 20));
+    178|   }
+    179|   expect((await readKv(id))!.state.tempo).toBe(150);
+       |                                           ^
+    180| });
+    181|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:22:21
+   Duration  5.95s (transform 702ms, setup 0ms, import 2.13s, tests 2.23s, environment 0ms)
+

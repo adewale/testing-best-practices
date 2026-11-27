@@ -1,0 +1,11 @@
+--- a/app/src/worker/live-session.ts
++++ b/app/src/worker/live-session.ts
+@@ -1271,7 +1271,7 @@
+     if (!this.state || !this.sessionId) return;
+ 
+     try {
+-      await this.saveToKV();
++      void this.state;
+       this.pendingKVSave = false;
+     } catch (e) {
+       console.error(`[KV] Flush failed: session=${this.sessionId}`, e);

@@ -2,11 +2,22 @@
   "eval_id": "E33-python-fault-injection-error-paths",
   "language": "python",
   "oracle": "oracle.py",
-  "good_sample": "samples/good",
-  "bad_sample": "samples/bad",
+  "unavailable_exit_codes": [2],
   "checks": [
-    "injects a downstream/dependency failure (failing fake or side_effect exception), not just invalid input",
-    "asserts the error-handling path degrades correctly (retries, wraps error, releases resources)",
-    "distinguishes injected-failure error paths from argument validation"
+    "transient store failures recover within the three-attempt budget",
+    "terminal failures surface as ReportSaveError",
+    "non-skipped tests distinguish incorrect recovery, retry budget and terminal errors"
+  ],
+  "good_samples": [
+    "samples/good",
+    "samples/good-mock-store"
+  ],
+  "bad_samples": [
+    "samples/bad",
+    "samples/bad-comments",
+    "samples/bad-exhaustion-only",
+    "samples/bad-import",
+    "samples/bad-skipped",
+    "samples/bad-unrelated"
   ]
 }

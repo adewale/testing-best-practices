@@ -1,0 +1,6 @@
+{
+  "scope": "Technical verification of the sealed PDA candidates",
+  "source_of_evidence": "Every candidate assertion and result came from sealed controller files, frozen participant source or evaluator controls.",
+  "instruction_discovery": "An initial workspace-wide AGENTS.md filename search returned some opaque subject-directory IDs. The exposure was limited to directory entries. The verifier did not open live-subject files, assignment maps or arm labels.",
+  "effect_on_evidence": "The sealed source hashes, selected test identities and recorded execution results are unaffected."
+}

@@ -1,0 +1,2319 @@
+{
+  "repository": "adewale/agentic-mermaid",
+  "as_of": "2026-11-23",
+  "total_prs": 491,
+  "pages_checked": [
+    {
+      "page": 1,
+      "result_count": 100
+    },
+    {
+      "page": 2,
+      "result_count": 100
+    },
+    {
+      "page": 3,
+      "result_count": 100
+    },
+    {
+      "page": 4,
+      "result_count": 100
+    },
+    {
+      "page": 5,
+      "result_count": 91
+    },
+    {
+      "page": 6,
+      "result_count": 0
+    },
+    {
+      "page": 7,
+      "result_count": 0
+    }
+  ],
+  "pull_request_list_url": "https://api.github.com/repos/adewale/agentic-mermaid/pulls?state=all&per_page=100&page=1",
+  "inventory": {
+    "pr_states": {
+      "open": 4,
+      "merged": 472,
+      "closed": 15
+    },
+    "pr_file_inventories": 491,
+    "changed_file_entries": 20623,
+    "maximum_files_in_one_pr": 483,
+    "method": "Enumerated all states, dates and authors. Screened titles, descriptions and the paginated changed-file inventories of every PR. Read candidate patches including changed, deleted and added tests, gates, fixtures and eval harnesses. Scope distinguishes suite reviews, focused repairs, broader product PRs, prior-case corpus audits and integration."
+  },
+  "recommended_starting_points": [
+    498,
+    361,
+    357,
+    428,
+    375,
+    267,
+    429,
+    193,
+    169,
+    69,
+    59,
+    52,
+    463,
+    592,
+    595,
+    605
+  ],
+  "matching_prs": [
+    {
+      "number": 5,
+      "title": "test: add property-based invariant coverage",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/5",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-03-15T21:36:41Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Parser and routing invariants were exercised only by selected examples.",
+      "remedy": "Added fast-check properties for route continuity, normalization, parser whitespace and chart containment across generated inputs.",
+      "test_paths": [
+        "src/__tests__/property-ascii-routing.test.ts",
+        "src/__tests__/property-mermaid-source-and-parser.test.ts"
+      ],
+      "transferable_rule": "Generate bounded inputs for a stated invariant and retain focused examples for specific failures.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 16,
+      "title": "Increase agent doc example test timeout",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/16",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-09T19:46:38Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "The Bun test's five-second deadline could expire while a legitimate example subprocess was still running.",
+      "remedy": "Gave both documentation example tests 30-second outer budgets.",
+      "test_paths": [
+        "src/__tests__/agent-doc-sync.test.ts"
+      ],
+      "transferable_rule": "Coordinate the test deadline with the time taken by its child process.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 19,
+      "title": "Relax agent example subprocess timeout",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/19",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-10T11:25:44Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A documentation smoke test started the native PNG stack in a nested subprocess and timed out on slow CI machines after #16.",
+      "remedy": "The example invocation now requests a lightweight placeholder for that smoke and uses a longer deadline. Dedicated tests still own real PNG generation.",
+      "test_paths": [
+        "src/__tests__/agent-doc-sync.test.ts"
+      ],
+      "transferable_rule": "Keep a smoke test focused on its promised behavior and test expensive integrations at a named boundary.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 22,
+      "title": "Structured mutation for all families, pie/quadrant, full-spectrum quality metrics",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/22",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-12T07:39:28Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "An independent audit found the ASCII core's existing tests did not distinguish some direction and nested-container cases.",
+      "remedy": "Used scoped mutation runs to select regression cases and added deterministic pathfinder and nested/subgraph tests within a larger product PR.",
+      "test_paths": [
+        "src/__tests__/ascii-pathfinder-units.test.ts",
+        "src/__tests__/ascii-subgraph-edge.test.ts"
+      ],
+      "transferable_rule": "Classify mutation survivors and add a behavioral witness for a real missing distinction.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 23,
+      "title": "Harden renderer tests with goldens and mutation configs",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/23",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-11T09:41:19Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Representative renderer fixtures missed unreachable routes, duplicate accessibility attributes and clipped relationship labels.",
+      "remedy": "Expanded exact terminal fixtures, exercised unreachable and zero-boundary routes, and changed the XY accessibility test to reject duplicate root attributes.",
+      "test_paths": [
+        "src/__tests__/xychart-integration.test.ts",
+        "src/__tests__/property-ascii-routing.test.ts",
+        "src/__tests__/ascii.test.ts"
+      ],
+      "transferable_rule": "Pair visible-output goldens with independent checks for the behavior they might accidentally approve.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 40,
+      "title": "Characterise the ASCII grid layout: contact sheet + PBT kernel",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/40",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-15T18:26:46Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Route correctness tests left ASCII grid behavior, renderer dispatch and observable output drift largely uncharacterized.",
+      "remedy": "Extended routing properties and added a cross-family characterization corpus. Also pinned a specific equal-cost path ordering, a constraint later revisited in #428.",
+      "test_paths": [
+        "src/__tests__/ascii-pathfinder-determinism.test.ts",
+        "src/__tests__/property-ascii-routing.test.ts",
+        "src/__tests__/characterization-families.test.ts"
+      ],
+      "transferable_rule": "State which observations are contractual before promoting characterization output to assertions.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 49,
+      "title": "Backfill diagram family citizenship gaps",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/49",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-16T18:50:43Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Family coverage carried known exceptions that allowed load-bearing terminal region identifiers to go unchecked.",
+      "remedy": "Added per-family stable-region assertions and tightened the existing citizenship and corpus expectations.",
+      "test_paths": [
+        "src/__tests__/agent-ascii-meta.test.ts",
+        "src/__tests__/diagram-family-citizenship.test.ts"
+      ],
+      "transferable_rule": "An enrolled family needs checks for the observable identifiers consumers use.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 51,
+      "title": "[codex] Add layout-complaint coverage and regression guards",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/51",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-16T19:32:27Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "The layout complaints inventory identified untested edge vocabulary, edit stability, sequence overlap and Unicode display width.",
+      "remedy": "Extended existing suites with edge/operator properties, sequence clearance and display-width examples. #69 later broadened the shared generators.",
+      "test_paths": [
+        "src/__tests__/route-contracts-syntax-range.test.ts",
+        "src/__tests__/sequence-layout.test.ts"
+      ],
+      "transferable_rule": "Connect a reported failure mode to its own exercised inputs and observable invariant.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 52,
+      "title": "Pin ELK degradation ladder fallback",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/52",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-16T19:59:54Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Broad crash-freedom stress tests could still pass if the ELK fallback ladder disappeared.",
+      "remedy": "Added a three-node witness where tier zero throws and tier one succeeds. The public layout must return all three nodes and nine edges with finite coordinates.",
+      "test_paths": [
+        "src/__tests__/heuristic-coverage.test.ts"
+      ],
+      "transferable_rule": "Make the primary path demonstrably fail before claiming to exercise a fallback.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 53,
+      "title": "[codex] Fix decision branch label overlap",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/53",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-18T23:00:49Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Earlier SVG-structure checks could pass when rendered borders, endpoint/icon pixels or stroke styling were visually wrong.",
+      "remedy": "Added raster-level checks for visible paint and nonblank rendered fixtures, alongside a decision-branch layout repair.",
+      "test_paths": [
+        "src/__tests__/visual-rendering-contracts.test.ts",
+        "src/__tests__/architecture-integration.test.ts"
+      ],
+      "transferable_rule": "When the claim is about visible marks, inspect raster or computed output at the affected region.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 54,
+      "title": "Close layout certificate gaps; add upstream parity ratchet",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/54",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-19T00:51:56Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "The upstream parser corpus was a seed without an accounting of reviewed source blocks or of cases that never ran.",
+      "remedy": "Created a harvest and ratchet with executable cases, explicit exclusions and separate Gantt ownership. #500/#508 later corrected the accounting and expectation generation.",
+      "test_paths": [
+        "eval/mermaid-upstream-suite-bench/harvest.ts",
+        "src/__tests__/mermaid-upstream-suite-bench.test.ts"
+      ],
+      "transferable_rule": "Keep source provenance, executable cases and exclusions as separate counts.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 57,
+      "title": "[codex] Fix peer centering visual ratchets",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/57",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-19T11:12:08Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Valid routes could still put a peer trunk far from the visual center the layout intended.",
+      "remedy": "Added a barycenter-delta metric and tests for nonterminal peer groups with several fan-in/fan-out sizes.",
+      "test_paths": [
+        "src/__tests__/layout-symmetry.test.ts",
+        "src/__tests__/layout-rubric.test.ts"
+      ],
+      "transferable_rule": "Measure the intended relationship directly instead of accepting generic layout validity.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 58,
+      "title": "Testing strategy: formalize oracle types and metamorphic relations",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/58",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-20T11:31:32Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "A single visual check could not establish correctness. Hidden optional-data skips and shallow browser assertions further reduced coverage.",
+      "remedy": "Added complementary structural round-trip, metamorphic and differential checks. Browser assertions were strengthened and optional data became explicit.",
+      "test_paths": [
+        "src/__tests__/agent-mermaid-corpus.test.ts",
+        "src/__tests__/property-layout-metamorphic.test.ts",
+        "e2e/browser.test.ts"
+      ],
+      "transferable_rule": "Name each oracle's blind spots and pair it with a check that fails for a different reason.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 59,
+      "title": "Issue-keyed regression fixtures for the 13 layout-aesthetic complaints",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/59",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-20T03:30:06Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Aggregate quality scores and issue mentions could hide one broken fixture. The old Gantt guard did not establish label/bar clearance.",
+      "remedy": "Bound complaints to individual sources and asserted per-fixture route/label geometry, including long-range Gantt axis labels relative to actual bars.",
+      "test_paths": [
+        "src/__tests__/aesthetic-issue-regressions.test.ts",
+        "src/__tests__/gantt-layout.test.ts"
+      ],
+      "transferable_rule": "Check each reported regression at the affected fixture before aggregating results.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 63,
+      "title": "Route mutation testing: survivor harvests + shard the nightly lane (keep bun:test)",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/63",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The broad route mutation lane timed out. Surviving geometry mutants showed the tests missed which dimension of a label blocked a route.",
+      "remedy": "Proposed four shards and added targeted behavioral cases such as non-square label-pill clearance. Closed unmerged and superseded by #169.",
+      "test_paths": [
+        "src/__tests__/route-contracts.test.ts",
+        "scripts/mutation-survivors.ts"
+      ],
+      "transferable_rule": "Classify equivalent survivors separately and select fault probes that distinguish actual behavior.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 67,
+      "title": "test: lift five curated example tests to properties over generators",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/67",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-20T20:15:44Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Five suites inferred general invariants from a handful of curated inputs.",
+      "remedy": "Added generated grouped services, parallel edges, multiline labels, sequence geometry and polyline simplification with endpoint/idempotence properties.",
+      "test_paths": [
+        "src/__tests__/architecture-layout.test.ts",
+        "src/__tests__/route-contracts.test.ts",
+        "src/__tests__/multiline-labels.test.ts"
+      ],
+      "transferable_rule": "Choose a generator that reaches the asserted relationship and make the preconditions explicit.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 69,
+      "title": "Harden layout & parser test contracts from an audit (#37, #36, #41, #25)",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/69",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-06-20T23:49:55Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The geometric route properties saw only the solid arrow operator. The citizenship ratchet could also tolerate new exceptions.",
+      "remedy": "Added a shared edge vocabulary, exercised distinct styles/markers in geometric properties and tightened exception accounting.",
+      "test_paths": [
+        "src/__tests__/helpers/edge-vocabulary.ts",
+        "src/__tests__/layout-rubric.test.ts",
+        "src/__tests__/diagram-family-citizenship.test.ts"
+      ],
+      "transferable_rule": "Inspect the vocabulary the generator actually feeds to each oracle.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 79,
+      "title": "Reify the layout pipeline as a pass manifest, with an equivalence gate, fuzzing, and route audits",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/79",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-01T15:14:12Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A label anywhere on its route passed, even if a fan-in label clung to an endpoint. Existing symmetry metrics missed some hub shapes.",
+      "remedy": "Added generated corner cases and quality checks for the actual placement of labels/peer branches as part of a routing refactor.",
+      "test_paths": [
+        "src/__tests__/labeled-source-port-property.test.ts",
+        "src/__tests__/property-corner-cases.test.ts"
+      ],
+      "transferable_rule": "Translate a visual complaint into the geometric property the old guard never measured.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 86,
+      "title": "Post-freeze repairs re-certify the edges they re-route; property seeds pinned (fixes #83)",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/86",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-01T23:12:43Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A route-certificate defect was found by chance on some CI rolls, with no stable witness in the normal suite.",
+      "remedy": "Pinned the known failing seed and captured the minimized duplicate-edge source in a deterministic certificate-completeness test, alongside the runtime repair.",
+      "test_paths": [
+        "src/__tests__/certificate-completeness.test.ts",
+        "src/__tests__/route-contracts.test.ts"
+      ],
+      "transferable_rule": "Preserve the exact counterexample and seed from a randomized failure.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 91,
+      "title": "Label-collision detection (eval/overlap-audit) and fixes across six families",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/91",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-02T07:33:47Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "The corpus could pass with labels colliding across several existing diagram families because no check measured occlusion.",
+      "remedy": "Added a final-SVG overlap audit, per-corpus gate and deterministic fuzz, then repaired collisions exposed by the new check.",
+      "test_paths": [
+        "eval/overlap-audit/audit.ts",
+        "eval/overlap-audit/corpus-gate.ts"
+      ],
+      "transferable_rule": "When fixtures already exhibit a defect, measure it on the emitted product.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 96,
+      "title": "Repo-wide fast-check seed policy: preload pin, AM_FC_SEED escape hatch, 1,368-run latent-failure sweep",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/96",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-02T12:53:25Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Individual suites reset the global fast-check configuration, so ordinary CI rolled unrecorded seeds in most files.",
+      "remedy": "Added a repository preload with a default seed, explicit replay/random controls and save/restore around suite-specific pins.",
+      "test_paths": [
+        "src/__tests__/fc-seed.preload.ts",
+        "src/__tests__/property-mermaid-source-and-parser.test.ts"
+      ],
+      "transferable_rule": "Separate repeatable regression runs from exploratory seed sweeps and record how to replay both.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 105,
+      "title": "Make the agentic-mermaid npm package shippable, consistent, and fuzzed",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/105",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-04T05:01:48Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "The previous source/development tests did not exercise the distributed artifact. Review also found an optional ASCII assertion and sampling that kept selecting one operation.",
+      "remedy": "Exercised actual built and installed artifacts under Node, required the ASCII field unconditionally and changed operation sampling so multiple actions are reached.",
+      "test_paths": [
+        "e2e/tarball-consumer-fuzz.e2e.test.ts",
+        "src/__tests__/property-mcp-surface-fuzz.test.ts"
+      ],
+      "transferable_rule": "Require the promised result to exist before comparing it, and sample inputs at the intended scope.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 108,
+      "title": "Make the homepage agent prompt a tested, measured onboarding surface",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/108",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-04T18:41:35Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "The existing prompt evaluation could not tell whether guidance improved task correctness or whether answers relied on unaided discovery.",
+      "remedy": "Added a no-docs comparison arm and knowledge cases whose graders reject plausible wrong answers.",
+      "test_paths": [
+        "eval/agent-usage/capture-subagent-prompt-eval.ts",
+        "src/__tests__/agent-usage.test.ts"
+      ],
+      "transferable_rule": "Give an evaluation a comparison condition and test whether its grader distinguishes realistic failures.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 112,
+      "title": "Address PR #110 review: restore website:check gate, harden deploy, DOM-free lint",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/112",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-05T13:47:22Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Running tests rebuilt generated website inputs before the drift check, so stale committed output could pass.",
+      "remedy": "Moved website:check ahead of test-triggered regeneration in CI and publication workflows.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/publish.yml"
+      ],
+      "transferable_rule": "Compare the original artifact before any setup step can repair it.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 126,
+      "title": "Add deterministic semantic facts for agent diagram checks",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/126",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-07T07:55:23Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Structural verification could accept a diagram with the wrong requested edit, including lost labels or a changed dependency.",
+      "remedy": "Added deterministic typed facts and changed the agent-usage task grader to inspect expected state, visibility and dependency facts.",
+      "test_paths": [
+        "eval/agent-usage/run.ts",
+        "src/__tests__/agent-usage.test.ts"
+      ],
+      "transferable_rule": "Score the requested semantic change independently of parse or render success.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 141,
+      "title": "Elevate the Journey family: shared parse core, experience curve, and a family-wide quality loop",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/141",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-10T00:41:23Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Five Journey regressions passed thousands of tests. Happy-path snapshots and four independent grammars missed overlapping bands and dropped tasks.",
+      "remedy": "Added cross-surface parser-convergence tests and geometry checks for family and Journey layouts, including wide section labels.",
+      "test_paths": [
+        "src/__tests__/journey-parse-core.test.ts",
+        "src/__tests__/journey-layout-quality.test.ts",
+        "src/__tests__/family-rubric.test.ts"
+      ],
+      "transferable_rule": "On a known escape, document which guard passed and add an independently measured invariant beside the snapshot.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 149,
+      "title": "Complete 14-family Mermaid 11.16 elevation with Style + Palette fidelity",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/149",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-12T14:07:40Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "An existing final-SVG overlap auditor skipped rotated text/rectangle geometry at non-right angles.",
+      "remedy": "Extended the auditor to measure rotated corners while expanding real-content and deterministic generated cases.",
+      "test_paths": [
+        "eval/overlap-audit/audit.ts",
+        "eval/overlap-audit/generators.ts"
+      ],
+      "transferable_rule": "Account for transforms in the observed coordinate space before certifying geometry.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 153,
+      "title": "Fix hosted MCP e2e error assertion",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/153",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-13T09:30:21Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A live E2E assertion still searched for a legacy flat error and rejected the current structured response.",
+      "remedy": "Changed the smoke to require the public error code EXECUTE_FAILED and its message.",
+      "test_paths": [
+        "website/e2e-mcp.sh"
+      ],
+      "transferable_rule": "Assert the current error envelope and the correlated payload.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 162,
+      "title": "fix: enforce MCP and diagram safety contracts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/162",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-13T23:20:08Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Unit checks on already-parsed objects and helpers missed disagreement between transport serialization, actual clients and downstream consumers.",
+      "remedy": "Added checks at real HTTP/stdio and package boundaries. The audit documents why a green helper test could miss a consumer-visible fault.",
+      "test_paths": [
+        "src/__tests__/hosted-mcp-http.test.ts",
+        "src/__tests__/agent-mcp-http.test.ts"
+      ],
+      "transferable_rule": "Place a walking-skeleton test where raw input enters and observe what its actual consumer receives.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 167,
+      "title": "Pie `highlightSlice`: fix off-centre slice displacement with research-backed non-geometric emphasis (Option D)",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/167",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-14T20:39:45Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Testing crisp SVG strings in isolation missed differences on styled renderers and did not exercise a real pointer or contrast on actual label ink.",
+      "remedy": "Added emitted-paint, real-browser pointer and styled regression checks for the existing pie highlight behavior.",
+      "test_paths": [
+        "src/__tests__/pie-elevation.test.ts"
+      ],
+      "transferable_rule": "Follow the affected rendering backend and interaction to a visible observable.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 169,
+      "title": "test: retire broad nightly mutation infrastructure",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/169",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-14T17:49:43Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Broad scheduled mutation runs consumed CI without reliable completion, and line-number scopes drifted as code moved.",
+      "remedy": "Removed the nightly workflow and broad acceptance floors, retaining bounded behavior-specific probes and opt-in diagnostics. This superseded #63.",
+      "test_paths": [
+        "eval/sabotage/route-regressions.ts",
+        "scripts/quality/marked-mutation-scopes.mjs",
+        "src/__tests__/mutation-config.test.ts"
+      ],
+      "transferable_rule": "Retire a quality proxy when its operational cost and fault-detection value no longer justify it.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 176,
+      "title": "Honor feedback link rank distance without packing regressions",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/176",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-17T08:42:23Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A long forward edge with a feedback edge present was counted as evidence about lengthening the feedback edge itself.",
+      "remedy": "Added reciprocal/three-node cycles with the return edge lengthened across all directions, plus packing geometry checks.",
+      "test_paths": [
+        "src/__tests__/link-grammar.test.ts",
+        "src/__tests__/linkrank-packing.test.ts"
+      ],
+      "transferable_rule": "Vary the exact operand or role named by the contract.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 182,
+      "title": "Harden post-merge Style, rendering, and agent contracts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/182",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-16T15:39:13Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Node/npm artifact checks could silently skip when their required tools were missing, so a green result could overstate what ran.",
+      "remedy": "Changed installed-artifact tests to fail at setup if the tools are missing and pinned their environment in CI.",
+      "test_paths": [
+        "e2e/tarball-consumer-fuzz.e2e.test.ts",
+        "e2e/dist-artifact-fuzz.e2e.test.ts"
+      ],
+      "transferable_rule": "A missing dependency for a required gate is an infrastructure failure, not a passing or silently skipped test.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 185,
+      "title": "Fix Editor render parity across every site handoff",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/185",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-16T23:28:30Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A unit test copied editor option-merging logic. The browser test sampled three cards and shallow root tokens, allowing real editor handoffs to disagree.",
+      "remedy": "Exercised actual Examples-to-Editor handoffs, comparing rendered results across cards and checking configuration after navigation.",
+      "test_paths": [
+        "src/__tests__/website-browser-a11y.test.ts",
+        "src/__tests__/website-build.test.ts"
+      ],
+      "transferable_rule": "Observe the consumer instead of reimplementing its transformation as the expectation.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 187,
+      "title": "Close repository consistency audit gaps",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/187",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-17T16:28:32Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "The visual audit conflated ASCII and Unicode, missed render errors, treated option headers as diagram source and omitted real fixture families.",
+      "remedy": "Separated output formats, enrolled actual sources and made render errors, warnings indicating failed ASCII, and empty output fail the audit.",
+      "test_paths": [
+        "eval/ugly-detector/audit.ts",
+        "src/__tests__/ugly-detector.test.ts"
+      ],
+      "transferable_rule": "Count failure and absence explicitly for each output format.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 188,
+      "title": "Align hosted PNG smoke payload with MCP schema",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/188",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-17T17:42:24Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "The live PNG smoke sent style and seed in invalid request positions and misreported a healthy endpoint as broken.",
+      "remedy": "Changed the shell request to its schema-defined shape and checked that the actual example includes required fields.",
+      "test_paths": [
+        "website/e2e-mcp.sh",
+        "src/__tests__/png-output-options-contract.test.ts"
+      ],
+      "transferable_rule": "Keep a live probe's request within the public protocol it intends to test.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 189,
+      "title": "Verify MCP compatibility against all three reference client SDKs (TS, Python, Go)",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/189",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-18T19:50:38Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Testing server clauses alone did not establish compatibility with reference clients. Client success alone could also miss incorrect wire responses.",
+      "remedy": "Exercised three SDKs and logged actual protocol exchanges, including the GET status that a tolerant client silently accepted.",
+      "test_paths": [
+        "src/__tests__/mcp-client-interop.test.ts",
+        "scripts/interop/probe-python.py"
+      ],
+      "transferable_rule": "Pair end-to-end success with the protocol observations the client may silently tolerate.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 190,
+      "title": "Gate the canonical degenerate-route corpus in CI",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/190",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-22T10:32:36Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Separate manual route checkers duplicated input generation, ran different populations and left the canonical CI suite unaware of failures.",
+      "remedy": "Consolidated them into one 2,800-case runner, made errors and missing cases fail and enrolled it in CI/release checks.",
+      "test_paths": [
+        "eval/degenerate-etn/enumerate.ts",
+        "eval/degenerate-etn/enum-etn.ts",
+        "eval/sabotage/route-regressions.ts"
+      ],
+      "transferable_rule": "Give a shared regression corpus a single enumerator, complete execution check and normal test entry point.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 193,
+      "title": "Replace Cartesian style tests with a complexity-aware portfolio",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/193",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-19T08:35:13Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "A 4,500-render cartesian matrix held source complexity and output format constant, repeated 360 renders and did not prove its claimed interactions.",
+      "remedy": "Replaced it with complexity strata and a variable-strength portfolio whose obligations are independently enumerated. Reused each reviewed golden cell once.",
+      "test_paths": [
+        "src/__tests__/mermaid-doc-showcase.test.ts",
+        "src/__tests__/helpers/render-conformance-verifier.ts",
+        "src/__tests__/test-portfolio-fault-sensitivity.test.ts"
+      ],
+      "transferable_rule": "Measure covered interactions and fault sensitivity before dropping redundant combinations.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 194,
+      "title": "Make palette performance provenance squash-safe",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/194",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-19T08:52:17Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Evidence checks required an intermediate feature commit to stay reachable after squash merge, although the rendered inputs were identical.",
+      "remedy": "Bound evidence to exact input hashes and tested the case in which the recording commit is no longer reachable.",
+      "test_paths": [
+        "src/__tests__/palette-performance-evidence.test.ts",
+        "eval/palette-performance/run.ts"
+      ],
+      "transferable_rule": "Use stable content identity for evidence that must survive a squash merge.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 201,
+      "title": "Make contact-sheet review advisory for releases",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/201",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-20T19:30:16Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "The publication gate required structured duration and row-review records beyond the human review actually performed.",
+      "remedy": "Removed the mandatory workflow step while retaining optional contact-sheet generation and review records.",
+      "test_paths": [
+        ".github/workflows/publish.yml",
+        "src/__tests__/agent-readiness-standards.test.ts"
+      ],
+      "transferable_rule": "Separate human review from an automated pass condition whose records do not demonstrate the judgment.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 205,
+      "title": "Subtract redundant product surfaces",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/205",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-21T08:30:48Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Twenty mutation scripts/configs and full-history reconstruction duplicated maintenance for existing evidence.",
+      "remedy": "Consolidated mutation configurations into named profiles and removed routine full-history reconstruction from testing.",
+      "test_paths": [
+        "scripts/quality/mutation-profile.ts",
+        "src/__tests__/mutation-config.test.ts"
+      ],
+      "transferable_rule": "Collapse repeated diagnostic configurations around a maintained owner.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 208,
+      "title": "Harden website build and cache authorities",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/208",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-21T09:17:31Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "The test preload could silently reuse a stale built website or stamp a build as fresh even as inputs changed.",
+      "remedy": "Fingerprinted transitive build inputs, checked the build's input snapshot and added explicit stale-input controls.",
+      "test_paths": [
+        "src/__tests__/website-public.preload.ts",
+        "src/__tests__/website-build-fingerprint.test.ts"
+      ],
+      "transferable_rule": "A reused fixture must be traceable to all inputs of the build that produced it.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 219,
+      "title": "Unify quality gates and narrow evidence provenance",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/219",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-21T21:11:17Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "The evidence gate hashed unrelated development dependencies, stopped after one stale receipt and had no single local equivalent of CI.",
+      "remedy": "Scoped receipt dependencies to the runtime graph and used one quality command to collect and report failures together.",
+      "test_paths": [
+        "scripts/pr-assets/artifact-receipt.ts",
+        "src/__tests__/artifact-receipt.test.ts",
+        "scripts/ci/quality-gates.ts"
+      ],
+      "transferable_rule": "Bind evidence to the inputs that can change its outcome.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 228,
+      "title": "Serve MCP 2025-11-25 and the 2026-07-28 stateless era, with the test and CI work it exposed",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/228",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-27T16:08:26Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "The golden-change checker reasoned from the head commit's approval token instead of the actual set of commits changing files.",
+      "remedy": "Updated its data model and tests to attribute each changed golden to its own commit and to reject irrelevant token occurrences. #370 later removed the token rule.",
+      "test_paths": [
+        "src/__tests__/golden-drift.test.ts",
+        "scripts/ci/golden-drift.ts"
+      ],
+      "transferable_rule": "If a historical gate exists, validate each covered change against its own evidence.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 232,
+      "title": "Fix hosted PNG verifier bootstrap",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/232",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-27T14:59:58Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A standalone PNG verifier relied on prior imports to register renderers. A shared test process could hide the missing initialization.",
+      "remedy": "Initialized the registry in the verifier and added a fresh-process test that passes a valid PNG response to it.",
+      "test_paths": [
+        "src/__tests__/png-output-options-contract.test.ts",
+        "scripts/verify-hosted-png-e2e.ts"
+      ],
+      "transferable_rule": "Run command-line verifier tests in a fresh process when test-order state can affect startup.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 236,
+      "title": "fix: parse MCP deployment probe results",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/236",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-28T01:02:33Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A production smoke searched raw JSON-RPC bytes for a field nested inside a serialized text result, rejecting healthy responses.",
+      "remedy": "Decoded the envelope and exactly one JSON text result before checking the typed verify/execute values.",
+      "test_paths": [
+        "scripts/ci/mcp-probe.sh",
+        "website/e2e-mcp.sh"
+      ],
+      "transferable_rule": "Decode each wire layer before asserting its payload.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 238,
+      "title": "Harden MCP scope and conformance",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/238",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-28T10:36:47Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "The existing MCP evaluation lacked independent conformance, negative inputs, family-balanced reporting and full provenance.",
+      "remedy": "Added protocol-input negatives and an executable conformance lane and expanded the eval inventory. #239 later found inventory alone insufficient.",
+      "test_paths": [
+        "src/__tests__/mcp-protocol-input-matrix.test.ts"
+      ],
+      "transferable_rule": "Pair supported-input checks with refusal behavior, independent conformance and a measured population.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 239,
+      "title": "Make skill eval evidence executable",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/239",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-28T12:04:52Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "A manifest was being counted as completed evaluation. Hidden task stubs leaked answers, paths resolved from the wrong checkout and the docs corpus overrepresented flowcharts.",
+      "remedy": "Bound inputs, outputs and grader to the selected checkout, added known-bad grader controls and required a complete per-task run matrix.",
+      "test_paths": [
+        "scripts/eval/prepare-skill-evidence.ts",
+        "src/__tests__/skill-eval-sabotage.test.ts"
+      ],
+      "transferable_rule": "Distinguish a declared case from an executed, independently graded result.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 240,
+      "title": "test: harden hosted skill eval evidence",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/240",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-28T19:05:35Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "An aggregate zero exit and a self-declared runner version could certify an evaluation where every task failed or where another runner executed.",
+      "remedy": "Required per-task metrics, traces, completed messages and materialized outputs. Verified the installed runner and added ablations.",
+      "test_paths": [
+        "scripts/eval/run-codex-evidence.ts",
+        "src/__tests__/materialize-codex-output.test.ts"
+      ],
+      "transferable_rule": "Never derive an evaluation pass from process exit alone. Validate the expected task population and artifacts.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 242,
+      "title": "test: derive hosted protocol versions in deploy probe",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/242",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-29T01:27:51Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Hard-coded protocol lists made the hosted deployment smoke require a revision that the hosted transport did not serve.",
+      "remedy": "Took the expected hosted revisions from the protocol authority and checked unsupported-version responses preserve the request ID.",
+      "test_paths": [
+        "website/e2e-mcp.sh"
+      ],
+      "transferable_rule": "Bind each transport's expected capabilities to its published contract and validate request correlation.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 243,
+      "title": "test: gate deploys on production site smoke",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/243",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-29T17:30:34Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "A candidate could pass the hosted MCP verifier while its independently served website, discovery resources or editor assets were broken.",
+      "remedy": "Added semantic website probes on the immutable candidate and again after promotion.",
+      "test_paths": [
+        "src/__tests__/production-site-smoke.test.ts",
+        "scripts/site/smoke-live-site.ts"
+      ],
+      "transferable_rule": "Check each delivered surface via its own production-facing entry point.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 244,
+      "title": "fix: tolerate static cache during promotion",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/244",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-29T18:06:36Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "The post-promotion website smoke demanded the new SHA immediately from eventually consistent static caches, falsely rolling back a healthy deployment.",
+      "remedy": "Kept exact SHA on the immutable candidate and MCP attestation while checking route health at the public website after promotion.",
+      "test_paths": [
+        "src/__tests__/production-site-smoke.test.ts",
+        ".github/workflows/deploy-cloudflare.yml"
+      ],
+      "transferable_rule": "Assert identity at the immutable target and choose a post-promotion check consistent with cache semantics.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 246,
+      "title": "Fix the v0.4.1 package manifest gate",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/246",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-07-31T11:09:02Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "CI exercised consumer tarballs but omitted the package-file-set comparison used at release, so drift appeared only on the publication path.",
+      "remedy": "Enrolled the existing verifier with the release toolchain in the canonical checked build and refreshed the inventory.",
+      "test_paths": [
+        ".github/workflows/ci.yml",
+        "src/__tests__/agent-readiness-standards.test.ts"
+      ],
+      "transferable_rule": "Exercise a release-critical verifier before the release event on the same artifact and tooling.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 251,
+      "title": "Preserve approved security-release evidence pixels",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/251",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-08-03T19:45:07Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Refreshing input provenance regenerated previously approved pictures even when the release made no visual change.",
+      "remedy": "Added a tested receipt-only refresh and restored the reviewed image bytes.",
+      "test_paths": [
+        "scripts/pr-assets/pie-highlightslice-evidence.ts",
+        "src/__tests__/pie-elevation.test.ts"
+      ],
+      "transferable_rule": "Do not rewrite expected outputs as a side effect of updating provenance.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 255,
+      "title": "Revert repository-enforced Mermaid intent survey",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/255",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-08-09T23:52:30Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "A continuous issue survey, hand-scored familiarity rubric and structural synchronization tests imposed maintenance without testing rendered behavior.",
+      "remedy": "Removed the survey/scoring gates and their structural tests, preserving focused construct-level work.",
+      "test_paths": [
+        "src/__tests__/family-intent-compatibility-rubric.test.ts",
+        "src/__tests__/family-visual-fidelity-rubric.test.ts",
+        "scripts/ci/quality-gates.ts"
+      ],
+      "transferable_rule": "Delete mechanically synchronized scores when observable product contracts supply better evidence.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 267,
+      "title": "Preserve whitespace through shrinkable flowchart mutations",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/267",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-23T08:12:15Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The mutation property permitted operations to fail and only required the final diagram to parse. Wrong labels and missing edges could pass.",
+      "remedy": "Replaced the operation array with fast-check commands, preconditions, and an independent shadow model checked after each operation. The PR reports finding trimmed label whitespace.",
+      "test_paths": [
+        "src/__tests__/agent.test.ts"
+      ],
+      "transferable_rule": "For stateful APIs, model the intended state transition and compare after every successful operation.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 268,
+      "title": "Correct agent-usage eval coverage and failure attribution",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/268",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-13T21:14:46Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The evaluator counted formatting and capture errors as semantic failures, and only two of sixteen families had both a create and edit case.",
+      "remedy": "Separated capture integrity, semantic task result and response format. Expanded the standard family population and reclassified historical transcripts by cause.",
+      "test_paths": [
+        "eval/agent-usage/run.ts",
+        "src/__tests__/agent-usage.test.ts"
+      ],
+      "transferable_rule": "Report infrastructure, presentation and task correctness separately and disclose the eligible denominator.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 277,
+      "title": "test: add construct fidelity receipt foundation",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/277",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-24T01:57:22Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Family-level capability reports could not show that an individual language construct survived parsing, rendering, serialization and editing.",
+      "remedy": "Added version-pinned construct cases and explicit per-surface semantic oracles and nonapplicability decisions.",
+      "test_paths": [
+        "src/__tests__/fidelity/runner.ts",
+        "src/__tests__/fidelity-receipts.test.ts"
+      ],
+      "transferable_rule": "Ground an advertised capability in representative executed behavior at each applicable public surface.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 278,
+      "title": "test: adopt landed behavior into fidelity receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/278",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-24T02:54:05Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Existing family tests did not distinguish a supported parse from unsupported paint or other downstream gaps in the public coverage projection.",
+      "remedy": "Added per-surface cases for already-landed Sankey, XYChart and Flowchart behavior, keeping known rendering divergence explicit.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/landed-adoption.fidelity.ts",
+        "src/__tests__/fidelity-receipts.test.ts"
+      ],
+      "transferable_rule": "When adopting historical test evidence, distinguish the surface it proves and the ones it leaves open.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 281,
+      "title": "Make diagrams truthful, complete and readable in every family and style",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/281",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T08:52:42Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Green application verification and snapshots admitted unreadable text, off-canvas titles and charts whose bar heights misstated values.",
+      "remedy": "Added a raster oracle for actual ink and visibility, plus generated chart-honesty properties and targeted model/paint checks.",
+      "test_paths": [
+        "src/__tests__/helpers/rendered-text.ts",
+        "src/__tests__/property-chart-honesty.test.ts",
+        "src/__tests__/renderer-contrast.test.ts"
+      ],
+      "transferable_rule": "Test the physical quantity or readability guarantee the chart communicates, separately from successful rendering.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 335,
+      "title": "Replace the freshness alarm with a one-time release to-do; check hosted render_ascii against the library on the default path",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/335",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:04Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "The default hosted terminal path could return an incorrect drawing and still satisfy a corner-character assertion.",
+      "remedy": "The changed hosted test compares both complete default charsets against the library. The PR incorporates #375's implementation through a merge commit.",
+      "test_paths": [
+        "src/__tests__/hosted-mcp.test.ts"
+      ],
+      "transferable_rule": "A parity smoke should compare the consumer's complete result for the real default path.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 339,
+      "title": "Prove typed SVG route equivalence across built-in families",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/339",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T01:23:06Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Adapter conformance covered only one native and two diagnosed sample cases.",
+      "remedy": "Ran existing family inputs and two distinct option sets through in-process adapters, comparing complete SVG and receipts and typed refusals.",
+      "test_paths": [
+        "src/__tests__/fidelity-route-conformance.test.ts"
+      ],
+      "transferable_rule": "Exercise every enrolled adapter/family combination promised by the assertion and state the remaining transport boundary.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 341,
+      "title": "Review eight pinned XY Chart official fences with semantic receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/341",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T02:44:23Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "XY Chart examples: eight source examples could parse while values, labels, legends or plotted geometry were wrong.",
+      "remedy": "The PR asserted authored series, ranges, label text/visibility and emitted bar/line geometry.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/xychart-official-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored XY Chart meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 342,
+      "title": "Review pinned Pie official fences with semantic receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/342",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T03:17:39Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Pie examples: a parse/render smoke left the order, percentages, arc sweep and paint of two reviewed diagrams untested.",
+      "remedy": "The PR bound expected slices to visible labels, percentages and nonzero/value-proportional arcs.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/pie-official-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Pie meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 343,
+      "title": "Review pinned Journey official fence with semantic receipt",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/343",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T03:41:21Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Journey examples: a family-level pass did not reveal that the default renderer added a curve absent upstream.",
+      "remedy": "The PR checked sections, task scores, actor associations and default/disabled-curve outputs and qualified the claim.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/journey-official-fence.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Journey meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 344,
+      "title": "Review four pinned Sankey CSV syntax fences",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/344",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T04:08:17Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Sankey CSV examples: nonempty output could conceal missing links or misread comma/quote escapes.",
+      "remedy": "The PR compared the authored link tuples and checked rendered ribbon geometry/reference identity for four fences.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/sankey-official-csv-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Sankey CSV meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 345,
+      "title": "Review official Sankey configuration fences with semantic receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/345",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T04:28:25Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Sankey config examples: a parsed frontmatter field did not show that label halos, node geometry or custom paint changed.",
+      "remedy": "The PR observed emitted halos, spacing/sizing and custom node colors for three official examples.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/sankey-official-config-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Sankey config meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 346,
+      "title": "Review pinned Sankey energy example with semantic receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/346",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T04:55:32Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Sankey energy examples: short cases and family smoke did not establish correct node and link populations in the large source.",
+      "remedy": "The PR independently decoded the fixed CSV into 68 expected links and 48 nodes and checked its rendered geometry.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/sankey-official-energy-fence.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Sankey energy meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 347,
+      "title": "Classify pinned Quadrant official examples with semantic receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/347",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T05:13:55Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Quadrant examples: smoke output could hide ignored or incorrectly applied styling.",
+      "remedy": "The PR checked authored coordinates, axes, label identity, point style and explicitly identified unsupported config effects.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/quadrant-official-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Quadrant meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 348,
+      "title": "Classify pinned Radar official examples with semantic receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/348",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T05:33:27Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Radar examples: a nonempty SVG did not establish correct axes, values, legend or graticule.",
+      "remedy": "The PR tested authored model and visible rings, dots, curve values and colors, and qualified the upstream coverage claim.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/radar-official-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Radar meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 349,
+      "title": "Receipt pinned Architecture core examples for #248",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/349",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T06:08:06Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Architecture examples: a family-level pass left service identity, containment and route contacts unqualified.",
+      "remedy": "The PR inspected typed groups, sides and ports and corresponding SVG card/route geometry for two official examples.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/architecture-official-core-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Architecture meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 350,
+      "title": "Receipt pinned Architecture alignment examples for #248",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/350",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T06:22:38Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Architecture alignment examples: render success did not show whether authored row/column constraints held.",
+      "remedy": "The PR checked ordered align directives against observed card geometry and recorded the unfulfilled grid-row constraint.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/architecture-official-align-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Architecture alignment meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 351,
+      "title": "test(fidelity): receipt official Architecture icon fence",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/351",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T06:47:18Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Architecture icons examples: an existing family pass did not prove the requested icon rendered and some earlier route receipt checks accepted invalid geometry.",
+      "remedy": "The PR checked icon IDs/glyphs, route/containment and reparse; additionally strengthened existing core/alignment controls.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/architecture-official-icon-fence.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Architecture icons meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 352,
+      "title": "test(fidelity): receipt official Mindmap shape fences",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/352",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T07:24:10Z",
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Mindmap shapes examples: a nonempty shape/polygon could pass while degenerating or failing to contain its label.",
+      "remedy": "The PR checked seven authored shape types, meaningful geometry/silhouette and label fit.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/mindmap-official-shape-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Mindmap shapes meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 353,
+      "title": "test(fidelity): receipt official Mindmap hierarchy fences",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/353",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "scope": "corpus re-audit",
+      "weakness": "Mindmap hierarchy examples: an official example could render with the wrong sibling/child topology.",
+      "remedy": "The PR proposed checks for node identity, parent/depth and actual branch endpoints on two different indentations.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/mindmap-official-hierarchy-fences.fidelity.ts"
+      ],
+      "transferable_rule": "Check authored Mindmap hierarchy meaning at the model and emitted-output boundaries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 354,
+      "title": "Revert the official fence receipts that pin pre-#281 rendering",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/354",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T08:38:14Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Eleven official-example receipt changes pinned implementation colors, halos or whole SVG digests, repeatedly blocking an intentional rendering change.",
+      "remedy": "Reverted those receipts while retaining the unaffected Journey receipt. The stated intent was to reconsider/reland them against the new rendering.",
+      "test_paths": [
+        "src/__tests__/fidelity/cases/xychart-official-fences.fidelity.ts",
+        "src/__tests__/fidelity/cases/sankey-official-energy-fence.fidelity.ts",
+        "src/__tests__/fidelity-receipts.test.ts"
+      ],
+      "transferable_rule": "Review the actual semantic obligation before re-recording many implementation-sensitive digests.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 357,
+      "title": "Simplify verification: check behaviour, not implementation",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/357",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T17:23:58Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Source fragments, output and input hashes, byte baselines and committed screenshots failed after behavior-neutral changes. The PR reports 13 failures from adding one comment.",
+      "remedy": "Replaced input-hash receipts with current-render checks, tested real editor interactions, and added model, differential and metamorphic properties.",
+      "test_paths": [
+        "e2e/editor-site-interactions.e2e.test.ts",
+        "src/__tests__/property-er-model.test.ts",
+        "scripts/ci/payload-delta.ts"
+      ],
+      "transferable_rule": "Try a harmless refactor and a real faulty result. A valuable behavior check accepts the former and rejects the latter.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 358,
+      "title": "Make the docs agree with each other and with the code, and keep them that way",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/358",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-28T21:33:24Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Token-presence checks allowed maintained documentation to contradict code or other docs while all expected words were present.",
+      "remedy": "Generated facts from their owning registries and checked executable CLI examples/enumerations instead of copied token lists.",
+      "test_paths": [
+        "src/__tests__/agent-doc-sync.test.ts",
+        "src/__tests__/doc-cli-commands.test.ts",
+        "src/__tests__/doc-enumerations.test.ts"
+      ],
+      "transferable_rule": "Test the usable command or precise documented fact at the surface readers receive.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 359,
+      "title": "Match upstream Mermaid on the defects the property tests found, and close two doc-check gaps",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/359",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-29T05:37:55Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Properties pinned known parser defects as observations. Documentation checks also missed broken references and stale enumerations.",
+      "remedy": "Changed known-defect assertions to require the fixed behavior and added owning reference checks.",
+      "test_paths": [
+        "src/__tests__/property-er-model.test.ts",
+        "src/__tests__/property-upstream-flowchart.test.ts",
+        "src/__tests__/doc-references.test.ts"
+      ],
+      "transferable_rule": "Once a bug is repaired, replace its characterization with a regression assertion that requires the intended semantics.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 360,
+      "title": "CI follow-ups to #331: job timeouts, package lint, one lazy-budget check, expiring label approvals",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/360",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-01T22:51:37Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Package lint checked only filenames and the lazy budget was checked twice. A completed shard could hang until the six-hour default.",
+      "remedy": "Added packed-package verification, assigned the lazy budget to one post-build check and bounded jobs.",
+      "test_paths": [
+        "scripts/ci/quality-gates.ts",
+        ".github/workflows/ci.yml",
+        "package.json"
+      ],
+      "transferable_rule": "Inspect the delivered package and give each costly gate a single execution point.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 361,
+      "title": "Tests protect behaviour: remove tests of tests, mutation testing and committed derived files",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/361",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-09-30T08:00:07Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Trace tests passed when their scripts failed to parse. A hexagon check observed an arrowhead in definitions. Tests also checked other tests, requiring repeated regeneration.",
+      "remedy": "Changed trace/shape assertions to observe the right output, deleted 55 test files per the PR, retired mutation/sabotage infrastructure and replaced 375 styled hashes with 16 readable SVG goldens.",
+      "test_paths": [
+        "src/__tests__/agent-usage.test.ts",
+        "src/__tests__/flowchart-v11-shapes.test.ts",
+        "src/__tests__/styled-output.test.ts",
+        "eval/sabotage/route-regressions.ts"
+      ],
+      "transferable_rule": "Make a test reach its named subject, eliminate checks whose subject is another check and retain reviewable output where it is valuable.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 369,
+      "title": "Converge five family parsers and strengthen meaning-preservation tests",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/369",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-02T13:55:25Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Separate parser properties could agree with their own projections while losing State, Radar or Sankey meaning across parse/export.",
+      "remedy": "Generated independent expected models for State and Radar and asserted public Sankey preservation and refusal. The PR separately reports 60 assertion failures against base.",
+      "test_paths": [
+        "src/__tests__/agent-state.test.ts",
+        "src/__tests__/agent-radar.test.ts",
+        "src/__tests__/agent-sankey.test.ts"
+      ],
+      "transferable_rule": "Have the generator retain expected values from construction, independent of the parser being tested.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 370,
+      "title": "Replace golden approval token with PR review",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/370",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-01T21:20:55Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A commit-message approval token gated changed goldens without supplying semantic review and also rejected uncommitted changes.",
+      "remedy": "Deleted the token checker and used PR review of each changed golden and its reason.",
+      "test_paths": [
+        "scripts/ci/golden-drift.ts",
+        "scripts/ci/quality-gates.ts",
+        "src/__tests__/styled-output.test.ts"
+      ],
+      "transferable_rule": "Move subjective baseline approval to a reviewable diff with an explanation of the intended change.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 375,
+      "title": "Test audit: hosted render_ascii default-path parity; corpus render-hash removal as a patch (after #374)",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/375",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Checking just a box-drawing or plus character let incorrect hosted ASCII output through. Separate corpus hashes pinned the renderer's own layout.",
+      "remedy": "Diff changes only the default hosted parity check to compare both charsets with the library. Corpus hash deletion was a proposed patch in the PR body. The test change was folded into #335.",
+      "test_paths": [
+        "src/__tests__/hosted-mcp.test.ts"
+      ],
+      "transferable_rule": "Distinguish transported output parity from validity of the renderer, and proposed deletions from actual diff changes.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 380,
+      "title": "Keep XY-chart titles inside the canvas and report hidden titles",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/380",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "The title generator used single-line inputs and normalized observed text to lowercase, hiding clipped multiline titles and changed capitalization.",
+      "remedy": "Retained a minimized multiline caller input and exact-case/paint evidence in owning chart tests. Closed unmerged, with the PR identifying equivalent fixes in #395.",
+      "test_paths": [
+        "src/__tests__/helpers/chart-honesty.ts",
+        "src/__tests__/property-chart-honesty.test.ts"
+      ],
+      "transferable_rule": "Use a reduced witness for a limitation deliberately outside a normalized oracle's scope.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 399,
+      "title": "Finish Python MCP evidence and source-backed comparison corrections",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/399",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-17T10:52:02Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "The Python interoperability probe used a deprecated SDK client, stale copied version expectations and indistinguishable evidence for an absent versus refused GET.",
+      "remedy": "Updated the SDK probe to observe actual HTTP requests/responses and negotiated headers on successful calls.",
+      "test_paths": [
+        "scripts/interop/probe-python.py"
+      ],
+      "transferable_rule": "Separate an observed refusal from a request that never happened.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 413,
+      "title": "Pin Mermaid 12.2.0 and align compatibility contracts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/413",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-18T09:00:46Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Current reference tests and policy named different Mermaid revisions, leaving the meaning of conformance results ambiguous.",
+      "remedy": "Aligned the active reference helper and tests to a single revision, while preserving original provenance for historical imported corpora.",
+      "test_paths": [
+        "src/__tests__/helpers/upstream-mermaid.ts",
+        "src/__tests__/official-fence-corpus.test.ts"
+      ],
+      "transferable_rule": "Pin the independent reference actually executed and keep historical fixture versions separate.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 415,
+      "title": "Make release benchmarks measure published bytes and comparable work",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/415",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-18T10:07:58Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The release benchmark tested a separate build, retained correctness only from the first process and allowed zero rounds or incomparable memory populations.",
+      "remedy": "Benchmarked the verified packed artifact, checked outputs every process/repetition, matched workloads across arms and rejected empty observations.",
+      "test_paths": [
+        "eval/benchmark/release-bench.ts",
+        "eval/benchmark/release-bench-worker.ts",
+        "src/__tests__/release-publish-steps.test.ts"
+      ],
+      "transferable_rule": "A benchmark gate needs a nonempty comparable population and proof that it exercised the artifact being released.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 420,
+      "title": "Test all supported diagram types and fix C4 label overlaps",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/420",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-18T15:23:04Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "An independent compatibility check could be skipped without blocking release, and package tests did not cover all supported diagram types.",
+      "remedy": "Required the independent compatibility gate and exercised installed SVG/terminal output for all 17 supported families.",
+      "test_paths": [
+        "e2e/tarball-consumer-fuzz.e2e.test.ts",
+        "src/__tests__/release-publish-steps.test.ts"
+      ],
+      "transferable_rule": "Treat a missing required verification distinctly from a passing result.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 421,
+      "title": "Repair shared outline contrast and verify emitted ink across families",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/421",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-18T15:01:04Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Token-level contrast checks alone did not establish that a visible outline had sufficient contrast against its painted background.",
+      "remedy": "Extended existing contrast suites with owned SVG stroke-versus-background checks and actual PNG border-only sampling.",
+      "test_paths": [
+        "src/__tests__/renderer-contrast.test.ts",
+        "src/__tests__/theme-contrast-wcag.test.ts"
+      ],
+      "transferable_rule": "Observe the mark and background after style application and bound the claim to the sampled colors/inputs.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 424,
+      "title": "Improve release benchmark gates and add browser competitor scorecards",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/424",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-18T20:04:34Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The release performance gate could pass with missing baseline timing, missing memory observations or incomplete candidate workloads.",
+      "remedy": "Made expected comparative measurements and successful candidate scaling/agent workloads mandatory and added negative cases.",
+      "test_paths": [
+        "eval/benchmark/release-baseline.ts",
+        "src/__tests__/release-benchmark.test.ts"
+      ],
+      "transferable_rule": "Define the complete expected population before collecting benchmark data.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 426,
+      "title": "Add 0.5 measurement tooling: micro, peer and output-identity benchmarks, fork graph, Mermaid reference setup",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/426",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-19T01:17:56Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "An output-identity run with more jobs than inputs could compare/copy partial digests. Typed-parser cases could accept opaque fallback results.",
+      "remedy": "Required every digest on each side, compared the union of keys and guarded typed cases. The faults were found while reviewing the PR's measurement tooling.",
+      "test_paths": [
+        "eval/benchmark/output-identity.ts",
+        "eval/benchmark/micro-bench-cases.ts"
+      ],
+      "transferable_rule": "Prove both sides produced the complete expected key set before comparing outputs.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 428,
+      "title": "Replace implementation locks with behavioral test contracts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/428",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-19T06:17:24Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Tests pinned source spellings, pipeline order, serializer call counts, spacing constants and one arbitrary shortest-path tie break.",
+      "remedy": "Exercised browser storage failure and emitted MCP errors, checked shortest repeatable routes/painted clearance and strengthened independent semantic checks beside existing goldens.",
+      "test_paths": [
+        "src/__tests__/ascii-pathfinder-determinism.test.ts",
+        "src/__tests__/layout-pass.test.ts",
+        "src/__tests__/mcp-reserved-error-codes.test.ts",
+        "src/__tests__/architecture-svg-snapshot.test.ts"
+      ],
+      "transferable_rule": "Permit equivalent valid implementations and check visible guarantees. Preserve implementation constraints only when they are explicit product requirements.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 429,
+      "title": "Strengthen fast-check testing with Hegel guidance",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/429",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-19T06:46:16Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Suite-local seeds/run counts defeated exploratory configuration, some generators/substring checks excluded valid output, and aggregated samples could not shrink.",
+      "remedy": "Centralized strong/replayable runner settings and replaced oracles with independent XML parsing, exact Sankey values and shrinkable properties. The PR reports finding malformed Radar SVG.",
+      "test_paths": [
+        "src/__tests__/helpers/fc-parameters.ts",
+        "src/__tests__/property-svg-wellformedness.test.ts",
+        "src/__tests__/agent-sankey.test.ts",
+        "src/__tests__/layout-rubric.test.ts"
+      ],
+      "transferable_rule": "Keep regression seeds replayable while letting discovery vary. Use an independent parser or expected state to check generated outputs.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 457,
+      "title": "Make rendering dependencies and evidence conditional; retain feasible layouts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/457",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-21T01:55:47Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A copied package-export inventory could fail after a valid refactor while existing package checks already covered the delivered contract.",
+      "remedy": "Deleted the redundant export-key expectation from the package suite during a larger rendering change.",
+      "test_paths": [
+        "src/__tests__/package-exports.test.ts"
+      ],
+      "transferable_rule": "Before removing a duplicated inventory, identify the tests that exercise actual package resolution and behavior.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 459,
+      "title": "Keep test workers responsive when Bun children hang",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/459",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-21T07:14:33Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A synchronous subprocess blocked the worker event loop, so the test deadline could not interrupt a hang and the entire CI shard stalled.",
+      "remedy": "Converted 25 synchronous sites to the existing asynchronous owned-child helper, added explicit deadlines and process-group cleanup.",
+      "test_paths": [
+        "src/__tests__/performance-startup.test.ts",
+        "src/__tests__/helpers/test-child.ts"
+      ],
+      "transferable_rule": "Give the supervisor an opportunity to time out and reap owned subprocesses.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 463,
+      "title": "test: run Getting Started commands against the packed package",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/463",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-21T11:44:30Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Website tests inspected Getting Started command text without running it. The published instructions referenced a file the reader had never created.",
+      "remedy": "Executed documented shell blocks in fresh consumers using the packed package and checked actual SVG, PNG, terminal, JSON and MCP outputs.",
+      "test_paths": [
+        "e2e/helpers/getting-started.ts",
+        "e2e/tarball-consumer-fuzz.e2e.test.ts",
+        "src/__tests__/website-build.test.ts"
+      ],
+      "transferable_rule": "Run a copied example in the environment and state a new reader would actually have.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 464,
+      "title": "Fix nightly finder regressions and deduplicate reports",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/464",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-21T21:21:39Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Nightly properties generated invalid reserved names, assumed unquantized bar geometry, or sampled antialiased text incorrectly. Repeat findings created duplicate notifications.",
+      "remedy": "Corrected domains and observations, retained the reduced inputs and deduplicated notifications while preserving each run's evidence.",
+      "test_paths": [
+        "src/__tests__/property-diagram-parsers.test.ts",
+        "src/__tests__/property-xychart-bar-encoding.test.ts",
+        "src/__tests__/helpers/rendered-text.ts",
+        "scripts/ci/nightly-finder-report.ts"
+      ],
+      "transferable_rule": "Determine whether a failed property reflects bad input, a bad oracle or a product defect before changing production.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 480,
+      "title": "bench: calibrate complete semantic populations and remove consumer allocation noise",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/480",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-25T20:12:25Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A measurement consumer allocated memory while reading output and could attribute its own cost to the renderer. Some peer comparisons lacked complete semantic populations.",
+      "remedy": "Indexed consumed bytes directly, retained complete comparable populations and separated consumer allocation from renderer evidence.",
+      "test_paths": [
+        "eval/benchmark/peer-track-worker.ts",
+        "src/__tests__/performance-gates.test.ts"
+      ],
+      "transferable_rule": "Measure observer overhead and bind performance comparisons to matching, qualified outputs.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 482,
+      "title": "Fix release checks for symlinked npm installs and macOS",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/482",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-24T22:20:12Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Release validation rejected identical packages installed through a symlink and invoked checksum flags unavailable on macOS.",
+      "remedy": "Checked actual package/lock identity from physical paths and added platform-specific release checks.",
+      "test_paths": [
+        "eval/benchmark/release-baseline.ts",
+        "src/__tests__/release-benchmark.test.ts",
+        "src/__tests__/release-publish-steps.test.ts"
+      ],
+      "transferable_rule": "Normalize equivalent platform paths without dropping artifact identity checks.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 487,
+      "title": "Execute pinned Mermaid assertions through native model adapters",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/487",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-27T01:57:57Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "A source-acceptance count was used where the question was whether upstream assertions actually pass against the native model.",
+      "remedy": "Executed original pinned test bodies through a pinned control and native model adapters, retaining original parameterization and expectations.",
+      "test_paths": [
+        "eval/mermaid-upstream-assertions/run.ts",
+        "eval/mermaid-upstream-assertions/views.ts"
+      ],
+      "transferable_rule": "Do not equate parsing an upstream source with passing that upstream test's assertions.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 490,
+      "title": "Preserve Mermaid grammar fields and identities through typed edits",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/490",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-25T06:04:03Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "Tar archive creation ran synchronously outside the test fixture's child deadline, so a stalled tool could leave a worker stuck.",
+      "remedy": "Moved all archive creation through the existing owned child boundary, awaited completion and checked status before reading bytes.",
+      "test_paths": [
+        "src/__tests__/release-benchmark.test.ts"
+      ],
+      "transferable_rule": "A timeout must govern the process doing the work; require success before consuming its artifact.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 493,
+      "title": "Run endpoint audit regressions in the standard test suite",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/493",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-25T08:47:41Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A valid endpoint-marker regression suite existed outside the directories selected by normal CI.",
+      "remedy": "Updated the package's canonical test command to enroll the existing suite.",
+      "test_paths": [
+        "package.json"
+      ],
+      "transferable_rule": "Confirm the intended regression is discovered by the normal entry point.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 498,
+      "title": "Strengthen test oracles and remove low-value test ceremony",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/498",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-25T21:10:16Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Assertions accepted empty or stale artifacts, derived expected values from production, compared unrelated values or asserted private implementation; duplicated smoke and source-grep tests added ceremony.",
+      "remedy": "Across 215 changed files, strengthened visible terminal connectivity, PNG dimensions, computed browser paint and task grading and removed duplicate and implementation-only tests. The PR describes reviewing 573 authored files.",
+      "test_paths": [
+        "e2e/browser.test.ts",
+        "e2e/dist-artifact-fuzz.e2e.test.ts",
+        "skill-evals/oracles/diagram-artifact.ts",
+        "src/__tests__/agent-png-determinism.test.ts"
+      ],
+      "transferable_rule": "For each test identify its consumer and failure witness, independently derive the expected result, then consolidate or remove overlap with an existing owner.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 500,
+      "title": "Extract historical Mermaid cases from complete bound source arguments",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/500",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-25T18:56:57Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "A historical test harvester counted strings resembling test calls as registrations, admitted incomplete dynamic source and treated extraction gaps as unsupported product cases.",
+      "remedy": "Switched to TypeScript AST registration/binding analysis and complete source arguments with explicit unresolved outcomes.",
+      "test_paths": [
+        "eval/mermaid-upstream-suite-bench/harvest.ts"
+      ],
+      "transferable_rule": "Count actual executed registrations and classify extraction failures separately from product failures.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 506,
+      "title": "Construct portable tokens and preserve empty grammar fields",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/506",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-26T03:26:24Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A control treated the reference parser's acceptance of a word prefix as proof it preserved the complete State class target.",
+      "remedy": "Changed the existing State test to distinguish accepted prefixes from the complete target and preserve unsupported source atomically.",
+      "test_paths": [
+        "src/__tests__/state-typed-elevation.test.ts",
+        "src/__tests__/agent-state.test.ts"
+      ],
+      "transferable_rule": "Validate the full expected field and ownership; acceptance alone does not prove retention.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 508,
+      "title": "Reconcile historical harvest sources and accounting units",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/508",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-26T03:26:24Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The harvester mixed fixture and registration counts, conflated extraction with product gaps and generated expected geometry from the implementation under test.",
+      "remedy": "Replaced the expectation-writing path with read-only provenance reporting and explicit source-recovery outcomes. Existing assertions and floors were left in place. Integrated via #516.",
+      "test_paths": [
+        "eval/mermaid-upstream-suite-bench/harvest.ts",
+        "docs/contributing/harvesting-upstream-tests.md"
+      ],
+      "transferable_rule": "Keep independently reviewed expectations separate from observation or harvesting tools.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 516,
+      "title": "Preserve diagram meaning and make historical harvesting read-only",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/516",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-26T03:26:22Z",
+      "author": "adewale",
+      "scope": "integration",
+      "weakness": "A historical harvester could write current renderer output as expectations and represented unrelated accounting units as upstream coverage.",
+      "remedy": "Integrated the #508 and #506 component work, including read-only provenance extraction and explicit Model/writer controls. This landing overlaps those component PRs.",
+      "test_paths": [
+        "eval/mermaid-upstream-suite-bench/harvest.ts",
+        "src/__tests__/state-typed-elevation.test.ts"
+      ],
+      "transferable_rule": "Keep component review and integration evidence traceable without counting them as separate discoveries.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 519,
+      "title": "Land the Trident extraction cleanup and benchmark harness fixes",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/519",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-26T14:52:45Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "The benchmark harness mixed reference installations/versions, permitted missing label data and had false failures caused by temporary-path aliases.",
+      "remedy": "Pinned the actual independent oracle, checked controls before timing, refused incomplete observations and normalized test temp paths.",
+      "test_paths": [
+        "eval/benchmark/portable/mermaid-oracle.ts",
+        "eval/benchmark/tests/mermaid-oracle.test.ts",
+        "eval/benchmark/tests/helpers/temp-dir.ts"
+      ],
+      "transferable_rule": "Validate the independent reference and the observable sample before accepting timing or coverage results.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 521,
+      "title": "Deduplicate contracts and split editor, routing, and site modules",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/521",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-26T13:37:00Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A research sketch prototype served as a proxy for contrast in shipped renderers, and hand-built editor script fixtures could differ from actual module code.",
+      "remedy": "Moved contrast coverage to shipped rough/hybrid renderers and changed tests to consume editor modules through the maintained harness.",
+      "test_paths": [
+        "e2e/browser.test.ts",
+        "src/__tests__/section-a-render-contract.test.ts",
+        "src/__tests__/helpers/editor-module-harness.ts"
+      ],
+      "transferable_rule": "Exercise the shipped implementation or final artifact for claims about the shipped product.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 525,
+      "title": "Resolve the Trident launcher test's temporary path on macOS",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/525",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-26T18:03:00Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A launcher test compared a symlinked macOS temporary path to the child's physical path and failed only on macOS.",
+      "remedy": "Normalized the test fixture using realpathSync before asserting forwarded directories.",
+      "test_paths": [
+        "src/__tests__/trident-launcher.test.ts"
+      ],
+      "transferable_rule": "Normalize path identity at the fixture boundary when both spellings represent the same directory.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 527,
+      "title": "Remove the legacy eval/benchmark copy now that Trident runs every benchmark",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/527",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-26T18:03:38Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Two maintained copies of the benchmark suite and its tests risked divergent behavior after benchmark ownership moved to Trident.",
+      "remedy": "Removed the legacy local copies, including the duplicate portable/benchmark suites, and pinned the replacement runner.",
+      "test_paths": [
+        "eval/benchmark/tests/ci-policy.test.ts",
+        "eval/benchmark/tests/release-benchmark.test.ts"
+      ],
+      "transferable_rule": "After moving a test suite, retire duplicate ownership and make the replacement entry point explicit.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 530,
+      "title": "Finish moving benchmark ownership to Trident",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/530",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-27T00:29:56Z",
+      "author": "adewale",
+      "scope": "testing approach",
+      "weakness": "Community-discovery and modern-evidence checks still duplicated benchmark ownership already in Trident.",
+      "remedy": "Deleted remaining copied evidence tests, keeping product regression tests and the independent Mermaid oracle separate.",
+      "test_paths": [
+        "src/__tests__/mermaid-community-discovery.test.ts",
+        "src/__tests__/modern-mermaid-evidence.test.ts"
+      ],
+      "transferable_rule": "Retain the consumer's product obligations while deleting copies of an external tool's own tests.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 553,
+      "title": "Give grammar finder reports finite scope and replay reviewed findings",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/553",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-27T14:30:20Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "An ever-open issue and its comments stored the grammar finder's deduplication state. Exploratory disagreements were mixed with demonstrated export/round-trip defects.",
+      "remedy": "Retained reviewed sources as a versioned regression corpus and separated actionable failures from exploratory findings.",
+      "test_paths": [
+        "eval/mermaid-modern-compat/grammar-regressions.test.ts",
+        "eval/mermaid-modern-compat/grammar-triage.ts",
+        "scripts/ci/grammar-finder-report.ts"
+      ],
+      "transferable_rule": "Store replayable evidence and a finite, explicit classification for discovery results.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 555,
+      "title": "Retain curved-node Flowchart regression after routing fix",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/555",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-28T05:43:14Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A minimized nightly counterexample had no durable place in the public routing property. Helper-specific tests for a superseded workaround added little evidence.",
+      "remedy": "Added the actual source as an explicit example in the existing structural property. The final diff retains the public counterexample and does not ship the earlier workaround.",
+      "test_paths": [
+        "src/__tests__/property-route-contracts-fuzz.test.ts"
+      ],
+      "transferable_rule": "Retain the smallest public regression when removing scaffolding for an obsolete implementation.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 569,
+      "title": "test(mcp): align hosted syntax probe with Code Mode screening",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/569",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-28T17:10:57Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A hosted smoke asserted a JavaScript engine's wording even though public syntax screening now rejects the request earlier.",
+      "remedy": "Changed the shell assertion to verify correlated JSON-RPC response fields, the tool error flag and the structured screening error.",
+      "test_paths": [
+        "website/e2e-mcp.sh"
+      ],
+      "transferable_rule": "Assert the public error boundary and its envelope, not private runtime phrasing.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 577,
+      "title": "Retain source benchmark replay controls in receipts",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/577",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-29T09:45:19Z",
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "A source benchmark documented explicit seed overrides but omitted the effective default seed passed to its actual test child.",
+      "remedy": "Recorded resolved seed/run counts after applying overrides and extended the child-process test to cover the default and explicit controls.",
+      "test_paths": [
+        "eval/benchmark/tests/unified-benchmark-cli.test.ts",
+        "eval/benchmark/unified/run.ts"
+      ],
+      "transferable_rule": "Record the effective settings the worker received when reporting a replayable test result.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 582,
+      "title": "fix: align ELK route roundoff where each adapter reads routes back",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/582",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-29T16:59:40Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A new wide-tree regression briefly required an overall certification status unrelated to the specific card-contact bug.",
+      "remedy": "The final patch checks that public layout succeeds and all 79 directed relationships survive; the PR records why it removed the unrelated status claim during review.",
+      "test_paths": [
+        "src/__tests__/class-layout-backends.test.ts"
+      ],
+      "transferable_rule": "Require the contract at issue and let separately owned certification checks judge unrelated geometry.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 592,
+      "title": "Reduce repeated CI work and make test failures trustworthy",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/592",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-31T23:06:22Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Recipe checks could pass following crashes or reuse an earlier PNG. JSON-RPC and batch checks could succeed without observing the right correlated result.",
+      "remedy": "Required usable recipe output and fresh files, checked exact IDs and successful work after malformed batch entries, and retired redundant goldens/CI checks such as hero freshness.",
+      "test_paths": [
+        "e2e/helpers/getting-started.ts",
+        "e2e/tarball-consumer-fuzz.e2e.test.ts",
+        "src/__tests__/agent-doc-sync.test.ts"
+      ],
+      "transferable_rule": "Require fresh outputs attributable to this invocation, fail on errors and prove the next valid operation still works.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 595,
+      "title": "Fix verification gaps and upgrade CI to Bun 1.4.4",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/595",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-01T13:34:34Z",
+      "author": "adewale",
+      "scope": "suite review",
+      "weakness": "Website tests reused stale prepared output, an SVG comparer accepted visibly shifted dashes, and its fault checks were repeated per diagram.",
+      "remedy": "Prepared the website explicitly per run and made a real Chromium comparer check painted stroke coverage in both directions. Consolidated repeated verifier work.",
+      "test_paths": [
+        "scripts/site/prepare-website-fixture.ts",
+        "scripts/resolved-scene-oracle.ts",
+        "e2e/browser-bundle.e2e.test.ts"
+      ],
+      "transferable_rule": "Use fresh build inputs and the visible effect for image equivalence, with positive and negative controls.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 605,
+      "title": "Compare visual goldens by decoded pixels",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/605",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "scope": "focused repair",
+      "weakness": "Visual regression tests rejected a re-encoded PNG with identical pixels because they compared encoded file bytes.",
+      "remedy": "Changed the two suites to compare dimensions and decoded RGBA against reviewed goldens. The PR reports accepting re-encoding and detecting a one-pixel change. Open at review time.",
+      "test_paths": [
+        "src/__tests__/custom-style-cookbook.test.ts",
+        "src/__tests__/section-b-visual-evidence.test.ts"
+      ],
+      "transferable_rule": "Choose the equivalence relation that matches the user-visible contract and test both sides of it.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 611,
+      "title": "Fix agent-experience findings from the axis.run assessment, merged with main",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/611",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-12T00:26:40Z",
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "A validator property only asserted that values considered clean could render. It skipped rejected inputs and did not establish the reverse implication or terminal parity.",
+      "remedy": "Changed the property to test acceptance and rejection over both SVG and terminal entry points, and required observations of both branches.",
+      "test_paths": [
+        "src/__tests__/property-validator-surface-fuzz.test.ts"
+      ],
+      "transferable_rule": "For an acceptance contract, generate both admitted and refused cases and verify each branch was exercised.",
+      "outcome_independently_verified": false
+    },
+    {
+      "number": 621,
+      "title": "Improve route traceability and graph layout selection",
+      "url": "https://github.com/adewale/agentic-mermaid/pull/621",
+      "state": "open",
+      "merged": false,
+      "merged_at": null,
+      "author": "adewale",
+      "scope": "mixed repair",
+      "weakness": "An invisible-edge point-count assertion pinned an internal route representation that could change without changing any visible obligation.",
+      "remedy": "Replaced the point-count comparison with checks on visible hard findings, crossing count and label conflicts in a broader routing PR. Open at review time.",
+      "test_paths": [
+        "src/__tests__/layout-pass.test.ts"
+      ],
+      "transferable_rule": "For invisible constraints, inspect the effect on visible relationships and quality instead of an arbitrary internal count.",
+      "outcome_independently_verified": false
+    }
+  ],
+  "scope_counts": {
+    "testing approach": 18,
+    "focused repair": 27,
+    "mixed repair": 34,
+    "suite review": 31,
+    "corpus re-audit": 13,
+    "integration": 1
+  },
+  "exclusions": [
+    "Feature regression tests alone, routine golden refreshes, test updates required only by a removed product feature, runner rebalance alone and benchmark/tool pins alone were excluded. Examples include #622 (editor regression), #616 (retired backend), #598 (runner reassignment), #507 (provisioning) and #518 (pin only).",
+    "The 13 official-example PRs #341–#353 are a linked corpus re-audit of existing smoke/coverage claims. They do not represent 13 distinct test-audit methods. #354 subsequently removed eleven receipt changes. #343 was kept. #353 was closed unmerged.",
+    "#63 is a closed, unmerged proposal superseded by #169. The parity change from closed-unmerged #375 was folded into #335; the render-hash deletion in #375's body was not included in its diff. #516 integrates #506 and #508. Count PRs and workstreams separately.",
+    "Focused bug fixes are included when they also changed a preexisting ineffective test, tested a documented omission in the existing strategy, or repaired a verifier. Numerous ordinary bug-fix cases with only newly added feature-specific regression tests were excluded."
+  ],
+  "limitations": [
+    "PR metadata and diff content were reviewed. Tests, fault injections, historical CI, and reported numeric outcomes were not rerun independently. GitHub merged_at determines merge status; component landings and proposed-only changes are called out where visible.",
+    "This is an evidence-based classification. File lists include renamed, generated and binary files; GitHub can omit large/binary patch bodies. The counts apply to the returned repository history on the review date."
+  ]
+}

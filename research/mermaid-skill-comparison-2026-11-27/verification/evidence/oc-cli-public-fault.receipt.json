@@ -1,0 +1,15 @@
+{
+  "label": "oc-cli-public-fault",
+  "argv": [
+    "python3",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/evidence/cli-witness.py"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {},
+  "timeout_seconds": 120,
+  "exit_code": 1,
+  "status": "completed",
+  "duration_seconds": 0.4382831740003894,
+  "stdout_sha256": "6d78dc13bd6cf13c698f97699b38c9daebe4730532bd7fdc7e0fb5f6237d7a18",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

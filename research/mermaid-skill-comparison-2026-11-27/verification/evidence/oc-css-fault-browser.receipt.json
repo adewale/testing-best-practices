@@ -1,0 +1,18 @@
+{
+  "label": "oc-css-fault-browser",
+  "argv": [
+    "bun",
+    "/workspace/mermaid-skill-comparison-2026-11-27/verification/evidence/browser-witness.cjs"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {
+    "TMPDIR": "/tmp/mtv-e2h_vo86",
+    "XDG_CONFIG_HOME": "/workspace/mermaid-skill-comparison-2026-11-27/verification/evidence/browser-config"
+  },
+  "timeout_seconds": 120,
+  "exit_code": 1,
+  "status": "completed",
+  "duration_seconds": 1.3600604469993414,
+  "stdout_sha256": "1d365c5899846e140331f04d0d57546373cd04f46febe13a203928b3e3d7e479",
+  "stderr_sha256": "2759f434b3811b939ac0f55db7885424bb531d22d86022900409db08797de8f5"
+}

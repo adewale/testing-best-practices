@@ -1,0 +1,50 @@
+22 |     Math.max(a.y, b.y) > header.y && Math.min(a.y,b.y) < header.y + header.height
+23 |       ? [{from: edge.source, to: edge.target, a, b}] : []
+24 | }))
+25 | console.log(JSON.stringify({ claimed, lineWidth: style.lineWidth, header, hazardousVerticalSegments: hits, before, after }, null, 2))
+26 | assert.equal(claimed, 0)
+27 | assert.deepEqual(hits, [], 'excluded candidate ink overlaps the header')
+            ^
+AssertionError: excluded candidate ink overlaps the header
++ actual - expected
+
++ [
++   {
++     a: {
++       x: 60,
++       y: 40
++     },
++     b: {
++       x: 60,
++       y: 70
++     },
++     from: 'A',
++     to: 'B'
++   },
++   {
++     a: {
++       x: 60,
++       y: 40
++     },
++     b: {
++       x: 60,
++       y: 70
++     },
++     from: 'A',
++     to: 'C'
++   }
++ ]
+- []
+
+ generatedMessage: false,
+     actual: [
+  [Object ...], [Object ...]
+],
+   expected: [],
+   operator: "deepStrictEqual",
+       diff: "simple",
+       code: "ERR_ASSERTION"
+
+      at /workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/evidence/bundle-witness.ts:27:8
+
+Bun v1.4.4 (Linux x64)

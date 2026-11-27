@@ -1,0 +1,39 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "The 4,500-render suite",
+      "action": "Share identical renders",
+      "details": "Inventory each row by effective source, seed, options, renderer version, environment and assertions. For the 360 repeated renders, reuse one artifact wherever the inputs match and retain every distinct assertion. Keep separate executions where repeatability or isolation is the contract."
+    },
+    {
+      "target": "Fast renderer suite",
+      "action": "Generate constrained pairwise rows",
+      "details": "Enumerate style families, looks, palettes and output formats from their canonical registries. Add explicit source-complexity levels with reviewed fixtures, such as a minimal source and one with nested or repeated elements. Cover every feasible pair across these dimensions, including complexity × format. Record why any combination is impossible. Exhaust inexpensive format/option rules at the pure layer and run one cheap public conformance case per registry member."
+    },
+    {
+      "target": "Three-factor regression",
+      "action": "Keep the original case mandatory",
+      "details": "Pin its exact three values, triggering fixture, environment and discriminating assertion regardless of generator output. Use the three factor names from that case as a variable-strength group and cover every feasible triple within that group."
+    },
+    {
+      "target": "Seeds and browsers",
+      "action": "Give each a distinct job",
+      "details": "Use replayable generated sources to explore complexity. Compare rendered structure with independently specified source features and retain minimized failures as fixtures. Exercise representative format/complexity rows through supported browsers on a measured slower lane, with browser-specific regressions pinned. Prioritize historically failing combinations within the budget."
+    }
+  ],
+  "retained_contracts": [
+    "Every canonical registry member reaches its applicable public renderer contract.",
+    "Every retained fixture preserves its distinct observable expectations, including the exact three-factor failure.",
+    "Format-specific readers can open the requested artifact and recover the fixture’s expected content. Browser cases exercise the actual display path."
+  ],
+  "validation": [
+    "Pin the baseline and shadow both portfolios on the same revisions and runners. Record stable row IDs, model, constraints, generator version, seed, selected inputs and observed outputs.",
+    "Independently compare canonical and executed member sets. Add an isolated registry member, verify automatic enrollment, then break its behavior and require its conformance assertion to fail.",
+    "Independently enumerate feasible pairs and designated triples. Check executed rows for validity and missing tuples. Remove a sole covering row and verify the checker identifies its missing tuple. Trace a complex source and nondefault format through the public executor.",
+    "Replay the original defect and compare old and proposed tests on identical faults, including dropping nested content and ignoring the requested format. Record which assertion fails. Investigate every old-only detection and keep its row until the replacement catches it.",
+    "Run a rotating random holdout from the old suite and track discrepancies alongside repaired-fault results."
+  ],
+  "cost_and_stop": "Report distinct renders after generation. Compare runner minutes, browser startup, p50/p90 critical path, reruns, triage and baseline-review time at equal budgets. Retire old rows only after all hard obligations pass, original fault detections are preserved, holdout differences are resolved and measured costs fit the agreed limits. Keep the old suite available if the model or enrollment goes stale.",
+  "rationale": "Adding seeds and browser versions to the full product multiplies cost while source complexity and format stay fixed. The proposed fast suite spends renders on those missing interactions and preserves direct evidence for the known failure."
+}

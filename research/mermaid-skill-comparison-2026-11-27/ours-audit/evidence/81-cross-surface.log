@@ -1,0 +1,199 @@
+    56	    expect(paintedText).not.toContain('h')
+    57	    expect(paintedText).toContain('hello')
+    58	    const ascii = renderMermaidASCII(edited.value.diagram, { colorMode: 'none' })
+    59	    expect(ascii).toContain('Changed')
+    60	    expect(ascii).toContain('hello')
+    61	    expect(ascii).toContain('test')
+    62	  })
+    63	  test('retains both complete native graph frames through nested shape, style and link label edits', () => {
+    64	    const source = ['---', 'title: Keep wrapper', '---', 'flowchart LR', 'subgraph S[Group]', '  A{Old}:::exClass --> B@{ shape: delay, label: Wait }', 'end', 'style A color:red', 'linkStyle 0 stroke:blue', 'click A href "https://example.com"', style, ''].join('\r\n')
+    65	    let diagram = parse(source), previous = source
+    66	    for (const label of ['Changed', 'Second']) {
+    67	      const result = mutatePreservingSource(diagram, { kind: 'set_label', target: 'A', label })
+    68	      if (!result.ok) throw new Error(result.error.message)
+    69	      expect(result.value.source.startsWith(previous)).toBe(true)
+    70	      expect(result.value.source.slice(0, source.length)).toBe(source)
+    71	      expect(result.value.source).toContain(style + '\r\n')
+    72	      expect(result.value.diagram.meta.wrapperSource).toBe('---\r\ntitle: Keep wrapper\r\n---\r\n')
+    73	      for (const normalize of [normalizeMermaidSource, normalizeMermaidRenderSource]) {
+    74	        const before = parseNativeFlowchart(normalize(previous).familyBody)
+    75	        const after = parseNativeFlowchart(normalize(result.value.source).familyBody)
+    76	        expect(after.nodes.get('A')).toEqual({ ...before.nodes.get('A')!, label })
+    77	        expect(after.nodes.get('A')?.shape).toBe('diamond')
+    78	        expect(after.nodes.get('A')?.href).toBe('https://example.com')
+    79	        expect(after.subgraphs[0]?.nodeIds).toEqual(['A', 'B'])
+    80	        expect(after.nodes.get('B')).toMatchObject({ shape: 'rounded', semanticShape: 'delay', authoredShape: 'delay' })
+    81	        after.nodes.set('A', before.nodes.get('A')!)
+   198	      name: 'standalone BOM',
+   199	      wrapper: '\uFEFF',
+   200	      body: 'lossyParseDiagram\n  must survive',
+   201	    },
+   202	    {
+   203	      name: 'leading init directives',
+   204	      wrapper: '%%{init: {"theme":"dark"}}%%\n',
+   205	      body: 'lossyParseDiagram\n  must survive',
+   206	    },
+   207	    {
+   208	      name: 'CRLF wrappers and bodies',
+   209	      wrapper: '%% retained wrapper comment\r\n\r\n',
+   210	      body: 'lossyParseDiagram\r\n  must survive',
+   211	    },
+   212	    {
+   213	      name: 'universal accessibility and non-leading init directives',
+   214	      wrapper: '',
+   215	      body: `lossyParseDiagram
+   216	  accTitle: Shared title
+   217	  %%{init: {"theme":"dark"}}%%
+   218	  must survive`,
+   219	    },
+   220	  ])('keeps exact post-wrapper extension bytes for $name', ({ wrapper, body }) => {
+   221	    const base = extensionDescriptor('lossy-parse', 'lossyParseDiagram')
+   222	    const descriptor: FamilyDescriptor = {
+   223	      ...base,
+   224	      capabilityEvidence: base.capabilityEvidence.map(claim => (claim.capability === 'source-preservation' || claim.capability === 'parse' ? { ...claim, state: 'native' } : claim)),
+   225	      parse: () =>
+   226	        ok({
+   127	    expect(() => originalMermaidRange(receipt, 2, 1)).toThrow(RangeError)
+   128	  })
+   129	})
+   130	
+   131	describe('cleanup at public source boundaries', () => {
+   132	  test('render requests retain exact authored slices after transport decoding', async () => {
+   133	    const { resolveRenderRequest } = await import('../render-contract.ts')
+   134	    const { renderMermaidSVG } = await import('../index.ts')
+   135	    const source = '\uFEFF---\r\ntitle: Map\r\n---\r\n%%{init: {flowchart: {rankSpacing: 80}}}%%\r\nflowchart LR\r\n%% Keep this note\r\n  A["&lt;b&gt;literal&lt;/b&gt; &#x1F600;"] --> B'
+   136	    const request = resolveRenderRequest(source, {}, 'svg')
+   137	    expect(request.source.originalText).toBe(source)
+   138	    const receipt = request.source.cleanup!
+   139	    const start = receipt.text.indexOf('<b>literal</b>')
+   140	    expect(authoredMermaidSlice(receipt, start, start + '<b>literal</b> 😀'.length)).toBe('&lt;b&gt;literal&lt;/b&gt; &#x1F600;')
+   141	    expect(request.source.authoredFamilyBody).toContain('&lt;b&gt;literal&lt;/b&gt;')
+   142	    const svg = renderMermaidSVG(source)
+   143	    const text = [...svg.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)].map(match => match[1]).join('')
+   144	    expect(text).toContain('&lt;b&gt;literal&lt;/b&gt; 😀')
+   145	    expect(svg).not.toContain('Keep this note')
+   146	    const { parseRegisteredMermaid } = await import('../agent/parse.ts')
+   147	    const { serializeMermaid } = await import('../agent/serialize.ts')
+   148	    const { readC4Source } = await import('../c4/parser.ts')
+   149	    for (const ending of ['\r', '\r\n', '\n']) {
+   150	      expect(readC4Source(['C4Context', 'accDescr {', 'one', 'two', '}', 'Person(a, "A")'].join(ending)).accessibilityDescription).toBe('one\ntwo')
+   151	    }
+   152	    for (const body of ['flowchart LR\nA["literal"] --> B', 'pie\n"A" : 1', 'sequenceDiagram\nA->>B: text', 'C4Context\nPerson(a, "A")']) {
+   153	      for (const ending of ['\r', '\r\n']) {
+   154	        const source = `---\ntitle: Map\n---\n${body}`.replaceAll('\n', ending)
+   155	        const parsed = parseRegisteredMermaid(source)
+   156	        if (!parsed.ok) throw new Error(JSON.stringify(parsed.error))
+   157	        expect(serializeMermaid(parsed.value)).toStartWith(`---${ending}title: Map${ending}---${ending}`)
+   158	        expect(parsed.value.source.spans?.preserved.header.start.line).toBe(4)
+   159	        // C4's source-preserving model participates in its CSS scope digest.
+   160	        const svg = (text: string) => renderMermaidSVG(text).replace(/am-[a-z0-9]+/g, 'am-scope')
+   161	        expect(svg(source)).toBe(svg(`---\ntitle: Map\n---\n${body}`))
+   162	        if (parsed.value.kind === 'flowchart') {
+   163	          const label = parsed.value.source.spans!.labels.get('node:A')!
+   219	    expect(verifyMermaid('flowchart TD\nSP[Power<br/><span style="font-size:12px;color:#666;">x</span>]').warnings.filter(warning => warning.code === 'UNSUPPORTED_SYNTAX' && warning.syntax === 'mermaid_cleanup'))
+   220	      .toEqual([expect.objectContaining({ line: 2, message: expect.stringMatching(/it removes a style\/classDef semicolon before/) })])
+   221	    for (const source of [
+   222	      '---\ntitle: style A fill:#fff;\n---\nstateDiagram-v2\n%% style A fill:#fff;\nA --> B\nstyle A fill:#fff;',
+   223	      'flowchart LR\nA --> B\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   224	      'classDiagram\nclass A\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   225	      'classDiagram\nnamespace N {\nclass A\nstyle A fill:#fff;\nclassDef c fill:#fff;\n}',
+   226	      'erDiagram\nA\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   227	      'erDiagram\nsubgraph G\nA\nstyle A fill:#fff;\nclassDef c fill:#fff;\nend',
+   228	      'quadrantChart\nA:::c: [0.5, 0.5]\nclassDef c color:#fff;',
+   229	      'block-beta\nA["Hello"]\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   230	      'requirementDiagram\nrequirement A {\nid: 1\ntext: "Hi"\nrisk: high\nverifymethod: test\n}\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   231	      ...['\n', '\r', '\r\n'].map(ending => '---\ntitle: requirementDiagram\n---\n%% preamble\n%%{init: {}}%%\nrequirement&#68;iagram\nrequirement A {\nid: 1\ntext: "Hi"\nrisk: high\nverifymethod: test\n}\nstyle A fill:#fff;\nclassDef c fill:#fff;'.replaceAll('\n', ending)),
+   232	      'treemap-beta\n"Leaf":1\nclassDef c fill:#fff;',
+   233	      // The dropped `;` only ends a style statement sharing its row, or a
+   234	      // statement Mermaid rejects whatever it does (`} classDef`).
+   235	      'graph TD;style Q background:#fff;',
+   236	      'flowchart LR\nA-->B;style A fill:#f00;',
+   237	      'classDiagram\nclass A {\nstyle A fill:#f00; } classDef c fill:#fff;',
+   238	      // Tag quotes inside one label, which Mermaid draws as HTML.
+   239	      'flowchart TD\nB --> C{Let <span style="background-color:#ddd">me</span> think}',
+   240	      'flowchart TD\nA -->|<span style="color:red">m</span>| B\nsubgraph S[Title<br/><span style="font-size:12px">sub</span>]\nC\nend',
+   241	    ]) {
+   242	      expect(verifyMermaid(source).warnings.filter(warning => warning.code === 'UNSUPPORTED_SYNTAX' && warning.syntax === 'mermaid_cleanup')).toEqual([])
+   243	    }
+   244	  })
+   245	})
+   246	
+   247	test('shared cleanup and protected entities agree with pinned Mermaid grammar text', async () => {
+   248	  const { startUpstreamMermaid } = await import('./helpers/upstream-mermaid.ts')
+   249	  const upstream = startUpstreamMermaid()
+   250	  try {
+   251	    const cases = [
+   252	      ['sequenceDiagram\rA->>B: <a href="x">text</a>', "sequenceDiagram\nA->>B: <a href='x'>text</a>\n"],
+   253	      ['sequenceDiagram\r\nA->>B: <a href = "x">text</a>', 'sequenceDiagram\nA->>B: <a href = "x">text</a>\n'],
+   254	      ['flowchart LR\nstyle A fill:#fff;', 'flowchart LR\nstyle A fill:#fff\n'],
+   255	      ['sequenceDiagram\nA->>B: #quot; #59; #9829;', 'sequenceDiagram\nA->>B: ﬂ°quot¶ß ﬂ°°59¶ß ﬂ°°9829¶ß\n'],
+   256	    ] as const
+   257	    expect(await upstream.projectAll(cases.map(([source]) => source), diagram => diagram.text)).toEqual(cases.map(([, expected]) => expected))
+   258	    expect(cleanupMermaidSource(cases[0][0]).upstreamText + '\n').toBe(cases[0][1])
+   259	    expect(cleanupMermaidSource(cases[1][0]).upstreamText + '\n').toBe(cases[1][1])
+   260	    expect(cleanupMermaidSource(cases[2][0]).prepassedText + '\n').toBe(cases[2][1])
+   630	  })
+   631	
+   632	  test('title', () => {
+   633	    const d = parse('classDiagram\n  title Animal Kingdom\n  class A')
+   634	    if (d.body.kind !== 'class') throw new Error()
+   635	    expect(d.body.title).toBe('Animal Kingdom')
+   636	  })
+   637	
+   638	  test('direction and inert callbacks retain their source while class members remain editable', () => {
+   639	    const source = 'classDiagram\r\n  direction LR\r\nnamespace API {\r\n  class A {\r\n    +int count\r\n  }\r\n  callback A "inspect"\r\n}\r\n%% keep footer\r\n'
+   640	    const d = parse(source)
+   641	    expect(d.body.kind).toBe('class')
+   642	    expect(serializeMermaid(d)).toBe(source)
+   643	    const added = mutateChecked(d, { kind: 'add_member', class: 'A', text: '+read()' })
+   644	    if (!added.ok) throw new Error(added.error.message)
+   645	    expect(serializeMermaid(added.value).startsWith(source)).toBe(true)
+   646	    expect(asClass(added.value)!.body.classes[0]!.members).toEqual(['+int count', '+read()'])
+   647	    const removed = mutateChecked(added.value, { kind: 'remove_member', class: 'A', index: 0 })
+   648	    if (!removed.ok) throw new Error(removed.error.message)
+   649	    expect(serializeMermaid(removed.value)).toContain('  callback A "inspect"\r\n}\r\n%% keep footer\r\n')
+   650	    expect(asClass(removed.value)!.body.classes[0]!.members).toEqual(['+read()'])
+   651	    const before = JSON.stringify(d)
+   652	    for (const op of [{ kind: 'rename_class', from: 'A', to: 'B' }, { kind: 'remove_class', id: 'A' }] as const) {
+   681	    expect(serializeMermaid(original)).toBe(source)
+   682	  })
+   683	})
+   684	
+   685	describe('class — mutate', () => {
+   686	  test.each(['\n', '\r', '\r\n', '&#10;', '&#13;', '&#13;&#10;'])('refuses multiline members through either authoring op without changing the diagram: %j', lineBreak => {
+   687	    const original = asClass(parse('classDiagram\nclass A'))!
+   688	    const text = `+foo()${lineBreak}+bar()`
+   689	    for (const op of [
+   690	      { kind: 'add_member', class: 'A', text },
+   691	      { kind: 'add_class', id: 'B', members: ['+valid()', text] },
+   692	    ] satisfies ClassMutationOp[]) {
+   693	      for (const apply of [mutate, mutateChecked]) {
+   694	        expect(apply(original, op)).toEqual({
+   695	          ok: false,
+   696	          error: {
+   697	            code: 'INVALID_OP',
+   698	            message: 'Class members must be single lines; add each member separately',
+   699	          },
+   700	        })
+   701	        expect(original.body.classes).toEqual([{ id: 'A', label: undefined, generic: undefined, members: [] }])
+   702	        expect(serializeMermaid(original)).toBe('classDiagram\n  class A\n')
+   791	    expect(members).toEqual(['+original()'])
+   792	    members.push('+later()')
+   793	    expect(edited.source).toBe(expected)
+   794	    expect(asClass(parse(edited.source))!.body.classes.at(-1)!.members).toEqual(['+original()'])
+   795	  })
+   796	
+   797	  test.each(['\n', '\r', '\r\n'])('refuses an unsupported multiline note without changing the diagram: %j', lineBreak => {
+   798	    const original = parse('classDiagram\nclass A')
+   799	    const typed = asClass(original)
+   800	    if (!typed) throw new Error('expected editable Class body')
+   801	    const result = mutate(typed, { kind: 'add_note', for: 'A', text: `Before${lineBreak}after` })
+   802	    expect(result).toEqual({
+   803	      ok: false,
+   804	      error: {
+   805	        code: 'INVALID_OP',
+src/__tests__/agent-source-preserving-edit.test.ts:636:    if (!/^get[A-Z]/.test(name) || typeof db[name] !== 'function' || db[name].length !== 0) continue
+src/__tests__/agent-source-preserving-edit.test.ts:688:  test('a Class edit that would leave a style above a classDef drawn over it falls back', () => {
+src/__tests__/agent-source-preserving-edit.test.ts:697:  test('a state edit that would reorder notes falls back with a named reason', () => {
+src/__tests__/property-source-preserving-edit.test.ts:133:  test('generated op sequences on commented, unevenly indented diagrams', () => {
+src/__tests__/property-source-preserving-edit.test.ts:157:      const reordered = ops.some(op => /^(?:move|reorder)_/.test(String(op.kind)))

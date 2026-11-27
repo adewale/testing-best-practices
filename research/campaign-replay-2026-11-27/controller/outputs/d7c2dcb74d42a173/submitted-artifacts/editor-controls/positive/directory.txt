@@ -1,0 +1,21 @@
+{
+  "formats": {
+    "svg": "image",
+    "png": "image",
+    "ascii": "text",
+    "unicode": "text"
+  },
+  "hostedArtifact": {
+    "path": "website/public/",
+    "action": "rebuild",
+    "script": "website",
+    "builder": "website/build.ts"
+  },
+  "standaloneArtifact": {
+    "path": "editor.html",
+    "action": "rebuild",
+    "script": "editor",
+    "builder": "scripts/site/editor.ts"
+  },
+  "edit": "editor/js/"
+}

@@ -1,0 +1,10 @@
+--- a/app/test/integration/state-machine-fuzz.test.ts
++++ b/app/test/integration/state-machine-fuzz.test.ts
+@@ -433,7 +433,6 @@
+ const swingArb = fc.integer({ min: 0, max: 100 });
+ const commandArbs = [
+   tempoArb.map((tempo) => new SessionCommand({ kind: 'ws_tempo', tempo })),
+-  swingArb.map((swing) => new SessionCommand({ kind: 'ws_swing', swing })),
+   fc.tuple(tempoArb, swingArb).map(([tempo, swing]) => new SessionCommand({ kind: 'rest_put', tempo, swing })),
+   fc.tuple(tempoArb, swingArb).map(([tempo, swing]) => new SessionCommand({ kind: 'rest_patch_state', tempo, swing })),
+   fc.integer({ min: 0, max: 9999 }).map((n) => new SessionCommand({ kind: 'rest_patch_name', name: `n${n}` })),

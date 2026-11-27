@@ -2,11 +2,22 @@
   "eval_id": "E08-flaky-time-tests",
   "language": "generic",
   "oracle": "oracle.py",
-  "good_sample": "samples/good",
-  "bad_sample": "samples/bad",
+  "unavailable_exit_codes": [2],
   "checks": [
-    "rejects arbitrary sleeps/timeouts",
-    "expects fake or injected clock/scheduler",
-    "expects condition-based deterministic validation"
+    "the virtual-time scheduler delivers a job once, at its deadline",
+    "the same executed tests detect early, missing and repeated delivery",
+    "the executable fixture rejects positive calls to time.sleep and skipped tests"
+  ],
+  "good_samples": [
+    "samples/good",
+    "samples/good-manual-clock"
+  ],
+  "bad_samples": [
+    "samples/bad",
+    "samples/bad-blocking-wait",
+    "samples/bad-comments",
+    "samples/bad-late-only",
+    "samples/bad-skipped",
+    "samples/bad-unrelated"
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "repository": "adewale/print-with-poppy",
+  "total_prs": 2,
+  "pages_checked": {
+    "pull_requests": "GitHub REST pulls with state=all, 100 per page, no author or date filters. Page 1 returned #2 and #1. Page 2 was empty.",
+    "changed_files": "Reviewed both PR titles and bodies and the complete changed-file lists and patches. Each PR changed one workflow file."
+  },
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 1,
+      "url": "https://github.com/adewale/print-with-poppy/pull/1",
+      "state": "open",
+      "reason": "Scheduling only. The only hunk in .github/workflows/ci.yml restricts push events to main and tags and retains pull_request."
+    },
+    {
+      "number": 2,
+      "url": "https://github.com/adewale/print-with-poppy/pull/2",
+      "state": "merged",
+      "reason": "Workflow security lint only. The added .github/workflows/action-pinning.yml runs zizmor and fails on unpinned-uses findings. The positive and negative probes mentioned in the body were validation of this policy check."
+    }
+  ],
+  "limitations": []
+}

@@ -1,0 +1,663 @@
+{
+  "schema": "technical-behavior-evidence/v1",
+  "case": "Keyboardia",
+  "subject_id": "81ed009d77b57e5c",
+  "status": "independent technical validation complete",
+  "verified_utc": "2026-11-27T02:51:07.020106+00:00",
+  "scope": {
+    "pin": "aa67598560f8eaf2509a3ad4bc73edee2f8bea8a",
+    "maintainer_request": "Survey 58 sampled test files and implement one bounded test repair.",
+    "repair": "Continue each configured seed\u2019s fast-check sequence in the actual DO/WS/KV integration model. Aggregate its observed executed coverage across seeds. Continue only after successful batches, up to three.",
+    "contract": "At least 100 executed commands, each of nine initialized action kinds, and at least one disconnect while the model differs from its KV mirror. Genuine failed properties go directly into the original fast-check shrink and promotion path.",
+    "changed_paths": [
+      "app/test/integration/state-machine-fuzz.test.ts"
+    ],
+    "entry_point": "/case/runtime/run-worker.sh state-machine-fuzz.test.ts -t \"model: read-your-writes\"",
+    "registration": "Existing real workerd integration file and model title, also in the weekly rotating three-file CI lane. No production source or CI workflow changed.",
+    "source_locations": [
+      "app/test/integration/state-machine-fuzz.test.ts:295",
+      "app/test/integration/state-machine-fuzz.test.ts:315",
+      "app/test/integration/state-machine-fuzz.test.ts:346",
+      "app/test/integration/state-machine-fuzz.test.ts:494",
+      "app/test/integration/state-machine-fuzz.test.ts:500",
+      "app/test/integration/state-machine-fuzz.test.ts:534",
+      ".github/workflows/property-seed.yml:100"
+    ],
+    "scope_record": {
+      "path": "verification-scope.json",
+      "sha256": "017b614a0f811083a01a6193f8399fad2776fd1e639158b1120a67211aea56e8"
+    }
+  },
+  "agent_availability": {
+    "state": "report-delivered-agent-status-unavailable",
+    "response_file_mtime_utc": "2026-11-27T02:39:04.198661+00:00",
+    "declared_deadline_utc": "2026-11-27T02:42:51Z",
+    "response_before_deadline": true,
+    "seal_utc": "2026-11-27T02:41:11.416967+00:00",
+    "agent_chat_final": "unavailable",
+    "model_retries": 0,
+    "explanation": "A second registry/metadata transition occurred after the report file existed. The report, patch, snapshot and 32 submitted files were retained. Backend turn completion, precise interruption time and model runtime are unavailable. Dispatch-to-seal includes observation delay.",
+    "elapsed_dispatch_to_seal_seconds": 1399.607514,
+    "records": [
+      {
+        "path": "disposition.json",
+        "sha256": "5650539c43739c6d9199dc11b990d53446cf071789d37d792902e551d2e28ce6"
+      },
+      {
+        "path": "interruption.json",
+        "sha256": "0a5476f0e890de967c149a2b06e18f39bf74fca449bbc762319fc353afe88f57"
+      }
+    ]
+  },
+  "harness": {
+    "candidate": "Complete sealed candidate snapshot. Fresh scratch copy per frozen case or exploratory control.",
+    "script": "preparation/keyboardia/postcandidate.py",
+    "container": "node:24.22.3-bookworm; --pull=never; --network=none; read-only root and dependency mounts; scratch worktree writable; 2 CPUs, 2 GiB, capability drop, no-new-privileges, non-root.",
+    "serialization": "All candidate executions passed through flock /tmp/test-audit-v2-docker.lock and the bounded frozen runner (180 seconds per invocation).",
+    "original_reuse": "Unchanged reference observations from preparation/keyboardia/evidence/seed-controls/ are reused, with per-log SHA-256 in the frozen matrix.",
+    "first_attempts": "Every post-candidate check completed on its first invocation. Intended failures and complete original logs are retained. The exploratory clean transport labels its arbitrary stimulus original; the stimulus, assertions and expected outcomes appear here."
+  },
+  "frozen_seed_matrix": [
+    {
+      "case": "default_model",
+      "stimulus": "Healthy DO, default seed set.",
+      "expected": "accept",
+      "selector": "model: read-your-writes",
+      "original": {
+        "exit": 0,
+        "assertion": "Existing model passes.",
+        "frozen_log": "evidence/seed-controls/default_model.log",
+        "sha256": "7f503e807e5ff821c8720f8182c0553268609c52e7b4dcbe0c51545096fc3ddb"
+      },
+      "candidate": {
+        "exit": 0,
+        "assertion": "Changed model passes after three schedules per seed, 33 schedules overall, all nine kinds, four dirty disconnects and 147 executed commands.",
+        "coverage": [
+          {
+            "seeds": "24301,1,7,42,1337,90210,12648430,2024,555,31337,4096",
+            "runs_per_seed": 3,
+            "accepted": 147,
+            "dirtyDisconnects": 4,
+            "byKind": {
+              "ws_tempo": 9,
+              "ws_swing": 15,
+              "rest_put": 14,
+              "rest_patch_state": 21,
+              "rest_patch_name": 20,
+              "hibernate": 27,
+              "hard_evict": 28,
+              "disconnect": 11,
+              "connect": 2
+            }
+          }
+        ],
+        "log": {
+          "path": "registered-seed/default_model.log",
+          "sha256": "7a53f8b979ba1b0792d4717dd27e7420a989be9c9b0b679cc2d4be7e6edae8da"
+        }
+      },
+      "attribution": "Retained legal default."
+    },
+    {
+      "case": "valid_schedule",
+      "stimulus": "Healthy DO, recorded rotating seed 45182094013.",
+      "expected": "accept",
+      "selector": "model: read-your-writes",
+      "original": {
+        "exit": 1,
+        "assertion": "Model failed only at the aggregate 100-command floor after 99 commands, all nine kinds and three dirty disconnects.",
+        "frozen_log": "evidence/seed-controls/valid_schedule.log",
+        "sha256": "7fc3f9a75647f426bd38020366b313a60846a4d798075780ecb0aac179448e83"
+      },
+      "candidate": {
+        "exit": 0,
+        "assertion": "First 30 schedules produce the same 99 commands. After the next 30 schedules, totals are 234 commands, all nine kinds and six dirty disconnects.",
+        "coverage": [
+          {
+            "seeds": "45182094013",
+            "runs_per_seed": 30,
+            "accepted": 99,
+            "dirtyDisconnects": 3,
+            "byKind": {
+              "ws_tempo": 10,
+              "ws_swing": 13,
+              "rest_put": 9,
+              "rest_patch_state": 11,
+              "rest_patch_name": 14,
+              "hibernate": 17,
+              "hard_evict": 11,
+              "disconnect": 8,
+              "connect": 6
+            }
+          },
+          {
+            "seeds": "45182094013",
+            "runs_per_seed": 60,
+            "accepted": 234,
+            "dirtyDisconnects": 6,
+            "byKind": {
+              "ws_tempo": 22,
+              "ws_swing": 25,
+              "rest_put": 28,
+              "rest_patch_state": 36,
+              "rest_patch_name": 30,
+              "hibernate": 36,
+              "hard_evict": 31,
+              "disconnect": 16,
+              "connect": 10
+            }
+          }
+        ],
+        "log": {
+          "path": "registered-seed/valid_schedule.log",
+          "sha256": "29c45b18f87f5879ee6deb0518b334e24f55de597bc884a9437388d4c80d3292"
+        }
+      },
+      "attribution": "Changed response to a valid short first batch; existing state assertions still execute."
+    },
+    {
+      "case": "persistence_original",
+      "stimulus": "Healthy DO, fixed WS-to-KV test.",
+      "expected": "accept",
+      "selector": "WS mutation makes KV lag",
+      "original": {
+        "exit": 0,
+        "assertion": "Fixed test passes.",
+        "frozen_log": "evidence/seed-controls/persistence_original.log",
+        "sha256": "8410a8b917bad1a5b9f37dce2c4eba36b4ddca55a37057564bb141347efff935"
+      },
+      "candidate": {
+        "exit": 0,
+        "assertion": "Fixed test passes. It observes GET tempo 150 and KV 120 after a WS write, then KV 150 after last-client close.",
+        "coverage": [],
+        "log": {
+          "path": "registered-seed/persistence_original.log",
+          "sha256": "0ff42e4f82a2c720af66cdbc932ab0e5c980cf538e3fffa74c8684aed31f83c7"
+        }
+      },
+      "attribution": "Pre-existing fixed keeper; code is identical."
+    },
+    {
+      "case": "persistence_fault",
+      "stimulus": "Skip only the final save in flushPendingKVSave.",
+      "expected": "reject",
+      "selector": "WS mutation makes KV lag",
+      "original": {
+        "exit": 1,
+        "assertion": "Fixed test fails, expected KV tempo 150 and observed 120.",
+        "frozen_log": "evidence/seed-controls/persistence_fault.log",
+        "sha256": "a3880f3416342fd47b44a076e481c3c3cadc3dd9cbea1981aa8e6c1d115cdd57"
+      },
+      "candidate": {
+        "exit": 1,
+        "assertion": "The same fixed test fails at the post-disconnect KV read, expected 150 and observed 120.",
+        "coverage": [],
+        "log": {
+          "path": "registered-seed/persistence_fault.log",
+          "sha256": "89b54d43b9eacb11523950af1546fdaa4a1c00a8961ba96c5af661dd7661cdd6"
+        }
+      },
+      "attribution": "Pre-existing fixed keeper. The changed model is separately executed against this fault below."
+    }
+  ],
+  "frozen_reference_results": {
+    "path": "preparation/keyboardia/evidence/seed-controls/results.json",
+    "sha256": "feb155ec71255f327035603b9a941502a1dcdcd8eb39a0ec3449e94cbe91d978"
+  },
+  "candidate_registered_results": {
+    "path": "registered-seed/results.json",
+    "sha256": "d68724a989269f500727239cf86e54ba43c05570df4eeb60c0dcb29ed74c3fd8"
+  },
+  "exploratory_controls": [
+    {
+      "id": "model-final-flush",
+      "class": "EXPLORATORY",
+      "stimulus": "Frozen missing-final-save mutation, changing only the selector to the actually submitted model.",
+      "original": "Fixed keeper sensitivity is established separately. The model state oracle and shrink/serialization path predate this patch.",
+      "candidate": {
+        "container_exit": 1,
+        "log": {
+          "path": "exploratory-model-final-flush/persistence_fault.log",
+          "sha256": "dacd3dfad68cc46d5fd64cf3c3fd3415bc11ac6b96ebc05177dee5f70e01a733"
+        },
+        "selected_tests": 1,
+        "assertion": "Model read stale KV swing 0, expected 1 after a WS edit and a disconnect. Failure went through shrinking before any successful batch summary.",
+        "counterexample": {
+          "lane": "stateMachine",
+          "example": [
+            {
+              "kind": "ws_swing",
+              "swing": 1
+            },
+            {
+              "kind": "disconnect"
+            }
+          ],
+          "seed": 1,
+          "path": "0:3:1:1:1:1:1:1",
+          "shrinks": 7
+        }
+      },
+      "meaning": "Confirms genuine persistence failure propagation in the executed candidate model."
+    },
+    {
+      "id": "continuous-stream",
+      "class": "EXPLORATORY",
+      "stimulus": "Emit replayable executed actions for every real model schedule. Compare candidate batch offsets 0 and 30 with one ordinary 60-example fast-check call from the same seed without a path option.",
+      "candidate": {
+        "container_exit": 0,
+        "log": {
+          "path": "exploratory-stream/original.log",
+          "sha256": "d4e2b8b2615340de33cd76535acdae463250d20a41f0bea6df78cb862fa7374a"
+        },
+        "peer": "single ordinary fast-check invocation, same seed, 60 schedules, no path option",
+        "matched": 60,
+        "commands": [
+          99,
+          135
+        ],
+        "schedule_sha256": [
+          "7754fcd08268bb6e570c2eba1962459923b7bf9f76de6b371842dccf795af24f",
+          "4d999bfabeeec921b87bbe7e275272e8548609c59a97d5ae26ebde8451158031",
+          "d266b90d0d39febf9c342d0925aecf56a79f406f9bfb7817e9ca203c65820989"
+        ]
+      },
+      "assertion": "Exact ordered action arrays, parameters and empty arrays matched for all 60 schedules. The halves differed and executed 99 and 135 commands. This comparison covers the reported historical seed and locked Worker fast-check version."
+    },
+    {
+      "id": "second-batch-fault-and-promotion",
+      "class": "EXPLORATORY",
+      "stimulus": "Cap the Worker REST PATCH swing field at 99 before storing it. Use the actual deposited model and project promotion CLI.",
+      "candidate": {
+        "container_exit": 0,
+        "log": {
+          "path": "exploratory-promotion/original.log",
+          "sha256": "392822151d5be81bcae0b6adbbcf520bae421260d2040ffc0b54310ef0e5a6b2"
+        },
+        "historical_seed_worker_exit": 1,
+        "first_stimulus": {
+          "lane": "stateMachine",
+          "example": [
+            {
+              "kind": "rest_patch_state",
+              "tempo": 60,
+              "swing": 100
+            }
+          ],
+          "seed": -2062546243,
+          "path": "51:1",
+          "shrinks": 1
+        },
+        "stored": [
+          [
+            {
+              "kind": "rest_patch_state",
+              "tempo": 60,
+              "swing": 100
+            }
+          ]
+        ],
+        "replay_seed": 42,
+        "faulted_replay_exit": 1,
+        "restored_replay_exit": 0
+      },
+      "assertion": "Only batch 1 reported success before the second batch hit actual swing 99 vs expected 100. The one-shrink counterexample was a single PATCH(60,100). The real CLI wrote that sole example to the scratch known-failures database. With seed 42 the model failed at known-failure #0 before random exploration. Restoring the Worker while keeping the example let seed 42 pass.",
+      "attribution": "Additional exploration reaches this specific regression; shrinking, the marker/codec, the real promotion CLI and replay-before-exploration were inherited."
+    },
+    {
+      "id": "mandatory-hibernate-and-bound",
+      "class": "EXPLORATORY",
+      "stimulus": "Delete only the hibernate command factory from default generation in independent clean scratch copies of original and candidate.",
+      "original": {
+        "container_exit": 0,
+        "log": {
+          "path": "exploratory-hibernate-original/original.log",
+          "sha256": "bb0c6f7aa405a480bd694bf1fd54a7543966fb471ec8a71856f7b2a45db7c1c3"
+        }
+      },
+      "candidate": {
+        "container_exit": 1,
+        "log": {
+          "path": "exploratory-hibernate-candidate/original.log",
+          "sha256": "b20a40a0770e7d8991ba5e32fea24132d241b243ad9acd496f4db3b1eea03423"
+        },
+        "coverage": [
+          {
+            "seeds": "24301,1,7,42,1337,90210,12648430,2024,555,31337,4096",
+            "runs_per_seed": 3,
+            "accepted": 143,
+            "dirtyDisconnects": 3,
+            "byKind": {
+              "ws_tempo": 18,
+              "ws_swing": 12,
+              "rest_put": 21,
+              "rest_patch_state": 17,
+              "rest_patch_name": 24,
+              "hibernate": 0,
+              "hard_evict": 27,
+              "disconnect": 13,
+              "connect": 11
+            }
+          },
+          {
+            "seeds": "24301,1,7,42,1337,90210,12648430,2024,555,31337,4096",
+            "runs_per_seed": 6,
+            "accepted": 251,
+            "dirtyDisconnects": 4,
+            "byKind": {
+              "ws_tempo": 28,
+              "ws_swing": 28,
+              "rest_put": 37,
+              "rest_patch_state": 35,
+              "rest_patch_name": 37,
+              "hibernate": 0,
+              "hard_evict": 49,
+              "disconnect": 21,
+              "connect": 16
+            }
+          },
+          {
+            "seeds": "24301,1,7,42,1337,90210,12648430,2024,555,31337,4096",
+            "runs_per_seed": 9,
+            "accepted": 393,
+            "dirtyDisconnects": 6,
+            "byKind": {
+              "ws_tempo": 40,
+              "ws_swing": 35,
+              "rest_put": 62,
+              "rest_patch_state": 63,
+              "rest_patch_name": 62,
+              "hibernate": 0,
+              "hard_evict": 72,
+              "disconnect": 36,
+              "connect": 23
+            }
+          }
+        ]
+      },
+      "assertion": "Original fixed-seed model remains green. The candidate exhausts three batches, 9 schedules per seed across 11 seeds (99 total schedules). The final 393 operations include six dirty disconnects, every other kind and zero hibernations. The coverage assertion fails."
+    },
+    {
+      "id": "independent-dirty-disconnect-and-bound",
+      "class": "EXPLORATORY",
+      "stimulus": "Historical seed with graceful disconnect allowed only when the model already equals its KV mirror. Other commands and all bookkeeping are unchanged.",
+      "candidate": {
+        "container_exit": 1,
+        "log": {
+          "path": "exploratory-dirty-candidate/original.log",
+          "sha256": "542ed932a826118251a02e0f7c402b7c14cb881b1bc5d4d3536aa0c149d6e9ca"
+        },
+        "coverage": [
+          {
+            "seeds": "45182094013",
+            "runs_per_seed": 30,
+            "accepted": 97,
+            "dirtyDisconnects": 0,
+            "byKind": {
+              "ws_tempo": 10,
+              "ws_swing": 14,
+              "rest_put": 9,
+              "rest_patch_state": 11,
+              "rest_patch_name": 14,
+              "hibernate": 17,
+              "hard_evict": 11,
+              "disconnect": 5,
+              "connect": 6
+            }
+          },
+          {
+            "seeds": "45182094013",
+            "runs_per_seed": 60,
+            "accepted": 230,
+            "dirtyDisconnects": 0,
+            "byKind": {
+              "ws_tempo": 24,
+              "ws_swing": 26,
+              "rest_put": 28,
+              "rest_patch_state": 36,
+              "rest_patch_name": 30,
+              "hibernate": 36,
+              "hard_evict": 31,
+              "disconnect": 10,
+              "connect": 9
+            }
+          },
+          {
+            "seeds": "45182094013",
+            "runs_per_seed": 90,
+            "accepted": 359,
+            "dirtyDisconnects": 0,
+            "byKind": {
+              "ws_tempo": 33,
+              "ws_swing": 49,
+              "rest_put": 49,
+              "rest_patch_state": 53,
+              "rest_patch_name": 43,
+              "hibernate": 58,
+              "hard_evict": 47,
+              "disconnect": 16,
+              "connect": 11
+            }
+          }
+        ]
+      },
+      "assertion": "Three batches reach 90 schedules, 359 executed commands, all nine kinds and 16 clean disconnects. Zero dirty disconnects triggers the coverage failure. This isolates the independent lifecycle requirement from total command count and the generic disconnect count.",
+      "attribution": "The dirty-disconnect guard was present in the pinned model."
+    }
+  ],
+  "legitimate_inputs": [
+    {
+      "input": "Default and historical short-first-batch schedule",
+      "source": "Independent registered matrix; deterministic legal historical input accepted without lowering threshold, dropping classes, changing seed or bypassing Worker reads."
+    },
+    {
+      "input": "Override 1,7,42; zero; signed -1",
+      "source": "Retained subject logs, one selected model test green each.",
+      "observations": [
+        {
+          "log": "submitted-artifacts/final-multi.log",
+          "counts": [
+            {
+              "seeds": "1,7,42",
+              "runs_per_seed": 10,
+              "accepted": 109,
+              "dirtyDisconnects": 3,
+              "byKind": {
+                "ws_tempo": 7,
+                "ws_swing": 12,
+                "rest_put": 11,
+                "rest_patch_state": 14,
+                "rest_patch_name": 18,
+                "hibernate": 16,
+                "hard_evict": 19,
+                "disconnect": 7,
+                "connect": 5
+              }
+            }
+          ]
+        },
+        {
+          "log": "submitted-artifacts/final-zero.log",
+          "counts": [
+            {
+              "seeds": "0",
+              "runs_per_seed": 30,
+              "accepted": 134,
+              "dirtyDisconnects": 5,
+              "byKind": {
+                "ws_tempo": 7,
+                "ws_swing": 9,
+                "rest_put": 16,
+                "rest_patch_state": 24,
+                "rest_patch_name": 18,
+                "hibernate": 25,
+                "hard_evict": 17,
+                "disconnect": 14,
+                "connect": 4
+              }
+            }
+          ]
+        },
+        {
+          "log": "submitted-artifacts/final-negative.log",
+          "counts": [
+            {
+              "seeds": "-1",
+              "runs_per_seed": 30,
+              "accepted": 117,
+              "dirtyDisconnects": 1,
+              "byKind": {
+                "ws_tempo": 7,
+                "ws_swing": 11,
+                "rest_put": 11,
+                "rest_patch_state": 14,
+                "rest_patch_name": 15,
+                "hibernate": 21,
+                "hard_evict": 17,
+                "disconnect": 12,
+                "connect": 9
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "Healthy owner with promoted single PATCH and different seed 42",
+      "source": "Independent promotion/replay pair; the same database accepted the restored implementation."
+    }
+  ],
+  "keepers": {
+    "model_observations": "Existing action-specific socket acknowledgments, REST status/authoritative GET (tempo, swing, name), independent KV state, and actual WebSocket readyState are maintained after accepted operations. Fixed last-client save and the new model both detect a removed last save. The hibernate action witnesses occurrence; the separate WS-only recovery case covers wake without an intervening REST GET.",
+    "model_replay": "Real fast-check shrink, machine-readable failure and promotion/replay logic predate the repair. The patch preserves them and reaches a real second-batch mutant.",
+    "other_sampled_examples": [
+      {
+        "path": "app/test/integration/collaboration-contract.test.ts:224",
+        "observation": "Two sockets receive matching acknowledgments and ordered sequence values. The test reads three touched cells through REST. Retained focused Worker log."
+      },
+      {
+        "path": "app/test/integration/eviction-recovery.test.ts:727",
+        "observation": "WS-only wake, acknowledgments, then second eviction and reads of both tempo 166 and swing 33. The rotating lane was independently rechecked."
+      },
+      {
+        "path": "app/src/sync/session.persistence.test.ts:109",
+        "observation": "Controlled fetch is held open to check client save ordering. This covers the client HTTP boundary."
+      },
+      {
+        "path": "app/src/audio/session-render-conservation.render.test.ts:89",
+        "observation": "Source checks measured onset count and timing against 0.125 seconds/step at 120 BPM. Native render execution remains unavailable."
+      }
+    ]
+  },
+  "other_findings": {
+    "sequence_rewind": {
+      "evidence": "The unchanged real Worker test drives three mutations and an eviction on a surviving socket, then sees sequence 1 again while GET still reads tempo 140. A separate unchanged production-client test uses controlled sockets and fake time. It applies a regressed edit and opens a third socket after the second group of eleven regressed frames. The existing test also recovers after the counter exceeds the earlier high-water mark.",
+      "contract": "Worker periodically persists its sequence counter. Client SyncHealth records older frames without lowering its high-water mark, recovers after excessive out-of-order frames, and its receive path still dispatches those frames. The supplied characterization checks explicitly describe the churn. These observations establish this bounded behavior. Production frequency, data loss, a mandatory alternative epoch/reset policy and an impact ranking are unestablished.",
+      "sources": [
+        "app/test/integration/seq-regression.test.ts:119",
+        "app/src/sync/seq-regression.test.ts:168",
+        "app/src/sync/sync-health.ts:171",
+        "app/src/sync/multiplayer.ts:1274",
+        "app/src/worker/live-session.ts:3036",
+        "submitted-artifacts/final-focus-worker.log",
+        "focused-recheck/original.log"
+      ]
+    },
+    "waveform": {
+      "evidence": "All four tests call their local computePeaks, while the canvas calls its separate private function. The retained subject mutant run reports all four tests green with the production function made to throw. The clean unit selection independently passes the four tests. The submitted mutation was temporary; the output log alone does not preserve the exact uncommitted edit.",
+      "attribution": "Existing documented test-local implementation gap. The submitted repair changes the Worker model only.",
+      "sources": [
+        "app/src/components/waveform-peaks.test.ts:11",
+        "app/src/components/Waveform.tsx:100",
+        "submitted-artifacts/control-waveform.log",
+        "focused-recheck/original.log"
+      ]
+    }
+  },
+  "availability": {
+    "assignment": {
+      "survey": 58,
+      "strata": 9,
+      "inventory": 370,
+      "sampled_paths_run_from_selections": 42,
+      "evidence": "42 distinct sampled files from 23 default unit, 11 additional unit and 8 sampled Worker files. All 58 frozen base blob IDs were checked independently. Depth of the claimed source survey is self-reported."
+    },
+    "independent_focused_recheck": {
+      "container_exit": 0,
+      "log": {
+        "path": "focused-recheck/original.log",
+        "sha256": "20ea4cf0c6363afc94810460852d69e9e64b8296295714000b69adaaeff538c2"
+      },
+      "three_rotating_worker_files": "28/28 passed at 45182094013",
+      "three_unit_files": "10/10 passed: three existing promote-pbt-counterexamples unit cases, three existing client sequence cases and four existing waveform-local cases."
+    },
+    "retained_subject_results": {
+      "baseline_unit": "343/343, 23 files (baseline-unit.log)",
+      "additional_unit": "120/120, 11 files (additional-unit.log)",
+      "neighbor_client_sequence": "3/3 (client-seq.log)",
+      "baseline_and_final_focused_worker": "84/84 in 8 files (baseline-worker.log, final-focus-worker.log)",
+      "complete_worker": "131/131 in 11 files (final-all.log), retained subject run; whole Worker suite was not repeated for this record. The sample overlaps this suite.",
+      "rotating_three_files_before_after": "27 pass + 1 quota failure to 28 pass (ci-seed-before.log, final-ci.log), final independently reproduced.",
+      "gates": "After access to the provisioned Worker compiler, subject logs record a passing test-antipattern scan (365 files), test-links and dead-export checks. The original missing-TypeScript attempt is retained."
+    },
+    "hosted_history": "Pinned main CI receipt contains 15 successes, 1 macOS visual cancellation before steps (unsupported configuration), and 1 skipped Stack A Identity. Rotating unit succeeded; integration preserved the job failure after counterexample handling. This is hosted history, with no new hosted execution.",
+    "tooling_limits": "Subject logs report ESLint unavailable, Playwright collection ENOTCACHED, app tsc initially unavailable, then missing Node/React declarations with the Worker compiler. Integration before/after typecheck logs match byte for byte with six pre-existing vitest.config.ts diagnostics. A clean app or integration typecheck was not demonstrated.",
+    "untested": "Local browser/Darwin/native audio and full application Vitest matrix. Independent reruns covered specified commands and a bounded set of seeds/controls; no assertion of exhaustive seed acceptance, suite-wide mutation sensitivity, CI rerun, or novel discovery."
+  },
+  "runtime_protocol_deviation": {
+    "observed": "The subject disclosed creating/removing a temporary compiler link that resolved through a shared .bin directory during setup. The supplied attach.py symlinks each package and the .bin directory into the writable checkout. Shared-host participants were expected to treat provisioned dependencies as read-only under a procedural path protocol. This is a reported write outside the assigned checkout.",
+    "current_observation": "App .bin has 12 links, all declared and resolving, and no tsc. The projected app lock omits TypeScript. Worker .bin has 8 declared resolving links, including tsc to ../typescript/bin/tsc from TypeScript 5.9.3. Both top-level .bin inventories exactly match their corresponding installed lock bin metadata at inspection.",
+    "limits": "No pre-event directory image or independent audit of the transient write, its window or cross-subject effect. The present match cannot establish the absence of earlier interference. The verifier made no changes to shared dependencies. Offline read-only Docker mounts apply to evaluator executions; subject isolation was procedural.",
+    "evidence": {
+      "path": "runtime-bin-observation.json",
+      "sha256": "35bcb66eb1aed157c71a08e039e7ac22e58039036048bfba5fcd2363e4a41873"
+    }
+  },
+  "limits_and_attribution": [
+    "Coverage is accumulated across the configured seeds, with every seed visited once in each attempted batch. The code does not promise that any individual seed covers every class.",
+    "The three-batch cap bounds examples. A legal seed can still fail on genuinely insufficient sampled coverage after that cap. This is not a proof of green behavior for every seed or under every runtime/time budget. Existing per-check interrupts and the overall Vitest title timeout still apply.",
+    "Adding coverage for all enumerated kinds detects a missing hibernate generator. A recorder count for an action is not by itself a proof of every effect of that action. State and lifecycle evidence comes from the retained read/acknowledgment/transport assertions and the fixed specific keepers.",
+    "Specific faults and legal runs were exercised. Other frozen sync/discovery candidates were outside the submitted repair. The overall impact ranking in the subject response was not independently established."
+  ],
+  "artifact_provenance": {
+    "sealed_report": {
+      "path": "response.md",
+      "sha256": "b47d6084bac3e5bbebbed975d8fcd99269973c6933d2c771fc724e02c4298b1b"
+    },
+    "sealed_patch": {
+      "path": "patch.diff",
+      "sha256": "f8b27ed2da5a9b82aabc92102b7ef29923145bc5935020cbd9360aaee396d0b7"
+    },
+    "sealed_tree_manifest": {
+      "path": "candidate-snapshot.json",
+      "sha256": "35939ef42941883a682a1e856e1e557a015ab021de186fc8c878f282e32627ed"
+    },
+    "submitted_collection_manifest": {
+      "path": "submitted-artifacts/collection.json",
+      "sha256": "40e708bde76df27bb072c122c5d37dc9e8c7911ee18fa043bef3e5963190f4ae"
+    },
+    "integrity_record": {
+      "path": "artifact-verification.json",
+      "sha256": "926dea0e9d54b9d091a26f99f3a70fecb6ee617b54295f7e6394faac94c5ea04"
+    },
+    "checked_snapshot_paths": 985,
+    "differences_from_pinned_export": {
+      "app/test/integration/state-machine-fuzz.test.ts": {
+        "base_sha256": "2e94b53a32fa518d9157611bc7133c020dd1d1091dddbd028ffef2bf7edb8516",
+        "candidate_sha256": "5ebbcacaefd6c8d955a4295238e5f044b8853e5807559e60c19275593717861c"
+      }
+    },
+    "all_retained_inputs_rehashed": 32,
+    "retained_file_types": {
+      ".log": 30,
+      ".txt": 1,
+      ".tsv": 1
+    },
+    "baseline_archive_sha256": "c1b763f7f1f5f7beacb1e52a0fdfff53a49a0ad85f7749ef7edb472ffdfb9a34",
+    "exploratory_driver": {
+      "path": "exploratory-control.py",
+      "sha256": "7f280a0ec778016124fd79a4147e209cedc11bf2cc710735bf7c3165c2502275"
+    },
+    "paths": "Local evidence paths are relative to the sealed output directory unless prefixed preparation/ or app/. Per-log hashes for all 32 original submitted files are in the collection manifest."
+  }
+}

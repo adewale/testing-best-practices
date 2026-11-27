@@ -1,0 +1,1533 @@
+[
+  {
+    "id": "discovery",
+    "started_utc": "2026-11-27T14:30:56.355+00:00",
+    "elapsed_seconds": 0.307,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "git rev-parse HEAD; git rev-list --count HEAD; git status --short --untracked-files=no; git ls-files | wc -l; bun --version; git log -30 --oneline; rg --files --hidden -g \"!.git\" -g \"!node_modules\" .github/workflows; rg --files -g \"*.test.ts\" -g \"*.spec.ts\" | cut -d/ -f1,2 | sort | uniq -c | sort -rn | head -100"
+    ],
+    "command": "bash -c 'git rev-parse HEAD; git rev-list --count HEAD; git status --short --untracked-files=no; git ls-files | wc -l; bun --version; git log -30 --oneline; rg --files --hidden -g \"!.git\" -g \"!node_modules\" .github/workflows; rg --files -g \"*.test.ts\" -g \"*.spec.ts\" | cut -d/ -f1,2 | sort | uniq -c | sort -rn | head -100'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/discovery.log"
+  },
+  {
+    "id": "leads-names",
+    "started_utc": "2026-11-27T14:31:08.441+00:00",
+    "elapsed_seconds": 0.017,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg --files src/__tests__ -g \"*.test.ts\" | sort | sed -n \"1,255p\"; rg -n \"^#|^##\" docs/testing-strategy.md; rg -n \"shard|run test|e2e|browser|contract-discovery|unit\" .github/workflows/ci.yml"
+    ],
+    "command": "bash -c 'rg --files src/__tests__ -g \"*.test.ts\" | sort | sed -n \"1,255p\"; rg -n \"^#|^##\" docs/testing-strategy.md; rg -n \"shard|run test|e2e|browser|contract-discovery|unit\" .github/workflows/ci.yml'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/leads-names.log"
+  },
+  {
+    "id": "leads-implementation",
+    "started_utc": "2026-11-27T14:31:08.456+00:00",
+    "elapsed_seconds": 0.013,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"src/.*\\\\.ts|__dirname.*\\.ts|\\.toHaveBeenCalled|_forTest|ForTests|forTesting\" src/__tests__ -g \"*.test.ts\" | head -230"
+    ],
+    "command": "bash -c 'rg -n \"src/.*\\\\.ts|__dirname.*\\.ts|\\.toHaveBeenCalled|_forTest|ForTests|forTesting\" src/__tests__ -g \"*.test.ts\" | head -230'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/leads-implementation.log"
+  },
+  {
+    "id": "leads-assertions",
+    "started_utc": "2026-11-27T14:31:08.449+00:00",
+    "elapsed_seconds": 0.026,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n -i \"toBeGreaterThanOrEqual\\(0\\)|toHaveLength\\(.*\\.length\\)|expect\\(true\\)\\.toBe\\(true\\)|Array\\.isArray\\(|toEqual\\(.*\\(.*\\)\\)\" src/__tests__ -g \"*.test.ts\" | head -180"
+    ],
+    "command": "bash -c 'rg -n -i \"toBeGreaterThanOrEqual\\(0\\)|toHaveLength\\(.*\\.length\\)|expect\\(true\\)\\.toBe\\(true\\)|Array\\.isArray\\(|toEqual\\(.*\\(.*\\)\\)\" src/__tests__ -g \"*.test.ts\" | head -180'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/leads-assertions.log"
+  },
+  {
+    "id": "scope-routing-docs",
+    "started_utc": "2026-11-27T14:31:53.632+00:00",
+    "elapsed_seconds": 0.019,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"^#\" docs/testing-strategy.md; rg -n \"test|shard|qualify\" .github/workflows/ci.yml; rg -n \"shard|unit test|bun run test|e2e\" .github/workflows/qualify-ci.yml; git remote -v; du -sh src eval"
+    ],
+    "command": "bash -c 'rg -n \"^#\" docs/testing-strategy.md; rg -n \"test|shard|qualify\" .github/workflows/ci.yml; rg -n \"shard|unit test|bun run test|e2e\" .github/workflows/qualify-ci.yml; git remote -v; du -sh src eval'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/scope-routing-docs.log"
+  },
+  {
+    "id": "file-association",
+    "started_utc": "2026-11-27T14:31:53.660+00:00",
+    "elapsed_seconds": 0.026,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"files\\.map|files\\.every|files\\[[01]\\](\\.output|\\.input|\\.file|\\.path)|multi-input|multi-file|multiple files\" src/cli src/__tests__ e2e docs/cli* -g \"*.ts\" -g \"*.md\" | head -160; rg --files src/cli | sort"
+    ],
+    "command": "bash -c 'rg -n \"files\\.map|files\\.every|files\\[[01]\\](\\.output|\\.input|\\.file|\\.path)|multi-input|multi-file|multiple files\" src/cli src/__tests__ e2e docs/cli* -g \"*.ts\" -g \"*.md\" | head -160; rg --files src/cli | sort'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/file-association.log"
+  },
+  {
+    "id": "supervision-routing",
+    "started_utc": "2026-11-27T14:31:53.655+00:00",
+    "elapsed_seconds": 0.032,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"run.*[Dd]eadline|[Ss]upervis|RENDER_TIMEOUT|timeout.*124|124.*timeout\" src/cli bin src/__tests__ e2e -g \"*.ts\"; rg -n \"supervised|--timeout|exit (code|status)|RENDER_TIMEOUT\" bin README.md AGENT_NATIVE.md docs/cli* docs/reference -g \"*.md\" -g \"*.ts\""
+    ],
+    "command": "bash -c 'rg -n \"run.*[Dd]eadline|[Ss]upervis|RENDER_TIMEOUT|timeout.*124|124.*timeout\" src/cli bin src/__tests__ e2e -g \"*.ts\"; rg -n \"supervised|--timeout|exit (code|status)|RENDER_TIMEOUT\" bin README.md AGENT_NATIVE.md docs/cli* docs/reference -g \"*.md\" -g \"*.ts\"'",
+    "exit_code": 2,
+    "artifact": "evidence/commands/supervision-routing.log"
+  },
+  {
+    "id": "workspace-clone",
+    "started_utc": "2026-11-27T14:31:53.632+00:00",
+    "elapsed_seconds": 2.264,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "git",
+      "clone",
+      "--shared",
+      "--no-checkout",
+      ".",
+      "../scratch/control"
+    ],
+    "command": "git clone --shared --no-checkout . ../scratch/control",
+    "exit_code": 0,
+    "artifact": "evidence/commands/workspace-clone.log"
+  },
+  {
+    "id": "workspace-checkout",
+    "started_utc": "2026-11-27T14:32:03.992+00:00",
+    "elapsed_seconds": 0.437,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "git",
+      "checkout",
+      "--detach",
+      "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004"
+    ],
+    "command": "git checkout --detach f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+    "exit_code": 0,
+    "artifact": "evidence/commands/workspace-checkout.log"
+  },
+  {
+    "id": "workspace-deps",
+    "started_utc": "2026-11-27T14:32:36.832+00:00",
+    "elapsed_seconds": 0.002,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "ln",
+      "-s",
+      "../../repo/node_modules",
+      "node_modules"
+    ],
+    "command": "ln -s ../../repo/node_modules node_modules",
+    "exit_code": 0,
+    "artifact": "evidence/commands/workspace-deps.log"
+  },
+  {
+    "id": "cli-contract-refs",
+    "started_utc": "2026-11-27T14:32:36.835+00:00",
+    "elapsed_seconds": 0.034,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n -i \"multiple inputs|multiple input files|files in order|multiple files|per[- ]file|per[- ]input|skips bad|multi[- ]input\" README.md AGENT_NATIVE.md Instructions_for_agents.md src/cli docs -g \"*.md\" -g \"*.ts\" | head -110; rg -n -i \"files.{0,26}\\.(ok|error|index|warnings|output)|\\.files\\b\" src/__tests__ e2e -g \"*.test.ts\" | rg -i \"cli-|e2e/cli|agent-cli|render-multi\" | head -170"
+    ],
+    "command": "bash -c 'rg -n -i \"multiple inputs|multiple input files|files in order|multiple files|per[- ]file|per[- ]input|skips bad|multi[- ]input\" README.md AGENT_NATIVE.md Instructions_for_agents.md src/cli docs -g \"*.md\" -g \"*.ts\" | head -110; rg -n -i \"files.{0,26}\\.(ok|error|index|warnings|output)|\\.files\\b\" src/__tests__ e2e -g \"*.test.ts\" | rg -i \"cli-|e2e/cli|agent-cli|render-multi\" | head -170'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/cli-contract-refs.log"
+  },
+  {
+    "id": "palette-refs",
+    "started_utc": "2026-11-27T14:32:36.840+00:00",
+    "elapsed_seconds": 0.034,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"brand-pine|--t-bg:|--bg:|--border:|--line:|\\[data-scheme=|--(success|warn|danger|info):\" editor/css/variables.css website/source/assets/styles.css | head -110; rg -n \"chromeThemeColors|brand-pine|hairline\" editor/js/rendering.js editor/css/variables.css DESIGN.md | head -100; rg -n -i \"chrome triplet|brand-pine|functional hues|chromeThemeColors|chrome token|hairline mix\" src/__tests__ e2e -g \"*.ts\" | head -140; which chromium chromium-browser google-chrome || true"
+    ],
+    "command": "bash -c 'rg -n \"brand-pine|--t-bg:|--bg:|--border:|--line:|\\[data-scheme=|--(success|warn|danger|info):\" editor/css/variables.css website/source/assets/styles.css | head -110; rg -n \"chromeThemeColors|brand-pine|hairline\" editor/js/rendering.js editor/css/variables.css DESIGN.md | head -100; rg -n -i \"chrome triplet|brand-pine|functional hues|chromeThemeColors|chrome token|hairline mix\" src/__tests__ e2e -g \"*.ts\" | head -140; which chromium chromium-browser google-chrome || true'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/palette-refs.log"
+  },
+  {
+    "id": "paint-consumers",
+    "started_utc": "2026-11-27T14:32:57.567+00:00",
+    "elapsed_seconds": 0.033,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n -- \"--brand-pine|class=\\\"brand\\\"|class=\\\"mark\\\"\" editor website/source -g \"\" 2>/dev/null | head -100; rg -n \"stylesheet|styles.css|variables.css|rendering.js\" editor/index.html website/build.ts website/source/index.html; rg -n \"backgroundColor|brand-pine|class=.brand|\\.brand .mark\" e2e -g \"*.test.ts\" | head -70"
+    ],
+    "command": "bash -c 'rg -n -- \"--brand-pine|class=\\\"brand\\\"|class=\\\"mark\\\"\" editor website/source -g \"\" 2>/dev/null | head -100; rg -n \"stylesheet|styles.css|variables.css|rendering.js\" editor/index.html website/build.ts website/source/index.html; rg -n \"backgroundColor|brand-pine|class=.brand|\\.brand .mark\" e2e -g \"*.test.ts\" | head -70'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/paint-consumers.log"
+  },
+  {
+    "id": "base-cli",
+    "started_utc": "2026-11-27T14:32:57.574+00:00",
+    "elapsed_seconds": 0.746,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/cli-multi-input.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/cli-multi-input.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-cli.log"
+  },
+  {
+    "id": "candidate-history",
+    "started_utc": "2026-11-27T14:33:27.031+00:00",
+    "elapsed_seconds": 0.017,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "git rev-parse --is-shallow-repository; cat .git/shallow; git log --format=\"%h %cs %s\" -- src/__tests__/cli-multi-input.test.ts src/__tests__/chrome-token-lockstep.test.ts website/source/assets/styles.css src/cli/index.ts editor/css/variables.css; command -v gh; rg -n \"skipp?ing bad|multi-input|logo chip|hairline\" CHANGELOG.md | head -35"
+    ],
+    "command": "bash -c 'git rev-parse --is-shallow-repository; cat .git/shallow; git log --format=\"%h %cs %s\" -- src/__tests__/cli-multi-input.test.ts src/__tests__/chrome-token-lockstep.test.ts website/source/assets/styles.css src/cli/index.ts editor/css/variables.css; command -v gh; rg -n \"skipp?ing bad|multi-input|logo chip|hairline\" CHANGELOG.md | head -35'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/candidate-history.log"
+  },
+  {
+    "id": "base-css",
+    "started_utc": "2026-11-27T14:33:27.010+00:00",
+    "elapsed_seconds": 0.322,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/chrome-token-lockstep.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/chrome-token-lockstep.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-css.log"
+  },
+  {
+    "id": "strict-contract",
+    "started_utc": "2026-11-27T14:33:47.060+00:00",
+    "elapsed_seconds": 0.054,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"fonts.googleapis.com|security.{0,12}strict|default.*strict|SecurityMode\" src/__tests__/agent-cli-render-formats.test.ts src/__tests__/cli-multi-input.test.ts src/__tests__/cli-batch-render-parity.test.ts src/cli/index.ts src/output-security* src/style* src/renderer.ts | head -160; rg -n \"googleapis.com|fonts.gstatic.com\" src -g \"!*.test.ts\" | head -65; rg -n -- \"--output|Multiple inputs\" src/cli/help.ts e2e/cli-smoke.e2e.test.ts src/__tests__/agent-cli-render-formats.test.ts | head -115"
+    ],
+    "command": "bash -c 'rg -n \"fonts.googleapis.com|security.{0,12}strict|default.*strict|SecurityMode\" src/__tests__/agent-cli-render-formats.test.ts src/__tests__/cli-multi-input.test.ts src/__tests__/cli-batch-render-parity.test.ts src/cli/index.ts src/output-security* src/style* src/renderer.ts | head -160; rg -n \"googleapis.com|fonts.gstatic.com\" src -g \"!*.test.ts\" | head -65; rg -n -- \"--output|Multiple inputs\" src/cli/help.ts e2e/cli-smoke.e2e.test.ts src/__tests__/agent-cli-render-formats.test.ts | head -115'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/strict-contract.log"
+  },
+  {
+    "id": "history-cli-public",
+    "started_utc": "2026-11-27T14:33:47.047+00:00",
+    "elapsed_seconds": 0.732,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "12s",
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/adewale/agentic-mermaid/commits",
+      "-f",
+      "sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+      "-f",
+      "path=src/__tests__/cli-multi-input.test.ts",
+      "-f",
+      "per_page=6",
+      "--jq",
+      ".[] | [.sha, .commit.message|split(\"\\n\")[0]] | @tsv"
+    ],
+    "command": "timeout 12s gh api --method GET repos/adewale/agentic-mermaid/commits -f sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004 -f path=src/__tests__/cli-multi-input.test.ts -f per_page=6 --jq '.[] | [.sha, .commit.message|split(\"\\n\")[0]] | @tsv'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/history-cli-public.log"
+  },
+  {
+    "id": "history-css-public",
+    "started_utc": "2026-11-27T14:33:47.062+00:00",
+    "elapsed_seconds": 0.758,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "12s",
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/adewale/agentic-mermaid/commits",
+      "-f",
+      "sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+      "-f",
+      "path=src/__tests__/chrome-token-lockstep.test.ts",
+      "-f",
+      "per_page=6",
+      "--jq",
+      ".[] | [.sha, .commit.message|split(\"\\n\")[0]] | @tsv"
+    ],
+    "command": "timeout 12s gh api --method GET repos/adewale/agentic-mermaid/commits -f sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004 -f path=src/__tests__/chrome-token-lockstep.test.ts -f per_page=6 --jq '.[] | [.sha, .commit.message|split(\"\\n\")[0]] | @tsv'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/history-css-public.log"
+  },
+  {
+    "id": "base-cli-siblings",
+    "started_utc": "2026-11-27T14:33:47.057+00:00",
+    "elapsed_seconds": 1.668,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "-t",
+      "multi-input|multiple files, emits",
+      "src/__tests__/cli-multi-input.test.ts",
+      "src/__tests__/cli-error-envelope.test.ts",
+      "e2e/cli.e2e.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 -t 'multi-input|multiple files, emits' src/__tests__/cli-multi-input.test.ts src/__tests__/cli-error-envelope.test.ts e2e/cli.e2e.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-cli-siblings.log"
+  },
+  {
+    "id": "recent-graph",
+    "started_utc": "2026-11-27T14:34:22.111+00:00",
+    "elapsed_seconds": 0.036,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "git show -m --first-parent --stat --format=\"%h %s\" HEAD | head -125; rg -n \"app-mark|function.*render|class=\\\"app-brand\" editor -g \"*.html\" -g \"*.ts\" -g \"*.js\" | head -40; rg --files src/__tests__ -g \"*.test.ts\" | rg \"route|arrowhead|clearance|painted\" | head -100"
+    ],
+    "command": "bash -c 'git show -m --first-parent --stat --format=\"%h %s\" HEAD | head -125; rg -n \"app-mark|function.*render|class=\\\"app-brand\" editor -g \"*.html\" -g \"*.ts\" -g \"*.js\" | head -40; rg --files src/__tests__ -g \"*.test.ts\" | rg \"route|arrowhead|clearance|painted\" | head -100'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/recent-graph.log"
+  },
+  {
+    "id": "cli-history-origin",
+    "started_utc": "2026-11-27T14:34:22.114+00:00",
+    "elapsed_seconds": 0.614,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "12s",
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/adewale/agentic-mermaid/commits",
+      "-f",
+      "sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+      "-f",
+      "path=src/__tests__/cli-multi-input.test.ts",
+      "-f",
+      "per_page=100",
+      "--jq",
+      ".[] | [.sha, .commit.message|split(\"\\n\")[0]] | @tsv"
+    ],
+    "command": "timeout 12s gh api --method GET repos/adewale/agentic-mermaid/commits -f sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004 -f path=src/__tests__/cli-multi-input.test.ts -f per_page=100 --jq '.[] | [.sha, .commit.message|split(\"\\n\")[0]] | @tsv'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/cli-history-origin.log"
+  },
+  {
+    "id": "base-cli-witness",
+    "started_utc": "2026-11-27T14:35:16.609+00:00",
+    "elapsed_seconds": 0.52,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "python",
+      "../../evidence/cli-witness.py"
+    ],
+    "command": "timeout 120s python ../../evidence/cli-witness.py",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-cli-witness.log"
+  },
+  {
+    "id": "base-css-witness",
+    "started_utc": "2026-11-27T14:35:17.360+00:00",
+    "elapsed_seconds": 0.724,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "../../evidence/color-witness.cjs"
+    ],
+    "command": "timeout 120s bun ../../evidence/color-witness.cjs",
+    "exit_code": 1,
+    "artifact": "evidence/commands/base-css-witness.log"
+  },
+  {
+    "id": "multi-output-observation",
+    "started_utc": "2026-11-27T14:35:18.296+00:00",
+    "elapsed_seconds": 0.93,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "python",
+      "../../evidence/cli-output-policy.py"
+    ],
+    "command": "timeout 120s python ../../evidence/cli-output-policy.py",
+    "exit_code": 0,
+    "artifact": "evidence/commands/multi-output-observation.log"
+  },
+  {
+    "id": "apply-cli-fault",
+    "started_utc": "2026-11-27T14:35:19.442+00:00",
+    "elapsed_seconds": 0.033,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/controls.py",
+      "cli-fault"
+    ],
+    "command": "python ../../evidence/controls.py cli-fault",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-cli-fault.log"
+  },
+  {
+    "id": "fault-cli-suite",
+    "started_utc": "2026-11-27T14:35:19.682+00:00",
+    "elapsed_seconds": 0.658,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/cli-multi-input.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/cli-multi-input.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/fault-cli-suite.log"
+  },
+  {
+    "id": "fault-cli-siblings",
+    "started_utc": "2026-11-27T14:35:20.558+00:00",
+    "elapsed_seconds": 1.582,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "-t",
+      "multi-input|multiple files, emits",
+      "src/__tests__/cli-multi-input.test.ts",
+      "src/__tests__/cli-error-envelope.test.ts",
+      "e2e/cli.e2e.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 -t 'multi-input|multiple files, emits' src/__tests__/cli-multi-input.test.ts src/__tests__/cli-error-envelope.test.ts e2e/cli.e2e.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/fault-cli-siblings.log"
+  },
+  {
+    "id": "fault-cli-witness",
+    "started_utc": "2026-11-27T14:35:22.350+00:00",
+    "elapsed_seconds": 0.409,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "python",
+      "../../evidence/cli-witness.py"
+    ],
+    "command": "timeout 120s python ../../evidence/cli-witness.py",
+    "exit_code": 1,
+    "artifact": "evidence/commands/fault-cli-witness.log"
+  },
+  {
+    "id": "apply-cli-permitted",
+    "started_utc": "2026-11-27T14:35:22.987+00:00",
+    "elapsed_seconds": 0.036,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/controls.py",
+      "cli-permitted"
+    ],
+    "command": "python ../../evidence/controls.py cli-permitted",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-cli-permitted.log"
+  },
+  {
+    "id": "permitted-cli-siblings",
+    "started_utc": "2026-11-27T14:35:23.235+00:00",
+    "elapsed_seconds": 1.426,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "-t",
+      "multi-input|multiple files, emits",
+      "src/__tests__/cli-multi-input.test.ts",
+      "src/__tests__/cli-error-envelope.test.ts",
+      "e2e/cli.e2e.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 -t 'multi-input|multiple files, emits' src/__tests__/cli-multi-input.test.ts src/__tests__/cli-error-envelope.test.ts e2e/cli.e2e.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/permitted-cli-siblings.log"
+  },
+  {
+    "id": "permitted-cli-witness",
+    "started_utc": "2026-11-27T14:35:24.897+00:00",
+    "elapsed_seconds": 0.472,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "python",
+      "../../evidence/cli-witness.py"
+    ],
+    "command": "timeout 120s python ../../evidence/cli-witness.py",
+    "exit_code": 0,
+    "artifact": "evidence/commands/permitted-cli-witness.log"
+  },
+  {
+    "id": "restore-cli",
+    "started_utc": "2026-11-27T14:35:25.582+00:00",
+    "elapsed_seconds": 0.205,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "git",
+      "restore",
+      "--",
+      "src/cli/index.ts"
+    ],
+    "command": "git restore -- src/cli/index.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/restore-cli.log"
+  },
+  {
+    "id": "bundle-context",
+    "started_utc": "2026-11-27T14:35:38.805+00:00",
+    "elapsed_seconds": 0.028,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"bundleEdgePaths|===.*\\.points|\\.points ===|oldPoints|originalPoints|Map<.*Point|WeakMap<.*Point\" src/layout-engine.ts src/layout/ src/route-contracts.ts src/__tests__/layout-bundle-proposals.test.ts | head -180; rg -n \"selects|round|point|referen|duplicate|identity\" src/layout/passes/edge-bundling.ts | head -120; wc -l src/layout/passes/edge-bundling.ts src/layout/graph-paint-support.ts; git log -12 --format=\"%h %s\" -- src/__tests__/layout-bundle-proposals.test.ts src/layout/passes/edge-bundling.ts"
+    ],
+    "command": "bash -c 'rg -n \"bundleEdgePaths|===.*\\.points|\\.points ===|oldPoints|originalPoints|Map<.*Point|WeakMap<.*Point\" src/layout-engine.ts src/layout/ src/route-contracts.ts src/__tests__/layout-bundle-proposals.test.ts | head -180; rg -n \"selects|round|point|referen|duplicate|identity\" src/layout/passes/edge-bundling.ts | head -120; wc -l src/layout/passes/edge-bundling.ts src/layout/graph-paint-support.ts; git log -12 --format=\"%h %s\" -- src/__tests__/layout-bundle-proposals.test.ts src/layout/passes/edge-bundling.ts'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/bundle-context.log"
+  },
+  {
+    "id": "browser-diagnosis",
+    "started_utc": "2026-11-27T14:35:38.797+00:00",
+    "elapsed_seconds": 0.07,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"ERROR|FATAL|crashpad|No such|Permission denied|Failed\" ../evidence/commands/base-css-witness.log | cut -c1-400 | head -24; ls -l /usr/bin/chromium; /usr/bin/chromium --version"
+    ],
+    "command": "bash -c 'rg -n \"ERROR|FATAL|crashpad|No such|Permission denied|Failed\" ../evidence/commands/base-css-witness.log | cut -c1-400 | head -24; ls -l /usr/bin/chromium; /usr/bin/chromium --version'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/browser-diagnosis.log"
+  },
+  {
+    "id": "base-css-browser",
+    "started_utc": "2026-11-27T14:36:50.198+00:00",
+    "elapsed_seconds": 1.635,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "python",
+      "../../evidence/short-browser-temp.py"
+    ],
+    "command": "timeout 120s python ../../evidence/short-browser-temp.py",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-css-browser.log"
+  },
+  {
+    "id": "apply-css-fault",
+    "started_utc": "2026-11-27T14:37:45.079+00:00",
+    "elapsed_seconds": 0.038,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/controls.py",
+      "css-fault"
+    ],
+    "command": "python ../../evidence/controls.py css-fault",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-css-fault.log"
+  },
+  {
+    "id": "bundle-history",
+    "started_utc": "2026-11-27T14:37:45.170+00:00",
+    "elapsed_seconds": 0.003,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "git",
+      "show",
+      "-s",
+      "--format=%H%n%s%n%b",
+      "5c232f9"
+    ],
+    "command": "git show -s --format=%H%n%s%n%b 5c232f9",
+    "exit_code": 0,
+    "artifact": "evidence/commands/bundle-history.log"
+  },
+  {
+    "id": "fault-css-suite",
+    "started_utc": "2026-11-27T14:37:45.364+00:00",
+    "elapsed_seconds": 0.311,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/chrome-token-lockstep.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/chrome-token-lockstep.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/fault-css-suite.log"
+  },
+  {
+    "id": "fault-css-browser",
+    "started_utc": "2026-11-27T14:37:45.907+00:00",
+    "elapsed_seconds": 1.049,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "python",
+      "../../evidence/short-browser-temp.py"
+    ],
+    "command": "timeout 120s python ../../evidence/short-browser-temp.py",
+    "exit_code": 1,
+    "artifact": "evidence/commands/fault-css-browser.log"
+  },
+  {
+    "id": "apply-css-permitted",
+    "started_utc": "2026-11-27T14:37:47.166+00:00",
+    "elapsed_seconds": 0.031,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/controls.py",
+      "css-permitted"
+    ],
+    "command": "python ../../evidence/controls.py css-permitted",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-css-permitted.log"
+  },
+  {
+    "id": "permitted-css-suite",
+    "started_utc": "2026-11-27T14:37:47.439+00:00",
+    "elapsed_seconds": 0.261,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/chrome-token-lockstep.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/chrome-token-lockstep.test.ts",
+    "exit_code": 1,
+    "artifact": "evidence/commands/permitted-css-suite.log"
+  },
+  {
+    "id": "permitted-css-browser",
+    "started_utc": "2026-11-27T14:37:47.922+00:00",
+    "elapsed_seconds": 0.896,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "python",
+      "../../evidence/short-browser-temp.py"
+    ],
+    "command": "timeout 120s python ../../evidence/short-browser-temp.py",
+    "exit_code": 0,
+    "artifact": "evidence/commands/permitted-css-browser.log"
+  },
+  {
+    "id": "restore-css",
+    "started_utc": "2026-11-27T14:37:49.034+00:00",
+    "elapsed_seconds": 0.006,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "git",
+      "restore",
+      "--",
+      "website/source/assets/styles.css"
+    ],
+    "command": "git restore -- website/source/assets/styles.css",
+    "exit_code": 0,
+    "artifact": "evidence/commands/restore-css.log"
+  },
+  {
+    "id": "base-graph-owner",
+    "started_utc": "2026-11-27T14:37:49.250+00:00",
+    "elapsed_seconds": 1.377,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-graph-owner.log"
+  },
+  {
+    "id": "base-graph-witness",
+    "started_utc": "2026-11-27T14:39:22.464+00:00",
+    "elapsed_seconds": 0.103,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "../../evidence/bundle-witness.ts"
+    ],
+    "command": "timeout 120s bun ../../evidence/bundle-witness.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-graph-witness.log"
+  },
+  {
+    "id": "relevant-history-output",
+    "started_utc": "2026-11-27T14:39:22.456+00:00",
+    "elapsed_seconds": 0.723,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "15s",
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/adewale/agentic-mermaid/commits",
+      "-f",
+      "sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+      "-f",
+      "path=src/__tests__/agent-cli-render-formats.test.ts",
+      "-f",
+      "per_page=40",
+      "--jq",
+      ".[] | [.sha,.commit.message|split(\"\\n\")[0]]|@tsv"
+    ],
+    "command": "timeout 15s gh api --method GET repos/adewale/agentic-mermaid/commits -f sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004 -f path=src/__tests__/agent-cli-render-formats.test.ts -f per_page=40 --jq '.[] | [.sha,.commit.message|split(\"\\n\")[0]]|@tsv'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/relevant-history-output.log"
+  },
+  {
+    "id": "graph-blame",
+    "started_utc": "2026-11-27T14:39:23.255+00:00",
+    "elapsed_seconds": 0.022,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "git",
+      "blame",
+      "--abbrev=11",
+      "-L",
+      "93,133",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "git blame --abbrev=11 -L 93,133 src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/graph-blame.log"
+  },
+  {
+    "id": "shared-brand-siblings",
+    "started_utc": "2026-11-27T14:39:23.320+00:00",
+    "elapsed_seconds": 0.017,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"brand-pine|brand-on|app-mark|\\.brand \\.mark|fallback chip\" src/__tests__ e2e -g \"*.ts\" | head -105"
+    ],
+    "command": "bash -c 'rg -n \"brand-pine|brand-on|app-mark|\\.brand \\.mark|fallback chip\" src/__tests__ e2e -g \"*.ts\" | head -105'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/shared-brand-siblings.log"
+  },
+  {
+    "id": "base-graph-public",
+    "started_utc": "2026-11-27T14:39:22.783+00:00",
+    "elapsed_seconds": 0.589,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "../../evidence/bundle-public.ts"
+    ],
+    "command": "timeout 120s bun ../../evidence/bundle-public.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/base-graph-public.log"
+  },
+  {
+    "id": "apply-graph-fault",
+    "started_utc": "2026-11-27T14:39:23.591+00:00",
+    "elapsed_seconds": 0.034,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/graph-controls.py",
+      "fault"
+    ],
+    "command": "python ../../evidence/graph-controls.py fault",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-graph-fault.log"
+  },
+  {
+    "id": "fault-graph-owner",
+    "started_utc": "2026-11-27T14:39:23.837+00:00",
+    "elapsed_seconds": 1.519,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 1,
+    "artifact": "evidence/commands/fault-graph-owner.log"
+  },
+  {
+    "id": "fault-graph-public",
+    "started_utc": "2026-11-27T14:39:25.598+00:00",
+    "elapsed_seconds": 0.443,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "../../evidence/bundle-public.ts"
+    ],
+    "command": "timeout 120s bun ../../evidence/bundle-public.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/fault-graph-public.log"
+  },
+  {
+    "id": "fault-graph-witness",
+    "started_utc": "2026-11-27T14:39:26.256+00:00",
+    "elapsed_seconds": 0.085,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "../../evidence/bundle-witness.ts"
+    ],
+    "command": "timeout 120s bun ../../evidence/bundle-witness.ts",
+    "exit_code": 1,
+    "artifact": "evidence/commands/fault-graph-witness.log"
+  },
+  {
+    "id": "apply-graph-permitted",
+    "started_utc": "2026-11-27T14:39:26.549+00:00",
+    "elapsed_seconds": 0.038,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/graph-controls.py",
+      "permitted"
+    ],
+    "command": "python ../../evidence/graph-controls.py permitted",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-graph-permitted.log"
+  },
+  {
+    "id": "permitted-graph-owner",
+    "started_utc": "2026-11-27T14:39:26.797+00:00",
+    "elapsed_seconds": 1.574,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 1,
+    "artifact": "evidence/commands/permitted-graph-owner.log"
+  },
+  {
+    "id": "permitted-graph-public",
+    "started_utc": "2026-11-27T14:39:28.593+00:00",
+    "elapsed_seconds": 0.612,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "../../evidence/bundle-public.ts"
+    ],
+    "command": "timeout 120s bun ../../evidence/bundle-public.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/permitted-graph-public.log"
+  },
+  {
+    "id": "permitted-graph-witness",
+    "started_utc": "2026-11-27T14:39:29.421+00:00",
+    "elapsed_seconds": 0.139,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "../../evidence/bundle-witness.ts"
+    ],
+    "command": "timeout 120s bun ../../evidence/bundle-witness.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/permitted-graph-witness.log"
+  },
+  {
+    "id": "restore-graph",
+    "started_utc": "2026-11-27T14:39:29.789+00:00",
+    "elapsed_seconds": 0.006,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "git",
+      "restore",
+      "--",
+      "src/layout/passes/edge-bundling.ts"
+    ],
+    "command": "git restore -- src/layout/passes/edge-bundling.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/restore-graph.log"
+  },
+  {
+    "id": "graph-results",
+    "started_utc": "2026-11-27T14:40:12.326+00:00",
+    "elapsed_seconds": 0.04,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"^\\((fail|pass)\\).*([Ss]tate|foreign tiny|unknown authored|full header)|Expected:|Received:|\\d+ fail|\\d+ pass\" ../evidence/commands/fault-graph-owner.log ../evidence/commands/permitted-graph-owner.log; head -48 ../evidence/commands/fault-graph-witness.log"
+    ],
+    "command": "bash -c 'rg -n \"^\\((fail|pass)\\).*([Ss]tate|foreign tiny|unknown authored|full header)|Expected:|Received:|\\d+ fail|\\d+ pass\" ../evidence/commands/fault-graph-owner.log ../evidence/commands/permitted-graph-owner.log; head -48 ../evidence/commands/fault-graph-witness.log'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/graph-results.log"
+  },
+  {
+    "id": "older-graph-history",
+    "started_utc": "2026-11-27T14:40:12.380+00:00",
+    "elapsed_seconds": 0.747,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "15s",
+      "gh",
+      "api",
+      "--method",
+      "GET",
+      "repos/adewale/agentic-mermaid/commits",
+      "-f",
+      "sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+      "-f",
+      "path=src/__tests__/layout-bundle-proposals.test.ts",
+      "-f",
+      "per_page=40",
+      "--jq",
+      ".[]|[.sha,.commit.message|split(\"\\n\")[0]]|@tsv"
+    ],
+    "command": "timeout 15s gh api --method GET repos/adewale/agentic-mermaid/commits -f sha=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004 -f path=src/__tests__/layout-bundle-proposals.test.ts -f per_page=40 --jq '.[]|[.sha,.commit.message|split(\"\\n\")[0]]|@tsv'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/older-graph-history.log"
+  },
+  {
+    "id": "output-contract-history",
+    "started_utc": "2026-11-27T14:40:13.160+00:00",
+    "elapsed_seconds": 0.699,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "15s",
+      "gh",
+      "api",
+      "repos/adewale/agentic-mermaid/commits/b83b2657e02fe4d2d568852e9df1a8c15594de0a",
+      "--jq",
+      ".commit.message"
+    ],
+    "command": "timeout 15s gh api repos/adewale/agentic-mermaid/commits/b83b2657e02fe4d2d568852e9df1a8c15594de0a --jq .commit.message",
+    "exit_code": 0,
+    "artifact": "evidence/commands/output-contract-history.log"
+  },
+  {
+    "id": "original-cli-contract",
+    "started_utc": "2026-11-27T14:40:13.899+00:00",
+    "elapsed_seconds": 0.609,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "15s",
+      "gh",
+      "api",
+      "repos/adewale/agentic-mermaid/commits/070c4b0e09d4113db4492380c5912090f71058eb",
+      "--jq",
+      ".commit.message"
+    ],
+    "command": "timeout 15s gh api repos/adewale/agentic-mermaid/commits/070c4b0e09d4113db4492380c5912090f71058eb --jq .commit.message",
+    "exit_code": 0,
+    "artifact": "evidence/commands/original-cli-contract.log"
+  },
+  {
+    "id": "apply-cli-repair",
+    "started_utc": "2026-11-27T14:41:38.414+00:00",
+    "elapsed_seconds": 0.042,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/test-repairs.py",
+      "cli"
+    ],
+    "command": "python ../../evidence/test-repairs.py cli",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-cli-repair.log"
+  },
+  {
+    "id": "graph-origin",
+    "started_utc": "2026-11-27T14:41:38.434+00:00",
+    "elapsed_seconds": 0.536,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "15s",
+      "gh",
+      "api",
+      "repos/adewale/agentic-mermaid/commits/f58b8e48bf7b1afb76e4f4daf646e907d92217d8",
+      "--jq",
+      ".files[] | select(.filename==\"src/__tests__/layout-bundle-proposals.test.ts\") | (.patch // \"\")| split(\"\\n\")[]|select(contains(\"full header\") or contains(\"foreign tiny\") or contains(\"unknown authored width\"))"
+    ],
+    "command": "timeout 15s gh api repos/adewale/agentic-mermaid/commits/f58b8e48bf7b1afb76e4f4daf646e907d92217d8 --jq '.files[] | select(.filename==\"src/__tests__/layout-bundle-proposals.test.ts\") | (.patch // \"\")| split(\"\\n\")[]|select(contains(\"full header\") or contains(\"foreign tiny\") or contains(\"unknown authored width\"))'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/graph-origin.log"
+  },
+  {
+    "id": "repair-cli-baseline",
+    "started_utc": "2026-11-27T14:41:38.688+00:00",
+    "elapsed_seconds": 0.877,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/cli-multi-input.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/cli-multi-input.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-cli-baseline.log"
+  },
+  {
+    "id": "repair-cli-apply-fault",
+    "started_utc": "2026-11-27T14:41:39.785+00:00",
+    "elapsed_seconds": 0.037,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/controls.py",
+      "cli-fault"
+    ],
+    "command": "python ../../evidence/controls.py cli-fault",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-cli-apply-fault.log"
+  },
+  {
+    "id": "css-origin",
+    "started_utc": "2026-11-27T14:41:39.034+00:00",
+    "elapsed_seconds": 1.045,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "15s",
+      "gh",
+      "api",
+      "repos/adewale/agentic-mermaid/commits/7347c53f00d33b69fdac6df89915b2283e059a77",
+      "--jq",
+      ".files[] | select(.filename==\"src/__tests__/chrome-token-lockstep.test.ts\") | {filename,status,additions}"
+    ],
+    "command": "timeout 15s gh api repos/adewale/agentic-mermaid/commits/7347c53f00d33b69fdac6df89915b2283e059a77 --jq '.files[] | select(.filename==\"src/__tests__/chrome-token-lockstep.test.ts\") | {filename,status,additions}'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/css-origin.log"
+  },
+  {
+    "id": "repair-cli-fault",
+    "started_utc": "2026-11-27T14:41:40.035+00:00",
+    "elapsed_seconds": 0.727,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/cli-multi-input.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/cli-multi-input.test.ts",
+    "exit_code": 1,
+    "artifact": "evidence/commands/repair-cli-fault.log"
+  },
+  {
+    "id": "repair-cli-apply-permitted",
+    "started_utc": "2026-11-27T14:41:40.997+00:00",
+    "elapsed_seconds": 0.034,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/controls.py",
+      "cli-permitted"
+    ],
+    "command": "python ../../evidence/controls.py cli-permitted",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-cli-apply-permitted.log"
+  },
+  {
+    "id": "repair-cli-permitted",
+    "started_utc": "2026-11-27T14:41:41.243+00:00",
+    "elapsed_seconds": 0.705,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/cli-multi-input.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/cli-multi-input.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-cli-permitted.log"
+  },
+  {
+    "id": "restore-cli-repair",
+    "started_utc": "2026-11-27T14:41:42.168+00:00",
+    "elapsed_seconds": 0.007,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "git",
+      "restore",
+      "--",
+      "src/cli/index.ts",
+      "src/__tests__/cli-multi-input.test.ts"
+    ],
+    "command": "git restore -- src/cli/index.ts src/__tests__/cli-multi-input.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/restore-cli-repair.log"
+  },
+  {
+    "id": "apply-graph-repair",
+    "started_utc": "2026-11-27T14:41:42.392+00:00",
+    "elapsed_seconds": 0.036,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/test-repairs.py",
+      "graph"
+    ],
+    "command": "python ../../evidence/test-repairs.py graph",
+    "exit_code": 0,
+    "artifact": "evidence/commands/apply-graph-repair.log"
+  },
+  {
+    "id": "repair-graph-baseline",
+    "started_utc": "2026-11-27T14:41:42.642+00:00",
+    "elapsed_seconds": 1.741,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-graph-baseline.log"
+  },
+  {
+    "id": "repair-graph-apply-fault",
+    "started_utc": "2026-11-27T14:41:44.615+00:00",
+    "elapsed_seconds": 0.037,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/graph-controls.py",
+      "fault"
+    ],
+    "command": "python ../../evidence/graph-controls.py fault",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-graph-apply-fault.log"
+  },
+  {
+    "id": "repair-graph-fault",
+    "started_utc": "2026-11-27T14:41:44.873+00:00",
+    "elapsed_seconds": 1.503,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 1,
+    "artifact": "evidence/commands/repair-graph-fault.log"
+  },
+  {
+    "id": "repair-graph-apply-permitted",
+    "started_utc": "2026-11-27T14:41:46.591+00:00",
+    "elapsed_seconds": 0.032,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "python",
+      "../../evidence/graph-controls.py",
+      "permitted"
+    ],
+    "command": "python ../../evidence/graph-controls.py permitted",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-graph-apply-permitted.log"
+  },
+  {
+    "id": "repair-graph-permitted",
+    "started_utc": "2026-11-27T14:41:46.832+00:00",
+    "elapsed_seconds": 1.464,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/repair-graph-permitted.log"
+  },
+  {
+    "id": "restore-graph-repair",
+    "started_utc": "2026-11-27T14:41:48.529+00:00",
+    "elapsed_seconds": 0.007,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "git",
+      "restore",
+      "--",
+      "src/layout/passes/edge-bundling.ts",
+      "src/__tests__/layout-bundle-proposals.test.ts"
+    ],
+    "command": "git restore -- src/layout/passes/edge-bundling.ts src/__tests__/layout-bundle-proposals.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/restore-graph-repair.log"
+  },
+  {
+    "id": "retained-transport",
+    "started_utc": "2026-11-27T14:41:48.746+00:00",
+    "elapsed_seconds": 1.672,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/cli-jsonl.test.ts",
+      "src/__tests__/cli-batch-render-parity.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/cli-jsonl.test.ts src/__tests__/cli-batch-render-parity.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/retained-transport.log"
+  },
+  {
+    "id": "retained-deadline",
+    "started_utc": "2026-11-27T14:41:50.635+00:00",
+    "elapsed_seconds": 0.993,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "-t",
+      "supervised command reads",
+      "src/__tests__/cli-flags-help-sync.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 -t 'supervised command reads' src/__tests__/cli-flags-help-sync.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/retained-deadline.log"
+  },
+  {
+    "id": "single-output-suite",
+    "started_utc": "2026-11-27T14:41:51.841+00:00",
+    "elapsed_seconds": 0.6,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/control",
+    "argv": [
+      "timeout",
+      "120s",
+      "bun",
+      "test",
+      "--timeout",
+      "30000",
+      "src/__tests__/agent-cli-render-formats.test.ts"
+    ],
+    "command": "timeout 120s bun test --timeout 30000 src/__tests__/agent-cli-render-formats.test.ts",
+    "exit_code": 0,
+    "artifact": "evidence/commands/single-output-suite.log"
+  },
+  {
+    "id": "incidence",
+    "started_utc": "2026-11-27T14:42:22.188+00:00",
+    "elapsed_seconds": 0.021,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "git ls-files src/__tests__ \":(exclude)*audit*\" | wc -l; git ls-files --cached -- \":(glob)src/__tests__/**/*.test.ts\" | wc -l; rg -n \"Single-input|single-input|multiple inputs|--output\" Instructions_for_agents.md | head -25; rg -n \"cli-multi-input|chrome-token-lockstep|layout-bundle-proposals|editor-theme-switch|^const|unit\" scripts/ci/run-unit-tests.ts | head -65"
+    ],
+    "command": "bash -c 'git ls-files src/__tests__ \":(exclude)*audit*\" | wc -l; git ls-files --cached -- \":(glob)src/__tests__/**/*.test.ts\" | wc -l; rg -n \"Single-input|single-input|multiple inputs|--output\" Instructions_for_agents.md | head -25; rg -n \"cli-multi-input|chrome-token-lockstep|layout-bundle-proposals|editor-theme-switch|^const|unit\" scripts/ci/run-unit-tests.ts | head -65'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/incidence.log"
+  },
+  {
+    "id": "graph-browser-state",
+    "started_utc": "2026-11-27T14:42:22.197+00:00",
+    "elapsed_seconds": 0.022,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"editor-theme-switch|site-interactions|browser\" e2e/run-browser-contracts.ts | head -45; rg -n \"source|stdout|css\" src/__tests__/editor-theme-switch.test.ts | head -45; rg -n \"normalize|\\\\.points|WeakMap\" src/layout/bundle-routes.ts | head -50"
+    ],
+    "command": "bash -c 'rg -n \"editor-theme-switch|site-interactions|browser\" e2e/run-browser-contracts.ts | head -45; rg -n \"source|stdout|css\" src/__tests__/editor-theme-switch.test.ts | head -45; rg -n \"normalize|\\\\.points|WeakMap\" src/layout/bundle-routes.ts | head -50'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/graph-browser-state.log"
+  },
+  {
+    "id": "final-manifest",
+    "started_utc": "2026-11-27T14:42:22.213+00:00",
+    "elapsed_seconds": 0.058,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "python",
+      "-c",
+      "import hashlib,pathlib,subprocess,json; root=pathlib.Path.cwd(); paths=[\"src/cli/index.ts\",\"src/__tests__/cli-multi-input.test.ts\",\"src/layout/passes/edge-bundling.ts\",\"src/__tests__/layout-bundle-proposals.test.ts\",\"website/source/assets/styles.css\"]; cases=[dict(path=p,head=hashlib.sha256(subprocess.check_output([\"git\",\"show\",\"HEAD:\"+p])).hexdigest(),delivered=hashlib.sha256((root/p).read_bytes()).hexdigest(),scratch=hashlib.sha256((root.parent/\"scratch\"/\"control\"/p).read_bytes()).hexdigest()) for p in paths];print(json.dumps(cases,indent=2));assert all(r[\"head\"]==r[\"delivered\"]==r[\"scratch\"] for r in cases)"
+    ],
+    "command": "python -c 'import hashlib,pathlib,subprocess,json; root=pathlib.Path.cwd(); paths=[\"src/cli/index.ts\",\"src/__tests__/cli-multi-input.test.ts\",\"src/layout/passes/edge-bundling.ts\",\"src/__tests__/layout-bundle-proposals.test.ts\",\"website/source/assets/styles.css\"]; cases=[dict(path=p,head=hashlib.sha256(subprocess.check_output([\"git\",\"show\",\"HEAD:\"+p])).hexdigest(),delivered=hashlib.sha256((root/p).read_bytes()).hexdigest(),scratch=hashlib.sha256((root.parent/\"scratch\"/\"control\"/p).read_bytes()).hexdigest()) for p in paths];print(json.dumps(cases,indent=2));assert all(r[\"head\"]==r[\"delivered\"]==r[\"scratch\"] for r in cases)'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/final-manifest.log"
+  },
+  {
+    "id": "status-and-identities",
+    "started_utc": "2026-11-27T14:42:22.210+00:00",
+    "elapsed_seconds": 0.392,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "git rev-parse HEAD; git rev-list --count HEAD; git ls-files | wc -l; git status --short --ignored --untracked-files=normal; git diff --exit-code HEAD --; git -C ../scratch/control status --short --ignored --untracked-files=normal; git -C ../scratch/control diff --exit-code HEAD --; bun --version; du -sh ../scratch ../evidence; rg -n \"pass|fail\" ../evidence/commands/repair-graph-fault.log | tail -16"
+    ],
+    "command": "bash -c 'git rev-parse HEAD; git rev-list --count HEAD; git ls-files | wc -l; git status --short --ignored --untracked-files=normal; git diff --exit-code HEAD --; git -C ../scratch/control status --short --ignored --untracked-files=normal; git -C ../scratch/control diff --exit-code HEAD --; bun --version; du -sh ../scratch ../evidence; rg -n \"pass|fail\" ../evidence/commands/repair-graph-fault.log | tail -16'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/status-and-identities.log"
+  },
+  {
+    "id": "checkout-history-shape",
+    "started_utc": "2026-11-27T14:42:49.810+00:00",
+    "elapsed_seconds": 0.045,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "git rev-list --first-parent --count HEAD; git rev-list --count HEAD; git rev-parse --is-shallow-repository; git log --first-parent -1 --format=\"%H %cs %s\"; cat ../dependency-install.log; df -h ."
+    ],
+    "command": "bash -c 'git rev-list --first-parent --count HEAD; git rev-list --count HEAD; git rev-parse --is-shallow-repository; git log --first-parent -1 --format=\"%H %cs %s\"; cat ../dependency-install.log; df -h .'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/checkout-history-shape.log"
+  },
+  {
+    "id": "graph-ink-siblings",
+    "started_utc": "2026-11-27T14:42:49.828+00:00",
+    "elapsed_seconds": 0.074,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"foreign .*shaft|foreign .*card|full header|header.*stroke|unknown authored width|rollback.*geometry|rollback.*route\" src/__tests__ -g \"*.test.ts\" | head -70"
+    ],
+    "command": "bash -c 'rg -n \"foreign .*shaft|foreign .*card|full header|header.*stroke|unknown authored width|rollback.*geometry|rollback.*route\" src/__tests__ -g \"*.test.ts\" | head -70'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/graph-ink-siblings.log"
+  },
+  {
+    "id": "css-caller-extra",
+    "started_utc": "2026-11-27T14:42:49.972+00:00",
+    "elapsed_seconds": 0.006,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"brand-pine|brand-on|--m-(deep|mid|sweep)|getComputedStyle\" website/source/assets/shader-mark.js | head -45"
+    ],
+    "command": "bash -c 'rg -n \"brand-pine|brand-on|--m-(deep|mid|sweep)|getComputedStyle\" website/source/assets/shader-mark.js | head -45'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/css-caller-extra.log"
+  },
+  {
+    "id": "graph-target-blame",
+    "started_utc": "2026-11-27T14:42:49.821+00:00",
+    "elapsed_seconds": 0.632,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "timeout",
+      "15s",
+      "gh",
+      "api",
+      "graphql",
+      "-f",
+      "query=query($oid:String!,$path:String!){repository(owner:\"adewale\",name:\"agentic-mermaid\"){object(expression:$oid){... on Commit{blame(path:$path){ranges{startingLine endingLine commit{oid messageHeadline}}}}}}}",
+      "-f",
+      "oid=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+      "-f",
+      "path=src/__tests__/layout-bundle-proposals.test.ts",
+      "--jq",
+      ".data.repository.object.blame.ranges[] | select(.startingLine <= 132 and .endingLine >= 96) | [.startingLine,.endingLine,.commit.oid,.commit.messageHeadline]|@tsv"
+    ],
+    "command": "timeout 15s gh api graphql -f 'query=query($oid:String!,$path:String!){repository(owner:\"adewale\",name:\"agentic-mermaid\"){object(expression:$oid){... on Commit{blame(path:$path){ranges{startingLine endingLine commit{oid messageHeadline}}}}}}}' -f oid=f49196e7f5d6d2f0970a4a76fe62644ee5e9d004 -f path=src/__tests__/layout-bundle-proposals.test.ts --jq '.data.repository.object.blame.ranges[] | select(.startingLine <= 132 and .endingLine >= 96) | [.startingLine,.endingLine,.commit.oid,.commit.messageHeadline]|@tsv'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/graph-target-blame.log"
+  },
+  {
+    "id": "assigned-guidance-fingerprints",
+    "started_utc": "2026-11-27T14:45:37.478+00:00",
+    "elapsed_seconds": 0.005,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "sha256sum",
+      "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/.agents/skills/test-audit/SKILL.md",
+      "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/.agents/skills/test-audit/references/audit.md",
+      "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/.agents/skills/openclaw-testing/SKILL.md",
+      "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/writing-tests.md",
+      "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/boundary-scenarios.md",
+      "/workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/fixtures.md"
+    ],
+    "command": "sha256sum /workspace/mermaid-skill-comparison-2026-11-27/openclaw/.agents/skills/test-audit/SKILL.md /workspace/mermaid-skill-comparison-2026-11-27/openclaw/.agents/skills/test-audit/references/audit.md /workspace/mermaid-skill-comparison-2026-11-27/openclaw/.agents/skills/openclaw-testing/SKILL.md /workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/writing-tests.md /workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/boundary-scenarios.md /workspace/mermaid-skill-comparison-2026-11-27/openclaw/docs/help/testing/fixtures.md",
+    "exit_code": 0,
+    "artifact": "evidence/commands/assigned-guidance-fingerprints.log"
+  },
+  {
+    "id": "cli-flag-owners",
+    "started_utc": "2026-11-27T14:45:37.481+00:00",
+    "elapsed_seconds": 0.011,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "bash",
+      "-c",
+      "rg -n \"^ *render:|output:|o:|render intentionally|DEFINE|OUTPUT\" src/cli/args.ts | head -40; rg -n \"^ *render:|--output <FILE>|Multiple inputs|With --output\" src/cli/help.ts"
+    ],
+    "command": "bash -c 'rg -n \"^ *render:|output:|o:|render intentionally|DEFINE|OUTPUT\" src/cli/args.ts | head -40; rg -n \"^ *render:|--output <FILE>|Multiple inputs|With --output\" src/cli/help.ts'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/cli-flag-owners.log"
+  },
+  {
+    "id": "proof-cost",
+    "started_utc": "2026-11-27T14:45:37.481+00:00",
+    "elapsed_seconds": 0.031,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/repo",
+    "argv": [
+      "python",
+      "-c",
+      "import json,pathlib; a=json.loads(pathlib.Path(\"../command-ledger.json\").read_text()); keys=[\"base-cli\",\"fault-cli-suite\",\"base-css\",\"fault-css-suite\",\"permitted-css-suite\",\"base-css-browser\",\"fault-css-browser\",\"permitted-css-browser\",\"base-graph-owner\",\"fault-graph-owner\",\"permitted-graph-owner\",\"repair-cli-fault\",\"repair-graph-permitted\",\"multi-output-observation\"]; print(\"\\n\".join(str((r[\"id\"],r[\"elapsed_seconds\"],r[\"exit_code\"])) for r in a if r[\"id\"] in keys))"
+    ],
+    "command": "python -c 'import json,pathlib; a=json.loads(pathlib.Path(\"../command-ledger.json\").read_text()); keys=[\"base-cli\",\"fault-cli-suite\",\"base-css\",\"fault-css-suite\",\"permitted-css-suite\",\"base-css-browser\",\"fault-css-browser\",\"permitted-css-browser\",\"base-graph-owner\",\"fault-graph-owner\",\"permitted-graph-owner\",\"repair-cli-fault\",\"repair-graph-permitted\",\"multi-output-observation\"]; print(\"\\n\".join(str((r[\"id\"],r[\"elapsed_seconds\"],r[\"exit_code\"])) for r in a if r[\"id\"] in keys))'",
+    "exit_code": 0,
+    "artifact": "evidence/commands/proof-cost.log"
+  },
+  {
+    "id": "artifacts-validated",
+    "started_utc": "2026-11-27T14:47:53.584+00:00",
+    "elapsed_seconds": 0.026,
+    "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit",
+    "argv": [
+      "python",
+      "evidence/validate-deliverables.py"
+    ],
+    "command": "python evidence/validate-deliverables.py",
+    "exit_code": 0,
+    "artifact": "evidence/commands/artifacts-validated.log"
+  }
+]

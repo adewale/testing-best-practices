@@ -1,0 +1,22 @@
+src/__tests__/authored-style-color-admission.test.ts
+ff968d963da Draw a Class style over its style classes, and keep Mermaid drawing it so
+2bedd939939 Attribute render failures to the source, its configuration, or the engine
+1cde6faa800 fix(styles): refuse undrawable authored colors across outputs (#326)
+src/__tests__/quadrant-style.test.ts
+31fb78d7f03 Preserve grammar fields and identities through typed Mermaid edits
+27ec03ce783 Keep author faults out of INTERNAL_ERROR and gate edits on the same defect
+82061a7f021 Write every Scene mark's SVG from its typed fields
+2bedd939939 Attribute render failures to the source, its configuration, or the engine
+5a9d37f3178 Reject invalid authored Quadrant point paints
+4749b3df9d6 feat!: remove deprecated compatibility surfaces [approve-goldens]
+d146adc9302 fix: close family-elevation review gaps
+79216b27bb2 quadrant: accept upstream-legal unknown style entries; heal stale W1 baselines
+src/__tests__/png-fonts.test.ts
+1e8d135502b Stream CLI batch responses and await output acknowledgements
+886bc94e150 test: exercise installed quickstarts and independent semantics
+28a805b76ed Tests protect behaviour: remove tests of tests, mutation testing and committed derived files (#361)
+8a9233802c6 Warn when PNG labels become unreadable (#247)
+40304164bc6 fix: close final Section A audit loop
+9714c3cd04e feat: complete Section A rendering contracts
+d146adc9302 fix: close family-elevation review gaps
+3c296024c12 Journey: shared parse core, experience curve, and correctness fixes

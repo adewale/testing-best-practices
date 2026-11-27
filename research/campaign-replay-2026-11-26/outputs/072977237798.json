@@ -1,0 +1,33 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Tamper-test setup",
+      "action": "Prepare one known-good fixture per distinct setup.",
+      "details": "Run expensive preparation once for cases sharing the same source inputs and configuration. Freeze the artifacts and independently computed reference data. Give each case a fresh copy of the artifact it mutates and fresh checker state."
+    },
+    {
+      "target": "Oracle pipeline",
+      "action": "Reuse only computations whose inputs the mutation leaves intact.",
+      "details": "Split the oracle at its data dependencies. For example, an expected digest computed from a trusted source can be shared across mutations of the submitted artifact. The checker must compute the actual digest from the bytes submitted in each case. A mutation of a preparation or oracle input reruns that stage and all dependent stages. Use the complete pipeline wherever independence is unclear."
+    },
+    {
+      "target": "Negative-case runner",
+      "action": "Make each existing and proposed mutation a named case.",
+      "details": "Apply the mutation, assert that it changed the intended input, and pass that input through the real checker. Require a rejection for each case and assert the expected diagnostic when it is part of the contract. Run an untouched positive control through the ordinary end-to-end path."
+    }
+  ],
+  "retained_contracts": [
+    "Every bad variant gets its own checker invocation and rejection assertion.",
+    "The valid fixture passes. Trusted expectations remain independent of candidate-supplied data.",
+    "Cases can run alone or in any order under the existing timeout."
+  ],
+  "validation": [
+    "During migration, run the fresh full pipeline and the optimized runner on the valid fixture and every mutation. Compare each outcome and any contractual diagnostic.",
+    "Count preparation, oracle-stage, and checker invocations. Confirm one preparation per shared setup, one checker call per candidate, and fresh dependent computations for mutations that change their inputs.",
+    "Run the cases individually and in reverse order. Verify that the untouched fixture still passes after the negative cases.",
+    "Measure five paired runs on the same worker with the same parallelism. Record median tamper-group and full unit-suite wall times, plus the slowest case."
+  ],
+  "cost_and_stop": "Use the pre-change median tamper-group time in seconds as the budget for the expanded group. Keep the global timeout. Hold the expansion if it exceeds that budget or any case disagrees with the full pipeline. Inspect the most expensive repeated stage before admitting more cases.",
+  "rationale": "The current 32% share includes repeated work on identical inputs. Sharing that work saves time while each mutated candidate still exercises the checker and can expose an erroneous acceptance."
+}

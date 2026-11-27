@@ -1,0 +1,77 @@
+{
+  "case": "R08",
+  "candidates": [
+    {
+      "id": "78f0b3607a50",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Hashes the intact archive against the published manifest, verifies successful import, and requires the public importer to reject a byte-altered copy with the same manifest.",
+          "reason": "The manifest supplies a fixed expectation for both the positive and negative cases."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Permits streaming, buffering, and changes to private helpers. The proposed digest checks read the archive fixtures.",
+          "reason": "A source edit can pass all checks when it preserves the importer's public behavior."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Confirms the altered copy has equal parsed contents and a different raw digest, then requires rejection.",
+          "reason": "The case would catch a substitution of parsed equality for the published byte commitment."
+        }
+      ]
+    },
+    {
+      "id": "9a66453a9f75",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Keeps the published pair read-only, independently hashes the intact fixture, and tests acceptance and corruption rejection with the same manifest.",
+          "reason": "Both outcomes are anchored to the publisher's original digest."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Allows helper and chunk-size changes and compares the original and refactored importers by their public outcomes.",
+          "reason": "The comparison works across different source implementations without requiring a fixed source digest."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Retains the raw archive digest, considers removing only incidental intermediate digests, and tests a parseable equivalent variant when a parsing failure could explain rejection.",
+          "reason": "The plan distinguishes hashes by what they protect and preserves rejection of changed release bytes."
+        }
+      ]
+    },
+    {
+      "id": "2f82ed507caa",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Checks the complete archive against the published algorithm and expected digest, imports the untouched fixture, and requires rejection of the corrupted copy under the unchanged manifest.",
+          "reason": "Mutating a test copy preserves the independent integrity expectation while exercising corruption rejection."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Removes incidental implementation hash assertions where present and allows the importer to change buffering and helper structure.",
+          "reason": "The retained checks exercise public outcomes and permit changes to the code that produces them."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Checks equal parsed contents and a different archive digest for an alternate encoding, then requires the public importer to reject it.",
+          "reason": "Parsed equality has a separate role in validating the fixture while the manifest digest still governs acceptance."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=24301,1,7,42,1337,90210,12648430,2024,555,31337,4096 runsPerSeed=3 coverage={"accepted":147,"dirtyDisconnects":4,"byKind":{"ws_tempo":9,"ws_swing":15,"rest_put":14,"rest_patch_state":21,"rest_patch_name":20,"hibernate":27,"hard_evict":28,"disconnect":11,"connect":2}}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts (6 tests | 5 skipped) 1551ms
+   ✓ model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points  1550ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  02:44:02
+   Duration  5.48s (transform 830ms, setup 0ms, import 2.19s, tests 1.55s, environment 0ms)
+

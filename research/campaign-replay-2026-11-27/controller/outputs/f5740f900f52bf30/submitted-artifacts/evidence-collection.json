@@ -1,0 +1,115 @@
+{
+  "collected_utc": "2026-11-27T02:19:03.999771+00:00",
+  "source": "completed subject work/evidence",
+  "scope": "late collection of already-existing submitted artifacts; no model regeneration or source edits",
+  "files": [
+    {
+      "path": "all-workers.log",
+      "sha256": "efbb8035dd195e614b4732f24af6eb86f5639aa93154e54695fdad2e991c198d",
+      "bytes": 724,
+      "source_mtime_utc": "2026-11-27T02:11:05.107003+00:00"
+    },
+    {
+      "path": "known-replay.log",
+      "sha256": "23d325f4fce928652daf18915ca9024d999e55c29098ce997542d6ea1f689e8d",
+      "bytes": 1628,
+      "source_mtime_utc": "2026-11-27T02:11:24.779575+00:00"
+    },
+    {
+      "path": "no-swing.log",
+      "sha256": "e3e5f6faae18b753bdaf51b50f80d3223337a87fb49e8eaa2f81435f4c6885d6",
+      "bytes": 2004,
+      "source_mtime_utc": "2026-11-27T02:12:20.513191+00:00"
+    },
+    {
+      "path": "pinned-unit.log",
+      "sha256": "f7e4f2acb49055da0aee810e13fdb00f44a0f40ade3d4498941cd71611cca843",
+      "bytes": 268,
+      "source_mtime_utc": "2026-11-27T01:58:04.508243+00:00"
+    },
+    {
+      "path": "pinned-worker-tsc.log",
+      "sha256": "73238eb62c8a83d875d8ee7f9a738d8aa855713f423e7c90beeda4fe49c022a9",
+      "bytes": 728,
+      "source_mtime_utc": "2026-11-27T02:09:20.599954+00:00"
+    },
+    {
+      "path": "pinned-worker.log",
+      "sha256": "d253cd7da98b9d22fdefd3c84c197cc92ce64c1d8ce1d2c7edebc1233b98d311",
+      "bytes": 720,
+      "source_mtime_utc": "2026-11-27T01:59:18.846423+00:00"
+    },
+    {
+      "path": "seed-after.log",
+      "sha256": "d431113130f81a82e66790dcc7966c3a773b368b5aa1ecf49ccc75b9cfd2295c",
+      "bytes": 727,
+      "source_mtime_utc": "2026-11-27T02:13:32.715294+00:00"
+    },
+    {
+      "path": "seed-before.log",
+      "sha256": "adc792482b1d1aadf6bc95466d2b6d82aa91e4e858632fa5de74e4bff0e65ddb",
+      "bytes": 2023,
+      "source_mtime_utc": "2026-11-27T01:58:00.100113+00:00"
+    },
+    {
+      "path": "seed-three-files.log",
+      "sha256": "79ff04cd6041aea4cf5ef01b7318790ded86c8bd4cd490caecddedf1c4d35ab0",
+      "bytes": 717,
+      "source_mtime_utc": "2026-11-27T02:09:25.668103+00:00"
+    },
+    {
+      "path": "stale-after.log",
+      "sha256": "55097289587890706525a7efef820d1236bcc5d5b0b38c3edab8113bf5d066f2",
+      "bytes": 2194,
+      "source_mtime_utc": "2026-11-27T02:10:31.050013+00:00"
+    },
+    {
+      "path": "stale-before.log",
+      "sha256": "cb26815c9891e88b4b8276edbe02787e0f78608cece16959805d40b4ffc82e4d",
+      "bytes": 2142,
+      "source_mtime_utc": "2026-11-27T02:02:47.008455+00:00"
+    },
+    {
+      "path": "survey-units.log",
+      "sha256": "b12c8103b3979547c31d2d3bfd7699b133a79e84783e2342c2b8bdf39f535dd8",
+      "bytes": 268,
+      "source_mtime_utc": "2026-11-27T02:11:01.866909+00:00"
+    },
+    {
+      "path": "survey.tsv",
+      "sha256": "ea17088f0f2b75be58bb22cfe967a714d545dfce62396e39ed3d0edf92879289",
+      "bytes": 6716,
+      "source_mtime_utc": "2026-11-27T02:13:38.468440+00:00"
+    },
+    {
+      "path": "test-quality.log",
+      "sha256": "018b667a0f903780f0c27c6d69e57cfda9a61196202f9e1a8c519b0ae6616ab4",
+      "bytes": 18441,
+      "source_mtime_utc": "2026-11-27T02:07:54.829442+00:00"
+    },
+    {
+      "path": "unit-files.txt",
+      "sha256": "0040316567230847c5026472e5933cf3c888c38665ae37b16270d43ffff103d8",
+      "bytes": 1237,
+      "source_mtime_utc": "2026-11-27T02:10:31.446024+00:00"
+    },
+    {
+      "path": "waveform-control.log",
+      "sha256": "cbaf343ba959a8805d1e78a53b80b0f610df36317823eb877ca4ba8565f41698",
+      "bytes": 276,
+      "source_mtime_utc": "2026-11-27T02:09:17.719869+00:00"
+    },
+    {
+      "path": "worker-tsc.log",
+      "sha256": "73238eb62c8a83d875d8ee7f9a738d8aa855713f423e7c90beeda4fe49c022a9",
+      "bytes": 728,
+      "source_mtime_utc": "2026-11-27T02:10:44.618408+00:00"
+    },
+    {
+      "path": "workload-diagnostic.log",
+      "sha256": "a5828d9d31d8cbe5ff4119fd0d499616081c4b6df8442ce62be4fbf3a8a72191",
+      "bytes": 2165,
+      "source_mtime_utc": "2026-11-27T02:06:56.131725+00:00"
+    }
+  ]
+}

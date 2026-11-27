@@ -1,0 +1,15 @@
+{
+  "repository": "adewale/streamer",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/streamer/pulls?state=all&per_page=100&page=1",
+      "count": 0,
+      "exhausted": true
+    }
+  ],
+  "cross_check": "GitHub GraphQL returned totalCount 0 and hasNextPage false for OPEN, CLOSED and MERGED pull requests with no author or date filters.",
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

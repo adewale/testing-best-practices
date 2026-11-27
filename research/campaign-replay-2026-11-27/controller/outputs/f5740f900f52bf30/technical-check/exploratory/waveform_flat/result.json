@@ -1,0 +1,20 @@
+{
+  "exit": 0,
+  "wall_seconds": 0.582,
+  "log": "technical-check/exploratory/waveform_flat/run.log",
+  "sha256": "67f4cf0fcb4c851f98c519883cb8b94bc74098a4c2fe89d373343bc8bbbb282e",
+  "test_files": "1 passed (1)",
+  "tests": "4 passed (4)",
+  "source": "submitted",
+  "stimulus": "waveform_flat",
+  "seed": null,
+  "selected_command": [
+    "runtime/run-unit.sh",
+    "--reporter=verbose",
+    "src/components/waveform-peaks.test.ts"
+  ],
+  "stimulus_file_hash_before_after": [
+    "04d2475f9497358284d42aaffbfcb95a6a7bbe2e89db95adb28198c34b42d4ea",
+    "921013c42137537d6d347c01951e9a0c799dd262e6c5f0d4440f014039fb6c0e"
+  ]
+}

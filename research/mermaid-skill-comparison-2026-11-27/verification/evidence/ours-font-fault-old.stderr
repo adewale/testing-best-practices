@@ -1,0 +1,31 @@
+
+src/__tests__/journey-svg-snapshot.test.ts:
+(pass) renderMermaidSVG – journey snapshots > matches the representative journey golden SVG [77.65ms]
+(pass) renderMermaidSVG – journey snapshots > matches the Mermaid docs journey example SVG [21.34ms]
+
+src/__tests__/png-fonts.test.ts:
+(pass) PNG font provenance > distinguishes verified, caller-directory, system, and buffer inputs [0.17ms]
+(pass) PNG raster font matches the metrics font > long journey task label rasterizes inside its measured task box [132.12ms]
+(pass) PNG glyph-coverage warnings > CJK text without a covering font warns, naming the script and the escape hatch [58.94ms]
+(pass) PNG glyph-coverage warnings > uncovered emoji warns with the emoji script bucket [19.16ms]
+(pass) PNG glyph-coverage warnings > Latin labels plus DejaVu-covered symbols produce no warning [17.14ms]
+(pass) PNG glyph-coverage warnings > loadSystemFonts: true keeps a qualified known-font warning [56.31ms]
+(pass) PNG glyph-coverage warnings > warnings are deterministic across identical renders [18.25ms]
+(pass) fontDirs escape hatch > a CJK-capable fontDirs clears the warning and changes the rendered bytes [109.61ms]
+(pass) am render --format png font flags > PNG-only controls are rejected for non-PNG formats [5.45ms]
+(pass) am render --format png font flags > fit dimensions are integer pixels [7.35ms]
+(pass) am render --format png font flags > CJK render warns on stderr and reports warnings in the --json envelope [14.42ms]
+(pass) am render --format png font flags > pure-Latin render prints no coverage warning [14.53ms]
+(pass) am render --format png font flags > --font-dirs silences the CJK warning [130.71ms]
+(pass) am render --format png font flags > --system-fonts keeps a qualified bundled-font coverage warning [58.32ms]
+
+src/__tests__/agent-png-determinism.test.ts:
+(pass) PNG in-process determinism > 5 renders of same fixture produce byte-identical output [175.59ms]
+(pass) PNG in-process determinism > determinism holds across different fixtures (no cross-talk) [23.35ms]
+(pass) PNG in-process determinism > determinism holds across scale variants [12.86ms]
+(pass) styled PNG > style + seed thread through to rasterization deterministically [259.42ms]
+
+ 20 pass
+ 0 fail
+ 61 expect() calls
+Ran 20 tests across 3 files. [1.51s]

@@ -1,0 +1,18 @@
+{
+  "valid_schedule": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "state-machine-fuzz.test.ts",
+        "-t",
+        "model: read-your-writes"
+      ]
+    },
+    "log": "valid_schedule.log",
+    "seconds": 21.897
+  }
+}

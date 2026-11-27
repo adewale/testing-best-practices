@@ -1,0 +1,114 @@
+{
+  "collected_utc": "2026-11-27T02:28:04.914577+00:00",
+  "scope": "existing artifacts from completed subject; no regeneration",
+  "files": [
+    {
+      "path": "direct-prose.txt",
+      "sha256": "b3d1d8d02c2ec1c908a9629a472276534cf33bee2f1bfa7ff441846060e28862",
+      "bytes": 136,
+      "source_mtime_utc": "2026-11-27T02:18:18.918292+00:00"
+    },
+    {
+      "path": "hosted-edit-generator.txt",
+      "sha256": "4524f608582cbbbc74f556ba9d56ee94f60f615f271934bfb4f3ed8bf91b7109",
+      "bytes": 133,
+      "source_mtime_utc": "2026-11-27T02:18:18.919399+00:00"
+    },
+    {
+      "path": "hosted-edit-html.txt",
+      "sha256": "0446b9122be8705598d1bef83457f3930ae1f1ad110305eafdc4077abe0e5f41",
+      "bytes": 149,
+      "source_mtime_utc": "2026-11-27T02:18:18.919297+00:00"
+    },
+    {
+      "path": "hosted-good.txt",
+      "sha256": "cff2e93ef05459f364e6d6d931e352299bf31f2ee13fa7c16f8dbcdb5c575046",
+      "bytes": 136,
+      "source_mtime_utc": "2026-11-27T02:18:18.919216+00:00"
+    },
+    {
+      "path": "hosted-relative.txt",
+      "sha256": "d49c90e3f5dde26916b1282d72513fd4638c2ed898e3eff4f8613dc7606ae2b2",
+      "bytes": 152,
+      "source_mtime_utc": "2026-11-27T02:21:46.369463+00:00"
+    },
+    {
+      "path": "hosted-standalone.txt",
+      "sha256": "c99b8dcab941a8256fceaf4c87e1a43e496232af0122c5b279bd57bb80ec82ac",
+      "bytes": 120,
+      "source_mtime_utc": "2026-11-27T02:18:18.919669+00:00"
+    },
+    {
+      "path": "hosted-wrong-build.txt",
+      "sha256": "a4afc7abab34b92345ff7e553e0d08a19a6b4437b7e26e78443d7e25a92358dd",
+      "bytes": 135,
+      "source_mtime_utc": "2026-11-27T02:18:18.919467+00:00"
+    },
+    {
+      "path": "hosted-wrong-generator.txt",
+      "sha256": "78d8dfb53e1bc6d79623920c41faa3d0c4ae3b20b18f6348c8289c5d047ddfca",
+      "bytes": 139,
+      "source_mtime_utc": "2026-11-27T02:21:46.369532+00:00"
+    },
+    {
+      "path": "hosted-wrong-output.txt",
+      "sha256": "4c4e113011ca1169a1636960771ab1372c5be5456b24b05c370273f28c978fac",
+      "bytes": 123,
+      "source_mtime_utc": "2026-11-27T02:18:18.919533+00:00"
+    },
+    {
+      "path": "owner-prose.txt",
+      "sha256": "2097032b0effb9441b1a70ce8d62d318540b916750ddd93561508bad5960cc0e",
+      "bytes": 222,
+      "source_mtime_utc": "2026-11-27T02:18:18.918395+00:00"
+    },
+    {
+      "path": "standalone-edit-generator.txt",
+      "sha256": "e1e47c87eff7df7e36f8656223443c723026e51ecff3ce4df9e170e54367c0c9",
+      "bytes": 204,
+      "source_mtime_utc": "2026-11-27T02:18:18.918674+00:00"
+    },
+    {
+      "path": "standalone-edit-html.txt",
+      "sha256": "1e00ced633932c0acd27787390d23fed52f1c9fda11a9c2401c2abfa086306ad",
+      "bytes": 193,
+      "source_mtime_utc": "2026-11-27T02:18:18.918593+00:00"
+    },
+    {
+      "path": "standalone-good.txt",
+      "sha256": "ec31fd126446cad4432322d2e0565b1845e2c70b4ea0e361702c7f03b006f870",
+      "bytes": 201,
+      "source_mtime_utc": "2026-11-27T02:18:18.918509+00:00"
+    },
+    {
+      "path": "standalone-relative.txt",
+      "sha256": "477f8bfbddc09dda27c51463f715ecb9e8656f267901bcaa3d84275d3b137234",
+      "bytes": 239,
+      "source_mtime_utc": "2026-11-27T02:21:46.369199+00:00"
+    },
+    {
+      "path": "standalone-wrong-build.txt",
+      "sha256": "31c24bd5a8772a20cd0aa49a732ed301e96b5196ee32f9a962d4959dcb39395a",
+      "bytes": 202,
+      "source_mtime_utc": "2026-11-27T02:18:18.918772+00:00"
+    },
+    {
+      "path": "standalone-wrong-formats.txt",
+      "sha256": "788ca3f9a6a90dc0bb9f985e6a0eb3e5048d36837f0b651d7563bd1da2e3b8fd",
+      "bytes": 202,
+      "source_mtime_utc": "2026-11-27T02:18:18.919602+00:00"
+    },
+    {
+      "path": "standalone-wrong-generator.txt",
+      "sha256": "7d377f6ce215cc2cf12e6ef6e33fb341e2dafd214b1b457b4ffaff403c6eede7",
+      "bytes": 198,
+      "source_mtime_utc": "2026-11-27T02:21:46.369322+00:00"
+    },
+    {
+      "path": "standalone-wrong-output.txt",
+      "sha256": "e8cf2fd1dbf5c163a932bb4e609a9ad844424194e39cfff1ad0ef3f568400e13",
+      "bytes": 209,
+      "source_mtime_utc": "2026-11-27T02:18:18.918911+00:00"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "label": "ours-coverage-with-font",
+  "argv": [
+    "bun",
+    "test",
+    "--coverage",
+    "src/__tests__/png-fonts.test.ts"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {
+    "CI": "true",
+    "AM_CJK_FONT_DIR": "/usr/share/fonts/opentype/noto"
+  },
+  "timeout_seconds": 120,
+  "exit_code": 0,
+  "status": "completed",
+  "duration_seconds": 2.157550331001403,
+  "stdout_sha256": "bbe6a94c29cc8d3ff5a1792a5abae1f1122aed0642111b52036ab7e0b2b2ca47",
+  "stderr_sha256": "7d01985dcf19e70d0bdd36b08af33fc2416283cbbf2c81c1ba54d21eb28a27b3"
+}

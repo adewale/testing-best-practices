@@ -1,0 +1,14 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/chrome-token-lockstep.test.ts:
+(pass) editor and site chrome share one brand system > light chrome triplet matches across site CSS, editor CSS, and rendering.js [5.22ms]
+(pass) editor and site chrome share one brand system > brand chip tokens match [0.09ms]
+(pass) editor and site chrome share one brand system > dark chrome triplet matches editor CSS and rendering.js; its accent is the brand pine [0.89ms]
+(pass) editor and site chrome share one brand system > functional hues match in both polarities [0.18ms]
+(pass) editor and site chrome share one brand system > success stays a distinct hue from the pine accent (shipped hex, both polarities) [0.86ms]
+(pass) editor and site chrome share one brand system > shared scale tokens match: radii, motion, hairline mix [0.42ms]
+
+ 6 pass
+ 0 fail
+ 88 expect() calls
+Ran 6 tests across 1 file. [314.00ms]

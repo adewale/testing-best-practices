@@ -1,0 +1,32 @@
+4:  browserOptIn?: boolean
+8: * runners and can turn valid browser contracts into timeout cascades. */
+11:  Object.freeze({ file: 'browser.test.ts' }),
+12:  Object.freeze({ file: 'browser-bundle.e2e.test.ts' }),
+13:  Object.freeze({ file: 'mcp-browser-cors.e2e.test.ts' }),
+16:  Object.freeze({ file: '../src/__tests__/editor-theme-switch.test.ts', browserOptIn: true }),
+17:  Object.freeze({ file: '../src/__tests__/editor-style-switch.test.ts', browserOptIn: true }),
+18:  Object.freeze({ file: '../src/__tests__/website-browser-a11y.test.ts', browserOptIn: true }),
+19:  Object.freeze({ file: '../src/__tests__/zenuml-browser.test.ts', browserOptIn: true }),
+20:  Object.freeze({ file: '../src/__tests__/svg-style-isolation-browser.test.ts', browserOptIn: true }),
+21:  Object.freeze({ file: '../src/__tests__/marker-raster-parity-browser.test.ts', browserOptIn: true }),
+35:      - name: Record the replay seed and source
+38:          seed=$(( $(od -An -N4 -tu4 /dev/urandom) % 2147483647 + 1 ))
+39:          echo "seed=$seed" >> "$GITHUB_OUTPUT"
+41:          printf '{"commit":"%s","seed":%s,"status":"incomplete"}\n' "$GITHUB_SHA" "$seed" > "$RUNNER_TEMP/contract-discovery/run.json"
+46:          AM_FC_SEED: ${{ steps.replay.outputs.seed }}
+47:          AM_FC_NUM_RUNS: '300'
+65:          bun run eval:mermaid-grammar --native-only --fuzz 100 --seed "${{ steps.replay.outputs.seed }}" \
+87:          echo 'Discovery is bounded evidence, not exhaustive coverage. Review phase/error, exact source, seed/path and reference pin; replay on current main before opening finite work.' >> "$GITHUB_STEP_SUMMARY"
+159:    "test": "bun run scripts/ci/run-unit-tests.ts",
+3://  - the source-preserving edit succeeds exactly when the canonical edit does;
+4://  - each step reads back as the same diagram as the canonical edit of the
+5://    same diagram (facts and canonical statements, compared as multisets);
+6://  - a step that reports `canonical` returns exactly the canonical source;
+120:// two caught the property's draft, which wrongly expected comment order to
+132:describe('source-preserving edits agree with canonical edits', () => {
+140:        const canonical = mutateChecked(current, op)
+142:        expect({ op, ok: preserved.ok }).toEqual({ op, ok: canonical.ok })
+143:        if (!canonical.ok || !preserved.ok) break
+144:        expect({ op, model: model(parse(preserved.value.source)) }).toEqual({ op, model: model(canonical.value) })
+145:        if (preserved.value.preservation?.method === 'canonical') {
+147:          expect(preserved.value.source).toBe(serializeMermaid(canonical.value))

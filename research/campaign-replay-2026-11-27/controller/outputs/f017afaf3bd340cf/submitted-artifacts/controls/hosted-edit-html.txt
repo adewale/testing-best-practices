@@ -1,0 +1,1 @@
+{"edit": "website/public/editor/index.html", "generator": "website/build.ts", "generated": "website/public/editor/index.html", "rebuild": "website"}

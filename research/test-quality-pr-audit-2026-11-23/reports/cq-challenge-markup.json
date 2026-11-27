@@ -1,0 +1,10 @@
+{
+  "repository": "adewale/cq-challenge-markup",
+  "total_prs": 0,
+  "pages_checked": [
+    "https://api.github.com/repos/adewale/cq-challenge-markup/pulls?state=all&per_page=100&page=1"
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": "The all-state PR collection returned an empty first page. There were no PR descriptions or changed files to review."
+}

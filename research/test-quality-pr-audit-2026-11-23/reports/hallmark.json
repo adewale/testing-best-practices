@@ -1,0 +1,68 @@
+{
+  "repository": "adewale/hallmark",
+  "total_prs": 4,
+  "pages_checked": {
+    "pull_requests": "GitHub REST state=all, per_page=100, without date or author filters. Page 1 returned #4, #3, #2 and #1. Page 2 returned zero.",
+    "changed_files": "Read every PR title and body and each PR's changed-file page 1 at per_page=100. Counts for #1–#4 were 30, 32, 3 and 3, agreeing with all four PR details. All changed files had patches."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Anti-slop eval harness + candidate gates (fork-internal review)",
+      "url": "https://github.com/adewale/hallmark/pull/1",
+      "state": "open",
+      "merged": false,
+      "classification": "Explicit upgrade of the existing design-quality checklist and its evaluation method",
+      "weakness": "Three curated briefs could score highly under per-page rules even when outputs reused the same layout or missed an existing hero-placement requirement.",
+      "attempted_remedy": "Version the evaluation, keep the three original fixtures, add two adversarial briefs and six detector rules, and score reuse of structural labels across fixtures. Add gates 70–84 to the existing checklist.",
+      "test_paths": [
+        "references/slop-test.md",
+        "evals/config.json",
+        "evals/briefs.md",
+        "evals/detector.mjs",
+        "evals/run.mjs",
+        "evals/results/cycle-05-v1.json",
+        "evals/results/cycle-06-v2.json"
+      ],
+      "diff_evidence": "config.json adds pulse and vellum to v2. detector.mjs selects RULES.concat(EXTRA_V2), including v2-hero-float. run.mjs reads each fixture's macrostructure label and subtracts 2.5 points for each duplicate or missing label. The committed cycle 5 and 6 snapshots record 98.3 (37 rules, three fixtures) and 76.4 (43 rules, five fixtures), with structure at 0/5 in cycle 6.",
+      "transferable_rule": "When a suite reaches its ceiling, retain its earlier cases and add inputs that expose a known blind spot. Check properties across outputs when they cannot be observed in a single fixture.",
+      "outcome_caveat": "Open fork-internal review. The score change is present in committed snapshots, with a different rule set and fixture mix. The structural label is a proxy, and fixtures and subjective craft scores are author-supplied. The PR head had no GitHub check runs. The audit did not execute the harness."
+    },
+    {
+      "number": 2,
+      "title": "Add eval-driven quality harness for Hallmark outputs",
+      "url": "https://github.com/adewale/hallmark/pull/2",
+      "state": "closed",
+      "merged": false,
+      "classification": "Explicit regression-check improvement, substantially overlapping #1",
+      "weakness": "The existing guidance had no repeatable regression gate. The overlapping proposal in #1 used a scoring command that wrote snapshots and history, and its aggregate score could hide an individual rule failure.",
+      "attempted_remedy": "Share scoring between a read-only check and a separately invoked snapshot writer. Fail the check on any individual detector failure, a v2 structural score below 5/5, or an aggregate score below the configured floor.",
+      "test_paths": [
+        "evals/check.mjs",
+        "evals/core.mjs",
+        "evals/run.mjs",
+        "evals/config.json",
+        "references/slop-test.md"
+      ],
+      "diff_evidence": "check.mjs evaluates every configured version by default, calls detectorFailures(perFixture), uses a default score floor of 95, and sets process.exitCode to 1 on failure. core.mjs reads the frozen judge sidecars and separates evaluateCycle from writeSnapshot and rebuildHistory. Both PRs target main and share 25 byte-identical changed files, including detector.mjs, config.json and the fixture data.",
+      "transferable_rule": "Keep ordinary verification read-only and make baseline updates explicit. Fail on critical per-case findings even when the aggregate score clears its threshold.",
+      "outcome_caveat": "Closed without merge. The implementation and the checked-in history are visible, but the reported local PASS was not independently reproduced. The PR head had no GitHub check runs. Its shared fixtures and scores are the same evidence as #1."
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 3,
+      "url": "https://github.com/adewale/hallmark/pull/3",
+      "reason": "Applied the audit to the Tally example. Against its stacked base the diff changes only site/examples/tally/{index.html,styles.css,tokens.css}, including changing footer h5 elements to h3."
+    },
+    {
+      "number": 4,
+      "url": "https://github.com/adewale/hallmark/pull/4",
+      "reason": "Applied the audit to the Najm example. Only site/examples/najm/{index.html,styles.css,tokens.css} changed, including changing the cart drawer from an aria-modal dialog to a labelled region."
+    }
+  ],
+  "limitations": [
+    "Both matches propose changes to the testing approach. The underlying harness and its adversarial fixtures are largely shared between the PRs. Neither matched PR was merged in the fork at review time.",
+    "No harness was executed during the audit. Committed scores establish what the snapshots contain. The parser and author-provided judgments do not independently establish visual quality."
+  ]
+}

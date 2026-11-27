@@ -1,0 +1,34 @@
+diff --git a/src/cli/index.ts b/src/cli/index.ts
+index fbf4909..3e0cf5b 100644
+--- a/src/cli/index.ts
++++ b/src/cli/index.ts
+@@ -276,22 +276,24 @@ function cmdRender(args: ParsedArgs, json: boolean): number {
+   // Single-input keeps the existing single-output behavior. PNG is excluded
+   // because it writes bytes to a single --output path.
+   if (args.positional.length > 1) {
+-    const results = args.positional.map((file, index) => {
++    const results = []
++    for (const [index, file] of args.positional.entries()) {
+       try {
+         const src = readSourceArg(file)
+         const warnings = renderConfigWarningsForMermaid(src, formatOptions)
+         emitConfigWarnings(warnings, `am render ${file}`)
+         const rendered = renderSourceToFormatWithReceipt(src, format, reportingConfigDiagnosticsOnce(formatOptions, warnings))
+-        return { index, file, ok: true, output: rendered.output, receipt: rendered.receipt, warnings }
++        results.push({ index, file, ok: true, output: rendered.output, receipt: rendered.receipt, warnings })
+       } catch (e) {
+-        return {
++        results.push({
+           index,
+           file,
+           ok: false,
+           error: e instanceof CliArgumentError ? { code: 'ARG', message: e.message } : cliStructuredRenderFailure(e).error,
+-        }
++        })
++        break
+       }
+-    })
++    }
+     process.stdout.write(JSON.stringify({ ok: true, files: results }) + '\n')
+     return EXIT_OK
+   }

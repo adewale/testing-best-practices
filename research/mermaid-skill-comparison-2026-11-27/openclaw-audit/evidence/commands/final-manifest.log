@@ -1,0 +1,32 @@
+[
+  {
+    "path": "src/cli/index.ts",
+    "head": "e0746ad51d192f971f27ea749989c3cbe91e489d2c2832046e8874d0edc63518",
+    "delivered": "e0746ad51d192f971f27ea749989c3cbe91e489d2c2832046e8874d0edc63518",
+    "scratch": "e0746ad51d192f971f27ea749989c3cbe91e489d2c2832046e8874d0edc63518"
+  },
+  {
+    "path": "src/__tests__/cli-multi-input.test.ts",
+    "head": "b382fbd335ade5a9f469cdc8b74f9748462481530ef1ec6d18b4cfc1fb19157d",
+    "delivered": "b382fbd335ade5a9f469cdc8b74f9748462481530ef1ec6d18b4cfc1fb19157d",
+    "scratch": "b382fbd335ade5a9f469cdc8b74f9748462481530ef1ec6d18b4cfc1fb19157d"
+  },
+  {
+    "path": "src/layout/passes/edge-bundling.ts",
+    "head": "a74b19d90a395268cee0082be0454b532a8ae7c3b9dff0f5e87e98d0433154c9",
+    "delivered": "a74b19d90a395268cee0082be0454b532a8ae7c3b9dff0f5e87e98d0433154c9",
+    "scratch": "a74b19d90a395268cee0082be0454b532a8ae7c3b9dff0f5e87e98d0433154c9"
+  },
+  {
+    "path": "src/__tests__/layout-bundle-proposals.test.ts",
+    "head": "03d976b830c48b02d555a726452edecf332b67671d6b366746ed390afd01ac18",
+    "delivered": "03d976b830c48b02d555a726452edecf332b67671d6b366746ed390afd01ac18",
+    "scratch": "03d976b830c48b02d555a726452edecf332b67671d6b366746ed390afd01ac18"
+  },
+  {
+    "path": "website/source/assets/styles.css",
+    "head": "94fb3d822358e65057ba5d14b4a6f5898d614276f418121ee2807268f72500ea",
+    "delivered": "94fb3d822358e65057ba5d14b4a6f5898d614276f418121ee2807268f72500ea",
+    "scratch": "94fb3d822358e65057ba5d14b4a6f5898d614276f418121ee2807268f72500ea"
+  }
+]

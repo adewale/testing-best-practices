@@ -1,0 +1,164 @@
+
+src/__tests__/layout-bundle-proposals.test.ts:
+(pass) bundle complete foreign ink admission > State0: Still-to-end shaft and markers clear the whole Moving artwork [138.09ms]
+(pass) bundle complete foreign ink admission > State1: Still-to-end shaft and markers clear the whole Moving artwork [28.97ms]
+(pass) bundle complete foreign ink admission > State16: Still-to-end shaft and markers clear the whole Moving artwork [24.24ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB plain [2.46ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB caption [0.18ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB colour [0.15ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB width [0.14ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB classes [0.11ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB marker [0.19ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: TB no-heads [0.81ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT plain [1.30ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT caption [0.15ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT colour [0.15ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT width [0.11ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT classes [0.14ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT marker [0.17ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: BT no-heads [0.53ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR plain [1.23ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR caption [0.10ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR colour [0.08ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR width [0.09ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR classes [0.06ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR marker [0.10ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: LR no-heads [0.62ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL plain [1.09ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL caption [0.11ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL colour [0.08ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL width [0.05ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL classes [0.07ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL marker [0.07ms]
+(pass) bundle complete foreign ink admission > preserves duplicate occurrence lanes beside shared fan trunks: RL no-heads [0.46ms]
+102 |     ]
+103 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: marked }))
+104 |     const before = edges.map(edge => edge.points)
+105 |     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+106 |     expect(bundled.size).toBe(marked ? 0 : 2)
+107 |     if (marked) for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
+                                                                                      ^
+error: expect(received).toBe(expected)
+
+Expected: [
+  {
+    x: 80,
+    y: 20,
+  }, {
+    x: 110,
+    y: 20,
+  }, {
+    x: 110,
+    y: 120,
+  }, {
+    x: 80,
+    y: 120,
+  }
+]
+Received: serializes to the same string
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/verification/repo/src/__tests__/layout-bundle-proposals.test.ts:107:81)
+(fail) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.88ms]
+(pass) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [1.03ms]
+114 |     ]
+115 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: true, inlineStyle: { 'stroke-width': width } }))
+116 |     const before = edges.map(edge => edge.points)
+117 |     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+118 |     expect(bundled.size).toBe(width === '1px' ? 2 : 0)
+119 |     if (width !== '1px') for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
+                                                                                               ^
+error: expect(received).toBe(expected)
+
+Expected: [
+  {
+    x: 80,
+    y: 20,
+  }, {
+    x: 110,
+    y: 20,
+  }, {
+    x: 110,
+    y: 120,
+  }, {
+    x: 80,
+    y: 120,
+  }
+]
+Received: serializes to the same string
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/verification/repo/src/__tests__/layout-bundle-proposals.test.ts:119:90)
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.55ms]
+114 |     ]
+115 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: true, inlineStyle: { 'stroke-width': width } }))
+116 |     const before = edges.map(edge => edge.points)
+117 |     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+118 |     expect(bundled.size).toBe(width === '1px' ? 2 : 0)
+119 |     if (width !== '1px') for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
+                                                                                               ^
+error: expect(received).toBe(expected)
+
+Expected: [
+  {
+    x: 80,
+    y: 20,
+  }, {
+    x: 110,
+    y: 20,
+  }, {
+    x: 110,
+    y: 120,
+  }, {
+    x: 80,
+    y: 120,
+  }
+]
+Received: serializes to the same string
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/verification/repo/src/__tests__/layout-bundle-proposals.test.ts:119:90)
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.24ms]
+(pass) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 1px [0.51ms]
+127 |     ]
+128 |     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: false }))
+129 |     const before = edges.map(edge => edge.points)
+130 |     const bundled = bundleEdgePaths(edges, nodes, [{ id: 'G', label: 'G', x: 60.1, y: 45, width: 6, height: 4, headerHeight: 4, children: [] }], 'TB', resolveRenderStyle())
+131 |     expect(bundled.size).toBe(0)
+132 |     for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
+                                                                          ^
+error: expect(received).toBe(expected)
+
+Expected: [
+  {
+    x: 80,
+    y: 20,
+  }, {
+    x: 110,
+    y: 20,
+  }, {
+    x: 110,
+    y: 120,
+  }, {
+    x: 80,
+    y: 120,
+  }
+]
+Received: serializes to the same string
+
+      at <anonymous> (/workspace/mermaid-skill-comparison-2026-11-27/verification/repo/src/__tests__/layout-bundle-proposals.test.ts:132:69)
+(fail) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.63ms]
+(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: dense mesh [359.42ms]
+(pass) bounded generic bundle proposals > preserves the measured quality gain and authored meaning: detached feedback [10.58ms]
+(pass) bounded generic bundle proposals > only the selected placement compares an unbundled proposal and it reuses that ELK result [240.19ms]
+(pass) bounded generic bundle proposals > an ordinary alternative failure retains the certified bundled proposal [114.15ms]
+(pass) bounded generic bundle proposals > parallel edges keep their specialized lanes instead of buying fewer proper crossings with ambiguous contacts [13.33ms]
+(pass) bounded generic bundle proposals > clean symmetric fans, placement-only calls and graphs over the work bound skip the second pipeline [157.22ms]
+
+4 tests failed:
+(fail) bundle complete foreign ink admission > a bundle marker cannot paint a foreign tiny card (marked=%s) [0.88ms]
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: var(--edge-width) [0.55ms]
+(fail) bundle complete foreign ink admission > unknown authored width cannot authorize a bundle: 2% [0.24ms]
+(fail) bundle complete foreign ink admission > a shaft touching the full header by its stroke retains its old route [0.63ms]
+
+ 39 pass
+ 4 fail
+ 381 expect() calls
+Ran 43 tests across 1 file. [1368.00ms]

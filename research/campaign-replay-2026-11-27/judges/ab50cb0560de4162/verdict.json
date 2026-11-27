@@ -1,0 +1,41 @@
+{
+  "case": "R03",
+  "candidates": [
+    {
+      "id": "da9b7e848a4169a8",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Removes the 3.0 acceptance criterion and drops type, null and source-substring checks introduced to raise the count.", "reason": "Counts serve only to select files for inspection."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Retains the promised exception assertion and the complete property assertion over its intended inputs.", "reason": "Both existing tests continue to detect the same contract violations."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Checks removal of a documented forbidden construct between cedar and birch and preservation of both fragments. Separately bypasses removal and drops birch to validate the checks.", "reason": "The documented rule and named fragments supply independent expectations for both observable behaviors."}
+      ]
+    },
+    {
+      "id": "ec9644c6ee0eb3d0",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Drops the density target and padding, using counts only to locate tests for review.", "reason": "A type or presence assertion needs an independent caller guarantee to justify retention."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Keeps both existing tests as written and verifies the focused run executes them.", "reason": "This preserves the triggering input, promised exception and full property domain."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Under the example policy, checks that the returned em contains Receipt-17 and lacks onclick. Tests pass-through and a fixed-text replacement separately.", "reason": "The policy supplies the expected structure, and each temporary fault verifies detection of a distinct wrong output."}
+      ]
+    },
+    {
+      "id": "0f6023984c698a16",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Drops the threshold and removes draft assertions added solely for count.", "reason": "Any retained check needs an observable promise such as a published literal or return type."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Keeps the exception and complete property tests intact and confirms the exception fixture reaches the intended guard.", "reason": "The existing assertions retain their inputs and original scope."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Requires keep-A and keep-B in the returned output and the documented forbidden construct to be absent. Independently bypasses removal and drops keep-B.", "reason": "Both expected values come from the fixture, and the policy specifies what to remove. Each fault challenges a separate promise."}
+      ]
+    },
+    {
+      "id": "3eda8c3d9456218b",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Drops the per-file threshold and requires each edit to identify a contract violation it would catch.", "reason": "The proposed review discards count-driven padding and assesses actual detection."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Explicitly keeps the exact exception test and complete property assertion with existing input coverage, and reruns both.", "reason": "Both single-assertion contracts remain covered."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "For each removal rule under review, derives the expected public output from policy. Its paragraph example checks preserved keep-42 text and an absent onclick attribute.", "reason": "The mixed input tests both outcomes, and separate pass-through and text-replacement faults verify each check."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+{
+  "role": "Independent technical evidence for blind review.",
+  "repository": "adewale/keyboardia",
+  "upstream_commit": "aa67598560f8eaf2509a3ad4bc73edee2f8bea8a",
+  "verification_artifact": {
+    "candidate_files_verified": 986,
+    "original_files": 985,
+    "changed_files": [
+      "app/e2e/core.spec.ts",
+      "app/e2e/phase3-refactoring.spec.ts",
+      "app/src/components/TransportBar.test.tsx",
+      "app/src/components/swing-control.test.ts",
+      "app/src/components/tempo-change.test.ts"
+    ],
+    "sampled_git_blobs_checked_on_original": 58,
+    "sealed_checksums": {
+      "response.md": "ae35ab66edd1c0525960268cdab8623faec5cbc6efdc9ec58613b63831555a34",
+      "patch.diff": "3ce4662a46d669c0b3cfa6f56af83af7eee233b20d4e5bb9a18091568b5d5993"
+    },
+    "snapshot_manifest_sha256": "2ffcbb0c47863fc7490bbe44e4ce624687a5e9a2daf66508d5be42ee6c91c88a",
+    "pristine_source_hashes_matched": 985,
+    "all_frozen_evaluator_hashes_matched": true,
+    "patch_applies_to_pristine_with_whitespace_error_check": true,
+    "insertions": 63,
+    "deletions": 127,
+    "production_paths_changed": 0
+  },
+  "declared_repair": "Replace the two Tempo and two Swing callback cases that used local simulations or directly called a spy. Add four jsdom cases driving the two real mobile TransportBar sliders, and correct stale browser-test comments.",
+  "control_design": {
+    "status": "The alternate-repair adjudication route was specified in advance. The two particular mobile faults were claimed in the sealed response and independently reconstructed afterwards. The private adapter transformation was chosen by the verifier. All three supplemental stimuli are EXPLORATORY. No frozen control or witness was edited.",
+    "method": "The frozen postcandidate.py ran each selection in its own fresh Node 24.22.3 Linux Docker container with no network, read-only dependency mounts, 2 CPUs and 2 GiB. The frozen runtime supplies Vitest 4.1.11, React 19.2.1, jsdom 27.3.0 and workerd 1.20261006.1. Docker operations used the shared host lock. Each original/submitted pair received the exact same production bytes. A submitted test is the only new detector counted here.",
+    "original_command": [
+      "/case/runtime/run-unit.sh",
+      "--reporter=verbose",
+      "src/components/tempo-change.test.ts",
+      "src/components/swing-control.test.ts"
+    ],
+    "submitted_command": [
+      "/case/runtime/run-unit.sh",
+      "--reporter=verbose",
+      "src/components/TransportBar.test.tsx",
+      "src/components/tempo-change.test.ts",
+      "src/components/swing-control.test.ts"
+    ],
+    "driver_envelope": "Alternate component stimuli are materialized before the frozen --scenario clean driver. Its raw expected_behavior field always says accept for clean transport. The independently classified expected behavior for each variant appears in this matrix.",
+    "full_run_commands": "technical-check/plan.json",
+    "replay_script": "technical-check/verify.py",
+    "driver_sha256": "4ce90ad0798b6a6de2a71f7ed41a96c605a31b1a8892727f1412184f91d71b26"
+  },
+  "exploratory_component_matrix": [
+    {
+      "stimulus": "clean",
+      "classification": "unchanged",
+      "change": "Pinned production.",
+      "behavioral_verdict_for_variant": "accept",
+      "original": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "2 passed (2)",
+        "tests": "50 passed (50)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/clean_original/raw/original.log",
+        "raw_sha256": "d4802f8e45fc70e19a08b4ec2dc4b59b6edbae7af89a9fb29d88847365e7d77a"
+      },
+      "submitted": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "3 passed (3)",
+        "tests": "50 passed (50)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/clean_candidate/raw/original.log",
+        "raw_sha256": "d4f8e984256c2982031f441dd5de19f98e7ea169512e4b6b9dd8d69e3fa2ce3e"
+      }
+    },
+    {
+      "stimulus": "touch_swap",
+      "classification": "exploratory fault",
+      "change": "Swap only the two onTouchMove callback arguments. Both received numbers stay correct. The original suites omit the mounted adapter.",
+      "behavioral_verdict_for_variant": "reject",
+      "original": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "2 passed (2)",
+        "tests": "50 passed (50)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/touch_swap_original/raw/original.log",
+        "raw_sha256": "e716fd6679396cd904acbb39d61a0c1d0213a8fc7193dbde269cead8422492ba"
+      },
+      "submitted": {
+        "state": "observed",
+        "exit": 1,
+        "test_files": "1 failed | 2 passed (3)",
+        "tests": "2 failed | 48 passed (50)",
+        "failed_identities": [
+          "src/components/TransportBar.test.tsx > sends consecutive 'Tempo' edits during a touch drag",
+          "src/components/TransportBar.test.tsx > sends consecutive 'Swing' edits during a touch drag"
+        ],
+        "raw_log": "technical-check/runs/touch_swap_candidate/raw/original.log",
+        "raw_sha256": "f5e28620a8430d6909128427ae6ea77800c11b3a16374e01cc7af758a1df05cd"
+      },
+      "identical_production_hashes_for_original_and_submitted_suites": true,
+      "variant": {
+        "changed_file": "app/src/components/TransportBar.tsx",
+        "old_sha256": "12c541a2137479a425fc2b21a944bd9e6c989f9f81c5b0f534a069318881815c",
+        "new_sha256": "3b98a766feeb8bf0d1ce7acceccdda845f136e9182511077448ceeaad18fab7b"
+      },
+      "stimulus_diff": "technical-check/mutations/touch_swap.diff"
+    },
+    {
+      "stimulus": "mouse_guards",
+      "classification": "exploratory fault",
+      "change": "Remove the two e.buttons === 1 checks. A secondary drag now sends Tempo 135 or Swing 59.",
+      "behavioral_verdict_for_variant": "reject",
+      "original": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "2 passed (2)",
+        "tests": "50 passed (50)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/mouse_guards_original/raw/original.log",
+        "raw_sha256": "3edda00a1db7e6d774f6923456ccf0d387a3d274fed58e75574831fce6f16e44"
+      },
+      "submitted": {
+        "state": "observed",
+        "exit": 1,
+        "test_files": "1 failed | 2 passed (3)",
+        "tests": "2 failed | 48 passed (50)",
+        "failed_identities": [
+          "src/components/TransportBar.test.tsx > ignores secondary-button 'Tempo' drags and reports a primary-button drag",
+          "src/components/TransportBar.test.tsx > ignores secondary-button 'Swing' drags and reports a primary-button drag"
+        ],
+        "raw_log": "technical-check/runs/mouse_guards_candidate/raw/original.log",
+        "raw_sha256": "de7ddbd71b107a123a8d28774d29ef1a9d65003085ae48128a681b8a9dc6660e"
+      },
+      "identical_production_hashes_for_original_and_submitted_suites": true,
+      "variant": {
+        "changed_file": "app/src/components/TransportBar.tsx",
+        "old_sha256": "12c541a2137479a425fc2b21a944bd9e6c989f9f81c5b0f534a069318881815c",
+        "new_sha256": "9c7657bc96d97cacbe75f77e4df4c305d36e76e0a2f53cb60ffe73346c19fbb1"
+      },
+      "stimulus_diff": "technical-check/mutations/mouse_guards.diff"
+    },
+    {
+      "stimulus": "private_adapter",
+      "classification": "exploratory behavior-preserving transformation",
+      "change": "Replace the private type/range positional parameters and conditional sensitivity lookup with two configuration objects used by both mouse and touch move handlers. Public props, labels, bounds, arithmetic and event bindings retain their values.",
+      "behavioral_verdict_for_variant": "accept",
+      "original": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "2 passed (2)",
+        "tests": "50 passed (50)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/private_adapter_original/raw/original.log",
+        "raw_sha256": "22388563618828e05c9743b769cffc73c704326ad0fb13eedc6933ee10de0528"
+      },
+      "submitted": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "3 passed (3)",
+        "tests": "50 passed (50)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/private_adapter_candidate/raw/original.log",
+        "raw_sha256": "754d37ccb1536542642d4e5b30736a9065b474d26a1e8e8568ff64d863fe224b"
+      },
+      "identical_production_hashes_for_original_and_submitted_suites": true,
+      "variant": {
+        "changed_file": "app/src/components/TransportBar.tsx",
+        "old_sha256": "12c541a2137479a425fc2b21a944bd9e6c989f9f81c5b0f534a069318881815c",
+        "new_sha256": "dee41e14d66a6ea3a33e2328504864535fb73e7f2aa690dd22edcfe04b357843"
+      },
+      "stimulus_diff": "technical-check/mutations/private_adapter.diff"
+    }
+  ],
+  "expected_values_and_test_boundary": {
+    "new_tests": [
+      "ignores secondary-button 'Swing' drags and reports a primary-button drag",
+      "ignores secondary-button 'Tempo' drags and reports a primary-button drag",
+      "sends consecutive 'Swing' edits during a touch drag",
+      "sends consecutive 'Tempo' edits during a touch drag"
+    ],
+    "removed_original_tests": [
+      "src/components/swing-control.test.ts > Swing Callback Flow (Integration) > C-001: onSwingChange callback receives correct value",
+      "src/components/swing-control.test.ts > Swing Callback Flow (Integration) > C-002: rapid swing changes all call callback",
+      "src/components/tempo-change.test.ts > Tempo Callback Flow (Integration) > C-001: onTempoChange callback receives correct value",
+      "src/components/tempo-change.test.ts > Tempo Callback Flow (Integration) > C-002: rapid tempo changes all call callback"
+    ],
+    "callback_identity": "StepSequencer passes distinct handlers that dispatch SET_TEMPO and SET_SWING. The sliders are independently labeled Tempo and Swing. The tests select by accessible role/name and append callback-specific labels and values into one ordered array. This observes cross-routing, extra edits and missing edits in the exercised sequence.",
+    "drag_values": "A move from y=100 to 70 produces 135 from 120 at 0.5 BPM/pixel, or 59 from 50 at 0.3 percentage points/pixel. The retained original Swing helper test independently calls the production calculation for that exact 59. The deleted fake callback case hard-codes 1.0 and expects 80 for the same 30-pixel delta. The new tests use literal observations and do not call the helper to compute the expected result. The precise sensitivities are characterization of the pinned calibration, also present in extant helper examples. Both upward examples land on integers, so these DOM cases do not isolate fractional rounding. The helper suites include separate rounding examples. The available product descriptions do not establish a fixed UX requirement for exact per-pixel rates.",
+    "bounds_and_buttons": "The second touch move, y=300, reaches 60 BPM or 0% Swing. These limits agree with the shared domain constants and slider aria limits. The button cases send a secondary drag, assert silence, then send a primary drag and assert one correctly routed edit. This checks the buttons===1 behavior already expressed by each mouse adapter.",
+    "failure_diagnostics": "The touch-swap assertions report Swing 135 where Tempo 135 is expected, and Tempo 59 where Swing 59 is expected, at TransportBar.test.tsx:32. With the mouse guards removed the secondary-button assertions at line 44 receive a one-element edit list instead of an empty list. Each fault leaves the opposite input modality green.",
+    "bounded_scope": "The component is rendered with fixed props. Its two callbacks record delivered edits. No app-level rerender, downstream dispatch, server, audio, real browser, touch-action, viewport, pointer capture or after-release behavior is exercised. The existing two-client desktop #tempo range-input test drives ArrowUp and is separate. Nearby helper cases retain upper-bound assertions.",
+    "source": [
+      "app/src/components/TransportBar.test.tsx:14,28,39 (submitted)",
+      "app/src/components/tempo-change.test.ts:421,447 (pinned)",
+      "app/src/components/swing-control.test.ts:33,402,428 (pinned)",
+      "app/src/components/TransportBar.tsx:45,68,127,150",
+      "app/src/components/StepSequencer.tsx:226,230,656",
+      "app/src/components/transport-drag.ts:3-16",
+      "app/src/shared/constants.ts:33-43",
+      "app/e2e/multiplayer.spec.ts:132-153",
+      "app/src/components/Transport.tsx:215,228"
+    ]
+  },
+  "registration": {
+    "add_file": "src/components/TransportBar.test.tsx",
+    "new_file_in_isolation": {
+      "state": "observed",
+      "exit": 0,
+      "test_files": "1 passed (1)",
+      "tests": "4 passed (4)",
+      "failed_identities": [],
+      "raw_log": "technical-check/runs/new_file_only/raw/original.log",
+      "raw_sha256": "81a9be475e31796ef1a2a3434ff7dd32f9c2fff61c688f027345d616852974f8"
+    },
+    "ordinary_unit_discovery": {
+      "state": "observed",
+      "exit": 0,
+      "failed_identities": [],
+      "raw_log": "technical-check/runs/unit_discovery/raw/original.log",
+      "raw_sha256": "98fcf325305d8035fbed08e03bb0f8848d1ef7a383c438b0debbc0fd96ba9be1"
+    },
+    "unfiltered_discovery_lists_new_file": true,
+    "unfiltered_discovery_files_with_test_suffix": 301,
+    "ci_source": "The required Unit Tests job invokes npm run test:unit, which runs vitest run --project unit. The unit project includes src/**/*.test.tsx. The local unfiltered listing verifies collection. The prior hosted job predates this patch. See .github/workflows/ci.yml:151-156, app/package.json:15 and app/vitest.config.ts:87-96.",
+    "prepared_default_file_count": 23,
+    "included_component_files": [
+      "src/components/tempo-change.test.ts"
+    ],
+    "default_unit_original_published": {
+      "files": 23,
+      "tests": 343,
+      "source": "preparation/keyboardia/baseline.json"
+    },
+    "default_unit_candidate_observed": {
+      "state": "observed",
+      "exit": 0,
+      "test_files": "23 passed (23)",
+      "tests": "341 passed (341)",
+      "failed_identities": [],
+      "raw_log": "technical-check/runs/default_units/raw/original.log",
+      "raw_sha256": "a8690b69b7bc33faa3a7cd0da35868df6e7606b9d8ca576e30b0bf082b08fac5"
+    },
+    "difference": "The prepared 23-file filter selects tempo-change.test.ts only. Its two removed cases reduce that filter\u2019s total by two. The two old full component suites had 23 and 27 cases. The submitted selection has 21, 25 and four. The added jsdom suite requires an explicit argument to the prepared wrapper or ordinary unfiltered unit project."
+  },
+  "keepers": [
+    {
+      "owner": "Original tempo/swing suites",
+      "identities_preserved": 46,
+      "clean_file_counts": {
+        "original": {
+          "src/components/swing-control.test.ts": 27,
+          "src/components/tempo-change.test.ts": 23
+        },
+        "candidate": {
+          "src/components/swing-control.test.ts": 25,
+          "src/components/tempo-change.test.ts": 21,
+          "src/components/TransportBar.test.tsx": 4
+        }
+      },
+      "evidence": "The same 46 retained identities pass on clean code and in both submitted fault runs. They include production drag arithmetic and properties, real gridReducer updates and field isolation, and state mutations/serialization. Swing tests asserting stored values do not establish audible scheduler timing. The two edited E2E files change comments only."
+    },
+    {
+      "owner": "overlap-fuzz and eviction-recovery",
+      "evidence": "Existing workerd checks derive toggle parity from sent operations, check per-socket contiguous sequence numbers, and compare three snapshots and REST. The cold-disconnect example observes stale KV 120, then KV 145 after wake and close. Both files pass in the three-file seed replay. These checks predate the component change.",
+      "source": [
+        "app/test/integration/overlap-fuzz.test.ts:216,254,277,303",
+        "app/test/integration/eviction-recovery.test.ts:761-780"
+      ]
+    },
+    {
+      "owner": "Client persistence",
+      "evidence": "The unchanged tests inspect the outbound URL after switching sessions and inspect the second outgoing body after a pending response resolves. The prepared default that includes this file passed. External fetch is a test double.",
+      "source": [
+        "app/src/sync/session.persistence.test.ts:64,87",
+        "preparation/keyboardia/participant/runtime/focused-unit.txt"
+      ]
+    },
+    {
+      "owner": "Native audio render",
+      "evidence": "The source counts PCM onsets and compares their timings with a literal step \u00d7 0.125 seconds, tolerance below 0.010 seconds. The hosted Unit Tests job recorded the required audio-render step as successful on the pinned commit. No native audio run was performed for this candidate.",
+      "source": [
+        "app/src/audio/session-render-conservation.render.test.ts:87-100",
+        "https://github.com/adewale/keyboardia/actions/runs/45018066984/job/137194593412"
+      ]
+    }
+  ],
+  "open_findings": [
+    {
+      "claim": "Rotating Worker run fails the accepted-work floor after its model assertions.",
+      "historical_status": "Previously recorded as keyboardia-02 and included as a secondary control. The submission reports this as an open finding.",
+      "independent_native": {
+        "state": "observed",
+        "exit": 1,
+        "test_files": "1 failed | 2 passed (3)",
+        "tests": "1 failed | 27 passed (28)",
+        "failed_identities": [
+          "state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points"
+        ],
+        "raw_log": "technical-check/runs/seed_45182094013/raw/valid_schedule.log",
+        "raw_sha256": "2a51622b5f4e4211837a4573a07a2d0918bb13d666e7da83f40b0b7a6226a332"
+      },
+      "coverage": {
+        "accepted": 99,
+        "dirtyDisconnects": 3,
+        "byKind": {
+          "ws_tempo": 10,
+          "ws_swing": 13,
+          "rest_put": 9,
+          "rest_patch_state": 11,
+          "rest_patch_name": 14,
+          "hibernate": 17,
+          "hard_evict": 11,
+          "disconnect": 8,
+          "connect": 6
+        }
+      },
+      "evidence": "Both seed variables were 45182094013. The trace reaches assertModelCoverage at line 494 after fc.check failure handling. Every one of the nine command kinds appears. The separate coverage assertions explicitly require both WebSocket edit kinds and a dirty disconnect. The hosted receipt records the same quota assertion and a separate step restoring failure after diagnostics. The proposed generation change has no submitted implementation.",
+      "sources": [
+        "app/test/integration/state-machine-fuzz.test.ts:315,492,510,531,546",
+        ".github/workflows/property-seed.yml:100-137",
+        "https://github.com/adewale/keyboardia/actions/runs/45182094013/job/137718195578"
+      ]
+    },
+    {
+      "claim": "The pinned Darwin lane was cancelled before running its three cases.",
+      "historical_status": "Previously recorded as keyboardia-01 and included in the prepared lane evidence. The submission reports this as an open finding.",
+      "evidence_kind": "Pinned archived hosted job receipt plus source, without a local Darwin execution.",
+      "run": 45018066984,
+      "conclusion": "cancelled",
+      "steps": 0,
+      "annotation": "The configuration 'macos-14-arm64-us-default' is not supported",
+      "lane_expected_passes": 3,
+      "case_identities": [
+        "chromium :: populated-visual.spec.ts \u203a Deterministic populated-session visuals \u203a Holby landscape editing view",
+        "chromium :: populated-visual.spec.ts \u203a Deterministic populated-session visuals \u203a Holby pitch overview exposes correctly named octaves",
+        "chromium :: populated-visual.spec.ts \u203a Deterministic populated-session visuals \u203a Holby portrait consumption view"
+      ],
+      "stack_a_identity": {
+        "conclusion": "skipped",
+        "steps": 0,
+        "source": ".github/workflows/ci.yml:163-167 requires pull_request and audio/full scope"
+      },
+      "sources": [
+        "https://github.com/adewale/keyboardia/actions/runs/45018066984/job/137194667192",
+        "https://github.com/adewale/keyboardia/actions/runs/45018066984/job/137194668367",
+        "app/e2e/populated-visual.spec.ts:10,19,32,45",
+        "app/e2e/lane-contracts.json:12"
+      ]
+    },
+    {
+      "claim": "The demo test entitled \u201cplayable range and scale\u201d accepts a first active string note outside its authored scale.",
+      "historical_status": "Additional finding relative to the four findings in the supplied prior audit and the frozen scoring cases. The fixture test was in the 58-file sample, outside the purposeful anchor list. This open finding has no submitted repair.",
+      "control": "EXPLORATORY diagnostic. The independently reconstructed variant changes only the first active string pitch offset from 2 to 3.",
+      "ground_truth": "The checked-in fixture sets the locked scale to D natural minor. The string manifest gives a range of 33\u201388 and omits playbackNote, so the test uses 60. The track transpose is zero. MIDI 62 is D. MIDI 63 is one semitone above D, outside the natural-minor intervals [0,2,3,5,7,8,10]. Both lie in the instrument range. The existing assertion checks only per-note range. This demonstrates a gap in that named fixture test\u2019s scale claim.",
+      "clean": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "1 passed (1)",
+        "tests": "5 passed (5)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/demo_clean/raw/original.log",
+        "raw_sha256": "680dab00dfe8b320cf8313b58f73de0be7ff0eb33da2fbe3e9d96ace977c1d72"
+      },
+      "out_of_scale": {
+        "state": "observed",
+        "exit": 0,
+        "test_files": "1 passed (1)",
+        "tests": "5 passed (5)",
+        "failed_identities": [],
+        "raw_log": "technical-check/runs/demo_out_of_scale/raw/original.log",
+        "raw_sha256": "c0ed8afe44965d69b4a7bef0b97fd0945a3ac1ec09be7b1da647ceb014c0870a"
+      },
+      "stimulus_diff": "technical-check/mutations/demo_out_of_scale.diff",
+      "sources": [
+        "app/scripts/demo-sessions/whisper-to-roar.json:28,59",
+        "app/public/instruments/string-section/manifest.json:7",
+        "app/src/music/music-theory.ts:21,48",
+        "app/src/data/phase44-demo-session.test.ts:105-116"
+      ]
+    }
+  ],
+  "frozen_reference": {
+    "provenance": "The following exit codes come from the independent pre-submission calibration. These are distinct from the new component matrix. Newly authored checks target the mobile component only. The submitted patch does not change these named observers or their production inputs.",
+    "sync_original_calibration": {
+      "original": {
+        "named_gate": 0,
+        "existing_worker": 0,
+        "worker_witness": 0,
+        "existing_senders": 0,
+        "hook_witness": 0
+      },
+      "private_rename": {
+        "named_gate": 1,
+        "existing_worker": 0,
+        "worker_witness": 0
+      },
+      "no_dispatch": {
+        "named_gate": 0,
+        "existing_worker": 1,
+        "worker_witness": 1
+      },
+      "author_only": {
+        "named_gate": 0,
+        "existing_worker": 0,
+        "worker_witness": 1
+      },
+      "inverted_hook": {
+        "named_gate": 0,
+        "existing_senders": 0,
+        "hook_witness": 1
+      },
+      "early_return": {
+        "named_gate": 0,
+        "existing_senders": 0,
+        "hook_witness": 0
+      },
+      "stale_hook": {
+        "named_gate": 0,
+        "existing_senders": 0,
+        "hook_witness": 1
+      }
+    },
+    "discovery_original_calibration": {
+      "correct": 0,
+      "reordered_tools": 0,
+      "missing_post_read": 0,
+      "edit_before_both_reads": 0,
+      "no_read": 1,
+      "wrong_protocol": 1
+    },
+    "worker_seed_original_calibration": {
+      "default_model": 0,
+      "valid_schedule": 1,
+      "persistence_original": 0,
+      "persistence_fault": 1
+    },
+    "persistence_reference": "The frozen existing state-machine example with the final KV flush removed sees 120 where 150 is expected. This reference case is distinct from the submitted report\u2019s cited 145 cold-disconnect example.",
+    "candidate_specific_scope": "Only the frozen valid_schedule stimulus was independently rerun on the submitted tree for the open seed finding, with the three-file selector shown in the report. The remaining results reflect the earlier calibration. The submitted tests exercise the mobile sliders.",
+    "sources": [
+      "preparation/keyboardia/evaluator/hidden-controls.md",
+      "preparation/keyboardia/evidence/final-sync-controls/results.json",
+      "preparation/keyboardia/evidence/grader-controls.json",
+      "preparation/keyboardia/evidence/seed-controls/results.json"
+    ]
+  },
+  "study_scope": {
+    "historical_provenance": [
+      "current-test-audit-2026-11-26/reports/keyboardia.json (designated prior report)",
+      "preparation/keyboardia/prepare.py:23-40 (purposeful anchors)",
+      "preparation/keyboardia/participant/sample.tsv"
+    ],
+    "historical_context": "The four findings in the designated prior audit covered Darwin cancellation, the rotating command quota, sync-validator behavior and discovery-grader ordering. The mobile callback repair is an additional finding relative to that list and the frozen controls. Its tempo-change.test.ts file was a purposeful sampling anchor, while swing-control.test.ts was a neighboring file followed beyond the sample. Neither that distinction nor the demo result establishes first-ever discovery or a novel-discovery rate.",
+    "sample": "58 sampled paths, nine strata, 370 conventionally named original tests. All 58 original sampled blob IDs match independently. The submitted command selects 34 sampled ordinary unit files. Including eight Worker files and one tooling file gives the reported 43. The scope arithmetic and membership were checked. Reading depth and the subject\u2019s execution history were not directly observable from the sealed outputs.",
+    "remaining_self_report": "The 490/36 expanded units, 12/12 verification-tooling, 84/8 Worker default and 131/11 Worker full after submission, and code-quality subcommand outcomes were not independently rerun for this record. The original prepared 84/8 and 131/11 Worker counts exist in baseline.json and the Worker code/tests are byte-identical. The response reports unavailable Playwright collection, ESLint and React/Node declarations. Those top-level dependencies are absent from the slim app runtime. The response\u2019s wall times are subject observations. All independent run logs retain their own timings.",
+    "unexecuted": "Full upstream CI on this patch, a real browser/mobile device, native audio, Darwin and real codec/browser verification. The historic hosted green audio step applies to pinned code. Claims about all-suite mutation detection or general UX precision fall outside the demonstrated controls."
+  }
+}

@@ -1,0 +1,160 @@
+   141	    expect(request.source.authoredFamilyBody).toContain('&lt;b&gt;literal&lt;/b&gt;')
+   142	    const svg = renderMermaidSVG(source)
+   143	    const text = [...svg.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)].map(match => match[1]).join('')
+   144	    expect(text).toContain('&lt;b&gt;literal&lt;/b&gt; 😀')
+   145	    expect(svg).not.toContain('Keep this note')
+   146	    const { parseRegisteredMermaid } = await import('../agent/parse.ts')
+   147	    const { serializeMermaid } = await import('../agent/serialize.ts')
+   148	    const { readC4Source } = await import('../c4/parser.ts')
+   149	    for (const ending of ['\r', '\r\n', '\n']) {
+   150	      expect(readC4Source(['C4Context', 'accDescr {', 'one', 'two', '}', 'Person(a, "A")'].join(ending)).accessibilityDescription).toBe('one\ntwo')
+   151	    }
+   152	    for (const body of ['flowchart LR\nA["literal"] --> B', 'pie\n"A" : 1', 'sequenceDiagram\nA->>B: text', 'C4Context\nPerson(a, "A")']) {
+   153	      for (const ending of ['\r', '\r\n']) {
+   154	        const source = `---\ntitle: Map\n---\n${body}`.replaceAll('\n', ending)
+   155	        const parsed = parseRegisteredMermaid(source)
+   156	        if (!parsed.ok) throw new Error(JSON.stringify(parsed.error))
+   222	      '---\ntitle: style A fill:#fff;\n---\nstateDiagram-v2\n%% style A fill:#fff;\nA --> B\nstyle A fill:#fff;',
+   223	      'flowchart LR\nA --> B\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   224	      'classDiagram\nclass A\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   225	      'classDiagram\nnamespace N {\nclass A\nstyle A fill:#fff;\nclassDef c fill:#fff;\n}',
+   226	      'erDiagram\nA\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   227	      'erDiagram\nsubgraph G\nA\nstyle A fill:#fff;\nclassDef c fill:#fff;\nend',
+   228	      'quadrantChart\nA:::c: [0.5, 0.5]\nclassDef c color:#fff;',
+   229	      'block-beta\nA["Hello"]\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   230	      'requirementDiagram\nrequirement A {\nid: 1\ntext: "Hi"\nrisk: high\nverifymethod: test\n}\nstyle A fill:#fff;\nclassDef c fill:#fff;',
+   231	      ...['\n', '\r', '\r\n'].map(ending => '---\ntitle: requirementDiagram\n---\n%% preamble\n%%{init: {}}%%\nrequirement&#68;iagram\nrequirement A {\nid: 1\ntext: "Hi"\nrisk: high\nverifymethod: test\n}\nstyle A fill:#fff;\nclassDef c fill:#fff;'.replaceAll('\n', ending)),
+   232	      'treemap-beta\n"Leaf":1\nclassDef c fill:#fff;',
+   233	      // The dropped `;` only ends a style statement sharing its row, or a
+   234	      // statement Mermaid rejects whatever it does (`} classDef`).
+   235	      'graph TD;style Q background:#fff;',
+   236	      'flowchart LR\nA-->B;style A fill:#f00;',
+   237	      'classDiagram\nclass A {\nstyle A fill:#f00; } classDef c fill:#fff;',
+   238	      // Tag quotes inside one label, which Mermaid draws as HTML.
+   239	      'flowchart TD\nB --> C{Let <span style="background-color:#ddd">me</span> think}',
+   240	      'flowchart TD\nA -->|<span style="color:red">m</span>| B\nsubgraph S[Title<br/><span style="font-size:12px">sub</span>]\nC\nend',
+   241	    ]) {
+   242	      expect(verifyMermaid(source).warnings.filter(warning => warning.code === 'UNSUPPORTED_SYNTAX' && warning.syntax === 'mermaid_cleanup')).toEqual([])
+   243	    }
+   244	  })
+   245	})
+   246	
+   247	test('shared cleanup and protected entities agree with pinned Mermaid grammar text', async () => {
+   248	  const { startUpstreamMermaid } = await import('./helpers/upstream-mermaid.ts')
+   249	  const upstream = startUpstreamMermaid()
+   250	  try {
+   251	    const cases = [
+   252	      ['sequenceDiagram\rA->>B: <a href="x">text</a>', "sequenceDiagram\nA->>B: <a href='x'>text</a>\n"],
+   253	      ['sequenceDiagram\r\nA->>B: <a href = "x">text</a>', 'sequenceDiagram\nA->>B: <a href = "x">text</a>\n'],
+   254	      ['flowchart LR\nstyle A fill:#fff;', 'flowchart LR\nstyle A fill:#fff\n'],
+   255	      ['sequenceDiagram\nA->>B: #quot; #59; #9829;', 'sequenceDiagram\nA->>B: ﬂ°quot¶ß ﬂ°°59¶ß ﬂ°°9829¶ß\n'],
+   256	    ] as const
+   257	    expect(await upstream.projectAll(cases.map(([source]) => source), diagram => diagram.text)).toEqual(cases.map(([, expected]) => expected))
+   258	    expect(cleanupMermaidSource(cases[0][0]).upstreamText + '\n').toBe(cases[0][1])
+   259	    expect(cleanupMermaidSource(cases[1][0]).upstreamText + '\n').toBe(cases[1][1])
+   163	    return { ok: false, family: null, error: { code: 'INVALID_OP', message: '`family` must be a string when provided' } }
+   164	  }
+   165	  if (typeof source === 'string' && typeof family === 'string') {
+   166	    return { ok: false, family: hasOpSchema(family) ? family : null, error: { code: 'INVALID_OP', message: 'applyOps accepts either `source` or `family`, not both' } }
+   167	  }
+   168	
+   169	  let d: MutableValidDiagram
+   170	  let before: ParsedDiagram
+   171	
+   172	  if (typeof source === 'string' && source.trim().length > 0) {
+   173	    const parsed = parseRegisteredMermaid(source)
+   174	    if (!parsed.ok) {
+   175	      const primary = parsed.error[0]
+   176	      return {
+   177	        ok: false,
+   178	        family: null,
+   179	        error: {
+   180	          code: primary?.code ?? 'PARSE_ERROR',
+   181	          message: parsed.error.map(e => e.message).join('; ') || 'could not parse source',
+   182	        },
+   183	      }
+   184	    }
+   185	    d = parsed.value as MutableValidDiagram
+   186	    before = d
+   187	    if (!hasOpSchema(d.kind)) {
+   188	      return { ok: false, family: d.kind, error: { code: 'INVALID_OP', message: `family "${d.kind}" has no structured ops; edit it as source text` } }
+   189	    }
+   190	    if (checkedOps.length === 0) {
+   191	      return { ok: false, family: d.kind, error: { code: 'INVALID_OP', message: '`ops` must contain at least one op object' } }
+   347	
+   348	/**
+   349	 * Write `after`, the committed canonical result of typed edits to `before`,
+   350	 * as a local change to the source `before` was parsed from. The whole batch
+   351	 * is projected at once; when that does not read back as `after`, a batch of
+   352	 * at most OP_BY_OP_PROJECTION_LIMIT ops is projected op by op. A diagram
+   353	 * with no authored source, or an edit no local change reproduces, is
+   354	 * written canonically with the reason.
+   355	 */
+   356	export function preserveStructuredEdit(before: ParsedDiagram, after: ParsedDiagram, ops: readonly unknown[] = []): SourceMutationResult {
+   357	  const canonical = (reason: string): SourceMutationResult => ({ source: serializeMermaid(after), diagram: after, preservation: { method: 'canonical', reason } })
+   358	  const authored = authoredSourceOf(before.source)
+   359	  if (authored === undefined) return canonical('the diagram was not parsed from source, so there are no authored lines to keep')
+   360	  const read = (source: string) => {
+   361	    const parsed = parseMermaid(source)
+   362	    return parsed.ok && parsed.value.kind === before.kind && parsed.value.body.kind === before.body.kind ? parsed.value : undefined
+   363	  }
+   364	  const original = read(authored)
+   365	  if (!original) return canonical('the authored source no longer reads as this diagram')
+   366	  const whole = projectStructuredEdit(authored, original, after)
+   367	  if (whole.ok) return { ...whole.value, preservation: { method: 'local' } }
+   368	  if (ops.length > OP_BY_OP_PROJECTION_LIMIT) return canonical(`${whole.error}; batches of more than ${OP_BY_OP_PROJECTION_LIMIT} operations are not projected one by one`)
+   369	  if (ops.length > 1) {
+   370	    let source = authored, current = original
+   371	    for (const op of ops) {
+   372	      const checked = hasOpSchema(current.kind) ? admittedOp(current.kind, op) : ok(op as AnyMutationOp)
+   373	      const next = checked.ok ? applyOneMutation(current, checked.value) : checked
+   374	      const projected = next.ok ? projectStructuredEdit(source, current, next.value) : undefined
+   375	      if (!projected?.ok) break
+   376	      ;({ source, diagram: current } = projected.value)
+   377	    }
+   378	    if (current !== original && sameProjectedDiagram(current, after)) return { source, diagram: current, preservation: { method: 'local' } }
+   379	  }
+   380	  return canonical(whole.error)
+   475	  reference: Array<[find: string, replace: string]>
+   476	}
+   477	
+   478	const CASES: Case[] = [
+   479	  { name: 'flowchart add_node into a quoted-title group\'s sibling', source: FLOWCHART, op: { kind: 'add_node', id: 'H', label: 'In group', parent: 'grp' }, reference: [['     G[Gee]\n', '     G[Gee]\n     H[In group]\n']] },
+   480	  { name: 'flowchart remove_node', source: FLOWCHART, op: { kind: 'remove_node', id: 'D' }, touched: ['      B -- no --> D[Skip]'], reference: [['      B -- no --> D[Skip]\n', '']] },
+   481	  { name: 'flowchart rename_node inside a quoted-title subgraph', source: FLOWCHART, op: { kind: 'rename_node', from: 'E', to: 'Ex' }, touched: ['    E[Think] --> F[Act]'], reference: [['E[Think]', 'Ex[Think]']] },
+   482	  { name: 'flowchart set_label on a :::class node', source: FLOWCHART, op: { kind: 'set_label', target: 'C', label: 'Do it now' }, touched: ['  B -->|yes| C(Do it):::hot'], reference: [['C(Do it)', 'C(Do it now)']] },
+   483	  { name: 'flowchart set_label on an entity-spelled quoted label', source: FLOWCHART, op: { kind: 'set_label', target: 'A', label: 'Begin' }, touched: ['    A["Start <here>"] --> B{Decide?}'], reference: [['"Start <here>"', '"Begin"']] },
+   484	  { name: 'flowchart add_edge with a label', source: FLOWCHART, op: { kind: 'add_edge', from: 'F', to: 'G', label: 'next' }, reference: [['     G[Gee]\n  end\n', '     G[Gee]\n  end\n    F -->|next| G\n']] },
+   485	  { name: 'flowchart remove_edge keeps the endpoint declaration', source: FLOWCHART, op: { kind: 'remove_edge', id: 'B->D' }, touched: ['      B -- no --> D[Skip]'], reference: [['B -- no --> D[Skip]', 'D[Skip]']] },
+   486	  { name: 'flowchart set_node_class', source: FLOWCHART, op: { kind: 'set_node_class', id: 'D', className: 'hot' }, reference: [['  classDef hot fill:#f96;\n', '  classDef hot fill:#f96;\n  class D hot\n']] },
+   487	  { name: 'flowchart set_node_style', source: FLOWCHART, op: { kind: 'set_node_style', id: 'D', style: 'fill:#0f0' }, reference: [['  style A fill:#eee\n', '  style A fill:#eee\n  style D fill:#0f0\n']] },
+   488	  { name: 'flowchart define_class', source: FLOWCHART, op: { kind: 'define_class', name: 'cool', style: 'fill:#00f' }, reference: [['  classDef hot fill:#f96;\n', '  classDef hot fill:#f96;\n  classDef cool fill:#00f\n']] },
+   211	export function startUpstreamMermaid(): UpstreamMermaid {
+   212	  const child = Bun.spawn({
+   213	    cmd: ['node', '--input-type=module', '-e', WORKER],
+   214	    cwd: REPO,
+   215	    stdin: 'pipe',
+   216	    stdout: 'pipe',
+   217	    stderr: 'inherit',
+   218	  })
+   219	  const reader = child.stdout.getReader()
+   220	  const decoder = new TextDecoder()
+   221	  let buffered = ''
+   222	  // Requests are strictly serialized: one line out, one reply back.
+   223	  let queue: Promise<unknown> = Promise.resolve()
+   224	
+   225	  async function readReply(): Promise<UpstreamReply> {
+   226	    for (;;) {
+   227	      const nl = buffered.indexOf('\n')
+   228	      if (nl >= 0) {
+   229	        const line = buffered.slice(0, nl)
+   230	        buffered = buffered.slice(nl + 1)
+   231	        if (line.startsWith(REPLY)) return JSON.parse(line.slice(REPLY.length)) as UpstreamReply
+   232	        continue
+   233	      }
+   234	      const { value, done } = await reader.read()
+   235	      if (done) throw new Error(`upstream Mermaid worker exited (code ${await child.exited})`)
+810:function canonicalDiff(c0: readonly string[], c1: readonly string[], loose: boolean): DiffOp[] | undefined {
+1318:[Omitted long matching line]
+1537:function renderPlan(lines: readonly AuthoredLine[], plan: Plan, eol: string): string {
+1555:export function projectStructuredEdit(authored: string, before: ParsedDiagram, after: ParsedDiagram): Result<{ source: string; diagram: ParsedDiagram }, string> {

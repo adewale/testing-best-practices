@@ -1,0 +1,33 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Audit acceptance criterion and draft assertions",
+      "action": "Remove the per-file density threshold and its padding assertions.",
+      "details": "Drop the proposed type, non-null, and implementation-source substring checks added solely to reach 3.0. Review each proposed test against a specific observable failure. Keep a type check only where the public contract promises that type and the existing expectation does not already establish it."
+    },
+    {
+      "target": "Existing exact exception and complete-property tests",
+      "action": "Keep the current one-assertion tests as written.",
+      "details": "The promised exception and the complete property already distinguish the intended outcome from a regression. Extra assertions about internal steps would add maintenance cost."
+    },
+    {
+      "target": "Sanitizer tests that only require nonempty output",
+      "action": "Replace the nonempty check with removal and preservation checks through the public sanitizer.",
+      "details": "Use a mixed fixture containing a policy-allowed item with distinctive safe text and a policy-forbidden item. In the returned content, check that the forbidden item is absent and that the allowed item still carries the exact safe text. Inspect the meaningful output structure so harmless formatting changes pass. Choose both items from the sanitizer's existing rules."
+    }
+  ],
+  "retained_contracts": [
+    "The documented invalid input raises the promised exception.",
+    "Each existing complete-property test continues to enforce its original property over its original inputs.",
+    "Sanitization removes policy-forbidden content while retaining policy-allowed content."
+  ],
+  "validation": [
+    "Run the focused exception, property, and sanitizer tests with the normal test runner.",
+    "Temporarily make the sanitizer return its mixed input unchanged. Confirm that the removal check fails even though the safe text survives.",
+    "Temporarily make it return a fixed nonempty placeholder. Confirm that the preservation check fails even though the forbidden item is absent.",
+    "Restore normal behavior and run the full suite. Review the final diff to confirm the temporary changes are gone."
+  ],
+  "cost_and_stop": "Limit edits to the audit proposal and tests with an identified behavioral gap. Stop when both simulated sanitizer regressions are caught for the intended reason and the restored suite passes. A file below 3.0 requires no further work on that basis.",
+  "rationale": "Assertion counts give the same credit to a redundant check as to an exact expectation. The mixed fixture distinguishes correct filtering from both pass-through and indiscriminate deletion."
+}

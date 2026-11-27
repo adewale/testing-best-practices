@@ -1,0 +1,8 @@
+--- a/app/test/integration/state-machine-fuzz.test.ts
++++ b/app/test/integration/state-machine-fuzz.test.ts
+@@ -546,4 +546,5 @@
+   // keep the fixed and rotating campaigns honest about the WS/KV lifecycle they
+   // claim to cover.
+   assertModelCoverage(coverage);
++  throw new Error("VERIFY_CAPTURE_COMPLETE\n" + verifierScheduleTrace.map((value) => "VERIFY_SCHEDULE=" + value).join("\n"));
+ }, MODEL_TIMEOUT_MS);

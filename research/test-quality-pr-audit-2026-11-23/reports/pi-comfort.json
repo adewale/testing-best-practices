@@ -1,0 +1,60 @@
+{
+  "repository": "adewale/pi-comfort",
+  "total_prs": 2,
+  "pages_checked": {
+    "pull_requests": "GitHub REST pulls, state=all, per_page=100, no author/date filters. Page 1 returned #2 and #1. Page 2 was empty.",
+    "changed_files": "Compared each complete first page and all supplied patches with the counts on the PR detail endpoint. #1 had 4 files and #2 had 3.",
+    "baseline": "Read test/export-to-browser.test.mjs at #2's base a451c00.",
+    "source_url": "https://api.github.com/repos/adewale/pi-comfort/pulls?state=all&per_page=100&page=1"
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Make the tests portable and test the generated pages in real Chromium",
+      "url": "https://github.com/adewale/pi-comfort/pull/1",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-11T23:44:56Z",
+      "classification": "Explicit test portability and replacement of weak assertions",
+      "weakness": "The test file imported a loader from an absolute Homebrew installation and could fail before the first assertion. Its generated-script checks parsed the response script and matched a function name in the session page. Wrong clipboard content, invisible panels or a broken filter could satisfy both checks.",
+      "attempted_remedy": "Replaced the host-specific import and hand-written runner with a relative TypeScript import and node:test. Deleted the new Function smoke test and the selectTurn source regex. Added Playwright checks for the generated pages in real Chromium.",
+      "test_paths": [
+        "test/export-to-browser.test.mjs",
+        "test/browser.test.mjs"
+      ],
+      "diff_evidence": [
+        "In test/export-to-browser.test.mjs, the deleted checks were `new Function(script)` and a regex for `function selectTurn(id)`. Four existing named tests remain.",
+        "In test/browser.test.mjs, clicking #toggle changes both panes' visibility, the Raw pane equals the original Markdown, and clicking #copy writes that exact Markdown to the clipboard. Clicking turn 2 changes the visible panel and both aria-selected values. Filling the filter with uppercase ZEBRAS hides the first prompt and clearing it restores the prompt.",
+        "package.json pins Playwright 1.56.1 and README.md documents installing Chromium. The browser is given clipboard permission at a routed localhost origin."
+      ],
+      "transferable_rule": "Before deleting parse-only or source-text assertions for generated programs, drive the same interaction in the target runtime and assert the user-visible result. Load tests through project-relative dependencies and run them through the normal test command.",
+      "outcome": "Merged after #2 on 2026-10-11. The author reports 13/13 tests passed on Linux and eight planted faults produced failures. GitHub returned zero pull-request workflow runs for head 8a51bc1. The audit verified the diff and merge. The execution and mutation counts are author-reported. Clipboard coverage is limited to Chromium with granted permission on localhost."
+    },
+    {
+      "number": 2,
+      "title": "Test audit: test renderer escaping and Copy payload; fix wrapped list lines",
+      "url": "https://github.com/adewale/pi-comfort/pull/2",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-03T21:36:13Z",
+      "classification": "Explicit test-effectiveness audit with a renderer repair",
+      "weakness": "Five pre-existing checks included happy-path HTML fragments and a parse-only browser script check. They omitted list ordering, link filtering, escaping and exact recovery of the embedded Copy Markdown value. A wrapped list line could appear before the list and still satisfy the old assertions.",
+      "attempted_remedy": "Added seven node:test cases around the existing renderer, changed npm test to discover all test files, and fixed continuation and list-marker handling. The old test file remained intact in this PR.",
+      "test_paths": [
+        "test/markdown.test.mjs",
+        "test/export-to-browser.test.mjs (baseline)"
+      ],
+      "diff_evidence": [
+        "test/markdown.test.mjs checks complete block order around a list, a wrapped line inside its list item, the treatment of subsequent markers, and LF/CRLF equivalence. extensions/export-to-browser.ts now appends a continuation to the open item, flattens nested bullets and flushes the list for other markers.",
+        "Other cases assert that safe formatting and an HTTPS link survive, unsafe markup is escaped and a disallowed link stays text. The embedded Copy value contains no raw less-than character and JSON.parse recovers the exact original text. The Raw pane is checked separately.",
+        "package.json replaces the single-file test script with `node --test test/*.test.mjs`. A failure to import the old test therefore allows the new file to report its own results."
+      ],
+      "transferable_rule": "Check a transformation in both directions and round-trip serialized content through the consumer. Use neighboring blocks to expose ordering faults. When evaluating a suite with hand-planted faults, distinguish failures at import or compile time from a failing behavioral assertion.",
+      "outcome": "Merged 2026-10-03. The author reports that the old suite caught 1 of 12 planted faults and the strengthened suite caught 12 of 12, after correcting one malformed mutation. A loader substitution was needed to run the old suite for that comparison. The seven new tests reportedly passed, while npm test on #2 alone still failed at the old Homebrew import. #1 later removed that import. GitHub returned zero pull-request workflow runs for head 94b1c3f. No local runs or mutation results were independently reproduced."
+    }
+  ],
+  "exclusions": [],
+  "limitations": [
+    "Both titles, bodies, changed-file inventories and all seven file patches were reviewed. Merge state and head workflow listings were verified through GitHub. Local test results, browser observations and mutation measurements are attributed to the PR authors."
+  ]
+}

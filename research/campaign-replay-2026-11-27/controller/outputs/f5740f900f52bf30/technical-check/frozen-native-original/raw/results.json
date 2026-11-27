@@ -1,0 +1,30 @@
+{
+  "default_model": {
+    "exit": 0,
+    "seed": null,
+    "selector": "model: read-your-writes",
+    "log": "default_model.log",
+    "matched": true
+  },
+  "valid_schedule": {
+    "exit": 1,
+    "seed": "45182094013",
+    "selector": "model: read-your-writes",
+    "log": "valid_schedule.log",
+    "matched": true
+  },
+  "persistence_original": {
+    "exit": 0,
+    "seed": null,
+    "selector": "WS mutation makes KV lag",
+    "log": "persistence_original.log",
+    "matched": true
+  },
+  "persistence_fault": {
+    "exit": 1,
+    "seed": null,
+    "selector": "WS mutation makes KV lag",
+    "log": "persistence_fault.log",
+    "matched": true
+  }
+}

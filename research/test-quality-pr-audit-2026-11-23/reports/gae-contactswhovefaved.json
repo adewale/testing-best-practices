@@ -1,0 +1,11 @@
+{
+  "repository": "adewale/gae-contactswhovefaved",
+  "total_prs": 0,
+  "pages_checked": {
+    "all_states_pr_list": "https://api.github.com/repos/adewale/gae-contactswhovefaved/pulls?state=all&per_page=100&page=1",
+    "result": "The first page returned an empty array, exhausting the collection across all states, authors and dates."
+  },
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

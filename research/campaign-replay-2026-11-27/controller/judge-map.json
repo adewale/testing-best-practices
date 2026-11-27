@@ -1,0 +1,278 @@
+[
+  {
+    "id": "683b871f8485a62e",
+    "phase": "A",
+    "case": "R01",
+    "candidates": [
+      {
+        "subject_id": "244aa8b6a4dbdf81",
+        "blind_id": "b72ecdaa37013843"
+      },
+      {
+        "subject_id": "a9182589c9b5e41c",
+        "blind_id": "a03334350c33eefa"
+      },
+      {
+        "subject_id": "0e9d862ce5b513d3",
+        "blind_id": "a1328343d3a2a46a"
+      },
+      {
+        "subject_id": "ef042f4f27faa240",
+        "blind_id": "a18e23703a5067a4"
+      }
+    ]
+  },
+  {
+    "id": "b21af27e376ddc9d",
+    "phase": "A",
+    "case": "R02",
+    "candidates": [
+      {
+        "subject_id": "cc9be1e227470f8a",
+        "blind_id": "ec9e2b91500974df"
+      },
+      {
+        "subject_id": "a6cc4322822f96a3",
+        "blind_id": "a6d01f95fe611104"
+      },
+      {
+        "subject_id": "09a9eb49daf17c83",
+        "blind_id": "97101d142d8a04d1"
+      },
+      {
+        "subject_id": "f33c0902fa9e7809",
+        "blind_id": "0abd8eaf1c770c79"
+      }
+    ]
+  },
+  {
+    "id": "ab50cb0560de4162",
+    "phase": "A",
+    "case": "R03",
+    "candidates": [
+      {
+        "subject_id": "8c00728ffb528610",
+        "blind_id": "da9b7e848a4169a8"
+      },
+      {
+        "subject_id": "af240a8ec78ae483",
+        "blind_id": "ec9644c6ee0eb3d0"
+      },
+      {
+        "subject_id": "0cc23a6d3d288c81",
+        "blind_id": "0f6023984c698a16"
+      },
+      {
+        "subject_id": "2bc860e3a0dcb269",
+        "blind_id": "3eda8c3d9456218b"
+      }
+    ]
+  },
+  {
+    "id": "bb389102053a4013",
+    "phase": "A",
+    "case": "R04",
+    "candidates": [
+      {
+        "subject_id": "c614295b49af98e7",
+        "blind_id": "931332a8e7d2ca16"
+      },
+      {
+        "subject_id": "b9e32ce20014cb81",
+        "blind_id": "b196e2c8798c6e4c"
+      },
+      {
+        "subject_id": "a2c633dd5d32e6da",
+        "blind_id": "2db0e16a8d9cfd55"
+      },
+      {
+        "subject_id": "c543a869571ed8bd",
+        "blind_id": "9ba5ef0a9d1eeb80"
+      }
+    ]
+  },
+  {
+    "id": "b772ebe006cc1e05",
+    "phase": "A",
+    "case": "R05",
+    "candidates": [
+      {
+        "subject_id": "a1b2e89654aaade9",
+        "blind_id": "32249b82e5de2f3f"
+      },
+      {
+        "subject_id": "a1aa9613d9c739e5",
+        "blind_id": "5550b88cef4a8071"
+      },
+      {
+        "subject_id": "ca0312132f599cf3",
+        "blind_id": "dd6898d2b6632561"
+      },
+      {
+        "subject_id": "8655062dec2aa24d",
+        "blind_id": "d7cf2c5e9c364483"
+      }
+    ]
+  },
+  {
+    "id": "e912509d0fc40cae",
+    "phase": "A",
+    "case": "R06",
+    "candidates": [
+      {
+        "subject_id": "14d68616bd52a6db",
+        "blind_id": "28b6816a7163bf8e"
+      },
+      {
+        "subject_id": "a130425720fc9b6e",
+        "blind_id": "225e27b30d01c375"
+      },
+      {
+        "subject_id": "0109a8ca161dc603",
+        "blind_id": "601d976edd918d94"
+      },
+      {
+        "subject_id": "fd103af50acf82f9",
+        "blind_id": "0b13c72d5b9cc1d1"
+      }
+    ]
+  },
+  {
+    "id": "b46d47ecf91cc159",
+    "phase": "A",
+    "case": "R07",
+    "candidates": [
+      {
+        "subject_id": "8887cf6821a2f4a3",
+        "blind_id": "52cffaa3fca1020b"
+      },
+      {
+        "subject_id": "1f2f41ad8583a869",
+        "blind_id": "ca375d10c9c987ba"
+      },
+      {
+        "subject_id": "f0ec335c896105d5",
+        "blind_id": "7e3eaee27d3bec9b"
+      },
+      {
+        "subject_id": "f8b1a29f82f5262b",
+        "blind_id": "31c061efcd9e740f"
+      }
+    ]
+  },
+  {
+    "id": "3807c048152ef71f",
+    "phase": "A",
+    "case": "R08",
+    "candidates": [
+      {
+        "subject_id": "e5e07cd4c67d8430",
+        "blind_id": "40ccb05ef34cf4b4"
+      },
+      {
+        "subject_id": "6dbc3760966291b1",
+        "blind_id": "f92c424190805e27"
+      },
+      {
+        "subject_id": "7fae3e37bb6edc9e",
+        "blind_id": "307883b6a344d95e"
+      },
+      {
+        "subject_id": "1418a084344cfc04",
+        "blind_id": "8e889473c1d64ee5"
+      }
+    ]
+  },
+  {
+    "id": "5fae99654841d4fe",
+    "phase": "A",
+    "case": "R09",
+    "candidates": [
+      {
+        "subject_id": "0670c41a390a1924",
+        "blind_id": "8ad21724217f5650"
+      },
+      {
+        "subject_id": "889c1e114207ebea",
+        "blind_id": "b3623a71159f9638"
+      },
+      {
+        "subject_id": "e9830d13fc16457f",
+        "blind_id": "ae85dd5b80f76a72"
+      },
+      {
+        "subject_id": "0738d8d6d69c9aab",
+        "blind_id": "7ae2a478cd81ef58"
+      }
+    ]
+  },
+  {
+    "id": "826997c89d99e7f0",
+    "phase": "B",
+    "case": "B01",
+    "candidates": [
+      {
+        "subject_id": "0999ee6be9755f97",
+        "blind_id": "6f5e2985589b0114"
+      },
+      {
+        "subject_id": "c6e8de671b642b51",
+        "blind_id": "538062af069e3a92"
+      },
+      {
+        "subject_id": "d7c2dcb74d42a173",
+        "blind_id": "c99e883d3ce70597"
+      },
+      {
+        "subject_id": "f017afaf3bd340cf",
+        "blind_id": "fca5cd3ab437df4a"
+      }
+    ]
+  },
+  {
+    "id": "c876fc068a5074c4",
+    "phase": "B",
+    "case": "B02",
+    "candidates": [
+      {
+        "subject_id": "4622435a5a23c15b",
+        "blind_id": "4db6c524dd83fb3b"
+      },
+      {
+        "subject_id": "f5740f900f52bf30",
+        "blind_id": "26b28c77f8288968"
+      },
+      {
+        "subject_id": "2eafa8d74ad7622d",
+        "blind_id": "125db40317156c7c"
+      },
+      {
+        "subject_id": "81ed009d77b57e5c",
+        "blind_id": "1274240f8d0c06e7"
+      }
+    ]
+  },
+  {
+    "id": "44ba2bdefa9fa642",
+    "phase": "B",
+    "case": "B03",
+    "candidates": [
+      {
+        "subject_id": "a8fc297c98aeeca9",
+        "blind_id": "b08defec2ed06e50"
+      },
+      {
+        "subject_id": "d3dfc73ed6d4ddba",
+        "blind_id": "4db08cd82e771644"
+      },
+      {
+        "subject_id": "991af762de5e1244",
+        "blind_id": "182d32db20b7d6f8"
+      },
+      {
+        "subject_id": "760faa4901a0a237",
+        "blind_id": "c2ce50e25a8e247b"
+      }
+    ]
+  }
+]

@@ -1,0 +1,101 @@
+{
+  "case": "R04",
+  "candidates": [
+    {
+      "id": "931332a8e7d2ca16",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes the live-checkout comparison and expects both a comment edit and removal of the old path by rename to pass.",
+          "reason": "Verification depends on the recorded identities and any referenced immutable copies, so live scripts can change or disappear."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Reads the three recorded digests, compares receipt bytes before and after verification, and issues a separate receipt for a new evaluation.",
+          "reason": "The original run keeps its original fingerprints."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Checks each output digest and independently tallies the results. Tests a score-preserving byte change, a missing output, and an isolated total change.",
+          "reason": "Each mutation must fail for the specific evidence it damages, even when the other check still agrees."
+        }
+      ]
+    },
+    {
+      "id": "b196e2c8798c6e4c",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Requires verification from the receipt and archive alone and tests successful runs after a checkout comment edit and a rename.",
+          "reason": "Neither the current script bytes nor their paths determine the verdict."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the receipt read-only and tests byte-identical contents after the baseline and refactor runs.",
+          "reason": "All three recorded script digests survive the refactors unchanged."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Tests digest failure for a totals-preserving output edit, missing-file failure for a removed output, and a total mismatch with every archived byte intact.",
+          "reason": "The output hashes and the totals computed from archived data each detect corruption independently."
+        }
+      ]
+    },
+    {
+      "id": "2db0e16a8d9cfd55",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Drops the working-tree dependency, checks original revision or archive bytes when available, and expects a current comment edit and rename to pass.",
+          "reason": "Only historical copies can trigger a script-content mismatch, and a fingerprint-only record can still undergo output verification."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Opens the original receipt without writing and requires it to remain byte-identical through both refactor tests.",
+          "reason": "The historical fingerprints stay attached to the run that recorded them."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Requires failures for an altered or missing output and for swapped unequal per-arm totals that preserve the grand total.",
+          "reason": "The verifier checks individual archived outputs and reconciles each arm's total against retained rows, exposing errors an aggregate check would miss."
+        }
+      ]
+    },
+    {
+      "id": "9ba5ef0a9d1eeb80",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes current-script lookup and hashing. The revised verifier must exit zero after a comment edit or a rename that removes the old path.",
+          "reason": "Historical verification remains usable after live scripts change or retire."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps all three script identities and digests and requires the same byte-for-byte receipt across refactors.",
+          "reason": "The refactor introduces no replacement fingerprints into the historical record."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Uses independently calculated digests and hand-counted totals, then requires failures for a score-preserving byte edit, a missing output, and a changed total.",
+          "reason": "These isolated mutations exercise both exact-output integrity and reconciliation of totals against archived records."
+        }
+      ]
+    }
+  ]
+}

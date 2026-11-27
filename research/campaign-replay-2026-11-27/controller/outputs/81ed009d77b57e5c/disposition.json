@@ -1,0 +1,11 @@
+{
+  "state": "report-delivered-agent-status-unavailable",
+  "controller_sealed_utc": "2026-11-27T02:41:11.416967+00:00",
+  "dispatch_to_seal_seconds": 1399.607514,
+  "response_file_mtime_utc": "2026-11-27T02:39:04.198661+00:00",
+  "files_sha256": {
+    "response.md": "b47d6084bac3e5bbebbed975d8fcd99269973c6933d2c771fc724e02c4298b1b",
+    "patch.diff": "f8b27ed2da5a9b82aabc92102b7ef29923145bc5935020cbd9360aaee396d0b7"
+  },
+  "timing_scope": "dispatch to controller seal; includes observation delay, not precise model runtime"
+}

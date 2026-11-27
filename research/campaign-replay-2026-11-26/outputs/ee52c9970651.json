@@ -1,0 +1,36 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Existing 4,500 renders",
+      "action": "Deduplicate equivalent work",
+      "details": "Group rows by effective style, source bytes, seed, browser, format and environment. Share one deterministic render across all its existing assertions. If all 360 repeats are redundant, this leaves 4,140 renders before redesign. Keep intentional repeatability checks as repeated executions."
+    },
+    {
+      "target": "Interaction suite",
+      "action": "Generate a constrained pairwise covering array",
+      "details": "Inventory actual style levels and supported formats. Add reproducible sources at low, typical and high complexity, with explicit criteria for each tier. Encode and review invalid combinations. On a pinned reference browser, cover every feasible pair of factor values across styles, complexity and format. Seed the generator with mandatory cases and retain the resulting manifest."
+    },
+    {
+      "target": "Fixed regression",
+      "action": "Pin a dedicated case",
+      "details": "Keep the exact three triggering values together, the reproducing fixture and environment, and an assertion for the original rendering defect. Require this case by ID even if the array generator changes."
+    },
+    {
+      "target": "Seeds and browsers",
+      "action": "Use targeted runs",
+      "details": "On each supported browser version, exercise every supported format with a representative source plus a known sensitive case where applicable. Run additional recorded seeds on selected complex sources in a bounded scheduled lane. Promote a reproducing seed and configuration when it exposes a distinct defect."
+    }
+  ],
+  "retained_contracts": [
+    "Preserve each documented style behavior, format-specific output assertion, tolerance, and platform guarantee. Keep a named case for any obligation the array does not establish.",
+    "Report feasible pair coverage separately from the pinned three-factor regression. Record which higher-order style combinations lose routine coverage."
+  ],
+  "validation": [
+    "Independently enumerate feasible pairs from the reviewed model, subtract pairs observed in the manifest, and require an empty difference. Verify every mandatory case and its assertion by ID.",
+    "Run the pinned case on the last affected revision and the fix. Require failure for the original symptom followed by a pass.",
+    "Map each retiring row to its checked behavior and replacement evidence. Re-render shared cases against the same approved outputs. Shadow both portfolios on representative revisions and replay available historical rendering defects. Investigate every old-only detection and retain its reproducer before retirement."
+  ],
+  "cost_and_stop": "Target at most 2,250 renders per ordinary run. Measure actual render count, browser-minutes and elapsed time against the 4,500-render baseline on the same workers, with scheduled costs reported separately. Retire old rows only after coverage, regression and comparison checks pass. If obligations exceed the target, keep them and revise the budget.",
+  "rationale": "More seeds and browsers multiply work while leaving source complexity and format fixed. Pairwise coverage adds those missing interactions at a measurable cost. Pair coverage alone cannot guarantee that the three regression values occur in one render."
+}

@@ -1,0 +1,1 @@
+Edit the generated editor.html directly. scripts/site/editor.ts is the assembler. Skip the rebuild. The formats are ASCII, PNG and SVG.

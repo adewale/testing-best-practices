@@ -1,0 +1,32 @@
+src/__tests__/sequence-layout.test.ts:1450:      // Lifeline starts below the full header bounds, not through the label
+src/__tests__/self-loop-arcs.test.ts:362:      // must preserve the entire foreign 1px shaft on its original route.
+src/__tests__/self-loop-arcs.test.ts:371:test('choosing an owned loop side keeps a previously clear foreign shaft visible', () => {
+src/__tests__/layout-pass.test.ts:934:  test('a cosmetic rollback cannot invalidate frozen geometry after repairing its score', () => {
+src/__tests__/layout-pass.test.ts:945:  test('a cosmetic rollback cannot leave a stale frozen route certificate', () => {
+src/__tests__/subgraph-hierarchy-exhaustive.test.ts:664:  test('the actual base BT SVG keeps coherent ports, upward flow and clear full headers', () => {
+src/__tests__/er-label-reservations.test.ts:31:describe('ER label reservations and foreign shafts', () => {
+src/__tests__/er-label-reservations.test.ts:62:  test('rejects a reserved label that covers a cardinality endpoint or a foreign shaft', () => {
+src/__tests__/er-label-reservations.test.ts:73:  test('uses exact interval subtraction when every center-out sample meets a foreign shaft', () => {
+src/__tests__/label-decoupling.test.ts:102:test('materialized initial label seat must clear foreign shaft ink before publication', () => {
+src/__tests__/label-decoupling.test.ts:117:  // the foreign actual1px vertical shaft. The existing11slots must reseat it.
+src/__tests__/layout-bundle-proposals.test.ts:96:  test.each([true, false])('a bundle marker cannot paint a foreign tiny card (marked=%s)', marked => {
+src/__tests__/layout-bundle-proposals.test.ts:109:  test.each(['var(--edge-width)', '2%', '1px'])('unknown authored width cannot authorize a bundle: %s', width => {
+src/__tests__/layout-bundle-proposals.test.ts:122:  test('a shaft touching the full header by its stroke retains its old route', () => {
+src/__tests__/zenuml-browser.test.ts:111:          groupFill: paint('.fragment-header', 'fill'), groupText: paint('.fragment-label', 'fill'), groupBorder: paint('.fragment-border', 'stroke'),
+src/__tests__/c4-presentation.test.ts:72:    const svg = renderMermaidSVG(source, { style: { colors: { bg: '#ffffff', fg: '#111827', surface: '#eff6ff', border: '#2563eb' }, roles: { node: { fillColor: '#dbeafe', borderColor: '#1d4ed8', lineWidth: 2 }, group: { fillColor: '#f8fafc', headerFillColor: '#e2e8f0', borderColor: '#64748b' }, edge: { strokeColor: '#7c3aed', lineWidth: 3 } } } })
+src/__tests__/route-contracts.test.ts:498:  it('preserves clear foreign shafts while moving a label away from a terminal marker', () => {
+src/__tests__/route-contracts.test.ts:544:        // with the owned shaft while proving the foreign shaft stays visible.
+src/__tests__/route-contracts.test.ts:2960:  for (const width of ['20', '20px', '1em', 'var(--edge-width)']) it(`does not slide a card into an unchanged foreign ${width} shaft`, () => {
+src/__tests__/route-contracts.test.ts:2971:  it('keeps the same slide when the authored foreign shaft has a real ink gap', () => {
+src/__tests__/route-contracts.test.ts:2991:  for (const width of ['20', '2']) it(`${width === '20' ? 'refuses' : 'admits'} a rewritten shaft beside a foreign card`, () => {
+src/__tests__/route-contracts.test.ts:3001:  for (const marked of [true, false]) it(`${marked ? 'refuses the endpoint marker' : 'admits the unmarked shaft'} beside the same foreign card`, () => {
+src/__tests__/route-contracts.test.ts:3014:  for (const width of ['20', '16']) it(`${width === '20' ? 'refuses' : 'keeps'} the labelled-source slide beside a foreign painted shaft`, () => {
+src/__tests__/route-contracts.test.ts:3152:  for (const transpose of [false, true]) for (const clear of [false, true]) it(`${transpose ? 'vertical' : 'horizontal'} foreign shaft ${clear ? 'retains a safe alignment' : 'cannot be covered by a moved card'}`, () => {
+src/__tests__/route-contracts.test.ts:3196:    // although the foreign shaft and the endpoint B remain clear of T.
+src/__tests__/route-contracts.test.ts:3375:  for (const transpose of [false, true]) it.each(['2', '20', 'var(--unknown-width)'])('protects a foreign %s shaft during caption rescue (transpose=' + transpose + ')', width => {
+src/__tests__/route-contracts.test.ts:3438:  it('keeps a foreign painted shaft and a node body protected',()=>{
+src/__tests__/route-contracts.test.ts:3580: const header:PositionedGroup={id:'scope',label:'scope',x:0,y:0,width:500,height:200,headerHeight:28,children:[],inlineStyle:{'stroke-width':'12'}}
+src/__tests__/route-contracts.test.ts:3589: const header:PositionedGroup={id:'scope',label:'scope',x:100.1234567891,y:0,width:100,height:200,headerHeight:28,children:[],inlineStyle:{'stroke-width':'100'}}
+src/__tests__/route-contracts.test.ts:3617:it.each([0, 1, 2, 3].flatMap(turns => ([['end', 'solid', false], ['start', 'solid', false], ['start', 'thick', false], ['both', 'thick', false], ['start', 'thick', true]] as const).map(([marked, shaft, collinear]) => ({ turns, marked, shaft, collinear }))))('a private channel retains $marked $shaft arrow leads and clears foreign ink at rotation $turns (collinear=$collinear)', ({ turns, marked, shaft, collinear }) => {
+src/__tests__/class-layout-backends.test.ts:882:test('rounded header detour cannot cut through a foreign card and uses the opposite lane', async () => {
+src/__tests__/class-layout-backends.test.ts:1402:    // Literal full header inflated by the actual .5px shaft radius. The

@@ -1,0 +1,1 @@
+Edit editor/js/export.js. Rebuild the standalone editor.html with bun run editor and the deployed site with bun run website. Download SVG or PNG and copy ASCII or Unicode.

@@ -1,0 +1,12 @@
+{"family":"flowchart","requested":"svg","shape":"as-authored","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"flowchart","requested":"svg","shape":"documented","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"flowchart","requested":"ascii","shape":"as-authored","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"flowchart","requested":"ascii","shape":"documented","ok":true,"returned":["ascii","receipt"],"receipt":"ascii"}
+{"family":"flowchart","requested":"unicode","shape":"as-authored","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"flowchart","requested":"unicode","shape":"documented","ok":true,"returned":["unicode","receipt"],"receipt":"unicode"}
+{"family":"quadrant","requested":"svg","shape":"as-authored","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"quadrant","requested":"svg","shape":"documented","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"quadrant","requested":"ascii","shape":"as-authored","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"quadrant","requested":"ascii","shape":"documented","ok":true,"returned":["ascii","receipt"],"receipt":"ascii"}
+{"family":"quadrant","requested":"unicode","shape":"as-authored","ok":true,"returned":["svg","receipt"],"receipt":"svg"}
+{"family":"quadrant","requested":"unicode","shape":"documented","ok":true,"returned":["unicode","receipt"],"receipt":"unicode"}

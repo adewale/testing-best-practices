@@ -34,3 +34,7 @@ jobs:
         run: python3 -m pip install -r skill-development/evals/requirements.txt
       - name: Run deterministic eval gates
         run: python3 skill-development/scripts/check-all.py
+      - name: Build isolated behavioral oracle runtime
+        run: docker build -f skill-development/evals/Dockerfile.behavioral-oracles -t tbp-behavioral-oracles:local skill-development/evals
+      - name: Verify untrusted candidate isolation and behavior
+        run: python3 skill-development/scripts/test-behavioral-oracles.py --isolated

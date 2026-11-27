@@ -1,0 +1,97 @@
+   161	          no-cache: true
+   162	
+   163	      - name: Install dependencies
+   164	        run: bun install --frozen-lockfile
+   165	
+   166	      - name: Install the CJK coverage fixture
+   167	        run: sudo apt-get update && sudo apt-get install -y fonts-wqy-zenhei
+   168	
+   169	      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+   170	        with:
+   171	          name: portable-test-artifacts
+   172	          path: .
+   173	      - name: Verify the transferred website fixture is usable
+   174	        run: bun scripts/site/prepare-website-fixture.ts --reuse
+   175	
+   176	      # Coverage is a scheduled diagnostic, not a condition for passing tests.
+   177	      # Keep two isolated workers: subprocess-heavy suites contend at four.
+   178	      - name: Run test shard
+   179	        env:
+   180	          AM_WEBSITE_FIXTURE_ROOT: ${{ github.workspace }}
+   181	        run: bun run test -- --shard=${{ matrix.shard }} --parallel=2
+   570	    timeout-minutes: 10
+   571	    steps:
+   572	      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+   573	      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+   574	        with:
+   575	          bun-version: 1.4.4
+   576	          no-cache: true
+   577	      - run: bun install --frozen-lockfile
+   578	      - name: Run CLI and native binary contracts
+   579	        run: cd e2e && bun test cli-smoke.e2e.test.ts cli.e2e.test.ts fresh-checkout.e2e.test.ts single-binary.e2e.test.ts --timeout 180000
+   580	
+   581	  e2e:
+     1	name: Contract discovery
+     2	
+     3	# Bounded, advisory discovery. Required deterministic semantic/corpus checks
+     4	# remain in canonical CI. Findings are artifacts for review, never new issues.
+     5	on:
+     6	  schedule:
+     7	    - cron: '17 3 * * 1'
+     8	  workflow_dispatch:
+     9	
+    10	permissions:
+    11	  contents: read
+    12	
+    13	concurrency:
+    14	  group: contract-discovery
+    15	  cancel-in-progress: true
+    16	
+    17	jobs:
+    18	  discover:
+    19	    runs-on: ubuntu-latest
+    20	    timeout-minutes: 10
+    21	    steps:
+    22	      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+    23	        with:
+    24	          persist-credentials: false
+    25	      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+    26	        with:
+    27	          bun-version: 1.4.4
+    28	          no-cache: true
+    29	      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+    30	        with:
+    31	          node-version: 24
+    32	          package-manager-cache: false
+    33	      - name: Install locked dependencies
+    34	        run: bun install --frozen-lockfile
+    35	      - name: Record the replay seed and source
+    36	        id: replay
+    37	        run: |
+    38	          seed=$(( $(od -An -N4 -tu4 /dev/urandom) % 2147483647 + 1 ))
+    39	          echo "seed=$seed" >> "$GITHUB_OUTPUT"
+    40	          mkdir -p "$RUNNER_TEMP/contract-discovery"
+    41	          printf '{"commit":"%s","seed":%s,"status":"incomplete"}\n' "$GITHUB_SHA" "$seed" > "$RUNNER_TEMP/contract-discovery/run.json"
+    42	      - name: Check valid-model and typed-edit contracts
+    43	        id: models
+    44	        timeout-minutes: 3
+    45	        env:
+    46	          AM_FC_SEED: ${{ steps.replay.outputs.seed }}
+    47	          AM_FC_NUM_RUNS: '300'
+    48	          CONTRACT_DISCOVERY_DIR: ${{ runner.temp }}/contract-discovery
+    49	        run: |
+    50	          bun test --timeout 30000 --preload ./scripts/ci/contract-discovery-preload.ts \
+    51	            --reporter=junit --reporter-outfile "$CONTRACT_DISCOVERY_DIR/models.xml" \
+    52	            src/__tests__/agent.test.ts src/__tests__/property-er-model.test.ts src/__tests__/agent-architecture.test.ts \
+    53	            --test-name-pattern 'property: flowchart mutation commands|property: any command sequence|generated service and edge meaning'
+    54	      - name: Install the pinned grammar reference
+    55	        env:
+    56	          MERMAID_UPSTREAM_DIR: ${{ runner.temp }}/mermaid
+    57	          MERMAID_REFERENCE_DIR: ${{ runner.temp }}/mermaid-reference
+    58	        run: bash scripts/setup-mermaid-reference.sh
+    59	      - name: Search bounded grammar contract candidates
+    60	        id: grammar
+    61	        env:
+    62	          MERMAID_UPSTREAM_DIR: ${{ runner.temp }}/mermaid
+4:const patterns = [
+11:export function unitTestFiles(): string[] {

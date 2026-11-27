@@ -1,0 +1,410 @@
+{
+  "artifact": "Development fixture controls for E08, E33 and E74",
+  "run_date_utc": "2026-11-27",
+  "source": {
+    "pre_repair_commit": "379e0d9b53130cc29da8ef73a6287947c9bc34f6",
+    "current_oracles": "skill-development/evals/fixtures",
+    "shared_runner": "skill-development/evals/behavioral_oracle.py",
+    "boundary_regression": "skill-development/scripts/test-behavioral-oracles.py",
+    "prior_proposal": "https://github.com/adewale/testing-best-practices/pull/39",
+    "prior_proposal_commit": "14bc5b72969e4f575b709d0dbdc8530e033406b6"
+  },
+  "runtime": {
+    "host_samples": {
+      "python": "3.12.14",
+      "pytest": "9.1.1",
+      "sqlite": "3.53.1"
+    },
+    "isolated_candidates": {
+      "image": "tbp-behavioral-oracles:local",
+      "python": "3.13.9",
+      "pytest": "9.1.1",
+      "sqlite": "3.46.1"
+    }
+  },
+  "method": [
+    "Ran the pre-repair oracles from the pinned commit on the listed maintained negative controls.",
+    "Ran each current manifest sample through its fixture oracle with the trusted self-test flag. The declared expected exit and actual process exit are recorded below.",
+    "Copied one accepted alternative per fixture outside the checkout, added an assertion that a host-only file is inaccessible, left the self-test flag on, and invoked the same fixture entry points. Also ran the original E74 input suite through the isolated runner.",
+    "Invoked the same copied candidates with Docker absent from PATH to check that the host did not execute them.",
+    "Staged the maintained E74 equivalent/search.py as the reference in a separate fixture checkout. The file-backed suite still accepted the equivalent SQL and detected both faults through the isolated runner."
+  ],
+  "reproduce": [
+    "python3 -m pip install -r skill-development/evals/requirements.txt",
+    "python3 skill-development/scripts/run-fixture-oracles.py",
+    "docker build -f skill-development/evals/Dockerfile.behavioral-oracles -t tbp-behavioral-oracles:local skill-development/evals",
+    "python3 skill-development/scripts/test-behavioral-oracles.py --isolated"
+  ],
+  "scope": [
+    "The fixture checks cover the specified scheduler, dependency-failure, and SQL behaviors on ordinary candidate suites.",
+    "E74 records a synchronous native sqlite3 execute returning during the owned search in a particular pytest item. The ranking check requires that item to pass on the reference, fail under ascending order and record the SQLite observation on both runs. This gives per-test evidence with no independent trace of each assertion's inputs.",
+    "Candidate code and reports share the isolated process environment. Deliberate report tampering is outside these checks."
+  ],
+  "pre_repair": [
+    {
+      "fixture": "E08",
+      "sample": "samples/bad-comments",
+      "expected_exit": 1,
+      "observed_exit": 0
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/bad-comments",
+      "expected_exit": 1,
+      "observed_exit": 0
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-bound-arguments",
+      "expected_exit": 1,
+      "observed_exit": 0
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-mocked-order",
+      "expected_exit": 1,
+      "observed_exit": 0
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-unordered",
+      "expected_exit": 1,
+      "observed_exit": 0
+    }
+  ],
+  "registered_controls": [
+    {
+      "fixture": "E08",
+      "sample": "samples/good",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "runs before deadline: failed tests: test_scheduler.test_scheduled_job_runs_when_clock_advances",
+        "never runs scheduled job: failed tests: test_scheduler.test_scheduled_job_runs_when_clock_advances",
+        "repeats completed job: failed tests: test_scheduler.test_scheduled_job_runs_when_clock_advances"
+      ]
+    },
+    {
+      "fixture": "E08",
+      "sample": "samples/good-manual-clock",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "runs before deadline: failed tests: test_candidate.test_one_delivery_at_the_deadline",
+        "never runs scheduled job: failed tests: test_candidate.test_one_delivery_at_the_deadline",
+        "repeats completed job: failed tests: test_candidate.test_one_delivery_at_the_deadline"
+      ]
+    },
+    {
+      "fixture": "E08",
+      "sample": "samples/bad",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 1): {('test_scheduler', 'test_scheduled_job_runs'): 'failure'}"
+      ]
+    },
+    {
+      "fixture": "E08",
+      "sample": "samples/bad-blocking-wait",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 1): {('test_candidate', 'test_delivery_with_an_extra_wall_clock_wait'): 'failure'}"
+      ]
+    },
+    {
+      "fixture": "E08",
+      "sample": "samples/bad-comments",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 5): {}"
+      ]
+    },
+    {
+      "fixture": "E08",
+      "sample": "samples/bad-late-only",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "runs before deadline: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E08",
+      "sample": "samples/bad-skipped",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 0): {('test_candidate', 'test_contract'): 'skipped'}"
+      ]
+    },
+    {
+      "fixture": "E08",
+      "sample": "samples/bad-unrelated",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "runs before deadline: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/good",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "loses a successful retry: failed tests: test_report.test_transient_failures_are_retried_and_recover",
+        "abandons third attempt: failed tests: test_report.test_transient_failures_are_retried_and_recover, test_report.test_exhausted_retries_surface_wrapped_error",
+        "leaks raw dependency error: failed tests: test_report.test_exhausted_retries_surface_wrapped_error",
+        "swallows exhausted failure: failed tests: test_report.test_exhausted_retries_surface_wrapped_error"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/good-mock-store",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "loses a successful retry: failed tests: test_candidate.test_key_returned_after_recovery",
+        "abandons third attempt: failed tests: test_candidate.test_key_returned_after_recovery, test_candidate.test_attempt_budget_ends_in_a_save_error",
+        "leaks raw dependency error: failed tests: test_candidate.test_attempt_budget_ends_in_a_save_error",
+        "swallows exhausted failure: failed tests: test_candidate.test_attempt_budget_ends_in_a_save_error"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/bad",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "loses a successful retry: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/bad-comments",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 5): {}"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/bad-exhaustion-only",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "loses a successful retry: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/bad-import",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 2): {('', 'test_candidate'): 'error'}"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/bad-skipped",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 0): {('test_candidate', 'test_contract'): 'skipped'}"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "samples/bad-unrelated",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "loses a successful retry: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/good",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "wildcards dropped: failed tests: test_search.test_partial_matches_ranked_by_score, test_search.test_limit_caps_results",
+        "SQLite ranks lowest score first: failed tests: test_search.test_partial_matches_ranked_by_score, test_search.test_limit_caps_results"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/good-file-database",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "wildcards dropped: failed tests: test_candidate.test_best_partial_match_is_first",
+        "SQLite ranks lowest score first: failed tests: test_candidate.test_best_partial_match_is_first"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/adversarial-mocked",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "wildcards dropped: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "wildcards dropped: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-bound-arguments",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "wildcards dropped: failed tests: test_candidate.test_partial_search_parameters",
+        "SQLite ranks lowest score first: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-comments",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 5): {}"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-mocked-order",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "wildcards dropped: failed tests: test_candidate.test_mock_receives_ranked_partial_query, test_candidate.test_real_search_checks_membership_only",
+        "SQLite ranks lowest score first: no failing test ran the owned search on SQLite in both runs"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-skipped",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "reference requires passing, non-skipped tests (pytest exit 0): {('test_candidate', 'test_contract'): 'skipped'}"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-unordered",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "wildcards dropped: failed tests: test_candidate.test_partial_matches_without_checking_rank",
+        "SQLite ranks lowest score first: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/bad-unrelated",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observations": [
+        "wildcards dropped: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    }
+  ],
+  "isolated_candidates": [
+    {
+      "fixture": "E08",
+      "sample": "copy of samples/good-manual-clock",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "runs before deadline: failed tests: test_candidate.test_one_delivery_at_the_deadline",
+        "never runs scheduled job: failed tests: test_candidate.test_one_delivery_at_the_deadline",
+        "repeats completed job: failed tests: test_candidate.test_one_delivery_at_the_deadline"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "copy of samples/good-mock-store",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "loses a successful retry: failed tests: test_candidate.test_key_returned_after_recovery",
+        "abandons third attempt: failed tests: test_candidate.test_key_returned_after_recovery, test_candidate.test_attempt_budget_ends_in_a_save_error",
+        "leaks raw dependency error: failed tests: test_candidate.test_attempt_budget_ends_in_a_save_error",
+        "swallows exhausted failure: failed tests: test_candidate.test_attempt_budget_ends_in_a_save_error"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "copy of samples/good-file-database",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "wildcards dropped: failed tests: test_candidate.test_best_partial_match_is_first",
+        "SQLite ranks lowest score first: failed tests: test_candidate.test_best_partial_match_is_first"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "input",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "wildcards dropped: failed tests: test_search.test_search_ranks_partial_matches_by_score",
+        "SQLite ranks lowest score first: failed tests: test_search.test_search_ranks_partial_matches_by_score"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "samples/good-file-database on equivalent/search.py",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "observations": [
+        "wildcards dropped: failed tests: test_candidate.test_best_partial_match_is_first",
+        "SQLite ranks lowest score first: failed tests: test_candidate.test_best_partial_match_is_first"
+      ]
+    }
+  ],
+  "isolated_runner_unavailable": [
+    {
+      "fixture": "E08",
+      "sample": "copy of samples/good-manual-clock",
+      "expected_exit": 2,
+      "observed_exit": 2,
+      "observations": [
+        "grading unavailable: [Errno 2] No such file or directory: 'docker'"
+      ]
+    },
+    {
+      "fixture": "E33",
+      "sample": "copy of samples/good-mock-store",
+      "expected_exit": 2,
+      "observed_exit": 2,
+      "observations": [
+        "grading unavailable: [Errno 2] No such file or directory: 'docker'"
+      ]
+    },
+    {
+      "fixture": "E74",
+      "sample": "copy of samples/good-file-database",
+      "expected_exit": 2,
+      "observed_exit": 2,
+      "observations": [
+        "grading unavailable: [Errno 2] No such file or directory: 'docker'"
+      ]
+    }
+  ]
+}

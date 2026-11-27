@@ -1,0 +1,8 @@
+{
+  "node_major": 24,
+  "installed_node": "24.22.3",
+  "platform": "linux-x64",
+  "package_lock_install": "npm ci --legacy-peer-deps",
+  "node_modules": "/tmp/pda-replay-toolchain-WlO75XPw/node_modules",
+  "package_lock_sha256": "e0dc7cc436b74454d5a184b3f90692f5d496a5bd7cadfafdb412db2681f5b5dd"
+}

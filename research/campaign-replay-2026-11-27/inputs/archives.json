@@ -1,0 +1,22 @@
+{
+  "inputs/agentic-mermaid.tar.gz": {
+    "sha256": "031c7df0d5dc29efdb8b0706380adb46a065304719ba8aef284a0043e61e9f50",
+    "bytes": 3717248
+  },
+  "inputs/keyboardia.tar.gz": {
+    "sha256": "ba81420f4b88d6f0066d4335078903c3480c805a53848aed70b1f212919e28d6",
+    "bytes": 4488470
+  },
+  "inputs/pda.tar.gz": {
+    "sha256": "0c861b93835169126c4020e890cb4cc4d70bf28025eb2534481dc98d154733b5",
+    "bytes": 2090012
+  },
+  "inputs/openclaw.tar.gz": {
+    "sha256": "a41cbee340cebdefb86ed2837c4bdcccaee1d6599124164168eb43baa20d9a3a",
+    "bytes": 103601
+  },
+  "inputs/packets.tar.gz": {
+    "sha256": "651c9cafdbacff2b998204737be833eae136f7b877616811123e7414c59beb54",
+    "bytes": 1109643
+  }
+}

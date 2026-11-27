@@ -1,0 +1,8 @@
+{
+  "cwd": ".",
+  "args": [
+    "/case/runtime/run-unit.sh",
+    "--reporter=verbose",
+    "src/components/TransportBar.test.tsx"
+  ]
+}

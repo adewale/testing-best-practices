@@ -1,0 +1,80 @@
+{
+  "checked_utc": "2026-11-27T02:48:13.543903+00:00",
+  "sealed_patch_sha256": "f8b27ed2da5a9b82aabc92102b7ef29923145bc5935020cbd9360aaee396d0b7",
+  "sealed_report_sha256": "b47d6084bac3e5bbebbed975d8fcd99269973c6933d2c771fc724e02c4298b1b",
+  "snapshot_manifest_sha256": "35939ef42941883a682a1e856e1e557a015ab021de186fc8c878f282e32627ed",
+  "checked_snapshot_files": 985,
+  "all_985_match_sealed_manifest": true,
+  "base_commit": "aa67598560f8eaf2509a3ad4bc73edee2f8bea8a",
+  "base_participant_archive_sha256": "c1b763f7f1f5f7beacb1e52a0fdfff53a49a0ad85f7749ef7edb472ffdfb9a34",
+  "changed_from_base": {
+    "app/test/integration/state-machine-fuzz.test.ts": {
+      "base_sha256": "2e94b53a32fa518d9157611bc7133c020dd1d1091dddbd028ffef2bf7edb8516",
+      "candidate_sha256": "5ebbcacaefd6c8d955a4295238e5f044b8853e5807559e60c19275593717861c"
+    }
+  },
+  "submitted_collection_manifest_sha256": "40e708bde76df27bb072c122c5d37dc9e8c7911ee18fa043bef3e5963190f4ae",
+  "checked_submitted_files": 32,
+  "retained_types": {
+    ".log": 30,
+    ".txt": 1,
+    ".tsv": 1
+  },
+  "reference_files_sha256": {
+    "freeze-manifest.json": "01643789781496faa242b3697ba23ba8efac14e9ac24e8e2d3c3b2fba8d1a753",
+    "postcandidate.py": "4ce90ad0798b6a6de2a71f7ed41a96c605a31b1a8892727f1412184f91d71b26",
+    "evaluator/hidden-controls.md": "75213374d240d22d10e2753f6f0e5c6c7e7fdf4e6eaa6793c2f028a0f9abd669",
+    "evaluator/hidden-controls.json": "fca1a273a497a6ca84f961aabefeafe7f157c282a4f51d7df4b20a33f131b06e",
+    "evaluator/evaluate-seed.py": "ac6063bef463cc2b3661ab9d8584843ffe1a3a28cbe1eb712e3450284477cede",
+    "evidence/seed-controls/results.json": "feb155ec71255f327035603b9a941502a1dcdcd8eb39a0ec3449e94cbe91d978",
+    "evidence/seed-controls/default_model.log": "7f503e807e5ff821c8720f8182c0553268609c52e7b4dcbe0c51545096fc3ddb",
+    "evidence/seed-controls/valid_schedule.log": "7fc3f9a75647f426bd38020366b313a60846a4d798075780ecb0aac179448e83",
+    "evidence/seed-controls/persistence_original.log": "8410a8b917bad1a5b9f37dce2c4eba36b4ddca55a37057564bb141347efff935",
+    "evidence/seed-controls/persistence_fault.log": "a3880f3416342fd47b44a076e481c3c3cadc3dd9cbea1981aa8e6c1d115cdd57",
+    "participant/ci-snapshot.json": "2e9622e5437df6c8d7afa674e551fe5a75f32a9b940b9deff3bf99be960722e1",
+    "participant/runtime/attach.py": "b4a910e54a12db5828c95c49637c7dfc6ea79f20123a93608a7320d31bd99d6c",
+    "participant/sample.tsv": "12d7f0056192678168acdbc0433468dc3a6b1c6cd2e482bf19f853354b7439ca",
+    "participant/source-manifest.tsv": "465fdae8d3459600b7d599dd02d6839be4295fd3ca8f2ab4bd3869067c82ef85"
+  },
+  "assigned_sample": {
+    "distinct_paths": 58,
+    "all_base_git_blob_ids_verified": true,
+    "inventory": 370,
+    "strata": {
+      "browser": 11,
+      "identity-browser": 2,
+      "ui": 6,
+      "audio": 8,
+      "other-product": 4,
+      "protocol-worker": 6,
+      "sync": 6,
+      "app-tooling": 7,
+      "worker-integration": 8
+    },
+    "sampled_run_paths": 42,
+    "selected_counts": {
+      "default_unit": 23,
+      "additional_unit": 11,
+      "focused_worker": 8
+    },
+    "additional_source_or_hosted_only": [
+      "app/e2e/change-instrument.spec.ts",
+      "app/e2e/mcp-sampled-instrument-lifecycle.spec.ts",
+      "app/e2e/mixer-layout.spec.ts",
+      "app/e2e/mobile-android.spec.ts",
+      "app/e2e/mobile-iphone.spec.ts",
+      "app/e2e/multiplayer.spec.ts",
+      "app/e2e/plock-editor.spec.ts",
+      "app/e2e/populated-visual.spec.ts",
+      "app/e2e/sample-browser-decode.spec.ts",
+      "app/e2e/session-persistence.spec.ts",
+      "app/e2e/track-reorder.spec.ts",
+      "app/identity/site-color-safety.spec.ts",
+      "app/identity/stack-a-identity.spec.ts",
+      "app/src/audio/session-render-conservation.render.test.ts",
+      "app/test/sample-pipeline-real-contract.test.ts",
+      "app/test/skill-eval-manifest.test.ts"
+    ],
+    "scope": "Packet and log identities verify assignment and run coverage. They cannot establish the subject\u2019s depth of inspection at each path."
+  }
+}

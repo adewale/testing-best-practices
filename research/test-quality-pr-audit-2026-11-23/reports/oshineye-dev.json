@@ -1,0 +1,375 @@
+{
+  "repository": "adewale/oshineye-dev",
+  "total_prs": 34,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/oshineye-dev/pulls?state=all&per_page=100&page=1",
+      "count": 34
+    },
+    {
+      "url": "https://api.github.com/repos/adewale/oshineye-dev/pulls?state=all&per_page=100&page=2",
+      "count": 0
+    }
+  ],
+  "enumeration": {
+    "states": {
+      "merged": 26,
+      "closed_unmerged": 4,
+      "open": 4
+    },
+    "author_or_date_filter": false,
+    "changed_file_entries": 4331,
+    "changed_files_per_pr": {
+      "1": 19,
+      "2": 3,
+      "3": 6,
+      "4": 5,
+      "5": 95,
+      "6": 3,
+      "7": 63,
+      "8": 124,
+      "9": 30,
+      "10": 1,
+      "12": 466,
+      "13": 90,
+      "14": 229,
+      "15": 261,
+      "16": 218,
+      "17": 35,
+      "18": 373,
+      "19": 24,
+      "20": 6,
+      "21": 6,
+      "22": 23,
+      "23": 1,
+      "24": 1,
+      "25": 668,
+      "26": 4,
+      "27": 2,
+      "28": 600,
+      "29": 2,
+      "30": 2,
+      "31": 2,
+      "32": 185,
+      "33": 5,
+      "34": 768,
+      "35": 11
+    },
+    "coverage": "Read every title, description and complete paginated changed-file inventory. All 34 inventory lengths matched the PR API’s changed_files count. Largest inventory was 768 files in #34. The number gap at #11 is an issue referenced by #12.",
+    "candidate_test_or_verifier_patches": [
+      3,
+      4,
+      12,
+      13,
+      14,
+      18,
+      19,
+      20,
+      21,
+      22,
+      25,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ]
+  },
+  "matching_prs": [
+    {
+      "number": 3,
+      "title": "CI typecheck and tests; accent tests and one-day event fix; grounded project copy",
+      "url": "https://github.com/adewale/oshineye-dev/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Merged follow-through of the explicit audit in #4",
+      "weakness": "The lint job covered Python tooling. TypeScript could compile through the build with type errors, and CI had no behavioral check of calendar and clock-based accent selection.",
+      "attempted_remedy": "Folded #4’s non-UTC clock tests and event precedence repair into the existing lint job alongside the TypeScript check.",
+      "test_paths": [
+        "test/oshineye-config.test.ts",
+        "package.json",
+        ".github/workflows/ruff.yml"
+      ],
+      "diff_evidence": "The suite reads getGartenConfig().colors.accent under setSystemTime and resets the clock after each case. It checks March 10, April 23, single-digit dates, overlapping ranges and hour transitions. The workflow runs bun run typecheck and bun run test with TZ=Pacific/Auckland set by the test script.",
+      "transferable_rule": "Run the real public entry point under a clock and time zone that can distinguish local-time accessors from UTC accessors. Share runner setup when the same checks can run in one job.",
+      "outcome_caveat": "Merged. The CI job log records 16 passes and zero failures. The test file patch is identical to #4’s, so the two PRs represent one audit and its integration. The typecheck covered src at this revision.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/3/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/38053629019/job/114217572731"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Test audit: add accent tests, fix shadowed one-day events, run tests in CI",
+      "url": "https://github.com/adewale/oshineye-dev/pull/4",
+      "state": "closed",
+      "merged": false,
+      "classification": "Explicit test audit, closed and folded into #3",
+      "weakness": "The public accent selector had no automated behavioral gate. The first version of its new suite could still pass when getHours became getUTCHours under UTC, zero-padding was removed, or overlapping ranges picked the last match.",
+      "attempted_remedy": "Used a fake clock through getGartenConfig, pinned a non-UTC zone, added single-digit dates and overlapping-range examples, and fixed two one-day holidays shadowed by longer events. The audit also tried hand-written mutations and checked that an empty or failing suite failed the gate.",
+      "test_paths": [
+        "test/oshineye-config.test.ts",
+        "package.json",
+        ".github/workflows/test.yml",
+        "src/oshineye-config.ts"
+      ],
+      "diff_evidence": "accentAt constructs a local Date, reads the public accent and restores real time after each case. Tests name New Year’s Day and Bonfire Night, check Easter and Sechseläuten on April 15 and 22, and assert two one-day colors. getEvent now prefers a one-day match before falling back to matches[0].",
+      "transferable_rule": "Choose dates that distinguish rival implementations, including overlapping intervals, single-digit fields and local versus UTC hours. For hand-applied mutations, confirm each change actually modified the code before interpreting survivors.",
+      "outcome_caveat": "The standalone PR closed without merging. Its final Test job independently records 16 passes and zero failures. #3 carried the tests and product repair into main. The red-before-green runs, surviving mutants and two no-op mutations are the author’s local evidence.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/4/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/37108195777/job/111160750181"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Refresh Rayner pages and generate the gallery from its catalog",
+      "url": "https://github.com/adewale/oshineye-dev/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "Deployment validation added within a gallery change",
+      "weakness": "The existing Cloudflare workflow built and uploaded the site without running its available typecheck and tests. A successful build alone could approve a bad release candidate.",
+      "attempted_remedy": "Added both checks before deployment. A new CLI fixture also exercises repeated gallery regeneration and rejection of inconsistent catalog totals.",
+      "test_paths": [
+        ".github/workflows/cloudflare-preview.yml",
+        "test/rayner-catalog.test.js"
+      ],
+      "diff_evidence": "The deployment workflow adds bun run typecheck && bun run test immediately after Build static assets. The temporary-tree test spawns the actual sync script twice, checks byte equality, then contradicts totals.cases and checks a nonzero exit and preservation of the last good page.",
+      "transferable_rule": "Run the relevant checks against the revision being released. For a command that mutates output, assert both its exit status and the resulting files on success and failure.",
+      "outcome_caveat": "Merged. GitHub records both Validate the site and Deploy production succeeding at the merge commit. The synthetic fixture covers selected catalog cases. The PR’s separate browser observations were not reproduced in this audit.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/12/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/40694633121/job/122838030226"
+      ]
+    },
+    {
+      "number": 13,
+      "title": "Open Rayner gallery and cache CTA at the start of each lesson",
+      "url": "https://github.com/adewale/oshineye-dev/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "Export-verification change embedded in a link and content refresh",
+      "weakness": "The existing test used a synthetic gallery and repeatable generation. CI and deployment never compared the actual checked-in export files with their declared hashes or rejected extra files.",
+      "attempted_remedy": "Added a verifier for the real export to both workflows and a regression fixture that deliberately corrupts the deployment tree.",
+      "test_paths": [
+        "test/rayner-export.test.js",
+        "test/rayner-catalog.test.js",
+        "tools/verify-rayner-export.mjs",
+        ".github/workflows/ruff.yml",
+        ".github/workflows/cloudflare-preview.yml"
+      ],
+      "diff_evidence": "The export test starts from a valid temporary manifest, then tampers with cache.html, adds old.html, removes a listed file, changes _headers, changes the generator and adds an invalid path. Each case expects the corresponding error. Both CI and pre-deploy run check:rayner-export.",
+      "transferable_rule": "Exercise the contents of the artifact that will ship. Test a verifier by changing, adding and removing actual files and checking that each failure identifies the affected path.",
+      "outcome_caveat": "Merged. The PR-head job ran the tests and export verifier successfully. This version also pinned generator source, which #30 challenged. A passing manifest check alone does not establish how a hosting platform serves the artifact.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/13/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/40871828883/job/123440538553"
+      ]
+    },
+    {
+      "number": 19,
+      "title": "Publish Hello World and Rayner authoring feature tour",
+      "url": "https://github.com/adewale/oshineye-dev/pull/19",
+      "state": "closed",
+      "merged": true,
+      "classification": "Missing regression case repaired within an authoring release",
+      "weakness": "The existing gallery suite could remove the authoring section and repeat a build, but never started from that saved state when the next export restored authoring examples. The sync relied on a section that could already have disappeared.",
+      "attempted_remedy": "Extended the existing fixture to simulate a prior curated page without its toolchain section, run the actual generator with restored lessons, then run it a second time.",
+      "test_paths": [
+        "test/rayner-catalog.test.js",
+        "tools/sync-rayner.mjs"
+      ],
+      "diff_evidence": "The test removes the entire section via once.replace(...), adds hello-world and feature-tour to the catalog, checks the returned section, links and four tiles, then compares the entire next result with withAuthors. The sync now reconstructs the missing section before filling it.",
+      "transferable_rule": "Seed regeneration tests with an artifact an earlier release really produced. Exercise restoration after removal and verify that another run leaves the restored output byte-identical.",
+      "outcome_caveat": "Merged. The PR-head test and export-verification steps passed. The committed fixture establishes which transition was exercised. No pre-fix execution or visual result was independently replayed.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/19/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/41074837382/job/124128134170"
+      ]
+    },
+    {
+      "number": 21,
+      "title": "Simplify the Rayner landing page: one action, useful facts, authoring links in place",
+      "url": "https://github.com/adewale/oshineye-dev/pull/21",
+      "state": "closed",
+      "merged": true,
+      "classification": "Assertion strengthened within a landing-page redesign",
+      "weakness": "The existing reconstruction test checked links and labels anywhere in the page. It could pass when the generator put the authoring introduction in the install section or duplicated it.",
+      "attempted_remedy": "Added an occurrence-count assertion and a position check to the existing regenerated-page test.",
+      "test_paths": [
+        "test/rayner-catalog.test.js",
+        "tools/sync-rayner.mjs"
+      ],
+      "diff_evidence": "The test counts 'These are for authors' with split(...).length - 1 and expects one occurrence. A second assertion places that text between the toolchain and install section markers in the generated HTML.",
+      "transferable_rule": "When placement and uniqueness matter, assert both. A page-wide substring check can pass for text in the wrong section.",
+      "outcome_caveat": "Merged. The PR-head job ran the suite successfully. The author reports the new test failed when an unscoped replacement was restored. That mutation was not rerun here. The assertion checks markup order.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/21/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/41117070963/job/124273962257"
+      ]
+    },
+    {
+      "number": 25,
+      "title": "Publish Henge and refresh the complete Rayner collection",
+      "url": "https://github.com/adewale/oshineye-dev/pull/25",
+      "state": "closed",
+      "merged": true,
+      "classification": "Curation tests redesigned within a collection refresh",
+      "weakness": "The curation suite duplicated a fixed selection of IDs and counts. It did not establish that changing a scene’s tier moved it between the correct public sections or kept coverage-only scenes available by direct link.",
+      "attempted_remedy": "Replaced the hand-maintained test list with catalog-derived invariants and deliberately changed tiers in a separate synthetic fixture.",
+      "test_paths": [
+        "test/rayner-curation.test.js",
+        "test/rayner-catalog.test.js"
+      ],
+      "diff_evidence": "The curation test compares rendered tiles by section with showcase, gallery and toolchain entries, checks scene totals and checks direct files for every catalog scene. The fixture promotes notes to showcase and verifies that the More group disappears while the notes card remains visible.",
+      "transferable_rule": "Use an authoritative input to verify generated collections without duplicating volatile lists. Change that input in a small fixture so a renderer that always emits the current selection will fail.",
+      "outcome_caveat": "Merged. GitHub records a successful validate-and-deploy job on the merge commit. The PR’s deliberate coverage-recommendation defect and its upstream science checks were not reproduced.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/25/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/41554049564/job/125648449120"
+      ]
+    },
+    {
+      "number": 30,
+      "title": "Verify Rayner deployment bytes without freezing generator source",
+      "url": "https://github.com/adewale/oshineye-dev/pull/30",
+      "state": "open",
+      "merged": false,
+      "classification": "Explicit repair of an over-specified export verifier",
+      "weakness": "A harmless edit to the current generator invalidated a previously built export with identical served bytes. Its test explicitly required that false failure.",
+      "attempted_remedy": "Treated the recorded generator identity and digest format as provenance. Removed the equality check against current source and changed the fixture to accept a modified or absent generator.",
+      "test_paths": [
+        "test/rayner-export.test.js",
+        "tools/verify-rayner-export.mjs"
+      ],
+      "diff_evidence": "After writing 'modified' to tools/sync-rayner.mjs the fixture now awaits successful verification, unlinks the generator, and expects success again. The verifier drops its digest(await readFile(...)) comparison. The file-integrity and invalid-path cases remain exercised.",
+      "transferable_rule": "Keep a producer’s historical identity separate from artifact acceptance. Test a harmless implementation change alongside corrupt or missing artifact cases.",
+      "outcome_caveat": "Open at the audit date. The PR-head suite and export verifier passed. #34 later introduced a different manifest format and removed the source-hash check on main. #30 itself has no merge record.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/30/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/42312793791/job/128218063926"
+      ]
+    },
+    {
+      "number": 31,
+      "title": "Remove the Rayner step redirects",
+      "url": "https://github.com/adewale/oshineye-dev/pull/31",
+      "state": "closed",
+      "merged": true,
+      "classification": "Explicit deletion of an obsolete test",
+      "weakness": "A test required exactly 42 redirect rules and required files to stay absent at retired URLs. Reintroducing a valid resource at an old path, or adding an unrelated rule, could fail the test after the old compatibility promise ended.",
+      "attempted_remedy": "Reverted #29 and deleted the redirect test along with the 42 rules for 14 retired steps.",
+      "test_paths": [
+        "test/rayner-redirects.test.js",
+        "site/_redirects"
+      ],
+      "diff_evidence": "The deleted suite counted every noncomment redirect, asserted rules.length === 42, and required existsSync(site + from) to be false for every source. The patch deletes its 20 lines and the entire redirect file.",
+      "transferable_rule": "When a compatibility commitment is retired, delete assertions that reserve its past paths or freeze a repository-wide count. Record the decision with the change.",
+      "outcome_caveat": "Merged. The remaining suite and export verifier passed on the PR head. The decision that no callers required these URLs is the PR author’s stated product judgment. Usage analytics were not examined.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/31/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/42364618495/job/128379945818"
+      ]
+    },
+    {
+      "number": 34,
+      "title": "Publish Rayner v2 exports and the Poppy explainer page",
+      "url": "https://github.com/adewale/oshineye-dev/pull/34",
+      "state": "closed",
+      "merged": true,
+      "classification": "Verification ownership repaired within a two-collection publication",
+      "weakness": "The previous verifier pinned the whole shared header file and the host generator, while the root llms.txt listing had no manifest check. Those boundaries could reject an unrelated host edit and miss drift in an owned listing.",
+      "attempted_remedy": "Reworked the existing export test and verifier around independently hashed files and marked sections owned by each collection, with explicit crossing, tampering and missing-section cases.",
+      "test_paths": [
+        "test/rayner-export.test.js",
+        "test/rayner-catalog.test.js",
+        "test/rayner-curation.test.js",
+        "tools/verify-rayner-export.mjs"
+      ],
+      "diff_evidence": "One fixture holds both collections. Editing only the host’s header rules passes both verifiers. Changing Rayner’s owned header section fails Rayner while Poppy still passes. Duplicating a listing’s begin marker, supplying a foreign section or omitting required sections fails. The sync fixture also checks that the published manifest bytes stay intact.",
+      "transferable_rule": "Give each producer an independently verifiable ownership boundary. Test a benign neighboring edit and a corrupt owned edit against both producers in the same fixture.",
+      "outcome_caveat": "Merged. The production job logged 26 passing tests and verification of 761 Rayner and 177 Poppy files/sections, then failed deployment because Cloudflare capped _headers at 100 rules. #35 closes this runtime-validation gap.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/34/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/43842065736/job/133212929765"
+      ]
+    },
+    {
+      "number": 35,
+      "title": "Fix Cloudflare's header-rule limit without changing exported bytes",
+      "url": "https://github.com/adewale/oshineye-dev/pull/35",
+      "state": "closed",
+      "merged": true,
+      "classification": "Deployment validation repaired after #34’s verified production failure",
+      "weakness": "The existing checks approved sound source manifests and a header recipe that the deployment platform rejected. They did not exercise the staged artifact through Cloudflare’s runtime or enforce its rule limit.",
+      "attempted_remedy": "Added boundary and byte-preservation cases, staged the Cloudflare-specific artifact, and exercised it via Wrangler’s actual static-assets handler in CI and before deployment.",
+      "test_paths": [
+        "test/cloudflare-assets.test.js",
+        "tools/check-cloudflare-site.mjs",
+        "tools/prepare-cloudflare-assets.mjs",
+        ".github/workflows/ruff.yml",
+        ".github/workflows/cloudflare-preview.yml"
+      ],
+      "diff_evidence": "Unit cases accept 100 rules, reject 101 and overlong lines, check that tampered input leaves the destination intact, and compare staged files byte-for-byte. The handler test requests canonical routes and aliases, checks redirect query strings, headers and body hashes, and fetches all manifest-pinned public files.",
+      "transferable_rule": "After a real deployment-only failure, test the platform’s boundary and run the staged artifact through the same serving engine. Verify both accepted limits and the first rejected input.",
+      "outcome_caveat": "Merged. The successful production job logged 55 staged rules, 30 passing tests, 52 readers and 934 files verified over local Wrangler HTTP before deploying. The audit did not independently check live edge responses. Several counts are pinned to this export.",
+      "sources": [
+        "https://github.com/adewale/oshineye-dev/pull/35/files",
+        "https://github.com/adewale/oshineye-dev/actions/runs/43842065736/job/133212929765",
+        "https://github.com/adewale/oshineye-dev/actions/runs/43845986588/job/133226162004"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        15,
+        16,
+        17
+      ],
+      "reason": "New pages, source copy or generated assets. Some descriptions report existing tests, quantitative checks or upstream audits. Their host-repository patches neither repair a test nor change the local verification method."
+    },
+    {
+      "numbers": [
+        2,
+        26,
+        27
+      ],
+      "reason": "Ruff lint upgrade, action pinning policy and a dependency update, respectively."
+    },
+    {
+      "numbers": [
+        14,
+        18,
+        20,
+        22,
+        28,
+        29,
+        32,
+        33
+      ],
+      "reason": "Tests accompany their own feature or changed contract. #14 checks the new catalog-supplied introduction. #18 tests the new six-scene curation and disappearance of an empty section. #20 tests new by-example links. #22 removes assertions for retired content and tests its removal. #28 renames fixture fields for a schema change. #29 introduces redirects and their first test, later retired by #31. #32 extends the existing verification method to the new Poppy collection. #33 covers changed installation copy and its fallback. #32 and #33 closed unmerged and #34 superseded them."
+    },
+    {
+      "numbers": [
+        23,
+        24
+      ],
+      "reason": "CI event scheduling and cancellation only. Existing test commands were retained."
+    }
+  ],
+  "limitations": [
+    "Historical PRs are the unit of counting. #4 and #3 share one audit and test patch. #30’s proposal and #34’s v2 rewrite are distinct attempts affecting the same old verifier.",
+    "This was a read-only historical review. Candidate test and verifier patches, GitHub merge records, Actions job steps, and selected CI logs were inspected. Claims from one-off author runs, mutation probes or browser checks are identified separately. Generated media was screened by filename."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "valid_schedule": {
+    "state": "observed",
+    "exit": 1,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "--reporter=verbose",
+        "state-machine-fuzz.test.ts",
+        "overlap-fuzz.test.ts",
+        "eviction-recovery.test.ts"
+      ]
+    },
+    "log": "valid_schedule.log",
+    "seconds": 25.879
+  }
+}

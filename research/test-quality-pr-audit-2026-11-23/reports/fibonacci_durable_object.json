@@ -1,0 +1,31 @@
+{
+  "repository": "adewale/fibonacci_durable_object",
+  "total_prs": 1,
+  "pages_checked": {
+    "pull_requests": "GitHub REST state=all, per_page=100. Page 1 returned #1 and page 2 was empty. No author or date filter.",
+    "changed_files": "Read both changed-file patches for #1 from page 1 (2 of 100 slots)."
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Add a check script: types, type-check and dry-run bundle",
+      "url": "https://github.com/adewale/fibonacci_durable_object/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Verification approach for a demo with no test suite",
+      "weakness": "A clean checkout had no reproducible type-and-bundle check. The base tsconfig.json required ./worker-configuration.d.ts, which .gitignore excluded and the base tree did not contain.",
+      "attempted_remedy": "Added a manual npm run check that generates Worker types, runs the TypeScript compiler, and bundles using Wrangler's dry run.",
+      "test_paths": [],
+      "diff_evidence": [
+        "package.json adds \"check\": \"wrangler types && tsc --noEmit && wrangler deploy --dry-run\" alongside the existing cf-typegen script.",
+        "README adds a paragraph stating the repository has no tests and describing the type and bundle checks. The PR changed these two files only."
+      ],
+      "transferable_rule": "Generate ignored prerequisites within the clean-checkout verification command, and document which build steps it exercises and which runtime behavior still needs evidence.",
+      "outcome": "Merged 2026-10-11. The author reported a clean run, a failing run with a deliberately invalid StoredData change, and a passing run after reverting. The PR head had zero GitHub check runs and zero commit statuses. The dry run bundles the Worker without executing the Durable Object."
+    }
+  ],
+  "exclusions": [],
+  "limitations": [
+    "No test case was changed or deleted. This PR qualifies as a deliberate change to the verification approach. The author's local commands were not independently rerun."
+  ]
+}

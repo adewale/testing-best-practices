@@ -1,0 +1,24 @@
+{
+  "engine": "156.0.8078.79",
+  "expected": {
+    "background": "rgb(111, 194, 162)",
+    "foreground": "rgb(10, 68, 52)"
+  },
+  "site": {
+    "background": "rgb(27, 110, 82)",
+    "foreground": "rgb(10, 68, 52)"
+  },
+  "editor": {
+    "background": "rgb(111, 194, 162)",
+    "foreground": "rgb(10, 68, 52)"
+  }
+}
+Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
++   background: 'rgb(27, 110, 82)',
+-   background: 'rgb(111, 194, 162)',
+    foreground: 'rgb(10, 68, 52)'
+  }
+

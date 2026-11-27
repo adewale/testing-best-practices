@@ -1,0 +1,182 @@
+     1	// E2E coverage for the new Loop 7 CLI verbs.
+     2	//
+     3	// Spawns the real `bin/am.ts` via `bun run` and pipes JSONL / source via
+     4	// stdin, asserting:
+     5	//   - capabilities emits well-formed JSON
+     6	//   - batch processes 5 lines (3 happy, 1 malformed JSON, 1 unknown op) and
+     7	//     keeps going after errors, exiting 0
+     8	//   - exit codes: 2 on arg error, 3 on verify-failed
+     9	
+    10	import { describe, test, expect } from 'bun:test'
+    11	import { spawnSync } from 'node:child_process'
+    12	import { join } from 'node:path'
+    13	
+    14	const AM = join(import.meta.dir, '..', 'bin', 'am.ts')
+    15	const SPAWN_TIMEOUT_MS = 60_000
+    16	
+    17	function runAm(args: string[], stdin = '', env: NodeJS.ProcessEnv = {}): { status: number; stdout: string; stderr: string } {
+    18	  const r = spawnSync('bun', ['run', AM, ...args], {
+    19	    encoding: 'utf8',
+    20	    input: stdin,
+    21	    env: { ...process.env, ...env },
+    22	    timeout: SPAWN_TIMEOUT_MS,
+    23	  })
+    24	  return { status: r.status ?? -1, stdout: r.stdout, stderr: r.stderr }
+    25	}
+    26	
+    27	describe('am capabilities', () => {
+    28	  test('emits a JSON envelope with the expected top-level keys', () => {
+    29	    const { status, stdout } = runAm(['capabilities'])
+    30	    expect(status).toBe(0)
+    31	    const payload = JSON.parse(stdout)
+    32	    expect(typeof payload.sdkVersion).toBe('string')
+    33	    expect(Array.isArray(payload.families)).toBe(true)
+    34	    expect(payload.families.length).toBeGreaterThan(0)
+    35	    expect(Array.isArray(payload.warningCodes)).toBe(true)
+    36	    expect(payload.warningCodes.length).toBeGreaterThan(0)
+    37	    expect(payload.outputFormats).toEqual(['svg', 'ascii', 'unicode', 'png', 'layout'])
+    38	    const flowchart = payload.families.find((f: any) => f.id === 'flowchart')
+    97	})
+    98	
+    99	describe('am render multi-input', () => {
+   100	  test('unsupported --format exits 2 instead of falling back to SVG', () => {
+   101	    const r = runAm(['render', '--format', 'nope', '-'], 'flowchart LR\n  A --> B\n')
+   102	    expect(r.status).toBe(2)
+   103	    expect(r.stderr).toContain('unsupported --format')
+   104	    expect(r.stdout).toBe('')
+   105	  })
+   106	
+   107	  test('--format png rejects multiple inputs instead of ignoring extras', () => {
+   108	    const { writeFileSync, existsSync, unlinkSync } = require('node:fs') as typeof import('node:fs')
+   109	    const a = `/tmp/am-png-a-${Date.now()}.mmd`
+   146	    }
+   147	  })
+   148	})
+   149	
+   150	describe('am batch', () => {
+   151	  test('processes mutate lines without aborting the JSONL stream', () => {
+   152	    const valid = JSON.stringify({
+   153	      op: 'mutate',
+   154	      source: 'flowchart LR\n  A --> B\n',
+   155	      mutations: [
+   156	        { kind: 'add_node', id: 'C', label: 'Cache' },
+   157	        { kind: 'add_edge', from: 'B', to: 'C' },
+   158	      ],
+   159	    })
+   160	    // A pie with an unquoted label has an opaque-fallback body and exposes no
+   161	    // structured mutation, so mutate returns UNSUPPORTED_FAMILY — and the batch
+   162	    // stream keeps going rather than aborting.
+   163	    const unsupported = JSON.stringify({ op: 'mutate', source: 'pie\n  Dogs : 3', mutation: { kind: 'add_node', id: 'X', label: 'X' } })
+   164	    const stdin = [valid, unsupported].join('\n') + '\n'
+   165	
+   166	    const { status, stdout } = runAm(['batch'], stdin)
+   167	    expect(status).toBe(0)
+   168	    const lines = stdout.trim().split('\n').map(l => JSON.parse(l))
+   169	    expect(lines.length).toBe(2)
+   170	    expect(lines[0].ok).toBe(true)
+   171	    expect(lines[0].op).toBe('mutate')
+   172	    expect(lines[0].data.source).toContain('B --> C')
+   173	    expect(lines[0].data.verify.ok).toBe(true)
+   174	    expect(lines[1].ok).toBe(false)
+   175	    expect(lines[1].error.code).toBe('UNSUPPORTED_FAMILY')
+   176	    expect(lines[1].data?.source).toBeUndefined()
+   177	  })
+   178	
+   179	  test('processes 5 lines with mixed validity and exits 0', () => {
+   180	    const validRender = JSON.stringify({ op: 'render', source: 'flowchart LR\n  A --> B', options: { format: 'ascii' } })
+   181	    const validVerify = JSON.stringify({ op: 'verify', source: 'flowchart LR\n  A --> B' })
+   182	    const malformed = '{not valid json'
+   183	    const unknownOp = JSON.stringify({ op: 'nope', source: 'x' })
+   184	    // Large source > 10KB. Use long ASCII labels rather than many nodes so the
+   185	    // layout engine doesn't blow the wallclock budget.
+   186	    const longLabel = 'x'.repeat(200)
+   187	    const big = JSON.stringify({ op: 'render', source: `flowchart LR\n  A["${longLabel}"] --> B["${longLabel}"]\n  B --> C["${longLabel}"]\n  C --> D["${longLabel}"]\n  D --> E["${longLabel}"]\n  E --> F["${longLabel}"]\n  F --> G["${longLabel}"]\n  G --> H["${longLabel}"]\n  H --> I["${longLabel}"]\n  I --> J["${longLabel}"]\n  J --> K["${longLabel}"]\n  K --> L["${longLabel}"]\n  L --> M["${longLabel}"]\n  M --> N["${longLabel}"]\n`, options: { format: 'ascii' } })
+   188	    const stdin = [validRender, validVerify, malformed, unknownOp, big].join('\n') + '\n'
+   189	
+   190	    const { status, stdout } = runAm(['batch'], stdin)
+   191	    expect(status).toBe(0)
+   192	    const lines = stdout.trim().split('\n')
+   193	    expect(lines.length).toBe(5)
+   194	
+   195	    const out = lines.map(l => JSON.parse(l))
+   196	    expect(out[0].ok).toBe(true)
+   197	    expect(out[0].op).toBe('render')
+   198	    expect(typeof out[0].data.ascii).toBe('string')
+   199	
+   200	    expect(out[1].ok).toBe(true)
+   201	    expect(out[1].op).toBe('verify')
+   202	    expect(Array.isArray(out[1].data.warnings)).toBe(true)
+   203	
+   204	    expect(out[2].ok).toBe(false)
+   205	    expect(out[2].error.code).toBe('INVALID_JSON')
+   206	
+   207	    expect(out[3].ok).toBe(false)
+   208	    expect(out[3].error.code).toBe('UNKNOWN_OP')
+   209	
+   210	    expect(out[4].ok).toBe(true)
+   211	    expect(out[4].op).toBe('render')
+   212	    expect(typeof out[4].data.ascii).toBe('string')
+    68	  const candidate = value as { ok?: unknown; error?: unknown }
+    69	  if (candidate.ok !== false || typeof candidate.error !== 'object' || candidate.error === null) return false
+    70	  const error = candidate.error as { code?: unknown; message?: unknown }
+    71	  return typeof error.code === 'string' && typeof error.message === 'string'
+    72	}
+    73	
+    74	function cliStructuredRenderFailure(error: unknown, source?: string): CliStructuredFailure {
+    75	  if (isCliStructuredFailure(error)) return error
+    76	  return { ok: false, error: projectRenderErrorDiagnostic(error, { source }) }
+    77	}
+    78	
+    79	/** A render failure is the caller's input (exit 2: the source, its
+    80	 * configuration, or an option) unless the engine is at fault (exit 4). */
+    81	function renderFailureExitCode(failure: CliStructuredFailure): number {
+    82	  return failure.error.code === 'INTERNAL_ERROR' ? EXIT_INTERNAL : EXIT_ARG_ERROR
+    83	}
+    84	
+    85	/** CLI render accepts installed extensions but cannot execute a source-only
+    86	 * preserved envelope. Keep that distinction structured instead of converting
+    87	 * unknown/future families into either a parse failure or an internal error. */
+    88	function preflightCliRenderableSource(source: string): ParsedDiagram {
+    89	  const parsed = parseRegisteredMermaid(source)
+    90	  if (!parsed.ok) throw parseErrorEnvelope(parsed.error)
+    91	  if (parsed.value.body.kind === 'preserved') {
+  1512	        return { ok: true, op, data: { family: r.family, source: r.source, verify: JSON.parse(JSON.stringify(r.verify, replacer)), ...(r.mode ? { mode: r.mode } : {}) } }
+  1513	      }
+  1514	      default:
+  1515	        return { ok: false, op, error: { code: 'UNKNOWN_OP', message: `unknown op: ${op}` } }
+  1516	    }
+  1517	  } catch (e) {
+  1518	    // Project documented render diagnostics (family-detection UNKNOWN_HEADER/
+  1519	    // UNSUPPORTED_FAMILY, ASCII_TARGET_WIDTH_IMPOSSIBLE) the same way every other CLI render
+  1520	    // transport does (cmdRender/preview/render-markdown), instead of collapsing them to a
+  1521	    // generic internal error. cliStructuredRenderFailure first honours an already-structured
+  1522	    // throw; any remaining render-path exception is still a bounded RENDER_FAILED response.
+  1523	    return { ok: false, op, error: cliStructuredRenderFailure(e).error }
+  1524	  }
+  1525	}
+  1526	
+  1527	async function cmdBatch(): Promise<number> {
+  1528	  if (process.stdin.isTTY) throw new CliArgumentError('needs a file argument or piped stdin')
+  1529	  const { streamJsonlBatch } = await import('./jsonl.ts')
+  1530	  await streamJsonlBatch(process.stdin, process.stdout, runBatchLine)
+  1531	  // Per-line failures don't abort; input/output transport failures do.
+  1532	  return EXIT_OK
+  1533	}
+  1534	
+  1535	function toJsonSafe(d: ParsedDiagram): unknown {
+  1536	  if (d.body.kind === 'flowchart') {
+  1537	    const g = d.body.graph
+  1538	    return {
+  1539	      kind: d.kind,
+  1540	      meta: d.meta,
+  1541	      body: {
+  1542	        kind: 'flowchart',
+  1543	        graph: {
+  1544	          direction: g.direction,
+  1545	          nodes: Object.fromEntries(g.nodes),
+src/render-output-metadata.ts:226:export const DEFAULT_CLI_RENDER_FORMAT = /* @__PURE__ */ defaultCliRenderFormat()
+src/cli/index.ts:37:import { CLI_RENDER_FORMATS, DEFAULT_CLI_RENDER_FORMAT, isCliRenderFormat, renderOutputForCliFormat, validateSerializableRenderOptions } from '../render-contract.ts'
+src/cli/index.ts:189:  const format = flagValue(args, 'format') ?? DEFAULT_CLI_RENDER_FORMAT
+src/cli/index.ts:1396:        const format = requestedFormat ?? DEFAULT_CLI_RENDER_FORMAT
+src/cli/help.ts:3:import { CLI_RENDER_FORMATS, cliRenderFormatHelpLines, DEFAULT_CLI_RENDER_FORMAT } from '../render-output-metadata.ts'
+src/cli/help.ts:75:Render a diagram. Default is ${DEFAULT_CLI_RENDER_FORMAT.toUpperCase()}.

@@ -1,0 +1,223 @@
+    14	  'notacolor', 'constructor', '__proto__', 'rgb(x)', 'rgb(1oops,2,3)',
+    15	  'rgba(1,2,3,0.5junk)', 'hsl(120,50%oops,50%)', '#12345',
+    16	  'rgb(1 2 3 / .5 / junk)', 'hsl(120 50% 50% / .5 / junk)',
+    17	  'rgb(1 2 3 .5)', 'hsl(120 50% 50% .5)',
+    18	  'rgb(1,20%,3)', 'rgba(1,20%,3,.5)',
+    19	  'rgb(1. 2 3)', 'rgb(1.e2 2 3)', 'hsl(120. 50% 50%)',
+    20	  'rgb(1, 2, 3 / .5)', 'hsl(120, 50%, 50% / .5)',
+    21	  'hsl(1e308turn,50%,50%)',
+    22	  'hwb(120 0% 0%)', 'color-mix(in srgb, red, blue)', 'url(#a)',
+    23	] as const
+    24	
+    25	const SOURCES = [
+    26	  { directive: 'style A', make: (value: string) => `flowchart TD\n  A --> B\n  style A fill:${value}` },
+    27	  { directive: 'classDef hot', make: (value: string) => `flowchart TD\n  A:::hot --> B\n  classDef hot fill:${value}` },
+    28	  { directive: 'linkStyle 0', make: (value: string) => `flowchart TD\n  A --> B\n  linkStyle 0 stroke:${value}` },
+    29	  { directive: 'classDef hot', make: (value: string) => `stateDiagram-v2\n  A --> B\n  classDef hot fill:${value}\n  class A hot` },
+    30	  { directive: 'style A', make: (value: string) => `classDiagram\n  class A\n  style A fill:${value}` },
+    31	  { directive: 'style A', make: (value: string) => `erDiagram\n  A ||--o{ B : has\n  style A fill:${value}` },
+    32	] as const
+    33	
+    34	describe('authored style color admission (#303, source/typed slice)', () => {
+    35	  test('distinguishes real colors from safe-looking words and malformed functions', () => {
+    36	    for (const value of INVALID) expect(drawableAuthoredCssPaint(value), value).toBeUndefined()
+    37	    for (const value of ['red', '#f96', '#3b82', '#112233', '#11223380', 'rgb(1,2,3)', 'rgba(1,2,3,.5)', 'rgb(300,0,0)', 'rgb(-1 0 0)', 'rgba(255,0,0,2)', 'hsl(120,50%,50%)', 'hsl(120 100 50)', 'hsl(120 150% 50%)', 'hsl(120 100% 150%)', 'transparent', 'currentColor', 'var(--brand)']) {
+    38	      expect(drawableAuthoredCssPaint(value), value).toBe(value)
+    39	    }
+    40	    expect(tryParseCssColor('rgb(300,0,0)')).toEqual([255, 0, 0, 1])
+    41	    expect(tryParseCssColor('rgba(255,0,0,2)')).toEqual([255, 0, 0, 1])
+    42	    expect(tryParseCssColor('hsl(120 100 50)')).toEqual([0, 255, 0, 1])
+    43	    for (const value of ['rgb(300,0,0)', 'rgba(255,0,0,2)', 'hsl(120 100 50)', 'hsl(120 150% 50%)']) {
+    44	      expect(() => renderMermaidSVG(SOURCES[0]!.make(value)), value).not.toThrow()
+    45	    }
+    46	    expect(drawableAuthoredCssPaint('none', true)).toBe('none')
+    47	    expect(drawableAuthoredCssPaint('none', false)).toBeUndefined()
+    48	    expect(tryParseCssColor('constructor')).toBeNull()
+    49	    expect(tryParseCssColor('rgb(1oops,2,3)')).toBeNull()
+    50	    expect(tryParseCssColor('rgb(1 2 3 / .5 / junk)')).toBeNull()
+    51	    expect(tryParseCssColor('hsl(120 50% 50% / .5 / junk)')).toBeNull()
+    52	    expect(tryParseCssColor('hsl(1e308turn,50%,50%)')).toBeNull()
+    53	    expect(tryParseCssColor('rgb(1,20%,3)')).toBeNull()
+    54	    expect(tryParseCssColor('#3b82')).toEqual([0x33, 0xbb, 0x88, 0x22 / 255])
+    55	  })
+    56	
+    57	  test('every affected graphical source placement refuses the offending value by directive and property', () => {
+    58	    for (const { directive, make } of SOURCES) {
+    59	      for (const value of INVALID) {
+    60	        const source = make(value)
+    61	        const named = `${directive}: ${directive.startsWith('linkStyle') ? 'stroke' : 'fill'} ${JSON.stringify(value)} is not a CSS color`
+    62	        expect(() => renderMermaidSVG(source)).toThrow(named)
+    63	        expect(() => renderMermaidASCII(source, { useAscii: true })).toThrow(named)
+    64	        expect(() => renderMermaidASCII(source, { useAscii: false })).toThrow(named)
+   112	describe('quadrant authored paint admission (#303)', () => {
+   113	  const invalid = ['notacolor', '#12345', 'rgb(x)', 'url(#a)', 'color-mix(in srgb, red 20%, blue)']
+   114	
+   115	  it('refuses every non-drawable direct and class paint before graphical or terminal output', () => {
+   116	    for (const property of ['color', 'stroke-color'] as const) {
+   117	      for (const value of invalid) {
+   118	        for (const source of [
+   119	          `quadrantChart\n  A: [0.5, 0.5] ${property}: ${value}`,
+   120	          `quadrantChart\n  classDef bad ${property}: ${value}\n  A:::bad: [0.5, 0.5]`,
+   121	        ]) {
+   122	          const named = `${property} ${JSON.stringify(value)} is not a CSS color`
+   123	          expect(() => renderMermaidSVG(source), source).toThrow(named)
+   124	          expect(() => renderMermaidPNG(source), source).toThrow(named)
+   125	          expect(() => renderMermaidASCII(source, { useAscii: true }), source).toThrow(named)
+   126	          expect(() => renderMermaidASCII(source, { useAscii: false }), source).toThrow(named)
+   127	          const agent = parseMermaid(source)
+   128	          expect(agent.ok).toBe(true)
+   129	          if (agent.ok) expect(agent.value.body.kind).toBe('opaque')
+   130	          const verdict = verifyMermaid(source)
+   131	          expect(verdict.ok).toBe(false)
+   132	          expect(verdict.warnings).toContainEqual({ code: 'RENDER_FAILED', reason: expect.stringContaining(named), origin: 'source' })
+   133	        }
+   134	      }
+   135	    }
+   136	  })
+   137	
+   138	  it('preserves drawable fill and stroke paints, including none and unresolved local variables', () => {
+   139	    for (const value of ['rebeccapurple', '#f96', '#11223380', 'rgb(255, 0, 0)', 'hsl(120 100% 50%)', 'transparent', 'currentColor', 'none', 'var(--brand)']) {
+   140	      const source = `quadrantChart\n  A: [0.5, 0.5] color: ${value}, stroke-color: ${value}`
+   141	      expect(() => renderMermaidSVG(source), value).not.toThrow()
+   142	      expect(() => renderMermaidASCII(source), value).not.toThrow()
+   143	      expect(verifyMermaid(source).warnings.filter(w => w.code === 'RENDER_FAILED' || w.code === 'INTERNAL_ERROR')).toEqual([])
+   144	    }
+   145	  })
+   146	
+   147	  it('projects only nominal bounded color errors through CLI and MCP', async () => {
+   148	    const source = 'quadrantChart\n  A: [0.5, 0.5] color: notacolor'
+   149	    for (const format of ['svg', 'ascii', 'unicode'] as const) {
+   150	      const result = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }
+   151	      expect(result).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: expect.stringContaining('notacolor') } })
+   152	    }
+   153	    const response = await handleHostedRequest(
+   154	      { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'render_svg', arguments: { source } } },
+   155	      {
+   156	        async execute() { return { ok: true, value: null, logs: [] } },
+   157	        async renderPng() { throw new Error('not used') },
+   158	      },
+   159	    )
+   160	    const payload = JSON.parse((response?.result as { content: Array<{ text: string }> }).content[0]!.text)
+   161	    expect(payload).toMatchObject({ ok: false, error: { code: 'INVALID_STYLE_COLOR', property: 'color', value: 'notacolor' } })
+   162	    expect(projectRenderErrorDiagnostic({ code: 'INVALID_STYLE_COLOR', subject: 'quadrant point A', property: 'color', value: 'notacolor', message: 'forged' }))
+   163	      .toEqual({ code: 'RENDER_FAILED', message: 'Rendering failed' })
+   164	    const veryLong = 'x'.repeat(100_000)
+   165	    let thrown: unknown
+   166	    try { renderMermaidSVG(`quadrantChart\n  A: [0.5, 0.5] color: ${veryLong}`) } catch (error) { thrown = error }
+   167	    expect(thrown).toBeInstanceOf(QuadrantStyleColorError)
+   168	    const diagnostic = projectRenderErrorDiagnostic(thrown)
+   169	    expect(diagnostic.message.length).toBeLessThan(600)
+   170	    expect('value' in diagnostic && diagnostic.value.length).toBeLessThanOrEqual(256)
+   171	  })
+   172	})
+  1524	  }
+  1525	}
+  1526	
+  1527	async function cmdBatch(): Promise<number> {
+  1528	  if (process.stdin.isTTY) throw new CliArgumentError('needs a file argument or piped stdin')
+  1529	  const { streamJsonlBatch } = await import('./jsonl.ts')
+  1530	  await streamJsonlBatch(process.stdin, process.stdout, runBatchLine)
+  1531	  // Per-line failures don't abort; input/output transport failures do.
+  1532	  return EXIT_OK
+  1533	}
+  1534	
+  1535	function toJsonSafe(d: ParsedDiagram): unknown {
+  1536	  if (d.body.kind === 'flowchart') {
+  1537	    const g = d.body.graph
+  1538	    return {
+  1539	      kind: d.kind,
+  1540	      meta: d.meta,
+  1541	      body: {
+  1542	        kind: 'flowchart',
+  1543	        graph: {
+  1544	          direction: g.direction,
+  1545	          nodes: Object.fromEntries(g.nodes),
+  1546	          edges: g.edges,
+  1547	          subgraphs: g.subgraphs,
+  1548	          // Preserve styling so `am parse | am serialize` is lossless.
+  1549	          classDefs: Object.fromEntries(g.classDefs),
+  1550	          classAssignments: Object.fromEntries(g.classAssignments),
+  1551	          nodeStyles: Object.fromEntries(g.nodeStyles),
+  1552	          linkStyles: Object.fromEntries([...g.linkStyles].map(([k, v]) => [String(k), v])),
+  1553	        },
+  1554	      },
+  1555	      canonicalSource: d.canonicalSource,
+  1556	    }
+src/cli/index.ts:38:import { parseFailedDiagnostic, projectRenderErrorDiagnostic, type ParseFailedDiagnostic, type RenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/cli/index.ts:74:function cliStructuredRenderFailure(error: unknown, source?: string): CliStructuredFailure {
+src/cli/index.ts:76:  return { ok: false, error: projectRenderErrorDiagnostic(error, { source }) }
+src/cli/index.ts:174:  const structured = args.command === 'render' || args.command === 'preview' || isCliStructuredFailure(e) ? cliStructuredRenderFailure(e) : undefined
+src/cli/index.ts:291:          error: e instanceof CliArgumentError ? { code: 'ARG', message: e.message } : cliStructuredRenderFailure(e).error,
+src/cli/index.ts:313:    const structured = cliStructuredRenderFailure(error)
+src/cli/index.ts:443:    const structured = cliStructuredRenderFailure(e)
+src/cli/index.ts:1310:        return { index: i, line, ok: false, error: cliStructuredRenderFailure(e, src).error }
+src/cli/index.ts:1521:    // generic internal error. cliStructuredRenderFailure first honours an already-structured
+src/cli/index.ts:1523:    return { ok: false, op, error: cliStructuredRenderFailure(e).error }
+src/mcp/server.ts:35:import { projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/mcp/server.ts:249:      error: projectRenderErrorDiagnostic(e, { source }),
+src/mcp/hosted-tool-runtime.ts:8:import { projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/mcp/hosted-tool-runtime.ts:57:    return { ok: false, error: projectRenderErrorDiagnostic(error, { source }) }
+src/mcp/source-tools.ts:12:import { projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/mcp/source-tools.ts:94:      error: projectRenderErrorDiagnostic(new MermaidFamilyDetectionError(familyDetectionDiagnosticFromPreservedBody(parsed.value.body))),
+src/mcp/source-worker.ts:7:import { projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/mcp/source-worker.ts:31:        : { ok: false, error: projectRenderErrorDiagnostic(error, { source }) }
+src/mcp/facade.ts:14:import { projectKnownRenderErrorDiagnostic, projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/mcp/facade.ts:121:      const parseFailure = renderFailure && projectKnownRenderErrorDiagnostic(e)?.code === 'MERMAID_SYNTAX_ERROR' ? projectRenderErrorDiagnostic(e, renderFailure) : undefined
+src/mcp/facade.ts:123:        ?? structuredErrorFields(e) ?? (renderFailure ? { name: 'RenderError', ...projectRenderErrorDiagnostic(e, renderFailure) } : undefined)
+src/mcp/hosted-server.ts:57:import { projectRenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/mcp/hosted-server.ts:477:      error: projectRenderErrorDiagnostic(e, { source }),
+src/cli/index.ts:38:import { parseFailedDiagnostic, projectRenderErrorDiagnostic, type ParseFailedDiagnostic, type RenderErrorDiagnostic } from '../render-error-diagnostic.ts'
+src/cli/index.ts:74:function cliStructuredRenderFailure(error: unknown, source?: string): CliStructuredFailure {
+src/quadrant/point-style.ts:32:export class QuadrantStyleColorError extends Error {
+src/quadrant/point-style.ts:33:  readonly code = 'INVALID_STYLE_COLOR' as const
+src/render-error-diagnostic.ts:26:  code: 'INVALID_STYLE_COLOR'
+   142	      }),
+   143	      fcParameters({ numRuns: NUM_RUNS }),
+   144	    )
+   145	  })
+   146	
+   147	  it('a valid render line returns exactly what the library renders for that line', () => {
+   148	    const labelArb = fc.string({ unit: 'grapheme', minLength: 1, maxLength: 8 }).filter(label => /^[\p{L}\p{N} ]+$/u.test(label) && label.trim() === label)
+   149	    const sourceArb = fc.array(labelArb, { minLength: 1, maxLength: 4 })
+   150	      .map(labels => `flowchart LR\n${labels.map((label, i) => `  n${i}["${label}"]${i > 0 ? `\n  n${i - 1} --> n${i}` : ''}`).join('\n')}`)
+   151	    fc.assert(
+   152	      fc.property(sourceArb, fc.integer({ min: 0, max: 999 }), fc.constantFrom('svg', 'ascii', 'unicode'), (source, idx, format) => {
+   153	        const out = runBatchLine(JSON.stringify({ op: 'render', source, options: { format } }), idx)
+   154	        expect(out).toMatchObject({ ok: true, op: 'render' })
+   155	        const expected = format === 'svg'
+   156	          ? renderMermaidSVG(source, { idPrefix: `d${idx}-` })
+   157	          : renderMermaidASCII(source, { useAscii: format === 'ascii' })
+   158	        expect((out as { data: Record<string, unknown> }).data[format]).toBe(expected)
+   159	      }),
+   160	      fcParameters({ numRuns: 40 }),
+   161	    )
+   162	  })
+   163	
+   164	  it('classifies malformed current-op envelopes as invalid payload/options', () => {
+   165	    for (const op of ['render', 'verify', 'parse', 'serialize', 'mutate']) {
+   166	      expect(runBatchLine(JSON.stringify({ op }))).toMatchObject({
+   167	        ok: false,
+   168	        error: { code: 'INVALID_PAYLOAD' },
+   169	      })
+   170	    }
+   171	    for (const options of [
+   172	      1, [], null, { suppress: 1 }, { suppress: ['NOT_A_WARNING'] },
+   173	      { labelCharCap: '40' }, { labelCharCap: 0 }, { unknown: true },
+   174	    ]) {
+   175	      expect(runBatchLine(JSON.stringify({
+   176	        op: 'verify',
+   177	        source: 'flowchart TD\n  A --> B',
+   178	        options,
+   179	      }))).toMatchObject({ ok: false, error: { code: 'INVALID_OPTIONS' } })
+   180	    }
+   181	  })
+   182	
+   183	  it('honours -- as an argv option terminator', () => {
+   184	    expect(parseArgs(['render', '--', '--looks-like-a-flag'])).toEqual({
+   185	      command: 'render',
+   186	      positional: ['--looks-like-a-flag'],
+   187	      flags: {},
+   188	      errors: [],
+   189	    })
+   190	  })
+   191	

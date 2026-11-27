@@ -1,0 +1,21 @@
+{
+  "exit": 0,
+  "wall_seconds": 6.61,
+  "log": "technical-check/exploratory/promoted_clean_control/run.log",
+  "sha256": "af6e6f88d5a54b8df93178dd469076ecb5447e485991559446bf2d8f56a341e8",
+  "test_files": "1 passed (1)",
+  "tests": "1 passed | 5 skipped (6)",
+  "source": "submitted",
+  "stimulus": "promoted_clean",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "4a5252b3b0886f936c7f8310873f98186f072ad5371a3e190bc6aeec15225e14",
+    "958fe7a0b1ad925f02ede0df1b618074855efd74bc39cadb40062977ba7ac696"
+  ]
+}

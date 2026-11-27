@@ -1,0 +1,21 @@
+{
+  "exit": 1,
+  "wall_seconds": 5.611,
+  "log": "technical-check/exploratory/stale_original/run.log",
+  "sha256": "e3a58c9c87b3bd0d1f29635fdaef697d87261478b9512e6670175ee0b31becbc",
+  "test_files": "1 failed (1)",
+  "tests": "1 failed | 5 skipped (6)",
+  "source": "original",
+  "stimulus": "stale",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "8a58b43877ce60f620dd89f1b4b12de9b005e7a90856302a256fc4726cc9c9e4",
+    "d523a5dd2327c56baff858acf6868c0a09d59ab34f4ef9e116502225ce27f7d3"
+  ]
+}

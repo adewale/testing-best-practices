@@ -1,0 +1,27 @@
+{
+  "decision": "revise",
+  "changes": [
+    {
+      "target": "Route mutation workflow",
+      "action": "Remove the nightly trigger and keep a single manual diagnostic job.",
+      "details": "Drop the four-job matrix, all-module enrollment and per-job floor of 60. Restrict the job to the route function under investigation and the focused tests that exercise it. Keep scores informational. An incomplete run must report failure and retain its diagnostics."
+    },
+    {
+      "target": "Focused route tests",
+      "action": "Check whether the suite detects an edge drawn to the wrong destination.",
+      "details": "Use a public rendering case with distinct source and destination nodes. If the existing tests miss this fault, add a regression asserting that the drawn edge terminates at the requested destination using the renderer’s documented attachment rule. If a relevant assertion already catches it, retain that test."
+    }
+  ],
+  "retained_contracts": [
+    "Keep the existing focused route tests and their normal CI entry point.",
+    "Preserve all route geometries allowed by the public contract. The endpoint assertion permits alternate bends and tie-breaks."
+  ],
+  "validation": [
+    "Inspect the effective workflow triggers, targets and thresholds. Only manual dispatch should start mutation, with one route target and no score floor.",
+    "Run the existing focused route command on a clean checkout. Record the selected tests, exit status and duration.",
+    "In a scratch checkout, change the production route so the final endpoint attaches to the source. Run the same tests and identify the failing public assertion. If they pass, add the endpoint regression, observe it fail on the seed, restore the router and rerun to green.",
+    "Dispatch the narrowed mutation job on the target runner only if a reviewer owns a remaining route fault question. Confirm nonzero target and test selection. Retain revision, configuration, timings and report. Separate actual kills and survivors from timeouts, uncovered mutants and infrastructure failures. Triage survivors against observable route behavior."
+  ],
+  "cost_and_stop": "Four perfectly balanced jobs could reduce the route-only estimate to about 41 minutes elapsed, still costing about 165 runner-minutes per night before overhead. Other modules add unmeasured cost. Bound a manual pilot to one job under the existing 90-minute cap and 20 minutes of review. Stop when the question is answered or the budget expires. Reconsider change-triggered runs only after a complete retained target-CI baseline, measured headroom, actionable evidence beyond the retained regression, and a named owner who receives and acts on findings. Retire a lane with no additional findings and suspend it after three consecutive operational failures or untriaged results.",
+  "rationale": "The unsuccessful nightly runs provide no completed mutation baseline. Green route tests establish normal behavior on their fixtures but leave fault detection unverified. A seeded endpoint error directly tests that question. Neither sharding nor an uncalibrated score of 60 establishes a reason to repeat the campaign."
+}

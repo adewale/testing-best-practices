@@ -1,0 +1,44 @@
+diff --git a/src/layout/passes/edge-bundling.ts b/src/layout/passes/edge-bundling.ts
+index b581193..7203bbe 100644
+--- a/src/layout/passes/edge-bundling.ts
++++ b/src/layout/passes/edge-bundling.ts
+@@ -284,14 +284,16 @@ export function bundleEdgePaths(
+         }
+       }
+ 
++      const previous = members.map(({ edge }) => edge.points.slice())
+       const clear = admittedMembers(members, candidates)
++      for (const { edge } of members) {
++        edge.points = candidates.get(edge)!
++      }
+       if (clear.length === members.length) {
+-        for (const { edge } of members) {
+-          edge.points = candidates.get(edge)!
+-        }
+         retainConstructedBundleRoutes(members.map(member => member.edge), processed)
+         break
+       }
++      for (const [index, { edge }] of members.entries()) edge.points = previous[index]!
+       members = clear
+     }
+   }
+@@ -373,14 +375,16 @@ export function bundleEdgePaths(
+         }
+       }
+ 
++      const previous = members.map(({ edge }) => edge.points.slice())
+       const clear = admittedMembers(members, candidates)
++      for (const { edge } of members) {
++        edge.points = candidates.get(edge)!
++      }
+       if (clear.length === members.length) {
+-        for (const { edge } of members) {
+-          edge.points = candidates.get(edge)!
+-        }
+         retainConstructedBundleRoutes(members.map(member => member.edge), processed)
+         break
+       }
++      for (const [index, { edge }] of members.entries()) edge.points = previous[index]!
+       members = clear
+     }
+   }

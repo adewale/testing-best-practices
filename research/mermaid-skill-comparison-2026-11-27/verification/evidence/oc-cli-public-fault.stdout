@@ -1,0 +1,50 @@
+{
+  "argv": [
+    "bun",
+    "run",
+    "bin/am.ts",
+    "render",
+    "/tmp/tmpevd93adh/first.mmd",
+    "/tmp/tmpevd93adh/broken.mmd",
+    "/tmp/tmpevd93adh/last.mmd",
+    "--format",
+    "ascii"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "ok": true,
+  "actual": [
+    {
+      "file": "first.mmd",
+      "index": 0,
+      "ok": true,
+      "content": "First Label"
+    },
+    {
+      "file": "broken.mmd",
+      "index": 1,
+      "ok": false,
+      "content": "UNKNOWN_HEADER"
+    }
+  ],
+  "expected": [
+    {
+      "file": "first.mmd",
+      "index": 0,
+      "ok": true,
+      "content": "First Label"
+    },
+    {
+      "file": "broken.mmd",
+      "index": 1,
+      "ok": false,
+      "content": "UNKNOWN_HEADER"
+    },
+    {
+      "file": "last.mmd",
+      "index": 2,
+      "ok": true,
+      "content": "Final Label"
+    }
+  ]
+}

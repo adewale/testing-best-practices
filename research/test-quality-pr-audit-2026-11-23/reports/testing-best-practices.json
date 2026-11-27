@@ -1,0 +1,551 @@
+{
+  "repository": "adewale/testing-best-practices",
+  "total_prs": 34,
+  "pages_checked": {
+    "collection": "https://api.github.com/repos/adewale/testing-best-practices/pulls?state=all&per_page=100",
+    "all_state_collection_page_sizes": [
+      34,
+      0
+    ],
+    "state_counts": {
+      "merged": 29,
+      "open": 5,
+      "closed_unmerged": 0
+    },
+    "scope": "All dates and authors returned by GitHub, checked 2026-11-23 UTC.",
+    "file_inventories": "All 34 REST file inventories were read at 100 files per page. Each inventory length matches its corresponding pull detail changed_files, including all 763 file entries. Titles, bodies and inventories were screened; candidate patches and relevant controls/receipts were inspected.",
+    "changed_file_entries": 763,
+    "rest_file_pages": 36,
+    "prs_with_two_file_pages": {
+      "9": [
+        100,
+        59
+      ],
+      "28": [
+        100,
+        11
+      ]
+    },
+    "per_pr_changed_files": {
+      "1": 15,
+      "2": 1,
+      "3": 4,
+      "4": 20,
+      "5": 25,
+      "6": 10,
+      "7": 2,
+      "8": 18,
+      "9": 159,
+      "10": 3,
+      "11": 3,
+      "12": 1,
+      "13": 1,
+      "14": 6,
+      "15": 8,
+      "16": 2,
+      "17": 2,
+      "18": 16,
+      "19": 1,
+      "23": 12,
+      "24": 11,
+      "25": 93,
+      "26": 13,
+      "27": 80,
+      "28": 111,
+      "31": 5,
+      "33": 13,
+      "34": 61,
+      "35": 1,
+      "36": 3,
+      "37": 5,
+      "38": 2,
+      "39": 19,
+      "40": 37
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 4,
+      "title": "Add Jane Street research, deterministic time, snapshot tests, and §10 Types-vs-tests",
+      "url": "https://github.com/adewale/testing-best-practices/pull/4",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluation design repair",
+      "weakness": "The existing Python and Go correctness-by-construction cases scored 8/8 with or without the new section, so reusing them could not measure its contribution.",
+      "remedy": "Keep the old cases as regressions, introduce three language-matched loose-type fixtures, and compare no section, v1 and v2 against a fixed rubric.",
+      "test_paths": [
+        "testing-best-practices-workspace/iteration-types-vs-tests/iter2-results.md",
+        "testing-best-practices-workspace/iteration-jane-street/SUMMARY.md",
+        "evals/files/user_service.py",
+        "evals/files/order_service.ts",
+        "evals/files/payment_service.go"
+      ],
+      "diff_evidence": "The iteration record shows 13/16, 15/16 and 16/16 across the three conditions. The separate pre/post-rebase record preserves a characterization decline from 5.5/6 to 5.0/6, although the PR body says it held.",
+      "transferable_rule": "Retain saturated tasks as regression guards. To test a claimed contribution, use a task where the baseline can plausibly miss it, keep the rubric fixed, and report adverse cases.",
+      "outcome_caveat": "These were small, purpose-designed cases used to tune the section. No hosted check was returned at the head and the subgroup scores are not a general effect estimate.",
+      "head_sha": "8fd01b1e547981b6d8709293edda0db108af101f",
+      "head_check": null
+    },
+    {
+      "number": 6,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/testing-best-practices/pull/6",
+      "state": "closed",
+      "merged": true,
+      "classification": "Repair of a saturated benchmark case",
+      "weakness": "The negative TDD evidence case passed both variants when its prompt and grader shared the word 'red'.",
+      "remedy": "Rewrite the case around observed green-only evidence, explicit separation of observed and missing phases, a concrete follow-up and a prohibition on claiming observed red. Add paired variants and private split placeholders.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "skill-development/evals/eval-health.md",
+        "evals/fixtures/round3-url-parser/test/parser.test.ts"
+      ],
+      "diff_evidence": "The eval-health diff records the prior 1.0/1.0 tie for neg-no-red-claim. The revised manifest includes missing pre-fix evidence and the actual passing command. A separate URL fixture deliberately uses only toBeTruthy().",
+      "transferable_rule": "Test whether a prompt supplies the answer a grader rewards. Separate passing commands, unsupported claims and the next observation that would establish them.",
+      "outcome_caveat": "The revised case still uses text-based checks. Preparing public tasks does not score the absent private prompts or demonstrate agent improvement.",
+      "head_sha": "54578420f662199159e53e46519868be23bb5f98",
+      "head_check": null
+    },
+    {
+      "number": 8,
+      "title": "Add error-handling and concurrency-contract testing principles with evals",
+      "url": "https://github.com/adewale/testing-best-practices/pull/8",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluator repair embedded in a feature",
+      "weakness": "A real candidate only logged the compute count under contention and asserted the count in a different, sequential test. The first concurrency grader accepted it despite passing its hand-written controls.",
+      "remedy": "Scope the compute-count assertion to a concurrent function, add a logging-only negative, and use a paired fixed-contract scenario to catch suggested retries or wrapped errors the contract did not promise.",
+      "test_paths": [
+        "skill-development/evals/fixtures/e35-go-concurrency-contract/oracle.py",
+        "skill-development/evals/fixtures/e35-go-concurrency-contract/samples/bad/cache_test.go",
+        "skill-development/scripts/run-prompt-evals.py",
+        "LESSONS_LEARNED.md"
+      ],
+      "diff_evidence": "The E35 grader splits Go source into functions containing `go func` and looks for the relevant count check within one. The negative runs 200 goroutines, verifies returned values and calls t.Logf on computeCalls. The retrospective records E34's over-application and subsequent baseline/treatment ceiling.",
+      "transferable_rule": "Check the invariant on the path where the fault occurs. Calibrate expectations against actual candidate output and include a case where applying the advice would be wrong.",
+      "outcome_caveat": "The E35 implementation uses source patterns, not execution. The runner introduced here still admitted unscored completions until #26. No hosted head check was returned.",
+      "head_sha": "f77078ff30f883eae86003585c203ff114eebb06",
+      "head_check": null
+    },
+    {
+      "number": 9,
+      "title": "Add iteration 7–8 evals: shadow-model, statistical, and testability patterns",
+      "url": "https://github.com/adewale/testing-best-practices/pull/9",
+      "state": "closed",
+      "merged": true,
+      "classification": "Grader calibration and retraction after ablation",
+      "weakness": "Cue-filled prompts taught their own desired strategy. Graders also marked correct work wrong for identifier spelling, explanatory comments or harmless phrasing.",
+      "remedy": "Introduce cue-free and restraint cases, inspect both passing and failing artifacts, accept multiple correct forms, and apply the stated decision rule for removing or trimming redundant guidance.",
+      "test_paths": [
+        "skill-development/evals/fixtures/e50-python-testability-compactor/oracle.py",
+        "skill-development/evals/fixtures/e51-go-testability-aggregator/oracle.py",
+        "testing-best-practices-workspace/iteration-10/benchmark.md",
+        "testing-best-practices-workspace/iteration-11/benchmark.md",
+        "skill-development/evals/evals.json"
+      ],
+      "diff_evidence": "E50/E51 originally failed three of four outputs because comments/docstrings described old sleeps. The graders strip prose before checking code. Both arms then passed for genuine synchronization seams. The branch folded the proposed standalone reference and retained its guardrails. E52/E53 stayed saturated after a wording correction.",
+      "transferable_rule": "Inspect the artifact behind every surprising verdict. A grader should accept distinct implementations that satisfy the contract. Record and act on null results.",
+      "outcome_caveat": "The committed iteration records describe one Sonnet run per cell in the cited comparisons. The final diff contains E36–E54 and four iteration records, extending past the stale PR title/body. No hosted head check was returned.",
+      "head_sha": "82ad7597eb399ae633417fd86023d33a206fb795",
+      "head_check": null
+    },
+    {
+      "number": 10,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/testing-best-practices/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "Attempted grader upgrade later superseded",
+      "weakness": "Literal checks in the URL-parser benchmark weakly distinguished a good assessment from vocabulary use.",
+      "remedy": "Add a deterministic script assertion and documented harness invocation for an existing case.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md"
+      ],
+      "diff_evidence": "The new Python script still case-folds output.md and accepts one substring from each group, including `toBeTruthy`, `fuzz` and `never crashes`. It checks no URL input or expected field. Merged #33 replaces this exact case after a concrete keyword-only false pass.",
+      "transferable_rule": "Evaluate the evidence a script reads and what bad candidates it rejects. Changing a check's implementation language does not give it a behavioral oracle.",
+      "outcome_caveat": "The PR reports one existing script check passing and 28 nonfatal leakage warnings. The later repair is source-confirmed in #33. No hosted head check was returned for #10.",
+      "head_sha": "b2e1f98949d973537e22fc6a4468038bd6afa88d",
+      "head_check": null
+    },
+    {
+      "number": 15,
+      "title": "Apply research-derived testing guidance",
+      "url": "https://github.com/adewale/testing-best-practices/pull/15",
+      "state": "closed",
+      "merged": true,
+      "classification": "Correction of an existing test-construction example",
+      "weakness": "The Go reference recommended a testing constructor that disabled the same private-IP safety rule exercised in production, which could make tests exercise a different policy.",
+      "remedy": "Inject a resolver and preserve the production allowlist. Add a benchmark case focused on the proposed bypass.",
+      "test_paths": [
+        "testing-best-practices/references/go.md",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The previous example set `c.disableSSRF = true`. The replacement builds a Crawler from a resolver and allowlist, labels the old example a bug, and adds `pos-go-test-seam-no-security-bypass` with checks for preserving enforcement.",
+      "transferable_rule": "A test seam can control inputs and dependencies while leaving the production decision under test intact.",
+      "outcome_caveat": "This repairs shipped example guidance. The new benchmark uses text patterns, and the diff does not establish execution against a real crawler. The reported seven-case aggregate cannot isolate this remedy.",
+      "head_sha": "f07814aaef4c46eb730351dd39dbffba02eee089",
+      "head_check": null
+    },
+    {
+      "number": 17,
+      "title": "Add install boundary CI check",
+      "url": "https://github.com/adewale/testing-best-practices/pull/17",
+      "state": "closed",
+      "merged": true,
+      "classification": "Verification approach only — installation boundary",
+      "weakness": "There was no repository check in this change's base enforcing the declared installation directory's contents.",
+      "remedy": "Add a CI check that discovers declared package directories, checks for SKILL.md and scans them for repository-only artifacts.",
+      "test_paths": [
+        "scripts/check_install_boundary.py",
+        ".github/workflows/install-boundary.yml"
+      ],
+      "diff_evidence": "The script reads package.json and marketplace metadata, scans the resolved directories, and returns 1 for missing directories, a missing SKILL.md, or entries such as evals, tests, research and bytecode. The workflow invokes it.",
+      "transferable_rule": "For a promised package boundary, inspect the declared delivery directory. Keep the claim limited to the contents actually examined.",
+      "outcome_caveat": "The hosted install-boundary check passed. This is a new packaging check, not a demonstrated repair to a behavioral test or proof of installing the packed artifact.",
+      "head_sha": "665fd40e3fafa37089e7dfed8fddca0616d5cc62",
+      "head_check": {
+        "name": "install-boundary",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/27562604397/job/81478223095"
+      }
+    },
+    {
+      "number": 18,
+      "title": "Refresh repository coherence docs",
+      "url": "https://github.com/adewale/testing-best-practices/pull/18",
+      "state": "closed",
+      "merged": true,
+      "classification": "Fixture identity repair only",
+      "weakness": "Fourteen existing prompts identified different evals from the directories and manifest IDs that owned them.",
+      "remedy": "Correct the headings of E36–E49 to their owning case IDs.",
+      "test_paths": [
+        "skill-development/evals/fixtures/e36-python-shadow-model-lru/prompt.md",
+        "skill-development/evals/fixtures/e49-hidden-digest-canonicalization/prompt.md"
+      ],
+      "diff_evidence": "Each of 14 fixture files changes exactly one heading. The LRU case changes E33 to E36 and the graph persistence case changes E46 to E49. The two other files are README and changelog.",
+      "transferable_rule": "Use the same case identity in prompts, manifests and reported results so results can be traced back to the intended task.",
+      "outcome_caveat": "The heading-only changes do not alter task bodies, grading or discrimination. Only a hosted installation-boundary check was present at this head.",
+      "head_sha": "5a183afa2f205320e75f92981fbe9239b3fba6eb",
+      "head_check": {
+        "name": "install-boundary",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/28288170838/job/83815594604"
+      }
+    },
+    {
+      "number": 24,
+      "title": "Clarify PBT and fuzzing guidance",
+      "url": "https://github.com/adewale/testing-best-practices/pull/24",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evidence-based retraction and testing approach correction",
+      "weakness": "Published guidance conflated property generation with coverage-guided discovery, treated no-crash as a broadly sufficient property, and let the existence of a target stand in for collection, reachability or active discovery.",
+      "remedy": "Revise the guidance to identify the input layer, independent semantic oracle, reachability and engine-native replay. Keep collection/inventory guards conditional and withdraw the broader adaptive fixture campaign from the final PR.",
+      "test_paths": [
+        "testing-best-practices/references/property-based-testing.md",
+        "testing-best-practices/references/fuzzing.md",
+        "testing-best-practices/references/go.md",
+        "LESSONS_LEARNED.md"
+      ],
+      "diff_evidence": "The final Markdown distinguishes ordinary Go seed replay from a bounded fuzz invocation and separates raw input from generated structured values. The lessons record how adaptive fixtures can teach their exact answer. All 11 changed files are Markdown.",
+      "transferable_rule": "State the phase and behavior actually exercised. Preserve the engine's replay artifact and reserve independent evidence for tasks that did not shape the proposed guidance.",
+      "outcome_caveat": "The hosted deterministic gate passed on the final head. The adaptive E64–E74 suite and earlier model runs were excluded from the merged treatment, and final-treatment effect size was not established.",
+      "head_sha": "d5c6c3f8ee729ad41751e634c13310f711fecfeb",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/35498580361/job/106046079427"
+      }
+    },
+    {
+      "number": 25,
+      "title": "Add Google Testing Blog research, ablation-tested skill guidance, and evals E55–E63",
+      "url": "https://github.com/adewale/testing-best-practices/pull/25",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evaluator and harness repair embedded in a feature",
+      "weakness": "Keyword oracles accepted assignments without assertions and prose that negated the requested action. The shared adapter failed to stage fenced Python as a discoverable pytest module, and a clean CI environment lacked the test dependency.",
+      "remedy": "Use actual AST assertion nodes, reject negated recommendations, retain demonstrated false positives as bad samples, correct the extraction filename and install the pinned pytest dependency in CI.",
+      "test_paths": [
+        "skill-development/evals/fixtures/e55-python-no-logic-in-tests/oracle.py",
+        "skill-development/evals/fixtures/e59-python-narrow-assertions-upgrade/oracle.py",
+        "evals/oracles/gtb_output_adapter.py",
+        "skill-development/scripts/test-gtb-output-adapter.py",
+        "skill-development/evals/requirements.txt",
+        "skill-development/evals/receipts/pr25-luna-terra-2026-09-19.md"
+      ],
+      "diff_evidence": "Six negative examples cover E55/E59 assignment-only and E57/E58/E61/E63 negated answers. The extractor regression asserts `test_extracted_output_0.py`. The E60 fixture runs a clean shared store contract and variants where the fake or real store changes missing-key behavior.",
+      "transferable_rule": "Keep the actual false pass as a negative control and test extraction, discovery and dependencies through the same path used to grade candidates.",
+      "outcome_caveat": "The hosted deterministic gate passed. The 24-generation receipt reports Luna 5/6→6/6 (one syntax failure) and Terra 6/6→6/6. Later #33 and #34 expose remaining weak AST checks and execution-boundary concerns.",
+      "head_sha": "e1f88d2d88ce76631bd098f452c467e860deb246",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/35440499691/job/105890343331"
+      }
+    },
+    {
+      "number": 26,
+      "title": "Harden eval integrity against false-green results",
+      "url": "https://github.com/adewale/testing-best-practices/pull/26",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct repair of an existing evaluator and its exit status",
+      "weakness": "A comment/docstring-stuffed `assert True` passed E23. Completed judge-only runs could exit successfully without a score, omit Markdown assessments, or accept malformed score data.",
+      "remedy": "Use AST checks on the Hypothesis property, on parse-result variants and their fields. Retain the original false green. Fail completed runs on failed generation, empty output or missing/invalid required scores.",
+      "test_paths": [
+        "skill-development/evals/fixtures/e23-python-hypothesis-parser/oracle.py",
+        "skill-development/evals/fixtures/e23-python-hypothesis-parser/samples/adversarial-noop/tests/test_config_parser.py",
+        "skill-development/scripts/run-prompt-evals.py",
+        "skill-development/scripts/test-run-prompt-evals.py"
+      ],
+      "diff_evidence": "The diff replaces raw `hypothesis`/`@given`/field text searches with a property scoped to the parser, success/error type checks and rejection of swallowed broad exceptions. Runner tests directly assert a nonzero result for absent scoring or failed generation, exercise an empty candidate, and include Markdown in judge input.",
+      "transferable_rule": "Make completed-but-ungraded runs fail. Distinguish incomplete staging from executed work, and make a checked-in no-op fail the same grader as a genuine candidate.",
+      "outcome_caveat": "The hosted deterministic gate passed. E23 establishes a bounded Python syntax shape, with possible false rejection of equivalent forms. The candidate property itself is not run here.",
+      "head_sha": "feb1f073c5ca1794a0a06983bd5686ee93d3609c",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/34779146474/job/103782813697"
+      }
+    },
+    {
+      "number": 27,
+      "title": "Add safe mutation operations and cost-aware combinatorial portfolios",
+      "url": "https://github.com/adewale/testing-best-practices/pull/27",
+      "state": "closed",
+      "merged": true,
+      "classification": "Oracle calibration and retraction of costly mutation guidance",
+      "weakness": "A registry grader could accept a partial owner enumeration and a contract that never invoked member behavior. Earlier mutation guidance encouraged generic score rankings and unevaluated recurrence.",
+      "remedy": "Check direct, complete owner enumeration and a reachable behavioral call. Use static inspection for submitted candidates, reserve dynamic controls for exact trusted fixture roots, and replace recurring score/floor prescriptions with cost, decision value and survivor classification.",
+      "test_paths": [
+        "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/oracle.py",
+        "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/samples/bad-partial-owner/portfolio.py",
+        "skill-development/evals/fixtures/e67-combinatorial-registry-sabotage/samples/bad-toothless-contract/portfolio.py",
+        "skill-development/scripts/test-untrusted-oracles.py",
+        "testing-best-practices/references/mutation-testing.md"
+      ],
+      "diff_evidence": "E67 retains negative controls for filtering an owner and for mentioning a case while returning a disconnected result. Shared and local checks cover those negatives. The mutation reference drops the numeric ranking and asks whether changed-code mutation adds decisions beyond cheaper evidence.",
+      "transferable_rule": "Source ownership alone does not establish enrollment or use. Require a witness through the real caller and require recurring fault campaigns to justify their incremental cost.",
+      "outcome_caveat": "The hosted deterministic gate passed. Historical regrading yielded 21/63 with-skill and 8/63 without for E64–E66. The receipt lacks public candidate/run preimages and the combined final tree was not independently model-tested.",
+      "head_sha": "fd3ecad62b46a3b92c078b9bc7f890f70b65c551",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/36845724390/job/110315267094"
+      }
+    },
+    {
+      "number": 28,
+      "title": "Apply portfolio verification audit: gate integrity, retracted guidance, eval hygiene",
+      "url": "https://github.com/adewale/testing-best-practices/pull/28",
+      "state": "closed",
+      "merged": true,
+      "classification": "Portfolio-driven repair, archival and explicit retractions",
+      "weakness": "The reference golden helper silently created a missing expected file from the result under test. Other advice legitimized CI visual skips, assertion quotas, blanket retries and unnecessary mutation programs. An unused public eval set looked active.",
+      "remedy": "Make missing goldens fail without writing, separate baseline authoring and review, retire misleading prescriptions and archive legacy cases. Calibrate key examples against vacuous and behavior-preserving variants.",
+      "test_paths": [
+        "testing-best-practices/references/golden-file-testing.md",
+        "skill-development/evals/fixtures/e71-python-vacuous-loop-assertions/oracle.py",
+        "skill-development/evals/fixtures/e74-python-no-silent-tier-downgrade/oracle.py",
+        "skill-development/evals/fixtures/e78-python-classify-equivalent-survivors/oracle.py",
+        "evals/archive/README.md",
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The old `saveExpected(name, result); return` path becomes an exception. E71 rejects tests still passing when results become empty. E74 requires detection of lost SQLite LIKE wildcards. E78 requires a true boundary defect to fail while tie-break and cache equivalents pass. Thirteen legacy files are pure renames into the archive.",
+      "transferable_rule": "A verifier should reject missing evidence without creating it. Calibrate tests in both directions using real defects and allowed changes. Archive inactive tests under an accurate status.",
+      "outcome_caveat": "The hosted deterministic gate passed. The accompanying scorecard and research identify pending gaps and rely on historical runs for model results. Broad model gains on the merged tree remain unmeasured.",
+      "head_sha": "653bcb2c1d01e15ffba870558b47d9506ebd663c",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/36939523005/job/110627501003"
+      }
+    },
+    {
+      "number": 31,
+      "title": "Clarify complete cost-aware verification for expensive products",
+      "url": "https://github.com/adewale/testing-best-practices/pull/31",
+      "state": "closed",
+      "merged": true,
+      "classification": "Repair to an existing verification algorithm and its worked example",
+      "weakness": "Existing expensive-product guidance let candidate suites skip non-default public dispatch, sample unresolved cases or compare newly allocated equal records by identity.",
+      "remedy": "Specify value semantics, public entry-point witnesses and complete coverage of the remaining derived cases. Execute the maintained example in the existing gate against clean, faulty, equivalent and over-budget cases.",
+      "test_paths": [
+        "testing-best-practices/references/exhaustive-testing.md",
+        "skill-development/scripts/test-exhaustive-example.mjs",
+        "skill-development/scripts/check-all.py",
+        "skill-development/ISSUE22_RUNTIME_VERIFICATION.md"
+      ],
+      "diff_evidence": "The JS test extracts the actual published example, checks 34 clean calls, rejects a dispatch fault and a defect in the last residual context, accepts unequal-but-equivalent output, and checks that a 33-call budget fails before any rendering.",
+      "transferable_rule": "When cheaper reasoning discharges part of a product, state the implication precisely, keep an entry-point witness per member, and check all remaining combinations or report the budget shortfall.",
+      "outcome_caveat": "The hosted deterministic gate passed. The retained record reports 3/6→6/6 on the tuning task and 10/12→11/12 on two transfer repositories, including an original revised failure. Raw historical runs were not committed and the transfer comparison combines several PRs.",
+      "head_sha": "ea791a7d2c05b03b72e6ac3278c66875cb50f20b",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/37077006898/job/111069056294"
+      }
+    },
+    {
+      "number": 33,
+      "title": "fix(evals): check concrete expectations and document proof limits",
+      "url": "https://github.com/adewale/testing-best-practices/pull/33",
+      "state": "closed",
+      "merged": true,
+      "classification": "Direct repair of false-positive checks and historical evidence coupling",
+      "weakness": "The #10 URL script rewarded keywords and a no-crash property for an API that throws. E59 credited a merely non-null transaction list. A historical receipt also compared its snapshot to every future current manifest.",
+      "remedy": "Grade bounded literal URL vectors against native semantics, require concrete post-deposit transaction data on the same account, and report a changed current manifest separately from verification of historical evidence.",
+      "test_paths": [
+        "evals/oracles/url_test_vectors.mjs",
+        "evals/oracles/url_test_vectors.test.mjs",
+        "skill-development/evals/fixtures/e59-python-narrow-assertions-upgrade/oracle.py",
+        "skill-development/scripts/verify-issues20-21-receipt.py"
+      ],
+      "diff_evidence": "URL tests reject keyword-only input, weak normalization, invalid expectations and missing relative negatives. E59 requires the exact deposit record (kind=deposit, amount=50, memo=salary) and rejects a pre-deposit assertion, unrelated account and unused helper. Historical digest verification remains separate from the current manifest gate.",
+      "transferable_rule": "Bind the expectation to the operation and object that could produce it. Verify a frozen historical claim against its own inputs, and check today's contract at today's revision.",
+      "outcome_caveat": "The hosted deterministic gate passed. The URL checker validates a data-only test plan and E59 supports a bounded AST form. The revisions invalidate comparisons to the old scores.",
+      "head_sha": "e89cba3e82c67cb5cec39845d552a7c42475e169",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/37950843788/job/113888900171"
+      }
+    },
+    {
+      "number": 34,
+      "title": "Apply cost-aware guidance and replace weak eval keyword checks",
+      "url": "https://github.com/adewale/testing-best-practices/pull/34",
+      "state": "open",
+      "merged": false,
+      "classification": "Open repair of ten weak or unsafe evaluator paths",
+      "weakness": "Eight prose checkers could reward vocabulary, E55 accepted unrelated literal equalities, E60 executed submitted code on the host, and the E66 plan contradicted its explicit cost limits.",
+      "remedy": "Use a shared data-only decision checker, tie E55's expected equality to the actual profile/avatar call, keep unknown E60 submissions static, align E66 with the stated budget and retain old grading preimages for historical comparison.",
+      "test_paths": [
+        "evals/oracles/decision_vectors.py",
+        "skill-development/evals/fixtures/e55-python-no-logic-in-tests/oracle.py",
+        "skill-development/evals/fixtures/e60-python-fake-contract-weld/oracle.py",
+        "skill-development/scripts/test-untrusted-oracles.py",
+        "skill-development/scripts/verify-issues20-21-receipt.py",
+        "testing-best-practices/references/gate-integrity.md"
+      ],
+      "diff_evidence": "The eight schemas check actual decision fields and include controls for wrong/missing fields, sibling answers, prompt echoes and duplicates. E55 gains negatives for disconnected calls and wrong shapes. E60 restricts runtime grading to exact trusted fixtures. The final commit adds concrete caller/duplicate-run and revision-bound evidence examples.",
+      "transferable_rule": "Match the strength of the grading claim to what it observes. When a grader or prompt changes, calibrate it against bad and good cases, and reset claims that depended on the former version.",
+      "outcome_caveat": "Open. GitHub shows deterministic gates passing on actual head 80157a0, which is newer than the 5e73940 head called final in the PR body. It records 128 focused negatives for the decision cases and no fresh model comparison; structured selections and AST shapes cannot establish a working suite.",
+      "head_sha": "80157a0b63751e63d3e8cc8591d299f340e29959",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/41258979419/job/124708088319"
+      }
+    },
+    {
+      "number": 39,
+      "title": "Grade clock and dependency-failure tests by executed behavior",
+      "url": "https://github.com/adewale/testing-best-practices/pull/39",
+      "state": "open",
+      "merged": false,
+      "classification": "Open replacement of two existing keyword graders with executed tests",
+      "weakness": "E08 accepted clock vocabulary and E33 accepted retry/assertion vocabulary even in comment-only answers. A suite could be empty, skipped or unrelated.",
+      "remedy": "Execute pytest on a maintained reference and three targeted faults per case, require successful collection and assertions, and isolate submitted candidates from the host.",
+      "test_paths": [
+        "skill-development/evals/behavioral_oracle.py",
+        "skill-development/evals/fixtures/e08-deterministic-time/oracle.py",
+        "skill-development/evals/fixtures/e33-python-fault-injection/oracle.py",
+        "skill-development/scripts/test-behavioral-oracles.py"
+      ],
+      "diff_evidence": "E08 exercises an early, missing and repeated callback. E33 exercises omitted retry, leaked dependency exception and swallowed exhaustion. The common grader inspects JUnit case counts, skips, errors and failures. Both fixtures add comment-only, skipped and unrelated negatives.",
+      "transferable_rule": "Check that real assertions pass on a reference, still collect on every faulty variant, and fail through the relevant behavior. Deliberately test skipped, empty and unrelated candidates.",
+      "outcome_caveat": "Open. The hosted deterministic gate passed on 14bc5b7. These bounded faults demonstrate what the selected grader can detect. They do not measure agent uptake or cover every possible fault.",
+      "head_sha": "14bc5b72969e4f575b709d0dbdc8530e033406b6",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/42312781373/job/128218023743"
+      }
+    },
+    {
+      "number": 40,
+      "title": "Prevent AI-written verification from trapping useful changes",
+      "url": "https://github.com/adewale/testing-best-practices/pull/40",
+      "state": "open",
+      "merged": false,
+      "classification": "Open stacked verification audit and retraction with adverse study results",
+      "weakness": "Identity checks could freeze incidental serialization or couple historic evidence to current prose. An early attempt to reduce this burden overreached and weakened two source-only review answers.",
+      "remedy": "Require both behavior-preserving and real-defect controls, preserve actual integrity requirements, and allow deletion of obsolete machinery without mandating a replacement. Narrow the guidance after the adverse comparison; keep the failed results.",
+      "test_paths": [
+        "skill-development/evals/fixtures/e79-implementation-locks/oracle.py",
+        "skill-development/evals/fixtures/e80-ceremony-decisions/expected.json",
+        "skill-development/evals/fixtures/e80-ceremony-decisions/oracle.py",
+        "skill-development/evals/receipts/ceremony-study-2026-11-07.md",
+        "skill-development/evals/receipts/ceremony-study-2026-11-07.json",
+        "testing-best-practices/references/implementation-coupling.md"
+      ],
+      "diff_evidence": "E79 must accept JSON whitespace/object-key reordering and reject lost labels, reordered items and acceptance of corrupted bytes. E80 has six decision cases and controls for extra approval gates, unsafe deletion and keywords. The retained study records early treatment scores 2/3/4/4 versus 4/4/4/4, then four ties after revision.",
+      "transferable_rule": "Before deleting a check, name its contract, try an allowed change that must pass and a real defect that must fail, and preserve distinct integrity obligations. Retain failed trials and avoid counting a seen retest as a fresh holdout.",
+      "outcome_caveat": "Open and stacked on #39. The hosted deterministic gate passed on 8b9fc68. The study reports nine direct archive checks and twelve existing unit tests for an external repair. The final four source-only reviews tied on previously seen cases. A subsequent model run was blocked (HTTP 403), and no incremental model uplift was established.",
+      "head_sha": "8b9fc683a378289d9ecee8c59a192e6e02b000c2",
+      "head_check": {
+        "name": "deterministic-gates",
+        "conclusion": "success",
+        "url": "https://github.com/adewale/testing-best-practices/actions/runs/42335278162/job/128290696647"
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1
+      ],
+      "reason": "Introduces correctness-by-construction guidance and two new feature-specific cases. The tracked dry-run identifies a model gap, but no existing grader, test or evaluation method is repaired."
+    },
+    {
+      "numbers": [
+        2,
+        3,
+        5,
+        14,
+        16,
+        19
+      ],
+      "reason": "Research synthesis, naming, illustrations, token-report refresh, and repository documentation. Changed files do not alter a test, grader, or execution approach."
+    },
+    {
+      "numbers": [
+        7,
+        13
+      ],
+      "reason": "Shared harness version references only."
+    },
+    {
+      "numbers": [
+        11,
+        12
+      ],
+      "reason": "Agent package metadata and descriptive taxonomy for reporting. The taxonomy adds fields to cases without changing their task, assertions or grading."
+    },
+    {
+      "numbers": [
+        23,
+        37,
+        38
+      ],
+      "reason": "Ruff pin and lint cleanup, workflow action SHA enforcement, or grouped Actions dependency bumps. Existing test expectations and behavior are preserved."
+    },
+    {
+      "numbers": [
+        35,
+        36
+      ],
+      "reason": "Duplicate push/PR scheduling and cancellation only. No assertion, command or grading change."
+    }
+  ],
+  "limitations": [
+    "The 18 entries include 16 substantive evaluator or testing-method changes, one new delivery-boundary check (#17), and one fixture-identity-only repair (#18). Cases from other repositories mentioned in these PRs are evidence reported by this repository and are not counted as its separate repairs.",
+    "Current PR states and the linked head check conclusions were read from GitHub. A successful hosted gate is evidence for that gate's run. Historical model runs, locally recorded costs and performance claims were not independently rerun. Null head_check means GitHub returned zero check-run records for that SHA.",
+    "GitHub omitted inline patches for nine diagram PNGs in #5, 13 unchanged-content archive renames in #28, and one large study JSON in #40. All filenames are accounted for. The #40 study JSON was fetched from the exact head and checked alongside its Markdown record.",
+    "GitHub retains the current PR view. The audit distinguishes final-diff evidence from earlier failed or withdrawn drafts documented in committed study records. Three matching PRs (#34, #39, #40) were open, and #40 is stacked on #39."
+  ]
+}

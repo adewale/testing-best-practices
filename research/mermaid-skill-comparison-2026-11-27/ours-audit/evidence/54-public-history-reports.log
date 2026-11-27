@@ -1,0 +1,15 @@
+.github/workflows/coverage.yml
+f9ec8c115d Pin GitHub Actions and enforce immutable references (#603)
+007dc14d0d Use Bun 1.4.4 for CI and bootstrap installs
+62afa5fffe ci: remove serial E2E waits and collect coverage on demand
+src/__tests__/png-fonts.test.ts
+1e8d135502 Stream CLI batch responses and await output acknowledgements
+886bc94e15 test: exercise installed quickstarts and independent semantics
+28a805b76e Tests protect behaviour: remove tests of tests, mutation testing and committed derived files (#361)
+8a9233802c Warn when PNG labels become unreadable (#247)
+40304164bc fix: close final Section A audit loop
+9714c3cd04 feat: complete Section A rendering contracts
+d146adc930 fix: close family-elevation review gaps
+3c296024c1 Journey: shared parse core, experience curve, and correctness fixes
+1cde6faa800 src/__tests__/authored-style-color-admission.test.ts +      const batch = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; message: string; property: string; value: string } }
+5a9d37f3178 src/__tests__/quadrant-style.test.ts +      const result = runBatchLine(JSON.stringify({ op: 'render', format, source }), 0) as { ok: boolean; error: { code: string; subject: string; property: string; value: string; message: string } }

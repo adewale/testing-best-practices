@@ -1,0 +1,21 @@
+13 |   const actual=result.ok ? result.source : result.error
+14 |   console.log(JSON.stringify({kind,method:result.ok?result.preservation?.method:null,expected,actual}))
+15 |   if (result.ok && result.preservation?.method==='local' && actual===expected) continue
+16 |   failures++
+17 | }
+18 | assert.equal(failures,0,'every accepted local edit must retain the original bytes around the changed label')
+            ^
+AssertionError: every accepted local edit must retain the original bytes around the changed label
+
+1 !== 0
+
+ generatedMessage: false,
+     actual: 1,
+   expected: 0,
+   operator: "strictEqual",
+       diff: "simple",
+       code: "ERR_ASSERTION"
+
+      at /workspace/mermaid-skill-comparison-2026-11-27/verification/repo/.parent-source-edit-bytes.ts:18:8
+
+Bun v1.4.4 (Linux x64)

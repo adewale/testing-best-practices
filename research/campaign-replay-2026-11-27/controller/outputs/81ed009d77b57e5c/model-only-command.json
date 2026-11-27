@@ -1,0 +1,10 @@
+{
+  "cwd": ".",
+  "args": [
+    "/case/runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes",
+    "--reporter=verbose"
+  ]
+}

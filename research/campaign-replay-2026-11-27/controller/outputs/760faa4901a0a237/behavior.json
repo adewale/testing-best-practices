@@ -1,0 +1,742 @@
+{
+  "candidate_id": "760faa4901a0a237",
+  "repository": "adewale/pda",
+  "source_commit": "c0a9a85c8f690eb77313b9627e3ea39cadc58968",
+  "patch_file": "patch.diff",
+  "patch_sha256": "6f0cfde54f031ffda8f39d40ebbb69f56c4650570fa035023abf0588d397c385",
+  "enrollment": {
+    "changed_files": [
+      "test/web-push.test.ts"
+    ],
+    "added_test_files": [],
+    "added_named_cases": 0,
+    "renamed_existing_cases": 1,
+    "old_case": "notifications sends a due reminder to each subscribed device once, encrypted for it, with only a title and the reminder's words; a 410 deletes that subscription",
+    "new_case": "notifications sends one reminder per device using its current keys and removes a subscription when its service returns 410",
+    "lines_added": 8,
+    "lines_removed": 3,
+    "candidate_production_changes": false,
+    "workers_file": "test/web-push.test.ts",
+    "selection": "The patch strengthens and renames one of nine Web Push tests. The frozen runner enrolled all nine with the 31-case photo owner in every main Workers run, all 14 client attachment cases on clean, and the original name-filtered frozen keepers."
+  },
+  "frozen_comparison": {
+    "count_order": [
+      "passed",
+      "failed",
+      "filtered_out"
+    ],
+    "variants": {
+      "clean": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/web-push.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        },
+        {
+          "project": "UI",
+          "original": [
+            14,
+            0,
+            0
+          ],
+          "submitted": [
+            14,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "submitted_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "empty-data": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/web-push.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "tail-bit": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/web-push.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "physical-order": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/web-push.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "member-order": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/web-push.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "auth-keeper": [
+        {
+          "project": "Workers",
+          "original": [
+            0,
+            1,
+            30
+          ],
+          "submitted": [
+            0,
+            1,
+            30
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts"
+          ],
+          "original_exit": 1,
+          "exit": 1,
+          "selected_name_filter": "exports the caller's records and chunked photos",
+          "failed_case": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records",
+          "failed_assertion": "AssertionError: expected 200 to be 401 // Object.is equality",
+          "location": "at /work/test/agent-data.test.ts:99:53"
+        }
+      ],
+      "isolation-keeper": [
+        {
+          "project": "Workers",
+          "original": [
+            0,
+            1,
+            30
+          ],
+          "submitted": [
+            0,
+            1,
+            30
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts"
+          ],
+          "original_exit": 1,
+          "exit": 1,
+          "selected_name_filter": "exports the caller's records and chunked photos",
+          "failed_case": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records",
+          "failed_assertion": "AssertionError: expected '{\"format\":\"pda-personal-data\",\"versio\u2026' not to contain 'SOMEONE_ELSES_NOTE'",
+          "location": "at /work/test/agent-data.test.ts:92:22"
+        }
+      ],
+      "upload-byte-keeper": [
+        {
+          "project": "UI",
+          "original": [
+            0,
+            1,
+            13
+          ],
+          "submitted": [
+            0,
+            1,
+            13
+          ],
+          "original_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "submitted_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "original_exit": 1,
+          "exit": 1,
+          "selected_name_filter": "sends a picked photo to the User's own agent",
+          "failed_case": "attaching a photo in the composer sends a picked photo to the User's own agent, shows it, and names it in the message by its marker",
+          "failed_assertion": "AssertionError: expected [ +0, +0, +0, +0, +0, +0 ] to deeply equal [ 255, 216, 255, 224, 18, 52 ]",
+          "location": "at /work/test/ui/attachments.test.tsx:128:70"
+        }
+      ]
+    },
+    "raw": "pda.json",
+    "raw_sha256": "7534369e3392e0e34406ffb57b16d51124e543701a991b035ec0f32d1508e380",
+    "command_log": {
+      "path": "controller/outputs/760faa4901a0a237/pda-commands.log",
+      "sha256": "99b48cde66f1aeb5cfb0496f4f036e1a42b3894414664a1af30477f034643364"
+    },
+    "original_raw": {
+      "path": "preparation/pda/evaluator/evidence/pinned.json",
+      "sha256": "d7e8b02ae4dcd02e7ee93c4d4e2e0387c41c8005570f0186470b758ba79dab74"
+    },
+    "verification": "The sealed candidate was run under all eight frozen variants. The unchanged photo owner and client-upload files matched every pinned case identity and outcome for their selections. The changed Web Push module contributed nine passes on each main variant.",
+    "photo_faults": {
+      "empty_data_detected": false,
+      "tail_bit_detected": false,
+      "physical_order_accepted": true,
+      "member_order_accepted": true,
+      "owner_case": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records"
+    },
+    "preservation": "401, second-person isolation and client upload-byte checks failed for their original reasons. The unchanged no-store and credential-redaction checks passed clean. Their evidence is the source and clean path."
+  },
+  "alternate_repair": {
+    "route": "The frozen scoring instructions permit a different demonstrated repair. The renewal fault, private SQL update and cleanup keeper here are exploratory controls chosen after the report was sealed. They do not enter the frozen photo or optional waiver metrics.",
+    "case": "notifications sends one reminder per device using its current keys and removes a subscription when its service returns 410",
+    "original_case": "notifications sends a due reminder to each subscribed device once, encrypted for it, with only a title and the reminder's words; a 410 deletes that subscription",
+    "contract": "For repeat registration at the same endpoint, the new subscription replaces both receiver key fields. A later due reminder must be readable by that receiver. The persisted endpoint stays unique and the other device remains independently addressable.",
+    "original_blind_spot": "The original registration test posts the same endpoint with identical keys twice and counts one row. The original notification test decrypts the first reminder for both devices, then checks the destinations and the phone's removal after a 410. It never changes the laptop keys or reads the second laptop ciphertext.",
+    "candidate_observation": "The strengthened test registers a second generated laptop subscription at the same URL, requires HTTP 201, records exactly one new outbound request per device, and independently decrypts the laptop's captured bytes with the renewed receiver. It compares the parsed body to the separate scheduled input, Bins out. The second assertion checks the body; the first delivery retains the full title/body/tag check.",
+    "paired_result": "Both tests ran against the same production-source SHA with the update of auth on endpoint conflict omitted. The complete original module passed all nine cases. Only the revised reminder case failed in the candidate. The capture, exact destination multiplicity, registration status and first two successful receiver decryptions all precede that failure.",
+    "failed_case": "notifications sends one reminder per device using its current keys and removes a subscription when its service returns 410",
+    "observed_failure": "OperationError: Decryption failed. This could be due to a ciphertext authentication failure, bad padding, incorrect CryptoKey, or another algorithm-specific reason. Input length was 71, output length expected to be 71 for AES-GCM\n    at decrypt (/work/test/web-push.test.ts:61:53)\n    at /work/test/web-push.test.ts:260:23\n    at work/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20",
+    "correct_clean_web_push": {
+      "source": "pda.json -> variants.clean.results[0]",
+      "passed": 9,
+      "failed": 0,
+      "filtered_out": 0
+    },
+    "allowed_private_change": "The equivalent SQLite tuple assignment updates both columns from the incoming row. It preserves the endpoint identity, original creation time, phone cleanup and receiver-visible payload. The whole candidate Web Push module passed.",
+    "keeper_controls": {
+      "rfc_vector_case": "message encryption (RFC 8291) encrypts RFC 8291's example to the exact message in its section 5, from the keys and salt in Appendix A",
+      "known_answer_evidence": "The original deterministic RFC 8291 example still checks exact header, ciphertext and full message, then decodes the RFC's own fixed ciphertext to its specified plaintext. It passes on clean, on the stale-auth mutation and on the equivalent tuple assignment.",
+      "first_reminder_evidence": "Both original devices still receive exactly one request; each device's independently held private key decrypts the expected complete first reminder. The existing header, VAPID shape and no-cookie assertions remain in the unchanged first-reminder block.",
+      "second_delivery_evidence": "Both second-stage destinations and their multiplicity are checked. The original slice(2) now uses sent.length, whose exact initial two endpoints were already asserted. The last endpoint check still requires the expired phone to be removed.",
+      "phone_410_active_probe": "Suppressing 410 removal while keeping both fresh laptop keys made the renamed case fail at its endpoint-list assertion after the renewed laptop decrypt. The other eight cases were intentionally filtered in this keeper run.",
+      "phone_410_failure": "AssertionError: expected [ \u2026(2) ] to deeply equal [ Array(1) ]\n    at /work/test/web-push.test.ts:261:35\n    at work/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20"
+    },
+    "controls": {
+      "original-stale-auth": {
+        "source_sha256": {
+          "src/web-push.ts": "3a902ad0f000440a7cb6f8f1e07db0f2685115f59f6cab8bd157c8b0a9cf3132",
+          "src/agent.ts": "06ca3ce4fc5de3bbbad07c4180d7a61f40af9468719243acc9a3720c8fe011cc",
+          "test/web-push.test.ts": "310f48d8110f1f22054da0912a9e17d915f7609cf2f02af919213d46a7638ca6",
+          "test/ui/workspace.test.tsx": "e3a18ed2e39820e2723b8b43b826697e6451f02cb97b225da0a5389930032bc8"
+        },
+        "single_change": [
+          "src/web-push.ts",
+          "ON CONFLICT (endpoint) DO UPDATE SET p256dh = excluded.p256dh, auth = excluded.auth",
+          "ON CONFLICT (endpoint) DO UPDATE SET p256dh = excluded.p256dh"
+        ],
+        "raw_attempt": 1,
+        "results": [
+          {
+            "files": [
+              "test/web-push.test.ts"
+            ],
+            "counts": [
+              9,
+              0,
+              0
+            ],
+            "exit": 0,
+            "name_filter": null,
+            "failed_assertions": []
+          }
+        ]
+      },
+      "candidate-stale-auth": {
+        "source_sha256": {
+          "src/web-push.ts": "3a902ad0f000440a7cb6f8f1e07db0f2685115f59f6cab8bd157c8b0a9cf3132",
+          "src/agent.ts": "06ca3ce4fc5de3bbbad07c4180d7a61f40af9468719243acc9a3720c8fe011cc",
+          "test/web-push.test.ts": "c855f55c22dd23e09379f0ffc1410b44846a41ca63880665150bddf2e5b6a254",
+          "test/ui/workspace.test.tsx": "e3a18ed2e39820e2723b8b43b826697e6451f02cb97b225da0a5389930032bc8"
+        },
+        "single_change": [
+          "src/web-push.ts",
+          "ON CONFLICT (endpoint) DO UPDATE SET p256dh = excluded.p256dh, auth = excluded.auth",
+          "ON CONFLICT (endpoint) DO UPDATE SET p256dh = excluded.p256dh"
+        ],
+        "raw_attempt": 2,
+        "results": [
+          {
+            "files": [
+              "test/web-push.test.ts"
+            ],
+            "counts": [
+              8,
+              1,
+              0
+            ],
+            "exit": 1,
+            "name_filter": null,
+            "failed_assertions": [
+              {
+                "name": "notifications sends one reminder per device using its current keys and removes a subscription when its service returns 410",
+                "message": "OperationError: Decryption failed. This could be due to a ciphertext authentication failure, bad padding, incorrect CryptoKey, or another algorithm-specific reason. Input length was 71, output length expected to be 71 for AES-GCM",
+                "stack_locations": [
+                  "at decrypt (/work/test/web-push.test.ts:61:53)",
+                  "at /work/test/web-push.test.ts:260:23"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "original-clean": {
+        "source_sha256": {
+          "src/web-push.ts": "f978280d7ba639c77f45660f15a6692c01e5140aced34b6cd21954f107524640",
+          "src/agent.ts": "06ca3ce4fc5de3bbbad07c4180d7a61f40af9468719243acc9a3720c8fe011cc",
+          "test/web-push.test.ts": "310f48d8110f1f22054da0912a9e17d915f7609cf2f02af919213d46a7638ca6",
+          "test/ui/workspace.test.tsx": "e3a18ed2e39820e2723b8b43b826697e6451f02cb97b225da0a5389930032bc8"
+        },
+        "single_change": null,
+        "raw_attempt": 3,
+        "results": [
+          {
+            "files": [
+              "test/web-push.test.ts"
+            ],
+            "counts": [
+              9,
+              0,
+              0
+            ],
+            "exit": 0,
+            "name_filter": null,
+            "failed_assertions": []
+          },
+          {
+            "files": [
+              "test/ui/workspace.test.tsx"
+            ],
+            "counts": [
+              4,
+              0,
+              49
+            ],
+            "exit": 0,
+            "name_filter": "notification settings",
+            "failed_assertions": []
+          }
+        ]
+      },
+      "candidate-allowed": {
+        "source_sha256": {
+          "src/web-push.ts": "f387e39d5c2986e6f584c37899143968b170bc8ce5c9ecc118dce011a87e5093",
+          "src/agent.ts": "06ca3ce4fc5de3bbbad07c4180d7a61f40af9468719243acc9a3720c8fe011cc",
+          "test/web-push.test.ts": "c855f55c22dd23e09379f0ffc1410b44846a41ca63880665150bddf2e5b6a254",
+          "test/ui/workspace.test.tsx": "e3a18ed2e39820e2723b8b43b826697e6451f02cb97b225da0a5389930032bc8"
+        },
+        "single_change": [
+          "src/web-push.ts",
+          "ON CONFLICT (endpoint) DO UPDATE SET p256dh = excluded.p256dh, auth = excluded.auth",
+          "ON CONFLICT (endpoint) DO UPDATE SET (p256dh, auth) = (excluded.p256dh, excluded.auth)"
+        ],
+        "raw_attempt": 4,
+        "results": [
+          {
+            "files": [
+              "test/web-push.test.ts"
+            ],
+            "counts": [
+              9,
+              0,
+              0
+            ],
+            "exit": 0,
+            "name_filter": null,
+            "failed_assertions": []
+          }
+        ]
+      },
+      "candidate-cleanup": {
+        "source_sha256": {
+          "src/web-push.ts": "f978280d7ba639c77f45660f15a6692c01e5140aced34b6cd21954f107524640",
+          "src/agent.ts": "778c543950fa3d993cc704fb9ae675d6a6fc92fb485efb306b676e0499d00e70",
+          "test/web-push.test.ts": "c855f55c22dd23e09379f0ffc1410b44846a41ca63880665150bddf2e5b6a254",
+          "test/ui/workspace.test.tsx": "e3a18ed2e39820e2723b8b43b826697e6451f02cb97b225da0a5389930032bc8"
+        },
+        "single_change": [
+          "src/agent.ts",
+          "if (status === 404 || status === 410) this.pushSubscriptions.remove(subscription.endpoint);",
+          "if (status === 404) this.pushSubscriptions.remove(subscription.endpoint);"
+        ],
+        "raw_attempt": 5,
+        "results": [
+          {
+            "files": [
+              "test/web-push.test.ts"
+            ],
+            "counts": [
+              0,
+              1,
+              8
+            ],
+            "exit": 1,
+            "name_filter": "sends one reminder per device using its current keys",
+            "failed_assertions": [
+              {
+                "name": "notifications sends one reminder per device using its current keys and removes a subscription when its service returns 410",
+                "message": "AssertionError: expected [ \u2026(2) ] to deeply equal [ Array(1) ]",
+                "stack_locations": [
+                  "at /work/test/web-push.test.ts:261:35"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "unchanged_named_cases": [
+      "VAPID (RFC 8292) serves the public key to a signed-in page, and null when the deployment has no VAPID key",
+      "VAPID (RFC 8292) signs an ES256 JWT for the push service's origin, at most 24 hours long, naming the deployment's contact, with the key the page subscribes with",
+      "message encryption (RFC 8291) encrypts RFC 8291's example to the exact message in its section 5, from the keys and salt in Appendix A",
+      "message encryption (RFC 8291) uses a new sender key and salt for every message",
+      "notifications says a scheduled task ran, in the User's words, and nothing else",
+      "push services sends only to Google's, Mozilla's, Apple's and Microsoft's push services, over https on the standard port",
+      "subscriptions keeps and forgets a browser's subscription, signed in and from this origin only, for a known push service only",
+      "subscriptions keeps at most 10 devices, dropping the oldest"
+    ],
+    "raw": {
+      "path": "controller/outputs/760faa4901a0a237/push-runs.ndjson",
+      "sha256": "69c83eb3957608df9d428b95991ab7ec9556495a5fbee37424a4c1d81374c416"
+    },
+    "reproduce": "python -B controller/outputs/760faa4901a0a237/push-controls.py"
+  },
+  "source_review": {
+    "fixture": "The service worker posts fresh subscription JSON to the same-origin registration API; the Settings action uses that API too. The server explicitly supports updating the existing endpoint's two keys. The browser fixture calls WebCrypto to generate a fresh ECDH P-256 key pair and a random 16-byte auth secret for each registration. Its exported public point is the standard 65-byte uncompressed form; the production parser checks the 0x04 prefix, point length and secret length. No invalid key data or database injection creates the renewal state.",
+    "boundary": "The helper calls the actual Worker registration route. The production agent writes the subscription to its SQLite store. The real scheduler emits the reminder, the agent loads the stored keys, and the production sender builds and encrypts the outbound request. The test push service records its actual bytes and answers controlled HTTP statuses. A synthetic receiver opens those bytes. The renewal POST is supplied directly by the test; native browser event dispatch, push-network delivery and OS display are separate boundaries.",
+    "oracle": "The test receiver uses its own private key and auth to parse and open the real ciphertext. Its receiver-side derivation is separate from the production encryption helper and is checked against an external RFC known answer in the same module. The two paths share WebCrypto and the repository's base64url transport utilities. The expected reminder text originates in the scheduling input.",
+    "registration_scope": "This evidence concerns refresh at an unchanged endpoint. Browser behavior when a subscription receives a different endpoint and display on a device were outside these native selections."
+  },
+  "secondary_findings": [
+    {
+      "kind": "Source-supported test gap, unchanged",
+      "claim": "The supplied push-service scenario exercises successful sends and a 410. Source removes subscriptions on 404 or 410 and records other statuses, so tests could separately check 404 removal and subsequent successful delivery after a 503. The 404 registration/deletion route assertions exercise a different HTTP response.",
+      "references": [
+        "pda-spec.md:772",
+        "src/agent.ts:519",
+        "src/web-push.ts:303",
+        "test/web-push.test.ts:253"
+      ],
+      "validation": "No dedicated 404 or 503 behavior control or candidate test was implemented for this lead."
+    },
+    {
+      "kind": "Source-supported test coupling, unchanged",
+      "claim": "The documented limit is 10. Production exports that value and the scanned test builds its fixture from the same imported constant, registering one extra device and checking that the oldest is gone. The literal ten is not an independent expected value in that test.",
+      "references": [
+        "pda-spec.md:234",
+        "src/web-push.ts:244",
+        "src/web-push.ts:292",
+        "test/web-push.test.ts:218"
+      ],
+      "validation": "The oldest-first case passed clean. Sensitivity to changing the numeric limit was not separately exercised."
+    }
+  ],
+  "static_validation": {
+    "raw": {
+      "path": "controller/outputs/760faa4901a0a237/push-static.ndjson",
+      "sha256": "a31bcfc37da318fdfa17f035443c598f269a7a4444db30d010b29e2494ab0eda"
+    },
+    "node": "v24.22.3",
+    "typescript": "Version 6.0.3",
+    "typecheck_exit": 0,
+    "patch_check_exit": 0,
+    "diff_check_exit": 0,
+    "production_unchanged_exit": 0,
+    "patch_applies_byte_for_byte": true,
+    "actual_numstat": "8\t3\ttest/web-push.test.ts"
+  },
+  "ui_validation": {
+    "config": "test/ui/vitest.config.ts",
+    "file": "test/ui/workspace.test.tsx",
+    "filter": "notification settings",
+    "passed": 4,
+    "failed": 0,
+    "filtered_out": 49,
+    "passed_cases": [
+      "notification settings turns notifications on: asks permission, subscribes with the deployment's key and hands the subscription to the agent; off unsubscribes and forgets it",
+      "notification settings subscribes nothing when the browser's permission is refused, and says how to allow it",
+      "notification settings hides the option when the deployment has no VAPID key",
+      "notification settings says how to get them on an iPhone when this browser can't take push messages"
+    ],
+    "provenance": "The independent selection ran on the clean pinned tree. Its production, UI test, fixture and runner bytes equal those in the sealed candidate; the only different file is the Workers Web Push test, which the UI selection excludes."
+  },
+  "source_provenance": {
+    "immutable_snapshot": "controller/candidate-snapshots/760faa4901a0a237",
+    "files_compared": 560,
+    "all_manifest_hashes_verified": true,
+    "input_scope": "For both PDA candidates reviewed by this verifier, all candidate evidence came from sealed source snapshots, frozen participant files, and evaluator controls. An initial workspace-wide search for AGENTS.md filenames returned some opaque subject-directory IDs. A directory-entry search was the full extent of that exposure. The verifier did not open live-subject files, assignment maps, or arm labels.",
+    "image": "node@sha256:49f7adaf9f1574bc45c20ea317139b39a59d7e758d0e93745e112fd85cb42623",
+    "node": "v24.22.3",
+    "candidate_sources": {
+      "pda-spec.md": {
+        "sha256": "313953c8faa654542d718c57acc2bbcdb9ac797417457799adbe58e021011c43",
+        "lines": [
+          "149",
+          "234",
+          "772-773"
+        ]
+      },
+      "public/sw.js": {
+        "sha256": "dd817213f0164414e285334a5a0f27290720a3ac83813d8469cc19b60624409a",
+        "lines": [
+          "5-17",
+          "33-48"
+        ]
+      },
+      "src/ui/notifications.tsx": {
+        "sha256": "0595a641f996230bec17139efa9669eabbb7c5074dcaaf11eb91337f3b1f1d07",
+        "lines": [
+          "59-79"
+        ]
+      },
+      "src/index.ts": {
+        "sha256": "68dd074eb45c3e705ece41e40c48c5fa0a3d9b5c65971d2ed362070f34b9526a",
+        "lines": [
+          "355-384"
+        ]
+      },
+      "src/agent.ts": {
+        "sha256": "06ca3ce4fc5de3bbbad07c4180d7a61f40af9468719243acc9a3720c8fe011cc",
+        "lines": [
+          "507-525",
+          "532-536"
+        ]
+      },
+      "src/web-push.ts": {
+        "sha256": "f978280d7ba639c77f45660f15a6692c01e5140aced34b6cd21954f107524640",
+        "lines": [
+          "53-72",
+          "178-200",
+          "217-238",
+          "243-249",
+          "273-293"
+        ]
+      },
+      "src/schedules.ts": {
+        "sha256": "dfaa52daba0ac79b4a70b8d12eea3b2f20a463d11fb30ac9a67de9096417bbd0",
+        "lines": [
+          "189-200"
+        ]
+      },
+      "test/web-push.test.ts": {
+        "sha256": "c855f55c22dd23e09379f0ffc1410b44846a41ca63880665150bddf2e5b6a254",
+        "lines": [
+          "18-76",
+          "80-104",
+          "185-215",
+          "218-224",
+          "228-262"
+        ]
+      },
+      "test/agent-helpers.ts": {
+        "sha256": "9df7708228cf6c43d9283558ee93f99e7513fb3057558e8c4c64535a03b375a5",
+        "lines": [
+          "71-73"
+        ]
+      },
+      "test/worker.ts": {
+        "sha256": "4b1702f9fe6357e45d8d2c94a2560542c3915f127bdfe436a058f0a4c2dd0da5",
+        "lines": [
+          "1286-1304"
+        ]
+      },
+      "test/ui/workspace.test.tsx": {
+        "sha256": "e3a18ed2e39820e2723b8b43b826697e6451f02cb97b225da0a5389930032bc8",
+        "lines": [
+          "1047-1175"
+        ]
+      },
+      "test/agent-data.test.ts": {
+        "sha256": "b98932cc313cf0f09aaca06f7269832bcb5cfdbc2dce256238fc9adb81d8827d",
+        "lines": [
+          "86-99"
+        ]
+      },
+      "test/ui/attachments.test.tsx": {
+        "sha256": "3eb340117ae01a72fd65cfb50c4de11bee39e19514828ea89412531021837a28",
+        "lines": [
+          "111-130"
+        ]
+      }
+    },
+    "baseline_test": {
+      "path": "preparation/pda/participant/repo/test/web-push.test.ts",
+      "sha256": "310f48d8110f1f22054da0912a9e17d915f7609cf2f02af919213d46a7638ca6"
+    },
+    "evidence_inputs": [
+      {
+        "path": "controller/outputs/760faa4901a0a237/disposition.json",
+        "sha256": "5b862971054d36f4622a5c10f7e7052508a5d0c31548fe9692c3d63d8dc9c3d5"
+      },
+      {
+        "path": "controller/outputs/760faa4901a0a237/response.md",
+        "sha256": "9d89c945196f4d11704b65b5e733ab389d8805b5e995209656b4f27a9802af37"
+      },
+      {
+        "path": "controller/outputs/760faa4901a0a237/patch.diff",
+        "sha256": "6f0cfde54f031ffda8f39d40ebbb69f56c4650570fa035023abf0588d397c385"
+      },
+      {
+        "path": "controller/outputs/760faa4901a0a237/candidate-snapshot.json",
+        "sha256": "bed9cc454999f797d538d4928d4e2fc82929e29badf9b8c1a7cec5e63d82c1db"
+      },
+      {
+        "path": "controller/outputs/760faa4901a0a237/push-controls.py",
+        "sha256": "7e9338897d59c2f3123e18a68b4985756d07e7d8ee81797c7e4f2efd39200a7a"
+      },
+      {
+        "path": "preparation/pda/README.md",
+        "sha256": "b8d832d4788960d43d95689b6492e3f12a184f8f778b4dbef0d618018d954672"
+      },
+      {
+        "path": "preparation/pda/participant/inventory.json",
+        "sha256": "cf827440745efe277fb6bbe7ff389ceb30e6e39f24f8d4202c1f4b517d7e8cee"
+      },
+      {
+        "path": "preparation/pda/evaluator/SCORING.md",
+        "sha256": "75587b689d500380552df45205830caf26560018a3ca95a952229c651801ac76"
+      },
+      {
+        "path": "preparation/pda/evaluator/case-lock.json",
+        "sha256": "125f5a05b9faa3131836f0c791bc3ded0eb8d45cdaa9ce91b34a01dbf76c9550"
+      },
+      {
+        "path": "preparation/pda/evaluator/controls.py",
+        "sha256": "3913d69fb2a2c0acd28f9a114c916cd07d6e965252a275a2e6ba5fe9a99b0498"
+      },
+      {
+        "path": "preparation/pda/evaluator/driver.mjs",
+        "sha256": "973e9b56f1d4ef78436212655f675b6c19f44d2fbf3f3a64e24f29acdb02fdc9"
+      },
+      {
+        "path": "preparation/pda/evaluator/source-manifest.json",
+        "sha256": "4a89263f43ee7f16911ffda118de130898b617ccc90c7f6e1dff953024ecd11d"
+      }
+    ],
+    "historical_ci": [
+      {
+        "name": "Check action pins",
+        "conclusion": "success",
+        "source_commit": "c0a9a85c8f690eb77313b9627e3ea39cadc58968",
+        "url": "https://github.com/adewale/pda/actions/runs/45800972780/job/139843780636",
+        "receipt": {
+          "path": "preparation/pda/participant/ci/jobs-45800972780.json",
+          "sha256": "0e66dc6fa31430d3982f2021296a832ca676989f459788d31078bdc34dd4dc3d"
+        }
+      },
+      {
+        "name": "interop",
+        "conclusion": "success",
+        "source_commit": "c0a9a85c8f690eb77313b9627e3ea39cadc58968",
+        "url": "https://github.com/adewale/pda/actions/runs/45800972796/job/139843780982",
+        "receipt": {
+          "path": "preparation/pda/participant/ci/jobs-45800972796.json",
+          "sha256": "d7687d3aa3a346e1482c19524632d90030ab08115317989882b109d78625f6d7"
+        }
+      },
+      {
+        "name": "test",
+        "conclusion": "success",
+        "source_commit": "c0a9a85c8f690eb77313b9627e3ea39cadc58968",
+        "url": "https://github.com/adewale/pda/actions/runs/45800972889/job/139843781530",
+        "receipt": {
+          "path": "preparation/pda/participant/ci/jobs-45800972889.json",
+          "sha256": "e722f0ba7943aa1af4725227e1563bd0d421ece8fc5ff34081b394df2d5cb235"
+        }
+      }
+    ]
+  },
+  "limits": [
+    "The packet supplied 56 of 155 named modules. Original versus revised fault sensitivity applies to the complete nine-test Web Push file. Other modules may cover related behavior indirectly.",
+    "The hosted action-pins, interop and test jobs succeeded on the original upstream commit. This campaign's results cover its selected offline modules and controls; the patched full-suite and hosted outcomes remain unknown.",
+    "Subject runtime measurements, reported reading of other tests, and its temporary scratch history were not independently timed or observed. Independent checks verified sealed file identity, the actual paired native failure and the named clean and keeper selections."
+  ]
+}

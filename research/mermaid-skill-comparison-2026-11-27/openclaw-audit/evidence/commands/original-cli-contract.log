@@ -1,0 +1,18 @@
+M4+M5 (#959/#930): multi-input rendering + --watch
+
+M4 (#959): `am render <a> <b> <c>` renders each file, emits
+{ ok:true, files:[{index,file,ok,output|error}] }, skips bad files (like
+#543). Single-input keeps the existing single-output behavior. Handles
+the parseArgs boolean-flag quirk by collecting positionals (flags-last
+convention; multi-positional is unambiguous).
+
+M5 (#930): `am render <file> --watch` re-renders on fs.watch change.
+Extracted renderFileOnce(file, format) as the pure, unit-testable
+re-render step (svg/ascii/unicode/json); cmdRenderWatch wires it to
+fs.watch + writes to --output or stdout. Live-watch timing isn't
+unit-tested (fs.watch is nondeterministic in CI); the re-render core is
+tested directly including a file-change-reflected case.
+
+10 tests. Suite 1681 → 1686.
+
+https://claude.ai/code/session_01Rq45GdhQ3RiprQ8cXLdqeU

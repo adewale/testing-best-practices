@@ -1,0 +1,43 @@
+diff --git a/src/__tests__/layout-bundle-proposals.test.ts b/src/__tests__/layout-bundle-proposals.test.ts
+index 744cae0..e5a0918 100644
+--- a/src/__tests__/layout-bundle-proposals.test.ts
++++ b/src/__tests__/layout-bundle-proposals.test.ts
+@@ -101,10 +101,10 @@ describe('bundle complete foreign ink admission', () => {
+       { id: 'P', label: '', shape: 'rectangle', x: 57.51, y: 92.01, width: 0.05, height: 0.02 },
+     ]
+     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: marked }))
+-    const before = edges.map(edge => edge.points)
++    const before = structuredClone(edges.map(edge => edge.points))
+     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+     expect(bundled.size).toBe(marked ? 0 : 2)
+-    if (marked) for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
++    if (marked) for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toEqual(before[i]!)
+   })
+   test.each(['var(--edge-width)', '2%', '1px'])('unknown authored width cannot authorize a bundle: %s', width => {
+     const nodes: PositionedNode[] = [
+@@ -113,10 +113,10 @@ describe('bundle complete foreign ink admission', () => {
+       { id: 'C', label: 'C', shape: 'rectangle', x: 140, y: 100, width: 40, height: 40 },
+     ]
+     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: true, inlineStyle: { 'stroke-width': width } }))
+-    const before = edges.map(edge => edge.points)
++    const before = structuredClone(edges.map(edge => edge.points))
+     const bundled = bundleEdgePaths(edges, nodes, [], 'TB', resolveRenderStyle())
+     expect(bundled.size).toBe(width === '1px' ? 2 : 0)
+-    if (width !== '1px') for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
++    if (width !== '1px') for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toEqual(before[i]!)
+   })
+ 
+   test('a shaft touching the full header by its stroke retains its old route', () => {
+@@ -126,10 +126,10 @@ describe('bundle complete foreign ink admission', () => {
+       { id: 'C', label: 'C', shape: 'rectangle', x: 140, y: 100, width: 40, height: 40 },
+     ]
+     const edges: PositionedEdge[] = ['B', 'C'].map(target => ({ source: 'A', target, points: [{ x: 80, y: 20 }, { x: 110, y: 20 }, { x: 110, y: 120 }, { x: target === 'B' ? 80 : 140, y: 120 }], style: 'solid', hasArrowStart: false, hasArrowEnd: false }))
+-    const before = edges.map(edge => edge.points)
++    const before = structuredClone(edges.map(edge => edge.points))
+     const bundled = bundleEdgePaths(edges, nodes, [{ id: 'G', label: 'G', x: 60.1, y: 45, width: 6, height: 4, headerHeight: 4, children: [] }], 'TB', resolveRenderStyle())
+     expect(bundled.size).toBe(0)
+-    for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toBe(before[i]!)
++    for (let i = 0; i < edges.length; i++) expect(edges[i]!.points).toEqual(before[i]!)
+   })
+ 
+ })

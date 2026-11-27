@@ -1,0 +1,1 @@
+{"edit": "scripts/site/editor.ts", "generated": "editor.html", "rebuild": "editor", "imageFormats": ["svg", "png"], "textFormats": ["ascii", "unicode"]}

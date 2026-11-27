@@ -1,0 +1,315 @@
+src/__tests__/accessibility-directives-complexity.test.ts
+src/__tests__/accessibility-relation-palette.test.ts
+src/__tests__/aesthetic-issue-regressions.test.ts
+src/__tests__/agent-analysis.test.ts
+src/__tests__/agent-architecture.test.ts
+src/__tests__/agent-ascii-maxwidth.test.ts
+src/__tests__/agent-ascii-meta.test.ts
+src/__tests__/agent-auth-flow.test.ts
+src/__tests__/agent-body-shared-rules.test.ts
+src/__tests__/agent-body-utils.test.ts
+src/__tests__/agent-class.test.ts
+src/__tests__/agent-cli-render-formats.test.ts
+src/__tests__/agent-cli-tty-guard.test.ts
+src/__tests__/agent-create.test.ts
+src/__tests__/agent-describe.test.ts
+src/__tests__/agent-determinism.test.ts
+src/__tests__/agent-doc-sync.test.ts
+src/__tests__/agent-er.test.ts
+src/__tests__/agent-facts.test.ts
+src/__tests__/agent-families.test.ts
+src/__tests__/agent-family-layouts.test.ts
+src/__tests__/agent-gantt.test.ts
+src/__tests__/agent-journey.test.ts
+src/__tests__/agent-mcp-http.test.ts
+src/__tests__/agent-mcp-png.test.ts
+src/__tests__/agent-mcp.test.ts
+src/__tests__/agent-mermaid-corpus.test.ts
+src/__tests__/agent-mermaidseqbench.test.ts
+src/__tests__/agent-op-array-slip.test.ts
+src/__tests__/agent-op-schema.test.ts
+src/__tests__/agent-opaque-fidelity.test.ts
+src/__tests__/agent-pie.test.ts
+src/__tests__/agent-png-determinism.test.ts
+src/__tests__/agent-png.test.ts
+src/__tests__/agent-quadrant.test.ts
+src/__tests__/agent-quality.test.ts
+src/__tests__/agent-radar.test.ts
+src/__tests__/agent-readiness-standards.test.ts
+src/__tests__/agent-region-tree.test.ts
+src/__tests__/agent-render-actions.test.ts
+src/__tests__/agent-sankey.test.ts
+src/__tests__/agent-sequence-ops.test.ts
+src/__tests__/agent-serialize-exact.test.ts
+src/__tests__/agent-source-map.test.ts
+src/__tests__/agent-source-preserving-edit.test.ts
+src/__tests__/agent-state.test.ts
+src/__tests__/agent-timeline.test.ts
+src/__tests__/agent-trace-error-observation.test.ts
+src/__tests__/agent-unknown-op.test.ts
+src/__tests__/agent-usage-live.test.ts
+src/__tests__/agent-usage.test.ts
+src/__tests__/agent-wrapper-fidelity.test.ts
+src/__tests__/agent-xychart.test.ts
+src/__tests__/agent.test.ts
+src/__tests__/agentflow.test.ts
+src/__tests__/ancestor-boundary-routes.test.ts
+src/__tests__/architecture-ascii.test.ts
+src/__tests__/architecture-config.test.ts
+src/__tests__/architecture-icons.test.ts
+src/__tests__/architecture-integration.test.ts
+src/__tests__/architecture-layout-backends.test.ts
+src/__tests__/architecture-layout.test.ts
+src/__tests__/architecture-lookup-ownership.test.ts
+src/__tests__/architecture-parser.test.ts
+src/__tests__/architecture-placement-only.test.ts
+src/__tests__/architecture-point-simplification.test.ts
+src/__tests__/architecture-renderer.test.ts
+src/__tests__/architecture-svg-snapshot.test.ts
+src/__tests__/architecture-theme.test.ts
+src/__tests__/arrowhead-terminal-clearance.test.ts
+src/__tests__/ascii-box-start.test.ts
+src/__tests__/ascii-bundle-forward-clearance.test.ts
+src/__tests__/ascii-cjk-width.test.ts
+src/__tests__/ascii-class-er-unicode.test.ts
+src/__tests__/ascii-deep-chain.test.ts
+src/__tests__/ascii-determinism.test.ts
+src/__tests__/ascii-edge-styles.test.ts
+src/__tests__/ascii-fan-in-grouping.test.ts
+src/__tests__/ascii-fanout-trunk-labeled.test.ts
+src/__tests__/ascii-layout-gaps.test.ts
+src/__tests__/ascii-longest-path-layering.test.ts
+src/__tests__/ascii-multiline.test.ts
+src/__tests__/ascii-pathfinder-determinism.test.ts
+src/__tests__/ascii-pathfinder-trunk.test.ts
+src/__tests__/ascii-pathfinder-units.test.ts
+src/__tests__/ascii-reciprocal-terminal.test.ts
+src/__tests__/ascii-reverse.test.ts
+src/__tests__/ascii-robustness.test.ts
+src/__tests__/ascii-sequence-blocks.test.ts
+src/__tests__/ascii-subgraph-edge.test.ts
+src/__tests__/ascii-target-width.test.ts
+src/__tests__/ascii-unicode-family-contract.test.ts
+src/__tests__/ascii-wrap.test.ts
+src/__tests__/ascii.test.ts
+src/__tests__/audit-regressions.test.ts
+src/__tests__/authored-style-color-admission.test.ts
+src/__tests__/backend-capability-conformance.test.ts
+src/__tests__/block-native.test.ts
+src/__tests__/block-upstream-bench.test.ts
+src/__tests__/browser-lazy.test.ts
+src/__tests__/browser-png-contract.test.ts
+src/__tests__/browser-runtime-metadata-projection.test.ts
+src/__tests__/browser-runtime-minify.test.ts
+src/__tests__/bun-version.test.ts
+src/__tests__/c4-layout-admission.test.ts
+src/__tests__/c4-layout-quality.test.ts
+src/__tests__/c4-presentation.test.ts
+src/__tests__/c4-public-contract.test.ts
+src/__tests__/c4-rendering.test.ts
+src/__tests__/c4-semantics.test.ts
+src/__tests__/capability-negotiation.test.ts
+src/__tests__/categorical-palette-rollout.test.ts
+src/__tests__/category-paint.test.ts
+src/__tests__/certificate-completeness.test.ts
+src/__tests__/characterization-families.test.ts
+src/__tests__/characterization-layout.test.ts
+src/__tests__/chart-honesty-text-1.test.ts
+src/__tests__/chart-honesty-text-2.test.ts
+src/__tests__/chart-honesty-text-3.test.ts
+src/__tests__/chart-honesty-text-4.test.ts
+src/__tests__/chart-small-values.test.ts
+src/__tests__/chart-width-fitting.test.ts
+src/__tests__/chrome-token-lockstep.test.ts
+src/__tests__/ci-change-scope.test.ts
+src/__tests__/cjk-subgraph.test.ts
+src/__tests__/class-annotation-parity.test.ts
+src/__tests__/class-arrow-directions.test.ts
+src/__tests__/class-ascii-namespaces.test.ts
+src/__tests__/class-bare-link-fidelity.test.ts
+src/__tests__/class-direction-config.test.ts
+src/__tests__/class-empty-body-fidelity.test.ts
+src/__tests__/class-er-edge-quality.test.ts
+src/__tests__/class-escaped-relation-fidelity.test.ts
+src/__tests__/class-generics.test.ts
+src/__tests__/class-integration.test.ts
+src/__tests__/class-layout-backends.test.ts
+src/__tests__/class-marker-geometry.test.ts
+src/__tests__/class-member-authored-text.test.ts
+src/__tests__/class-namespace.test.ts
+src/__tests__/class-parser.test.ts
+src/__tests__/class-residual-elevation.test.ts
+src/__tests__/class-safe-link-tooltip-fidelity.test.ts
+src/__tests__/class-serializer-conformance.test.ts
+src/__tests__/cli-batch-render-parity.test.ts
+src/__tests__/cli-capabilities.test.ts
+src/__tests__/cli-config-warnings.test.ts
+src/__tests__/cli-error-envelope.test.ts
+src/__tests__/cli-flags-help-sync.test.ts
+src/__tests__/cli-gantt-today-flag.test.ts
+src/__tests__/cli-init-agent.test.ts
+src/__tests__/cli-jsonl.test.ts
+src/__tests__/cli-llms-txt.test.ts
+src/__tests__/cli-multi-input.test.ts
+src/__tests__/cli-render-markdown.test.ts
+src/__tests__/cli-target-width.test.ts
+src/__tests__/closing-the-gap.test.ts
+src/__tests__/code-mode-membrane-traps.test.ts
+src/__tests__/code-mode-structured-errors.test.ts
+src/__tests__/color-math.test.ts
+src/__tests__/compactness.test.ts
+src/__tests__/compound-obstacle-index.test.ts
+src/__tests__/compound-paint-compatibility.test.ts
+src/__tests__/compound-sparse-visibility.test.ts
+src/__tests__/config-diagnostic-parity.test.ts
+src/__tests__/connector-edge-case-conformance.test.ts
+src/__tests__/connector-inline-text.test.ts
+src/__tests__/consolidation-gate.test.ts
+src/__tests__/contact-sheet.test.ts
+src/__tests__/crisp-drawing.test.ts
+src/__tests__/curved-connector-projection.test.ts
+src/__tests__/custom-font-geometry.test.ts
+src/__tests__/custom-style-cookbook.test.ts
+src/__tests__/cynefin-native.test.ts
+src/__tests__/deferred-terminal-projection.test.ts
+src/__tests__/dependency-security.test.ts
+src/__tests__/deploy-hash.test.ts
+src/__tests__/deploy-workflow-transaction.test.ts
+src/__tests__/diagram-family-citizenship.test.ts
+src/__tests__/diagram-parsers.test.ts
+src/__tests__/diagram-work-limits.test.ts
+src/__tests__/differential-mermaid-ast.test.ts
+src/__tests__/doc-blocks.test.ts
+src/__tests__/doc-cli-commands.test.ts
+src/__tests__/edge-approach-direction.test.ts
+src/__tests__/edge-crossing-pair.test.ts
+src/__tests__/edge-crossings.test.ts
+src/__tests__/edge-selector-contract.test.ts
+src/__tests__/editor-examples.test.ts
+src/__tests__/editor-family-registry.test.ts
+src/__tests__/editor-link-contract.test.ts
+src/__tests__/editor-motion.test.ts
+src/__tests__/editor-popup.test.ts
+src/__tests__/editor-script-behaviour.test.ts
+src/__tests__/editor-security-closures.test.ts
+src/__tests__/editor-style-switch.test.ts
+src/__tests__/editor-theme-switch.test.ts
+src/__tests__/elk-layered-differential.test.ts
+src/__tests__/elk-layout-cache.test.ts
+src/__tests__/embedded-font-resources.test.ts
+src/__tests__/endpoint-marker-contact.test.ts
+src/__tests__/er-ascii-clearance.test.ts
+src/__tests__/er-crowsfoot.test.ts
+src/__tests__/er-direction-config.test.ts
+src/__tests__/er-integration.test.ts
+src/__tests__/er-label-reservations.test.ts
+src/__tests__/er-layout-backends.test.ts
+src/__tests__/er-multi-class-fidelity.test.ts
+src/__tests__/er-parser.test.ts
+src/__tests__/er-public-paint.test.ts
+src/__tests__/er-subgraph-membership.test.ts
+src/__tests__/er-subgraph-tolerance.test.ts
+src/__tests__/er-typed-segments.test.ts
+src/__tests__/er-upstream-parity.test.ts
+src/__tests__/er-word-cardinality.test.ts
+src/__tests__/escape-helpers.test.ts
+src/__tests__/eventmodeling.test.ts
+src/__tests__/extension-family-mcp-parity.test.ts
+src/__tests__/extension-family-public-api.test.ts
+src/__tests__/extension-parsed-render-composition.test.ts
+src/__tests__/extension-registries.test.ts
+src/__tests__/external-scene-public-api.test.ts
+src/__tests__/family-config-color-admission.test.ts
+src/__tests__/family-registration-conformance.test.ts
+src/__tests__/family-rubric.test.ts
+src/__tests__/fanout-symmetry.test.ts
+src/__tests__/feedback-reroute.test.ts
+src/__tests__/fidelity-route-conformance.test.ts
+src/__tests__/flowchart-edge-ids.test.ts
+src/__tests__/flowchart-markdown-strings.test.ts
+src/__tests__/flowchart-marker-raster.test.ts
+src/__tests__/flowchart-metadata.test.ts
+src/__tests__/flowchart-op-menu.test.ts
+src/__tests__/flowchart-parser-conformance.test.ts
+src/__tests__/flowchart-runtime-config.test.ts
+src/__tests__/flowchart-terminal-readability.test.ts
+src/__tests__/flowchart-v11-shapes.test.ts
+src/__tests__/gantt-dependency-overlay.test.ts
+src/__tests__/gantt-excluded-shading.test.ts
+src/__tests__/gantt-exclusion-boundary.test.ts
+src/__tests__/gantt-label-wrap.test.ts
+src/__tests__/gantt-layout.test.ts
+src/__tests__/gantt-parser.test.ts
+src/__tests__/gantt-schedule.test.ts
+src/__tests__/gantt-shadowed-security.test.ts
+src/__tests__/gantt-svg-snapshot.test.ts
+src/__tests__/gantt-upstream-bench.test.ts
+src/__tests__/gitgraph-agent-ops.test.ts
+src/__tests__/graph-layout-cache-integration.test.ts
+src/__tests__/graph-layout-selection.test.ts
+src/__tests__/heuristic-coverage.test.ts
+src/__tests__/heuristic-tracker.test.ts
+src/__tests__/host-png-backend-parity.test.ts
+src/__tests__/host-text-measurement.test.ts
+src/__tests__/hosted-execute-differential.test.ts
+src/__tests__/hosted-execute-loader.test.ts
+1:# Testing strategy — what we test, how, and why
+17:## Local CI parity
+101:## The central problem: this is a partly non-testable program
+122:## Oracle types and the gates that use them
+136:## 1. Specified oracles — structural correctness
+168:## 2. Derived oracles — goldens and snapshots
+206:## 2a. Registry-derived combinatorial conformance
+246:## 3. Derived oracles — differential corpora
+384:## 4. Metamorphic oracles — relations instead of ground truth
+422:### Seed policy: pinned gates, rolling finders
+505:### Applying Hegel guidance with fast-check
+533:## 5. Pseudo-oracles — do selected seeded faults make the suite fail?
+558:## 6. Heuristic / perceptual oracles — geometry inside human bounds
+603:## 7. Human / model oracles — the axis nothing else covers
+621:## What runs where
+785:## Contract review and completion
+848:### Boundary-contract matrix — lessons applied from the 2026-07 agent audit
+872:#157 and #160, is recorded in
+881:## What makes a good test
+965:## Why the suite is shaped this way
+982:## Honest gaps (current, not aspirational)
+1019:## References
+142:  unit:
+145:    name: Unit tests (${{ matrix.shard }})
+152:        shard: [1/3, 2/3, 3/3]
+178:      - name: Run test shard
+181:        run: bun run test -- --shard=${{ matrix.shard }} --parallel=2
+492:        run: bun test src/__tests__/mcp-source-tools.test.ts e2e/single-binary.e2e.test.ts --timeout 30000
+556:    needs: [scope, artifacts, unit, quality, mcp-conformance, renderer-platforms, cli, e2e, semantic, consumer-quickstarts]
+579:        run: cd e2e && bun test cli-smoke.e2e.test.ts cli.e2e.test.ts fresh-checkout.e2e.test.ts single-binary.e2e.test.ts --timeout 180000
+581:  e2e:
+586:    # Consume portable build artifacts without waiting for unit/quality checks.
+590:      image: ${{ contains(fromJSON('["browser","browser-site","payload"]'), matrix.suite) && 'mcr.microsoft.com/playwright:v1.65.1-noble@sha256:766137e2d9caad4744187e53cdc89320ba6f2eb57cff097374020944b44dd0a9' || '' }}
+606:        suite: [dist-artifact, tarball-consumer, tarball-consumer-node22, browser, browser-site, payload]
+611:      - name: Align the browser container session with its user
+612:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+620:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+622:        # Keep font metrics consistent with the Ubuntu host browser contract.
+627:      - name: Install Bun in the browser environment
+628:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+635:        if: ${{ matrix.suite != 'browser' && matrix.suite != 'browser-site' && matrix.suite != 'payload' }}
+668:        if: ${{ matrix.suite == 'browser' || matrix.suite == 'browser-site' || matrix.suite == 'payload' }}
+750:      - name: Capture native ZenUML Looks and configured browser controls
+765:        # Keep distinct browser/Node bundler and deferred-ELK contracts here.
+767:        run: cd e2e && bun test dist-artifact.e2e.test.ts --timeout 400000
+784:        run: cd e2e && bun test tarball-consumer-fuzz.e2e.test.ts --timeout 600000
+796:      - name: Run canonical browser contracts
+797:        if: ${{ matrix.suite == 'browser-site' }}
+798:        # Keep every contract, one process per file. The other browser job
+800:        run: bun run test:browser
+803:        if: ${{ matrix.suite == 'browser' }}
+808:          bun scripts/resolved-scene-oracle.ts /tmp/resolved-families.json --compare --progress --worker-bundle dist/browser.global.js | tee bench-report/resolved-scene/families.log
+818:        if: ${{ always() && matrix.suite == 'browser' }}
+827:        if: ${{ always() && matrix.suite == 'browser-site' }}
+830:          name: editor-community-review-${{ github.event.pull_request.head.sha || github.sha }}
+831:          path: e2e/screenshots/current-*.png
+836:        if: ${{ always() && matrix.suite == 'browser-site' }}
+846:        # Capture the same portable site artifact used by browser contracts.
+872:          bun run scripts/build/browser-lazy-report.ts --measure-only --json > head-lazy.json
+875:          bun run scripts/build/browser-lazy-report.ts --root ../payload-base --measure-only --json > base-lazy.json

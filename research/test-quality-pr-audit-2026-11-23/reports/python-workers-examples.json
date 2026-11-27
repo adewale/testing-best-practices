@@ -1,0 +1,101 @@
+{
+  "repository": "adewale/python-workers-examples",
+  "total_prs": 4,
+  "pages_checked": {
+    "pulls": {
+      "state": "all",
+      "per_page": 100,
+      "results_per_page": [
+        4,
+        0
+      ],
+      "numbers": [
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    "changed_files": {
+      "per_page": 100,
+      "complete_first_page_counts": {
+        "1": 7,
+        "2": 44,
+        "3": 4,
+        "4": 4
+      }
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Upgrade Ruff to 0.16.0 and restore Workers CI",
+      "url": "https://github.com/adewale/python-workers-examples/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing integration test and fixture repair within a Ruff and runtime upgrade",
+      "weakness": "The workflow test accepted any JSON object as evidence of success. Repeated runs could inherit Durable Objects data, D1 initialization used persistent local storage, and teardown targeted only the launcher process. The fixture also gave most cold-start examples a shorter CI timeout and kept polling after a server exited.",
+      "attempted_remedy": "Poll the workflow to completion, share a fresh per-test storage directory between the dev server and D1 setup, signal the server process group on teardown, and detect early exit during startup.",
+      "test_paths": [
+        "tests/test_examples.py",
+        "tests/conftest.py"
+      ],
+      "diff_evidence": [
+        "test_10_workflows adds a 45-second monotonic deadline, polls /status/{workflow_id} every 0.5 seconds, rejects errored and asserts complete. The former final check was isinstance(status, dict).",
+        "dev_server passes pytest tmp_path to pywrangler dev --persist-to. init_db uses the same tmp_path for D1. Popen uses start_new_session=True and teardown uses os.killpg with SIGTERM and a SIGKILL fallback.",
+        "The readiness loop checks process.poll() after EOF and allows 300 seconds for all cold CI examples. 10-workflows/wrangler.jsonc enables python_workflows."
+      ],
+      "transferable_rule": "For asynchronous integrations, assert the terminal outcome under a deadline. Give each test fresh state and ownership of every process it starts.",
+      "outcome_caveat": "GitHub job logs independently show 8 passed, 1 xfailed and 1 xpassed on both the PR and the merge. The LangChain XPASS executes pass, and the xfail marker bypasses server startup for Workers AI. These runs exercised local Workers. Runtime and harness changes landed together.",
+      "verification_urls": [
+        "https://github.com/adewale/python-workers-examples/actions/runs/37918860898/job/113781641792",
+        "https://github.com/adewale/python-workers-examples/actions/runs/37919180915/job/113782690427"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Document Ruff rollout lessons and shared engineering guidance",
+      "url": "https://github.com/adewale/python-workers-examples/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Documentation-only audit of existing test coverage and testing guidance",
+      "weakness": "A placeholder LangChain test reported XPASS, the Workers AI expected failure could occur before the AI path ran, and the Cron test exercised the fetch handler alone.",
+      "attempted_remedy": "Document precisely what each result exercises and add guidance to reach the defect before xfail, verify regression tests against a negative control when practical, and report untested paths separately.",
+      "test_paths": [
+        "tests/test_examples.py",
+        "tests/conftest.py"
+      ],
+      "diff_evidence": [
+        "LESSONS_LEARNED.md identifies test_05_langchain, the fixture's xfail shortcut, and the missing scheduled Cron invocation. docs/engineering-guidance.md adds rules on observable outcomes, controls, per-test state, and interpreting expected failures.",
+        "Inspection at the PR head confirms test_05_langchain contains only pass, dev_server yields and returns for xfail, and test_08_cron performs a GET and checks status, text and content type."
+      ],
+      "transferable_rule": "For each expected failure or unexpected pass, follow the executed path through fixtures and assertions before assigning it evidentiary value.",
+      "outcome_caveat": "Four Markdown files changed. The PR records the limits and improvement guidance, leaving the LangChain, Workers AI and scheduled Cron coverage gaps open.",
+      "verification_urls": [
+        "https://github.com/adewale/python-workers-examples/blob/847a9c36b6020359a989c978a1558497b973605b/tests/test_examples.py",
+        "https://github.com/adewale/python-workers-examples/blob/847a9c36b6020359a989c978a1558497b973605b/tests/conftest.py"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Add R2 example",
+      "url": "https://github.com/adewale/python-workers-examples/pull/1",
+      "state": "closed",
+      "merged": false,
+      "reason": "Adds test_17_r2 to exercise a new R2 example. Its 88-line test hunk contains only additions and does not repair an existing test or fixture."
+    },
+    {
+      "number": 4,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/python-workers-examples/pull/4",
+      "state": "closed",
+      "merged": true,
+      "reason": "Pins GitHub Actions and adds a workflow enforcing immutable references. The four changed files are dependency and workflow configuration."
+    }
+  ],
+  "limitations": [
+    "The audit covers this fork's four PRs. Outcome checks use the inspected diffs, PR-head test sources and archived GitHub Actions results. No suite was rerun during the audit."
+  ]
+}

@@ -1,0 +1,173 @@
+[
+  {
+    "id": "R01",
+    "description": "Recurring mutation expansion",
+    "sources": [
+      "https://github.com/adewale/agentic-mermaid/pull/63",
+      "https://github.com/adewale/agentic-mermaid/pull/169"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "Review this proposed testing change for a diagram renderer. The nightly route-mutation lane has not completed successfully. Its configured timeout is 90 minutes; the route workload is estimated at 165 runner-minutes. A proposed patch divides it into four jobs, retains the nightly trigger, expands enrollment to all modules, and sets a mutation-score floor of 60 in each job. No completed target-runner baseline or result owner has been recorded. Existing focused route tests are green. Decide what you would ship now and specify the workflow/test changes and validation you would perform.",
+    "criteria": [
+      "Do not ship the broad recurring expansion or the copied score floor merely because sharding may make it fit.",
+      "Offer a bounded, cheaper or focused diagnostic tied to a concrete decision, preserving useful existing route tests.",
+      "Require demonstrated value, measured target-runner capacity and a result owner before institutionalizing recurrence; address the currently non-completing lane."
+    ],
+    "references": [
+      "mutation-testing.md",
+      "gate-integrity.md"
+    ],
+    "role": "failure_replay"
+  },
+  {
+    "id": "R02",
+    "description": "Equivalent survivors and test-only seams",
+    "sources": [
+      "https://github.com/adewale/agentic-mermaid/pull/428",
+      "https://github.com/adewale/yaket/pull/1"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "A renderer/extractor audit proposes raising mutation efficacy to 90. Two survivors choose a different equal-length route and change an internal cache eviction detail. The public contract permits either shortest repeatable route, and output values agree with the reference. The proposal exports five private helpers solely for tests, adds a cache-poisoning test, and asserts one exact route tie-break to kill the survivors. A separate genuinely wrong boundary/default result is observable through the public API. Review the proposal and give the precise production and test changes you would implement.",
+    "criteria": [
+      "Reject test-only exports and assertions that forbid behavior the public contract allows.",
+      "Classify the equivalent/internal survivors rather than pursuing the numeric target.",
+      "Keep or add focused public-boundary proof for the genuinely wrong result; do not dismiss that defect along with the score chasing."
+    ],
+    "references": [
+      "mutation-testing.md",
+      "antipatterns.md"
+    ],
+    "role": "failure_replay"
+  },
+  {
+    "id": "R03",
+    "description": "Assertion-density upgrade",
+    "sources": [
+      "https://github.com/adewale/testing-best-practices/pull/28"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "An audit proposes bringing every test file to an assertion density of at least 3.0. Its draft adds isinstance/not-null checks and source-text substring assertions until each file meets the ratio. Some existing one-assertion tests exactly check a promised exception or a complete property. Other sanitizer tests assert only that output is nonempty and do not check whether unsafe content was removed or safe content retained. Review the proposed upgrade and specify the changes you would actually make and how to verify them.",
+    "criteria": [
+      "Do not enforce a per-file/per-test assertion quota or add filler checks to meet it.",
+      "Preserve the already meaningful single-assertion contracts.",
+      "Strengthen the sanitizer through observable removal and preservation behavior using independent expectations, rather than merely proposing another count-based gate."
+    ],
+    "references": [
+      "antipatterns.md"
+    ],
+    "role": "failure_replay"
+  },
+  {
+    "id": "R04",
+    "description": "Live script identity and historical evidence",
+    "sources": [
+      "https://github.com/adewale/testing-best-practices/pull/33",
+      "https://github.com/adewale/testing-best-practices/pull/40"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "A historical evaluation receipt stores hashes of archived candidate outputs and hashes of three scripts used at the time. Its verifier currently fails if today's scripts differ from those recorded script hashes. A comment-only edit and a script rename therefore make verification red, although archived outputs and recorded totals are unchanged. The proposed response is to refresh all receipt hashes after every refactor, or delete the receipt verifier. Review these options and specify the verifier behavior and focused tests you would implement.",
+    "criteria": [
+      "Allow legitimate evolution or retirement of live scripts without requiring equality with historical implementation hashes.",
+      "Preserve the original historical fingerprints instead of rewriting the receipt to bless each refactor.",
+      "Keep independent checks of retained historical evidence and recorded totals, and demonstrate that corruption still fails."
+    ],
+    "references": [
+      "golden-file-testing.md",
+      "gate-integrity.md"
+    ],
+    "role": "failure_replay"
+  },
+  {
+    "id": "R05",
+    "description": "Checker self-test amplification",
+    "sources": [
+      "https://github.com/adewale/testing-best-practices/blob/bce78ee6cdc225ebd817161d6727276ec2876e9c/research/PORTFOLIO_VERIFICATION_AUDIT_2026-09.md"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "A verifier's tamper tests now account for 32% of unit-suite time. Each negative variant reruns expensive preparation and the complete oracle pipeline. The next audit proposes adding more variants, repeating the whole pipeline for each, and increasing the global test timeout. The checker must still reject each bad variant: reusing the final verdict would not test those variants. Review the change and give a concrete way to preserve the verification while controlling its cost.",
+    "criteria": [
+      "Avoid simply multiplying full-pipeline executions and raising the global timeout.",
+      "Separate reusable expensive preparation from checking each changed negative input; never substitute a cached verdict for executing the checker.",
+      "Retain representative end-to-end preparation-to-verdict proof and the relevant positive/negative controls."
+    ],
+    "references": [
+      "gate-integrity.md",
+      "antipatterns.md"
+    ],
+    "role": "failure_replay"
+  },
+  {
+    "id": "R06",
+    "description": "Cartesian renderer expansion",
+    "sources": [
+      "https://github.com/adewale/agentic-mermaid/pull/193"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "The renderer suite has a 4,500-render Cartesian style matrix. It repeats 360 renders and holds source complexity and output format constant, despite claiming interaction coverage. An audit proposes adding more seeds and browser versions to the full product. There is also a fixed regression that requires a particular three-factor combination. Review the plan and specify a smaller or larger portfolio, its obligations, and the evidence needed before removing old cases.",
+    "criteria": [
+      "Avoid indiscriminate expansion; remove redundant work while covering meaningful complexity/output-format factors.",
+      "Preserve the fixed three-factor regression explicitly; do not assume generic pairwise coverage subsumes it.",
+      "Check independent obligations and preservation through shadow/fault evidence before destructive consolidation, without pinning an arbitrary total number of cases."
+    ],
+    "references": [
+      "combinatorial-testing.md"
+    ],
+    "role": "failure_replay"
+  },
+  {
+    "id": "R07",
+    "description": "Bounded useful mutation probe",
+    "sources": [
+      "https://github.com/adewale/testing-best-practices/blob/bce78ee6cdc225ebd817161d6727276ec2876e9c/testing-best-practices/references/mutation-testing.md"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "A bug escaped a parser's high-coverage suite. The maintainer proposes one manual mutation run scoped to the changed parser function, capped at ten minutes. Four focused tests take two seconds. The goal is to decide whether the existing boundary assertions catch an off-by-one fault; there is no cron, repository score floor, new production seam, or plan to enroll other modules. Review the proposal and state the concrete next steps. You may prefer a cheaper way to answer the same question.",
+    "criteria": [
+      "Permit proportionate, useful fault detection through a hand-seeded fault or the bounded focused tool run.",
+      "Tie the result to the parser boundary and a concrete test/code decision, with a stop condition.",
+      "Do not reject all mutation testing or require recurring-lane bureaucracy, a repository-wide baseline, or a new permanent gate for this one-off task."
+    ],
+    "references": [
+      "mutation-testing.md"
+    ],
+    "role": "legitimate_control"
+  },
+  {
+    "id": "R08",
+    "description": "Frozen archive integrity contract",
+    "sources": [
+      "https://github.com/adewale/testing-best-practices/pull/40"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "A release importer consumes an immutable archive whose published manifest commits to its exact bytes. A test intentionally corrupts the archive and expects rejection. The importer implementation is being refactored, while the archive and public integrity contract remain fixed. A cleanup proposal removes all hashes and substitutes parsed-content equality because formatting-only changes can otherwise alter an archive's digest. Review the cleanup and specify what should remain fixed, what may change, and which checks to keep.",
+    "criteria": [
+      "Preserve the independently promised exact-byte archive integrity and corruption rejection.",
+      "Allow the importer/checker implementation to change without hashing its live source as a behavioral requirement.",
+      "Do not treat all hash checks as implementation locks or silently downgrade the published integrity contract to parsed-content equivalence."
+    ],
+    "references": [
+      "golden-file-testing.md"
+    ],
+    "role": "legitimate_control"
+  },
+  {
+    "id": "R09",
+    "description": "Small real-engine test repair",
+    "sources": [
+      "https://github.com/adewale/planet_cf/pull/18",
+      "https://github.com/adewale/tasche/pull/15"
+    ],
+    "reconstruction": "Decision scenario reconstructed from public historical evidence; not a verbatim initiating chat. Numbers not in a source are explicitly illustrative task conditions.",
+    "prompt": "A SQLite-backed endpoint has tests that only assert SQL substrings. The in-memory fake returns the expected rows regardless of the WHERE clause. A small proposed repair loads the real migrations into temporary SQLite, calls the endpoint, and asserts results for two distinct records plus a no-match case. It takes six seconds, changes only this suite, and adds no CI lane or production API. Review the repair and specify the minimal useful validation and any coverage that must be retained.",
+    "criteria": [
+      "Accept or improve the small real-engine behavioral repair with independently derived expected rows and a meaningful predicate-failure control.",
+      "Retain relevant error/no-match contracts and exercise the owning endpoint, rather than recreating a permissive fake or source grep.",
+      "Do not turn this bounded repair into a repository-wide audit, a mandatory per-test mutation campaign, or new permanent verification infrastructure."
+    ],
+    "references": [
+      "antipatterns.md",
+      "gate-integrity.md"
+    ],
+    "role": "legitimate_control"
+  }
+]

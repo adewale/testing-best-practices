@@ -1,0 +1,780 @@
+
+> test
+> vitest run --reporter=verbose
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > greets every collaborator with the production snapshot protocol 83ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > merges different-cell edits and orders same-cell edits without replacing the session 72ms
+ ✓ |keyboardia-integration| live-session.test.ts > DO: returns 404 for non-WebSocket requests to root 10ms
+ ✓ |keyboardia-integration| live-session.test.ts > DO: returns debug info via /debug endpoint 29ms
+ ✓ |keyboardia-integration| live-session.test.ts > DO: can access internal state via runInDurableObject 185ms
+stderr | live-session.test.ts > DO: counts automatic state repairs for structured WebSocket telemetry
+[INVARIANT VIOLATION][repairTelemetryTest] session=test-repair-telemetry {
+  violations: [ [32m'Tempo 999 is outside valid range [60, 180]'[39m ],
+  trackCount: [33m0[39m,
+  trackIds: []
+}
+[INVARIANT] Auto-repaired state for session=test-repair-telemetry { repairs: [ [32m'Clamped tempo from 999 to 180'[39m ] }
+
+ ✓ |keyboardia-integration| live-session.test.ts > DO: counts automatic state repairs for structured WebSocket telemetry 20ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: creates a new session via POST /api/sessions 24ms
+ ✓ |keyboardia-integration| live-session.test.ts > DO: version-1 state with no scale hydrates as explicitly unlocked 17ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: loads session via GET /api/sessions/:id 26ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: returns 404 for non-existent session 12ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > shares playback presence through play, stop, join, and disconnect 251ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > acknowledges duplicate track operations without duplicating or losing state 62ms
+stderr | live-session.test.ts > Router: persists all track fields correctly
+[INVARIANT VIOLATION][loadFromKV] session=e936c753-710f-4a73-82ab-53ad3c27b178 {
+  violations: [
+    [32m'Track test-track-1: steps length 16 !== 128'[39m,
+    [32m'Track test-track-1: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'test-track-1'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=e936c753-710f-4a73-82ab-53ad3c27b178 {
+  repairs: [
+    [32m'Padded steps array for track test-track-1'[39m,
+    [32m'Padded parameterLocks array for track test-track-1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track test-track-1'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts 12-step triplet grid
+[INVARIANT VIOLATION][loadFromKV] session=74eabd35-d3d0-4f48-9c70-4a3176950f79 {
+  violations: [
+    [32m'Track triplet-track: steps length 12 !== 128'[39m,
+    [32m'Track triplet-track: parameterLocks length 12 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'triplet-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=74eabd35-d3d0-4f48-9c70-4a3176950f79 {
+  repairs: [
+    [32m'Padded steps array for track triplet-track'[39m,
+    [32m'Padded parameterLocks array for track triplet-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track triplet-track'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts 24-step high-res triplet grid
+[INVARIANT VIOLATION][loadFromKV] session=df7d3112-839f-46f2-b583-1f275a69a7ad {
+  violations: [
+    [32m'Track trap-hats: steps length 24 !== 128'[39m,
+    [32m'Track trap-hats: parameterLocks length 24 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'trap-hats'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=df7d3112-839f-46f2-b583-1f275a69a7ad {
+  repairs: [
+    [32m'Padded steps array for track trap-hats'[39m,
+    [32m'Padded parameterLocks array for track trap-hats'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track trap-hats'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| live-session.test.ts > Router: validates request body on create 4ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: creates session with name via POST /api/sessions 17ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: creates session with null name when name not provided 14ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: rejects invalid session name (XSS attempt) 5ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: rejects non-string session name 3ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: persists all track fields correctly 23ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: accepts 12-step triplet grid 16ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: accepts 24-step high-res triplet grid 18ms
+stderr | live-session.test.ts > Router: accepts -24 semitone transpose (deep sub-bass)
+[INVARIANT VIOLATION][loadFromKV] session=4f960366-55df-4f92-ba81-08825adb5cf8 {
+  violations: [
+    [32m'Track sub-bass: steps length 8 !== 128'[39m,
+    [32m'Track sub-bass: parameterLocks length 8 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'sub-bass'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=4f960366-55df-4f92-ba81-08825adb5cf8 {
+  repairs: [
+    [32m'Padded steps array for track sub-bass'[39m,
+    [32m'Padded parameterLocks array for track sub-bass'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track sub-bass'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts +24 semitone transpose (high melodic)
+[INVARIANT VIOLATION][loadFromKV] session=f04d8f5e-064d-4470-8116-256611799cb2 {
+  violations: [
+    [32m'Track high-lead: steps length 8 !== 128'[39m,
+    [32m'Track high-lead: parameterLocks length 8 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'high-lead'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=f04d8f5e-064d-4470-8116-256611799cb2 {
+  repairs: [
+    [32m'Padded steps array for track high-lead'[39m,
+    [32m'Padded parameterLocks array for track high-lead'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track high-lead'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > broadcasts validated effects and recovers them from durable storage 52ms
+stderr | live-session.test.ts > Router: persists parameter locks with pitch and volume
+[INVARIANT VIOLATION][loadFromKV] session=2e79125b-5b18-4f96-bdaa-c9f3280576e0 {
+  violations: [
+    [32m'Track plock-track: steps length 16 !== 128'[39m,
+    [32m'Track plock-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'plock-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=2e79125b-5b18-4f96-bdaa-c9f3280576e0 {
+  repairs: [
+    [32m'Padded steps array for track plock-track'[39m,
+    [32m'Padded parameterLocks array for track plock-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track plock-track'[39m
+  ]
+}
+
+stderr | eviction-recovery.test.ts > replays a rejected v2 operation ID instead of applying it after state changes
+[INVARIANT VIOLATION][loadFromKV] session=9735e5c0-71d7-4575-9f43-10758ca233b9 {
+  violations: [
+    [32m'Track idempotent-envelope-track: steps length 16 !== 128'[39m,
+    [32m'Track idempotent-envelope-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'idempotent-envelope-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=9735e5c0-71d7-4575-9f43-10758ca233b9 {
+  repairs: [
+    [32m'Padded steps array for track idempotent-envelope-track'[39m,
+    [32m'Padded parameterLocks array for track idempotent-envelope-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track idempotent-envelope-track'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64)
+[INVARIANT VIOLATION][loadFromKV] session=1b048328-c50a-440c-a298-06db7b680b2c {
+  violations: [
+    [32m'Track track-4: steps length 4 !== 128'[39m,
+    [32m'Track track-4: parameterLocks length 4 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'track-4'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=1b048328-c50a-440c-a298-06db7b680b2c {
+  repairs: [
+    [32m'Padded steps array for track track-4'[39m,
+    [32m'Padded parameterLocks array for track track-4'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-4'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64)
+[INVARIANT VIOLATION][loadFromKV] session=11ca069f-d16b-4eb7-b879-c76b5e1ebfb8 {
+  violations: [
+    [32m'Track track-8: steps length 8 !== 128'[39m,
+    [32m'Track track-8: parameterLocks length 8 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'track-8'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=11ca069f-d16b-4eb7-b879-c76b5e1ebfb8 {
+  repairs: [
+    [32m'Padded steps array for track track-8'[39m,
+    [32m'Padded parameterLocks array for track track-8'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-8'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64)
+[INVARIANT VIOLATION][loadFromKV] session=f36ffd45-9936-4d7a-845c-1d0f8454655b {
+  violations: [
+    [32m'Track track-12: steps length 12 !== 128'[39m,
+    [32m'Track track-12: parameterLocks length 12 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'track-12'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=f36ffd45-9936-4d7a-845c-1d0f8454655b {
+  repairs: [
+    [32m'Padded steps array for track track-12'[39m,
+    [32m'Padded parameterLocks array for track track-12'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-12'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64)
+[INVARIANT VIOLATION][loadFromKV] session=4faa1434-5719-4008-b64c-b13f72172a91 {
+  violations: [
+    [32m'Track track-16: steps length 16 !== 128'[39m,
+    [32m'Track track-16: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'track-16'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=4faa1434-5719-4008-b64c-b13f72172a91 {
+  repairs: [
+    [32m'Padded steps array for track track-16'[39m,
+    [32m'Padded parameterLocks array for track track-16'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-16'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| live-session.test.ts > Router: accepts -24 semitone transpose (deep sub-bass) 18ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: accepts +24 semitone transpose (high melodic) 17ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: rejects transpose outside ±24 range 5ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: persists parameter locks with pitch and volume 15ms
+stderr | live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64)
+[INVARIANT VIOLATION][loadFromKV] session=22402199-8343-41fe-88a8-a18f8cac98b8 {
+  violations: [
+    [32m'Track track-24: steps length 24 !== 128'[39m,
+    [32m'Track track-24: parameterLocks length 24 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'track-24'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=22402199-8343-41fe-88a8-a18f8cac98b8 {
+  repairs: [
+    [32m'Padded steps array for track track-24'[39m,
+    [32m'Padded parameterLocks array for track track-24'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-24'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > replays a rejected v2 operation ID instead of applying it after state changes 63ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > accepts ten collaborators and rejects the eleventh through the Worker route 104ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > keeps collaborative state that a REST replacement does not carry 51ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > offers an existing loop region to a collaborator who joins later 44ms
+stderr | live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64)
+[INVARIANT VIOLATION][loadFromKV] session=3128dfb1-2ecf-416f-9720-841435100ffa {
+  violations: [
+    [32m'Track track-32: steps length 32 !== 128'[39m,
+    [32m'Track track-32: parameterLocks length 32 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'track-32'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=3128dfb1-2ecf-416f-9720-841435100ffa {
+  repairs: [
+    [32m'Padded steps array for track track-32'[39m,
+    [32m'Padded parameterLocks array for track track-32'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-32'[39m
+  ]
+}
+
+stderr | live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64)
+[INVARIANT VIOLATION][loadFromKV] session=87db1e1b-e34a-42eb-8790-86204ec96b2b {
+  violations: [
+    [32m'Track track-64: steps length 64 !== 128'[39m,
+    [32m'Track track-64: parameterLocks length 64 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'track-64'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=87db1e1b-e34a-42eb-8790-86204ec96b2b {
+  repairs: [
+    [32m'Padded steps array for track track-64'[39m,
+    [32m'Padded parameterLocks array for track track-64'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-64'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| live-session.test.ts > Router: accepts all valid step count options (4, 8, 12, 16, 24, 32, 64) 125ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: rejects invalid step count (e.g., 256 - exceeds max) 3ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: publishes a session via POST /api/sessions/:id/publish 41ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > persists a real WebSocket mutation to storage and recovers it after an ungraceful eviction 45ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > restores serverSeq from storage after a graceful disconnect + eviction 21ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > documents that serverSeq below the persistence checkpoint resets on ungraceful eviction (state still survives) 24ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > hibernates a live WebSocket across eviction and restores + resumes it 25ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > closes live WebSockets when evicted with { webSockets: "close" } 22ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > reports live Durable Object state through the debug route 37ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > rejects a WebSocket route request that is not an upgrade 14ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > changes a track instrument for every collaborator without disturbing the track 34ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: publishing same source twice creates two different published sessions 38ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: blocks PUT updates on published sessions with 403 37ms
+stderr | collaboration-contract.test.ts > drops an instrument change the catalog does not know, without mutating
+[WS] session=3b1cdb6e-7b6e-4b1d-ac38-01c5c7bdc5b7 player=player-a Rejected set_track_instrument (INVALID_SAMPLE_ID): Unknown sample_id: definitely-not-an-instrument
+
+stderr | collaboration-contract.test.ts > drops an instrument change for a track that does not exist
+[WS] session=c21e1040-7eed-46b4-9f77-db608eb8a27f player=player-a Rejected set_track_instrument (TRACK_NOT_FOUND): Track not found: no-such-track
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > recovers from the KV fallback path after eviction when DO storage was never written 37ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > evictAllDurableObjects recovers each instance from its own persisted mutation 46ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > hibernates and restores TWO live WebSockets, preserving cross-client broadcast 26ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > closes ALL live WebSockets when two players are evicted with { webSockets: "close" } 20ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > keeps the legacy rollout envelope validated, name-safe, and acknowledged on no-op 50ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > drops engine-scoped parameters the new instrument cannot interpret 27ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > drops an instrument change the catalog does not know, without mutating 25ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > drops an instrument change for a track that does not exist 28ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: blocks PATCH (rename) on published sessions with 403 38ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: PATCH accepts state updates for programmatic editing 31ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: allows remixing a published session 41ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > refuses an instrument change on a published session 40ms
+ ✓ |keyboardia-integration| collaboration-contract.test.ts > applies the same result through the Durable Object as the shared operation 28ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > restores only the still-connected player when a peer disconnected before eviction 36ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > drains a burst of in-flight WebSocket mutations across eviction without corruption 39ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: cannot publish from an already-published session 34ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: new sessions have immutable: false by default 85ms
+ ✓ |keyboardia-integration| live-session.test.ts > Router: returns 404 when publishing non-existent session 6ms
+stderr | live-session.test.ts > DO: loads state from KV when DO storage is empty (migration path)
+[INVARIANT VIOLATION][loadFromKV] session=a3b69666-2723-49ab-a754-48dd4c9d75a8 {
+  violations: [
+    [32m'Track migration-track: steps length 16 !== 128'[39m,
+    [32m'Track migration-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'migration-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=a3b69666-2723-49ab-a754-48dd4c9d75a8 {
+  repairs: [
+    [32m'Padded steps array for track migration-track'[39m,
+    [32m'Padded parameterLocks array for track migration-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track migration-track'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > keeps state consistent when a mutation races an eviction 96ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > survives repeated back-to-back evictions 71ms
+ ✓ |keyboardia-integration| live-session.test.ts > DO: loads state from KV when DO storage is empty (migration path) 20ms
+ ✓ |keyboardia-integration| live-session.test.ts > DO: persists state to DO storage after mutation (hybrid persistence) 48ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > regression: mutations on a WebSocket that woke a hibernated DO are applied (no HTTP load) 104ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > flushes the latest state to KV when a disconnect wakes a hibernated DO 53ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > keeps a published session immutable across eviction (immutable flag reloaded on wake) 48ms
+stderr | eviction-recovery.test.ts > webSocketError on a cold wake flushes KV when it is the last connection
+[WS] error session=493523ab-1974-4571-a901-4978f4f0426e player=undefined Error: forced abnormal close
+    at /case/repo/app/test/integration/eviction-recovery.test.ts:849:27
+    at maybeHandleRunRequest (opt/keyboardia-worker/node_modules/[4m@cloudflare[24m/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:157:24)
+    at DurableObject.Wrapper.fetch (opt/keyboardia-worker/node_modules/[4m@cloudflare[24m/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:552:26)
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > webSocketError on a cold wake flushes KV when it is the last connection 100ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > serverSeq stays monotonic across a graceful disconnect, eviction, and reconnect 85ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > a non-last client close after hibernation does not prematurely flush KV 68ms
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=57eecf83-9d7c-4924-86e4-9e48c16dcf10 {
+  violations: [
+    [32m'Track fuzz-track: steps length 16 !== 128'[39m,
+    [32m'Track fuzz-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'fuzz-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=57eecf83-9d7c-4924-86e4-9e48c16dcf10 {
+  repairs: [
+    [32m'Padded steps array for track fuzz-track'[39m,
+    [32m'Padded parameterLocks array for track fuzz-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track fuzz-track'[39m
+  ]
+}
+
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=f56e36a1-b9ed-4954-ba03-57a1258b6206 {
+  violations: [
+    [32m'Track fuzz-track: steps length 16 !== 128'[39m,
+    [32m'Track fuzz-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'fuzz-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=f56e36a1-b9ed-4954-ba03-57a1258b6206 {
+  repairs: [
+    [32m'Padded steps array for track fuzz-track'[39m,
+    [32m'Padded parameterLocks array for track fuzz-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track fuzz-track'[39m
+  ]
+}
+
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=a4b760cc-3bfc-4489-8008-0c527a0054b9 {
+  violations: [
+    [32m'Track fuzz-track: steps length 16 !== 128'[39m,
+    [32m'Track fuzz-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'fuzz-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=a4b760cc-3bfc-4489-8008-0c527a0054b9 {
+  repairs: [
+    [32m'Padded steps array for track fuzz-track'[39m,
+    [32m'Padded parameterLocks array for track fuzz-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track fuzz-track'[39m
+  ]
+}
+
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=3300211d-b4e6-43a3-b119-625e92c1990e {
+  violations: [
+    [32m'Track fuzz-track: steps length 16 !== 128'[39m,
+    [32m'Track fuzz-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'fuzz-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=3300211d-b4e6-43a3-b119-625e92c1990e {
+  repairs: [
+    [32m'Padded steps array for track fuzz-track'[39m,
+    [32m'Padded parameterLocks array for track fuzz-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track fuzz-track'[39m
+  ]
+}
+
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=e4b2acbc-7662-4875-b80d-23fbc2430302 {
+  violations: [
+    [32m'Track fuzz-track: steps length 16 !== 128'[39m,
+    [32m'Track fuzz-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'fuzz-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=e4b2acbc-7662-4875-b80d-23fbc2430302 {
+  repairs: [
+    [32m'Padded steps array for track fuzz-track'[39m,
+    [32m'Padded parameterLocks array for track fuzz-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track fuzz-track'[39m
+  ]
+}
+
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=3e9af0f4-6634-4d92-b36d-faf3da59172d {
+  violations: [
+    [32m'Track fuzz-track: steps length 16 !== 128'[39m,
+    [32m'Track fuzz-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'fuzz-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=3e9af0f4-6634-4d92-b36d-faf3da59172d {
+  repairs: [
+    [32m'Padded steps array for track fuzz-track'[39m,
+    [32m'Padded parameterLocks array for track fuzz-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track fuzz-track'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction 523ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV 67ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins) 66ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write 59ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge 38ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects 275ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > clamps an over-max tempo instead of storing it 28ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > clamps an under-min tempo instead of storing it 17ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > clamps swing to its range 19ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > does not let a non-numeric tempo corrupt session state 17ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > does not let a null swing corrupt session state 19ms
+stderr | validator-enforcement.test.ts > ignores a step toggle for a track that does not exist
+[ASSERT] toggle_step FAILED: track not found (trackId=no-such-track)
+
+stderr | validator-enforcement.test.ts > ignores a step toggle outside the step range
+[WS] Invalid step index 9999 from validator-probe
+
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > ignores a step toggle for a track that does not exist 21ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > ignores a step toggle outside the step range 21ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > does not let a non-numeric track volume corrupt session state 53ms
+stderr | validator-enforcement.test.ts > rejects an effects payload whose non-wet numbers are not numbers
+[WS] Invalid effects state from validator-probe: reverb.decay is not a finite number
+
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > rejects invalid pan assignments and accepts a normalized one 40ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > does not let a non-numeric transpose corrupt session state 34ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > does not let a non-numeric per-track swing corrupt session state 29ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > rejects an effects payload whose non-wet numbers are not numbers 48ms
+ ✓ |keyboardia-integration| validator-enforcement.test.ts > still accepts a fully valid effects payload 115ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP v1 onboarding journeys > joins a created session, collaborates live, persists, and resumes with a fresh agent 864ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP v1 onboarding journeys > changes a track instrument through the same granular broadcast a browser uses 74ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP v1 onboarding journeys > reads a published session, rejects its edit, and reports a missing session 77ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP v1 onboarding journeys > leaves KV consistent when only an agent has touched the session 25ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP v1 onboarding journeys > answers browser MCP clients with usable CORS headers 16ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP endpoint guards > rejects a non-POST request with 405 before the SDK runs 23ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP endpoint guards > rejects a wrong content type with 415 4ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP endpoint guards > rejects browser Origin null with 403 before the SDK runs 3ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP endpoint guards > rejects browser Origin https://agent.example with 403 before the SDK runs 4ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP endpoint guards > rejects an oversized declared body with 413 2ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > creates a session an agent can edit and a browser can join 36ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > resolves a retried create to the same session instead of a duplicate 24ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > remixes a published session without disturbing the original 141ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > publishes a snapshot and leaves the source editable 40ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > refuses to publish an already-published session 28ms
+stderr | mcp-journeys.test.ts > MCP session lifecycle journeys > explains the music of a session it did not write
+[INVARIANT VIOLATION][loadFromKV] session=2973b1d4-f723-41db-a5ee-fa91b987a03a {
+  violations: [
+    [32m'Track lead: steps length 16 !== 128'[39m,
+    [32m'Track lead: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'lead'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=2973b1d4-f723-41db-a5ee-fa91b987a03a {
+  repairs: [
+    [32m'Padded steps array for track lead'[39m,
+    [32m'Padded parameterLocks array for track lead'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track lead'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > exports a MIDI file without changing the session 69ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > explains the music of a session it did not write 34ms
+ ✓ |keyboardia-integration| mcp-journeys.test.ts > MCP session lifecycle journeys > reports a session with nothing audible rather than exporting an empty file 17ms
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=fc7abb58-29c7-42f4-b496-995e58d7dedb {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=fc7abb58-29c7-42f4-b496-995e58d7dedb {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=bfb97bf8-dcc3-40d0-8b48-14c97cb96bec {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=bfb97bf8-dcc3-40d0-8b48-14c97cb96bec {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=07caf786-dc8d-4cf6-9ea1-cda46f2764a7 {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=07caf786-dc8d-4cf6-9ea1-cda46f2764a7 {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=d000ac05-620b-4172-8e36-775af5b10ce1 {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=d000ac05-620b-4172-8e36-775af5b10ce1 {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=20fbd7d5-2bb8-4026-ac5a-22f4066d25d9 {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=20fbd7d5-2bb8-4026-ac5a-22f4066d25d9 {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=ea0905b8-78a6-43b7-bd37-89ef4ff7d472 {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=ea0905b8-78a6-43b7-bd37-89ef4ff7d472 {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=b87588ed-41ad-4011-a6d3-69783ae9da51 {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=b87588ed-41ad-4011-a6d3-69783ae9da51 {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 3546ms
+ ✓ |keyboardia-integration| overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client 1000ms
+stderr | social-preview.test.ts > Social Media Preview Integration > Meta Tag Injection > injects OG tags for Facebook crawler
+[INVARIANT VIOLATION][loadFromKV] session=4ba3b4f9-9692-4933-8e30-0d4e37a68a12 {
+  violations: [
+    [32m'Track track-1: steps length 16 !== 128'[39m,
+    [32m'Track track-1: parameterLocks length 0 !== 128'[39m,
+    [32m'Track track-2: steps length 16 !== 128'[39m,
+    [32m'Track track-2: parameterLocks length 0 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m'track-1'[39m, [32m'track-2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=4ba3b4f9-9692-4933-8e30-0d4e37a68a12 {
+  repairs: [
+    [32m'Padded steps array for track track-1'[39m,
+    [32m'Padded parameterLocks array for track track-1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-1'[39m,
+    [32m'Padded steps array for track track-2'[39m,
+    [32m'Padded parameterLocks array for track track-2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track track-2'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Meta Tag Injection > injects OG tags for Facebook crawler 49ms
+stdout | social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > returns PNG for valid session
+[OG] Font loaded successfully, size: [33m31196[39m
+[OG] Generating image for session: Integration Test Beat tracks: [33m2[39m
+init RESVG
+
+stdout | social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > returns PNG for valid session
+[OG] Image generated successfully, status: [33m200[39m
+
+stdout | social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > returns PNG for valid session
+init RESVG
+
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Meta Tag Injection > injects Twitter Card tags for Twitter crawler 38ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Meta Tag Injection > injects JSON-LD structured data 21ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Meta Tag Injection > includes track and tempo info in description 9ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Meta Tag Injection > injects meta for regular browsers too (for validation tools) 7ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > returns PNG for valid session 179ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > returns non-empty image data 50ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > includes cache headers 33ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > returns 404 for invalid session ID format 5ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Dynamic OG Image > returns fallback image for missing session 11ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Schema.org Validation > produces valid JSON-LD 7ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Content Matching > og:title contains exact session name 7ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Content Matching > og:description matches session stats exactly 8ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Content Matching > JSON-LD name equals session name 12ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Content Matching > og:image URL contains session ID 10ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > Content Matching > twitter:title matches og:title 5ms
+ ✓ |keyboardia-integration| social-preview.test.ts > Social Media Preview Integration > XSS Prevention > escapes malicious session names 2ms
+ ✓ |keyboardia-integration| seq-regression.test.ts > ungraceful eviction rewinds serverSeq and re-issues sequence numbers on the same hibernated socket 186ms
+stderr | state-hash-parity.test.ts > state hash parity through the session API > preserves the complete hashed state through create and update round trips
+[INVARIANT VIOLATION][loadFromKV] session=7433e452-f7be-4f0b-b19e-960278a35345 {
+  violations: [
+    [32m'Track hash-test-track: steps length 8 !== 128'[39m,
+    [32m'Track hash-test-track: parameterLocks length 8 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'hash-test-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=7433e452-f7be-4f0b-b19e-960278a35345 {
+  repairs: [
+    [32m'Padded steps array for track hash-test-track'[39m,
+    [32m'Padded parameterLocks array for track hash-test-track'[39m
+  ]
+}
+
+stderr | state-hash-parity.test.ts > state hash parity through the session API > preserves the complete hashed state through create and update round trips
+[INVARIANT VIOLATION][restApiUpdate] session=7433e452-f7be-4f0b-b19e-960278a35345 {
+  violations: [ [32m'Track hash-test-track: steps length 8 !== 128'[39m ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'hash-test-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=7433e452-f7be-4f0b-b19e-960278a35345 { repairs: [ [32m'Padded steps array for track hash-test-track'[39m ] }
+
+stderr | state-hash-parity.test.ts > state hash parity through the session API > accepts an old browser hash for a session with authored scale
+[INVARIANT VIOLATION][loadFromKV] session=70cfbe73-1ff4-4a26-ba87-ff4d1172d927 {
+  violations: [
+    [32m'Track hash-test-track: steps length 8 !== 128'[39m,
+    [32m'Track hash-test-track: parameterLocks length 8 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'hash-test-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=70cfbe73-1ff4-4a26-ba87-ff4d1172d927 {
+  repairs: [
+    [32m'Padded steps array for track hash-test-track'[39m,
+    [32m'Padded parameterLocks array for track hash-test-track'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| state-hash-parity.test.ts > state hash parity through the session API > preserves the complete hashed state through create and update round trips 58ms
+ ✓ |keyboardia-integration| state-hash-parity.test.ts > state hash parity through the session API > accepts an old browser hash for a session with authored scale 33ms
+ ✓ |keyboardia-integration| seq-regression.test.ts > negative ack gap is silent; the same detector proves positive gaps push a snapshot 592ms
+ ✓ |keyboardia-integration| agent-skills-journey.test.ts > Agent Skills host protocol journey > fetches a digest-verified skill and executes its exact MCP examples 462ms
+
+ Test Files  11 passed (11)
+      Tests  131 passed (131)
+   Start at  02:24:30
+   Duration  14.74s (transform 3.49s, setup 0ms, import 19.14s, tests 12.42s, environment 0ms)
+

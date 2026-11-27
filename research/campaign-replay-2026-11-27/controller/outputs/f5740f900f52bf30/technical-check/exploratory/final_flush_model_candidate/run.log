@@ -1,0 +1,37 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/controller/outputs/f5740f900f52bf30/technical-check/scratch-e627y_hq/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+stderr | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+PBT_COUNTEREXAMPLE={"lane":"stateMachine","example":[{"kind":"ws_tempo","tempo":60},{"kind":"disconnect"}],"seed":-2062546243,"path":"0:2","shrinks":1}
+
+ ❯ |keyboardia-integration| state-machine-fuzz.test.ts (6 tests | 1 failed | 5 skipped) 5657ms
+   × model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 5651ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+Error: stateMachine property failed after 1 shrink(s) (seed=-2062546243, path=0:2): expected 120 to be 60 // Object.is equality
+ ❯ failWithPbtCounterexample ../../src/test/pbt-failure.ts:38:9
+     36|     ? details.errorInstance.message
+     37|     : String(details.errorInstance ?? 'property check failed');
+     38|   throw new Error(
+       |         ^
+     39|     `${lane} property failed after ${details.numShrinks} shrink(s) `
+     40|     + `(seed=${details.seed}, path=${details.counterexamplePath ?? 'un…
+ ❯ runModelBatch state-machine-fuzz.test.ts:526:9
+ ❯ state-machine-fuzz.test.ts:548:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:24:42
+   Duration  9.66s (transform 865ms, setup 0ms, import 2.26s, tests 5.66s, environment 1ms)
+

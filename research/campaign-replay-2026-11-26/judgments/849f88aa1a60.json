@@ -1,0 +1,77 @@
+{
+  "case": "R01",
+  "candidates": [
+    {
+      "id": "e0ac039f05fc",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes the nightly trigger, four-job matrix, all-module enrollment and per-job floor of 60. The manual job targets one route function.",
+          "reason": "The shipped configuration ends the broad recurring work and keeps the score informational."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the focused tests in normal CI and seeds a wrong endpoint. Adds a destination assertion only if the existing tests miss the fault.",
+          "reason": "The seeded fault directly decides whether a regression is needed. The assertion allows valid alternate bends."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Stops the unsuccessful nightly lane. Reconsiders recurrence only after a completed target-CI baseline, measured headroom, actionable findings beyond the regression and a named owner who handles results.",
+          "reason": "Each prerequisite addresses a specific missing justification for recurring runner use."
+        }
+      ]
+    },
+    {
+      "id": "3c4cb3ab4816",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes the schedule, four-job matrix, all-module enrollment and score floor. Manual dispatch selects a named route function.",
+          "reason": "The proposed recurring expansion and threshold do not ship."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Preserves the suite on its existing trigger. Seeds a source-for-destination fault on a fixture and extends the endpoint check only if the suite misses it.",
+          "reason": "The fault check decides whether a focused assertion is needed. A distinct unanswered question is required for the optional 30-minute mutation trial."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Disables the failing schedule. Future recurrence needs a complete target-runner baseline within budget, an actionable fault class beyond the regression and a named owner accepting notification and triage.",
+          "reason": "A measured run, added detection value and accepted responsibility must all precede recurrence."
+        }
+      ]
+    },
+    {
+      "id": "8d47c118af05",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Replaces the schedule and four-job matrix with one manual runner for one route module and drops the proposed score floor.",
+          "reason": "The pilot limits enrollment and introduces neither scheduled execution nor a score gate."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps existing focused tests on their current triggers. Samples at most 10 mutants in 30 minutes and adds a regression when a survivor reveals a missed observable behavior.",
+          "reason": "The pilot bounds runner use and gives the owner a concrete decision about which surviving fault merits a test."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Removes the unsuccessful nightly run and requires an owner before dispatch. Captures actual target-runner cost and holds scheduling pending a completed baseline and owner review of cost and actionable findings.",
+          "reason": "Measured capacity and evidence of a test gap go to an identified reviewer before recurrence is considered."
+        }
+      ]
+    }
+  ]
+}

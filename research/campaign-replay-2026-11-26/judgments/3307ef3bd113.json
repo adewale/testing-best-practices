@@ -1,0 +1,77 @@
+{
+  "case": "R07",
+  "candidates": [
+    {
+      "id": "0e8d15fc799b",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Seeds the escaped edit or shifts the relevant comparison by one in a scratch copy, then reruns the same four tests.",
+          "reason": "This directly measures whether the existing assertions detect the named fault."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the suite if it catches the fault. For a surviving mutant, compares the public parser results and adds a regression row only for a demonstrated gap. Stops after classification and verification or at ten minutes.",
+          "reason": "The documented boundary result determines what to ship, and the cap covers triage."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Approves one manual run and checks the four focused tests on the original function before seeding the fault.",
+          "reason": "The baseline serves this experiment alone and creates no ongoing repository requirement."
+        }
+      ]
+    },
+    {
+      "id": "3b8a3adc76fe",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Temporarily reintroduces the escaped boundary comparison or shifts the relevant bound in a scratch copy, leaving the four tests unchanged for measurement.",
+          "reason": "One seeded comparison tests the specified off-by-one fault at low cost."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the suite when the intended assertion fails. For a demonstrated gap, verifies the missing public boundary assertion against the mutant and the restored parser. Stops at a conclusive result or ten minutes.",
+          "reason": "Detection and an observable gap lead to distinct test decisions, with an explicit time limit for an inconclusive run."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Approves the proposed one-off run and uses a temporary function-scoped comparison with the existing test command.",
+          "reason": "The plan requires neither recurring administration nor a permanent score or gate."
+        }
+      ]
+    },
+    {
+      "id": "b43f1b09dc15",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Temporarily shifts the comparison at the relevant limit and runs the same four existing tests on the original and mutant.",
+          "reason": "The single edit and unchanged assertions isolate the fault the maintainer asked about."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Ships no change if an existing boundary assertion fails as expected. If all four tests pass, keeps a new exact-boundary assertion only after it fails on the mutant and passes on the original. Stops after the one fault or at ten minutes.",
+          "reason": "The specified public result determines whether to keep a regression, and unresolved evidence at the cap is recorded as inconclusive."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Runs one fault manually through the existing test runner and removes the temporary production edit.",
+          "reason": "It accepts bounded mutation testing without adding a recurring lane, repository baseline, or permanent gate."
+        }
+      ]
+    }
+  ]
+}

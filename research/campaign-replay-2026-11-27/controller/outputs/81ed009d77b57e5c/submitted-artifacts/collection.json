@@ -1,0 +1,198 @@
+{
+  "scope": "existing report-cited logs from the delivered subject; no model regeneration",
+  "collected_utc": "2026-11-27T02:41:11.659500+00:00",
+  "files": [
+    {
+      "path": "additional-unit.log",
+      "sha256": "2757a606824b5767aae94797755326baabf6555e9d6de8fa20cc326400f65b44",
+      "bytes": 29915,
+      "source_mtime_utc": "2026-11-27T02:30:45.237200+00:00"
+    },
+    {
+      "path": "additional-unit.txt",
+      "sha256": "a3451ac812eda4cc2aa5e058db955127e1df9742f50ad5d89ca7bd1d3af9c029",
+      "bytes": 378,
+      "source_mtime_utc": "2026-11-27T02:30:40.300500+00:00"
+    },
+    {
+      "path": "audit-runs.tsv",
+      "sha256": "daa981f612088c3e5e6a3ee020be2f08d4306f6ba128cde66fa5c1d90bbbe998",
+      "bytes": 6094,
+      "source_mtime_utc": "2026-11-27T02:37:50.585440+00:00"
+    },
+    {
+      "path": "baseline-unit.log",
+      "sha256": "18bb6b3663c4ae99a9f6709a814007b80381c394a76f500fa557f11872a324e9",
+      "bytes": 268,
+      "source_mtime_utc": "2026-11-27T02:18:50.716558+00:00"
+    },
+    {
+      "path": "baseline-worker.log",
+      "sha256": "1fc0706515d6e67cfe45c87342726c7b7fa4bcef29aa93c1530776306061e401",
+      "bytes": 720,
+      "source_mtime_utc": "2026-11-27T02:18:54.228661+00:00"
+    },
+    {
+      "path": "ci-seed-after.log",
+      "sha256": "47f0ce0f06a46300deeafc11e1b6365b4257d7054ef606a8326a43ebbbdf44c2",
+      "bytes": 10051,
+      "source_mtime_utc": "2026-11-27T02:26:38.258021+00:00"
+    },
+    {
+      "path": "ci-seed-before.log",
+      "sha256": "e85656e71efacb5736f88aae7de8d367f29af2c19cfcab93fab911e643ea71c6",
+      "bytes": 10573,
+      "source_mtime_utc": "2026-11-27T02:19:20.181413+00:00"
+    },
+    {
+      "path": "client-seq.log",
+      "sha256": "fc979dd610dfa14f17fb4ff74193895be8ed36ae7904d61e0c193f9701845a7b",
+      "bytes": 15070,
+      "source_mtime_utc": "2026-11-27T02:26:30.497797+00:00"
+    },
+    {
+      "path": "control-hibernate-after.log",
+      "sha256": "7f6c846dbd14315e970436033f702b9af932f862f817b168d02a830eef73553d",
+      "bytes": 4393,
+      "source_mtime_utc": "2026-11-27T02:29:30.763020+00:00"
+    },
+    {
+      "path": "control-hibernate-before.log",
+      "sha256": "af1cfd66e210957ef555fa13130c410f326fa3c5fbceff3b36eb663491395bb0",
+      "bytes": 1569,
+      "source_mtime_utc": "2026-11-27T02:29:21.242743+00:00"
+    },
+    {
+      "path": "control-missing-disconnect.log",
+      "sha256": "bd44cccec13c6468ceb8d46627645b8f58af6fe02b63e66a946d4ec514dd2bf4",
+      "bytes": 4185,
+      "source_mtime_utc": "2026-11-27T02:27:26.887425+00:00"
+    },
+    {
+      "path": "control-patch-swing.log",
+      "sha256": "696755734856a7bf87bb7cc80faa3248b38e6f873f90f5442cfd4bcdc948f976",
+      "bytes": 3345,
+      "source_mtime_utc": "2026-11-27T02:36:41.691515+00:00"
+    },
+    {
+      "path": "control-promote.log",
+      "sha256": "1b9bf4342233d29c11fc7cd51ace46d1b884ddd09f08a67c0ed57b73814b2889",
+      "bytes": 68,
+      "source_mtime_utc": "2026-11-27T02:36:41.963522+00:00"
+    },
+    {
+      "path": "control-promoted-replay.log",
+      "sha256": "7cf7457abcd6164f4166985754e290ab15469b2af92fa126757112d27dc60db6",
+      "bytes": 2301,
+      "source_mtime_utc": "2026-11-27T02:36:45.903588+00:00"
+    },
+    {
+      "path": "control-waveform.log",
+      "sha256": "f714e5839aaaf0ae13dcacdcde742bf0dbf821b4dc45a63226e06b31e2f5b155",
+      "bytes": 769,
+      "source_mtime_utc": "2026-11-27T02:32:18.731920+00:00"
+    },
+    {
+      "path": "coverage-trace.log",
+      "sha256": "c20327d6338af1e9ca138532a76d86f02486c7bb6c837910b5c588140e2dc830",
+      "bytes": 50311,
+      "source_mtime_utc": "2026-11-27T02:27:34.007631+00:00"
+    },
+    {
+      "path": "final-all.log",
+      "sha256": "7c3d137a670ec7f32b08e47241573a152c3c5f27c1962bc935cea62b9176d266",
+      "bytes": 724,
+      "source_mtime_utc": "2026-11-27T02:30:17.416392+00:00"
+    },
+    {
+      "path": "final-ci.log",
+      "sha256": "e90b6a04f72a4613df58350236caf329ac185d96c293e6546e2ba67b46feb0b4",
+      "bytes": 10052,
+      "source_mtime_utc": "2026-11-27T02:30:01.747917+00:00"
+    },
+    {
+      "path": "final-focus-worker.log",
+      "sha256": "742ca41a49ad2caf8ffc47af1f52ce776b2344f017e90326dfc97be035a6d578",
+      "bytes": 28859,
+      "source_mtime_utc": "2026-11-27T02:36:58.275943+00:00"
+    },
+    {
+      "path": "final-multi.log",
+      "sha256": "9fec82b4f28348b8446338734f075f6ea11610f09b79d60e77563ad36d0644c7",
+      "bytes": 1969,
+      "source_mtime_utc": "2026-11-27T02:30:23.644572+00:00"
+    },
+    {
+      "path": "final-negative.log",
+      "sha256": "f315e74dd52977782adb9cf801fc90de1d16fb869304a14982dd9c76fd40f222",
+      "bytes": 1966,
+      "source_mtime_utc": "2026-11-27T02:30:36.796954+00:00"
+    },
+    {
+      "path": "final-zero.log",
+      "sha256": "d43db8c1feadab2659baabb07987b1272327d511acb8edf0db13b44ac82d9aeb",
+      "bytes": 1964,
+      "source_mtime_utc": "2026-11-27T02:30:29.760750+00:00"
+    },
+    {
+      "path": "gate-antipattern.log",
+      "sha256": "658145d301020dca7d2fa7069c8dbd5af437a85cf03bdb38c3f200fe2af6d222",
+      "bytes": 1514,
+      "source_mtime_utc": "2026-11-27T02:26:29.689773+00:00"
+    },
+    {
+      "path": "gate-app-types-worker-compiler.log",
+      "sha256": "6968c54f4c53d3f958762126846f375beebc4d7f92d357104a4ceb58ba9447a6",
+      "bytes": 322675,
+      "source_mtime_utc": "2026-11-27T02:34:24.315578+00:00"
+    },
+    {
+      "path": "gate-app-types.log",
+      "sha256": "3ae3775563a056552a8d80fd557bd9b568675a219706278c1336d4abce9a6cba",
+      "bytes": 62,
+      "source_mtime_utc": "2026-11-27T02:33:13.225505+00:00"
+    },
+    {
+      "path": "gate-collector.log",
+      "sha256": "23b6b150c60436436dbd73dc178f325773397d1d22aedf15e42d4d9a9b8e0807",
+      "bytes": 2965,
+      "source_mtime_utc": "2026-11-27T02:33:12.997498+00:00"
+    },
+    {
+      "path": "gate-dead-exports.log",
+      "sha256": "d0c349f1ba9898c006297261afce8a45ffa7b4f9df7154766bd8ea6642f81c7e",
+      "bytes": 14778,
+      "source_mtime_utc": "2026-11-27T02:31:10.185926+00:00"
+    },
+    {
+      "path": "gate-lint.log",
+      "sha256": "b2107f674f1c9dcba1484aaa10b1e554c5a30620f6a9a107bb1dee3dfc86515f",
+      "bytes": 62,
+      "source_mtime_utc": "2026-11-27T02:33:13.117501+00:00"
+    },
+    {
+      "path": "gate-test-antipatterns.log",
+      "sha256": "7067bfa327077d58611424ec1c42105cfbf46723caea47cb12bdb0859cc8db06",
+      "bytes": 142,
+      "source_mtime_utc": "2026-11-27T02:31:00.001629+00:00"
+    },
+    {
+      "path": "gate-test-links.log",
+      "sha256": "440ce0f83218ff564fe3a85c3a7b15a5acf896e43789cb0038e18dbcdf4bb60e",
+      "bytes": 135,
+      "source_mtime_utc": "2026-11-27T02:31:06.277812+00:00"
+    },
+    {
+      "path": "worker-types-before.log",
+      "sha256": "01ceb5c38f21c836927304431258c1e32786820eb056d0692dd04f9df1a57724",
+      "bytes": 830,
+      "source_mtime_utc": "2026-11-27T02:32:21.516001+00:00"
+    },
+    {
+      "path": "worker-types.log",
+      "sha256": "01ceb5c38f21c836927304431258c1e32786820eb056d0692dd04f9df1a57724",
+      "bytes": 830,
+      "source_mtime_utc": "2026-11-27T02:31:13.154013+00:00"
+    }
+  ]
+}

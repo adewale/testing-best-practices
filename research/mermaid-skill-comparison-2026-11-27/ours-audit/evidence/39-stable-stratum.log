@@ -1,0 +1,185 @@
+src/agent/parse.ts:7:// back to an opaque body (lossless round-trip via canonicalSource) rather
+src/agent/parse.ts:197:/** The canonical lines of an indentation-sensitive family: the same lines,
+src/agent/parse.ts:199: * keeping its indentation, so parsing the canonical source reads the same
+src/agent/parse.ts:257:  // wrapperSource and therefore request canonical wrapper synthesis.
+src/agent/parse.ts:263:  const canonicalSource = capturedFamily?.canonicalSource === 'preserved'
+src/agent/parse.ts:268:  const sourceMapCanonicalSource = maskAccessibilityDirectivesForSourceMap(canonicalSource, capturedFamily)
+src/agent/parse.ts:277:    return attachSourceMapSpans(map, canonicalSource, source, documentSpans, grammar)
+src/agent/parse.ts:284:  // non-leading init directives and original line endings for every future
+src/agent/parse.ts:323:      canonicalSource,
+src/agent/parse.ts:340:      canonicalSource,
+src/agent/parse.ts:407:        canonicalSource,
+src/agent/parse.ts:425:        canonicalSource,
+src/agent/parse.ts:429:    let diagram: ValidDiagram = { kind, meta, body: parsed.value, source: sourceMap, canonicalSource }
+src/agent/parse.ts:444:      kind, meta, body: { kind: 'opaque', family: kind, source: opaqueSource }, source: tracedSourceMap(emptySourceMap()), canonicalSource,
+src/agent/parse.ts:453:    canonicalSource,
+src/agent/parse.ts:461:/** Identify comments that canonical serialization does not already own. Counts
+src/mermaid-source.ts:545:/** Read the shared post-wrapper source without normalizing payload line endings.
+src/mermaid-source.ts:555: * grammar rather than search for the authored bytes: a source-preserving
+src/mermaid-source.ts:581: * Generous object reads remain repairable as canonical JSON. */
+src/mermaid-source.ts:699:  const canonicalLines = physicalStatementEnds?.some((end, index) => end > index)
+src/mermaid-source.ts:747:    text: canonicalLines.join('\n'),
+src/mermaid-source.ts:877:  const yamlFrontmatter = frontmatterMatch ? canonicalizeFrontmatterMap(parseYamlDocument(frontmatterMatch.yaml)) : {}
+src/mermaid-source.ts:879:  const extracted = extractInitDirectives(rawBody, mergeFrontmatterMaps(canonicalizeFrontmatterMap(baseFrontmatter), yamlFrontmatter), family)
+src/mermaid-source.ts:969:  return canonicalizeFrontmatterMap(toFrontmatterMap(config) ?? {})
+src/mermaid-source.ts:1092:function canonicalizeFrontmatterMap(raw: MermaidFrontmatterMap): MermaidFrontmatterMap {
+src/mermaid-source.ts:1129:  // The base is already a fresh, admitted canonical map. An empty merge has
+docs/agent-mutation-policy.md:76:returned diagram's IDs: its canonical writer and reader may reassign positions
+docs/agent-mutation-policy.md:94:source-preserving mutation (below) supports four bounded operations on opaque
+docs/agent-mutation-policy.md:132:  // Inspect warnings and save exact source; do not canonicalize it.
+docs/agent-mutation-policy.md:145:Ordinary structured mutation re-serializes the whole diagram canonically.
+docs/agent-mutation-policy.md:152:2. The difference between the canonical text before and after the edit is
+docs/agent-mutation-policy.md:153:   replayed on the authored lines. Each canonical statement is traced to the
+docs/agent-mutation-policy.md:158:   canonical spelling beside its neighbour, indented like its authored
+docs/agent-mutation-policy.md:163:   same diagram as the canonical edit: the same facts and the same canonical
+docs/agent-mutation-policy.md:172:4. When no local change passes, the canonical source is returned with
+docs/agent-mutation-policy.md:173:   `preservation: { method: 'canonical', reason }`; otherwise the result
+docs/agent-mutation-policy.md:175:   from source has no authored lines and is always written canonically.
+docs/agent-mutation-policy.md:177:New statements are written in the same portable spelling as canonical
+docs/agent-mutation-policy.md:191:`A ->> B: ping`) is edited through its canonical reading, so only the changed
+docs/agent-mutation-policy.md:192:text changes. A canonical difference too long for the line table is compared
+docs/agent-mutation-policy.md:199:inside a block its canonical statement is not in goes after that block's
+docs/agent-mutation-policy.md:201:are written in canonical order (`A:::hot & B --> C` less `A --> C` becomes
+docs/agent-mutation-policy.md:216:canonical edit; the note instead follows `S --> T`, or the composite whose
+docs/agent-mutation-policy.md:224:A new statement written beside its canonical neighbour can stand before what
+docs/agent-mutation-policy.md:262:edit that empties a family below its grammar floor, a canonical difference
+docs/agent-mutation-policy.md:263:beyond the diff budget, and edits to wrappers the canonical writer does not
+docs/agent-mutation-policy.md:266:the source is then the ordinary canonical result.
+docs/agent-mutation-policy.md:271:- Library batches: `applyOps({ source, ops, mode: 'source-preserving' })`.
+docs/agent-mutation-policy.md:274:- Declarative MCP `mutate`: pass `mode: 'source-preserving'` with `source` and
+docs/agent-mutation-policy.md:279:- Editor adapter: programmatic `applyOps(source, ops, 'source-preserving')`
+docs/agent-mutation-policy.md:282:Batch success includes `mode: 'source-preserving'`, verification diagnostics
+docs/agent-mutation-policy.md:291:output with `am format` keep working; 0.6.0 makes source-preserving the default
+docs/agent-mutation-policy.md:292:for `am mutate` and MCP `mutate`. Pin today's output with `--canonical` or
+docs/agent-mutation-policy.md:313:[Omitted long matching line]
+src/agent/source-projection.ts:5:// The canonical writer is a function of the typed model, so the line
+src/agent/source-projection.ts:6:// difference between canonical(before) and canonical(after) is exactly what
+src/agent/source-projection.ts:7:// the edit changed. Each canonical statement of `before` is traced to the
+src/agent/source-projection.ts:9:// the same identity, else a line already in canonical spelling, else the line
+src/agent/source-projection.ts:13:// that spells it (through the line's canonical reading when the line keeps
+src/agent/source-projection.ts:16:// canonical, portable spelling beside its neighbour, indented like its
+src/agent/source-projection.ts:22:// same diagram as the canonical result: the same facts and the same canonical
+src/agent/source-projection.ts:34:// goes outside authored blocks its canonical statement is not in, and the
+src/agent/source-projection.ts:36:// in canonical order. A declaration whose label the writer moves onto a new
+src/agent/source-projection.ts:70:// The caller otherwise writes the canonical source and says why: the closest
+src/agent/source-projection.ts:82:/** How a source-preserving edit of a structured body was written. */
+src/agent/source-projection.ts:85:   * byte. `canonical`: no local splice reproduced the edit, so the whole
+src/agent/source-projection.ts:86:   * diagram was re-serialized canonically (comments and spelling may change). */
+src/agent/source-projection.ts:87:  readonly method: 'local' | 'canonical'
+src/agent/source-projection.ts:88:  /** Why the local projection was not used, for `canonical`. */
+src/agent/source-projection.ts:132: * the same canonical statements, whose incidental order may differ. */
+src/agent/source-projection.ts:139:  // A segment kept verbatim and the same statements written canonically differ
+src/agent/source-projection.ts:148:  /** The authored line that produced each canonical statement, or -1. */
+src/agent/source-projection.ts:150:  /** Authored lines that produce no canonical statement of their own, with
+src/agent/source-projection.ts:159:  /** Structural pass: canonical block openers no authored block spells (a
+src/agent/source-projection.ts:170:  /** The canonical statements an authored statement reads as on its own (the
+src/agent/source-projection.ts:186:  /** The canonical statements an authored statement adds inside a block
+src/agent/source-projection.ts:189:  /** The canonical statements a statement adds after earlier authored
+src/agent/source-projection.ts:275:  const canonical = counts(c0.slice(1))
+src/agent/source-projection.ts:280:    if (at > 0 && !inert(line.text) && !canonical.has(trimmed) && !reader.isolated(trimmed)) {
+src/agent/source-projection.ts:286:        if (found?.size && [...found.keys()].every(statement => canonical.has(statement))) { line = { text, eol }; at = next; break }
+src/agent/source-projection.ts:294:/** Which authored line produced each canonical statement of `before`: the
+src/agent/source-projection.ts:296: * line already in canonical spelling, else the line whose own canonical
+src/agent/source-projection.ts:324:  const canonical = counts(c0.slice(1))
+src/agent/source-projection.ts:328:    if (index === 0 || !trimmed || (inert(text) && !canonical.has(trimmed))) return new Map<string, number>()
+src/agent/source-projection.ts:329:    if (canonical.has(trimmed)) return new Map([[trimmed, 1]])
+src/agent/source-projection.ts:416:  // The closer of an authored block goes with what it closes: the canonical
+src/agent/source-projection.ts:436: * label: the canonical writer writes the last label on both); identical
+src/agent/source-projection.ts:437: * statements take their owners in authored order. A canonical block closer
+src/agent/source-projection.ts:451:  // A canonical opener: the next statement is deeper, or closes it at once.
+src/agent/source-projection.ts:647:/** The changed middle of two canonical lines, widened to whole words. */
+src/agent/source-projection.ts:675: * statement joined from several physical lines spells a canonical line break
+src/agent/source-projection.ts:692:/** Replace the one authored occurrence of a changed canonical token run. */
+src/agent/source-projection.ts:721: * same change made through the canonical reading of `before` when `before`
+src/agent/source-projection.ts:744:  /** Write a statement the canonical text only reorders at its new place;
+src/agent/source-projection.ts:750:  /** Structural pass: rewrite a kept statement in canonical spelling when a
+     1	import { describe, expect, test } from 'bun:test'
+     2	import fc from 'fast-check'
+     3	import { describeMermaidFacts, mutate, parseRegisteredMermaid, renderMermaidSVG, serializeMermaid, synthesizeFromGraph, verifyMermaid } from '../agent/index.ts'
+     4	import { applyMutationBatch } from '../agent/mutate.ts'
+     5	import type { AnyMutationOp, ParsedDiagram } from '../agent/types.ts'
+     6	import { fcParameters } from './helpers/fc-parameters.ts'
+     7	import { METAMORPHIC_FAMILIES } from './helpers/metamorphic-families.ts'
+     8	import { startUpstreamMermaid } from './helpers/upstream-mermaid.ts'
+     9	
+    10	function parse(source: string): ParsedDiagram {
+    11	  const parsed = parseRegisteredMermaid(source)
+    12	  if (!parsed.ok) throw new Error(JSON.stringify(parsed.error))
+    13	  return parsed.value
+    14	}
+    15	
+    16	function reload(diagram: ParsedDiagram): ParsedDiagram {
+    17	  const payload = JSON.parse(JSON.stringify(diagram, (_key, value) => value instanceof Map ? Object.fromEntries(value) : value instanceof Set ? [...value] : value))
+    18	  const result = synthesizeFromGraph(payload)
+    19	  if (!result.ok) throw new Error(JSON.stringify(result.error))
+    20	  const source = serializeMermaid(result.value)
+    21	  const reparsed = parse(source)
+    22	  expect(serializeMermaid(reparsed)).toBe(source)
+    23	  return reparsed
+    24	}
+    25	
+    26	function edit(diagram: ParsedDiagram, op: AnyMutationOp): ParsedDiagram {
+    27	  const result = mutate(diagram, op)
+    28	  if (!result.ok) throw new Error(result.error.message)
+    29	  return reload(result.value)
+    30	}
+    31	
+    32	const wrapperArb = fc.constantFrom('', '%% wrapper\n', '---\ntitle: Preserve\n---\n%% wrapper\n', '%%{init: {"theme":"dark"}}%%\n')
+    33	
+    34	describe('canonical source', () => {
+    35	  for (const family of Object.values(METAMORPHIC_FAMILIES)) {
+    36	    // canonicalSource is the normalized renderer and source-map input. Families
+    37	    // that read indentation as structure (mindmap, kanban, treemap, ishikawa)
+    38	    // lost their tree when it was line-trimmed: a mindmap's canonical source
+    39	    // re-read as several roots. Scaling the indentation keeps every family's
+    40	    // relative structure, so the canonical source must read as the same facts.
+    41	    test(`${family.family}: the canonical source reads as the authored diagram`, () => {
+    42	      fc.assert(fc.property(
+    43	        fc.integer({ min: family.kRange[0], max: family.kRange[1] }), fc.integer({ min: 1, max: 3 }),
+    44	        (size, scale) => {
+    45	          const source = family.build(size, 'canon').replace(/^ +/gm, indent => ' '.repeat(indent.length * scale))
+    46	          const diagram = parse(source)
+    47	          const reread = parseRegisteredMermaid(diagram.canonicalSource)
+    48	          expect(reread.ok).toBe(true)
+    49	          if (!reread.ok) return
+    50	          expect(reread.value.body.kind).toBe(diagram.body.kind)
+    51	          expect(describeMermaidFacts(reread.value)).toEqual(describeMermaidFacts(diagram))
+    52	        }), fcParameters({ numRuns: 8 }),
+    53	      )
+    54	    })
+    55	  }
+    56	})
+    57	
+    58	// `am format` (serialize∘parse) over hostile text in each family's text
+    59	// fields, written raw into the authored source. Whatever the reader admits as
+    60	// a typed body, the writer must spell back: serialization never throws on a
+    61	// body the parser produced (V5), and its output re-reads as the same facts and
+    62	// formats to itself (V6, V7). A source the reader keeps preserved is written
+    63	// back verbatim.
+    64	describe('format over hostile field text', () => {
+    65	  const TEMPLATES: ReadonlyArray<readonly [string, (text: string) => string]> = [
+    66	    ['flowchart node', text => `flowchart LR\n  A["${text}"] --> B\n`],
+    67	    ['flowchart edge', text => `flowchart LR\n  A -->|"${text}"| B\n`],
+    68	    ['state transition', text => `stateDiagram-v2\n  S1 --> S2 : ${text}\n`],
+    69	    ['state label', text => `stateDiagram-v2\n  S1 : ${text}\n`],
+    70	    ['sequence message', text => `sequenceDiagram\n  A->>B: ${text}\n`],
+    71	    ['class label', text => `classDiagram\n  class A["${text}"]\n`],
+    72	    ['class member', text => `classDiagram\n  class A {\n    ${text}\n  }\n`],
+    73	    ['class title', text => `classDiagram\n  title ${text}\n  class A\n`],
+    74	    ['er relation', text => `erDiagram\n  A ||--o{ B : "${text}"\n`],
+    75	    ['timeline event', text => `timeline\n  2025 : ${text}\n`],
+    76	    ['journey task', text => `journey\n  section S\n    ${text}: 3: Me\n`],
+    77	    ['architecture service', text => `architecture-beta\n  service api(server)[${text}]\n`],
+    78	    ['xychart title', text => `xychart-beta\n  title "${text}"\n  x-axis [a, b]\n  bar [1, 2]\n`],
+    79	    ['pie slice', text => `pie\n  "${text}" : 3\n`],
+    80	    ['pie title', text => `pie\n  title ${text}\n  "a" : 3\n`],
+    81	    ['quadrant point', text => `quadrantChart\n  ${text}: [0.3, 0.6]\n`],
+    82	    ['gantt task', text => `gantt\n  dateFormat YYYY-MM-DD\n  section S\n    ${text} : t1, 2024-01-01, 1d\n`],
+    83	    ['mindmap node', text => `mindmap\n  root\n    ${text}\n`],
+    84	    ['gitgraph message', text => `gitGraph\n  commit id: "a" msg: "${text}"\n`],
+    85	    ['radar axis', text => `radar-beta\n  axis a["${text}"], b, c\n  curve x{1, 2, 3}\n`],
+    86	    ['sankey quoted node', text => `sankey-beta\n"${text}",B,10\n`],
+    87	    ['sankey bare node', text => `sankey-beta\n${text},B,10\n`],
+    88	    ['c4 label', text => `C4Context\n  Person(user, "${text}")\n`],
+    89	    ['packet field', text => `packet\n  0-15: "${text}"\n`],
+    90	    ['kanban task', text => `kanban\n  todo[Todo]\n    t1["${text}"]\n`],

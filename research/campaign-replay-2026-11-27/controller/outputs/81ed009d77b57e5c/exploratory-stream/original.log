@@ -1,0 +1,416 @@
+EXPLORATORY run=candidate-split exit=0
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":113},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n1395"}]
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":23}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_put","tempo":87,"swing":10},{"kind":"connect"},{"kind":"rest_patch_state","tempo":116,"swing":71}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":174,"swing":66},{"kind":"ws_swing","swing":81},{"kind":"hard_evict"},{"kind":"rest_put","tempo":99,"swing":63},{"kind":"rest_put","tempo":158,"swing":92},{"kind":"hard_evict"},{"kind":"connect"},{"kind":"ws_tempo","tempo":123}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":98}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n8861"},{"kind":"ws_tempo","tempo":122},{"kind":"hibernate"},{"kind":"disconnect"},{"kind":"rest_patch_name","name":"n3143"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":77,"swing":63}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":140,"swing":8},{"kind":"hibernate"},{"kind":"hard_evict"},{"kind":"connect"},{"kind":"rest_put","tempo":140,"swing":36},{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":60},{"kind":"hibernate"},{"kind":"rest_patch_name","name":"n9829"},{"kind":"disconnect"},{"kind":"rest_patch_state","tempo":118,"swing":55}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_put","tempo":68,"swing":60},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":68,"swing":48},{"kind":"rest_patch_name","name":"n6956"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"},{"kind":"ws_swing","swing":58},{"kind":"ws_swing","swing":0},{"kind":"disconnect"},{"kind":"connect"},{"kind":"ws_swing","swing":86},{"kind":"rest_put","tempo":179,"swing":23},{"kind":"hibernate"},{"kind":"ws_swing","swing":6}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"},{"kind":"rest_put","tempo":168,"swing":65},{"kind":"ws_swing","swing":11},{"kind":"rest_patch_name","name":"n9191"},{"kind":"rest_patch_name","name":"n4857"},{"kind":"rest_put","tempo":170,"swing":42},{"kind":"ws_swing","swing":44},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":99},{"kind":"hibernate"},{"kind":"rest_patch_name","name":"n8945"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":55},{"kind":"hard_evict"},{"kind":"connect"},{"kind":"hibernate"},{"kind":"ws_tempo","tempo":102},{"kind":"hibernate"},{"kind":"ws_swing","swing":93}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":147,"swing":55},{"kind":"ws_tempo","tempo":137},{"kind":"rest_patch_name","name":"n2806"},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n8144"},{"kind":"disconnect"},{"kind":"rest_patch_state","tempo":138,"swing":64},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":70},{"kind":"rest_patch_name","name":"n9894"},{"kind":"ws_swing","swing":62},{"kind":"hibernate"},{"kind":"ws_tempo","tempo":102}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n9897"},{"kind":"rest_patch_name","name":"n2875"},{"kind":"rest_put","tempo":119,"swing":27},{"kind":"rest_patch_state","tempo":160,"swing":22},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n1862"},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":137,"swing":52},{"kind":"ws_swing","swing":65},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"rest_patch_state","tempo":141,"swing":15}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":62}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=30 coverage={"accepted":99,"dirtyDisconnects":3,"byKind":{"ws_tempo":10,"ws_swing":13,"rest_put":9,"rest_patch_state":11,"rest_patch_name":14,"hibernate":17,"hard_evict":11,"disconnect":8,"connect":6}}
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":50},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":87},{"kind":"rest_put","tempo":93,"swing":29},{"kind":"ws_swing","swing":85},{"kind":"hibernate"},{"kind":"rest_put","tempo":118,"swing":37},{"kind":"hibernate"},{"kind":"ws_swing","swing":60},{"kind":"ws_swing","swing":44}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":141,"swing":28},{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"rest_put","tempo":127,"swing":82}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_put","tempo":107,"swing":97},{"kind":"rest_put","tempo":93,"swing":39},{"kind":"rest_patch_state","tempo":140,"swing":63},{"kind":"hibernate"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":132},{"kind":"rest_put","tempo":126,"swing":49},{"kind":"rest_patch_name","name":"n9800"},{"kind":"hibernate"},{"kind":"rest_put","tempo":106,"swing":0},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n615"},{"kind":"disconnect"},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":67},{"kind":"rest_patch_state","tempo":138,"swing":26},{"kind":"hibernate"},{"kind":"hard_evict"},{"kind":"rest_patch_name","name":"n3863"},{"kind":"rest_patch_state","tempo":110,"swing":29},{"kind":"rest_patch_state","tempo":119,"swing":44}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":71},{"kind":"ws_swing","swing":62},{"kind":"disconnect"},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":131,"swing":32},{"kind":"rest_patch_state","tempo":167,"swing":68},{"kind":"rest_patch_name","name":"n1333"},{"kind":"rest_patch_state","tempo":88,"swing":20},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":132,"swing":1},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":81,"swing":37},{"kind":"rest_patch_name","name":"n5379"},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_patch_name","name":"n4996"},{"kind":"hard_evict"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":111}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"rest_patch_name","name":"n9941"},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n5605"},{"kind":"hibernate"},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":149,"swing":78},{"kind":"ws_swing","swing":83},{"kind":"rest_patch_name","name":"n1842"},{"kind":"rest_patch_state","tempo":139,"swing":35},{"kind":"rest_patch_state","tempo":110,"swing":58},{"kind":"hibernate"},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"rest_patch_name","name":"n5817"},{"kind":"hard_evict"},{"kind":"hibernate"},{"kind":"connect"},{"kind":"ws_tempo","tempo":179},{"kind":"rest_patch_state","tempo":83,"swing":64},{"kind":"rest_put","tempo":134,"swing":65}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":131,"swing":66},{"kind":"hibernate"},{"kind":"rest_put","tempo":90,"swing":13}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":119,"swing":91},{"kind":"hibernate"},{"kind":"rest_put","tempo":73,"swing":15},{"kind":"rest_patch_state","tempo":89,"swing":75},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":162},{"kind":"rest_patch_state","tempo":86,"swing":46},{"kind":"rest_put","tempo":108,"swing":84},{"kind":"rest_patch_state","tempo":121,"swing":42},{"kind":"ws_tempo","tempo":109},{"kind":"ws_tempo","tempo":122},{"kind":"rest_patch_name","name":"n7585"},{"kind":"ws_swing","swing":47},{"kind":"rest_put","tempo":132,"swing":5}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":134},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":134,"swing":77},{"kind":"rest_put","tempo":174,"swing":18}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":92,"swing":100},{"kind":"hibernate"},{"kind":"rest_patch_name","name":"n6851"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":168},{"kind":"ws_swing","swing":82},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":134,"swing":10}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n8587"},{"kind":"hibernate"},{"kind":"ws_swing","swing":70},{"kind":"ws_tempo","tempo":140},{"kind":"ws_swing","swing":25},{"kind":"rest_put","tempo":95,"swing":4},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n4729"},{"kind":"rest_put","tempo":73,"swing":44},{"kind":"rest_put","tempo":85,"swing":87},{"kind":"hibernate"},{"kind":"rest_put","tempo":124,"swing":14},{"kind":"ws_swing","swing":45},{"kind":"hibernate"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_put","tempo":141,"swing":98}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":96},{"kind":"rest_patch_name","name":"n9965"},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":122,"swing":58}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"rest_put","tempo":89,"swing":59},{"kind":"rest_patch_name","name":"n4167"},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":117,"swing":75},{"kind":"rest_patch_state","tempo":111,"swing":67}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=60 coverage={"accepted":234,"dirtyDisconnects":6,"byKind":{"ws_tempo":22,"ws_swing":25,"rest_put":28,"rest_patch_state":36,"rest_patch_name":30,"hibernate":36,"hard_evict":31,"disconnect":16,"connect":10}}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 2606ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  02:46:33
+   Duration  6.75s (transform 832ms, setup 0ms, import 2.56s, tests 2.61s, environment 0ms)
+
+
+EXPLORATORY run=single-60-reference exit=0
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":113},{"kind":"disconnect"}]
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n1395"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":23}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_put","tempo":87,"swing":10},{"kind":"connect"},{"kind":"rest_patch_state","tempo":116,"swing":71}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":174,"swing":66},{"kind":"ws_swing","swing":81},{"kind":"hard_evict"},{"kind":"rest_put","tempo":99,"swing":63},{"kind":"rest_put","tempo":158,"swing":92},{"kind":"hard_evict"},{"kind":"connect"},{"kind":"ws_tempo","tempo":123}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":98}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n8861"},{"kind":"ws_tempo","tempo":122},{"kind":"hibernate"},{"kind":"disconnect"},{"kind":"rest_patch_name","name":"n3143"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":77,"swing":63}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":140,"swing":8},{"kind":"hibernate"},{"kind":"hard_evict"},{"kind":"connect"},{"kind":"rest_put","tempo":140,"swing":36},{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":60},{"kind":"hibernate"},{"kind":"rest_patch_name","name":"n9829"},{"kind":"disconnect"},{"kind":"rest_patch_state","tempo":118,"swing":55}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_put","tempo":68,"swing":60},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":68,"swing":48},{"kind":"rest_patch_name","name":"n6956"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"},{"kind":"ws_swing","swing":58},{"kind":"ws_swing","swing":0},{"kind":"disconnect"},{"kind":"connect"},{"kind":"ws_swing","swing":86},{"kind":"rest_put","tempo":179,"swing":23},{"kind":"hibernate"},{"kind":"ws_swing","swing":6}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"},{"kind":"rest_put","tempo":168,"swing":65},{"kind":"ws_swing","swing":11},{"kind":"rest_patch_name","name":"n9191"},{"kind":"rest_patch_name","name":"n4857"},{"kind":"rest_put","tempo":170,"swing":42},{"kind":"ws_swing","swing":44},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":99},{"kind":"hibernate"},{"kind":"rest_patch_name","name":"n8945"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":55},{"kind":"hard_evict"},{"kind":"connect"},{"kind":"hibernate"},{"kind":"ws_tempo","tempo":102},{"kind":"hibernate"},{"kind":"ws_swing","swing":93}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":147,"swing":55},{"kind":"ws_tempo","tempo":137},{"kind":"rest_patch_name","name":"n2806"},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n8144"},{"kind":"disconnect"},{"kind":"rest_patch_state","tempo":138,"swing":64},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":70},{"kind":"rest_patch_name","name":"n9894"},{"kind":"ws_swing","swing":62},{"kind":"hibernate"},{"kind":"ws_tempo","tempo":102}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n9897"},{"kind":"rest_patch_name","name":"n2875"},{"kind":"rest_put","tempo":119,"swing":27},{"kind":"rest_patch_state","tempo":160,"swing":22},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n1862"},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":137,"swing":52},{"kind":"ws_swing","swing":65},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"rest_patch_state","tempo":141,"swing":15}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":62}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":50},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":87},{"kind":"rest_put","tempo":93,"swing":29},{"kind":"ws_swing","swing":85},{"kind":"hibernate"},{"kind":"rest_put","tempo":118,"swing":37},{"kind":"hibernate"},{"kind":"ws_swing","swing":60},{"kind":"ws_swing","swing":44}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":141,"swing":28},{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"rest_put","tempo":127,"swing":82}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_put","tempo":107,"swing":97},{"kind":"rest_put","tempo":93,"swing":39},{"kind":"rest_patch_state","tempo":140,"swing":63},{"kind":"hibernate"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":132},{"kind":"rest_put","tempo":126,"swing":49},{"kind":"rest_patch_name","name":"n9800"},{"kind":"hibernate"},{"kind":"rest_put","tempo":106,"swing":0},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n615"},{"kind":"disconnect"},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_swing","swing":67},{"kind":"rest_patch_state","tempo":138,"swing":26},{"kind":"hibernate"},{"kind":"hard_evict"},{"kind":"rest_patch_name","name":"n3863"},{"kind":"rest_patch_state","tempo":110,"swing":29},{"kind":"rest_patch_state","tempo":119,"swing":44}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":71},{"kind":"ws_swing","swing":62},{"kind":"disconnect"},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":131,"swing":32},{"kind":"rest_patch_state","tempo":167,"swing":68},{"kind":"rest_patch_name","name":"n1333"},{"kind":"rest_patch_state","tempo":88,"swing":20},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":132,"swing":1},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":81,"swing":37},{"kind":"rest_patch_name","name":"n5379"},{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"rest_patch_name","name":"n4996"},{"kind":"hard_evict"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hibernate"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":111}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"rest_patch_name","name":"n9941"},{"kind":"connect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n5605"},{"kind":"hibernate"},{"kind":"hibernate"},{"kind":"rest_patch_state","tempo":149,"swing":78},{"kind":"ws_swing","swing":83},{"kind":"rest_patch_name","name":"n1842"},{"kind":"rest_patch_state","tempo":139,"swing":35},{"kind":"rest_patch_state","tempo":110,"swing":58},{"kind":"hibernate"},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"hard_evict"},{"kind":"hard_evict"},{"kind":"rest_patch_name","name":"n5817"},{"kind":"hard_evict"},{"kind":"hibernate"},{"kind":"connect"},{"kind":"ws_tempo","tempo":179},{"kind":"rest_patch_state","tempo":83,"swing":64},{"kind":"rest_put","tempo":134,"swing":65}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":131,"swing":66},{"kind":"hibernate"},{"kind":"rest_put","tempo":90,"swing":13}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":119,"swing":91},{"kind":"hibernate"},{"kind":"rest_put","tempo":73,"swing":15},{"kind":"rest_patch_state","tempo":89,"swing":75},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":162},{"kind":"rest_patch_state","tempo":86,"swing":46},{"kind":"rest_put","tempo":108,"swing":84},{"kind":"rest_patch_state","tempo":121,"swing":42},{"kind":"ws_tempo","tempo":109},{"kind":"ws_tempo","tempo":122},{"kind":"rest_patch_name","name":"n7585"},{"kind":"ws_swing","swing":47},{"kind":"rest_put","tempo":132,"swing":5}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":134},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":134,"swing":77},{"kind":"rest_put","tempo":174,"swing":18}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":92,"swing":100},{"kind":"hibernate"},{"kind":"rest_patch_name","name":"n6851"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":168},{"kind":"ws_swing","swing":82},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":134,"swing":10}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n8587"},{"kind":"hibernate"},{"kind":"ws_swing","swing":70},{"kind":"ws_tempo","tempo":140},{"kind":"ws_swing","swing":25},{"kind":"rest_put","tempo":95,"swing":4},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_name","name":"n4729"},{"kind":"rest_put","tempo":73,"swing":44},{"kind":"rest_put","tempo":85,"swing":87},{"kind":"hibernate"},{"kind":"rest_put","tempo":124,"swing":14},{"kind":"ws_swing","swing":45},{"kind":"hibernate"},{"kind":"hard_evict"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_put","tempo":141,"swing":98}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"ws_tempo","tempo":96},{"kind":"rest_patch_name","name":"n9965"},{"kind":"disconnect"}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"rest_patch_state","tempo":122,"swing":58}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+VERIFIER_SCHEDULE=[{"kind":"disconnect"},{"kind":"rest_put","tempo":89,"swing":59},{"kind":"rest_patch_name","name":"n4167"},{"kind":"hard_evict"},{"kind":"rest_patch_state","tempo":117,"swing":75},{"kind":"rest_patch_state","tempo":111,"swing":67}]
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=30 coverage={"accepted":234,"dirtyDisconnects":6,"byKind":{"ws_tempo":22,"ws_swing":25,"rest_put":28,"rest_patch_state":36,"rest_patch_name":30,"hibernate":36,"hard_evict":31,"disconnect":16,"connect":10}}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 2540ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  02:46:40
+   Duration  6.04s (transform 863ms, setup 0ms, import 2.31s, tests 2.54s, environment 0ms)
+
+
+VERIFIER_STREAM={"peer": "single ordinary fast-check invocation, same seed, 60 schedules, no path option", "matched": 60, "commands": [99, 135], "schedule_sha256": ["7754fcd08268bb6e570c2eba1962459923b7bf9f76de6b371842dccf795af24f", "4d999bfabeeec921b87bbe7e275272e8548609c59a97d5ae26ebde8451158031", "d266b90d0d39febf9c342d0925aecf56a79f406f9bfb7817e9ca203c65820989"]}

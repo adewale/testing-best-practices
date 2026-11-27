@@ -1,0 +1,169 @@
+{
+  "scoring": "All frozen criteria must pass; no partial-credit pass. Raw blind judgments are preserved.",
+  "rows": {
+    "R09": {
+      "base": {
+        "verdict": "PASS",
+        "candidate": "de7aa4d16bdf",
+        "judgment": "judgments/0c7525f06d5a.json"
+      },
+      "none": {
+        "verdict": "PASS",
+        "candidate": "03c9e0077220",
+        "judgment": "judgments/0c7525f06d5a.json"
+      },
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "453865452c48",
+        "judgment": "judgments/0c7525f06d5a.json"
+      }
+    },
+    "R08": {
+      "base": {
+        "verdict": "PASS",
+        "candidate": "78f0b3607a50",
+        "judgment": "judgments/147d1d4c3892.json"
+      },
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "9a66453a9f75",
+        "judgment": "judgments/147d1d4c3892.json"
+      },
+      "none": {
+        "verdict": "PASS",
+        "candidate": "2f82ed507caa",
+        "judgment": "judgments/147d1d4c3892.json"
+      }
+    },
+    "R07": {
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "0e8d15fc799b",
+        "judgment": "judgments/3307ef3bd113.json"
+      },
+      "base": {
+        "verdict": "PASS",
+        "candidate": "3b8a3adc76fe",
+        "judgment": "judgments/3307ef3bd113.json"
+      },
+      "none": {
+        "verdict": "PASS",
+        "candidate": "b43f1b09dc15",
+        "judgment": "judgments/3307ef3bd113.json"
+      }
+    },
+    "R05": {
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "2cc376543a28",
+        "judgment": "judgments/42a2517ce9e5.json"
+      },
+      "none": {
+        "verdict": "PASS",
+        "candidate": "072977237798",
+        "judgment": "judgments/42a2517ce9e5.json"
+      },
+      "base": {
+        "verdict": "PASS",
+        "candidate": "7fdf267627e1",
+        "judgment": "judgments/42a2517ce9e5.json"
+      }
+    },
+    "R02": {
+      "none": {
+        "verdict": "PASS",
+        "candidate": "247551539e25",
+        "judgment": "judgments/6dd0816be610.json"
+      },
+      "base": {
+        "verdict": "PASS",
+        "candidate": "1fa188118cad",
+        "judgment": "judgments/6dd0816be610.json"
+      },
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "73ca6945ad8d",
+        "judgment": "judgments/6dd0816be610.json"
+      }
+    },
+    "R03": {
+      "base": {
+        "verdict": "PASS",
+        "candidate": "461e1844682f",
+        "judgment": "judgments/7180c2b08883.json"
+      },
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "3a66eed1ecae",
+        "judgment": "judgments/7180c2b08883.json"
+      },
+      "none": {
+        "verdict": "PASS",
+        "candidate": "b943977ba88b",
+        "judgment": "judgments/7180c2b08883.json"
+      }
+    },
+    "R01": {
+      "base": {
+        "verdict": "PASS",
+        "candidate": "e0ac039f05fc",
+        "judgment": "judgments/849f88aa1a60.json"
+      },
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "3c4cb3ab4816",
+        "judgment": "judgments/849f88aa1a60.json"
+      },
+      "none": {
+        "verdict": "PASS",
+        "candidate": "8d47c118af05",
+        "judgment": "judgments/849f88aa1a60.json"
+      }
+    },
+    "R06": {
+      "none": {
+        "verdict": "PASS",
+        "candidate": "ee52c9970651",
+        "judgment": "judgments/9f49be4450a2.json"
+      },
+      "base": {
+        "verdict": "PASS",
+        "candidate": "0ef9721fc57d",
+        "judgment": "judgments/9f49be4450a2.json"
+      },
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "9e3bd98af50c",
+        "judgment": "judgments/9f49be4450a2.json"
+      }
+    },
+    "R04": {
+      "none": {
+        "verdict": "PASS",
+        "candidate": "0aca6e930e20",
+        "judgment": "judgments/ac20fafeb893.json"
+      },
+      "pr41": {
+        "verdict": "PASS",
+        "candidate": "d724ec0ccc4b",
+        "judgment": "judgments/ac20fafeb893.json"
+      },
+      "base": {
+        "verdict": "PASS",
+        "candidate": "211c73716269",
+        "judgment": "judgments/ac20fafeb893.json"
+      }
+    }
+  },
+  "totals": {
+    "none": {
+      "PASS": 9
+    },
+    "base": {
+      "PASS": 9
+    },
+    "pr41": {
+      "PASS": 9
+    }
+  }
+}

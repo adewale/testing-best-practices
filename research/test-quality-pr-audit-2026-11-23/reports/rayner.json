@@ -1,0 +1,1315 @@
+{
+  "repository": "adewale/rayner",
+  "total_prs": 92,
+  "pages_checked": {
+    "pull_requests": {
+      "source": "GitHub REST pulls collection, state=all, per_page=100, no date or author filter",
+      "page_sizes": [
+        92,
+        0
+      ],
+      "url": "https://api.github.com/repos/adewale/rayner/pulls?state=all&per_page=100&page=1",
+      "graphql_total_count": 92
+    },
+    "changed_files": {
+      "source": "GitHub GraphQL PullRequest.files with 100 entries per page. Every changed path was present in a local three-dot diff against that PR’s base. Renames counted once by GitHub.",
+      "prs": 92,
+      "pages": 149,
+      "entries": 8167,
+      "truncated_prs": []
+    },
+    "head_check_queries": 92
+  },
+  "state_counts": {
+    "merged": 85,
+    "open": 5,
+    "closed_unmerged": 2
+  },
+  "matching_prs": [
+    {
+      "number": 1,
+      "title": "Explainers from the kyle.md spec: native scenes, step-through embeds and captioned video",
+      "url": "https://github.com/adewale/rayner/pull/1",
+      "state": "closed",
+      "merged": true,
+      "classification": "Testing approach in initial integration",
+      "weakness": "The inherited Manim comparisons skipped when the upstream checkout was missing. A passing run then supplied no numerical comparison.",
+      "attempted_remedy": "Commit reference vectors for the default run and reserve live upstream access for verifying those vectors. Add single-defect fixtures for the public checker.",
+      "test_paths": [
+        "test/manim.test.ts",
+        "test/manim-oracle.json",
+        "test/explain-gates.test.ts"
+      ],
+      "diff_evidence": "The rate-function and cubic comparisons lose their skip flag. A separate test verifies the frozen answers when MANIM_DIR is available. A clean scene and individually broken scenes exercise the checker.",
+      "transferable_rule": "Keep reference outputs available in the ordinary suite and give the reference generator an independently runnable freshness check.",
+      "outcome_caveat": "The live upstream check still requires a pinned checkout.",
+      "head_sha": "19316f3190ab9f38befcb5a0e5c3b9f6edc38f68",
+      "head_check_runs": {
+        "success": 1
+      }
+    },
+    {
+      "number": 2,
+      "title": "Engine features from the kyle.md review: diff-driven morphs, a camera, emphasis, graphing, views",
+      "url": "https://github.com/adewale/rayner/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test repair within an engine PR",
+      "weakness": "A correct model trace could accompany a stale displayed value. Earlier model assertions did not require the view to follow every traced state.",
+      "attempted_remedy": "Compare each resting view with a redraw from the recorded end state. Require a nonzero number of checks and verify the expected number of steps for the scene.",
+      "test_paths": [
+        "test/lib/view-fidelity.ts",
+        "test/explain-models.test.ts"
+      ],
+      "diff_evidence": "assertViewFollowsState asserts each mismatch is null and checked > 0. Token Bucket requires five checked steps per rate and State Machine requires the full trace length.",
+      "transferable_rule": "Test the link between model and presentation, including how often the assertion actually ran.",
+      "outcome_caveat": "The redraw still uses the scene’s drawing function, so domain truth needs its own oracle.",
+      "head_sha": "1ebac40e9cbb8cc77fcef8a9ec7be138aae8855e",
+      "head_check_runs": {}
+    },
+    {
+      "number": 10,
+      "title": "Lettering on request, phase 1: Latin Extended, Greek and Cyrillic, at no cost to other explainers",
+      "url": "https://github.com/adewale/rayner/pull/10",
+      "state": "closed",
+      "merged": true,
+      "classification": "Compatibility-testing approach",
+      "weakness": "A change to optional lettering could affect existing explainers that had never requested it.",
+      "attempted_remedy": "Capture pre-change page, header and receipt fingerprints. Run representative sentinels by default and the full existing catalog in FULL mode, alongside checks for opt-in payloads.",
+      "test_paths": [
+        "test/lettering.test.ts",
+        "test/lettering-baseline.json"
+      ],
+      "diff_evidence": "The new comparison deep-compares each eligible existing build to its stored record. Separate assertions verify missing lettering metadata for ordinary projects and distinguish the optional engine fingerprint.",
+      "transferable_rule": "Separate narrowly defined compatibility properties from broad temporary before/after sentinels.",
+      "outcome_caveat": "The whole-output pins also changed on harmless edits. PR #62 later removed them and retained the lettering-specific properties.",
+      "head_sha": "026c0d221b4327284308ee97a83c0a7550213958",
+      "head_check_runs": {}
+    },
+    {
+      "number": 11,
+      "title": "Add manual reader timing comparisons between revisions",
+      "url": "https://github.com/adewale/rayner/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated benchmark design",
+      "weakness": "One-off reader timings could vary with warm-up, machine load, run order and observation window. Too few observations could look decisive.",
+      "attempted_remedy": "Compare both revisions on the same host, alternate warmed runs, retain the paired samples and validate the recorder with a known blocked click and malformed observations.",
+      "test_paths": [
+        "test/bench-measure.test.ts",
+        "test/bench-stats.test.ts",
+        "tools/lib/bench-measure.ts"
+      ],
+      "diff_evidence": "The stats tests require at least five pairs, verify both regression thresholds and reject slowdowns driven by a minority of disturbed samples. The browser control observes actual stage writes and checks the corrupt-data path.",
+      "transferable_rule": "Test measurement equipment against known signals before interpreting comparative timings.",
+      "outcome_caveat": "The PR does not report a fresh full seven-pair performance campaign. The DOM write measures one milestone.",
+      "head_sha": "cc5c9d70645e4b237dc69bf4117f2640cdfc9944",
+      "head_check_runs": {
+        "success": 10,
+        "cancelled": 2
+      }
+    },
+    {
+      "number": 13,
+      "title": "Agent skill: start from an example, use the engine, test the model",
+      "url": "https://github.com/adewale/rayner/pull/13",
+      "state": "closed",
+      "merged": true,
+      "classification": "Author guidance for test design",
+      "weakness": "The authoring skill said to test a model against its source without defining the reference, its provenance or what each test should assert.",
+      "attempted_remedy": "Require authors changing models to pin a real program or published vectors, record state at each step and add a failing fidelity test across cases.",
+      "test_paths": [
+        "skills/rayner-explainers/SKILL.md"
+      ],
+      "diff_evidence": "The single instruction becomes a four-step Test the model section, naming assertStepState and the small-model view checks, and exempting layout-only work.",
+      "transferable_rule": "Give test authors an independent oracle, an observable result and a failing control appropriate to the change.",
+      "outcome_caveat": "The artifact is guidance. The PR reports an eight-run planning comparison and an inconclusive significance test, without proving adoption.",
+      "head_sha": "2b74726ebd0b93d60cd9de0f9c2b92689d72b634",
+      "head_check_runs": {}
+    },
+    {
+      "number": 14,
+      "title": "Add complex-script outline snapshots and typeset maths",
+      "url": "https://github.com/adewale/rayner/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "Reference-oracle and integrity testing in a broader PR",
+      "weakness": "Page byte equality and the presence of glyphs could not establish character shaping or that cached glyph payloads matched the source fingerprints.",
+      "attempted_remedy": "Introduce direct HarfBuzz comparison, Unicode reference checks and fixtures that corrupt stored outlines while preserving freshness metadata.",
+      "test_paths": [
+        "test/lettering-outlines.test.ts",
+        "test/lettering-pipeline-audit.test.ts",
+        "test/lettering-integration-audit.test.ts",
+        "test/lettering-unicode-audit.test.ts"
+      ],
+      "diff_evidence": "Arabic and Devanagari runs compare glyph IDs, clusters, advances and offsets to a separate Python oracle. A changed contour with intact metadata must fail the checksum check.",
+      "transferable_rule": "Compare structured outputs against an independent implementation. Perturb payload and metadata independently when testing a cache.",
+      "outcome_caveat": "Some reference and browser checks require explicitly enabled fonts, Python or Chromium.",
+      "head_sha": "f647e085eec9ce6049bf34b895d14e9628a5eb49",
+      "head_check_runs": {}
+    },
+    {
+      "number": 17,
+      "title": "Prepare 0.1.0: name the command rayner, finish the notices, say how to install",
+      "url": "https://github.com/adewale/rayner/pull/17",
+      "state": "closed",
+      "merged": true,
+      "classification": "Release-testing approach",
+      "weakness": "Smoke-testing a repacked source tree did not establish that the eventual publication used the tested bytes, or that usage worked from the installed package.",
+      "attempted_remedy": "Let the smoke gate install an existing archive. Exercise the installed command and fixtures, then require the candidate digest and source before publishing.",
+      "test_paths": [
+        "test/release-publish.test.ts",
+        "tools/explain-package-smoke.ts"
+      ],
+      "diff_evidence": "The fake npm records calls. Damaged bytes, provenance or required gates must leave no publish call. The valid case names the exact tarball. The install gate checks executable help, version and lettering fixtures.",
+      "transferable_rule": "Carry the same validated artifact through test and release, and test refusals before the external side effect.",
+      "outcome_caveat": "The publication test uses a fake registry command.",
+      "head_sha": "61ee5991723bafdc083ddada0765d12793d34a03",
+      "head_check_runs": {}
+    },
+    {
+      "number": 18,
+      "title": "Engine: alignData pads a path from its box as the points stand",
+      "url": "https://github.com/adewale/rayner/pull/18",
+      "state": "closed",
+      "merged": true,
+      "classification": "Reduced regression from a generated failure",
+      "weakness": "The random-scene determinism failure did not explicitly isolate whether previously reading a path’s geometry cache should change subsequent padding.",
+      "attempted_remedy": "Turn the observed history dependency into a small deterministic regression. Compare warmed and untouched paths and check the expected padding coordinates.",
+      "test_paths": [
+        "test/core.test.ts"
+      ],
+      "diff_evidence": "The test checks equality of the two sequences of subpaths plus concrete reference coordinates [4, 2] and [-0.25, 0.75].",
+      "transferable_rule": "Keep a minimized example for a discovered stateful failure and retain the broader randomized property.",
+      "outcome_caveat": "This example covers one cache-history defect. The independent reruns of the full seed were reported by the PR author.",
+      "head_sha": "b9ace5022a800e31e1a3bbc056c1ac66d1e0e028",
+      "head_check_runs": {}
+    },
+    {
+      "number": 19,
+      "title": "describeExplainer follow-ups: skill step, REFERENCE example, explain see on it, site JSON and llms.txt",
+      "url": "https://github.com/adewale/rayner/pull/19",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test repair within a CLI PR",
+      "weakness": "The raw-template generator filtered hostile text before normalization, which could manufacture a disallowed template afterward and falsely fail the escaping property.",
+      "attempted_remedy": "Validate the transformed body. Add the shrunk counterexample, a related input and a valid near neighbor.",
+      "test_paths": [
+        "test/explain-tools.property.test.ts"
+      ],
+      "diff_evidence": "The old filter(...).map(...) becomes map(rawTemplate).filter(nonNull). The regression checks inputs containing a backtick or dollar sign between the pieces of the prohibited sequence.",
+      "transferable_rule": "Validate a property generator’s final values against its domain, and retain a positive neighbor when fixing exclusions.",
+      "outcome_caveat": "The change narrows only the raw-template case, whose literal content cannot survive the specified transformation.",
+      "head_sha": "595bbeef0d15cb0ca7ef97cbdb0494ce0bf2be4c",
+      "head_check_runs": {}
+    },
+    {
+      "number": 24,
+      "title": "Make mobile view navigation explicit and link gallery authoring docs",
+      "url": "https://github.com/adewale/rayner/pull/24",
+      "state": "closed",
+      "merged": true,
+      "classification": "Reader-test coverage repair",
+      "weakness": "A phone zoom-scale assertion could pass even when a reader could not reach the evidence named by a caption through the controls.",
+      "attempted_remedy": "Drive the visible close-up controls in both PKCE scenarios. Track which named on-screen targets each view reaches while checking step stability and touch-target size.",
+      "test_paths": [
+        "test/explain-embed.test.ts"
+      ],
+      "diff_evidence": "The test refuses an empty fixture, records each target box center seen on the tour, verifies seen.size equals evidence.length, and checks a minimum 44-pixel touch height.",
+      "transferable_rule": "Exercise the user’s route to the claimed result and count named targets reached.",
+      "outcome_caveat": "The geometry oracle checks target centers on these phone fixtures. Later reviews strengthened the painted-ink requirement.",
+      "head_sha": "a5eaf7699bfc51bbc1a675db67b7f6938d6961d7",
+      "head_check_runs": {}
+    },
+    {
+      "number": 25,
+      "title": "Maths lettering: check it against glyph, fix two MathTex faults, document it",
+      "url": "https://github.com/adewale/rayner/pull/25",
+      "state": "closed",
+      "merged": true,
+      "classification": "Independent reference-oracle upgrade",
+      "weakness": "The earlier maths checks covered individual symbols and fraction or script structure without comparing the whole typesetter output with upstream glyph.",
+      "attempted_remedy": "Generate versioned expected layouts independently and compare stored glyph IDs, positions, scales, path digests and rule rectangles for the fixture. Add a larger reference corpus.",
+      "test_paths": [
+        "test/lettering-math.test.ts",
+        "test/lettering/glyph-math.json",
+        "tools/oracle/glyph-math.ts"
+      ],
+      "diff_evidence": "Fixture comparisons run from frozen data. A 44-formula plus error-case test uses the font, and a separate optional test asks the actual upstream checkout to reproduce the record.",
+      "transferable_rule": "Pin oracle inputs and outputs so everyday checks can run offline, and keep an explicit reference-regeneration check.",
+      "outcome_caveat": "Live reproduction requires the source font and upstream checkout.",
+      "head_sha": "3f2ddd39e55ea7c785976bda8db1dc6cbc4861de",
+      "head_check_runs": {}
+    },
+    {
+      "number": 27,
+      "title": "perf: `rayner see` draws one step; `site:export` copies demos:build's describe JSON",
+      "url": "https://github.com/adewale/rayner/pull/27",
+      "state": "closed",
+      "merged": true,
+      "classification": "Differential and artifact-validation approach",
+      "weakness": "Optimizing the one-step CLI and reusing generated JSON created two opportunities for drift across an existing catalog. The exporter previously tested file presence without checking freshness.",
+      "attempted_remedy": "Check optimized CLI output against the full-description route across the catalog, and require export to reject a changed source or dependency.",
+      "test_paths": [
+        "test/explain-cli.test.ts",
+        "test/explain-describe.test.ts",
+        "test/explain-site-describe.test.ts"
+      ],
+      "diff_evidence": "The FULL CLI check compares per-case last steps and named first steps against full descriptions. Export tests compare the resulting file to the built JSON and mutate a data file and source input.",
+      "transferable_rule": "Use an equivalent slower path as a regression oracle and verify that reused artifacts still match their inputs.",
+      "outcome_caveat": "The equality oracle is about agreement between the two paths and cannot detect a shared semantic error.",
+      "head_sha": "058e2112328fcdc1390f19a735bc980134cd9fb2",
+      "head_check_runs": {}
+    },
+    {
+      "number": 28,
+      "title": "A step line and numbered heading, stage tools (focus, carry, draw, annotations), and the pen-and-pencil explainer",
+      "url": "https://github.com/adewale/rayner/pull/28",
+      "state": "closed",
+      "merged": true,
+      "classification": "Checker-property repair within a feature PR",
+      "weakness": "The old collision property put headings in the same ignored group as invisible text. It could miss visible text running into a heading.",
+      "attempted_remedy": "Keep hidden-text coverage separate and add a property comparing overlap with the actual heading and visible-text bounds.",
+      "test_paths": [
+        "test/explain-tools.property.test.ts",
+        "tools/lib/explain-check.ts"
+      ],
+      "diff_evidence": "Generated visible text and heading boxes are intersected independently. A runs-into-heading result must equal that overlap while all unrelated collision results stay equal to the heading-free control.",
+      "transferable_rule": "Check exceptions both ways. An object exempt from a check can still obstruct an object the check protects.",
+      "outcome_caveat": "The property measures the authored bounding-box contract.",
+      "head_sha": "e433edd4969ffd934a299d9c14434feba10b6382",
+      "head_check_runs": {}
+    },
+    {
+      "number": 30,
+      "title": "Next view visits what the step emphasised first (#21)",
+      "url": "https://github.com/adewale/rayner/pull/30",
+      "state": "closed",
+      "merged": true,
+      "classification": "Oracle repair during feature review",
+      "weakness": "A proposed close-up expectation duplicated the implementation’s selection logic. Agreement could survive the same error on both sides.",
+      "attempted_remedy": "Compare emitted emphasis points with independent geometric containment and coverage properties. Check the resulting order and real phone evidence.",
+      "test_paths": [
+        "test/embed-closeup.property.test.ts",
+        "test/explain-embed.test.ts"
+      ],
+      "diff_evidence": "The generated property requires every reported start inside the appropriate marked region and a point for every participating emphasized box. Other checks preserve the original first view and the set of close-ups.",
+      "transferable_rule": "Test the constraints a selection must satisfy independently of the algorithm that chose it.",
+      "outcome_caveat": "The earlier duplicated oracle is described in review. The final diff provides the replacement properties.",
+      "head_sha": "bed012db9c4ec5d3cc66ddafaffd255000d1426f",
+      "head_check_runs": {}
+    },
+    {
+      "number": 31,
+      "title": "Lettering: real bold and italic on request, OFL/Apache-only faces, lighter lettered pages",
+      "url": "https://github.com/adewale/rayner/pull/31",
+      "state": "closed",
+      "merged": true,
+      "classification": "Browser test repair within a lettering PR",
+      "weakness": "The outline browser test could pass on the presence of some paths. The relevant opt-in check was outside the normal browser lane.",
+      "attempted_remedy": "Build every outline fixture in the browser job and compare each resting step’s actual path data with the Node render.",
+      "test_paths": [
+        "test/lettering-browser.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The test collects sorted d attributes from Chromium and compares them to Node’s sorted absolute path list at each fixture step, after waiting for the expected count.",
+      "transferable_rule": "A smoke assertion should establish the promised output. Use separate upstream checks where both renderers consume the same stored input.",
+      "outcome_caveat": "Path agreement validates replay. It cannot independently validate the input glyph geometry.",
+      "head_sha": "58f03222164323ad8982e37ace05f33df37f5093",
+      "head_check_runs": {}
+    },
+    {
+      "number": 32,
+      "title": "Strengthen test contracts and fix five boundary and lifecycle bugs",
+      "url": "https://github.com/adewale/rayner/pull/32",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated audit and test consolidation",
+      "weakness": "Existing assertions could pass with missing changed keys, correlated expectations, unobserved callbacks or damaged text. Some declarations repeated guarantees exercised elsewhere.",
+      "attempted_remedy": "Audit existing declarations, introduce independent references and complete-output checks, and remove or consolidate checks with named remaining owners.",
+      "test_paths": [
+        "test/explain-describe.test.ts",
+        "test/explain-models.test.ts",
+        "test/explain-tools.property.test.ts",
+        "test/anim-utils.test.ts"
+      ],
+      "diff_evidence": "The changed-key set is compared in full. SHA-256 and PKCE values are checked against Node crypto, token buckets against an independent quarter-token ledger, and guaranteed-fitting captions against unbroken expected words. A duplicate copy-over-source case is removed while real cut-ins remain covered.",
+      "transferable_rule": "For each assertion, identify what wrong result could pass and what independent evidence would reject it before removing overlap.",
+      "outcome_caveat": "The PR reports auditing 679 declarations in 68 files and finding five production bugs. Those counts are author-reported.",
+      "head_sha": "9e0c81fa7f101b2f23d71fe4468cfc3b6fa87441",
+      "head_check_runs": {}
+    },
+    {
+      "number": 33,
+      "title": "Write the bundled scene atomically, so parallel loads never import half a file",
+      "url": "https://github.com/adewale/rayner/pull/33",
+      "state": "closed",
+      "merged": true,
+      "classification": "Flaky-suite investigation and reproduction",
+      "weakness": "An existing full-suite CLI test failed intermittently when parallel cold loads observed an incomplete bundled scene. The file passed in isolation.",
+      "attempted_remedy": "Reproduce the condition with competing real processes and cold temporary directories. Repair cache publication with an atomic rename.",
+      "test_paths": [
+        "test/explain-bundle-race.test.ts",
+        "tools/lib/explain-project.ts"
+      ],
+      "diff_evidence": "The FULL-only regression runs three cold rounds of eight processes and requires eight successful scene loads in each round.",
+      "transferable_rule": "Reproduce the missing concurrency and cache state before attributing a parallel-suite failure to the test.",
+      "outcome_caveat": "The regression is probabilistic. Its reported old-code failure frequency is not a deterministic guarantee.",
+      "head_sha": "6d36811e552bb7cd2f97a2dfb453ce2da3329415",
+      "head_check_runs": {}
+    },
+    {
+      "number": 34,
+      "title": "Agent skill: pin what you relied on when you can't run the source; larger text is the fix",
+      "url": "https://github.com/adewale/rayner/pull/34",
+      "state": "closed",
+      "merged": true,
+      "classification": "Author guidance for test evidence",
+      "weakness": "The earlier testing guidance allowed a missing executable to leave the version or evidence source as a placeholder.",
+      "attempted_remedy": "Require the exact tagged source, specification section or published vectors consulted, and state whether the reference was read or run.",
+      "test_paths": [
+        "skills/rayner-explainers/SKILL.md"
+      ],
+      "diff_evidence": "The Test the model section replaces the unspecific fallback with concrete alternative evidence and explicitly disallows a placeholder pin.",
+      "transferable_rule": "Record weaker evidence with precise provenance when live reference execution is unavailable.",
+      "outcome_caveat": "This was a guidance edit after #13. The PR says the skill evaluation was not repeated.",
+      "head_sha": "3ca7970da6bca2104c7fd248499a0e7fb8c495f0",
+      "head_check_runs": {}
+    },
+    {
+      "number": 36,
+      "title": "0.3: video export, pacing and filmstrip review",
+      "url": "https://github.com/adewale/rayner/pull/36",
+      "state": "open",
+      "merged": false,
+      "classification": "Open testing-approach attempt",
+      "weakness": "Video transport checks could show that captions and frames existed while leaving long still stretches and difficult subtitle timing unexamined.",
+      "attempted_remedy": "Reinstate video-specific coverage in its feature branch, add frame-by-frame stillness checks and test the gate with an intentionally long stationary scene.",
+      "test_paths": [
+        "test/explain-gates.test.ts",
+        "test/explain-video.test.ts",
+        "tools/lib/explain-check.ts"
+      ],
+      "diff_evidence": "The defect fixture requires a four-second still image to fail. The checker applies pacingProblems to a trace. The VTT property reconstructs the nonempty caption words after escaping and blank-line handling.",
+      "transferable_rule": "Exercise a proposed heuristic on authentic counterexamples, and keep editorial suitability distinct from a machine-detected timing property.",
+      "outcome_caveat": "The draft’s review reports 138 of 142 actual cues above 240 words/minute and page-only lessons affected by film pacing. The heuristic remained unresolved.",
+      "head_sha": "3edb3dc3fb1c41a77d8a35b033bb5f2b49273b2c",
+      "head_check_runs": {
+        "success": 11,
+        "failure": 1
+      }
+    },
+    {
+      "number": 38,
+      "title": "Prepare HTML-only 0.1 on Node 24 and macOS",
+      "url": "https://github.com/adewale/rayner/pull/38",
+      "state": "closed",
+      "merged": true,
+      "classification": "Release-test and coverage repair",
+      "weakness": "The installed-package smoke path did not demonstrate that a new author could actually start the documented preview and see an edit. Some checks still exercised a deferred video product.",
+      "attempted_remedy": "Open the documented starter from a fresh installation, check both cases and a watched edit, add boundary assertions, and relocate video-specific tests to #36.",
+      "test_paths": [
+        "tools/explain-package-smoke.ts",
+        "test/explain-embed.test.ts",
+        "test/explain-video.test.ts"
+      ],
+      "diff_evidence": "The smoke script replaces the former missing-peer expectation with an installed preview. The phone regression adds the heading line to controls checked for movement. The video test file is deleted on this branch.",
+      "transferable_rule": "Exercise the documented installed workflow. Preserve the test of a deferred feature with the branch that owns it.",
+      "outcome_caveat": "The PR attributes 18 video-specific declarations to the deferred branch. Its contemporary hosted Mac run was unavailable.",
+      "head_sha": "d3e3085019290d404f03b4a42a3bef323d45670b",
+      "head_check_runs": {}
+    },
+    {
+      "number": 39,
+      "title": "Keep diagram labels and phone story evidence unobstructed",
+      "url": "https://github.com/adewale/rayner/pull/39",
+      "state": "closed",
+      "merged": true,
+      "classification": "Visual regression upgrade",
+      "weakness": "Description strings and traced values said nothing about whether route ink obscured labels or whether all claimed paths were visible on the phone.",
+      "attempted_remedy": "Sample the raster behind named lettering, require the route remains drawn, and compare readouts and real phone geometry with specific expected subjects.",
+      "test_paths": [
+        "test/explain-story.test.ts",
+        "test/view-readouts.test.ts",
+        "test/explain-embed.test.ts"
+      ],
+      "diff_evidence": "The route test requires expected label counts, more than ten sampled interior pixels and over 500 trail pixels. Reader tests compare full traced values and test intersection with nearby text.",
+      "transferable_rule": "Pair absence-of-obstruction checks with an assertion that the object being checked is present.",
+      "outcome_caveat": "The raster and phone evidence covers particular routes, steps and viewport sizes.",
+      "head_sha": "df49328556b15711a5518eaa1aa5ab02eb9e5e35",
+      "head_check_runs": {}
+    },
+    {
+      "number": 41,
+      "title": "Backport Lantern engine fixes and strengthen layout checks",
+      "url": "https://github.com/adewale/rayner/pull/41",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated repair of missed faults and wrong expectations",
+      "weakness": "Placement helpers erased the original text offset, font generators omitted invalid values and SVG comparisons shared a serializer. An existing math test encoded the constructor’s incorrect offset.",
+      "attempted_remedy": "Test raw placement, expand the generator domain, parse emitted XML independently, and verify layout and display-math behavior with raw geometry and raster controls.",
+      "test_paths": [
+        "test/svg-boundary.test.ts",
+        "test/svg-browser.test.ts",
+        "test/lettering-math.test.ts",
+        "test/explain-story.test.ts",
+        "test/fonts.test.ts"
+      ],
+      "diff_evidence": "The SVG checks use an independently parsed document and calculate exact dimensions using integer arithmetic. The lettering test removes the copied constructor offset. The raster test now requires a real scenario and distinguishes legitimately dimmed backgrounds.",
+      "transferable_rule": "Avoid constructing test inputs in a way that silently repairs them. Compare serialization or geometry with an independent consumer.",
+      "outcome_caveat": "The PR records gated browser and font executions and isolated deliberate mutations. Those individual campaigns were not rerun here.",
+      "head_sha": "04a7bcded5f840b4f94b2e78ec682fb49161419c",
+      "head_check_runs": {}
+    },
+    {
+      "number": 42,
+      "title": "Review every story step and require painted caption subjects",
+      "url": "https://github.com/adewale/rayner/pull/42",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated review-harness repair",
+      "weakness": "The reviewer visited gallery-selected steps and accepted source geometry when a required label was missing, hidden or clipped in the browser.",
+      "attempted_remedy": "Visit every resting step at both target widths, drive real navigation, require painted evidence and merge against the exact expected case/step/width inventory.",
+      "test_paths": [
+        "test/explain-review-plan.test.ts",
+        "test/explain-story-review.test.ts",
+        "tools/explain-review-merge.ts"
+      ],
+      "diff_evidence": "Removing, duplicating or corrupting shard evidence is rejected. Rectangle-union coverage is compared to independent integer-cell coverage to detect holes. Partly missing glyphs fail the served review.",
+      "transferable_rule": "Enumerate the expected inventory independently of the runner, and tie each claimed subject to actual visible output.",
+      "outcome_caveat": "This establishes the declared rendered subjects at the reviewed widths. It does not establish reader comprehension.",
+      "head_sha": "5dae62d6bbe2d6314d2b8e9e5051c6c4a7345696",
+      "head_check_runs": {}
+    },
+    {
+      "number": 44,
+      "title": "Fix author review, export freshness and the project documentation",
+      "url": "https://github.com/adewale/rayner/pull/44",
+      "state": "closed",
+      "merged": true,
+      "classification": "Public author-review testing approach",
+      "weakness": "Authors outside the repository did not have the catalog’s served review and could carry an old passing receipt through a failing new review.",
+      "attempted_remedy": "Expose the review for a standalone project, check every declared case/width, and remove prior success evidence before a fresh run.",
+      "test_paths": [
+        "test/explain-review-scene.test.ts",
+        "tools/lib/explain-review-scene.ts"
+      ],
+      "diff_evidence": "An outside project is reviewed across two cases and four step/width rows. Replacing its caption claim with a false one must reject and removes its earlier success receipt.",
+      "transferable_rule": "Test public validation from a clean consumer project and ensure stale successful output cannot mask a later failure.",
+      "outcome_caveat": "The exercised author fixture and its declared claims limit what this review proves.",
+      "head_sha": "aa654e901d5658bc54e1c9537fdfd025e3f120da",
+      "head_check_runs": {}
+    },
+    {
+      "number": 45,
+      "title": "Fix Node 24 CLI assertions and concurrent font-cache writes",
+      "url": "https://github.com/adewale/rayner/pull/45",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated assertion portability and fixture repair",
+      "weakness": "Two stderr assertions required the diagnostic at the beginning of the stream. Node 24.0 could emit a warning first. An independent Unicode oracle also depended on private warm-cache filenames.",
+      "attempted_remedy": "Match the complete expected diagnostic line anywhere in stderr while retaining failure status. Give the font oracle its own inputs and force a controlled partial-write race.",
+      "test_paths": [
+        "test/explain-cli.test.ts",
+        "test/explain-gates.test.ts",
+        "test/lettering-unicode-audit.test.ts",
+        "test/lettering-cache.test.ts"
+      ],
+      "diff_evidence": "Both error checks add an end-of-line assertion and multiline matching. The Unicode test isolates its font inputs. The cache regression pauses a writer after one byte while a reader attempts access.",
+      "transferable_rule": "Assert required diagnostics at their documented boundary, and give independent oracles control of their setup.",
+      "outcome_caveat": "Two ARM check runs on this PR head were cancelled before supplying verification for that platform.",
+      "head_sha": "ebac51ba8f142e685ab7146b3964c87434168517",
+      "head_check_runs": {
+        "success": 10,
+        "cancelled": 2
+      }
+    },
+    {
+      "number": 49,
+      "title": "Start explainer lessons at step one; clarify the story each teaches",
+      "url": "https://github.com/adewale/rayner/pull/49",
+      "state": "closed",
+      "merged": true,
+      "classification": "Benchmark assertion repair within a content PR",
+      "weakness": "A benchmark control assumed a 120 ms busy loop must produce an observed frame gap of at least 80 ms. The measurement window clipped its first and last frames.",
+      "attempted_remedy": "Relax the real-browser frame-gap assertion to match the clipped click-to-rest observation while retaining checks for the injected blocking.",
+      "test_paths": [
+        "test/bench-measure.test.ts"
+      ],
+      "diff_evidence": "The assertion changes from a minimum of 80 ms to a gap above 50 ms. The new comment explains how a true 120 ms loop can cross the observation boundaries.",
+      "transferable_rule": "Derive performance assertions from the actual measurement window, including clipping at both ends.",
+      "outcome_caveat": "The revised threshold is a coarse control for this fixture. It is not a general latency target.",
+      "head_sha": "0cfd2ee95a5a48395700868c2542c91a63ee3af4",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 50,
+      "title": "Keep phone comparisons together and finish release setup",
+      "url": "https://github.com/adewale/rayner/pull/50",
+      "state": "closed",
+      "merged": true,
+      "classification": "Coverage and platform-test upgrade",
+      "weakness": "Existing rate checks could confirm a selected case’s trace without verifying all pictured comparison marks. Chromium alone did not exercise the served journeys on other browser engines.",
+      "attempted_remedy": "Use a separately fixed schedule for all comparison marks, and add a served WebKit/native Safari boundary against the built artifact.",
+      "test_paths": [
+        "test/view-readouts.test.ts",
+        "test/reader-cross-browser.test.ts",
+        "test/page-snapshots.test.ts"
+      ],
+      "diff_evidence": "The rate test expects five named steps and compares all thirty outcome marks with independently fixed results. The WebKit test requires exactly eight cases across cache, rate, PKCE and fonts.",
+      "transferable_rule": "Assert every part of a comparison against independent expected values, then verify selected journeys on the engines users run.",
+      "outcome_caveat": "The cross-browser journeys are named samples. A waiting publish job at the observed head is distinct from the testing jobs.",
+      "head_sha": "4b9c6e5a84b4aadd0a7a5969cbe805d3de4f773b",
+      "head_check_runs": {
+        "waiting": 1,
+        "success": 24,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 53,
+      "title": "Use natural diagram widths and explicit panel direction",
+      "url": "https://github.com/adewale/rayner/pull/53",
+      "state": "closed",
+      "merged": true,
+      "classification": "Transport and deployment test upgrade",
+      "weakness": "Rendered sample fixtures could conceal loss of arbitrary snapshot metadata or floating-point bits, and checking a local header recipe could miss incorrect live headers.",
+      "attempted_remedy": "Exercise independent JSON round trips and verify the deployed response bytes, MIME types, routes and headers against the reviewed export.",
+      "test_paths": [
+        "test/page-snapshots.test.ts",
+        "test/explain-live-site.test.ts"
+      ],
+      "diff_evidence": "The transport property checks independent JSON, key order, prototype-sensitive keys, caller immutability and raw bytes. A test server with correct bytes but wrong media type or attachment behavior must fail.",
+      "transferable_rule": "Test the wire representation with an independent consumer and inspect the served response at its external boundary.",
+      "outcome_caveat": "The live verifier’s failure controls use a test server. A production deployment conclusion requires a separately identified run.",
+      "head_sha": "7e3756240cf39430392d3a2c01685a0579804c55",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 54,
+      "title": "Put explainer step navigation before the picture",
+      "url": "https://github.com/adewale/rayner/pull/54",
+      "state": "closed",
+      "merged": true,
+      "classification": "Cross-platform baseline repair within a player PR",
+      "weakness": "Linux and macOS zlib output could differ for the same scene, producing different valid HTML and CSP bytes. A single host’s expected file treated these differences as a regression.",
+      "attempted_remedy": "Select a deliberately reviewed baseline per platform and reuse the same per-page build for the receipt and header checks.",
+      "test_paths": [
+        "test/lettering.test.ts",
+        "test/lettering-baseline-linux.json"
+      ],
+      "diff_evidence": "The PINS URL selects lettering-baseline-linux.json on Linux and the existing file elsewhere. Its comment identifies compression as the source of the byte difference.",
+      "transferable_rule": "Decide whether platform-specific bytes are a real contract before forcing identical snapshots across environments.",
+      "outcome_caveat": "This workaround incurred ongoing repinning costs. PR #62 later removed both whole-page baseline files.",
+      "head_sha": "2fb7e49d3fdb9b9ed2ff621c66d535cb366d6c05",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 60,
+      "title": "Add a periodic-table gallery entry drawn in Atlas's palette",
+      "url": "https://github.com/adewale/rayner/pull/60",
+      "state": "closed",
+      "merged": true,
+      "classification": "Review-oracle repair within a new gallery-entry PR",
+      "weakness": "Changes in abstract layer order or multiplicity could be credited as visual evidence even when covered pixels looked identical. Removing a duplicate could reveal different artwork.",
+      "attempted_remedy": "Keep layer order and multiplicity but require native pixel change, verify revealed paint and use explicit unchanged controls.",
+      "test_paths": [
+        "test/explain-story-review.test.ts",
+        "tools/lib/explain-story-review.ts"
+      ],
+      "diff_evidence": "Test cases reject covered order/count changes as evidence, compare repeated-color occurrences, and require inspection of differently shaped artwork revealed by a removed layer.",
+      "transferable_rule": "A structural difference is only visual evidence when it changes the rendered pixels that support the claim.",
+      "outcome_caveat": "Pixel visibility applies to sampled rendered states, not a viewer’s interpretation.",
+      "head_sha": "e256d98f3975012c24a08d9325b9132e77ca6bcd",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 62,
+      "title": "Remove whole-page output pins; keep the lettering properties they duplicated",
+      "url": "https://github.com/adewale/rayner/pull/62",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated deletion of brittle snapshots",
+      "weakness": "Whole-page hashes made unrelated code, copy, compression, headers and platform output break the lettering test, duplicating narrower checks.",
+      "attempted_remedy": "Delete the Linux and macOS baseline files and the giant deep equality. Continue building the catalog and checking opt-in, receipt byte size and the surviving leak guards.",
+      "test_paths": [
+        "test/lettering.test.ts",
+        "test/lettering-baseline.json",
+        "test/lettering-baseline-linux.json",
+        "test/AGENTS.md"
+      ],
+      "diff_evidence": "The all-catalog key-set assertion and per-page deepEqual against pins disappear. The rewritten test still checks published bytes and whether a page requested lettering.",
+      "transferable_rule": "Retire a golden only after identifying the behavior it was meant to protect and the surviving tests for that behavior.",
+      "outcome_caveat": "Deliberate tradeoff: arbitrary whole-page byte drift is no longer itself a failure.",
+      "head_sha": "e8a7ed4881ebba0499f38af6177f48c27e0518d5",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 63,
+      "title": "Add six step-through lessons and playable music comparisons",
+      "url": "https://github.com/adewale/rayner/pull/63",
+      "state": "closed",
+      "merged": true,
+      "classification": "Test-fixture and oracle repair during feature review",
+      "weakness": "The audio absence test depended on a gallery example slated for retirement. Model-state checks could pass when the Monty Hall percentages or rows shown to readers were wrong.",
+      "attempted_remedy": "Give the no-audio boundary a fixture it owns and separately assert the displayed probabilities and row contents against expected fractions.",
+      "test_paths": [
+        "test/explain-audio.test.ts",
+        "test/learning-pictures.test.ts"
+      ],
+      "diff_evidence": "The audio test constructs its own no-audio page. The picture test checks the painted Monty Hall rows and percentages separately from the producer’s model state.",
+      "transferable_rule": "Own minimal fixtures locally and assert the consumer-visible result when model correctness alone cannot protect it.",
+      "outcome_caveat": "The audio work also contains new-feature tests. These two audit repairs are the qualifying changes.",
+      "head_sha": "d091e9220f77019ded26f45ecdcd5ce7eae0e379",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 65,
+      "title": "Make the explainer one tile: header, rail pane, footer mark, framed mode, paper tint, oEmbed",
+      "url": "https://github.com/adewale/rayner/pull/65",
+      "state": "closed",
+      "merged": true,
+      "classification": "Legacy-reader test expansion within a redesign",
+      "weakness": "The catalog browser test checked the existence of controls without establishing that the whole reader remained usable in its standalone and embedded forms.",
+      "attempted_remedy": "Add a crop check for every catalog page in standalone, raw iframe and loader contexts, testing required contents and containment by the actual tile.",
+      "test_paths": [
+        "test/explain-embed.test.ts"
+      ],
+      "diff_evidence": "The control-count test gains heading, footer and placement checks. A separate visitor intersects boxes with clipping ancestors, reports elements past the tile and tests each embedding mode.",
+      "transferable_rule": "Test a component inside the containers in which it is shipped, including ancestors that can clip it.",
+      "outcome_caveat": "The full-catalog repetition was later consolidated in #69 when shared chrome and per-scene obligations had separate owners.",
+      "head_sha": "b9266177b01c44e8da1a95de5c285cdb3a278e6c",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 66,
+      "title": "Teach explainer authoring with an LRU/MRU starter and card columns",
+      "url": "https://github.com/adewale/rayner/pull/66",
+      "state": "closed",
+      "merged": true,
+      "classification": "Tutorial test repair during starter redesign",
+      "weakness": "The existing tutorial comparison covered only one generated scene. Copied state alone could also pass while the displayed policy comparison disagreed.",
+      "attempted_remedy": "Run the initializer in an empty directory, compare every emitted source file with the documented program, and compare the card’s own description to independently expected rows at every step.",
+      "test_paths": [
+        "test/explain-cli.test.ts",
+        "test/explain-tutorial.test.ts"
+      ],
+      "diff_evidence": "The new test asserts the complete output file set, absence of checkout-only imports, identical printed source, and independently expected card contents for both cases at four steps.",
+      "transferable_rule": "Test a tutorial as delivered to a reader and read values from the displayed component as well as from model state.",
+      "outcome_caveat": "This establishes the tested starter and two scenarios, not a novice usability result.",
+      "head_sha": "d40980769397d3486915347815676e24fb5e2f07",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 69,
+      "title": "Improve teaching paths and phone framing across 38 explainers",
+      "url": "https://github.com/adewale/rayner/pull/69",
+      "state": "closed",
+      "merged": true,
+      "classification": "Review-coverage and duplicate-test repair",
+      "weakness": "Shared player chrome was repeatedly checked across the whole catalog and embedding modes, while painted labels hidden by artwork and narrow openings could escape the reviewer.",
+      "attempted_remedy": "Move shared checks to representative English/French fixtures and exercise scene-specific obligations during existing catalog visits. Strengthen native ink and partial-visibility checks.",
+      "test_paths": [
+        "test/explain-embed.test.ts",
+        "test/explain-story-review.test.ts",
+        "tools/lib/explain-story-review.ts"
+      ],
+      "diff_evidence": "The catalog-wide chrome and tile declarations are replaced by compact shared checks. The story suite adds covered/still-covered/disjoint controls, the smallest transformed em dimension, and per-shape paint obligations at 320px.",
+      "transferable_rule": "Consolidate a property at the shared component boundary while retaining a separate inventory of case-specific checks.",
+      "outcome_caveat": "Native paint tests remain bounded by selected widths, steps and the checker’s supported visual effects.",
+      "head_sha": "f013c5f0f2da0a234e2620a5cd24a425472d2733",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 75,
+      "title": "Use typed reader phases and check cancellation before committing state",
+      "url": "https://github.com/adewale/rayner/pull/75",
+      "state": "closed",
+      "merged": false,
+      "classification": "Superseded test and migration attempt",
+      "weakness": "Async tests could miss stale render or audio work occurring between promise settlement and the owning caller’s next microtask.",
+      "attempted_remedy": "Add real-browser cancellation controls and compare delayed navigation with a fresh direct link. Exercise held loads, stale ready events and late audio independently.",
+      "test_paths": [
+        "test/explain-audio.test.ts",
+        "test/explain-embed.test.ts",
+        "test/explain-loading.test.ts"
+      ],
+      "diff_evidence": "The audio probe places cancellation between resume and the caller continuation. A MutationObserver records stale attachments/ready events, and a 1000 ms asynchronous render is checked against a fresh page.",
+      "transferable_rule": "Force the exact scheduling boundary that can invalidate ownership and assert the externally visible consequence.",
+      "outcome_caveat": "Closed without merge. The replacement stack starts at #76 and retires its temporary migration harness in #80.",
+      "head_sha": "9b9f0bf6a5eba11074f4c00caf565284a97f40a1",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 76,
+      "title": "Pin motion and scheduled audio behavior before migrating the reader",
+      "url": "https://github.com/adewale/rayner/pull/76",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated characterization before migration",
+      "weakness": "The planned phase refactor lacked a behavior record for unawaited navigation, scheduled audio, history and freshness of the resting picture.",
+      "attempted_remedy": "Add native browser properties and a temporary differential harness that builds both revisions, schedules completions and compares the externally visible results.",
+      "test_paths": [
+        "test/explain-migration.test.ts",
+        "test/explain-audio.test.ts",
+        "test/explain-embed.test.ts"
+      ],
+      "diff_evidence": "The harness compares URL, caption, picture, controls and history across generated actions. The audio probe can interrupt precisely after resume resolution and checks Stop, Next and Pulse.",
+      "transferable_rule": "Characterize externally visible behavior before a migration. Specify intentional exceptions and decide which checks will outlive the comparison harness.",
+      "outcome_caveat": "The migration harness was temporary and was deliberately removed by #80.",
+      "head_sha": "9b0b81d62a6782b5d3b92484a1e20b570faf5722",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 80,
+      "title": "Retire migration scaffolding and keep behavior-owned regression tests",
+      "url": "https://github.com/adewale/rayner/pull/80",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated deletion and consolidation",
+      "weakness": "The two-revision harness and overlapping audio/navigation checks had served the migration. Leaving parallel owners would preserve the retired implementation and add repeated browser work.",
+      "attempted_remedy": "Delete the migration harness and overlapping cases after preserving permanent user-visible cancellation, resize and fresh-link assertions.",
+      "test_paths": [
+        "test/explain-migration.test.ts",
+        "test/explain-audio.test.ts",
+        "test/explain-embed.test.ts"
+      ],
+      "diff_evidence": "The entire migration comparison is deleted. The target suite retains native microtask cancellation, real 600px resize crossing and stale-ready/attachment checks in behavior-focused owners.",
+      "transferable_rule": "Before deleting a migration harness, map each discovered defect to a surviving assertion and verify those owners reject the defect.",
+      "outcome_caveat": "The five isolated defect reruns and the mapping are PR evidence. A green head alone cannot establish each mutation result.",
+      "head_sha": "bf7187e15ef7b98c214176d7b923638e37ca7b1f",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 82,
+      "title": "Separate the showcase from coverage and simplify reader publishing",
+      "url": "https://github.com/adewale/rayner/pull/82",
+      "state": "closed",
+      "merged": true,
+      "classification": "Fixture-ownership and package-proof repair",
+      "weakness": "Removing public selectors would have discarded the existing four-case promise/chart proof. Separate compatibility jobs could also validate independently repacked bytes.",
+      "attempted_remedy": "Keep the four-case model-and-chart scenario as a dedicated test fixture and check the simplified public story separately. Install one source- and digest-bound archive in all compatibility lanes.",
+      "test_paths": [
+        "test/explain-latest-search.test.ts",
+        "test/fixtures/latest-search-view.ts",
+        "test/package-candidate.test.ts"
+      ],
+      "diff_evidence": "The previous four-case test now opens its own fixture. The real public story is exercised under both finish orders. Package tests reject another commit, an invalid filename and modified bytes before installation.",
+      "transferable_rule": "Preserve valuable test cases outside a simplified UI, and bind platform checks to one candidate artifact.",
+      "outcome_caveat": "The fixture covers behavior no longer exposed as a public selector. The public-story test remains necessary.",
+      "head_sha": "b9aeba2791ade959ff80b872b5762a067baf7f5d",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 83,
+      "title": "Keep dense standalone diagrams readable in short windows",
+      "url": "https://github.com/adewale/rayner/pull/83",
+      "state": "closed",
+      "merged": true,
+      "classification": "Visibility-inspector repair within a layout PR",
+      "weakness": "The existing inspector could treat a clipped glyph as visible. Numeric labels that looked present in a regular window could be unreadable on a short laptop or in fullscreen.",
+      "attempted_remedy": "Make visibility require complete ink, use actual screen transforms for the font floor, and add clipping and scrollbar controls.",
+      "test_paths": [
+        "test/explain-periodic-reader.test.ts",
+        "test/explain-player-style.test.ts",
+        "tools/lib/explain-story-review.ts"
+      ],
+      "diff_evidence": "The periodic-table test enumerates all 118 atomic numbers and the block strip. Each label needs nonempty ink whose pieces are visible, complete and inside the viewport, with at least 12 CSS pixels.",
+      "transferable_rule": "When checking readability, verify completeness, size and visible extent of each expected label at the target viewport.",
+      "outcome_caveat": "The test covers the declared short-window sizes and periodic-table cases.",
+      "head_sha": "1a122b1bd1c1c5b8c61ce172f5359c4de1fcd637",
+      "head_check_runs": {
+        "success": 12
+      }
+    },
+    {
+      "number": 85,
+      "title": "Unify review claims and remove repeated validation work",
+      "url": "https://github.com/adewale/rayner/pull/85",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated review and validation consolidation",
+      "weakness": "Author and catalog review used different claims, an explicit browser-file list omitted a regression, and shards repeated scene collection without an independent proof of complete coverage.",
+      "attempted_remedy": "Use the same scene-owned claims and discover browser suites by directory. Partition whole scenes and reject incomplete or duplicate merged coverage. Require exact provenance before reusing CI.",
+      "test_paths": [
+        "test/explain-review-plan.test.ts",
+        "test/ci-scope.test.ts",
+        "package.json"
+      ],
+      "diff_evidence": "The sharding property checks that a scene appears in one shard and that all cases survive partitioning. Reuse tests reject a changed source commit, dirty archive, missing browser gate, empty story inventory and invalid execution evidence.",
+      "transferable_rule": "Discover tests automatically, then validate the union of workers against an independently derived expected inventory.",
+      "outcome_caveat": "The branch description says #87 consolidated this work. The two PR records overlap and do not represent independent fixes.",
+      "head_sha": "55e846f318e1514baa1dcc43afa442f342ff95bd",
+      "head_check_runs": {
+        "success": 13
+      }
+    },
+    {
+      "number": 87,
+      "title": "Fix review coverage, copy ownership and authoring contracts",
+      "url": "https://github.com/adewale/rayner/pull/87",
+      "state": "closed",
+      "merged": true,
+      "classification": "Integrated review and coverage repair",
+      "weakness": "The shared reviewer could lose highlights after copying cards or focus objects, while author and catalog review inherited the inconsistent claims and browser discovery covered in #85.",
+      "attempted_remedy": "Carry the review and sharding repairs into the integrated branch, and independently check copied, unregistered and removed highlights from the actual staged picture.",
+      "test_paths": [
+        "test/browser/explain-story-review.test.ts",
+        "test/composite-ownership.test.ts",
+        "test/explain-review-plan.test.ts"
+      ],
+      "diff_evidence": "The browser fixture copies a group without re-marking it and deliberately removes a copied highlight to exercise failure. The ownership test mutates the copy, verifies descendants belong to it and checks the original separately.",
+      "transferable_rule": "For copy and replay behavior, observe both original and copy and include a negative control in the real consumer.",
+      "outcome_caveat": "Shares the review-discovery changes with #85. The copy-specific controls supply distinct evidence.",
+      "head_sha": "28558aff6bc621512639fdb06d3208ad50b6112c",
+      "head_check_runs": {
+        "success": 13
+      }
+    },
+    {
+      "number": 89,
+      "title": "Build Henge and raise the full explainer collection",
+      "url": "https://github.com/adewale/rayner/pull/89",
+      "state": "closed",
+      "merged": true,
+      "classification": "Evidence-validation repair and blinded benchmark",
+      "weakness": "A textual mention could count as a test backing a claim, overlapping claims could be lost, and the bounds used by native label checks and receipt validation differed.",
+      "attempted_remedy": "Recognize actual active node:test declarations and covered per-case claims, coordinate the rounding rule, and test the assignment procedure for blinded method comparisons.",
+      "test_paths": [
+        "test/explain-claims.test.ts",
+        "test/bench-explainers.test.ts",
+        "test/browser/explain-story-review.test.ts"
+      ],
+      "diff_evidence": "Claim controls reject a comment, a string constant, malformed declarations, skip and todo. The blinding properties require a reproducible seed, both methods for each author, and varied sides across seeds.",
+      "transferable_rule": "Validate that a cited test really exists and runs in the intended mode. Validate experimental assignment separately from measured outcomes.",
+      "outcome_caveat": "Recognizing an active declaration does not run it or prove its assertion. A blinded assignment does not establish human learning.",
+      "head_sha": "50bc696cabcc370bb4349126cacb1e4387dc19f8",
+      "head_check_runs": {
+        "success": 13
+      }
+    },
+    {
+      "number": 91,
+      "title": "Machines, one vocabulary, and primitives correct by construction",
+      "url": "https://github.com/adewale/rayner/pull/91",
+      "state": "closed",
+      "merged": true,
+      "classification": "Model-exploration approach upgrade",
+      "weakness": "A scripted path could satisfy existing tests while another reachable state had the wrong picture, an unreadable label, or a transition violated an invariant between endpoints.",
+      "attempted_remedy": "Explore model states breadth-first, check state discrimination and readability, replay transitions at intermediate times, and report invariants that never applied.",
+      "test_paths": [
+        "test/machine.test.ts",
+        "test/recipes.test.ts"
+      ],
+      "diff_evidence": "Tests compare the shortest paths and traversal cap with known states, reject indistinguishable or undersized states, and explicitly report a misspelled-key invariant as vacuous.",
+      "transferable_rule": "Treat reachability, observation count and intermediate transitions as separate test obligations. Retain the exploration bound.",
+      "outcome_caveat": "Only the explored state space and sampled transition times supply evidence.",
+      "head_sha": "9d6f9929e6d492fc8278a9c0b9982d3ba9d3ffb6",
+      "head_check_runs": {
+        "success": 13
+      }
+    },
+    {
+      "number": 92,
+      "title": "0.2.0: live machines, pictures held to their state, revised explainers, and a public API split by audience",
+      "url": "https://github.com/adewale/rayner/pull/92",
+      "state": "closed",
+      "merged": true,
+      "classification": "Presentation-oracle repair within a release PR",
+      "weakness": "A view whose words still matched its model could move an important shape without failing. A scripted end state also omitted reader-triggered live states.",
+      "attempted_remedy": "Compare geometry alongside words, and include representative browser-reachable live states and their phone readability in served review.",
+      "test_paths": [
+        "test/view.test.ts",
+        "test/browser/explain-live-review.test.ts",
+        "tools/lib/explain-check.ts"
+      ],
+      "diff_evidence": "A test moves a bar outside its state update while leaving its label unchanged and expects the checker to name the view. Browser cases check immediate, breadth-first and farthest reachable states and a label that becomes tiny after a press.",
+      "transferable_rule": "Keep a fault that preserves the old oracle’s output while breaking the user-visible result, and exercise reachable interactions beyond the authored script.",
+      "outcome_caveat": "The browser live-state set is sampled and bounded. PR #111 later strengthened checks for painting, paths and clips.",
+      "head_sha": "dfae4ca58480e1e82c4f1af3a59659f404cb9572",
+      "head_check_runs": {
+        "success": 15
+      }
+    },
+    {
+      "number": 97,
+      "title": "0.2.0: explainers as intent, model and scene; one way to change a picture",
+      "url": "https://github.com/adewale/rayner/pull/97",
+      "state": "closed",
+      "merged": true,
+      "classification": "Embedded audit, test deletion and reproducibility repair",
+      "weakness": "Repository-wide tests sometimes inspected private state or source text, snapshot freshness tracked source hashes, and default unseeded property runs complicated replay.",
+      "attempted_remedy": "Move model-specific tests and reference data beside their models, replace source-hash freshness with real regeneration, consolidate property settings and run a fixed default seed with optional exploration.",
+      "test_paths": [
+        "test/snapshot-freshness.test.ts",
+        "test/snapshot-capture.test.ts",
+        "test/lib/pbt.ts",
+        "scenes/explainers/lib/pbt.ts",
+        "test/lettering.test.ts"
+      ],
+      "diff_evidence": "The source-hash freshness test is deleted. Enabled capture tests regenerate stores. Lettering tests replace a changed-source fingerprint probe with overlapping runs that must see their own faces. Shared fast-check configuration validates FC_SEED and supports replay with FC_PATH.",
+      "transferable_rule": "Put evidence beside the behavior it describes, assert observable artifacts, and keep a replayable default while searching additional seeds separately.",
+      "outcome_caveat": "Renames in this 872-file release are not evidence of deletion by themselves. Diagram and lettering recapture needs the appropriate tools.",
+      "head_sha": "712f9a35633a80e2910039cd116d81b703607e73",
+      "head_check_runs": {
+        "success": 16,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 100,
+      "title": "Verify rendered contrast and diagram use without freezing source hashes",
+      "url": "https://github.com/adewale/rayner/pull/100",
+      "state": "open",
+      "merged": false,
+      "classification": "Dedicated replacement of source and serialization checks",
+      "weakness": "Equivalent CSS formatting or a source-only refactor could break a test despite identical page colors and diagram inputs.",
+      "attempted_remedy": "Read actual browser colors for every palette and explicit/system theme and compare WCAG ratios. Run all current scenarios to compare their diagram stores with the captured inputs.",
+      "test_paths": [
+        "test/browser/embed-tint.test.ts",
+        "test/embed-tint.test.ts",
+        "test/snapshot-freshness.test.ts"
+      ],
+      "diff_evidence": "The CSS-regex test is deleted. Its replacement checks actual tint direction, bounded magnitude, contrast and a full palette × theme × role count. A separate test keeps provenance for unchanged diagrams and updates it for a changed capture.",
+      "transferable_rule": "Use browser-computed values and the diagrams actually consumed as the oracle for a rendering contract.",
+      "outcome_caveat": "Open at audit time. The browser’s computed colors are evidence for these theme contracts, not all visual accessibility.",
+      "head_sha": "0c9fec500243dd66be60e64949e86675bf81e9f3",
+      "head_check_runs": {
+        "success": 15,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 103,
+      "title": "Poppy sign-in and overview: fix five model defects found in review of #102",
+      "url": "https://github.com/adewale/rayner/pull/103",
+      "state": "closed",
+      "merged": true,
+      "classification": "Boundary coverage repaired after model review",
+      "weakness": "The existing sign-in and request tests missed malformed input and rejection states that were absent from the authored story examples.",
+      "attempted_remedy": "Extend the existing model tests with negative boundaries and valid neighbors, and add an independent session-result test for rejected and permitted requests.",
+      "test_paths": [
+        "scenes/explainers/poppy-sign-in/model.test.ts",
+        "scenes/explainers/poppy/model.test.ts"
+      ],
+      "diff_evidence": "The sign-in tests add tables of invalid and accepted cases. The session test distinguishes a revoked token, a missing token and a request whose response still identifies an account.",
+      "transferable_rule": "When review finds a boundary gap, preserve the rejected and nearest valid inputs and test the resulting state as well as the response.",
+      "outcome_caveat": "These are models of protocol rules. The PR does not establish that a live service behaves identically.",
+      "head_sha": "8adec8c3aa27147b95970acc09e5ac83ca587b04",
+      "head_check_runs": {
+        "success": 15,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 106,
+      "title": "Act on the outside review, and give every engine feature a real explainer",
+      "url": "https://github.com/adewale/rayner/pull/106",
+      "state": "closed",
+      "merged": true,
+      "classification": "Reference-oracle enforcement and evaluation design",
+      "weakness": "Required external oracles could silently skip in CI, letting a green suite imply fidelity it had never checked. The product’s core verification premise also lacked a controlled comparison.",
+      "attempted_remedy": "Route required and optional oracle availability through an explicit policy, enforce required execution in CI, and compare unchecked, method-only and engine-rendered examples using recorded external facts.",
+      "test_paths": [
+        "scenes/explainers/lib/oracle.ts",
+        "test/explain-oracles.test.ts",
+        ".github/workflows/ci.yml"
+      ],
+      "diff_evidence": "The tests inject environment values, require exactly one local skip for a missing required oracle and an exception with no skip when CI enforcement is enabled. The workflow sets RAYNER_REQUIRE_ORACLES=1.",
+      "transferable_rule": "Make unavailable prerequisites visible in test results and explicitly distinguish mandatory CI evidence from optional local checks.",
+      "outcome_caveat": "The initial premise benchmark involved two topics. A later PR expanded it and qualified the resulting product claims.",
+      "head_sha": "659775d4ab7f031f2184576ffda8d77c8e553ec6",
+      "head_check_runs": {
+        "success": 14,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 107,
+      "title": "Make Rayner's account of itself match the work, and trim the API before 1.0: blank init and guide, motion check, multi-collection export, rayner/extras, one label and one Transform, Henge at real places",
+      "url": "https://github.com/adewale/rayner/pull/107",
+      "state": "closed",
+      "merged": true,
+      "classification": "Defect-corpus and verification approach",
+      "weakness": "Filming existing chapters exposed motion faults that the ordinary checker accepted. The original premise comparison also gave too little support for broad product claims.",
+      "attempted_remedy": "Check motion against a versioned defect corpus. Retain a clean control, specific expected diagnostics, ordinary sampled cases and a larger FULL regression campaign. Expand the premise comparison with a blind second grader.",
+      "test_paths": [
+        "test/motion-corpus.test.ts",
+        "test/fixtures/motion-corpus/corpus.ts",
+        "test/keyed-motion.test.ts"
+      ],
+      "diff_evidence": "The corpus test requires unique entries, named events and continued detection of the previously caught IDs. Focused controls distinguish a press-only jump from a clean played path and check the precise flicker diagnostic.",
+      "transferable_rule": "Evaluate a checker on known defects and preserve its misses. Use a stronger comparison before broadening claims.",
+      "outcome_caveat": "The corpus is a bounded reconstruction. Raw rejections cannot by themselves establish exact defect detection, a distinction strengthened in #115.",
+      "head_sha": "f4ab58ce20eaa115d5530575ce48daeba1cc6de4",
+      "head_check_runs": {
+        "success": 14,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 108,
+      "title": "Docs: a writing guide a newcomer can follow, and an audit of the docs against the code",
+      "url": "https://github.com/adewale/rayner/pull/108",
+      "state": "closed",
+      "merged": true,
+      "classification": "Tutorial-harness repair within a documentation PR",
+      "weakness": "The documentation test used completed files during an intermediate tutorial stage. It therefore certified output a reader following the guide could not see.",
+      "attempted_remedy": "Construct the model and tested stages from blank initialization and only the three files already written. Apply the deliberately wrong model to the appropriate stage.",
+      "test_paths": [
+        "test/lib/writing-guide.ts",
+        "test/explain-tutorial.test.ts"
+      ],
+      "diff_evidence": "The harness selects script.md, model.ts and model.test.ts and leaves the generated scene blank. applyDrafts now rejects an instruction that modifies a file the reader has not written yet.",
+      "transferable_rule": "Replay a tutorial from each stage’s real starting state and verify the output for that state.",
+      "outcome_caveat": "This validates the executable sequence and printed output. It does not measure whether a beginner understands the prose.",
+      "head_sha": "e5d75fd19c0a938e723f7ad5923083b5ebc3e432",
+      "head_check_runs": {
+        "success": 14,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 110,
+      "title": "Keep sideEffects: false on engine paths the alias resolves (loader.js 445 KB → 16 KB)",
+      "url": "https://github.com/adewale/rayner/pull/110",
+      "state": "closed",
+      "merged": true,
+      "classification": "Budget coverage for an existing shipped artifact",
+      "weakness": "Page-size budgets did not catch the shared loader bundling unused engine and font code. The PR reported a loader around 445 KB.",
+      "attempted_remedy": "Build the loader itself and put a direct byte budget on its output while retaining an assertion that the public entry point is present.",
+      "test_paths": [
+        "test/loader-size.test.ts"
+      ],
+      "diff_evidence": "The independent test reads emitted loader.js, asserts it stays within 32 × 1024 bytes and requires mountExplainer in the script.",
+      "transferable_rule": "Put a budget on each separately downloaded artifact and pair it with a minimum functionality check.",
+      "outcome_caveat": "The budget covers bytes and a public marker. It does not measure startup latency or prove functionality alone.",
+      "head_sha": "8416acb59c2f031870689fc326c7c99af305730a",
+      "head_check_runs": {
+        "success": 14,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 111,
+      "title": "Repair model fidelity, strengthen picture checks and compare renderers",
+      "url": "https://github.com/adewale/rayner/pull/111",
+      "state": "closed",
+      "merged": true,
+      "classification": "Dedicated repair of rendering and model oracles",
+      "weakness": "Existing view comparisons accepted altered fill, path, clipping and draw fraction. API-rationale checks rejected reasonable prose using word counts and word bans.",
+      "attempted_remedy": "Compare rendered SVG records with clean and equivalent controls, strengthen the Git reference model check, and remove rationale heuristics while retaining nonempty and structural obligations.",
+      "test_paths": [
+        "test/explain-gates.test.ts",
+        "test/public-names.test.ts",
+        "test/view.test.ts",
+        "scenes/explainers/unified-diff/model.test.ts"
+      ],
+      "diff_evidence": "The defect matrix expects changed paint and clip records to fail while equivalent rendering passes. The rationale test now permits a short upstream citation. A real-Git counterexample is retained for relocated hunks.",
+      "transferable_rule": "Look for different outputs the old oracle collapses, and pair those negatives with a harmless alternative that should pass.",
+      "outcome_caveat": "The paired rendering benchmark uses fixed subjects and a recorded environment. Its timing samples cannot establish general renderer superiority.",
+      "head_sha": "7e80fc4a4da0dd4b103adc2375587b72e6850ff2",
+      "head_check_runs": {
+        "success": 14,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 112,
+      "title": "Review iframe readers and repair diagram, live-machine and motion gaps",
+      "url": "https://github.com/adewale/rayner/pull/112",
+      "state": "open",
+      "merged": false,
+      "classification": "Review-harness coverage repair",
+      "weakness": "A standalone or whole-scene pass could miss a clipped word, hidden event outcome or unreadable live state in the phone loader iframe.",
+      "attempted_remedy": "Run the production loader iframe, visit every tour stop, exercise real live controls, and check complete visible label ink and the returned state after navigation.",
+      "test_paths": [
+        "test/browser/explain-live-review.test.ts",
+        "test/browser/explain-story-review.test.ts",
+        "tools/lib/explain-story-review.ts"
+      ],
+      "diff_evidence": "The reviewer enumerates partiallyVisibleLabels and requires zero. Browser tests follow a multi-event direct link, use Reset, and require the visible reached state in the resulting evidence.",
+      "transferable_rule": "Test every supported presentation container where its geometry differs, and record which interaction histories were actually sampled.",
+      "outcome_caveat": "Open at audit time. The live-state coverage is deliberately sampled. The matched benchmark does not provide human learning evidence.",
+      "head_sha": "11b9ab5a61fbed0cb57006f583317b56eb02b5aa",
+      "head_check_runs": {
+        "success": 14,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 113,
+      "title": "Repair CI progress and remove duplicate validation work",
+      "url": "https://github.com/adewale/rayner/pull/113",
+      "state": "open",
+      "merged": false,
+      "classification": "Test-runner reliability and duplicate-work repair",
+      "weakness": "The progress reporter silently dropped relative paths used by CI. Duplicate full motion campaigns and all-scenario setup inflated test work without changing the guarantees.",
+      "attempted_remedy": "Normalize runner events, prove progress while a slow file is blocked, reuse one corpus campaign, and verify default-only fixture collection against the original full collector.",
+      "test_paths": [
+        "test/ci-progress.test.ts",
+        "test/motion-corpus.test.ts",
+        "test/motion-corpus-runner.test.ts",
+        "test/default-scenes.test.ts"
+      ],
+      "diff_evidence": "Both corpus invocations become a memoized campaign promise. Three representative scenes compare default-only traces and every rendered frame with both collection modes. The progress test exercises relative paths.",
+      "transferable_rule": "Reuse expensive setup only after demonstrating result equivalence. Test incremental feedback while later work is still blocked.",
+      "outcome_caveat": "Open at audit time. Multiple check runs appear for this head, including a cancelled compatibility check. Component timings are not whole-suite timings.",
+      "head_sha": "1664537fa8eba498cd2d6155b43784b8a3db699f",
+      "head_check_runs": {
+        "success": 18,
+        "cancelled": 1,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 114,
+      "title": "Make Rayner state, drawing, readouts and observations explicit",
+      "url": "https://github.com/adewale/rayner/pull/114",
+      "state": "closed",
+      "merged": true,
+      "classification": "CLI test architecture repair within a domain refactor",
+      "weakness": "Ordinary CLI behavior tests launched Node processes to inspect output. This conflated command logic with binary startup and made concurrent output ownership implicit.",
+      "attempted_remedy": "Use an injectable argv/output/status interface for behavioral tests and retain executable and installed-package smoke coverage for process boundaries.",
+      "test_paths": [
+        "test/explain-cli.test.ts",
+        "test/lib/cli-contract.ts",
+        "tools/lib/explain-cli.ts"
+      ],
+      "diff_evidence": "Concurrent success and failure are exercised with Promise.all. The tests check separate stdout, stderr and statuses and confirm process.exitCode did not change. Many previous execFileSync assertions use the direct contract.",
+      "transferable_rule": "Test command semantics in process, then retain real executable tests where startup, linkage or OS exit status matters.",
+      "outcome_caveat": "Direct calls cannot establish installed executable behavior. That remains a separate smoke boundary.",
+      "head_sha": "a867ffe95e2f3a5c77f909571f916c72eb0db757",
+      "head_check_runs": {
+        "success": 14,
+        "skipped": 1
+      }
+    },
+    {
+      "number": 115,
+      "title": "Fix motion rendering, reader coverage and native evidence validation",
+      "url": "https://github.com/adewale/rayner/pull/115",
+      "state": "open",
+      "merged": false,
+      "classification": "Defect-detection and evidence-provenance audit",
+      "weakness": "An unrelated warning, a stale baseline, or evidence produced for another actor, victim or run could incorrectly count as detecting a seeded defect. Reader and filming inventories also skipped reachable paths.",
+      "attempted_remedy": "Score predeclared findings by exact identity and phase, subtract matching baseline observations, validate worker and archive completeness, and retain prevention, diagnosis, nonreproduction and editorial outcomes separately.",
+      "test_paths": [
+        "test/motion-corpus-v2.test.ts",
+        "test/motion-corpus-report.test.ts",
+        "test/fixtures/motion-corpus/current-obligations.ts"
+      ],
+      "diff_evidence": "The controls reject wrong actor, victim, event, source and lookalike text, and reject missing, duplicate or failed workers. A baseline finding cannot gain new-target credit even when the worker reports caught=true.",
+      "transferable_rule": "Credit a detector only for the intended defect, using provenance-bound and independently specified evidence. Keep invalid runs outside accuracy counts.",
+      "outcome_caveat": "Open draft on a stacked branch. The PR explicitly separates raw rejections from exact matches. Archived visual observations and editorial judgments remain bounded.",
+      "head_sha": "6bc9bfc86be87f4a3da3c0e23a23b8c4a9c918ef",
+      "head_check_runs": {
+        "success": 15,
+        "skipped": 1
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        3,
+        6,
+        22,
+        67,
+        98
+      ],
+      "reason": "Package naming, README, FAQ, guidance or release copy. Test edits update names or verify the existing documentation as applicable."
+    },
+    {
+      "numbers": [
+        4,
+        5,
+        15,
+        16,
+        20,
+        26,
+        29,
+        35,
+        58,
+        59,
+        61,
+        68,
+        73,
+        79,
+        102,
+        104,
+        109
+      ],
+      "reason": "The changed assertions cover new reader behavior, formatting, release/package shape, documented examples, exporter features, protocol revisions or the corresponding product bug. The diffs do not show a distinct repair to the former testing method. For example, #35 adds Hebrew to the existing reference pipeline, #102 supplies tests for eight new chapters, #104 updates the draft specification and #109 rewrites the single-package contract."
+    },
+    {
+      "numbers": [
+        12
+      ],
+      "reason": "A busy machine changed actual tokenizer output. The existing test exposed the defect and the tokenizer was fixed. Other tests cover the new describe API."
+    },
+    {
+      "numbers": [
+        23,
+        47,
+        90,
+        95,
+        99,
+        105
+      ],
+      "reason": "Workflow trigger/permissions, runner allocation, retention, action-pinning lint or required-status reporting. #99 adds a matrix-context check. #105 removes a duplicated runner combination and adapts its workflow tests. Neither demonstrates a new application test oracle or repairs application test assertions."
+    },
+    {
+      "numbers": [
+        55,
+        56,
+        57
+      ],
+      "reason": "Manual editorial evaluation and curation. #55 defines a reader-first prose review, #56 ranks lessons with a six-part rubric, and #57 tightens countercase and hero-selection criteria. Their model tests, where present, cover new examples. These are adjacent if editorial assessment is desired."
+    },
+    {
+      "numbers": [
+        64
+      ],
+      "reason": "Retires Hello World and its guide. Deleted assertions tracked the removed example and its guidance, while the replacement checks cover new onboarding rules. The deletion follows a product retirement."
+    },
+    {
+      "numbers": [
+        77,
+        78
+      ],
+      "reason": "These stages apply the reader and audio refactor under the behavior harness from #76. Their changed files are implementation files. #79 adds tests for the new loading policy and is recorded separately with feature coverage."
+    }
+  ],
+  "limitations": [
+    "Captured on 2026-11-23. The audit screened all 92 titles, descriptions and full changed-file inventories, and inspected test, checker, workflow and applicable authoring diffs at their PR revisions. Test paths are representative changed files and can include corresponding checker or guidance files.",
+    "The public GitHub check-runs endpoint was queried at every recorded PR head. head_check_runs counts every returned check result, including separate attempts, rather than reporting a required-check rollup. An empty object means this endpoint returned no check runs for that head.",
+    "The audit did not execute historical suites or independently replay reported mutations, benchmark campaigns or archived media. A merged status records GitHub’s merge flag. Overlapping stacked contributions, including #75/#76/#80 and #85/#87, should not be counted as independent defect discoveries."
+  ]
+}

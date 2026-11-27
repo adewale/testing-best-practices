@@ -1,0 +1,54 @@
+{
+  "repository": "openclaw/openclaw",
+  "commit": "dff00f34e82554ec5afb4422db2540e630a42b1b",
+  "files": [
+    {
+      "path": ".agents/skills/test-audit/SKILL.md",
+      "git_blob": "6c6565a03928050dc03c16ea5af2e98ed6ca8acd",
+      "sha256": "1390c61901a1b9ec46778901ebd24f96b201989977d7b8dea2f05b7e593ab025",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/.agents/skills/test-audit/SKILL.md"
+    },
+    {
+      "path": ".agents/skills/test-audit/references/audit.md",
+      "git_blob": "e1d39da15ea383afdddb4d8d17f93353bca657ee",
+      "sha256": "71fbcc8d3f0b423a650edc25a99f634ef7f20211c25751c54892e24a5bac3c0c",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/.agents/skills/test-audit/references/audit.md"
+    },
+    {
+      "path": ".agents/skills/test-audit/CAMPAIGN.md",
+      "git_blob": "b4b93ceb91d2a801fc65f40f89e13d4134ef478a",
+      "sha256": "c844b1df2b23153b55e1ac06c128953e956d51ecd0b6b2df3f8a33009f245ef0",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/.agents/skills/test-audit/CAMPAIGN.md"
+    },
+    {
+      "path": ".agents/skills/openclaw-testing/SKILL.md",
+      "git_blob": "6c5ca243b0b7a90378c075644ba766181e0bfd22",
+      "sha256": "800366ae70aa5a5191347ef31bc7fe577903a066a3d496109c8aed73b5a071a4",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/.agents/skills/openclaw-testing/SKILL.md"
+    },
+    {
+      "path": "docs/help/testing/writing-tests.md",
+      "git_blob": "01b29f61226a8d6134e1afad0dd70164a6896f74",
+      "sha256": "37056fbd1ad4935ad8818cc868e8b844b515d77af91f7b14683446a50b3866f1",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/docs/help/testing/writing-tests.md"
+    },
+    {
+      "path": "docs/help/testing/boundary-scenarios.md",
+      "git_blob": "8c24a9854f6f281d01f0208f28e3f7689421c34a",
+      "sha256": "cbe36fa47424fb6566da019f3949d0cbbb61e87b23396ad3449d3a8bc1b6417f",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/docs/help/testing/boundary-scenarios.md"
+    },
+    {
+      "path": "docs/help/testing/fixtures.md",
+      "git_blob": "113bc7d5a7aee8f48b2dfba1235ec7206954bf21",
+      "sha256": "f63268fab7609c439853f05f485b8c4d4f1297807cf6b71e295c330fbe76a0dd",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/docs/help/testing/fixtures.md"
+    },
+    {
+      "path": "LICENSE",
+      "git_blob": "ed064819ab537575d0cad902f7e5af4a3488b1d0",
+      "sha256": "9efd316ecf1c4c60f6fd5d26433142fff2b6794d7d328e9bc6179b29bf9c82a4",
+      "url": "https://github.com/openclaw/openclaw/blob/dff00f34e82554ec5afb4422db2540e630a42b1b/LICENSE"
+    }
+  ]
+}

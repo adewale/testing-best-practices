@@ -1,0 +1,15 @@
+{
+  "label": "oc-cli-output-policy",
+  "argv": [
+    "python3",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/evidence/cli-output-policy.py"
+  ],
+  "cwd": "/workspace/mermaid-skill-comparison-2026-11-27/verification/repo",
+  "extra_env": {},
+  "timeout_seconds": 120,
+  "exit_code": 0,
+  "status": "completed",
+  "duration_seconds": 0.8597670119997929,
+  "stdout_sha256": "336383c7be5121217dac360fc1157bb78b99e2b9ac96aa623881b5cc16100272",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

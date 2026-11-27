@@ -1,0 +1,65 @@
+{
+  "imageId": "sha256:e89a28eddc2679c648d10c127f6d0f79d892056a55f179dfded36452a5477c46",
+  "candidateSHA256": "54aed977de66fbbb2409278d4e8b24ab44170468de361d84814611e1647d7c3a",
+  "candidateFiles": 437,
+  "limits": {
+    "cpus": "2",
+    "memory": "2g",
+    "pids": 96,
+    "tmpfsBytes": 268435456,
+    "timeoutSeconds": 240,
+    "maxResultBytes": 8388608
+  },
+  "inputMounts": [
+    {
+      "target": "/case/participant",
+      "readOnly": true
+    },
+    {
+      "target": "/case/hidden",
+      "readOnly": true
+    },
+    {
+      "target": "/case/hidden/vendor",
+      "readOnly": true
+    },
+    {
+      "target": "/candidate",
+      "readOnly": true
+    }
+  ],
+  "assertBaseline": false,
+  "allowScripts": false,
+  "exit": 0,
+  "elapsedSeconds": 21.354,
+  "runtimeProof": {
+    "Pillow": "13.0.0",
+    "PyYAML": "6.0.3",
+    "effectiveCapabilities": "0000000000000000",
+    "environmentKeys": [
+      "HOME",
+      "LANG",
+      "LC_ALL",
+      "PATH",
+      "PYTHONDONTWRITEBYTECODE",
+      "TMPDIR",
+      "TZ"
+    ],
+    "gid": 65534,
+    "interfaces": [
+      "lo"
+    ],
+    "noNewPrivileges": true,
+    "node": "v24.22.3",
+    "python": "3.11.2",
+    "readOnlyMounts": {
+      "/": true,
+      "/candidate": true,
+      "/case/hidden": true,
+      "/case/hidden/vendor": true,
+      "/case/participant": true
+    },
+    "uid": 65534
+  },
+  "resultSHA256": "3ac9e790346eac2df7fb6ab5ae8952c2a4701eee26a321eaf0e48e20e3335419"
+}

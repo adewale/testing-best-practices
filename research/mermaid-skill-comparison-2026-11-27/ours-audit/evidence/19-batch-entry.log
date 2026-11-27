@@ -1,0 +1,508 @@
+  1334	  process.stdout.write(JSON.stringify({ ok: true, blocks: results }) + '\n')
+  1335	  // Per-block failures don't fail the command (#543) — exit OK.
+  1336	  return EXIT_OK
+  1337	}
+  1338	
+  1339	// ---- Loop 7 / A3.2: batch -------------------------------------------------
+  1340	
+  1341	interface BatchLine {
+  1342	  op: 'render' | 'verify' | 'parse' | 'serialize' | 'mutate'
+  1343	  source: string
+  1344	  options?: Record<string, unknown>
+  1345	  mutation?: AnyMutationOp
+  1346	  mutations?: AnyMutationOp[]
+  1347	  preserveSource?: boolean
+  1348	}
+  1349	
+  1350	export interface BatchRenderOptions extends Record<string, unknown> {
+  1351	  format?: CliRenderFormat
+  1352	  certificates?: boolean
+  1353	  targetWidth?: number
+  1354	}
+  1355	
+  1356	interface BatchOutput {
+  1357	  ok: boolean
+  1358	  op?: string
+  1359	  /** mutate lines: the MCP mutate envelope's family and failing op index. */
+  1360	  family?: string | null
+  1361	  opIndex?: number
+  1362	  data?: unknown
+  1363	  verify?: unknown
+  1364	  error?: { code: string; message: string; details?: unknown }
+  1365	}
+  1366	
+  1367	/**
+  1368	 * Execute a single batch line. Exported for tests; the CLI just shuttles
+  1369	 * lines into and out of this function.
+  1370	 */
+  1371	export function runBatchLine(rawLine: string, lineIndex = 0): BatchOutput {
+  1372	  let parsed: BatchLine
+  1373	  try {
+  1374	    parsed = JSON.parse(rawLine) as BatchLine
+  1375	  } catch (e) {
+  1376	    return { ok: false, error: { code: 'INVALID_JSON', message: (e as Error).message } }
+  1377	  }
+  1378	  if (!parsed || typeof parsed !== 'object' || typeof parsed.op !== 'string') {
+  1379	    return { ok: false, error: { code: 'INVALID_PAYLOAD', message: 'missing op string' } }
+  1380	  }
+  1381	  const op = parsed.op
+  1382	  if (['render', 'verify', 'parse', 'serialize', 'mutate'].includes(op) && typeof parsed.source !== 'string') {
+  1383	    return { ok: false, op, error: { code: 'INVALID_PAYLOAD', message: 'missing source string' } }
+  1384	  }
+  1385	  try {
+  1386	    switch (op) {
+  1387	      case 'render': {
+  1388	        const options = parsed.options === undefined ? {} : parsed.options
+  1389	        if (typeof options !== 'object' || options === null || Array.isArray(options)) {
+  1390	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: 'batch render options must be a plain JSON object' } }
+  1391	        }
+  1392	        const { format: requestedFormat, certificates, targetWidth, ...sharedCandidate } = options as BatchRenderOptions
+  1393	        if (requestedFormat !== undefined && typeof requestedFormat !== 'string') {
+  1394	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: 'batch render option "format" must be a string' } }
+  1395	        }
+  1396	        const format = requestedFormat ?? DEFAULT_CLI_RENDER_FORMAT
+  1397	        if (!isCliRenderFormat(format) || renderOutputForCliFormat(format)?.id === 'png') {
+  1398	          const supported = CLI_RENDER_FORMATS.filter(candidate => renderOutputForCliFormat(candidate)?.id !== 'png')
+  1399	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: `batch render format must be one of ${supported.join(', ')}` } }
+  1400	        }
+  1401	        const output = renderOutputForCliFormat(format)!
+  1402	        if (certificates !== undefined && typeof certificates !== 'boolean') {
+  1403	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: 'batch render option "certificates" must be a boolean' } }
+  1404	        }
+  1405	        if (certificates === true && output.id !== 'layout') {
+  1406	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: 'batch render option "certificates" is valid only with format "layout"' } }
+  1407	        }
+  1408	        if (targetWidth !== undefined && (!Number.isInteger(targetWidth) || targetWidth <= 0)) {
+  1409	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: 'batch render option "targetWidth" must be a positive integer' } }
+  1410	        }
+  1411	        if (targetWidth !== undefined && output.id !== 'ascii' && output.id !== 'unicode') {
+  1412	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: 'batch render option "targetWidth" is valid only with format "ascii" or "unicode"' } }
+  1413	        }
+  1414	        const problems = validateSerializableRenderOptions(sharedCandidate)
+  1415	        if (problems.length > 0) {
+  1416	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: problems.join('; ') } }
+  1417	        }
+  1418	        const sharedOptions = sharedCandidate as RenderOptions
+  1419	        // Classify source admission errors before entering renderer internals;
+  1420	        // malformed batch input is a documented PARSE_FAILED response, never
+  1421	        // an INTERNAL failure that can poison an otherwise healthy JSONL run.
+  1422	        preflightCliRenderableSource(parsed.source)
+  1423	        // #7540: auto-namespace SVG ids per batch line so the rendered
+  1424	        // diagrams can coexist on one HTML page without def-id collisions,
+  1425	        // while retaining a caller-provided suffix.
+  1426	        const rendered = renderSourceToFormatWithReceipt(parsed.source, format, {
+  1427	          ...sharedOptions,
+  1428	          ...(output.id === 'svg' ? { idPrefix: `d${lineIndex}-${sharedOptions.idPrefix ?? ''}` } : {}),
+  1429	          ...(certificates === undefined ? {} : { certificates }),
+  1430	          ...(targetWidth === undefined ? {} : { targetWidth }),
+  1431	        })
+  1432	        return { ok: true, op, data: { [format]: rendered.output, receipt: rendered.receipt } }
+  1433	      }
+  1434	      case 'verify': {
+  1435	        const options = parsed.options === undefined ? {} : parsed.options
+  1436	        if (typeof options !== 'object' || options === null || Array.isArray(options)) {
+  1437	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: 'batch verify options must be a plain JSON object' } }
+  1438	        }
+  1439	        const unknown = Object.keys(options).filter(key => key !== 'suppress' && key !== 'labelCharCap')
+  1440	        if (unknown.length > 0) {
+  1441	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: `unknown batch verify option: ${unknown.join(', ')}` } }
+  1442	        }
+  1443	        const problem = verifyOptionsProblem(options)
+  1444	        if (problem) {
+  1445	          return { ok: false, op, error: { code: 'INVALID_OPTIONS', message: problem.field === 'labelCharCap' ? 'batch verify option "labelCharCap" must be a positive safe integer' : 'batch verify option "suppress" must be an array of known warning-code strings' } }
+  1446	        }
+  1447	        const r = verifyMermaid(parsed.source, options as { suppress?: WarningCode[]; labelCharCap?: number })
+  1448	        if (!r.ok) {
+  1449	          const verify = JSON.parse(JSON.stringify(r, replacer))
+  1450	          return {
+  1451	            ok: false,
+  1452	            op,
+  1453	            error: {
+  1454	              code: 'VERIFY_FAILED',
+  1455	              message: 'diagram failed verify',
+  1456	              details: verify.warnings,
+  1457	            },
+  1458	            verify,
+  1459	          }
+  1460	        }
+  1461	        return { ok: true, op, data: JSON.parse(JSON.stringify(r, replacer)) }
+  1462	      }
+  1463	      case 'parse': {
+  1464	        // Batch is the streaming form of `am parse`; keep both on the open
+  1465	        // registered-family envelope while preserving built-in result shapes.
+  1466	        const r = parseRegisteredMermaid(parsed.source)
+  1467	        if (!r.ok) {
+  1468	          const env = parseErrorEnvelope(r.error)
+  1469	          return { ok: false, op, error: env.error }
+  1470	        }
+  1471	        return { ok: true, op, data: JSON.parse(JSON.stringify(toJsonSafe(r.value), replacer)) }
+  1472	      }
+  1473	      case 'serialize': {
+  1474	        // For batch, the line's `source` field is a JSON-stringified ValidDiagram
+  1475	        // (same shape as `am parse` emits). We re-hydrate it via synthesizeFromGraph.
+  1476	        let payload: unknown
+  1477	        try {
+  1478	          payload = JSON.parse(parsed.source)
+  1479	        } catch (e) {
+  1480	          return { ok: false, op, error: { code: 'INVALID_JSON', message: (e as Error).message } }
+  1481	        }
+  1482	        const r = synthesizeFromGraph(payload as Parameters<typeof synthesizeFromGraph>[0])
+  1483	        if (!r.ok) return { ok: false, op, error: { code: 'SYNTHESIZE_FAILED', message: JSON.stringify(r.error) } }
+  1484	        return { ok: true, op, data: { source: serializeMermaid(r.value) } }
+  1485	      }
+  1486	      case 'mutate': {
+  1487	        const hasMutation = Object.hasOwn(parsed, 'mutation')
+  1488	        const hasMutations = Object.hasOwn(parsed, 'mutations')
+  1489	        if (hasMutation === hasMutations) {
+  1490	          return { ok: false, op, error: { code: 'INVALID_OP', message: 'mutate batch line requires exactly one of mutation or mutations[]' } }
+  1491	        }
+  1492	        if (hasMutations && !Array.isArray(parsed.mutations)) {
+  1493	          return { ok: false, op, error: { code: 'INVALID_OP', message: 'mutate batch line mutations must be a non-empty array' } }
+  1494	        }
+  1495	        const ops = (hasMutations ? parsed.mutations : [parsed.mutation]) as Parameters<typeof mutateSource>[1]
+  1496	        if (ops.length === 0) return { ok: false, op, error: { code: 'INVALID_OP', message: 'mutate batch line mutations must be a non-empty array' } }
+  1497	        if (parsed.preserveSource !== undefined && typeof parsed.preserveSource !== 'boolean') return { ok: false, op, error: { code: 'INVALID_OP', message: 'preserveSource must be boolean' } }
+  1498	        const r = mutateSource(parsed.source, ops, parsed.preserveSource === true)
+  1499	        if (!r.ok)
+  1500	          return {
+  1501	            ok: false,
+  1502	            op,
+  1503	            family: r.family,
+  1504	            ...(r.opIndex !== undefined ? { opIndex: r.opIndex } : {}),
+  1505	            error: {
+  1506	              code: r.error.code,
+  1507	              message: r.error.message,
+  1508	              ...('details' in r.error && r.error.details !== undefined ? { details: r.error.details } : {}),
+  1509	            },
+  1510	            ...(r.verify ? { verify: JSON.parse(JSON.stringify(r.verify, replacer)) } : {}),
+  1511	          }
+  1512	        return { ok: true, op, data: { family: r.family, source: r.source, verify: JSON.parse(JSON.stringify(r.verify, replacer)), ...(r.mode ? { mode: r.mode } : {}) } }
+  1513	      }
+  1514	      default:
+  1515	        return { ok: false, op, error: { code: 'UNKNOWN_OP', message: `unknown op: ${op}` } }
+  1516	    }
+  1517	  } catch (e) {
+  1518	    // Project documented render diagnostics (family-detection UNKNOWN_HEADER/
+  1519	    // UNSUPPORTED_FAMILY, ASCII_TARGET_WIDTH_IMPOSSIBLE) the same way every other CLI render
+  1520	    // transport does (cmdRender/preview/render-markdown), instead of collapsing them to a
+  1521	    // generic internal error. cliStructuredRenderFailure first honours an already-structured
+  1522	    // throw; any remaining render-path exception is still a bounded RENDER_FAILED response.
+  1523	    return { ok: false, op, error: cliStructuredRenderFailure(e).error }
+  1524	  }
+  1525	}
+  1526	
+  1527	async function cmdBatch(): Promise<number> {
+  1528	  if (process.stdin.isTTY) throw new CliArgumentError('needs a file argument or piped stdin')
+  1529	  const { streamJsonlBatch } = await import('./jsonl.ts')
+  1530	  await streamJsonlBatch(process.stdin, process.stdout, runBatchLine)
+  1531	  // Per-line failures don't abort; input/output transport failures do.
+  1532	  return EXIT_OK
+  1533	}
+  1534	
+  1535	function toJsonSafe(d: ParsedDiagram): unknown {
+  1536	  if (d.body.kind === 'flowchart') {
+  1537	    const g = d.body.graph
+  1538	    return {
+  1539	      kind: d.kind,
+  1540	      meta: d.meta,
+  1541	      body: {
+  1542	        kind: 'flowchart',
+  1543	        graph: {
+  1544	          direction: g.direction,
+  1545	          nodes: Object.fromEntries(g.nodes),
+  1546	          edges: g.edges,
+  1547	          subgraphs: g.subgraphs,
+  1548	          // Preserve styling so `am parse | am serialize` is lossless.
+  1549	          classDefs: Object.fromEntries(g.classDefs),
+  1550	          classAssignments: Object.fromEntries(g.classAssignments),
+  1551	          nodeStyles: Object.fromEntries(g.nodeStyles),
+  1552	          linkStyles: Object.fromEntries([...g.linkStyles].map(([k, v]) => [String(k), v])),
+  1553	        },
+  1554	      },
+  1555	      canonicalSource: d.canonicalSource,
+  1556	    }
+  1557	  }
+  1558	  return { kind: d.kind, meta: d.meta, body: d.body, canonicalSource: d.canonicalSource }
+  1559	}
+     1	import { type Readable, Writable } from 'node:stream'
+     2	import { pipeline } from 'node:stream/promises'
+     3	
+     4	/** Retain at most the current input line, output envelope and stream buffers.
+     5	 * Pulling the next request waits for stdout capacity, including slow consumers. */
+     6	export async function streamJsonlBatch(input: Readable, output: Writable, handler: (line: string, index: number) => unknown): Promise<void> {
+     7	  input.setEncoding('utf8')
+     8	  async function* responses(source: AsyncIterable<string | Buffer>) {
+     9	    let pending = ''
+    10	    let index = 0
+    11	    const response = (line: string): string => {
+    12	      let value: unknown
+    13	      try {
+    14	        value = handler(line, index++)
+    15	      } catch (error) {
+    16	        value = { ok: false, error: { code: 'BATCH_HANDLER_ERROR', message: error instanceof Error ? error.message : String(error) } }
+    17	      }
+    18	      return JSON.stringify(value) + '\n'
+    19	    }
+    20	    for await (const chunk of source) {
+    21	      pending += chunk
+    22	      let start = 0
+    23	      let end: number
+    24	      while ((end = pending.indexOf('\n', start)) !== -1) {
+    25	        const line = pending.slice(start, end)
+    26	        start = end + 1
+    27	        if (line.trim() !== '') yield response(line)
+    28	      }
+    29	      pending = pending.slice(start)
+    30	    }
+    31	    if (pending.trim() !== '') yield response(pending)
+    32	  }
+    33	  // Finish an owned adapter so pipeline awaits the final write callback without
+    34	  // ending shared stdout. end:false can resolve before that acknowledgement.
+    35	  const writer = new Writable({ highWaterMark: 1, write(chunk, encoding, done) { output.write(chunk, encoding, done) } })
+    36	  const onError = (error: Error) => { writer.destroy(error) }
+    37	  const onClose = () => { writer.destroy(new Error('output closed before batch completed')) }
+    38	  output.on('error', onError)
+    39	  output.on('close', onClose)
+    40	  try {
+    41	    await pipeline(input, responses, writer)
+    42	  } finally {
+    43	    output.removeListener('error', onError)
+    44	    output.removeListener('close', onClose)
+    45	  }
+    46	}
+     1	// E2E coverage for the new Loop 7 CLI verbs.
+     2	//
+     3	// Spawns the real `bin/am.ts` via `bun run` and pipes JSONL / source via
+     4	// stdin, asserting:
+     5	//   - capabilities emits well-formed JSON
+     6	//   - batch processes 5 lines (3 happy, 1 malformed JSON, 1 unknown op) and
+     7	//     keeps going after errors, exiting 0
+     8	//   - exit codes: 2 on arg error, 3 on verify-failed
+     9	
+    10	import { describe, test, expect } from 'bun:test'
+    11	import { spawnSync } from 'node:child_process'
+    12	import { join } from 'node:path'
+    13	
+    14	const AM = join(import.meta.dir, '..', 'bin', 'am.ts')
+    15	const SPAWN_TIMEOUT_MS = 60_000
+    16	
+    17	function runAm(args: string[], stdin = '', env: NodeJS.ProcessEnv = {}): { status: number; stdout: string; stderr: string } {
+    18	  const r = spawnSync('bun', ['run', AM, ...args], {
+    19	    encoding: 'utf8',
+    20	    input: stdin,
+    21	    env: { ...process.env, ...env },
+    22	    timeout: SPAWN_TIMEOUT_MS,
+    23	  })
+    24	  return { status: r.status ?? -1, stdout: r.stdout, stderr: r.stderr }
+    25	}
+    26	
+    27	describe('am capabilities', () => {
+    28	  test('emits a JSON envelope with the expected top-level keys', () => {
+    29	    const { status, stdout } = runAm(['capabilities'])
+    30	    expect(status).toBe(0)
+    31	    const payload = JSON.parse(stdout)
+    32	    expect(typeof payload.sdkVersion).toBe('string')
+    33	    expect(Array.isArray(payload.families)).toBe(true)
+    34	    expect(payload.families.length).toBeGreaterThan(0)
+    35	    expect(Array.isArray(payload.warningCodes)).toBe(true)
+    36	    expect(payload.warningCodes.length).toBeGreaterThan(0)
+    37	    expect(payload.outputFormats).toEqual(['svg', 'ascii', 'unicode', 'png', 'layout'])
+    38	    const flowchart = payload.families.find((f: any) => f.id === 'flowchart')
+    39	    expect(flowchart.mutationOps).toContain('add_node')
+    40	  })
+    41	})
+    42	
+    43	describe('am preview', () => {
+    44	  test('writes standalone HTML and can use a stubbed opener', () => {
+    45	    const { writeFileSync, readFileSync, existsSync, unlinkSync } = require('node:fs') as typeof import('node:fs')
+    46	    const tmpSrc = `/tmp/am-preview-input-${Date.now()}.mmd`
+    47	    const tmpOut = `/tmp/am-preview-output-${Date.now()}.html`
+    48	    writeFileSync(tmpSrc, 'flowchart LR\n  A --> B\n')
+    49	    try {
+    50	      const r = runAm(['preview', tmpSrc, '--output', tmpOut, '--open', '--json'], '', { AM_OPEN_COMMAND: 'true' })
+    51	      expect(r.status).toBe(0)
+    52	      const payload = JSON.parse(r.stdout)
+    53	      expect(payload.ok).toBe(true)
+    54	      expect(payload.path).toBe(tmpOut)
+    55	      expect(payload.opened).toBe(true)
+    56	      const html = readFileSync(tmpOut, 'utf8')
+    57	      expect(html).toContain('<!doctype html>')
+    58	      expect(html).toContain('<svg')
+    59	      expect(html).toContain('flowchart LR')
+    60	    } finally {
+    61	      if (existsSync(tmpSrc)) unlinkSync(tmpSrc)
+    62	      if (existsSync(tmpOut)) unlinkSync(tmpOut)
+    63	    }
+    64	  })
+    65	
+    66	  test('an unknown family returns its structured capability diagnostic', () => {
+    67	    const r = runAm(['preview', '-', '--json'], 'not a diagram')
+    68	    expect(r.status).toBe(2)
+    69	    const payload = JSON.parse(r.stdout)
+    70	    expect(payload.ok).toBe(false)
+    71	    expect(payload.error.code).toBe('UNKNOWN_HEADER')
+    72	  })
+    73	
+    74	  test('opener failures are not reported as success', () => {
+    75	    const r = runAm(['preview', '-', '--open'], 'flowchart LR\n  A --> B\n', { AM_OPEN_COMMAND: '/tmp/am-missing-opener-command' })
+    76	    expect(r.status).toBe(4)
+    77	    expect(r.stderr).toContain('open command failed')
+    78	  })
+    79	})
+    80	
+    81	describe('am describe', () => {
+    82	  test('emits prose by default and AX-tree JSON on request', () => {
+    83	    const source = 'flowchart LR\n  A --> B\n'
+    84	    const text = runAm(['describe', '-'], source)
+    85	    expect(text.status).toBe(0)
+    86	    expect(text.stdout).toContain('flowchart')
+    87	    expect(text.stdout).toContain('A')
+    88	    expect(text.stdout).toContain('B')
+    89	
+    90	    const json = runAm(['describe', '-', '--format', 'json'], source)
+    91	    expect(json.status).toBe(0)
+    92	    const tree = JSON.parse(json.stdout)
+    93	    expect(tree.kind).toBe('flowchart')
+    94	    expect(tree.nodes.map((n: any) => n.id).sort()).toEqual(['A', 'B'])
+    95	    expect(tree.edges).toEqual([{ from: 'A', to: 'B' }])
+    96	  })
+    97	})
+    98	
+    99	describe('am render multi-input', () => {
+   100	  test('unsupported --format exits 2 instead of falling back to SVG', () => {
+   101	    const r = runAm(['render', '--format', 'nope', '-'], 'flowchart LR\n  A --> B\n')
+   102	    expect(r.status).toBe(2)
+   103	    expect(r.stderr).toContain('unsupported --format')
+   104	    expect(r.stdout).toBe('')
+   105	  })
+   106	
+   107	  test('--format png rejects multiple inputs instead of ignoring extras', () => {
+   108	    const { writeFileSync, existsSync, unlinkSync } = require('node:fs') as typeof import('node:fs')
+   109	    const a = `/tmp/am-png-a-${Date.now()}.mmd`
+   110	    const b = `/tmp/am-png-b-${Date.now()}.mmd`
+   111	    const out = `/tmp/am-png-out-${Date.now()}.png`
+   112	    writeFileSync(a, 'flowchart LR\n  A --> B\n')
+   113	    writeFileSync(b, 'flowchart LR\n  C --> D\n')
+   114	    try {
+   115	      const r = runAm(['render', '--format', 'png', a, b, '--output', out])
+   116	      expect(r.status).toBe(2)
+   117	      expect(r.stderr).toContain('exactly one input')
+   118	      expect(existsSync(out)).toBe(false)
+   119	    } finally {
+   120	      if (existsSync(a)) unlinkSync(a)
+   121	      if (existsSync(b)) unlinkSync(b)
+   122	      if (existsSync(out)) unlinkSync(out)
+   123	    }
+   124	  })
+   125	
+   126	  test('--format layout returns layout JSON per file, not ASCII strings', () => {
+   127	    const { writeFileSync, existsSync, unlinkSync } = require('node:fs') as typeof import('node:fs')
+   128	    const a = `/tmp/am-json-a-${Date.now()}.mmd`
+   129	    const b = `/tmp/am-json-b-${Date.now()}.mmd`
+   130	    writeFileSync(a, 'flowchart LR\n  A --> B\n')
+   131	    writeFileSync(b, 'flowchart LR\n  C --> D\n')
+   132	    try {
+   133	      const r = runAm(['render', '--format', 'layout', a, b])
+   134	      expect(r.status).toBe(0)
+   135	      const payload = JSON.parse(r.stdout)
+   136	      expect(payload.files.length).toBe(2)
+   137	      expect(payload.files.map((result: { file: string; ok: boolean; output: { kind: string; nodes: { id: string }[] } }) => ({
+   138	        file: result.file, ok: result.ok, kind: result.output.kind, nodes: result.output.nodes.map(node => node.id).sort(),
+   139	      }))).toEqual([
+   140	        { file: a, ok: true, kind: 'flowchart', nodes: ['A', 'B'] },
+   141	        { file: b, ok: true, kind: 'flowchart', nodes: ['C', 'D'] },
+   142	      ])
+   143	    } finally {
+   144	      if (existsSync(a)) unlinkSync(a)
+   145	      if (existsSync(b)) unlinkSync(b)
+   395	    BUILTIN_FAMILY_METADATA.forEach((family, index) => {
+   396	      const result = results[flow.length + index]!
+   397	      expect(result.kind, family.id).toBe(family.id)
+   398	      expect(result.layout, family.id).not.toBe('THREW')
+   399	      expect(refLayout(family.example), family.id).not.toBe('THREW')
+   400	      expect(result.svg, family.id).not.toBe('THREW')
+   401	      expect(result.ascii, family.id).not.toBe('THREW')
+   402	    })
+   403	    PACKAGE_FAMILY_FIXTURES.forEach((fixture, index) => {
+   404	      expect(results[fixtureStart + index]!.kind).toBe(fixture.family)
+   405	      expect(results[fixtureStart + index]!.svg).not.toBe('THREW')
+   406	      expect(results[fixtureStart + index]!.ascii).not.toBe('THREW')
+   407	    })
+   408	    // This differential protects installed exports, native dependencies and font
+   409	    // resources across Node/Bun. Raster quality has independent source keepers.
+   410	    expect(pngResults).toHaveLength(pngInputs.length)
+   411	    pngInputs.forEach(({ source, options }, index) => {
+   412	      const installed = pngResults[index]!
+   413	      expect(installed.signature, source).toEqual([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+   414	      expect(installed.ihdr, source).toBe('IHDR')
+   415	      expect(installed.width, source).toBeGreaterThan(0)
+   416	      expect(installed.height, source).toBeGreaterThan(0)
+   417	      const reference = renderMermaidPNG(source, options)
+   418	      expect({ sha256: installed.sha256, length: installed.length }, source).toEqual({ sha256: sha(reference), length: reference.length })
+   419	    })
+   420	
+   421	    // Bins are linked into node_modules/.bin.
+   422	    expect(existsSync(binShimAm)).toBe(true)
+   423	    expect(existsSync(binShimMcp)).toBe(true)
+   424	
+   425	    // Apache-2.0-derived Architecture icon paths reach actual recipients with
+   426	    // both the attribution and the complete license, not merely files[] intent.
+   427	    const notice = readFileSync(join(packageDir, 'THIRD_PARTY_NOTICES.md'), 'utf8')
+   428	    const apache = readFileSync(join(packageDir, 'LICENSES', 'Apache-2.0.txt'), 'utf8')
+   429	    expect(notice).toContain('LICENSES/Apache-2.0.txt')
+   430	    expect(notice).toContain('contains no upstream `NOTICE` file')
+   431	    expect(apache).toContain('Apache License\n                           Version 2.0, January 2004')
+   432	  }, RUN_TIMEOUT_MS)
+   433	})
+   434	
+   435	// ---------------------------------------------------------------------------
+   436	// T2 — the `am` bin under Node.
+   437	// ---------------------------------------------------------------------------
+   438	describe('installed tarball — am bin', () => {
+   439	  test('batch --jsonl: one result per line, bad lines never abort, ASCII matches source', () => {
+   440	    expect(haveConsumer).toBe(true)
+   441	    // Interleave valid ASCII-render ops (differential), other ops, and hostile
+   442	    // lines (non-JSON, JSON-but-invalid) to prove the stream never aborts.
+   443	    const flow = fc.sample(flowchartArb, 30)
+   444	    const lines: string[] = []
+   445	    const asciiAt = new Map<number, string>() // line index -> source
+   446	    flow.forEach((src) => { asciiAt.set(lines.length, src); lines.push(JSON.stringify({ op: 'render', source: src, options: { format: 'ascii' } })) })
+   447	    // Sample sources and ops in ONE draw each — `fc.sample(arb, 1)` inside a loop
+   448	    // re-seeds from the pinned global seed every call and returns the same pick.
+   449	    const mixedSrcs = fc.sample(mixedArb, 20)
+   450	    const mixedOps = fc.sample(fc.constantFrom('render', 'verify', 'parse', 'serialize'), 20)
+   451	    mixedSrcs.forEach((src, k) => lines.push(JSON.stringify({ op: mixedOps[k], source: src })))
+   452	    const invalidAt = new Map<number, string>()
+   453	    for (const [bad, code] of [
+   454	      ['not json at all', 'INVALID_JSON'], ['{"op":123}', 'INVALID_PAYLOAD'],
+   455	      ['{"nope":1}', 'INVALID_PAYLOAD'], ['[]', 'INVALID_PAYLOAD'], ['null', 'INVALID_PAYLOAD'],
+   456	    ] as const) {
+   457	      invalidAt.set(lines.length, code)
+   458	      lines.push(bad)
+   459	      // Recovery must reach a later valid request, not just terminate cleanly
+   460	      // after an invalid final line.
+   461	      asciiAt.set(lines.length, flow[0]!)
+   462	      lines.push(JSON.stringify({ op: 'render', source: flow[0], options: { format: 'ascii' } }))
+   463	    }
+   464	
+   465	    const r = spawnSync(NODE!, [amBin, 'batch', '--jsonl'], { cwd: work, input: lines.join('\n') + '\n', encoding: 'utf8', timeout: RUN_TIMEOUT_MS, maxBuffer: 64 * 1024 * 1024 })
+   466	    expect(r.status).toBe(0) // clean exit; a segfault/panic would be 132/139
+   467	    const out = r.stdout.split('\n').filter(Boolean)
+   468	    expect(out.length).toBe(lines.length) // exactly one result per input line
+   469	
+   470	    const mismatches: unknown[] = []
+   471	    out.forEach((line, i) => {
+   472	      const res = JSON.parse(line) as { ok: boolean; op?: string; data?: { ascii?: string }; error?: { code?: string } }
+   473	      expect(typeof res.ok).toBe('boolean')
+   474	      if (!res.ok) expect(typeof res.error?.code).toBe('string')
+   475	      if (invalidAt.has(i)) expect(res).toMatchObject({ ok: false, error: { code: invalidAt.get(i) } })
+   476	      if (asciiAt.has(i)) {
+   477	        // A valid flowchart ASCII render must SUCCEED and carry `ascii` — assert
+   478	        // unconditionally so a regression that drops the field (still ok:true)
+   479	        // can't let the differential pass vacuously.
+   480	        expect(res.ok).toBe(true)
+   481	        expect(typeof res.data?.ascii).toBe('string')
+   482	        if (sha(res.data!.ascii!) !== refAscii(asciiAt.get(i)!)) mismatches.push({ i, src: asciiAt.get(i) })
+   483	      }
+   484	    })
+   485	    expect(mismatches).toEqual([])

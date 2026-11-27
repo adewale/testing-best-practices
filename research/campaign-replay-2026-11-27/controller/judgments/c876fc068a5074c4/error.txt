@@ -1,0 +1,3 @@
+Agent errored: Invalid prompt: your prompt was flagged as potentially violating our usage policy. Please try again with a different prompt: https://platform.openai.com/docs/guides/reasoning#advice-on-prompting
+
+This agent's turn failed.

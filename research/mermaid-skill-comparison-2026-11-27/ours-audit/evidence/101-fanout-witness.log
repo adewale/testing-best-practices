@@ -1,0 +1,96 @@
+   260	    const capacityElbow = targetEdge - f.sign * requiredTerminalRun
+   261	    const elbow = ((capacityElbow - midpointElbow) * f.sign < 0) ? capacityElbow : midpointElbow
+   262	    // Unmoved targets must still leave the source its own hook before the elbow.
+   263	    if (routeOnly && (elbow - sourceEdge) * f.sign < Math.max(...sorted.map(edge => terminalHookLength(style, edge, 'start'))) - 0.001) continue
+   264	    // Continue a centred approach through an internal rectangular fork only
+   265	    // where the bundler already admitted its outgoing trunk to this elbow.
+   266	    const centrePort = sourceEmissionPort(source, graph.direction, 0, 1)
+   267	    const keepTrunk = source.shape === 'rectangle' && (elbow - centrePort[f.main]) * f.sign > 0 && sorted.every(edge => {
+   268	      const [start, next] = edge.points
+   269	      return !edge.label && bundled.has(edge) && !!start && !!next && start.x === centrePort.x && start.y === centrePort.y
+   270	        && next[f.cross] === centrePort[f.cross] && (next[f.main] - elbow) * f.sign >= 0 && hasConstructedBundleRoute(edge)
+   271	    }) && edges.some(edge => {
+   272	      if (edge.target !== source.id || edge.style === 'invisible') return false
+   273	      const entry = edge.points.at(-1), previous = edge.points.at(-2)
+   274	      const facing = targetFlowPort(source, graph.direction)
+   275	      return !!entry && !!previous && entry.x === facing.x && entry.y === facing.y && previous[f.cross] === facing[f.cross]
+   276	        && (entry[f.main] - previous[f.main]) * f.sign > 0
+   277	    })
+   278	    const proposed: Array<{ edge: PositionedEdge; points: Point[] }> = []
+   279	    for (let i = 0; i < sorted.length; i++) {
+   280	      const edge = sorted[i]!
+   281	      const target = nodeMap.get(edge.target)!
+   282	      const points = doglegBetween(keepTrunk ? { ...centrePort } : sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
+   283	      if (!routeClearOfNodes(points, nodes, new Set([edge.source, edge.target]))) { clear = false; break }
+   284	      proposed.push({ edge, points })
+   285	    }
+   286	    // Unmoved neighbours keep their routes; the rebuilt fork may not cross more of them.
+   287	    if (clear && routeOnly) {
+   288	      const foreign = edges.filter(edge => !raw.includes(edge) && edge.style !== 'invisible')
+   289	      const crossings = (route: Point[]) => foreign.reduce((sum, other) => sum + countPointPairCrossings(route, other.points), 0)
+   290	      clear = proposed.reduce((sum, { points }) => sum + crossings(points), 0) <= proposed.reduce((sum, { edge }) => sum + crossings(edge.points), 0)
+   291	    }
+   292	    if (!clear) {
+   293	      restoreGeometry()
+   294	      continue
+   295	    }
+   296	    // Route-only forks cannot enlarge their corridor. Prove the entire label
+  1436	        trimBoundaryEndpointRuns(edge, sourceNode, targetNode)
+  1437	        if (sourceNode) edge.points = clipEdgeToShape(edge.points, sourceNode, true)
+  1438	        if (targetNode) edge.points = clipEdgeToShape(edge.points, targetNode, false)
+  1439	        retainBundleRouteAfterRewrite(edge, bundle)
+  1440	      }
+  1441	    },
+  1442	  },
+  1443	  {
+  1444	    id: 'applySymmetricFanoutEmissions', doc: 're-route small equivalent fan-outs symmetrically; mark bundle-owned',
+  1445	    after: ['clipEdgeToShape'], mutates: ['positions', 'dimensions', 'edges'],
+  1446	    mayChangeMetrics: { symErr: 'improve-only', bends: { worsenBy: 2 } },
+  1447	    run: c => { applySymmetricFanoutEmissions(c.nodes, c.edges, c.groups, c.graph, c.bundled, c.style) },
+  1448	  },
+  1449	  {
+  1450	    id: 'applySymmetricParallelEdgeLanes', doc: 'separate parallel edges into symmetric non-crossing lanes',
+  1451	    after: ['applySymmetricFanoutEmissions'], mutates: ['edges'],
+  1452	    enabled: context => hasParallelPair(context.edges, true),
+  1453	    mayChangeMetrics: { symErr: 'improve-only', crossings: 'improve-only' },
+  1454	    run: c => { applySymmetricParallelEdgeLanes(c.nodes, c.edges, c.groups, c.graph, c.bundled, c.style) },
+  1455	  },
+  1456	  {
+  1457	    id: 'applyParallelDuplicateLanes', doc: 'split exact duplicate edges into separated lanes',
+  1458	    after: ['applySymmetricParallelEdgeLanes'], mutates: ['edges'],
+   126	  test('--format layout returns layout JSON per file, not ASCII strings', () => {
+   127	    const { writeFileSync, existsSync, unlinkSync } = require('node:fs') as typeof import('node:fs')
+   128	    const a = `/tmp/am-json-a-${Date.now()}.mmd`
+   129	    const b = `/tmp/am-json-b-${Date.now()}.mmd`
+   130	    writeFileSync(a, 'flowchart LR\n  A --> B\n')
+   131	    writeFileSync(b, 'flowchart LR\n  C --> D\n')
+   132	    try {
+   133	      const r = runAm(['render', '--format', 'layout', a, b])
+   134	      expect(r.status).toBe(0)
+   135	      const payload = JSON.parse(r.stdout)
+   136	      expect(payload.files.length).toBe(2)
+   137	      expect(payload.files.map((result: { file: string; ok: boolean; output: { kind: string; nodes: { id: string }[] } }) => ({
+   138	        file: result.file, ok: result.ok, kind: result.output.kind, nodes: result.output.nodes.map(node => node.id).sort(),
+   139	      }))).toEqual([
+   140	        { file: a, ok: true, kind: 'flowchart', nodes: ['A', 'B'] },
+   141	        { file: b, ok: true, kind: 'flowchart', nodes: ['C', 'D'] },
+   142	      ])
+    31	    new Response(child.stdout).text(),
+    32	    new Response(child.stderr).text(),
+    33	    child.exited,
+    34	  ])
+    35	  if (stdout) process.stdout.write(stdout)
+    36	  if (stderr) process.stderr.write(stderr)
+    37	  if (exitCode !== 0) throw new Error(`Command exited ${exitCode}: ${command.join(' ')}`)
+    38	  if (options.requireTests) {
+    39	    const counts = [...`${stdout}\n${stderr}`.matchAll(/(?:^|\n)\s*(\d+) pass(?:\s|$)/g)]
+    40	    const passed = counts.reduce((total, match) => total + Number(match[1]), 0)
+    41	    if (passed === 0) throw new Error(`Browser contract executed zero passing tests: ${command.join(' ')}`)
+    42	  }
+    43	}
+    52	for (const contract of contracts) {
+    53	  await run(['bun', 'test', contract.file, '--timeout', '600000'], {
+    54	    cwd: import.meta.dir,
+    55	    env: contract.browserOptIn ? { AM_BROWSER_TESTS: '1' } : undefined,
+    56	    requireTests: true,
+    57	  })

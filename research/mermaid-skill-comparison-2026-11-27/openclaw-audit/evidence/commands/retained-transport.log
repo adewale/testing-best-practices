@@ -1,0 +1,20 @@
+bun test v1.4.4 (38afee6c8)
+
+src/__tests__/cli-batch-render-parity.test.ts:
+(pass) batch render uses the canonical render contract > live JSONL emits before EOF and preserves UTF-8, nonblank indices and per-line errors [1210.26ms]
+(pass) batch render uses the canonical render contract > threads shared options and returns the same SVG receipt [99.65ms]
+(pass) batch render uses the canonical render contract > renders the canonical ASCII format with a receipt [35.83ms]
+(pass) batch render uses the canonical render contract > rejects unknown styles, malformed shared fields, and removed aliases [1.70ms]
+
+src/__tests__/cli-jsonl.test.ts:
+(pass) a blocked output stops processing requests and preserves handler failures [14.37ms]
+(pass) input failure rejects instead of reporting an empty successful batch [1.21ms]
+(pass) output failure rejects while the producer remains open [0.97ms]
+(pass) EOF waits for the final output acknowledgement and propagates a late failure [0.78ms]
+(pass) repeated batches retain no output listeners and leave shared stdout open [4.26ms]
+(pass) premature output close rejects and cancels the open input [0.61ms]
+
+ 10 pass
+ 0 fail
+ 39 expect() calls
+Ran 10 tests across 2 files. [1.66s]

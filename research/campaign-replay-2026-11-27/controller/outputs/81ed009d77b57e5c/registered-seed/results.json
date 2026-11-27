@@ -1,0 +1,66 @@
+{
+  "default_model": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "state-machine-fuzz.test.ts",
+        "-t",
+        "model: read-your-writes"
+      ]
+    },
+    "log": "default_model.log",
+    "seconds": 21.43
+  },
+  "valid_schedule": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "state-machine-fuzz.test.ts",
+        "-t",
+        "model: read-your-writes"
+      ]
+    },
+    "log": "valid_schedule.log",
+    "seconds": 21.53
+  },
+  "persistence_original": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "state-machine-fuzz.test.ts",
+        "-t",
+        "WS mutation makes KV lag"
+      ]
+    },
+    "log": "persistence_original.log",
+    "seconds": 20.599
+  },
+  "persistence_fault": {
+    "state": "observed",
+    "exit": 1,
+    "expected_behavior": "reject",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "state-machine-fuzz.test.ts",
+        "-t",
+        "WS mutation makes KV lag"
+      ]
+    },
+    "log": "persistence_fault.log",
+    "seconds": 21.89
+  }
+}

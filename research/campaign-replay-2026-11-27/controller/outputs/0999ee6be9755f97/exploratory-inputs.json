@@ -1,0 +1,773 @@
+{
+  "purpose": "Post-submission, case-specific diagnostic. Independent inputs map known required behaviors to the candidate's requested JSON. Original source is given the identical bytes. Subject witnesses are separate.",
+  "frozenControlsEdited": false,
+  "originalSubmittedManifestSHA256": "3be28dbfdc98086ebde628b400c1bf179f0932f8fc00abb6de9a26b101d9ba1c",
+  "inputs": [
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "maintain_owner",
+      "expected": "accept",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "regenerate_paraphrase",
+      "expected": "accept",
+      "kind": "mapped-to-field-and-array-order",
+      "answer": "{\n  \"textFormats\": [\n    \"unicode\",\n    \"ascii\"\n  ],\n  \"imageFormats\": [\n    \"svg\",\n    \"png\"\n  ],\n  \"rebuild\": \"editor\",\n  \"generated\": \"editor.html\",\n  \"edit\": \"editor/js/export.js\"\n}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "assembler_in_context",
+      "expected": "accept",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"], \"assembler\": \"scripts/site/editor.ts\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "direct_edit_negated_rebuild",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor.html\", \"generated\": \"editor.html\", \"rebuild\": \"do not rebuild\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"], \"assembler\": \"scripts/site/editor.ts\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "wrong_owner_only",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"scripts/site/editor.ts\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "skip_rebuild_only",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"do not rebuild\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"], \"assembler\": \"scripts/site/editor.ts\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "direct_edit_only",
+      "expected": "reject",
+      "kind": "extra-action-requires-out-of-form-field",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"], \"alsoEdit\": \"editor.html\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "behavior_without_formats",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "no_relevant_content",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "owner_directory_no_slash",
+      "expected": "accept",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "owner_directory_slash",
+      "expected": "accept",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js/\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "wrong_optional_assembler",
+      "expected": "reject",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"], \"assembler\": \"editor/js/export.js\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "wrong_generated_target",
+      "expected": "reject",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor/js/export.js\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "correct_shell_command_wrong_field_syntax",
+      "expected": "reject",
+      "kind": "form-only-distinction",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"bun run editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "correct_owner_with_dot_slash",
+      "expected": "reject",
+      "kind": "form-only-distinction",
+      "answer": "{\"edit\": \"./editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\", \"unicode\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "missing_unicode_only",
+      "expected": "reject",
+      "kind": "newly_required_format",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"ascii\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "swapped_image_text_roles",
+      "expected": "reject",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"ascii\", \"unicode\"], \"textFormats\": [\"png\", \"svg\"]}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "maintain_owner",
+      "expected": "accept",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "regenerate_paraphrase",
+      "expected": "accept",
+      "kind": "mapped-to-field-and-array-order",
+      "answer": "{\n  \"siteRebuild\": \"website\",\n  \"rebuild\": \"editor\",\n  \"generated\": \"editor.html\",\n  \"edit\": \"editor/js/export.js\"\n}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "assembler_in_context",
+      "expected": "accept",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\", \"assembler\": \"scripts/site/editor.ts\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "direct_edit_negated_rebuild",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor.html\", \"generated\": \"editor.html\", \"rebuild\": \"do not rebuild\", \"siteRebuild\": \"website\", \"assembler\": \"scripts/site/editor.ts\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "wrong_owner_only",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"scripts/site/editor.ts\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "skip_rebuild_only",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"do not rebuild\", \"siteRebuild\": \"website\", \"assembler\": \"scripts/site/editor.ts\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "direct_edit_only",
+      "expected": "reject",
+      "kind": "extra-action-requires-out-of-form-field",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\", \"alsoEdit\": \"editor.html\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "behavior_without_formats",
+      "expected": "accept",
+      "kind": "mapped-semantic",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "no_relevant_content",
+      "expected": "reject",
+      "kind": "mapped-semantic",
+      "answer": "{}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "owner_directory_no_slash",
+      "expected": "accept",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "owner_directory_slash",
+      "expected": "accept",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js/\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "wrong_optional_assembler",
+      "expected": "reject",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\", \"assembler\": \"editor/js/export.js\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "wrong_generated_target",
+      "expected": "reject",
+      "kind": "new-form-boundary",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor/js/export.js\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "correct_shell_command_wrong_field_syntax",
+      "expected": "reject",
+      "kind": "form-only-distinction",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"bun run editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "correct_owner_with_dot_slash",
+      "expected": "reject",
+      "kind": "form-only-distinction",
+      "answer": "{\"edit\": \"./editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "hosted_standalone_commands_swapped",
+      "expected": "reject",
+      "kind": "newly_required_hosted_script",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"website\", \"siteRebuild\": \"editor\"}"
+    },
+    {
+      "cohort": "independent",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "standalone_only",
+      "expected": "reject",
+      "kind": "newly_required_hosted_script",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\"}"
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "assembler-as-assembler",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\", \"assembler\": \"scripts/site/editor.ts\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "assembler-as-assembler",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "3/3",
+        "after_objective_rate": "1.0",
+        "after_veto": "False",
+        "after_failed_gates": ""
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "assembler-only",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"scripts/site/editor.ts\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "assembler-only",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "directory",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "directory",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "3/3",
+        "after_objective_rate": "1.0",
+        "after_veto": "False",
+        "after_failed_gates": ""
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "extra-edit",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\", \"alsoEdit\": \"editor.html\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "extra-edit",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "generated-edit",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor.html\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\", \"assembler\": \"scripts/site/editor.ts\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "generated-edit",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "missing-generated",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "missing-generated",
+        "before_gates": "1/3",
+        "before_objective_rate": "0.3333333333333333",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.6666666666666666",
+        "after_veto": "False",
+        "after_failed_gates": "generated"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "module",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "module",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "3/3",
+        "after_objective_rate": "1.0",
+        "after_veto": "False",
+        "after_failed_gates": ""
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "prose-correct",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "Edit editor/js/export.js. Rebuild the standalone editor.html with bun run editor and the deployed site with bun run website. Download SVG or PNG and copy ASCII or Unicode.\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "prose-correct",
+        "before_gates": "1/3",
+        "before_objective_rate": "0.3333333333333333",
+        "before_veto": "False",
+        "after_gates": "0/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth,generated,rebuild"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "prose-wrong",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "Edit the generated editor.html directly after every rebuild by scripts/site/editor.ts. The editor downloads SVG and PNG and can copy ASCII and Unicode.\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "prose-wrong",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "0/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth,generated,rebuild"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "standalone-for-site",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"editor\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "standalone-for-site",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.6666666666666666",
+        "after_veto": "False",
+        "after_failed_gates": "rebuild"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "wrong-module",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/state.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"siteRebuild\": \"website\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "wrong-module",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "adv-reject-editor-html-direct-edit",
+      "id": "wrong-rebuild",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"website\", \"siteRebuild\": \"website\"}\n",
+      "submittedComparison": {
+        "case": "adv-reject-editor-html-direct-edit",
+        "input": "wrong-rebuild",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.6666666666666666",
+        "after_veto": "False",
+        "after_failed_gates": "rebuild"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "assembler-as-assembler",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"], \"assembler\": \"scripts/site/editor.ts\"}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "assembler-as-assembler",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "3/3",
+        "after_objective_rate": "1.0",
+        "after_veto": "False",
+        "after_failed_gates": ""
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "assembler-only",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"scripts/site/editor.ts\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "assembler-only",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "directory",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "directory",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "3/3",
+        "after_objective_rate": "1.0",
+        "after_veto": "False",
+        "after_failed_gates": ""
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "extra-edit",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"], \"alsoEdit\": \"editor.html\"}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "extra-edit",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "format-order",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"png\", \"svg\"], \"textFormats\": [\"unicode\", \"ascii\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "format-order",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "3/3",
+        "after_objective_rate": "1.0",
+        "after_veto": "False",
+        "after_failed_gates": ""
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "generated-edit",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor.html\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"], \"assembler\": \"scripts/site/editor.ts\"}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "generated-edit",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "missing-ascii",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"unicode\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "missing-ascii",
+        "before_gates": "1/3",
+        "before_objective_rate": "0.3333333333333333",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.6666666666666666",
+        "after_veto": "False",
+        "after_failed_gates": "outputs"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "missing-generated",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "missing-generated",
+        "before_gates": "1/3",
+        "before_objective_rate": "0.3333333333333333",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.6666666666666666",
+        "after_veto": "False",
+        "after_failed_gates": "generated-artifact-rule"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "module",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "module",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "3/3",
+        "after_objective_rate": "1.0",
+        "after_veto": "False",
+        "after_failed_gates": ""
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "prose-correct",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "Edit editor/js/export.js. Rebuild the standalone editor.html with bun run editor and the deployed site with bun run website. Download SVG or PNG and copy ASCII or Unicode.\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "prose-correct",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "0/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth,generated-artifact-rule,outputs"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "prose-wrong",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "Edit the generated editor.html directly after every rebuild by scripts/site/editor.ts. The editor downloads SVG and PNG and can copy ASCII and Unicode.\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "prose-wrong",
+        "before_gates": "3/3",
+        "before_objective_rate": "1.0",
+        "before_veto": "False",
+        "after_gates": "0/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth,generated-artifact-rule,outputs"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "swapped-formats",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"ascii\", \"unicode\"], \"textFormats\": [\"svg\", \"png\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "swapped-formats",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.6666666666666666",
+        "after_veto": "False",
+        "after_failed_gates": "outputs"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "wrong-module",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/state.js\", \"generated\": \"editor.html\", \"rebuild\": \"editor\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "wrong-module",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.0",
+        "after_veto": "True",
+        "after_failed_gates": "source-of-truth"
+      }
+    },
+    {
+      "cohort": "subject-submitted",
+      "case": "pos-live-editor-source-of-truth",
+      "id": "wrong-rebuild",
+      "expected": "record-submitted-outcome",
+      "kind": "subject-authored-witness",
+      "answer": "{\"edit\": \"editor/js/export.js\", \"generated\": \"editor.html\", \"rebuild\": \"website\", \"imageFormats\": [\"svg\", \"png\"], \"textFormats\": [\"ascii\", \"unicode\"]}\n",
+      "submittedComparison": {
+        "case": "pos-live-editor-source-of-truth",
+        "input": "wrong-rebuild",
+        "before_gates": "2/3",
+        "before_objective_rate": "0.6666666666666666",
+        "before_veto": "False",
+        "after_gates": "2/3",
+        "after_objective_rate": "0.6666666666666666",
+        "after_veto": "False",
+        "after_failed_gates": "generated-artifact-rule"
+      }
+    }
+  ]
+}

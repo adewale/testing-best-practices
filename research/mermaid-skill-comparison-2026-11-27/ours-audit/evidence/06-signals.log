@@ -1,0 +1,154 @@
+e2e/mcp-browser-cors.e2e.test.ts:165:describe.skipIf(!LAUNCH)('hosted /mcp in a real cross-origin browser', () => {
+e2e/browser.test.ts:488:    await worker.evaluate(() => { setTimeout(() => { throw new Error('intentional worker crash') }, 0) })
+src/__tests__/cli-batch-render-parity.test.ts:33:      await new Promise(resolve => setTimeout(resolve, 10))
+src/__tests__/treemap-upstream-bench.test.ts:50:        return it.skip(name, fn)
+src/__tests__/marker-raster-parity-browser.test.ts:18:const describeBrowser = available && process.env.AM_BROWSER_TESTS === '1' ? describe : describe.skip
+src/__tests__/resource-manifest-integrity.test.ts:114:  test.skipIf(!NODE)('plain Node verifies shipped resources when /dev/fd realpath is not canonical', async () => {
+src/__tests__/agent-mcp-http.test.ts:31:    await new Promise(resolve => setTimeout(resolve, 5))
+src/__tests__/agent-mcp-http.test.ts:66:  test.skipIf(!HAS_IPV6_LOOPBACK)(`IPv6 loopback spellings advertise bracketed URLs and serve requests${HAS_IPV6_LOOPBACK ? '' : ' (skipped: this host has no ::1 loopback)'}`, async () => {
+src/__tests__/mcp-client-interop.test.ts:34:    await new Promise(resolve => setTimeout(resolve, 10))
+src/__tests__/png-fonts.test.ts:141:  test.skipIf(!HAS_CJK_FONT)('a CJK-capable fontDirs clears the warning and changes the rendered bytes', () => {
+src/__tests__/png-fonts.test.ts:221:  test.skipIf(!HAS_CJK_FONT)('--font-dirs silences the CJK warning', () => {
+src/__tests__/svg-style-isolation-browser.test.ts:30:  : describe.skip
+src/__tests__/editor-style-switch.test.ts:50:  : describe.skip
+src/__tests__/editor-theme-switch.test.ts:31:  // rather than describe.skip, or a typo'd path masquerades as a green run.
+src/__tests__/editor-theme-switch.test.ts:40:  : describe.skip
+src/__tests__/editor-theme-switch.test.ts:174:      await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/editor-theme-switch.test.ts:178:      await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/agent-mermaid-corpus.test.ts:117:  test.skipIf(divergences.length === 0)('divergence entries preserve their declared source behavior', () => {
+src/__tests__/website-build.test.ts:1531:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/website-browser-a11y.test.ts:41:const describeBrowser = browserRequested ? describe : describe.skip
+src/__tests__/agent-determinism.test.ts:44:  return (name, body) => test.skip(`${name} (skipped: missing ${missing.join(', ')})`, body)
+src/__tests__/zenuml-browser.test.ts:7:const browserTests = process.env.AM_BROWSER_TESTS === '1' ? describe : describe.skip
+src/__tests__/editor-script-behaviour.test.ts:475:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/editor-script-behaviour.test.ts:536:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/editor-script-behaviour.test.ts:582:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/mcp-stdio-cancellation.test.ts:84:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/mcp-stdio-cancellation.test.ts:116:    await new Promise(resolve => setTimeout(resolve, 0))
+src/__tests__/cli-multi-input.test.ts:43:      await new Promise(resolve => setTimeout(resolve, 100))
+src/__tests__/requirement-upstream-bench.test.ts:49:  const checkedIt = (name: string, fn: () => void) => (exclusions.some(e => e.test === name) ? it.skip(name, fn) : it(name, fn))
+src/__tests__/block-upstream-bench.test.ts:50:  const checkedIt = (name: string, fn: () => void) => (exclusions.some(e => e.test === name) ? it.skip(name, fn) : it(name, fn))
+src/__tests__/hosted-mcp-http.test.ts:631:          await new Promise(resolve => setTimeout(resolve, 0))
+e2e/tarball-consumer-fuzz.e2e.test.ts:337:      }).transform(new Response(Bun.markdown.html(readFileSync(join(packageDir, document), 'utf8')))).text()
+e2e/browser.test.ts:399:  const html = new Uint8Array(await Bun.file(join(ROOT, 'editor.html')).arrayBuffer())
+e2e/browser-bundle.e2e.test.ts:294:    const source = readFileSync(BUNDLE, 'utf8')
+e2e/browser-bundle.e2e.test.ts:324:    const source = readFileSync(join(REPO, 'eval/layout-compare/fixtures/zenuml-native-checkout.mmd'), 'utf8')
+e2e/browser-bundle.e2e.test.ts:901:    const source = mode === 'refined-cycle' ? readFileSync(join(REPO, 'eval/layout-compare/fixtures/cyclic-labelled-15.mmd'), 'utf8')
+e2e/cli.e2e.test.ts:56:      const html = readFileSync(tmpOut, 'utf8')
+src/__tests__/mcp-deploy-rate-budget.test.ts:17:const deployJob = (parseYaml(readFileSync(join(ROOT, '.github', 'workflows', 'deploy-cloudflare.yml'), 'utf8')) as {
+src/__tests__/class-layout-backends.test.ts:1594: const source=readFileSync(new URL('./fixtures/class-crowded-rtl-note.mmd',import.meta.url),'utf8'),capture:{positioned?:PositionedClassDiagram}={},original=classLayoutModule.layoutClassDiagram
+src/__tests__/production-site-smoke.test.ts:133:  const steps = (parseYaml(readFileSync(join(ROOT, '.github', 'workflows', 'deploy-cloudflare.yml'), 'utf8')) as {
+src/__tests__/agent-doc-sync.test.ts:508:    const sources = docs.map(file => ({ file, text: readFileSync(join(REPO, file), 'utf8') }))
+src/__tests__/agent-readiness-standards.test.ts:57:  return parseYaml(readFileSync(join(WORKFLOWS_DIR, file), 'utf8')) as Workflow
+src/__tests__/treemap-upstream-bench.test.ts:45:  const source = readFileSync(join(bench, 'upstream', file), 'utf8').replace(/^import[^;]*;\s*/gm, ''),
+src/__tests__/terminal-native-route-regressions.test.ts:179:  const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-19.mmd', import.meta.url), 'utf8')
+src/__tests__/terminal-native-route-regressions.test.ts:479:  const source = readFileSync(new URL(`../../eval/layout-compare/fixtures/${fixture}.mmd`, import.meta.url), 'utf8')
+src/__tests__/paint-certification.test.ts:1247:  const { source } = JSON.parse(readFileSync(new URL('./fixtures/class-native-clearance.json', import.meta.url), 'utf8')) as { source: string }
+src/__tests__/paint-certification.test.ts:1766:  const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8').replace(/^flowchart LR/, `flowchart ${direction}`)
+src/__tests__/ugly-detector.test.ts:24:    const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8')
+src/__tests__/arrowhead-terminal-clearance.test.ts:37:    { name: 'Flowchart sharp duplicate', source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-19.mmd', import.meta.url), 'utf8') },
+src/__tests__/style-spec-authority.test.ts:190:    const html = readFileSync(out, 'utf8')
+src/__tests__/metadata-yaml.test.ts:160:  .find(name => name.endsWith('.mjs') && /export \{\s*JSON_SCHEMA,\s*load\s*\}/.test(readFileSync(join(JS_YAML_DIR, name), 'utf8')))
+src/__tests__/ishikawa-upstream-bench.test.ts:36:const source = readFileSync(join(bench, 'upstream/ishikawa.spec.ts.txt'), 'utf8').replace(/^import[^;]*;\s*/gm, '')
+src/__tests__/treemap-native.test.ts:335:    const source = readFileSync(new URL('../../eval/stable-families/fixtures/treemap.mmd', import.meta.url), 'utf8'),
+src/__tests__/chrome-token-lockstep.test.ts:23:const siteCss = readFileSync(join(REPO, 'website/source/assets/styles.css'), 'utf8')
+src/__tests__/chrome-token-lockstep.test.ts:24:const editorCss = readFileSync(join(REPO, 'editor/css/variables.css'), 'utf8')
+src/__tests__/mindmap-gitgraph-grammar.test.ts:188:    const markdown = readFileSync(join(import.meta.dir, '..', '..', 'skills/agentic-mermaid-diagram-workflow/references/upstream/gitgraph.md'), 'utf8')
+src/__tests__/mindmap-gitgraph-grammar.test.ts:236:    const markdown = readFileSync(join(import.meta.dir, '..', '..', 'skills/agentic-mermaid-diagram-workflow/references/upstream/gitgraph.md'), 'utf8')
+src/__tests__/cli-init-agent.test.ts:50:    expect(readFileSync(join(dir, 'skills', 'agentic-mermaid-diagram-workflow', linkedGuide!), 'utf8')).toBe(AGENT_INSTRUCTIONS)
+src/__tests__/graph-layout-cache-integration.test.ts:187:  const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8')
+src/__tests__/graph-layout-selection.test.ts:154:    { nodes: 11, edges: 24, crossings: 3, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-11.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:155:    { nodes: 10, edges: 20, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-10.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:156:    { nodes: 15, edges: 31, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:157:    { nodes: 19, edges: 44, crossings: 37, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-19.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:158:    { nodes: 13, edges: 31, crossings: 7, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-13.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:159:    { nodes: 15, edges: 34, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-15-chains.mmd', import.meta.url), 'utf8') },
+src/__tests__/graph-layout-selection.test.ts:160:    { nodes: 9, edges: 23, source: readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-9-chains.mmd', import.meta.url), 'utf8'), reducedRoute: { from: 'n1', to: 'n8', label: 'edge 0 xxx' } },
+src/__tests__/graph-layout-selection.test.ts:194:    const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-9.mmd', import.meta.url), 'utf8').replace(/^flowchart BT/, `flowchart ${direction}`)
+src/__tests__/graph-layout-selection.test.ts:232:    const source = await Bun.file(new URL('../../eval/layout-compare/fixtures/nested-wide-titles.mmd', import.meta.url)).text()
+src/__tests__/deploy-workflow-transaction.test.ts:20:const WORKFLOW = parseYaml(readFileSync(join(REPO, '.github', 'workflows', 'deploy-cloudflare.yml'), 'utf8')) as {
+src/__tests__/requirement-upstream-bench.test.ts:46:  const source = readFileSync(join(bench, 'upstream', file), 'utf8').replace(/^import[^;]*;\s*/gm, '')
+src/__tests__/styled-output.test.ts:53:    .map(name => ({ name, source: readFileSync(join(FIXTURES, name), 'utf8') }))
+src/__tests__/styled-output.test.ts:355:      const source = readFileSync(join(demoRoot, fixture), 'utf8')
+src/__tests__/block-upstream-bench.test.ts:47:  const source = readFileSync(join(bench, 'upstream', file), 'utf8').replace(/^import[^;]*;\s*/gm, '')
+src/__tests__/website-font-subsets.test.ts:59:    const styles = readFileSync(join(PUBLIC, 'styles.css'), 'utf8')
+src/__tests__/resolved-scene.test.ts:277:  const source = readFileSync(new URL('../../eval/layout-compare/fixtures/sankey-basic.mmd', import.meta.url), 'utf8')
+src/__tests__/mindmap-gitgraph-content-corpus.test.ts:51:const sourceFor = (entry: CorpusCase): string => readFileSync(join(CORPUS, entry.file), 'utf8')
+src/__tests__/extension-registries.test.ts:673:    const schema = JSON.parse(readFileSync(
+src/__tests__/cli-capabilities.test.ts:144:    const schema = JSON.parse(readFileSync(schemaPath, 'utf8'))
+src/__tests__/block-native.test.ts:443:    const source = readFileSync(new URL('../../eval/stable-families/fixtures/block.mmd', import.meta.url), 'utf8'),
+src/__tests__/custom-style-cookbook.test.ts:29:    const schema = JSON.parse(readFileSync(schemaPath, 'utf8'))
+src/__tests__/custom-style-cookbook.test.ts:65:      const source = readFileSync(customStyleSamplePath(entry), 'utf8')
+src/__tests__/custom-style-cookbook.test.ts:112:      const source = readFileSync(customStyleSamplePath(entry), 'utf8')
+src/__tests__/published-version.test.ts:8:const script = readFileSync(new URL('../../scripts/ci/published-version.ts', import.meta.url), 'utf8')
+src/__tests__/release-publish-steps.test.ts:17:const workflow = parseYaml(readFileSync(join(REPO, '.github', 'workflows', 'publish.yml'), 'utf8'))
+src/__tests__/release-publish-steps.test.ts:18:const ciWorkflow = parseYaml(readFileSync(join(REPO, '.github', 'workflows', 'ci.yml'), 'utf8'))
+src/__tests__/release-publish-steps.test.ts:19:const qualification = parseYaml(readFileSync(join(REPO, '.github', 'workflows', 'qualify-ci.yml'), 'utf8'))
+src/__tests__/bun-version.test.ts:21:    const workflow = parseYaml(readFileSync(join(dir, file), 'utf8')) as { jobs?: Record<string, { steps?: Array<{ uses?: string; with?: Record<string, unknown> }> }> }
+src/__tests__/browser-runtime-metadata-projection.test.ts:73:    const path = join(root, 'src/scene/backend-conformance.ts'), source = readFileSync(path, 'utf8')
+src/__tests__/c4-rendering.test.ts:52:    const source = readFileSync(new URL('../../docs/design/families/c4-context-demo.mmd', import.meta.url), 'utf8')
+src/__tests__/layout-pass.test.ts:460:    const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-19.mmd', import.meta.url), 'utf8')
+src/__tests__/ci-change-scope.test.ts:45:  const workflow = parseYaml(readFileSync(join(import.meta.dir, '../../.github/workflows/ci.yml'), 'utf8'))
+src/__tests__/mcp-publish-recovery.test.ts:12:const workflow = parseYaml(readFileSync(join(REPO, '.github', 'workflows', 'publish.yml'), 'utf8'))
+src/__tests__/website-build.test.ts:257:    const text = readFileSync(join(import.meta.dir, '..', '..', 'website', 'src', 'generated', 'deploy-version.ts'), 'utf8')
+src/__tests__/website-build.test.ts:790:      const html = readFileSync(out, 'utf8')
+src/__tests__/mermaid-upstream-suite-bench.test.ts
+src/__tests__/packet-upstream-bench.test.ts
+src/__tests__/cli-batch-render-parity.test.ts
+src/__tests__/treemap-upstream-bench.test.ts
+src/__tests__/position-cache-ownership.test.ts
+src/__tests__/png-output-options-contract.test.ts
+src/__tests__/public-group-mutability.test.ts
+src/__tests__/mcp-client-interop.test.ts
+src/__tests__/er-upstream-parity.test.ts
+src/__tests__/elk-layout-cache.test.ts
+src/__tests__/browser-png-contract.test.ts
+src/__tests__/mindmap-gitgraph-upstream-oracle.test.ts
+src/__tests__/measured-route-safety.test.ts
+src/__tests__/website-cache-policy.test.ts
+src/__tests__/upstream-config-key-diagnostics.test.ts
+src/__tests__/er-public-paint.test.ts
+src/__tests__/kanban-upstream-bench.test.ts
+src/__tests__/ishikawa-upstream-bench.test.ts
+src/__tests__/cli-error-envelope.test.ts
+src/__tests__/accessibility-directives-complexity.test.ts
+src/__tests__/accessibility-relation-palette.test.ts
+src/__tests__/png-fonts.test.ts
+src/__tests__/renderer-accessibility.test.ts
+src/__tests__/testdata/section-b-brand-evidence.png
+src/__tests__/testdata/styled/radar-basic.publication-figure.svg
+src/__tests__/testdata/styled/wardley-basic.publication-figure.svg
+src/__tests__/c4-public-contract.test.ts
+src/__tests__/extension-family-public-api.test.ts
+src/__tests__/png-legibility-warning.test.ts
+src/__tests__/testdata/stable-families/kanban.png
+src/__tests__/testdata/stable-families/requirement.png
+src/__tests__/testdata/stable-families/packet.png
+src/__tests__/testdata/stable-families/block.png
+src/__tests__/testdata/stable-families/ishikawa.png
+src/__tests__/testdata/stable-families/treemap.png
+src/__tests__/helpers/png-fixture.ts
+src/__tests__/helpers/upstream-mermaid.ts
+src/__tests__/helpers/png-pixels.ts
+src/__tests__/agent-mcp-png.test.ts
+src/__tests__/mcp-publish-recovery.test.ts
+src/__tests__/upstream-rejection-parity.test.ts
+src/__tests__/gantt-upstream-bench.test.ts
+src/__tests__/upstream-family-manifest.test.ts
+src/__tests__/property-upstream-flowchart.test.ts
+src/__tests__/svg-a11y-conformance.test.ts
+src/__tests__/deploy-workflow-transaction.test.ts
+src/__tests__/code-mode-structured-errors.test.ts
+src/__tests__/pie-terminal-control-safety.test.ts
+src/__tests__/mcp-reserved-error-codes.test.ts
+src/__tests__/external-scene-public-api.test.ts
+src/__tests__/requirement-upstream-bench.test.ts
+src/__tests__/agent-trace-error-observation.test.ts
+src/__tests__/block-upstream-bench.test.ts
+src/__tests__/agent-png.test.ts
+src/__tests__/website-public-fixture.ts
+src/__tests__/website-browser-a11y.test.ts
+src/__tests__/graph-layout-cache-integration.test.ts
+src/__tests__/agent-png-determinism.test.ts
+src/__tests__/host-png-backend-parity.test.ts
+src/__tests__/property-upstream-sequence.test.ts

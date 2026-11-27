@@ -1,0 +1,150 @@
+src/__tests__/agent-class.test.ts 39,90,94,99,106,639,649,686,797
+src/__tests__/agent.test.ts 64,71,72
+src/__tests__/extension-family-public-api.test.ts 209,210
+src/__tests__/mermaid-cleanup.test.ts 23,45,47,48,51,63,80,82,135,149,153,174,231,253
+   118	  return applyMutationBatch(d, checkedOps) as Result<MutableValidDiagram, CheckedBuildError>
+   119	}
+   120	
+   121	// ---- Declarative batch entrypoint -----------------------------------------
+   122	
+   123	export interface ApplyOpsInput {
+   124	  /** Existing Mermaid `source` to edit, OR `family` to author from blank. */
+   125	  source?: string
+   126	  family?: string
+   127	  ops: unknown
+   128	  /** Explicitly retain unsupported syntax while applying a bounded family edit. */
+   129	  mode?: 'structured' | 'source-preserving'
+   130	}
+   131	
+   132	/**
+   133	 * Plain-JSON-in / plain-JSON-out batch edit. Fail-fast, all-or-nothing: ops
+   134	 * apply in order over a working copy; the first invalid or semantically-rejected
+   135	 * op stops the batch and reports its index — nothing is committed (the input
+   136	 * `source` is untouched, mirroring buildMermaid). Returns the canonical envelope.
+   137	 */
+   138	export function applyOps(input: ApplyOpsInput): OpEnvelope {
+   139	  let source: unknown
+   140	  let family: unknown
+   141	  let ops: unknown
+   142	  let mode: unknown
+   143	  try {
+   144	    if (!isPlainRecord(input)) {
+   145	      return { ok: false, family: null, error: { code: 'INVALID_OP', message: 'applyOps input must be a plain object' } }
+   146	    }
+   147	    ;({ source, family, ops, mode } = input)
+   148	  } catch {
+   149	    return { ok: false, family: null, error: { code: 'INVALID_OP', message: 'applyOps input must be a readable plain object' } }
+   150	  }
+   151	
+   152	  const admittedOps = snapshotOpArray(ops)
+   153	  if (!admittedOps.ok) {
+   154	    return { ok: false, family: (typeof family === 'string' && hasOpSchema(family)) ? family : null, error: { code: 'INVALID_OP', message: '`ops` must be an array of op objects' } }
+   155	  }
+   156	  const checkedOps = admittedOps.value
+   157	  if (mode !== undefined && mode !== 'structured' && mode !== 'source-preserving') return { ok: false, family: null, error: { code: 'INVALID_OP', message: '`mode` must be structured or source-preserving' } }
+   158	  if (mode === 'source-preserving' && typeof source !== 'string') return { ok: false, family: null, error: { code: 'INVALID_OP', message: 'Source-preserving mode requires existing source, not a blank-slate build' } }
+   159	  if (source !== undefined && typeof source !== 'string') {
+   160	    return { ok: false, family: null, error: { code: 'INVALID_OP', message: '`source` must be a string when provided' } }
+   161	  }
+   162	  if (family !== undefined && typeof family !== 'string') {
+   163	    return { ok: false, family: null, error: { code: 'INVALID_OP', message: '`family` must be a string when provided' } }
+   164	  }
+   165	  if (typeof source === 'string' && typeof family === 'string') {
+   166	    return { ok: false, family: hasOpSchema(family) ? family : null, error: { code: 'INVALID_OP', message: 'applyOps accepts either `source` or `family`, not both' } }
+   167	  }
+   168	
+   169	  let d: MutableValidDiagram
+   170	  let before: ParsedDiagram
+   171	
+   172	  if (typeof source === 'string' && source.trim().length > 0) {
+   173	    const parsed = parseRegisteredMermaid(source)
+   174	    if (!parsed.ok) {
+   175	      const primary = parsed.error[0]
+   176	      return {
+   177	        ok: false,
+   178	        family: null,
+   179	        error: {
+   180	          code: primary?.code ?? 'PARSE_ERROR',
+   181	          message: parsed.error.map(e => e.message).join('; ') || 'could not parse source',
+   182	        },
+   183	      }
+   184	    }
+   185	    d = parsed.value as MutableValidDiagram
+   186	    before = d
+   187	    if (!hasOpSchema(d.kind)) {
+   188	      return { ok: false, family: d.kind, error: { code: 'INVALID_OP', message: `family "${d.kind}" has no structured ops; edit it as source text` } }
+   189	    }
+   190	    if (checkedOps.length === 0) {
+   292	/** Typed edits written as the smallest change to the source they were read
+   293	 * from. A structured body is edited canonically, then the change is projected
+   294	 * onto its authored lines and accepted only when it reads back as the same
+   295	 * diagram; otherwise the canonical source is returned and the receipt says
+   296	 * so. An opaque body uses its family's bounded source hooks and refuses
+   297	 * operations they do not own. */
+   298	export function mutatePreservingSource(d: ParsedDiagram, op: unknown): Result<SourceMutationResult, MutationError> {
+   299	  const result = editPreservedSource(d, op)
+   300	  logToolInvocation('mutate', result.ok)
+   301	  return result
+   302	}
+   303	
+   304	function admittedOp(kind: OpFamily, op: unknown): Result<AnyMutationOp, MutationError> {
+   305	  const admitted = admitOpRecord(op)
+   306	  const invalid = validateOp(kind, admitted.ok ? admitted.value : op)
+   307	  return invalid ? err(invalid) : ok((admitted.ok ? admitted.value : op) as AnyMutationOp)
+   308	}
+   309	
+   310	function editPreservedSource(d: ParsedDiagram, op: unknown): Result<SourceMutationResult, MutationError> {
+   311	  if (d.body.kind !== 'opaque' && d.body.kind !== 'preserved' && d.body.kind !== 'extension' && hasOpSchema(d.kind)) {
+   312	    const checked = admittedOp(d.kind, op)
+   313	    if (!checked.ok) return checked
+   314	    const edited = applyOneMutation(d, checked.value)
+   315	    return edited.ok ? ok(preserveStructuredEdit(d, edited.value)) : edited
+   316	  }
+   317	  if (d.body.kind !== 'opaque' || d.body.family !== d.kind) return err({ code: 'INVALID_OP', message: 'Source-preserving mutation requires a structured or opaque body of its parsed family' })
+   318	  const plugin = getFamily(d.kind)
+   319	  if (!plugin?.mutateSource || !hasOpSchema(d.kind)) return err({ code: 'UNSUPPORTED_FAMILY', message: `${d.kind} has no source-preserving mutation contract` })
+   320	  const checked = admittedOp(d.kind, op)
+   321	  if (!checked.ok) return checked
+   322	  // The opaque body and captured wrapper own the original bytes. The ordinary
+   323	  // serializer may normalize the final newline, so it is not this authority.
+   324	  const source = (d.meta.wrapperSource ?? '') + d.body.source
+   325	  try {
+   326	    const next = plugin.mutateSource(source, checked.value)
+   327	    if (!next.ok) return next
+   328	    const editedSource = applySourceEdits(source, next.value)
+   329	    if (editedSource === source) return ok({ source, diagram: d })
+   330	    const parsed = parseMermaid(editedSource)
+   331	    if (!parsed.ok) return err({ code: 'INVALID_OP', message: `Source-preserving mutation could not be reparsed: ${parsed.error.map(error => error.message).join('; ')}` })
+   332	    if (parsed.value.kind !== d.kind || parsed.value.body.kind !== 'opaque') return err({ code: 'INVALID_OP', message: 'Source-preserving mutation changed family or source-preserved representation' })
+   333	    // Source coordinates are rebuilt after a removal or rename. Comment text
+   334	    // and order remain meaning; their old physical row numbers do not.
+   335	    const metadata = (value: ParsedDiagram['meta']) => ({ ...value, comments: value.comments.map(comment => comment.text) })
+   336	    if (!sameSourceMeaning(metadata(d.meta), metadata(parsed.value.meta))) return err({ code: 'INVALID_OP', message: 'Source-preserving mutation changed configuration, accessibility or comment metadata' })
+   337	    return ok({ source: editedSource, diagram: parsed.value })
+   338	  } catch (error) {
+   339	    return err({ code: 'INVALID_OP', message: error instanceof Error ? error.message : String(error) })
+   340	  }
+   341	}
+   342	
+   343	/** Batches up to this many ops are projected op by op when the whole batch
+   344	 * does not project; each step re-traces every authored line, so a larger
+   345	 * batch falls back to canonical output instead. */
+   346	const OP_BY_OP_PROJECTION_LIMIT = 16
+   347	
+   348	/**
+   349	 * Write `after`, the committed canonical result of typed edits to `before`,
+src/__tests__/fc-seed.preload.ts:2:// every fast-check suite runs at one pinned seed, so a red CI run is a real,
+src/__tests__/fc-seed.preload.ts:3:// reproducible counterexample — never a seed lottery (2026-07 audit: three
+src/__tests__/fc-seed.preload.ts:4:// suites flaked on rolled seeds; the policy is now structural, not per-file).
+src/__tests__/fc-seed.preload.ts:6://   bun test src/__tests__/                    # pinned default seed
+src/__tests__/fc-seed.preload.ts:8://   AM_FC_SEED=random bun test src/__tests__/  # finder mode: roll fresh seeds
+src/__tests__/fc-seed.preload.ts:12:// future *.test.ts without per-file wiring. Suites that preserve a seed which
+src/__tests__/fc-seed.preload.ts:13:// exposed a real bug use per-call `seed:` options through fcParameters. Those
+src/__tests__/fc-seed.preload.ts:27:  const seed = raw === undefined ? DEFAULT_FC_SEED : Number(raw)
+src/__tests__/fc-seed.preload.ts:28:  if ((raw !== undefined && !/^-?\d+$/.test(raw)) || !Number.isSafeInteger(seed)) {
+src/__tests__/fc-seed.preload.ts:31:  fc.configureGlobal({ ...fc.readConfigureGlobal(), seed })
+src/__tests__/helpers/fc-parameters.ts:4:export function fcParameters<T>(defaults: fc.Parameters<T> = {}): fc.Parameters<T> {
+src/__tests__/helpers/fc-parameters.ts:8:    // With AM_FC_SEED=random the preload leaves seed unset. Removing a local
+src/__tests__/helpers/fc-parameters.ts:9:    // pin lets fast-check choose (and report) a fresh seed for this property.
+src/__tests__/helpers/fc-parameters.ts:10:    if (global.seed === undefined) delete parameters.seed
+src/__tests__/helpers/fc-parameters.ts:11:    else parameters.seed = global.seed

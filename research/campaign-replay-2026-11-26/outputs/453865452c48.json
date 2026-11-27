@@ -1,0 +1,25 @@
+{
+  "decision": "approve",
+  "changes": [
+    {
+      "target": "Endpoint test fixture",
+      "action": "Replace the canned fake with temporary SQLite.",
+      "details": "Apply the production migrations and seed both records in the same database with distinct lookup keys and distinct returned values. Call the endpoint through its usual entry point so its own query and bindings run."
+    },
+    {
+      "target": "Lookup assertions",
+      "action": "Replace SQL-substring checks with response assertions.",
+      "details": "Look up A, B, and a missing key against that populated database. Use explicit expectations from the seeded examples. Each hit must return exactly its own record, and the miss must produce the endpoint’s established no-match response."
+    }
+  ],
+  "retained_contracts": [
+    "Both positive selections, exclusion of the other stored record, and the public no-match behavior.",
+    "Review each old substring assertion before removal. If it represented another observable rule, preserve that case in the SQLite suite. SQL spelling alone can be retired. Keep any existing independent real-database coverage."
+  ],
+  "validation": [
+    "In a scratch copy, force every lookup to use A while leaving the SQL text intact. Run the old endpoint checks and the repaired checks against that same change. Record the outcomes and verify the repaired B and missing-key cases fail because A is returned.",
+    "Discard the scratch change. Run the repository’s existing focused command for the endpoint suite and confirm all three lookups execute and pass on the migrated database."
+  ],
+  "cost_and_stop": "The repaired suite takes about six seconds. Stop after the focused passing run, the one-off wrong-key check, and accounting for the old assertions. Use the existing test lane.",
+  "rationale": "The fake supplies the expected rows even when selection is wrong. With two records present, a wrong binding or an overly broad filter changes the endpoint response and fails a meaningful assertion."
+}

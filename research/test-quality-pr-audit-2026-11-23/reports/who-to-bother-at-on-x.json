@@ -1,0 +1,20 @@
+{
+  "repository": "adewale/who-to-bother-at-on-x",
+  "total_prs": 1,
+  "pages_checked": [
+    "GitHub REST pulls, state=all, per_page=100: page 1 returned PR #1; page 2 returned zero.",
+    "PR #1 files, per_page=100: page 1 returned three files. All three patches and the PR title and body were reviewed."
+  ],
+  "matching_prs": [],
+  "exclusions": [
+    {
+      "number": 1,
+      "title": "Pin GitHub Actions and enforce immutable references",
+      "url": "https://github.com/adewale/who-to-bother-at-on-x/pull/1",
+      "state": "closed",
+      "merged": true,
+      "reason": "The patch pins four action references in .github/workflows/validate.yml, adds a zizmor rule for unpinned actions in .github/workflows/action-pinning.yml, and configures .github/dependabot.yml. The PR body describes positive and negative probes for the new pinning rule. The diff changes no test cases or test execution logic."
+    }
+  ],
+  "limitations": []
+}

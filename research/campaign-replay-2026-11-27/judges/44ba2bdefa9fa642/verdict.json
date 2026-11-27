@@ -1,0 +1,121 @@
+{
+  "case": "B03",
+  "candidates": [
+    {
+      "id": "b08defec2ed06e50",
+      "disposition": "infrastructure-interrupted",
+      "known_findings": [
+        {"finding":"pda-02 photo export fidelity","status":"unmentioned","evidence":"No response survived the interruption."},
+        {"finding":"pda-03 export cursor lifetime","status":"unmentioned","evidence":"No response survived the interruption."},
+        {"finding":"pda-05 waiver membership versus order","status":"unmentioned","evidence":"No response survived the interruption."}
+      ],
+      "novel_findings": [],
+      "unsupported_or_refuted_claims": [],
+      "repair": {"exists":false,"target":null,"clean":null,"faults":null,"assertion":null,"evidence":"The interruption snapshot contained no tracked or new source changes. The trial lost agent state before its allowance expired. See controller/environment-event.json."},
+      "preservation": [
+        {"item":"auth-keeper","outcome":null,"evidence":"No submission to probe."},
+        {"item":"isolation-keeper","outcome":null,"evidence":"No submission to probe."},
+        {"item":"upload-byte-keeper","outcome":null,"evidence":"No submission to probe."},
+        {"item":"credential redaction and headers","outcome":null,"evidence":"No submission to inspect."},
+        {"item":"physical-order","outcome":null,"evidence":"No submitted selection."},
+        {"item":"member-order","outcome":null,"evidence":"No submitted selection."}
+      ],
+      "scope":"The controller recorded an infrastructure interruption and ran no replacement. Discovery, work completed before interruption and task adherence cannot be judged.",
+      "coverage":{"inventory_modules":155,"accessible_modules":56,"groups":9,"priority_sample":null,"reported_reading":null,"executed":null,"independent_candidate_runs":null,"runtime_seconds":null,"historical_ci":"The three successful jobs concern the pinned upstream revision. They supply no candidate results."},
+      "uncertainties":["The environment event establishes the loss of the submission. It supplies no evidence of how this candidate would have performed."]
+    },
+    {
+      "id": "4db08cd82e771644",
+      "disposition": "returned",
+      "known_findings": [
+        {"finding":"pda-02 photo export fidelity","status":"substantiated","evidence":"The original two checks at test/agent-data.test.ts:97 accepted empty BLOB data and a changed trailing bit. The submitted download check detects both in pda.json. Original-photo recovery is promised by pda-spec.md:344 and docs/using.md:79."},
+        {"finding":"pda-03 export cursor lifetime","status":"substantiated","evidence":"The HTTP test at test/agent-data.test.ts:365 can stop at the header before the first table row. In cursor-exploratory.json the unchanged HTTP case passed both readers. The separate partial-table probe passed the batched reader and failed the live cursor with SQLITE_LOCKED at erasure. Exploratory finding, repair explicitly deferred."},
+        {"finding":"pda-05 waiver membership versus order","status":"unmentioned","evidence":"The two reported findings concern exports. No waiver-order, missing-member or extra-member control was selected."}
+      ],
+      "novel_findings": [],
+      "unsupported_or_refuted_claims": [
+        {"claim":"The first-slice replay failed at byte 1048576, and the non-owner local selections and static commands succeeded as reported.","status":"unsupported","evidence":"These historical details are subject-reported. The independent tail-bit and row-order controls test related behavior. The additional page, durability and migration selections and static commands appear in the report only."}
+      ],
+      "repair":{"exists":true,"assessment":"Demonstrated focused improvement","target":"test/agent-data.test.ts:101, existing case 'exports the caller's records and chunked photos without stored credentials or another person's records'","proof":"The PersonalAgent attachment writer stores a patterned 2 MiB file and distinct five-byte preview in real workerd SQLite. The authenticated HTTP download is decoded by returned attachment ID, part and sorted seq. The test checks each encoding, distinct sequence keys, lengths and every byte against the pre-write inputs. See src/agent.ts:825, src/agent-data-routes.ts:29 and src/agent-data-export.ts:130.","counts":"Passed/failed/filtered, original then submitted, in pda.json.","clean":"Workers 31/0/0 to 31/0/0. Client attachment UI 14/0/0 to 14/0/0.","empty-data":"31/0/0 to 30/1/0. The changed export case expected 2097152 decoded file bytes and received zero.","tail-bit":"31/0/0 to 30/1/0. The same case expected first mismatch -1 and received 2097151. This proves content sensitivity with the correct length."},
+      "preservation": [
+        {"item":"physical-order","outcome":"accepted","evidence":"Both owner files passed 31/0/0 in pda.json. The download instructions identify seq as the reconstruction order, so reversing physical insertion preserves the contract."},
+        {"item":"member-order","outcome":"accepted","evidence":"Both owner files passed 31/0/0. The consumer reads the named encoding and data fields, whose JSON member order carries no meaning."},
+        {"item":"auth-keeper","outcome":"preserved","evidence":"pda.json, original and submitted 0/1/30. The named export test observed 200 where it required anonymous 401."},
+        {"item":"isolation-keeper","outcome":"preserved","evidence":"pda.json, original and submitted 0/1/30. The named export test rejected SOMEONE_ELSES_NOTE."},
+        {"item":"upload-byte-keeper","outcome":"preserved","evidence":"pda.json, original and submitted 0/1/13. The separate picked-photo page test at test/ui/attachments.test.tsx:128 rejected six zero bytes in place of [255,216,255,224,18,52]."},
+        {"item":"credential redaction","outcome":"retained on clean","evidence":"The export case still checks credential absence, the omitted token marker and absence of model_keys. Source review and clean execution only."},
+        {"item":"owner record and response headers","outcome":"retained on clean","evidence":"The same export case still checks the owner's memory and download headers, including no-store. See the patch and source_review.keeper_evidence."}
+      ],
+      "scope":"One existing Workers test changed. Both original photo checks have stronger counterparts. The cancellation probe was temporary. No production edits, unrelated patch or whole-suite claim appear in the submission.",
+      "coverage":{"inventory_modules":155,"accessible_modules":56,"groups":9,"priority_sample":"Candidate reports sampling the first alphabetical module in each of nine strata. Eight packet inclusions were informed by prior knowledge. The earlier audit's nine complete reads are separate.","reported_reading":"Page, durability and migration modules, selected Workers export, rollback and pagination cases, and declaration or entry-point checks in six named modules. Settings link, worker dispatch and authenticated agent export were traced.","reported_runs":"Owner 31/31 before and after, test/ui/agent-data.test.tsx 5/5, test/durability/crash.test.ts 3/3, interop/test/legacy-state-migration.test.ts 11/11, named scratch filters, typecheck and Git checks.","independent":"Complete owner on the five main controls, complete 14-case upload UI on clean, three named keepers, and two exploratory cursor selections. The latter had 2 passed on pinned and 1 passed/1 failed on live cursor with 30 filtered in each.","historical_ci":"Test, interop and action-pins succeeded on c0a9a85 before this patch.","runtime_seconds":null},
+      "uncertainties":["A preview-only corruption was not injected. Exact row counts match the documented 1 MiB storage rows at pda-spec.md:230. A different chunk size was not exercised.","These results establish an improvement in the 31-case owner. The case criteria's literal scan of 155 modules cannot exclude indirect coverage elsewhere."]
+    },
+    {
+      "id": "182d32db20b7d6f8",
+      "disposition": "returned",
+      "known_findings": [
+        {"finding":"pda-02 photo export fidelity","status":"unmentioned","evidence":"The report concerns model admission. In pda.json both empty-data and tail-bit passed the unchanged photo owner."},
+        {"finding":"pda-03 export cursor lifetime","status":"unmentioned","evidence":"Neither reported finding concerns export cancellation."},
+        {"finding":"pda-05 waiver membership versus order","status":"unmentioned","evidence":"No waiver finding, patch or waiver selection appears in the packet."}
+      ],
+      "novel_findings": [
+        {"finding":"The exhausted dollar allowance masks a relaxed two-unresolved-call guard.","status":"substantiated","evidence":"pda-spec.md:249 defines the separate count limit. The routed overlap reaches $1.00 after its second reservation. All eight original budget cases passed the relaxed guard at src/budget.ts:108. The submitted case failed at test/budget.test.ts:182. The paired controls were exploratory."},
+        {"finding":"A delayed dispatch can stall the overlap test's diagnostic.","status":"substantiated","evidence":"test/budget.test.ts:133 and :151 poll 100 times and can then await a stream completed later in the test. test/model-key-generation.test.ts:25 waits on dispatch directly. Source-supported risk, with no timed stall observed and no repair submitted for it."}
+      ],
+      "unsupported_or_refuted_claims": [
+        {"claim":"The isolated scratch copy was restored byte-for-byte and removed during the audit.","status":"unsupported","evidence":"The historical cleanup is self-reported. Static validation verified the sealed patch and paired controls independently reproduced the fault."}
+      ],
+      "repair":{"exists":true,"assessment":"Demonstrated focused improvement on an alternate contract","target":"test/budget.test.ts:166, added case 'counts a partial reservation toward the day's two unresolved calls after eviction'","proof":"The case drives production Ledger.begin/reserve/complete over real workerd SQLite and Durable Object eviction. It supplies the partial grant and explicit UTC days. $0.25 + $0.50 leaves $0.25 available, yet a third hold must be refused. Settling the first for $0.125 opens a $0.375 hold, and the next day admits $0.50. The expected amounts are independent of the guard.","counts":"Passed/failed/filtered, original then submitted.","clean":"budget-runs.ndjson complete budget file 8/0/0 to 9/0/0.","off-by-one":"Changing >=2 to >2 gave 8/0/0 to 8/1/0. Only the new third-begin assertion at line 182 received an object instead of null. Its $0.25 value follows from the preceding spend and the grant formula. The failure output elides its fields.","photo_controls":"pda.json clean, empty-data and tail-bit each passed 31/0/0 original owner and 40/0/0 submitted owner plus budget. Neither photo fault was detected. Clean attachment UI passed 14/0/0 on each tree.","fixture_witness":"Exploratory evaluator-only witness, budget-runs.ndjson reachability-context. Real shared RPC and ModelAccess produced both unequal holds. After eviction the third request returned user_cap before provider dispatch and shared spend stayed 1.25. The earlier witness captured an RPC stub in the wrong Durable Object context and failed before admission. Reacquiring it in the owner fixed the witness. The submitted test exercises the local ledger."},
+      "preservation": [
+        {"item":"bounded unresolved-count query","outcome":"accepted","evidence":"budget-runs.ndjson original-permitted-query 8/0/0, candidate-permitted-query 9/0/0. Saturating the count at two gives the same admission decision for every count."},
+        {"item":"two concurrent admissions","outcome":"preserved","evidence":"On the stricter one-call mutant the original was 7/1/0 at the routed second dispatch, test/budget.test.ts:140. The submission was 7/2/0 at that same assertion and the new second hold, line 174, undefined versus 0.5."},
+        {"item":"shared capacity and unknown liabilities","outcome":"retained on clean","evidence":"The preexisting shared-reservation and unknown-usage budget cases kept their identities and passed the complete clean budget selection."},
+        {"item":"settlement replay and admission-day charging","outcome":"retained on clean","evidence":"The durable outbox and routed overlap cases remain among the eight original identities in budget-runs.ndjson."},
+        {"item":"background summary cost","outcome":"retained on clean","evidence":"test/compaction.test.ts:233 ran in the complete 18/0/0 clean module. It was not a paired budget mutant selection."},
+        {"item":"physical-order","outcome":"accepted","evidence":"pda.json, 31/0/0 to 40/0/0. Descending insertion preserves the serialized seq and payload used for reconstruction."},
+        {"item":"member-order","outcome":"accepted","evidence":"pda.json, 31/0/0 to 40/0/0. Reordering named JSON members preserves the byte object."},
+        {"item":"auth-keeper","outcome":"preserved","evidence":"pda.json, both 0/1/30 at test/agent-data.test.ts:99, 200 versus required 401."},
+        {"item":"isolation-keeper","outcome":"preserved","evidence":"pda.json, both 0/1/30 at test/agent-data.test.ts:92 on the injected SOMEONE_ELSES_NOTE."},
+        {"item":"upload-byte-keeper","outcome":"preserved","evidence":"pda.json, both 0/1/13 at test/ui/attachments.test.tsx:128 on the six zeroed upload bytes."},
+        {"item":"redaction, owner record and no-store","outcome":"retained on clean","evidence":"Unchanged test/agent-data.test.ts:86 onward and the complete clean owner. No separate credential substitution."}
+      ],
+      "scope":"A 24-line test addition preserved the eight original budget cases and changed no production code. The alternate repair, static polling lead and exploratory evaluator witness have distinct evidence.",
+      "coverage":{"inventory_modules":155,"accessible_modules":56,"groups":9,"priority_sample":null,"reported_reading":"Budget and compaction owners, sibling dispatch helper and agent/router/ledger wiring. Total full modules read is unavailable.","reported_runs":"Complete budget 8/8 baseline and 9/9 patched, paired relaxed guard, compaction 18/18, typecheck and diff check.","independent":"Frozen photo and keeper rows in pda.json, exploratory complete budget clean/fault/allowed/stricter pairs, clean compaction, fixture-witness attempts and static checks. Node 24.22.3.","historical_ci":"The report cites a successful upstream npm test on c0a9a85, before this patch.","runtime_seconds":null},
+      "uncertainties":["The new test supplies the grant and day keys. Actual clock rollover, provider calls and production deployment limits were outside this selection. The reachability witness used the test configuration's $1/$1.50 limits.","test/model-access.test.ts and test/properties/budget.test.ts were absent. Incremental sensitivity is established for the eight-test baseline budget file."]
+    },
+    {
+      "id": "c2ce50e25a8e247b",
+      "disposition": "returned",
+      "known_findings": [
+        {"finding":"pda-02 photo export fidelity","status":"unmentioned","evidence":"The report concerns notifications. In pda.json both empty-data and tail-bit passed the unchanged photo owner."},
+        {"finding":"pda-03 export cursor lifetime","status":"unmentioned","evidence":"None of the three reported findings concerns export cancellation."},
+        {"finding":"pda-05 waiver membership versus order","status":"unmentioned","evidence":"No waiver finding, patch or waiver selection appears in the packet."}
+      ],
+      "novel_findings": [
+        {"finding":"Identical re-registration keys mask a stale stored receiver secret.","status":"substantiated","evidence":"pda-spec.md:149 and :772 require up-to-date browser keys. The old registration case counts endpoints and the old notification case checks second destinations. All nine original Web Push cases passed stale auth. The renewed receiver in the submitted case failed to decrypt. See push-runs.ndjson, original-stale-auth and candidate-stale-auth, exploratory controls."},
+        {"finding":"The supplied delivery case lacks 404 removal and post-503 retention checks.","status":"substantiated","evidence":"src/agent.ts:519 and test/web-push.test.ts:253 distinguish push-service statuses from registration-route 404s. The selected test exercises success and 410. This is a source-supported lead. Separate 404 and 503 controls were deferred."},
+        {"finding":"The ten-device test imports its expected limit from production.","status":"substantiated","evidence":"pda-spec.md:234 fixes ten. test/web-push.test.ts:218 builds its fixture from the constant at src/web-push.ts:244, so the oldest-first assertion lacks an independent numeric limit. Source review only for a changed limit."}
+      ],
+      "unsupported_or_refuted_claims": [
+        {"claim":"The restored participant run took 12.74 seconds including 0.904 seconds in tests.","status":"unsupported","evidence":"The timing and scratch chronology are self-reported. The sealed nine-case clean result and single stale-auth failure were independently verified."}
+      ],
+      "repair":{"exists":true,"assessment":"Demonstrated focused improvement on an alternate contract","target":"test/web-push.test.ts:250, renamed case 'sends one reminder per device using its current keys and removes a subscription when its service returns 410'","proof":"A new valid P-256 key and auth secret are posted through the Worker registration route at the existing laptop endpoint. SQLite, the scheduler and production encryption feed a capturing push-service fake. A receiver using its own private material opens the second ciphertext and compares its body with the scheduling input, 'Bins out'. Its derivation is independent of the sender and covered by the RFC vector, with shared WebCrypto and base64url utilities.","counts":"Passed/failed/filtered, original then submitted.","clean":"Complete Web Push file 9/0/0 to 9/0/0, from push-runs.ndjson original-clean and pda.json clean submission.","stale-auth":"Same production fault stores the fresh public key but retains the old auth. Original 9/0/0 to submitted 8/1/0. Only the renamed case failed at renewedLaptop.read, test/web-push.test.ts:260, AES-GCM OperationError at line 61, after successful 201 and exact destination checks.","photo_controls":"pda.json clean, empty-data and tail-bit each passed 31/0/0 original owner and 40/0/0 submitted owner plus Web Push. Neither photo fault was detected. Clean attachment UI passed 14/0/0 on each tree."},
+      "preservation": [
+        {"item":"equivalent two-column SQL update","outcome":"accepted","evidence":"The tuple assignment sets both key fields from the same excluded row at the same endpoint, preserving the registration contract. push-runs.ndjson candidate-allowed 9/0/0. Original on this variant was not run."},
+        {"item":"410 cleanup","outcome":"preserved","evidence":"Suppressing 410 removal caused only the selected renamed case to run and fail at test/web-push.test.ts:261, two endpoints versus one, 0/1/8 after successful decryption. The original endpoint-list assertion remains in the diff. Original mutant run unavailable."},
+        {"item":"RFC 8291 wire and receiver vector","outcome":"preserved","evidence":"The unchanged known-answer case passed on clean, stale-auth and tuple-assignment runs, checking fixed ciphertext and plaintext."},
+        {"item":"first reminder per device","outcome":"preserved","evidence":"Both receivers still decrypt the full original title/body/tag. Exact destinations, headers, VAPID and no-cookie checks run before renewal at test/web-push.test.ts:241."},
+        {"item":"second delivery multiplicity","outcome":"preserved","evidence":"The amended case checks exactly one second request to each endpoint. sent.length follows the asserted two first requests. The original membership assertion remains at the end."},
+        {"item":"physical-order","outcome":"accepted","evidence":"pda.json, 31/0/0 to 40/0/0. Reversed physical insertion preserves documented sequence and payload."},
+        {"item":"member-order","outcome":"accepted","evidence":"pda.json, 31/0/0 to 40/0/0. Data-first JSON has the same named members."},
+        {"item":"auth-keeper","outcome":"preserved","evidence":"pda.json, both 0/1/30 at test/agent-data.test.ts:99, 200 versus required 401."},
+        {"item":"isolation-keeper","outcome":"preserved","evidence":"pda.json, both 0/1/30 at test/agent-data.test.ts:92 on the injected SOMEONE_ELSES_NOTE."},
+        {"item":"upload-byte-keeper","outcome":"preserved","evidence":"pda.json, both 0/1/13 at test/ui/attachments.test.tsx:128 on the six zeroed upload bytes."},
+        {"item":"redaction, owner record and no-store","outcome":"retained on clean","evidence":"Unchanged test/agent-data.test.ts:86 onward and the complete clean owner. No separate credential substitution."}
+      ],
+      "scope":"One renamed Workers test, eight lines added and three removed. Static checks confirm the sealed diff and unchanged production code. The two other findings were left as leads.",
+      "coverage":{"inventory_modules":155,"accessible_modules":56,"groups":9,"priority_sample":null,"reported_reading":"The report traces Settings, service worker renewal, registration, scheduler and capture. It also names crash, approval-recovery, task-request, interop approval-delivery and UI history as reading during selection. A full-module count is unavailable.","reported_runs":"Web Push 9/9 baseline and clean, stale-auth pair, four notification settings cases with 49 filtered, typecheck and Git checks.","independent":"Complete Web Push clean and stale-auth pairs, submitted tuple variant and named 410 keeper, frozen photo matrix, static checks. The notification settings filter passed 4/0/49 on the pin with identical relevant source and UI files.","historical_ci":"Test, interop and action-pins succeeded on c0a9a85 before this patch.","reported_runtime_seconds":12.74,"reported_test_seconds":0.904,"independent_runtime_seconds":null},
+      "uncertainties":["The renewal POST was supplied by the test. Changed endpoints, browser event dispatch, push-network delivery and device display were outside the exercised boundary.","The paired fault isolates stale auth. A stale public key alone was not separately injected. Incremental detection is established for the complete nine-case Web Push module. Other repository owners and patched full CI remain unverified."]
+    }
+  ]
+}

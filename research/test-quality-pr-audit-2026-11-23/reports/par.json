@@ -1,0 +1,14 @@
+{
+  "repository": "adewale/par",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "url": "https://api.github.com/repos/adewale/par/pulls?state=all&per_page=100&page=1",
+      "count": 0,
+      "exhausted": true
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": []
+}

@@ -1,0 +1,80 @@
+diff --git a/app/test/integration/state-machine-fuzz.test.ts b/app/test/integration/state-machine-fuzz.test.ts
+index cc19793..686144c 100644
+--- a/app/test/integration/state-machine-fuzz.test.ts
++++ b/app/test/integration/state-machine-fuzz.test.ts
+@@ -489,25 +489,16 @@ async function replayKnownFailure(schedule: StateMachineOp[]): Promise<void> {
+   }
+ }
+ 
+-function assertModelCoverage(coverage: ModelCoverage): void {
+-  const summary = JSON.stringify(coverage);
+-  expect(coverage.accepted, summary).toBeGreaterThanOrEqual(100);
+-  expect(coverage.byKind.ws_tempo, summary).toBeGreaterThan(0);
+-  expect(coverage.byKind.ws_swing, summary).toBeGreaterThan(0);
+-  expect(coverage.dirtyDisconnects, summary).toBeGreaterThan(0);
++function missingModelCoverage(coverage: ModelCoverage) {
++  return [
++    { witness: 'accepted commands', observed: coverage.accepted, minimum: 100 },
++    { witness: 'WS tempo writes', observed: coverage.byKind.ws_tempo, minimum: 1 },
++    { witness: 'WS swing writes', observed: coverage.byKind.ws_swing, minimum: 1 },
++    { witness: 'dirty disconnects', observed: coverage.dirtyDisconnects, minimum: 1 },
++  ].filter(({ observed, minimum }) => !(observed >= minimum));
+ }
+ 
+-it('model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points', async () => {
+-  // Re-run promoted counterexamples before exploring generated schedules.
+-  for (const [index, schedule] of STATE_MACHINE_KNOWN_FAILURES.entries()) {
+-    try {
+-      await replayKnownFailure(schedule);
+-    } catch (error) {
+-      throw new Error(`known-failure #${index} regressed: ${(error as Error).message}`);
+-    }
+-  }
+-
+-  const coverage = createModelCoverage();
++async function runModelBatch(coverage: ModelCoverage, startRun: number, numRuns: number): Promise<void> {
+   for (const seed of MODEL_SEEDS) {
+     const details = await fc.check(
+       fc.asyncProperty(fc.commands(commandArbs, { maxCommands: 18 }), async (commands) => {
+@@ -520,7 +511,9 @@ it('model: read-your-writes through the DO holds across shrunk command sequences
+       }),
+       {
+         seed: seed | 0,
+-        numRuns: RUNS_PER_SEED,
++        // A single path segment starts at this case in the seed's unshrunk stream.
++        path: String(startRun),
++        numRuns,
+         interruptAfterTimeLimit: Math.max(
+           30_000,
+           Math.floor(MODEL_TIMEOUT_MS / MODEL_SEEDS.length) - 5_000,
+@@ -539,9 +532,26 @@ it('model: read-your-writes through the DO holds across shrunk command sequences
+       throw new Error(`stateMachine property interrupted before producing a counterexample (seed=${details.seed})`);
+     }
+   }
++}
++
++it('model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points', async () => {
++  // Re-run promoted counterexamples before exploring generated schedules.
++  for (const [index, schedule] of STATE_MACHINE_KNOWN_FAILURES.entries()) {
++    try {
++      await replayKnownFailure(schedule);
++    } catch (error) {
++      throw new Error(`known-failure #${index} regressed: ${(error as Error).message}`);
++    }
++  }
+ 
+-  // A total command count can hide a missing transition class. These witnesses
+-  // keep the fixed and rotating campaigns honest about the WS/KV lifecycle they
+-  // claim to cover.
+-  assertModelCoverage(coverage);
++  const coverage = createModelCoverage();
++  await runModelBatch(coverage, 0, RUNS_PER_SEED);
++  // Short schedules and command preconditions can leave the campaign below
++  // budget. Draw the next schedule from each seed only while witnesses are
++  // missing, with at most one more batch's worth of cases.
++  for (let extraRun = 0; extraRun < RUNS_PER_SEED; extraRun++) {
++    if (missingModelCoverage(coverage).length === 0) break;
++    await runModelBatch(coverage, RUNS_PER_SEED + extraRun, 1);
++  }
++  expect(missingModelCoverage(coverage), JSON.stringify(coverage)).toEqual([]);
+ }, MODEL_TIMEOUT_MS);

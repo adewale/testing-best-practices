@@ -1,0 +1,2189 @@
+{
+  "grader": "Original and sealed manifests, grade_text.score / grade_case_variant v0.6.0, output.md, allow_scripts=False",
+  "collection": {
+    "sha256": "c8078987f13f3a64139a93d9458f1024cc90c48bcb96de2790c327c7ee6e7bcf",
+    "collectedUTC": "2026-11-27T02:28:04.914577+00:00",
+    "uniqueFiles": 18,
+    "totalBytes": 3093
+  },
+  "subjectSavedAnswers": [
+    {
+      "file": "direct-prose.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "b3d1d8d02c2ec1c908a9629a472276534cf33bee2f1bfa7ff441846060e28862",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "direct-prose.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "b3d1d8d02c2ec1c908a9629a472276534cf33bee2f1bfa7ff441846060e28862",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-edit-generator.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "4524f608582cbbbc74f556ba9d56ee94f60f615f271934bfb4f3ed8bf91b7109",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'website/build.ts' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-edit-html.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "0446b9122be8705598d1bef83457f3930ae1f1ad110305eafdc4077abe0e5f41",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'website/public/editor/index.html' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-good.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "cff2e93ef05459f364e6d6d931e352299bf31f2ee13fa7c16f8dbcdb5c575046",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-relative.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "d49c90e3f5dde26916b1282d72513fd4638c2ed898e3eff4f8613dc7606ae2b2",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-standalone.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "c99b8dcab941a8256fceaf4c87e1a43e496232af0122c5b279bd57bb80ec82ac",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.generator: 'scripts/site/editor.ts' not in enum ['website/build.ts', './website/build.ts']; $.generated: 'editor.html' not in enum ['website/public/editor/index.html', './website/public/editor/index.html']; $.rebuild: expected const 'website', got 'editor'"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-wrong-build.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "a4afc7abab34b92345ff7e553e0d08a19a6b4437b7e26e78443d7e25a92358dd",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.rebuild: expected const 'website', got 'editor'"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-wrong-generator.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "78d8dfb53e1bc6d79623920c41faa3d0c4ae3b20b18f6348c8289c5d047ddfca",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.generator: 'editor/js/export.js' not in enum ['website/build.ts', './website/build.ts']"
+          }
+        ]
+      }
+    },
+    {
+      "file": "hosted-wrong-output.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "4c4e113011ca1169a1636960771ab1372c5be5456b24b05c370273f28c978fac",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.generated: 'editor/js/export.js' not in enum ['website/public/editor/index.html', './website/public/editor/index.html']"
+          }
+        ]
+      }
+    },
+    {
+      "file": "owner-prose.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "2097032b0effb9441b1a70ce8d62d318540b916750ddd93561508bad5960cc0e",
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "owner-prose.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "2097032b0effb9441b1a70ce8d62d318540b916750ddd93561508bad5960cc0e",
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-edit-generator.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "e1e47c87eff7df7e36f8656223443c723026e51ecff3ce4df9e170e54367c0c9",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-edit-html.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "1e00ced633932c0acd27787390d23fed52f1c9fda11a9c2401c2abfa086306ad",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'editor.html' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-good.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "ec31fd126446cad4432322d2e0565b1845e2c70b4ea0e361702c7f03b006f870",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-relative.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "477f8bfbddc09dda27c51463f715ecb9e8656f267901bcaa3d84275d3b137234",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-wrong-build.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "31c24bd5a8772a20cd0aa49a732ed301e96b5196ee32f9a962d4959dcb39395a",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.rebuild: expected const 'editor', got 'website'"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-wrong-formats.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "788ca3f9a6a90dc0bb9f985e6a0eb3e5048d36837f0b651d7563bd1da2e3b8fd",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.formats: expected const {'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}, got {'svg': 'image', 'png': 'image', 'ascii': 'image', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-wrong-generator.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "7d377f6ce215cc2cf12e6ef6e33fb341e2dafd214b1b457b4ffaff403c6eede7",
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.generator: 'editor/js/export.js' not in enum ['scripts/site/editor.ts', './scripts/site/editor.ts']"
+          }
+        ]
+      }
+    },
+    {
+      "file": "standalone-wrong-output.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "e8cf2fd1dbf5c163a932bb4e609a9ad844424194e39cfff1ad0ef3f568400e13",
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "evidence": "missing: ['editor.html']"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.generated: 'editor/js/export.js' not in enum ['editor.html', './editor.html']"
+          }
+        ]
+      }
+    }
+  ],
+  "exploratoryIndependentPlans": [
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "correct_role_assignment",
+      "meaning": "correct",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "reordered_keys_only",
+      "meaning": "correct",
+      "plan": {
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        },
+        "rebuild": "editor",
+        "generated": "editor.html",
+        "generator": "scripts/site/editor.ts",
+        "edit": "editor/js/export.js"
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "mixed_relative_paths",
+      "meaning": "correct",
+      "plan": {
+        "edit": "./editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "./editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "owner_and_generator_swapped",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "scripts/site/editor.ts",
+        "generator": "editor/js/export.js",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', './editor/js/export.js']; $.generator: 'editor/js/export.js' not in enum ['scripts/site/editor.ts', './scripts/site/editor.ts']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "edit_generated_file",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor.html",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'editor.html' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "negated_rebuild",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "do not rebuild",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.rebuild: expected const 'editor', got 'do not rebuild'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "generated_is_wrong_delivery_target",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "evidence": "missing: ['editor.html']"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.generated: 'website/public/editor/index.html' not in enum ['editor.html', './editor.html']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "two_independent_faults",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor.html",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "do not rebuild",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'editor.html' not in enum ['editor/js/export.js', './editor/js/export.js']; $.rebuild: expected const 'editor', got 'do not rebuild'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "omit_generator_while_giving_correct_owner_and_script",
+      "meaning": "missing requested builder",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$: missing required key 'generator'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "directory_instead_of_requested_file",
+      "meaning": "correct directory, lacks requested file",
+      "plan": {
+        "edit": "editor/js/",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'editor/js/' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "same_file_with_internal_dot",
+      "meaning": "same file, alternative spelling",
+      "plan": {
+        "edit": "editor/js/./export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'editor/js/./export.js' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "truthful_context_field",
+      "meaning": "extra field excluded by prompt",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        },
+        "context": "scripts/site/editor.ts is the standalone assembler."
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$: unexpected key 'context'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "missing_unicode",
+      "meaning": "missing requested format",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.formats: expected const {'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}, got {'svg': 'image', 'png': 'image', 'ascii': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "wrong_ascii_role",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor",
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "image",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "standalone-export-plan",
+            "passed": false,
+            "evidence": "$.formats: expected const {'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}, got {'svg': 'image', 'png': 'image', 'ascii': 'image', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "correct_role_assignment",
+      "meaning": "correct",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "website/build.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "reordered_keys_only",
+      "meaning": "correct",
+      "plan": {
+        "rebuild": "website",
+        "generated": "website/public/editor/index.html",
+        "generator": "website/build.ts",
+        "edit": "editor/js/export.js"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "mixed_relative_paths",
+      "meaning": "correct",
+      "plan": {
+        "edit": "./editor/js/export.js",
+        "generator": "website/build.ts",
+        "generated": "./website/public/editor/index.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "owner_and_generator_swapped",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "website/build.ts",
+        "generator": "editor/js/export.js",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'website/build.ts' not in enum ['editor/js/export.js', './editor/js/export.js']; $.generator: 'editor/js/export.js' not in enum ['website/build.ts', './website/build.ts']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "edit_generated_file",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "website/public/editor/index.html",
+        "generator": "website/build.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'website/public/editor/index.html' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "negated_rebuild",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "website/build.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "do not rebuild"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.rebuild: expected const 'website', got 'do not rebuild'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "generated_is_wrong_delivery_target",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "website/build.ts",
+        "generated": "editor.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.generated: 'editor.html' not in enum ['website/public/editor/index.html', './website/public/editor/index.html']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "two_independent_faults",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "website/public/editor/index.html",
+        "generator": "website/build.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "do not rebuild"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'website/public/editor/index.html' not in enum ['editor/js/export.js', './editor/js/export.js']; $.rebuild: expected const 'website', got 'do not rebuild'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "omit_generator_while_giving_correct_owner_and_script",
+      "meaning": "missing requested builder",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$: missing required key 'generator'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "directory_instead_of_requested_file",
+      "meaning": "correct directory, lacks requested file",
+      "plan": {
+        "edit": "editor/js/",
+        "generator": "website/build.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'editor/js/' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "same_file_with_internal_dot",
+      "meaning": "same file, alternative spelling",
+      "plan": {
+        "edit": "editor/js/./export.js",
+        "generator": "website/build.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "website"
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.edit: 'editor/js/./export.js' not in enum ['editor/js/export.js', './editor/js/export.js']"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "truthful_context_field",
+      "meaning": "extra field excluded by prompt",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "website/build.ts",
+        "generated": "website/public/editor/index.html",
+        "rebuild": "website",
+        "context": "scripts/site/editor.ts is the standalone assembler."
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": false,
+            "evidence": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$: unexpected key 'context'"
+          }
+        ]
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "standalone_plan_used_for_hosted",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "generator": "scripts/site/editor.ts",
+        "generated": "editor.html",
+        "rebuild": "editor"
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 1,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "hosted-export-plan",
+            "passed": false,
+            "evidence": "$.generator: 'scripts/site/editor.ts' not in enum ['website/build.ts', './website/build.ts']; $.generated: 'editor.html' not in enum ['website/public/editor/index.html', './website/public/editor/index.html']; $.rebuild: expected const 'website', got 'editor'"
+          }
+        ]
+      }
+    }
+  ],
+  "ablations": {
+    "original": {
+      "materializerExit": 0,
+      "allDeclared": {
+        "exit": 1,
+        "stdout": "",
+        "stderr": "FAIL: ablation no-verify-before-serialize: patch context mismatch at line 62: '4. `verifyMermaid(d)` \u2014 structured warnings; inspect `ok` / `warnings` / `layout`.'"
+      },
+      "editorOnly": {
+        "exit": 0,
+        "stdout": "materialized ablation:no-editor-source-of-truth -> <tmp>/original-editorOnly/no-editor-source-of-truth (answer, 1 component(s))",
+        "stderr": "",
+        "removedLines": [
+          "| `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |",
+          "Do not edit generated `editor.html` or `website/public/` files directly."
+        ],
+        "insertedLines": []
+      }
+    },
+    "candidate": {
+      "materializerExit": 0,
+      "allDeclared": {
+        "exit": 1,
+        "stdout": "",
+        "stderr": "FAIL: ablation no-verify-before-serialize: patch context mismatch at line 62: '4. `verifyMermaid(d)` \u2014 structured warnings; inspect `ok` / `warnings` / `layout`.'"
+      },
+      "editorOnly": {
+        "exit": 0,
+        "stdout": "materialized ablation:no-editor-source-of-truth -> <tmp>/candidate-editorOnly/no-editor-source-of-truth (answer, 1 component(s))",
+        "stderr": "",
+        "removedLines": [
+          "| `editor/js/export.js` | Handle SVG and PNG downloads, including their filenames. |",
+          "| `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |",
+          "| `website/build.ts` | Generate `website/public/editor/index.html` for the hosted `/editor/` and build the public pages that link to it. |",
+          "Do not edit generated `editor.html` or `website/public/` files directly."
+        ],
+        "insertedLines": []
+      }
+    }
+  },
+  "cliGrade": {
+    "original": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "judgeTasks": 0,
+      "rows": [
+        {
+          "file": "standalone-good.txt",
+          "passed": 3,
+          "total": 3
+        },
+        {
+          "file": "standalone-edit-html.txt",
+          "passed": 3,
+          "total": 3
+        },
+        {
+          "file": "hosted-good.txt",
+          "passed": 1,
+          "total": 3
+        },
+        {
+          "file": "hosted-standalone.txt",
+          "passed": 3,
+          "total": 3
+        }
+      ]
+    },
+    "candidate": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": "",
+      "judgeTasks": 0,
+      "rows": [
+        {
+          "file": "standalone-good.txt",
+          "passed": 1,
+          "total": 1
+        },
+        {
+          "file": "standalone-edit-html.txt",
+          "passed": 0,
+          "total": 1
+        },
+        {
+          "file": "hosted-good.txt",
+          "passed": 1,
+          "total": 1
+        },
+        {
+          "file": "hosted-standalone.txt",
+          "passed": 0,
+          "total": 1
+        }
+      ]
+    }
+  }
+}

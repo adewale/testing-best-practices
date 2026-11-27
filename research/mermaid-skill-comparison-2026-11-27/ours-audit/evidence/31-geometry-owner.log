@@ -1,0 +1,402 @@
+     1	import type { Direction, MermaidGraph, Point, PositionedEdge, PositionedGroup, PositionedNode } from '../../types.ts'
+     2	import type { LabelMetricsStyle } from '../../route-contracts.ts'
+     3	import { graphReachability, layoutFlow, nodeCrossCenter, nodeMainStart, rectsOverlap } from '../geometry.ts'
+     4	import { positionedEdgeForwardish, sameFlowLayer, nodeInsideGroups, flattenPositionedGroups, rectInsideGroup, expandGroupsForMainShift, moveKeepsGroupContainment, sourceEmissionPort, targetFlowPort, symmetricOffsets, doglegBetween, routeClearOfNodes } from './shared.ts'
+     5	import { terminalLabelRunLength, terminalLabelCorridorLength, assignBundledFanoutLabels } from './bundled-labels.ts'
+     6	import { hasConstructedBundleRoute, retainConstructedBundleRoutes } from '../bundle-routes.ts'
+     7	import { countPointPairCrossings } from '../../shared/edge-crossing-pair.ts'
+     8	import { terminalHookLength } from '../route-geometry.ts'
+     9	import { laneContextFor, straightLaneFor } from '../route-lanes.ts'
+    10	import { labelPaintClearance } from '../../route-contracts.ts'
+    11	import { labelHaloExtension, labelRect } from '../../shared/edge-label-geometry.ts'
+    12	import { labelSeatPaintContext } from '../graph-paint-support.ts'
+    13	
+    14	/** A grouped fork cannot grow its corridor. Retain its existing readable
+    15	 * seats, or admit a complete replacement against the proposed route paint. */
+    16	function seatGroupedFanout(
+    17	  proposed: Array<{ edge: PositionedEdge; points: Point[] }>,
+    18	  nodes: PositionedNode[], edges: PositionedEdge[], groups: PositionedGroup[],
+    19	  direction: Direction, style: LabelMetricsStyle,
+    20	): boolean {
+    21	  let work = 4_000_000
+    22	  const paint = labelSeatPaintContext(nodes, edges, groups, style, units => (work -= units) >= 0)
+    23	  if (!paint) return false
+    24	  const clearance = labelPaintClearance({ nodes, edges, groups }, style)
+    25	  const ignored = new Set(proposed.map(({ edge }) => edge))
+    26	  const source = nodes.find(node => node.id === proposed[0]!.edge.source)!
+    27	  const containers = flattenPositionedGroups(groups).filter(group => rectInsideGroup(source, group))
+    28	  const admit = (edge: PositionedEdge, point: Point): boolean => {
+    29	    const rect = labelRect({ ...edge, labelPosition: point }, style)
+    30	    const halo = rect && clearance.clearPaintRect(rect, labelHaloExtension(edge, style.lineWidth ?? 1), edge)
+    31	    return !!halo && containers.every(group => halo.x > group.x && halo.y > group.y
+    32	      && halo.x + halo.w < group.x + group.width && halo.y + halo.h < group.y + group.height)
+    33	      && paint.clear(edge, point, new Map(), undefined, ignored)
+    34	  }
+    35	  const complete = () => proposed.every(({ edge }) => !edge.label || !!edge.labelPosition && paint.clear(edge, edge.labelPosition, new Map()))
+    36	  const retained = proposed.every(({ edge, points }) => {
+    37	    if (!edge.label) return true
+    38	    if (!edge.labelPosition || !admit(edge, edge.labelPosition)) return false
+    39	    const rect = labelRect(edge, style)!
+    40	    return points.some((b, i) => {
+    41	      if (!i) return false
+    42	      const a = points[i - 1]!
+    43	      return a.x === b.x && a.x >= rect.x && a.x <= rect.x + rect.w && rect.y >= Math.min(a.y, b.y) && rect.y + rect.h <= Math.max(a.y, b.y)
+    44	        || a.y === b.y && a.y >= rect.y && a.y <= rect.y + rect.h && rect.x >= Math.min(a.x, b.x) && rect.x + rect.w <= Math.max(a.x, b.x)
+    45	    })
+    46	  })
+    47	  return retained && complete() || assignBundledFanoutLabels(proposed, nodes, direction, style, false, admit) && complete()
+    48	}
+    49	
+    50	export function reassignBundledSiblingLabels(
+    51	  nodes: PositionedNode[],
+    52	  edges: PositionedEdge[],
+    53	  bundled: ReadonlySet<PositionedEdge>,
+    54	  direction: Direction,
+    55	  style: LabelMetricsStyle,
+    56	  groups: PositionedGroup[] = [],
+    57	): void {
+    58	  const nodeMap = new Map(nodes.map(n => [n.id, n]))
+    59	  const bySource = new Map<string, PositionedEdge[]>()
+    60	  for (const edge of edges) {
+    61	    if (!bundled.has(edge) || !edge.label || !positionedEdgeForwardish(edge, nodeMap, direction)) continue
+    62	    if (!bySource.has(edge.source)) bySource.set(edge.source, [])
+    63	    bySource.get(edge.source)!.push(edge)
+    64	  }
+    65	  for (const group of bySource.values()) {
+    66	    if (group.length < 2 || group.length > 3) continue
+    67	    if (new Set(group.map(edge => edge.target)).size < group.length) continue
+    68	    const sorted = [...group].sort((a, b) => {
+    69	      const aTarget = nodeMap.get(a.target)
+    70	      const bTarget = nodeMap.get(b.target)
+    71	      if (!aTarget || !bTarget) return (a.edgeIndex ?? 0) - (b.edgeIndex ?? 0)
+    72	      return nodeCrossCenter(aTarget, direction) - nodeCrossCenter(bTarget, direction)
+    73	    })
+    74	    const source = nodeMap.get(sorted[0]!.source)!
+    75	    if (source?.shape === 'rectangle' && nodeInsideGroups(source, groups)) {
+    76	      const proposed = sorted.map(edge => ({ edge: { ...edge }, points: edge.points }))
+    77	      const replacements = new Map(sorted.map((edge, i) => [edge, proposed[i]!.edge]))
+    78	      if (seatGroupedFanout(proposed, nodes, edges.map(edge => replacements.get(edge) ?? edge), groups, direction, style)) {
+    79	        sorted.forEach((edge, i) => { edge.labelPosition = proposed[i]!.edge.labelPosition })
+    80	      }
+    81	    } else assignBundledFanoutLabels(sorted.map(edge => ({ edge, points: edge.points })), nodes, direction, style)
+    82	  }
+    83	}
+    84	
+    85	/** The ids of every group enclosing `node`, outermost first. */
+    86	function containingGroups(node: PositionedNode, groups: PositionedGroup[]): string {
+    87	  return flattenPositionedGroups(groups).filter(group => rectInsideGroup(node, group)).map(group => group.id).join('\u0000')
+    88	}
+    89	
+    90	/** The forward edges of a fan-out the symmetric emitter owns, sorted by
+    91	 * target cross centre, or undefined. A rectangle or diamond source emits to
+    92	 * 2–3 rectangle leaves fed only by it, peers on one rank that do not reach
+    93	 * each other; a grouped rectangle source owns only targets in its groups.
+    94	 * `raw` is the source's forward edges. */
+    95	export function symmetricFanout(
+    96	  source: PositionedNode,
+    97	  raw: readonly PositionedEdge[],
+    98	  edges: readonly PositionedEdge[],
+    99	  nodeMap: ReadonlyMap<string, PositionedNode>,
+   100	  groups: PositionedGroup[],
+   101	  direction: Direction,
+   102	  reaches: (from: string, to: string) => boolean,
+   103	): PositionedEdge[] | undefined {
+   104	  if (raw.length < 2 || raw.length > 3) return undefined
+   105	  if (source.shape !== 'rectangle' && source.shape !== 'diamond') return undefined
+   106	  const routeOnly = source.shape !== 'diamond' && nodeInsideGroups(source, groups)
+   107	  const sorted = [...raw].sort((a, b) => nodeCrossCenter(nodeMap.get(a.target)!, direction) - nodeCrossCenter(nodeMap.get(b.target)!, direction))
+   108	  const targets = sorted.map(e => nodeMap.get(e.target)!).filter(Boolean)
+   109	  if (targets.length !== sorted.length) return undefined
+   110	  const scope = routeOnly ? containingGroups(source, groups) : ''
+   111	  // Grouped rectangle forks retain placement; diamond forks may propose new
+   112	  // placement, subject to the enclosure checks in placementClear below.
+   113	  if (!targets.every(t => t.shape === 'rectangle' && (routeOnly ? containingGroups(t, groups) === scope : source.shape === 'diamond' || !nodeInsideGroups(t, groups)))) return undefined
+   114	  // Same-rank gate. Fan-out targets drift apart on the main axis when their
+   115	  // label widths differ ("warnings" 97px vs "ok" 60px → ~32px apart), so the
+   116	  // tolerance must clear that width-driven drift to see them as peers — while
+   117	  // staying below layerSpacing (48) so genuinely different ranks are still
+   118	  // rejected. The peer confirmation just below is the real safety net, so
+   119	  // loosening this gate cannot equalize non-peers. (Equalizing such peers is
+   120	  // exactly the symmetry the diamond/"warnings"/"ok" fan-out wants; verified
+   121	  // byte-identical on the corpus, which has no fan-out in the 28–40px band.)
+   122	  if (!sameFlowLayer(targets, direction, 40)) return undefined
+   123	  if (!targets.every(t => edges.every(e => e.source !== t.id && (e.target !== t.id || e.source === source.id)))) return undefined
+   124	  for (let i = 0; i < targets.length; i++) for (let j = 0; j < targets.length; j++) {
+   125	    if (i !== j && reaches(targets[i]!.id, targets[j]!.id)) return undefined
+   126	  }
+   127	  return sorted
+   128	}
+   129	
+   130	export function applySymmetricFanoutEmissions(
+   131	  nodes: PositionedNode[],
+   132	  edges: PositionedEdge[],
+   133	  groups: PositionedGroup[],
+   134	  graph: MermaidGraph,
+   135	  bundled: Set<PositionedEdge>,
+   136	  style: LabelMetricsStyle,
+   137	): void {
+   138	  const reaches = graphReachability(graph.edges)
+   139	  const nodeMap = new Map(nodes.map(n => [n.id, n]))
+   140	  const bySource = new Map<string, PositionedEdge[]>()
+   141	  for (const edge of edges) {
+   142	    if (!positionedEdgeForwardish(edge, nodeMap, graph.direction)) continue
+   143	    if (!bySource.has(edge.source)) bySource.set(edge.source, [])
+   144	    bySource.get(edge.source)!.push(edge)
+   145	  }
+   146	  const f = layoutFlow(graph.direction)
+   147	  for (const [sourceId, raw] of bySource) {
+   148	    const source = nodeMap.get(sourceId)
+   149	    const sorted = source && symmetricFanout(source, raw, edges, nodeMap, groups, graph.direction, reaches)
+   150	    if (!source || !sorted) continue
+   151	    const targets = sorted.map(e => nodeMap.get(e.target)!)
+   152	    // A grouped rectangle keeps ELK's target placement: moving a member would
+   153	    // need its group refitted. Its fork is still emitted symmetrically, with
+   154	    // one shared elbow and level label seats; the terminal runs follow the
+   155	    // targets where ELK centred them under the source.
+   156	    const routeOnly = source.shape !== 'diamond' && nodeInsideGroups(source, groups)
+   157	    if (routeOnly) {
+   158	      // The straightener's own lanes stand when they already mirror about the
+   159	      // source: a symmetric pair of straight lines needs no constructed fork.
+   160	      const { ctx, axis: laneAxis } = laneContextFor(nodes, edges, graph.direction, style, groups)
+   161	      const centre = nodeCrossCenter(source, graph.direction)
+   162	      const lanes = sorted.map(edge => straightLaneFor(edge, source, nodeMap.get(edge.target)!, ctx, laneAxis))
+   163	      if (lanes.every((lane, i) => lane !== null && Math.abs(lane - centre + (lanes[lanes.length - 1 - i]! - centre)) <= 1)) continue
+   164	    }
+   165	
+   166	    const oldTargets = targets.map(t => ({ t, x: t.x, y: t.y, width: t.width, height: t.height }))
+   167	    const targetGroups = new Map(targets.map(target => [target.id, flattenPositionedGroups(groups).filter(group => rectInsideGroup(target, group))]))
+   168	    const oldGroups = flattenPositionedGroups(groups).map(group => ({ group, x: group.x, y: group.y, width: group.width, height: group.height }))
+   169	    const restoreGeometry = () => {
+   170	      for (const old of oldTargets) { old.t.x = old.x; old.t.y = old.y; old.t.width = old.width; old.t.height = old.height }
+   171	      for (const old of oldGroups) { old.group.x = old.x; old.group.y = old.y; old.group.width = old.width; old.group.height = old.height }
+   172	    }
+   173	    const maxWidth = Math.max(...targets.map(t => t.width))
+   174	    const maxHeight = Math.max(...targets.map(t => t.height))
+   175	    const axis = nodeCrossCenter(source, graph.direction)
+   176	    const rank = Math.min(...targets.map(t => nodeMainStart(t, graph.direction)))
+   177	    const spacing = (f.isHorizontal ? maxHeight : maxWidth) + 28
+   178	    const offsets = symmetricOffsets(targets.length, spacing)
+   179	    const sourceAlignedCross = source.shape === 'diamond'
+   180	      ? sorted.map((_, i) => sourceEmissionPort(source, graph.direction, i, sorted.length)[f.cross])
+   181	      : undefined
+   182	    const placeTargets = (crossCenters: number[]) => {
+   183	      for (let i = 0; i < targets.length; i++) {
+   184	        const target = targets[i]!
+   185	        target.width = maxWidth
+   186	        target.height = maxHeight
+   187	        if (f.isHorizontal) {
+   188	          target.x = rank
+   189	          target.y = crossCenters[i]! - maxHeight / 2
+   190	        } else {
+   191	          target.x = crossCenters[i]! - maxWidth / 2
+   192	          target.y = rank
+   193	        }
+   194	      }
+   195	    }
+   196	    if (!routeOnly) placeTargets(sourceAlignedCross ?? offsets.map(offset => axis + offset))
+   197	    const targetIds = new Set(targets.map(t => t.id))
+   198	    const placementClear = (): boolean => {
+   199	      for (let i = 0; i < targets.length; i++) {
+   200	        const target = targets[i]!
+   201	        if (target.x < 0 || target.y < 0) return false
+   202	        // Late fan-out placement must preserve every original enclosure. Main
+   203	        // axis expansion below may enlarge a group, but never evict a member.
+   204	        if (!targetGroups.get(target.id)!.every(group => rectInsideGroup(target, group))) return false
+   205	        for (let j = i + 1; j < targets.length; j++) {
+   206	          if (rectsOverlap(target, targets[j]!, 8)) return false
+   207	        }
+   208	      }
+   209	      for (const target of targets) {
+   210	        for (const other of nodes) {
+   211	          if (targetIds.has(other.id)) continue
+   212	          if (rectsOverlap(target, other, 8)) return false
+   213	        }
+   214	      }
+   215	      return true
+   216	    }
+   217	    let clear = routeOnly || placementClear()
+   218	    if (!clear && sourceAlignedCross) {
+   219	      placeTargets(offsets.map(offset => axis + offset))
+   220	      clear = placementClear()
+   221	    }
+   222	    if (!clear) {
+   223	      restoreGeometry()
+   224	      continue
+   225	    }
+   226	
+   227	    const sourceEdge = f.isHorizontal
+   228	      ? (f.sourceSide === 'E' ? source.x + source.width : source.x)
+commit 268efa1d6ef09f016ca4f24debe7ea764b9e0c21
+Author: Ade Oshineye <adewale@gmail.com>
+
+    fix(layout): retain centered through-trunks at internal forks [skip ci]
+
+diff --git a/src/layout/passes/fanout.ts b/src/layout/passes/fanout.ts
+index 3d7a7c9..4923d7a 100644
+--- a/src/layout/passes/fanout.ts
++++ b/src/layout/passes/fanout.ts
+@@ -3,7 +3,7 @@ import type { LabelMetricsStyle } from '../../route-contracts.ts'
+ import { graphReachability, layoutFlow, nodeCrossCenter, nodeMainStart, rectsOverlap } from '../geometry.ts'
+ import { positionedEdgeForwardish, sameFlowLayer, nodeInsideGroups, flattenPositionedGroups, rectInsideGroup, expandGroupsForMainShift, moveKeepsGroupContainment, sourceEmissionPort, targetFlowPort, symmetricOffsets, doglegBetween, routeClearOfNodes } from './shared.ts'
+ import { terminalLabelRunLength, terminalLabelCorridorLength, assignBundledFanoutLabels } from './bundled-labels.ts'
+-import { retainConstructedBundleRoutes } from '../bundle-routes.ts'
++import { hasConstructedBundleRoute, retainConstructedBundleRoutes } from '../bundle-routes.ts'
+ import { countPointPairCrossings } from '../../shared/edge-crossing-pair.ts'
+ import { terminalHookLength } from '../route-geometry.ts'
+ import { laneContextFor, straightLaneFor } from '../route-lanes.ts'
+@@ -261,11 +261,25 @@ export function applySymmetricFanoutEmissions(
+     const elbow = ((capacityElbow - midpointElbow) * f.sign < 0) ? capacityElbow : midpointElbow
+     // Unmoved targets must still leave the source its own hook before the elbow.
+     if (routeOnly && (elbow - sourceEdge) * f.sign < Math.max(...sorted.map(edge => terminalHookLength(style, edge, 'start'))) - 0.001) continue
++    // Continue a centred approach through an internal rectangular fork only
++    // where the bundler already admitted its outgoing trunk to this elbow.
++    const centrePort = sourceEmissionPort(source, graph.direction, 0, 1)
++    const keepTrunk = source.shape === 'rectangle' && (elbow - centrePort[f.main]) * f.sign > 0 && sorted.every(edge => {
++      const [start, next] = edge.points
++      return !edge.label && bundled.has(edge) && !!start && !!next && start.x === centrePort.x && start.y === centrePort.y
++        && next[f.cross] === centrePort[f.cross] && (next[f.main] - elbow) * f.sign >= 0 && hasConstructedBundleRoute(edge)
++    }) && edges.some(edge => {
++      if (edge.target !== source.id || edge.style === 'invisible') return false
++      const entry = edge.points.at(-1), previous = edge.points.at(-2)
++      const facing = targetFlowPort(source, graph.direction)
++      return !!entry && !!previous && entry.x === facing.x && entry.y === facing.y && previous[f.cross] === facing[f.cross]
++        && (entry[f.main] - previous[f.main]) * f.sign > 0
++    })
+     const proposed: Array<{ edge: PositionedEdge; points: Point[] }> = []
+     for (let i = 0; i < sorted.length; i++) {
+       const edge = sorted[i]!
+       const target = nodeMap.get(edge.target)!
+-      const points = doglegBetween(sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
++      const points = doglegBetween(keepTrunk ? { ...centrePort } : sourceEmissionPort(source, graph.direction, i, sorted.length), targetFlowPort(target, graph.direction), graph.direction, elbow)
+       if (!routeClearOfNodes(points, nodes, new Set([edge.source, edge.target]))) { clear = false; break }
+       proposed.push({ edge, points })
+     }
+src/layout/passes/fanout.ts:130:export function applySymmetricFanoutEmissions(
+src/layout/passes/edge-bundling.ts:148:export function bundleEdgePaths(
+src/layout/passes/peers.ts:347:    // applySymmetricFanoutEmissions OWNS fan-out symmetry and re-spreads rect (or
+src/layout/passes/peers.ts:379:    // applySymmetricFanoutEmissions LATER in the pipeline, so that side follows
+src/layout/passes/peers.ts:417:      // barycenter, so this pass finds delta≈0 and no-ops there; applySymmetricFanoutEmissions
+src/layout/passes/peers.ts:568: * applySymmetricFanoutEmissions does for the fan-out (re-route THEN mark).
+src/layout/passes/index.ts:5:export { reassignBundledSiblingLabels, applySymmetricFanoutEmissions } from './fanout.ts'
+src/layout/passes/obstacle-routing.ts:57: * (unlike applySymmetricFanoutEmissions): a link that skips a collinear node
+src/layout-engine.ts:50:  applySymmetricFanoutEmissions,
+src/layout-engine.ts:1410:      c.bundled = bundleEdgePaths(c.edges, c.nodes, c.groups, c.graph.direction, c.style)
+src/layout-engine.ts:1444:    id: 'applySymmetricFanoutEmissions', doc: 're-route small equivalent fan-outs symmetrically; mark bundle-owned',
+src/layout-engine.ts:1447:    run: c => { applySymmetricFanoutEmissions(c.nodes, c.edges, c.groups, c.graph, c.bundled, c.style) },
+src/layout-engine.ts:1451:    after: ['applySymmetricFanoutEmissions'], mutates: ['edges'],
+src/layout-engine.ts:1467:    after: ['applySymmetricFanoutEmissions', 'applySymmetricParallelEdgeLanes', 'applyParallelDuplicateLanes'],
+src/layout-rubric.ts:45: * our own fan-out emitter (applySymmetricFanoutEmissions) does too. So
+src/layout-rubric.ts:476:// stay rectangle-only (that side is owned by applySymmetricFanoutEmissions).
+src/layout-rubric.ts:496:  // FAN-OUT peers stay rectangle-only (applySymmetricFanoutEmissions owns non-rect
+src/agent/quality.ts:191:// fan-out emitter applySymmetricFanoutEmissions does too — offsets the small bend
+   188	    JSON.stringify(svg.receipt)
+   189	    JSON.stringify(native.receipt)
+   190	  })
+   191	
+   192	
+   193	  test.each(['TD', 'BT', 'LR', 'RL'] as const)('retains the nine-node labelled graph meaning in %s', direction => {
+   194	    const source = readFileSync(new URL('../../eval/layout-compare/fixtures/cyclic-labelled-9.mmd', import.meta.url), 'utf8').replace(/^flowchart BT/, `flowchart ${direction}`)
+   195	    const model = parseFlowchart(source)
+   196	    const result = layoutMermaidWithReceipt(source, { ...ELK, debug: true })
+   197	    expect(result.layout.nodes).toHaveLength(9)
+   198	    expect(result.layout.edges).toHaveLength(21)
+   199	    expect(result.layout.nodes.map(node => node.id).sort()).toEqual([...model.nodes.keys()].sort())
+   200	    expect(result.layout.edges.map(edge => [edge.from, edge.to, edge.label?.text ?? null])).toEqual(
+   201	      model.edges.map(edge => [edge.source, edge.target, edge.label ?? null]),
+   202	    )
+   203	    if (direction === 'BT') {
+   204	      // The narrower five-crossing route needs a clear channel beside the
+   205	      // wide n6→n3 caption. Both relationships must remain traceable.
+   206	      const quality = measureQuality(result.layout)
+   207	      expect(quality.edgeCrossings).toBeLessThanOrEqual(5)
+   208	      expect(quality.labelConflicts?.labelEdge).toBe(0)
+   209	    }
+   210	    expect(result.receipt.layoutDecisions?.[0]?.selected).toBe('elk')
+   211	  })
+   212	
+   213	  test.each([
+   214	    ...[171, 217, 228, 296, 319].map(seed => ({ seed, generator: 'lcg-v1' as const })),
+   215	    { seed: 22, generator: 'sha256-counter-v1' as const },
+   216	  ])('retains authored long-edge occurrences for development $generator seed $seed', ({ seed, generator }) => {
+   217	    const source = generatedFlowchartSamples({ start: seed, count: 1 }, generator)[0]!.source
+   218	    const rendered = renderMermaidSVGWithReceipt(source, ELK)
+   219	    const native = layoutMermaidWithReceipt(source, { ...ELK, debug: true })
+   220	    const quality = measureQuality(native.layout)
+   221	    expect(quality.nodeCount).toBe(8 + seed % 13)
+   222	    expect(quality.edgeCount).toBe(2 * quality.nodeCount + seed % 7)
+   223	    const model = parseFlowchart(source)
+   224	    expect(native.layout.nodes.map(node => node.id).sort()).toEqual([...model.nodes.keys()].sort())
+   225	    expect(native.layout.edges.map(edge => [edge.from, edge.to, edge.label?.text ?? null])).toEqual(model.edges.map(edge => [edge.source, edge.target, edge.label ?? null]))
+   226	    expect(rendered.receipt.layoutDecisions?.[0]?.selected).toBe('elk')
+   227	    JSON.stringify(rendered.receipt)
+   228	    JSON.stringify(native.receipt)
+   229	  })
+   230	
+   231	  test.each(['elk'] as const)('contains wide nested headers in %s without changing frame endpoints', async backend => {
+   232	    const source = await Bun.file(new URL('../../eval/layout-compare/fixtures/nested-wide-titles.mmd', import.meta.url)).text()
+   233	    const options = { graphLayout: { backend } }
+   234	    const rendered = renderMermaidSVGWithReceipt(source, options)
+   235	    const { layout, receipt } = layoutMermaidWithReceipt(source, { ...options, debug: true })
+   236	    expect(layout.groups).toHaveLength(3)
+   237	    expect(layout.nodes).toHaveLength(4)
+   282	    expect(native.routeOverlaps?.opposing).toBe(0)
+   283	    JSON.stringify(result.receipt)
+   284	  }, 60000)
+   285	
+   286	  test.each(['TD', 'LR', 'BT', 'RL'])('retains State pseudostates, configured bars and notes with ELK in %s', direction => {
+   287	    const source = `stateDiagram-v2\ndirection ${direction}\nstate F <<fork>>\nstate J <<join>>\nstate C <<choice>>\n[*] --> F\nF --> A\nF --> B\nA --> J\nB --> J\nJ --> C\nC --> A: retry\nC --> [*]: done\nnote right of A : keep this note`
+   288	    const options = { ...ELK, mermaidConfig: { state: { forkWidth: 120, forkHeight: 24, fontSize: 22, noteMargin: 50 } } }
+   289	    const stages: string[] = []
+   290	    const result = withRenderStageObserver(sample => stages.push(sample.stage), () => renderMermaidSVGWithReceipt(source, options))
+   291	    const rendered = layoutMermaidWithReceipt(source, { ...options, debug: true })
+   292	    const bars = rendered.layout.nodes.filter(node => node.id === 'F' || node.id === 'J')
+   293	    expect(bars).toHaveLength(2)
+   294	    for (const bar of bars) expect([Number(bar.w), Number(bar.h)]).toEqual(direction === 'LR' || direction === 'RL' ? [24, 120] : [120, 24])
+   295	
+   296	    expect(result.receipt.layoutDecisions).toEqual([expect.objectContaining({ selected: 'elk', attempts: [{ backend: 'elk', outcome: 'selected' }] })])
+   297	    for (const text of ['keep this note', 'retry', 'done', 'font-size="22"']) expect(result.svg).toContain(text)
+   298	    const quality = measureQuality(rendered.layout)
+   299	    expect(quality.minimumNodeSpacing).toBeGreaterThanOrEqual(0)
+   300	    expect(quality.labelConflicts?.total).toBe(0)
+   301	    expect(result.svg).toBe(renderMermaidSVGWithReceipt(source, options).svg)
+   302	    JSON.stringify(result.receipt)
+   303	    JSON.stringify(rendered.receipt)
+   304	  })
+   305	
+   306	  test.each([
+   307	    { name: 'disconnected fan-out', source: 'flowchart TD\nn58 --> n66\nn58 --> n70\nn29 -->|label 37| n16\nn113 -->|label 38| n16', nodes: 6, edges: 4, parallel: undefined },
+   308	    { name: 'duplicate lanes', source: 'flowchart BT\nn0 --> n6\nn0 -->|edge 4 xxxxxxx| n2\nn0 --> n6', nodes: 3, edges: 3, parallel: ['n0', 'n6'] },
+   309	  ])('retains separate label corridors beside $name', ({ source, nodes, edges, parallel }) => {
+   310	    // Reduced public counterexamples: a shared routing proposal must not
+   311	    // replace clear native corridors with crossings through a foreign pill.
+   312	    const result = layoutMermaidWithReceipt(source, { ...ELK, debug: true })
+   313	    const quality = measureQuality(result.layout)
+   314	    expect(quality.nodeCount).toBe(nodes)
+   315	    expect(quality.edgeCount).toBe(edges)
+   316	    expect(quality.edgeCrossings).toBe(0)
+   317	    expect(quality.labelConflicts?.total).toBe(0)
+   318	    if (parallel) {
+   319	      const routes = result.layout.edges.filter(edge => edge.from === parallel[0] && edge.to === parallel[1])
+   320	      expect(routes).toHaveLength(2)
+   321	      expect(routes[0]!.path).not.toEqual(routes[1]!.path)
+   322	    }
+   323	    JSON.stringify(result.receipt)
+   324	  })
+   325	
+   326	  test.each([
+   327	    { name: 'nested frames and directions', source: 'flowchart LR\nsubgraph Outer[A wide outer title]\n direction TB\n subgraph Left[Stage One]\n  direction RL\n  A([Begin]) -->|within| B\n end\n subgraph Right[Stage Two]\n  direction BT\n  C --> D{Finish}\n end\n Left -->|handoff| Right\nend\nStart --> Outer --> Done', nodes: 6, groups: 3, edges: 5, frame: 'Outer' },
+   328	    { name: 'State composites and notes', source: 'stateDiagram-v2\ndirection LR\nstate Composite {\n direction BT\n [*] --> A\n A --> [*]: finish\n note right of A : inner note\n}\n[*] --> Composite\nComposite --> Done\nDone --> [*]', nodes: 6, groups: 1, edges: 5, frame: 'Composite' },
+   329	    { name: 'concurrent regions with reciprocal labels', source: 'stateDiagram-v2\n[*] --> Active\nstate Active {\n [*] --> NumLockOff\n NumLockOff --> NumLockOn : EvNumLockPressed\n NumLockOn --> NumLockOff : EvNumLockPressed\n note right of NumLockOff : inner note\n --\n [*] --> CapsLockOff\n CapsLockOff --> CapsLockOn : EvCapsLockPressed\n CapsLockOn --> CapsLockOff : EvCapsLockPressed\n --\n [*] --> ScrollLockOff\n ScrollLockOff --> ScrollLockOn : EvScrollLockPressed\n ScrollLockOn --> ScrollLockOff : EvScrollLockPressed\n}', nodes: 10, groups: 4, edges: 10, frame: 'Active' },
+   330	  ])('retains $name without flattening frame endpoints', ({ source, nodes, groups, edges, frame: frameId }) => {
+   331	    const stages: string[] = []
+   332	    const svg = withRenderStageObserver(sample => stages.push(sample.stage), () => renderMermaidSVGWithReceipt(source, ELK))
+   333	    const result = layoutMermaidWithReceipt(source, { ...ELK, debug: true })
+6:Checks consume retained prepared text and final geometry. `assessLayout` accepts
+32:aesthetics from final geometry on every test run, so "looks correct" is a
+66:| `endpointApproaches` | an exact-outline endpoint has an inward or tangent terminal shaft; envelopes and unenclosed text make no exact approach claim | visible attachment and marker direction |
+69:| `hitches` | edge bends while a clear direct lane exists (re-proved on final geometry) | Ware continuity; issue #25 |
+83:| `portEndpointRate` | fraction of edge ends exactly on a canonical port | yFiles port candidates |
+94:Label-conflict counts likewise share their geometry predicates and rendered pill
+97:The label/node count uses bounding rectangles rather than exact painted shapes.
+156:  exact S/N port and enters the target's side midpoint.
+158:  may converge exactly collinearly at the shared port (single arrowhead)

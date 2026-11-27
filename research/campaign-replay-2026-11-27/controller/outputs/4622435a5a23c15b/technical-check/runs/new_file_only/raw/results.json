@@ -1,0 +1,17 @@
+{
+  "original": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-unit.sh",
+        "--reporter=verbose",
+        "src/components/TransportBar.test.tsx"
+      ]
+    },
+    "log": "original.log",
+    "seconds": 19.501
+  }
+}

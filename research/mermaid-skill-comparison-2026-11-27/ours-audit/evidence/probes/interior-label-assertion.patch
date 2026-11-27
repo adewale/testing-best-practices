@@ -1,0 +1,18 @@
+diff --git a/src/__tests__/png-fonts.test.ts b/src/__tests__/png-fonts.test.ts
+index 6e5e4dc..04bdfbc 100644
+--- a/src/__tests__/png-fonts.test.ts
++++ b/src/__tests__/png-fonts.test.ts
+@@ -64,6 +64,13 @@ describe('PNG raster font matches the metrics font', () => {
+     // and its antialiasing), within the box's rows. The actor legend sits LEFT
+     // of the box, so only the right side is unambiguous.
+     const pad = 3 * scale
++    const insideBand = (from: number, to: number) => inkColumns(
++      img, (box.x + box.w * from) * scale, (box.x + box.w * to) * scale,
++      box.y * scale + pad, (box.y + box.h) * scale - pad,
++    ).length
++    // The long text spans either side of the centered actor decoration.
++    expect(insideBand(0.05, 0.35)).toBeGreaterThan(0)
++    expect(insideBand(0.65, 0.95)).toBeGreaterThan(0)
+     const overflow = inkColumns(
+       img,
+       (box.x + box.w) * scale + pad,

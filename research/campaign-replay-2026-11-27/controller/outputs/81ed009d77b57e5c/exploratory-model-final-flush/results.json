@@ -1,0 +1,19 @@
+{
+  "persistence_fault": {
+    "state": "observed",
+    "exit": 1,
+    "expected_behavior": "reject",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "state-machine-fuzz.test.ts",
+        "-t",
+        "model: read-your-writes",
+        "--reporter=verbose"
+      ]
+    },
+    "log": "persistence_fault.log",
+    "seconds": 38.126
+  }
+}

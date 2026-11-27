@@ -1,0 +1,652 @@
+{
+  "role": "Independent technical verification for blind review.",
+  "repository": "adewale/keyboardia",
+  "upstream_commit": "aa67598560f8eaf2509a3ad4bc73edee2f8bea8a",
+  "integrity": {
+    "candidate_and_pristine_files": 985,
+    "unique_changed_path": "app/test/integration/state-machine-fuzz.test.ts",
+    "changed_model_sha256": "b68145253f7453b176fa77c62ce15dacf2be714add213dad8f50ea32f11c85c1",
+    "base_model_sha256": "2e94b53a32fa518d9157611bc7133c020dd1d1091dddbd028ffef2bf7edb8516",
+    "sampled_blob_ids_checked": 58,
+    "sealed_sha256": {
+      "response.md": "6616cbca3bec23d1bec1ae4ba769473bff84a9cf99e52af6b4c23133dd96f315",
+      "patch.diff": "274998930e204ab35ec23e5ef31cbddade794879eac2977eb8a37e094f5cd09f"
+    },
+    "submitted_evidence_files_verified": 18,
+    "submitted_artifact_earliest_mtime": "2026-11-27T01:58:00.100113+00:00",
+    "submitted_artifact_latest_mtime": "2026-11-27T02:13:38.468440+00:00",
+    "submitted_artifact_collection": "2026-11-27T02:19:03.999771+00:00",
+    "controller_sealed_utc": "2026-11-27T02:17:51.412962+00:00",
+    "all_frozen_evaluator_hashes_matched": true,
+    "patch_applies_to_pristine_with_whitespace_error_check": true
+  },
+  "submitted_repair": "Change the existing registered Worker command-model test to continue drawing whole schedules from each allowed seed while its accepted-work or lifecycle requirements are missing. The one-file patch leaves the command generator, production owners, CI, five fixed examples and known-failure database byte-identical outside the changed end of the test file.",
+  "verification_method": {
+    "predeclared_target": "Prior audit finding keyboardia-02 and the frozen Worker-seed secondary matrix. The matched original and submitted commands used evaluator/evaluate-seed.py --assert-original or --assert-repaired with the shared pinned dependencies. All four submitted rows also ran separately through postcandidate.py --scenario seed in fresh offline Docker containers with 2 CPUs and 2 GiB. Exit 1 in a fault row is an assertion failure. Each title filter selected one actual test and filtered the file\u2019s other five.",
+    "supplemental": "Additional fault, representation, seed and trace checks are explicitly EXPLORATORY. They used independent disposable trees, real Node 24.22.3, Vitest 4.1.11, workerd 1.20261006.1 and Worker fast-check 4.9.0. Their shared-host transport differs from the independent offline Docker repeat. All Docker calls acquired the shared lock.",
+    "evidence_sources": [
+      "technical-check/plan.json",
+      "technical-check/frozen.py",
+      "technical-check/probes.py",
+      "submitted-artifacts/evidence-collection.json"
+    ]
+  },
+  "frozen_seed_matrix": [
+    {
+      "case": "default_model",
+      "meaning": "Clean default seed list and real generated model.",
+      "ground_truth": "accept",
+      "original": {
+        "exit": 0,
+        "log": "technical-check/frozen-native-original/raw/default_model.log",
+        "sha256": "bdef2664b924ae9a74a8237789a3d989c78395626465974f7101c750827d4f61",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "7.28s"
+      },
+      "submitted": {
+        "exit": 0,
+        "log": "technical-check/frozen-native-candidate/raw/default_model.log",
+        "sha256": "fcf696f9b660335919011695f0467e1327ca1a4ea871d407a8de694e1385a142",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "6.46s"
+      },
+      "submitted_offline_repeat": {
+        "exit": 0,
+        "log": "technical-check/frozen-offline-candidate/default_model/raw/default_model.log",
+        "sha256": "2a4ff344a062f0da2b6ca9209c2f9bf4bc1991f3b033385241e751d0335d1641",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "5.50s"
+      }
+    },
+    {
+      "case": "valid_schedule",
+      "meaning": "Accepted historical schedule, with both fast-check bindings set to 45182094013.",
+      "ground_truth": "accept",
+      "original": {
+        "exit": 1,
+        "log": "technical-check/frozen-native-original/raw/valid_schedule.log",
+        "sha256": "c65fc1fe1045e66d42820bbe06c0b6f3ec7de5766f3f79b82de016c6c50feb30",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "5.26s"
+      },
+      "submitted": {
+        "exit": 0,
+        "log": "technical-check/frozen-native-candidate/raw/valid_schedule.log",
+        "sha256": "fa5cee11b16d2db8222ded16c39f9d69742908988c7d5a29bc565282949b4f1c",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "5.80s"
+      },
+      "submitted_offline_repeat": {
+        "exit": 0,
+        "log": "technical-check/frozen-offline-candidate/valid_schedule/raw/valid_schedule.log",
+        "sha256": "2bf235e5309b62f3b27906bf9c7a07f7e8eb38d8a37c33037b8645c2b66dd562",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "4.86s"
+      }
+    },
+    {
+      "case": "persistence_original",
+      "meaning": "Existing explicit WebSocket, GET and KV lifecycle example on clean production.",
+      "ground_truth": "accept",
+      "original": {
+        "exit": 0,
+        "log": "technical-check/frozen-native-original/raw/persistence_original.log",
+        "sha256": "a324ea69d50d5b6739907005d21d503e86b523ba5408a97c90a32ba4c76e4642",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "3.78s"
+      },
+      "submitted": {
+        "exit": 0,
+        "log": "technical-check/frozen-native-candidate/raw/persistence_original.log",
+        "sha256": "c3faa62b8cc2b8f04d2a102b32b783199b135514abad08fde6c4ac6108cec0f4",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "3.82s"
+      },
+      "submitted_offline_repeat": {
+        "exit": 0,
+        "log": "technical-check/frozen-offline-candidate/persistence_original/raw/persistence_original.log",
+        "sha256": "61aaea57f7174e2987ac85a50a596362366be13e6822b3ae48f32eace946e585",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "4.21s"
+      }
+    },
+    {
+      "case": "persistence_fault",
+      "meaning": "Remove exactly the final save inside flushPendingKVSave. Run the same existing lifecycle example.",
+      "ground_truth": "reject",
+      "original": {
+        "exit": 1,
+        "log": "technical-check/frozen-native-original/raw/persistence_fault.log",
+        "sha256": "3b3820d181ca4e9ef631777f9203ea3d1eb2d71a391afe865ea96e5808d7ba39",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "5.79s"
+      },
+      "submitted": {
+        "exit": 1,
+        "log": "technical-check/frozen-native-candidate/raw/persistence_fault.log",
+        "sha256": "d4e07cb7761acf8bcebd6a176765af7497cd3fddbd01cb8bd2cc784adf1e7e6e",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "6.91s"
+      },
+      "submitted_offline_repeat": {
+        "exit": 1,
+        "log": "technical-check/frozen-offline-candidate/persistence_fault/raw/persistence_fault.log",
+        "sha256": "c8456249249d15015823870ae22bbcc778794d69c4d2469de558df3bfe009a69",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "5.95s"
+      }
+    }
+  ],
+  "historical_seed": {
+    "seed": 45182094013,
+    "signed_fast_check_seed": -2062546243,
+    "baseline_actual_coverage": {
+      "accepted": 99,
+      "dirtyDisconnects": 3,
+      "byKind": {
+        "ws_tempo": 10,
+        "ws_swing": 13,
+        "rest_put": 9,
+        "rest_patch_state": 11,
+        "rest_patch_name": 14,
+        "hibernate": 17,
+        "hard_evict": 11,
+        "disconnect": 8,
+        "connect": 6
+      }
+    },
+    "failure_cause": "The original run completed its generated properties, then failed only the 100-accepted-command floor at state-machine-fuzz.test.ts:494. The post-repair row is the same registered model and same seed. The original archived rotating-unit job passed. The hosted Worker job uploaded its diagnostic before its failure-preservation step returned red.",
+    "hosted_worker_receipt": "https://github.com/adewale/keyboardia/actions/runs/45182094013/job/137718195578"
+  },
+  "extension_evidence": {
+    "logic": "Let S be the number of supplied seeds and R = ceil(30 / S). Each seed first runs R schedules. If any shared witness is deficient, each seed draws one more schedule at offset R + extraRun. There are at most R such rounds. A batch finishes for every seed before coverage is checked again. The maximum is 2 \u00d7 S \u00d7 R scheduled cases before shrink/replay, and the normal 11 unique default seeds give 33 initial and at most 66 cases. This historical single-seed configuration starts at 30 and caps at 60. Each schedule allows up to 18 generated commands with preconditions.",
+    "witnesses": "At least 100 accepted commands, at least one acknowledged WebSocket tempo write, one WebSocket swing write, and one disconnect while the model\u2019s live and KV state differ. An accepted action calls the real owner and compares expected state through REST, KV and socket observations. A property failure is handled immediately before any coverage top-up. The other seven command kinds are generated but each is not independently required by the final predicate.",
+    "same_stream": "The fixed package implements a single numeric fast-check path by dropping that many initial producers from the same seed\u2019s generator stream. It honors numRuns when that path has no shrink segment. The repair uses the original signed seed and increasing case offsets. In a disposable diagnostic we recorded all accepted action objects and cumulative coverage after each successful real model schedule. All 32 records were byte-identical to one uninterrupted 32-case run of the original generator with the same seed.",
+    "trace_support": {
+      "length": 32,
+      "accepted_action_count": 101,
+      "trace_sha256": "4f1bfa6045b8da27c0219f55f9516a441a16f0851c617a749cfdb3e067b7b68e",
+      "submitted_trace": "technical-check/exploratory/candidate_trace_capture/schedule-trace.json",
+      "uninterrupted_reference_trace": "technical-check/exploratory/continuous_32_capture/schedule-trace.json",
+      "after_case_30": {
+        "accepted": 99,
+        "dirty_disconnects": 3
+      },
+      "case_31": {
+        "actions": [],
+        "accepted": 99,
+        "dirty": 3,
+        "byKind": {
+          "ws_tempo": 10,
+          "ws_swing": 13,
+          "rest_put": 9,
+          "rest_patch_state": 11,
+          "rest_patch_name": 14,
+          "hibernate": 17,
+          "hard_evict": 11,
+          "disconnect": 8,
+          "connect": 6
+        }
+      },
+      "case_32": {
+        "actions": [
+          {
+            "kind": "ws_swing",
+            "swing": 50
+          },
+          {
+            "kind": "disconnect"
+          }
+        ],
+        "accepted": 101,
+        "dirty": 4,
+        "byKind": {
+          "ws_tempo": 10,
+          "ws_swing": 14,
+          "rest_put": 9,
+          "rest_patch_state": 11,
+          "rest_patch_name": 14,
+          "hibernate": 17,
+          "hard_evict": 11,
+          "disconnect": 9,
+          "connect": 6
+        }
+      }
+    },
+    "cost": "For this seed the repair executed two extra schedules. Case 31 had no accepted action. Case 32 sent swing 50 and disconnected, raising 99 to 101 and three dirty closes to four. The uninstrumented paired local Vitest process times and isolated repeats are in the matrix. Each extra fc.check reinitializes a runner and advances to an offset. The outer test timeout is unchanged at max(120000, 15000 \u00d7 S) ms. interruptAfterTimeLimit is per fc.check, including each extra call. No suite-wide runtime multiplier or all-seed success rate was measured.",
+    "diagnostic_attempts": {
+      "first_passing_runs_with_no_emitted_trace": {
+        "candidate_trace": {
+          "exit": 0,
+          "log": "technical-check/exploratory/candidate_trace/run.log",
+          "sha256": "97e3ec81d4c493b4a31b80f43ad8590c8fd8b2f431bfb49adaf64f4301ac1b43",
+          "files": "1 passed (1)",
+          "tests": "1 passed | 5 skipped (6)",
+          "vitest_duration": "4.53s"
+        },
+        "continuous_32_reference": {
+          "exit": 0,
+          "log": "technical-check/exploratory/continuous_32_reference/run.log",
+          "sha256": "896a7522b8dcfbf39a50ab221a07b9bc76d65cc9c5a3e7b30254f27201bb388b",
+          "files": "1 passed (1)",
+          "tests": "1 passed | 5 skipped (6)",
+          "vitest_duration": "4.48s"
+        }
+      },
+      "reason": "The first successful runs emitted no console.log records. Their empty traces give no stream comparison. The retained follow-ups accumulated records, ran the original coverage assertion and then deliberately raised a diagnostic error to deliver the trace. The added diagnostic exit supplies observations only. The frozen uninstrumented runs establish pass/fail.",
+      "submitted_capture": {
+        "exit": 1,
+        "log": "technical-check/exploratory/candidate_trace_capture/run.log",
+        "sha256": "fc6b4ddd7ad72e203a63479114d51805f7ffcd649815c3abc222be5d9efb2bc2",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "5.13s"
+      },
+      "reference_capture": {
+        "exit": 1,
+        "log": "technical-check/exploratory/continuous_32_capture/run.log",
+        "sha256": "d7827eee88e5a18e34ce43649ce34968e5b6b87ac3b8da0077ba88da78f3b13b",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "5.97s"
+      }
+    },
+    "sources": [
+      "app/test/integration/state-machine-fuzz.test.ts:315,346,391,412,445,455,492,501,524,537,547",
+      "Worker fast-check 4.9.0 lib/fast-check.js:2327,2532"
+    ]
+  },
+  "exploratory_checks": {
+    "stale_get": {
+      "classification": "Additional submitted fault, independently reconstructed on original and submitted model. Existing regression detection is retained.",
+      "change": "Serve the stale KV state instead of the active Durable Object state in the real Worker GET merge. Both versions shrink to one WebSocket tempo write of 60. The acknowledgement arrives and the following GET observes the original 120. Both matrices fail before the coverage check.",
+      "original": {
+        "exit": 1,
+        "log": "technical-check/exploratory/stale_original/run.log",
+        "sha256": "e3a58c9c87b3bd0d1f29635fdaef697d87261478b9512e6670175ee0b31becbc",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "4.54s"
+      },
+      "submitted": {
+        "exit": 1,
+        "log": "technical-check/exploratory/stale_candidate/run.log",
+        "sha256": "26b56a888f67271180b9e5c45546de24ba2e2472b528dc914e11f60b8bb3d079",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "3.28s"
+      },
+      "shrunk_record": {
+        "lane": "stateMachine",
+        "example": [
+          {
+            "kind": "ws_tempo",
+            "tempo": 60
+          }
+        ],
+        "seed": -2062546243,
+        "path": "0:1",
+        "shrinks": 1
+      },
+      "same_modified_owner_bytes": true
+    },
+    "promotion_and_replay": {
+      "classification": "Existing real counterexample CLI and registered replay loop.",
+      "result": "The actual promote-pbt-counterexamples.ts CLI consumed the independently produced failure log and added the shrunk schedule to the otherwise empty stateMachine array. Known case 0 failed before exploration with 120 where 60 was required while the stale GET remained. The same promoted schedule passed with correct production restored.",
+      "CLI": {
+        "exit": 0,
+        "log": "technical-check/exploratory/stale_candidate/promotion.log",
+        "sha256": "612d03d494fd2cc79d9b2dc46402681669dc800d2345f3db6c698d3b76393bba"
+      },
+      "promoted_database": "technical-check/exploratory/stale_candidate/promoted-known-failures.json",
+      "faulty_known_replay": {
+        "exit": 1,
+        "log": "technical-check/exploratory/stale_candidate/known-replay.log",
+        "sha256": "8bed1043014b4e092291a96c77e27d0db1db81d5d5371fbd04a3d67a4a2130f9",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "3.09s"
+      },
+      "restored_production": {
+        "exit": 0,
+        "log": "technical-check/exploratory/promoted_clean_control/run.log",
+        "sha256": "af6e6f88d5a54b8df93178dd469076ecb5447e485991559446bf2d8f56a341e8",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "5.37s"
+      }
+    },
+    "flush_fault_actual_generated_model": {
+      "classification": "Unchanged frozen missing-final-save stimulus, with an EXPLORATORY selection of the registered generated model as observer.",
+      "original": {
+        "exit": 1,
+        "log": "technical-check/exploratory/final_flush_model_original/run.log",
+        "sha256": "7a6f6787be4840ff630da2a9338eb5da27e79f6442f685e84456059987b1a617",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "9.47s"
+      },
+      "submitted": {
+        "exit": 1,
+        "log": "technical-check/exploratory/final_flush_model_candidate/run.log",
+        "sha256": "5a138370f2e17c7421d4dddc6b5f897ec5f07a8560416bacdc3ce1f19e19a93e",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "9.66s"
+      },
+      "shrunk_record": {
+        "lane": "stateMachine",
+        "example": [
+          {
+            "kind": "ws_tempo",
+            "tempo": 60
+          },
+          {
+            "kind": "disconnect"
+          }
+        ],
+        "seed": -2062546243,
+        "path": "0:2",
+        "shrinks": 1
+      },
+      "same_modified_owner_bytes": true,
+      "result": "Both reach the same failing generated schedule, a tempo write to 60 followed by disconnect. The KV observation stays 120. This is distinct from the fixed frozen 150 example and demonstrates preservation of an existing sensitivity."
+    },
+    "missing_swing_generator": {
+      "classification": "EXPLORATORY damaged workload generator.",
+      "submitted": {
+        "exit": 1,
+        "log": "technical-check/exploratory/missing_swing/run.log",
+        "sha256": "5e3eebcc7f0d0abc945d8d5e7536de363b0530a5bcd74d823acfd2c16c8e3e85",
+        "files": "1 failed (1)",
+        "tests": "1 failed | 5 skipped (6)",
+        "vitest_duration": "6.08s"
+      },
+      "coverage": {
+        "accepted": 247,
+        "dirtyDisconnects": 4,
+        "byKind": {
+          "ws_tempo": 21,
+          "ws_swing": 0,
+          "rest_put": 46,
+          "rest_patch_state": 37,
+          "rest_patch_name": 33,
+          "hibernate": 31,
+          "hard_evict": 28,
+          "disconnect": 29,
+          "connect": 22
+        }
+      },
+      "result": "Deleting only the WebSocket swing generator still fails after the capped extension. The native assertion reports the missing WS swing witness (observed 0, minimum 1), even after 247 accepted actions and four dirty disconnects. The original model already required this witness."
+    },
+    "different_allowed_seed": {
+      "seed": 20261127,
+      "original": {
+        "exit": 0,
+        "log": "technical-check/exploratory/other_seed_original/run.log",
+        "sha256": "71622828083f387ae809bce8fe2fec168674979e9110cda58604aa1839e3b124",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "4.58s"
+      },
+      "submitted": {
+        "exit": 0,
+        "log": "technical-check/exploratory/other_seed_candidate/run.log",
+        "sha256": "ab73f2f151466d0cbe19a0fdbc5b07d9fb277b4150302bed8cf4b9b21e8a64bb",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "4.89s"
+      },
+      "result": "Both registered models passed the separately selected valid seed with both seed bindings set."
+    },
+    "equivalent_get_representation": {
+      "submitted": {
+        "exit": 0,
+        "log": "technical-check/exploratory/private_get_representation/run.log",
+        "sha256": "5b3541f09d0d8cf760b35128d8d4d8f3ce66bf67d3877db4632b2e7ac4f6996f",
+        "files": "1 passed (1)",
+        "tests": "1 passed | 5 skipped (6)",
+        "vitest_duration": "5.74s"
+      },
+      "result": "The submitted model accepted a private Object.assign construction producing the same plain response as the previous object spread, retaining KV metadata and authoritative DO state, on 45182094013."
+    }
+  },
+  "registration_and_retained_checks": {
+    "ordinary_ci": {
+      "observed": {
+        "exit": 0,
+        "log": "technical-check/ci-worker-full/raw/original.log",
+        "sha256": "3d0757c7d3fda2578ccf7f9a01b71f32364982553ee576def1cd348c3db63942",
+        "files": "11 passed (11)",
+        "tests": "131 passed (131)",
+        "vitest_duration": "14.74s"
+      },
+      "files": [
+        "agent-skills-journey.test.ts",
+        "collaboration-contract.test.ts",
+        "eviction-recovery.test.ts",
+        "live-session.test.ts",
+        "mcp-journeys.test.ts",
+        "overlap-fuzz.test.ts",
+        "seq-regression.test.ts",
+        "social-preview.test.ts",
+        "state-hash-parity.test.ts",
+        "state-machine-fuzz.test.ts",
+        "validator-enforcement.test.ts"
+      ],
+      "scope": "The complete ordinary Worker test entry ran npm test (vitest run, no file/title filters) in app/test/integration under isolated Docker. It collected all 11 Worker files, all six state-machine identities and 131 passes. The pinned CI builds first, installs Worker dependencies, then calls test:integration:built, which delegates here. The prepared runner supplied the two small static assets and HTML. A complete application build or hosted patch run is outside this observation.",
+      "sources": [
+        ".github/workflows/ci.yml:241-255",
+        "app/package.json:23-24",
+        "app/test/integration/package.json:6",
+        "app/test/integration/vitest.config.ts:21-50"
+      ]
+    },
+    "rotating_ci": {
+      "observed": {
+        "exit": 0,
+        "log": "technical-check/exploratory/weekly_selection/run.log",
+        "sha256": "a023aa12eefafdf226bedb441d159c574b0eaaff1c01e57084b775c5671c351f",
+        "files": "3 passed (3)",
+        "tests": "28 passed (28)",
+        "vitest_duration": "6.47s"
+      },
+      "scope": "Exact three registered files with both replay seed variables, all 28 passed. The registered modified model, five fixed examples, eviction/recovery and three-socket overlap checks ran. The eight other integration files outside the weekly selector were covered by the separate unfiltered run.",
+      "source": ".github/workflows/property-seed.yml:97-137"
+    },
+    "fixed_state_machine_examples": [
+      "WS mutation makes KV lag, GET stays authoritative, disconnect converges KV",
+      "REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)",
+      "WS mutation -> hibernate -> REST PUT -> GET reflects the REST write",
+      "PATCH name (KV-only) composes with WS state (DO-only) in the GET merge",
+      "multi-client: KV flushes only when the LAST client disconnects"
+    ],
+    "keepers": [
+      {
+        "area": "Worker state and acknowledgments",
+        "evidence": "The fixed example creates tempo 120, sends 150 over a WebSocket and requires its acknowledgement, GET at 150 and KV still at 120, followed by KV at 150 after the disconnect. Stateful commands compare real GET name/tempo/swing, direct KV values and socket readyState to the independent expected model. Checks and update logic are unchanged.",
+        "sources": [
+          "app/test/integration/state-machine-fuzz.test.ts:162,315,346,391,412"
+        ]
+      },
+      {
+        "area": "Peer state and convergence",
+        "evidence": "The unchanged overlap test starts all 32 expected cells from fixture inputs, toggles by sent parity, checks every sequence number on each of three sockets and reconciles snapshots and the REST GET. The native three-file and full Worker runs passed it. The single-client generated model itself makes a narrower delivery observation.",
+        "sources": [
+          "app/test/integration/overlap-fuzz.test.ts:218,254,277,303"
+        ]
+      },
+      {
+        "area": "Client save destination and in-flight edit",
+        "observed": {
+          "exit": 0,
+          "log": "technical-check/exploratory/client_persistence_keeper/run.log",
+          "sha256": "eb1fa55fd0dc5cc5790dbb177e4c08bbdc0514b7cb4cbc1d700a38b57c0c9b4f",
+          "files": "1 passed (1)",
+          "tests": "7 passed (7)",
+          "vitest_duration": "396ms"
+        },
+        "evidence": "The test records outgoing requests with a fetch double. The unchanged client test leaves the first save pending, releases its response and checks that the next outbound payload carries tempo 200.",
+        "source": "app/src/sync/session.persistence.test.ts:87-105"
+      },
+      {
+        "area": "Audio timing",
+        "evidence": "The source counts PCM onsets and compares timing against step \u00d7 0.125 seconds at 120 BPM with a 0.010-second tolerance. The required native-render step passed in the pinned hosted Unit Tests receipt. This verification performed no native audio render.",
+        "sources": [
+          "app/src/audio/session-render-conservation.render.test.ts:87-100",
+          "https://github.com/adewale/keyboardia/actions/runs/45018066984/job/137194593412"
+        ]
+      }
+    ]
+  },
+  "other_reported_findings": [
+    {
+      "finding": "Historical macOS visual cancellation",
+      "historical_status": "Prior finding keyboardia-01, reported as open.",
+      "evidence_kind": "Archived hosted receipt and source.",
+      "run": 45018066984,
+      "mac_conclusion": "cancelled",
+      "steps": 0,
+      "annotation": "The configuration 'macos-14-arm64-us-default' is not supported",
+      "source_contract": "The workflow requests macos-14 and Chromium, sets the mock API and calls populated-visual.spec.ts. The spec requires Darwin. The lane expects three named Holby results and zero skips.",
+      "cases": [
+        "chromium :: populated-visual.spec.ts \u203a Deterministic populated-session visuals \u203a Holby landscape editing view",
+        "chromium :: populated-visual.spec.ts \u203a Deterministic populated-session visuals \u203a Holby pitch overview exposes correctly named octaves",
+        "chromium :: populated-visual.spec.ts \u203a Deterministic populated-session visuals \u203a Holby portrait consumption view"
+      ],
+      "linux_visual": "success",
+      "stack_a_identity": "skipped",
+      "identity_gate": "pull_request with audio or full verification scope, .github/workflows/ci.yml:166",
+      "sources": [
+        "https://github.com/adewale/keyboardia/actions/runs/45018066984/job/137194667192",
+        "https://github.com/adewale/keyboardia/actions/runs/45018066984/job/137194667189",
+        "https://github.com/adewale/keyboardia/actions/runs/45018066984/job/137194668367",
+        "app/e2e/populated-visual.spec.ts:10",
+        ".github/workflows/ci.yml:649-681",
+        "app/e2e/lane-contracts.json:12"
+      ]
+    },
+    {
+      "finding": "Recorder waveform tests accept flat production peaks",
+      "historical_status": "Additional relative to the designated prior audit\u2019s four reported findings and frozen controls. This sampled file is outside the purposeful anchor list. The submission reports an open finding. No global novelty claim follows.",
+      "evidence_kind": "EXPLORATORY independent native case pair on the candidate tree.",
+      "change": "Only the production Waveform.tsx assignments to mins[i] and maxs[i] are replaced by zeros. Recorder supplies the recorded buffer to Waveform, which draws from its production function and per-buffer/per-width cache. The four ordinary tests define a local function, import only Vitest, and never reach the production function or its WeakMap. All four pass on clean and flattened production. This establishes insensitivity of these four tests. Browser canvas output and the rest of the suite were not evaluated on this fault.",
+      "native": {
+        "waveform_clean": {
+          "exit": 0,
+          "log": "technical-check/exploratory/waveform_clean/run.log",
+          "sha256": "95de2ef59e70a620f5a7020cd59e9d3a131787b58c40129ddf0ad9dcf840f3e6",
+          "files": "1 passed (1)",
+          "tests": "4 passed (4)",
+          "vitest_duration": "259ms"
+        },
+        "waveform_flat": {
+          "exit": 0,
+          "log": "technical-check/exploratory/waveform_flat/run.log",
+          "sha256": "67f4cf0fcb4c851f98c519883cb8b94bc74098a4c2fe89d373343bc8bbbb282e",
+          "files": "1 passed (1)",
+          "tests": "4 passed (4)",
+          "vitest_duration": "251ms"
+        }
+      },
+      "sources": [
+        "app/src/components/waveform-peaks.test.ts:9-39",
+        "app/src/components/Waveform.tsx:29,53,99,106",
+        "app/src/components/Recorder.tsx:230"
+      ]
+    }
+  ],
+  "submitted_evidence_and_scope": {
+    "packet": "18 supplied attachments verified against the controller collection manifest. All recorded original mtimes precede the seal. These include 16 logs, one unit-file list and a 58-row survey. Submitted logs and independent post-candidate observations have separate provenance.",
+    "survey": "The ledger matches all 58 frozen sampled paths and strata out of 370 conventional original test files. It marks 34 sampled unit files and eight sampled Worker files as run, and 16 source-only. It characterizes five full reads, 22 focused excerpts and 31 declaration/import/matcher/gate scans. The path and selection arithmetic are verifiable. The depth of each reading is self-described.",
+    "submitted_log_counts": {
+      "pinned-unit": "343 passed (343)",
+      "pinned-worker": "84 passed (84)",
+      "survey-units": "463 passed (463)",
+      "all-workers": "131 passed (131)",
+      "seed-before": "1 failed | 5 skipped (6)",
+      "seed-after": "1 passed | 5 skipped (6)",
+      "seed-three-files": "28 passed (28)",
+      "stale-before": "1 failed | 5 skipped (6)",
+      "stale-after": "1 failed | 5 skipped (6)",
+      "known-replay": "1 failed | 5 skipped (6)",
+      "no-swing": "1 failed | 5 skipped (6)",
+      "waveform-control": "4 passed (4)",
+      "workload-diagnostic": "1 failed | 5 skipped (6)"
+    },
+    "reported_obstacles": {
+      "typecheck": "The supplied baseline and candidate Worker tsc logs are byte-identical, with six configuration diagnostics. This verification did not independently rerun tsc.",
+      "tsc_sha256": "73238eb62c8a83d875d8ee7f9a738d8aa855713f423e7c90beeda4fe49c022a9",
+      "quality": "The supplied log reaches successful antipattern, linkage and dead-export checks, then its npx playwright test --list fails with ENOTCACHED in the slim offline setup. This is separate from the successful actual full Worker collector run.",
+      "quality_log": "submitted-artifacts/evidence/test-quality.log"
+    },
+    "scope": "The data support a repair to the registered Worker property-test workload, alongside inherited detection and replay. A valid run can still fail if it does not meet the four mandatory witnesses within the cap or exceeds the unchanged outer deadline. Exact performance across arbitrary seeds, full hosted CI, browser behavior, native audio and Darwin were not independently exercised. No production application change was submitted."
+  },
+  "other_frozen_reference_results": {
+    "provenance": "Unchanged pre-submission calibration. The participant\u2019s patch targets the frozen Worker seed secondary matrix, not the named sync or discovery contracts. These numerical exits are earlier observations, without a new detection attributed to this submission.",
+    "sync": {
+      "original": {
+        "named_gate": 0,
+        "existing_worker": 0,
+        "worker_witness": 0,
+        "existing_senders": 0,
+        "hook_witness": 0
+      },
+      "private_rename": {
+        "named_gate": 1,
+        "existing_worker": 0,
+        "worker_witness": 0
+      },
+      "no_dispatch": {
+        "named_gate": 0,
+        "existing_worker": 1,
+        "worker_witness": 1
+      },
+      "author_only": {
+        "named_gate": 0,
+        "existing_worker": 0,
+        "worker_witness": 1
+      },
+      "inverted_hook": {
+        "named_gate": 0,
+        "existing_senders": 0,
+        "hook_witness": 1
+      },
+      "early_return": {
+        "named_gate": 0,
+        "existing_senders": 0,
+        "hook_witness": 0
+      },
+      "stale_hook": {
+        "named_gate": 0,
+        "existing_senders": 0,
+        "hook_witness": 1
+      }
+    },
+    "discovery": {
+      "correct": 0,
+      "reordered_tools": 0,
+      "missing_post_read": 0,
+      "edit_before_both_reads": 0,
+      "no_read": 1,
+      "wrong_protocol": 1
+    },
+    "sources": [
+      "preparation/keyboardia/evidence/final-sync-controls/results.json",
+      "preparation/keyboardia/evidence/grader-controls.json",
+      "preparation/keyboardia/evaluator/hidden-controls.md"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "exit": 0,
+  "wall_seconds": 0.694,
+  "log": "technical-check/exploratory/client_persistence_keeper/run.log",
+  "sha256": "eb1fa55fd0dc5cc5790dbb177e4c08bbdc0514b7cb4cbc1d700a38b57c0c9b4f",
+  "test_files": "1 passed (1)",
+  "tests": "7 passed (7)",
+  "source": "submitted",
+  "stimulus": null,
+  "seed": null,
+  "selected_command": [
+    "runtime/run-unit.sh",
+    "--reporter=verbose",
+    "src/sync/session.persistence.test.ts"
+  ]
+}

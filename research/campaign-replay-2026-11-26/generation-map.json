@@ -1,0 +1,218 @@
+[
+  {
+    "id": "1fa188118cad",
+    "case": "R02",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/1fa188118cad.md",
+    "packet_sha256": "e3136ab1826aa9acfdd1d99df9aac0b645a86d69cb8866b854ae33ffc47b7c14",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/1fa188118cad.json"
+  },
+  {
+    "id": "8d47c118af05",
+    "case": "R01",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/8d47c118af05.md",
+    "packet_sha256": "960daa48bd1f640aa38d6d278001fcb3c438e6b1897a53e6b538aeba0d520c62",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/8d47c118af05.json"
+  },
+  {
+    "id": "453865452c48",
+    "case": "R09",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/453865452c48.md",
+    "packet_sha256": "d1f7f6c530283030d34315f1f14e5a27bdbb4f6fae1f81953e94c3da059f5ff3",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/453865452c48.json"
+  },
+  {
+    "id": "03c9e0077220",
+    "case": "R09",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/03c9e0077220.md",
+    "packet_sha256": "51be73a75c346199c4450bb07fe87c1eb16c709033987441f71002ca1be41047",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/03c9e0077220.json"
+  },
+  {
+    "id": "b43f1b09dc15",
+    "case": "R07",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/b43f1b09dc15.md",
+    "packet_sha256": "0f055988a97260131fc462412e4fe8ae143a1f919eb4382d897bf8ec25d02234",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/b43f1b09dc15.json"
+  },
+  {
+    "id": "d724ec0ccc4b",
+    "case": "R04",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/d724ec0ccc4b.md",
+    "packet_sha256": "11941a08b4f93cc9eb3a257ce7cd75b90669729a6fedaf41ac32eebfb803c80b",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/d724ec0ccc4b.json"
+  },
+  {
+    "id": "de7aa4d16bdf",
+    "case": "R09",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/de7aa4d16bdf.md",
+    "packet_sha256": "f5e10441cdcb43732c06d6cd3ca47a85e846b8cbbf3eaefe936e5a6477fb379c",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/de7aa4d16bdf.json"
+  },
+  {
+    "id": "9a66453a9f75",
+    "case": "R08",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/9a66453a9f75.md",
+    "packet_sha256": "b372557e21d88aa9a882ce6c06df49de7cfeacc448ceea26ff9d2769b2da5309",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/9a66453a9f75.json"
+  },
+  {
+    "id": "b943977ba88b",
+    "case": "R03",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/b943977ba88b.md",
+    "packet_sha256": "2bb92fb47e9a4dd403167eb97e1f6259ac22091cfde7db7230a5a9ddf9ded8b8",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/b943977ba88b.json"
+  },
+  {
+    "id": "9e3bd98af50c",
+    "case": "R06",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/9e3bd98af50c.md",
+    "packet_sha256": "7e873fa22b941cce7262f952c1d7b6d0782ec4d21ac4c311d6bf5afce1ee3428",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/9e3bd98af50c.json"
+  },
+  {
+    "id": "072977237798",
+    "case": "R05",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/072977237798.md",
+    "packet_sha256": "1efb19bb34f98124508b9a735f2b7c7d54e07aa4784f7cb01ec8188710c284f9",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/072977237798.json"
+  },
+  {
+    "id": "78f0b3607a50",
+    "case": "R08",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/78f0b3607a50.md",
+    "packet_sha256": "dec18babde7850c287f6343216066be2a78ccfc78daec9797a68b8392facc508",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/78f0b3607a50.json"
+  },
+  {
+    "id": "3a66eed1ecae",
+    "case": "R03",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/3a66eed1ecae.md",
+    "packet_sha256": "68b9bbaf1c9429003a97b3b594587f09c8a14e6b4e32349be5ba1bbd935762b9",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/3a66eed1ecae.json"
+  },
+  {
+    "id": "0ef9721fc57d",
+    "case": "R06",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/0ef9721fc57d.md",
+    "packet_sha256": "7e603bef9e411d003b7298c6e72b991a1df7fd61cc23e8d1e0b5787fe4d50df5",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/0ef9721fc57d.json"
+  },
+  {
+    "id": "73ca6945ad8d",
+    "case": "R02",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/73ca6945ad8d.md",
+    "packet_sha256": "4b4b4f55d0cc51a44f681f053235134c672f76ff4bbb772499adb3e6a0e02797",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/73ca6945ad8d.json"
+  },
+  {
+    "id": "7fdf267627e1",
+    "case": "R05",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/7fdf267627e1.md",
+    "packet_sha256": "3c88f53fa53c8311372e6a6e6b316ed2c628f29379045b4ef71dd17df0151e25",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/7fdf267627e1.json"
+  },
+  {
+    "id": "247551539e25",
+    "case": "R02",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/247551539e25.md",
+    "packet_sha256": "7784a3f6ee64fe0ebb6a1ee1516641220bf3dbbe0d22959b1587ebe8b97958bf",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/247551539e25.json"
+  },
+  {
+    "id": "0e8d15fc799b",
+    "case": "R07",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/0e8d15fc799b.md",
+    "packet_sha256": "a00dea48a5c5107052020992686b6a900cf6cdc390372426d3d685471682e598",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/0e8d15fc799b.json"
+  },
+  {
+    "id": "461e1844682f",
+    "case": "R03",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/461e1844682f.md",
+    "packet_sha256": "c38bbd47bb7cd20da92a28bf6a9074813d3955912a06b88a7e9b13c1f1bb3439",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/461e1844682f.json"
+  },
+  {
+    "id": "211c73716269",
+    "case": "R04",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/211c73716269.md",
+    "packet_sha256": "edfc156590a42f5a6b95054242f8015b44a57287ccb9809fbd3d386134d8db43",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/211c73716269.json"
+  },
+  {
+    "id": "0aca6e930e20",
+    "case": "R04",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/0aca6e930e20.md",
+    "packet_sha256": "b8fc7a693716439681eb9a4f0688e7d0d4f2affb19db45c803a8f668d5486f42",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/0aca6e930e20.json"
+  },
+  {
+    "id": "3c4cb3ab4816",
+    "case": "R01",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/3c4cb3ab4816.md",
+    "packet_sha256": "fd3a8a4cef5d98958686cdecc0112b77cf2f66783c4e90bcff9c822e39718df0",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/3c4cb3ab4816.json"
+  },
+  {
+    "id": "2f82ed507caa",
+    "case": "R08",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/2f82ed507caa.md",
+    "packet_sha256": "578ec6b35ffac93d1e23f9fd1ff17fb811678e3d80daa333466792eedcb440c4",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/2f82ed507caa.json"
+  },
+  {
+    "id": "3b8a3adc76fe",
+    "case": "R07",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/3b8a3adc76fe.md",
+    "packet_sha256": "dce9a0619b1187d5135f124ed41108c26ca3e92fb35224ff4bb13d83116e2e1f",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/3b8a3adc76fe.json"
+  },
+  {
+    "id": "e0ac039f05fc",
+    "case": "R01",
+    "arm": "base",
+    "packet": "/workspace/campaign-replay-packets/e0ac039f05fc.md",
+    "packet_sha256": "88639cba9b87417825747dc7817a8572eb06ca10805b74956c82ca27f5b88bb1",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/e0ac039f05fc.json"
+  },
+  {
+    "id": "2cc376543a28",
+    "case": "R05",
+    "arm": "pr41",
+    "packet": "/workspace/campaign-replay-packets/2cc376543a28.md",
+    "packet_sha256": "4d0e6597c6749d3a0ed148fc162290780247eec7b7d4f00dcd64f2794731aa2f",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/2cc376543a28.json"
+  },
+  {
+    "id": "ee52c9970651",
+    "case": "R06",
+    "arm": "none",
+    "packet": "/workspace/campaign-replay-packets/ee52c9970651.md",
+    "packet_sha256": "10f517de30ef25a211720ff515fd30cf74a2051182faa05d531d2f92d5399877",
+    "output": "/workspace/testing-best-practices/research/campaign-replay-2026-11-26/outputs/ee52c9970651.json"
+  }
+]

@@ -1,0 +1,262 @@
+{
+  "repository": "adewale/slide-maker",
+  "total_prs": 18,
+  "pages_checked": {
+    "pull_requests": "GitHub REST pulls?state=all&per_page=100 returned all 18 pull requests on page 1, covering #1–18. Page 2 was empty. Fifteen were merged, two were open and one was closed without merge.",
+    "file_inventories": "The paginated GitHub changed-filenames endpoint returned 630 per-PR path entries across all 18 inventories, including all 425 entries for #1. The test, tool, documentation and workflow patches for plausible candidates were inspected.",
+    "file_counts_by_pr": {
+      "1": 425,
+      "2": 85,
+      "3": 12,
+      "4": 2,
+      "5": 3,
+      "6": 10,
+      "7": 1,
+      "8": 1,
+      "9": 2,
+      "10": 9,
+      "11": 4,
+      "12": 28,
+      "13": 12,
+      "14": 18,
+      "15": 1,
+      "16": 5,
+      "17": 7,
+      "18": 5
+    }
+  },
+  "matching_prs": [
+    {
+      "number": 2,
+      "title": "Flash-bang rule, AI-slop rubric, and a predictive eval/gate stack",
+      "url": "https://github.com/adewale/slide-maker/pull/2",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing evaluation assertions and gate calibration",
+      "weakness": "Three eval cases described expected behavior in prose. Passing structural checks could hide content-free slides containing the expected words or an abrupt brightness change caused by a background image.",
+      "attempted_remedy": "Give the existing assertions executable meanings, retain judgment for qualitative criteria, and exercise the gates on good decks and deliberately defective decks.",
+      "test_paths": [
+        "evals/evals.json",
+        "tools/eval-runner.mjs",
+        "tools/gate-check.mjs",
+        "tools/render-gate.mjs",
+        "evals/adversarial/assertion-gaming/intended.txt",
+        "evals/adversarial/image-flashbang/intended.txt",
+        "evals/holdout-rubric.md"
+      ],
+      "diff_evidence": "All 20 existing descriptions gained an assert field, including slide_count, file_exists and token_luma checks. The fixture gate discovered published example decks and four adversarial decks. Its original declaresOtherGate branch still accepted the words “caught by” in a fixture description as evidence of coverage.",
+      "transferable_rule": "Try known-good and deliberately bad artifacts. Give executable checks to objective requirements and record which defects a detector actually catches.",
+      "outcome_verification": "The head's fast-gates job completed its deterministic eval and fixture steps. Its coverage verdict could count an unexecuted detector. PR #14 later measured that distinction. The PR's rendered and judge demonstrations were outside that CI run.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/actions/runs/26714308807",
+        "https://github.com/adewale/slide-maker/pull/14"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Add shared skill eval harness coverage",
+      "url": "https://github.com/adewale/slide-maker/pull/3",
+      "state": "closed",
+      "merged": true,
+      "classification": "Existing assertion repair and benchmark design",
+      "weakness": "The scoped-color check scanned any style block in slides.md for hex literals. It missed RGB/HSL and colors in Vue layouts or components, and could misidentify comments or unscoped styles. The existing evals also lacked a shared baseline and held-out split structure.",
+      "attempted_remedy": "Inspect color-bearing declarations in scoped styles across deck sources. Add paired with-skill and without-skill evaluations, an image-deck fixture, and explicit holdout and holdback splits.",
+      "test_paths": [
+        "tools/eval-runner.mjs",
+        "evals/evals.json",
+        "evals/shared-benchmark.json",
+        "evals/fixtures/round3-image-deck/slides.md",
+        "evals/shared-harness.md"
+      ],
+      "diff_evidence": "scopedStyleSources collects slides.md, root Vue files, layouts and components. scopedColorLiteralViolations strips comments, locates hex, RGB and HSL literals, and reports the file, line and property. The manifest pairs variants for 22 cases and declares ablations.",
+      "transferable_rule": "Define an assertion over the locations and syntax where the behavior can occur. Compare evaluation outcomes with a baseline and reserve unseen examples before drawing conclusions about improvement.",
+      "outcome_verification": "The head's deterministic eval step passed. The hidden prompts are external placeholders, the stated trigger check used seven examples, and the PR supplied no completed ablation or blind-score results. The implementation also skips a declaration containing var(), so mixed literal and variable values can still escape.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/actions/runs/27212235103"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Adopt v0.3 eval quality oracles",
+      "url": "https://github.com/adewale/slide-maker/pull/5",
+      "state": "closed",
+      "merged": true,
+      "classification": "Attempted grading-oracle upgrade",
+      "weakness": "The image-deck review was graded with short literal matches. Repeating terms such as “scoped”, “tokens” and “screenshot” could satisfy substantial parts of the review.",
+      "attempted_remedy": "Add an executable repository-owned oracle for the existing fixture case and require all four groups of expected advice to appear in the saved answer.",
+      "test_paths": [
+        "evals/oracles/fixture_oracle.py",
+        "evals/shared-benchmark.json",
+        "evals/shared-harness.md"
+      ],
+      "diff_evidence": "The new script reads output.md and case-folds substrings. Its four groups reproduce the four existing contains_any assertions, with two extra acceptable refusal phrases in the last group. The manifest adds a script assertion, leaves the existing checks in place and requires --allow-scripts for grading.",
+      "transferable_rule": "Challenge a new oracle with a plausible wrong answer that satisfies the old one. Inspecting real artifacts or observable behavior can supply evidence independent of wording.",
+      "outcome_verification": "The PR reports one successful script check on a saved output and 21 nonfatal leakage warnings. Its green hosted verify job ran the local deterministic eval runner. The script's checks still accept a keyword-only response, and the recorded run does not establish qualitative grading accuracy.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/actions/runs/27314931915"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Add eval taxonomy fields",
+      "url": "https://github.com/adewale/slide-maker/pull/7",
+      "state": "closed",
+      "merged": true,
+      "classification": "Benchmark reporting metadata only",
+      "weakness": "The shared benchmark could not distinguish test results by difficulty, success goal, or implicit trigger versus near miss in the harness's planned slice reports.",
+      "attempted_remedy": "Annotate the existing benchmark cases so a reporting tool can break failures down by the behavior under evaluation.",
+      "test_paths": [
+        "evals/shared-benchmark.json"
+      ],
+      "diff_evidence": "The patch labels all 22 cases with domain, difficulty and success_goals. Four trigger cases receive implicit and three receive negative-near-miss. The prompts and assertions are unchanged.",
+      "transferable_rule": "Label evaluation cases by the behaviors that need separate reporting, especially correct activations and plausible false activations.",
+      "outcome_verification": "The diff establishes a reporting capability. The PR reports schema validation and provides no slice results or evidence of better defect detection. PR #8 subsequently changes only the harness version requirement.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/pull/8"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Pin Slidev to 52.15.2 to fix hash-mode navigation regression",
+      "url": "https://github.com/adewale/slide-maker/pull/11",
+      "state": "closed",
+      "merged": true,
+      "classification": "Documented manual regression procedure in a dependency repair",
+      "weakness": "Lint and a successful build missed a broken Slidev hash route on a site deployed under a subdirectory. Advancing produced a doubled path, and reloading a deep link failed.",
+      "attempted_remedy": "Pin Slidev to the last working release and document a browser check for every upgrade using the deployment base, keyboard navigation and a deep-link reload.",
+      "test_paths": [
+        "docs/LESSONS_LEARNED.md",
+        "package.json"
+      ],
+      "diff_evidence": "Lesson 18 specifies loading a subdirectory deck, pressing Right, checking #/N and reloading a deep link. package.json pins @slidev/cli to 52.15.2. The four changed files contain documentation and dependency changes only.",
+      "transferable_rule": "After a routing dependency change, exercise a built artifact at its deployment path. Check the visible transition, resulting URL and direct reload.",
+      "outcome_verification": "The cited red/green browser comparison was manual. The green head verify job ran lint, fixture gates and deterministic assertions. PR #14 later automated the documented procedure on the artifact before deployment.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/actions/runs/28289506034",
+        "https://github.com/adewale/slide-maker/pull/14"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Retire legacy build/deploy scripts; consolidate to tools/build.py",
+      "url": "https://github.com/adewale/slide-maker/pull/12",
+      "state": "closed",
+      "merged": true,
+      "classification": "Assertion repairs and deletion of a duplicate verifier within a build refactor",
+      "weakness": "Visible prompts contained literal words that the corresponding success checks accepted. For example, repeating “gallery” or “manifest” could pass the gallery-manifest assertion. The shell and Python post-build smoke tests also maintained their own deck inventories, allowing the verifier's coverage to drift from the build.",
+      "attempted_remedy": "Replace prompt-derived literals with expected output evidence, add an offline overlap check to CI, and document intentional vocabulary overlap. Retire the shell verifier and discover generated and personal decks in the remaining Python verifier.",
+      "test_paths": [
+        "evals/shared-benchmark.json",
+        "tools/leakage-lint.mjs",
+        ".github/workflows/verify.yml",
+        "evals/shared-harness.md",
+        "tools/build-and-verify.sh",
+        "tools/build-and-verify.py"
+      ],
+      "diff_evidence": "The gallery check switched from manifest/gallery to index.html/serve.json, and the quickstart check dropped the single digit 5. The new gate compares case-insensitive whole terms, exempts structural vocabulary and records two assertion-specific exceptions. The patch deletes the 327-line build-and-verify.sh and replaces Python's eight hard-coded local decks with discover_decks(), which walks generated-decks/ and decks/ for slides.md.",
+      "transferable_rule": "Compare each prompt with its scoring criteria. Prefer evidence produced while doing the task and document unavoidable overlap. Give the surviving verifier a way to discover the artifacts it must check when deleting a duplicate.",
+      "outcome_verification": "An independent comparison of the base and head manifests using the patch's matching rule found 13 unexpected literal overlaps before and zero after. Five matches remained under the two exceptions. The hosted leakage step passed. The comparison covers public prompt text and literal overlap only. The diff confirms the shell verifier's deletion. Python's default discovery covers the two in-repository directories, while the builder also accepts an external DECKS_DIR override.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/actions/runs/28444368015"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Lesson 18 nav smoke per PR, deploy gated on verify, no swallowed navigation, executed recall",
+      "url": "https://github.com/adewale/slide-maker/pull/14",
+      "state": "closed",
+      "merged": true,
+      "classification": "Verification audit and repair",
+      "weakness": "Six swallowed navigation errors, a fixed sleep, a server using the wrong asset base, and a fallback returning empty findings allowed a blank or unreachable deck to pass. The recall report credited descriptions of checks that never ran.",
+      "attempted_remedy": "Require an OK response and the expected rendered slide, verify each keyboard transition and a deep-link reload on the actual Pages artifact, fail requested checks that cannot run, and distinguish executed detections from declarations.",
+      "test_paths": [
+        "tools/slidev-nav.mjs",
+        "tools/nav-smoke.mjs",
+        "tools/screenshot-audit.mjs",
+        "tools/render-gate.mjs",
+        "tools/build-and-verify.py",
+        "tools/gate-check.mjs",
+        "tools/deck-lint.test.mjs",
+        "evals/shared-benchmark.json",
+        ".github/workflows/verify.yml",
+        ".github/workflows/deploy-pages.yml"
+      ],
+      "diff_evidence": "gotoSlide requires #/N and .slidev-page-N. pressNext checks an increment in click count or slide number. render-gate serves the built base and propagates sampling errors. gate-check --run-catchers executes rendered detectors and records untouched judge cases as declared-unverified. Thirteen unit tests include neighboring 7/8-bullet and 8/9-line thresholds. The final deploy workflow runs nav-smoke --all before upload.",
+      "transferable_rule": "Make a browser test prove it reached the intended state. Report an unavailable check separately from an observed pass, and validate the artifact served under its real base path.",
+      "outcome_verification": "The final PR log records 13/13 unit tests, zero of four adversarial defects caught by executed checks in fast mode, and zero manifest blockers. After merge, the deployment log confirms nine decks navigated successfully. The next weekly rendered run reported seven of nine decks failing. The final PR workflow omits the browser smoke and model-based judges. The five manual mutants claimed by the author were a one-time experiment.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/actions/runs/38053208606",
+        "https://github.com/adewale/slide-maker/actions/runs/38185463344/job/114606710499",
+        "https://github.com/adewale/slide-maker/actions/runs/38265954515/job/114868039951"
+      ]
+    },
+    {
+      "number": 16,
+      "title": "ci: avoid duplicate validation and pin supported browser runners",
+      "url": "https://github.com/adewale/slide-maker/pull/16",
+      "state": "closed",
+      "merged": true,
+      "classification": "Execution-environment repair for existing checks",
+      "weakness": "The moving ubuntu-latest image switched to Ubuntu 26.04. Playwright's Chromium installation then failed before the established verification suite could run.",
+      "attempted_remedy": "Choose an Ubuntu image supported by Playwright for the fast checks, deployment build and rendered checks.",
+      "test_paths": [
+        ".github/workflows/verify.yml",
+        ".github/workflows/rendered-gate.yml",
+        ".github/workflows/deploy-pages.yml"
+      ],
+      "diff_evidence": "All three jobs change runs-on from ubuntu-latest to ubuntu-24.04. The PR's first commit changed scheduling and still failed at dependency installation. The second commit changed the runner.",
+      "transferable_rule": "When a test job fails before assertions execute, distinguish infrastructure failure from product failure. Verify the repair by observing those same checks complete on the supported image.",
+      "outcome_verification": "The earlier hosted log explicitly says Playwright does not support chromium on ubuntu26.04-x64. The final hosted fast-gates job installed dependencies and passed the existing checks. The two run records establish recovery of fast-gates only. Scheduling and cancellation changes were ancillary.",
+      "verification_urls": [
+        "https://github.com/adewale/slide-maker/actions/runs/41525577296/job/125552306391",
+        "https://github.com/adewale/slide-maker/actions/runs/41526337606"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "numbers": [
+        1,
+        10
+      ],
+      "reason": "A presentation and its generated publishing assets (#1), and an upstream feature update with a deck deployment workflow (#10). Existing checks were used for validation. #10's later routing failure is covered by #11 and #14."
+    },
+    {
+      "numbers": [
+        6
+      ],
+      "reason": "Agent-client packaging includes a manual fallback for the installed skill's users when repository-only deck tools are absent. The acceptance checklist asks them to inspect rendered contrast, overflow and transitions. This changes guidance for the new installation path and supplies no change or test of the existing repository gates."
+    },
+    {
+      "numbers": [
+        4,
+        8,
+        18
+      ],
+      "reason": "Only harness version references or dependency action pins change. Tests discussed in #18's upstream changelog belong to those dependencies."
+    },
+    {
+      "numbers": [
+        9
+      ],
+      "reason": "Adds a separate package-boundary scan for missing SKILL.md and prohibited directory/file names such as evals, tests and .pyc. The new repository hygiene policy leaves the evaluation and test suites untouched."
+    },
+    {
+      "numbers": [
+        13,
+        17
+      ],
+      "reason": "Ruff upgrade and lint-only source cleanups (#13), and immutable-action policy lint with SHA pinning (#17). For example, #13 spells out existing regex flag aliases in the fixture oracle without changing the matching behavior."
+    },
+    {
+      "numbers": [
+        15
+      ],
+      "reason": "The open PR changes workflow triggers only to suppress duplicate runs. #16 is counted for its separate runner repair."
+    }
+  ],
+  "limitations": [
+    "This audit inspected PR titles, bodies and GitHub file inventories in all states. Generated publishing assets in #1 and lockfile or binary patches omitted by GitHub were outside the evidence used for the findings.",
+    "Historic job-log downloads for #2, #3 and #12 returned HTTP 410. Their run and step metadata remained available. Checked-in diffs, independent comparisons and retained logs are distinguished from PR-author reports."
+  ]
+}

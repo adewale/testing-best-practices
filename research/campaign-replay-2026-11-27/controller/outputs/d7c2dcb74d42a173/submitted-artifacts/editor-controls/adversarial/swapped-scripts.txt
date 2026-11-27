@@ -1,0 +1,15 @@
+{
+  "edit": "editor/js/export.js",
+  "standaloneArtifact": {
+    "path": "editor.html",
+    "action": "rebuild",
+    "script": "website",
+    "builder": "scripts/site/editor.ts"
+  },
+  "hostedArtifact": {
+    "path": "website/public",
+    "action": "rebuild",
+    "script": "editor",
+    "builder": "website/build.ts"
+  }
+}

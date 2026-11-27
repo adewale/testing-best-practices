@@ -1,0 +1,1361 @@
+
+ RUN  v4.1.11 /case/repo/app
+
+ ✓ |unit| test/skill-eval-hidden-oracles.test.ts (11 tests) 28ms
+ ✓ |unit| src/sync/mutation-tracker.property.test.ts (22 tests) 309ms
+ ✓ |unit| test/unit/sync-layer-coverage.test.ts (91 tests) 59ms
+ ✓ |unit| test/unit/pattern-ops-sync.test.ts (22 tests) 10ms
+ ✓ |unit| src/worker/validation.property.test.ts (49 tests) 3071ms
+       ✓ set_loop_region normalizes reversed bounds  1015ms
+       ✓ loop region is clamped to longest track length  1423ms
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > enqueue > queues ordinary messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > eviction when full > evicts a low priority message to make room
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > eviction when full > evicts a normal priority message when no low priority one exists
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > eviction when full > evicts the oldest message within the sacrificed priority
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > eviction when full > never evicts a high priority message to make room
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > eviction when full > drops a NEW high priority message when the queue is all high priority
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > replay ordering > sends high priority first, then normal, then low
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > replay ordering > preserves insertion order within a priority level
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > expiry > drops messages older than maxAge and keeps the rest
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Replayed 1 queued messages (by priority), dropped 1 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > expiry > treats a message exactly at maxAge as still valid
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > oversized messages > drops a message that would exceed MAX_MESSAGE_SIZE instead of sending it
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Replayed 1 queued messages (by priority), dropped 1 stale messages
+
+stderr | src/sync/MessageQueue.test.ts > MessageQueue > oversized messages > drops a message that would exceed MAX_MESSAGE_SIZE instead of sending it
+[WS] Dropping oversized queued message: toggle_step
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > lifecycle > empties the queue after replay so a second reconnect does not resend
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > lifecycle > empties the queue even when every message was dropped as stale
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 0 queued messages (by priority), dropped 1 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > lifecycle > clear() discards queued messages without sending them
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > defaults > defaults to maxSize 100
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Queued normal priority message: toggle_step (queue size: 6)
+[WS] Queued normal priority message: toggle_step (queue size: 7)
+[WS] Queued normal priority message: toggle_step (queue size: 8)
+[WS] Queued normal priority message: toggle_step (queue size: 9)
+[WS] Queued normal priority message: toggle_step (queue size: 10)
+[WS] Queued normal priority message: toggle_step (queue size: 11)
+[WS] Queued normal priority message: toggle_step (queue size: 12)
+[WS] Queued normal priority message: toggle_step (queue size: 13)
+[WS] Queued normal priority message: toggle_step (queue size: 14)
+[WS] Queued normal priority message: toggle_step (queue size: 15)
+[WS] Queued normal priority message: toggle_step (queue size: 16)
+[WS] Queued normal priority message: toggle_step (queue size: 17)
+[WS] Queued normal priority message: toggle_step (queue size: 18)
+[WS] Queued normal priority message: toggle_step (queue size: 19)
+[WS] Queued normal priority message: toggle_step (queue size: 20)
+[WS] Queued normal priority message: toggle_step (queue size: 21)
+[WS] Queued normal priority message: toggle_step (queue size: 22)
+[WS] Queued normal priority message: toggle_step (queue size: 23)
+[WS] Queued normal priority message: toggle_step (queue size: 24)
+[WS] Queued normal priority message: toggle_step (queue size: 25)
+[WS] Queued normal priority message: toggle_step (queue size: 26)
+[WS] Queued normal priority message: toggle_step (queue size: 27)
+[WS] Queued normal priority message: toggle_step (queue size: 28)
+[WS] Queued normal priority message: toggle_step (queue size: 29)
+[WS] Queued normal priority message: toggle_step (queue size: 30)
+[WS] Queued normal priority message: toggle_step (queue size: 31)
+[WS] Queued normal priority message: toggle_step (queue size: 32)
+[WS] Queued normal priority message: toggle_step (queue size: 33)
+[WS] Queued normal priority message: toggle_step (queue size: 34)
+[WS] Queued normal priority message: toggle_step (queue size: 35)
+[WS] Queued normal priority message: toggle_step (queue size: 36)
+[WS] Queued normal priority message: toggle_step (queue size: 37)
+[WS] Queued normal priority message: toggle_step (queue size: 38)
+[WS] Queued normal priority message: toggle_step (queue size: 39)
+[WS] Queued normal priority message: toggle_step (queue size: 40)
+[WS] Queued normal priority message: toggle_step (queue size: 41)
+[WS] Queued normal priority message: toggle_step (queue size: 42)
+[WS] Queued normal priority message: toggle_step (queue size: 43)
+[WS] Queued normal priority message: toggle_step (queue size: 44)
+[WS] Queued normal priority message: toggle_step (queue size: 45)
+[WS] Queued normal priority message: toggle_step (queue size: 46)
+[WS] Queued normal priority message: toggle_step (queue size: 47)
+[WS] Queued normal priority message: toggle_step (queue size: 48)
+[WS] Queued normal priority message: toggle_step (queue size: 49)
+[WS] Queued normal priority message: toggle_step (queue size: 50)
+[WS] Queued normal priority message: toggle_step (queue size: 51)
+[WS] Queued normal priority message: toggle_step (queue size: 52)
+[WS] Queued normal priority message: toggle_step (queue size: 53)
+[WS] Queued normal priority message: toggle_step (queue size: 54)
+[WS] Queued normal priority message: toggle_step (queue size: 55)
+[WS] Queued normal priority message: toggle_step (queue size: 56)
+[WS] Queued normal priority message: toggle_step (queue size: 57)
+[WS] Queued normal priority message: toggle_step (queue size: 58)
+[WS] Queued normal priority message: toggle_step (queue size: 59)
+[WS] Queued normal priority message: toggle_step (queue size: 60)
+[WS] Queued normal priority message: toggle_step (queue size: 61)
+[WS] Queued normal priority message: toggle_step (queue size: 62)
+[WS] Queued normal priority message: toggle_step (queue size: 63)
+[WS] Queued normal priority message: toggle_step (queue size: 64)
+[WS] Queued normal priority message: toggle_step (queue size: 65)
+[WS] Queued normal priority message: toggle_step (queue size: 66)
+[WS] Queued normal priority message: toggle_step (queue size: 67)
+[WS] Queued normal priority message: toggle_step (queue size: 68)
+[WS] Queued normal priority message: toggle_step (queue size: 69)
+[WS] Queued normal priority message: toggle_step (queue size: 70)
+[WS] Queued normal priority message: toggle_step (queue size: 71)
+[WS] Queued normal priority message: toggle_step (queue size: 72)
+[WS] Queued normal priority message: toggle_step (queue size: 73)
+[WS] Queued normal priority message: toggle_step (queue size: 74)
+[WS] Queued normal priority message: toggle_step (queue size: 75)
+[WS] Queued normal priority message: toggle_step (queue size: 76)
+[WS] Queued normal priority message: toggle_step (queue size: 77)
+[WS] Queued normal priority message: toggle_step (queue size: 78)
+[WS] Queued normal priority message: toggle_step (queue size: 79)
+[WS] Queued normal priority message: toggle_step (queue size: 80)
+[WS] Queued normal priority message: toggle_step (queue size: 81)
+[WS] Queued normal priority message: toggle_step (queue size: 82)
+[WS] Queued normal priority message: toggle_step (queue size: 83)
+[WS] Queued normal priority message: toggle_step (queue size: 84)
+[WS] Queued normal priority message: toggle_step (queue size: 85)
+[WS] Queued normal priority message: toggle_step (queue size: 86)
+[WS] Queued normal priority message: toggle_step (queue size: 87)
+[WS] Queued normal priority message: toggle_step (queue size: 88)
+[WS] Queued normal priority message: toggle_step (queue size: 89)
+[WS] Queued normal priority message: toggle_step (queue size: 90)
+[WS] Queued normal priority message: toggle_step (queue size: 91)
+[WS] Queued normal priority message: toggle_step (queue size: 92)
+[WS] Queued normal priority message: toggle_step (queue size: 93)
+[WS] Queued normal priority message: toggle_step (queue size: 94)
+[WS] Queued normal priority message: toggle_step (queue size: 95)
+[WS] Queued normal priority message: toggle_step (queue size: 96)
+[WS] Queued normal priority message: toggle_step (queue size: 97)
+[WS] Queued normal priority message: toggle_step (queue size: 98)
+[WS] Queued normal priority message: toggle_step (queue size: 99)
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 100)
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue > defaults > defaults to a 30s maxAge
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 0 queued messages (by priority), dropped 1 stale messages
+
+stdout | src/sync/MessageQueue.test.ts > MessageQueue model-based property > MB-002: any op sequence matches the reference model in size and replay order
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Queued high priority message: add_track (queue size: 5)
+[WS] Replayed 5 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Queued low priority message: cursor_move (queue size: 5)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 5)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Replayed 5 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Queued normal priority message: toggle_step (queue size: 5)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 5)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 5)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 5)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 5)
+[WS] Replayed 5 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Queue full, dropping high priority message: add_track
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 4)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 4)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 4)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 4 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Replayed 1 queued messages (by priority), dropped 0 stale messages
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued low priority message: cursor_move (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Evicted normal priority message: toggle_step
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping low priority message: cursor_move
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued normal priority message: toggle_step (queue size: 1)
+[WS] Queued normal priority message: toggle_step (queue size: 2)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Queued high priority message: add_track (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued low priority message: cursor_move (queue size: 3)
+[WS] Evicted low priority message: cursor_move
+[WS] Queued high priority message: add_track (queue size: 3)
+[WS] Queue full, dropping normal priority message: toggle_step
+[WS] Replayed 3 queued messages (by priority), dropped 0 stale messages
+[WS] Queued low priority message: cursor_move (queue size: 1)
+[WS] Queued high priority message: add_track (queue size: 2)
+[WS] Replayed 2 queued messages (by priority), dropped 0 stale messages
+
+ ✓ |unit| src/sync/MessageQueue.test.ts (22 tests) 40ms
+ ✓ |unit| src/sync/mutation-tracker.model.test.ts (7 tests) 153ms
+ ✓ |unit| src/utils/playhead.property.test.ts (21 tests) 102ms
+ ✓ |unit| src/hooks/useStableCallback.test.ts (11 tests) 31ms
+ ✓ |unit| src/components/tempo-change.test.ts (21 tests) 3874ms
+     ✓ PI-001: applyMutation set_tempo is idempotent for same value  1613ms
+     ✓ PI-003: tempo survives state serialization round-trip  2157ms
+ ✓ |unit| src/sync/session.persistence.test.ts (7 tests) 90ms
+ ✓ |unit| src/data/phase44-demo-session.test.ts (5 tests) 18ms
+ ✓ |unit| src/sync/handler-factory.test.ts (7 tests) 13ms
+ ✓ |unit| test/unit/validate-sync-checklist.test.ts (10 tests) 35ms
+ ✓ |unit| src/components/waveform-peaks.test.ts (4 tests) 4ms
+ ✓ |unit| src/audio/audio-graph-owner.test.ts (4 tests) 9ms
+stdout | src/hooks/useMultiplayer-capability.test.ts
+[Audio] [HMR] Multiplayer: registering dispose handler
+
+stderr | src/hooks/useMultiplayer-capability.test.ts > v2 envelope capability UX > does not optimistically apply or queue v2 edits before capability negotiation
+[WS] This connected server does not support v2 envelope edits yet
+
+ ✓ |unit| src/hooks/useMultiplayer-capability.test.ts (6 tests) 23ms
+stdout | src/audio/preset-hygiene.test.ts
+[Audio] LRUSampleCache initialized with maxSize: 64.0MB, hardLimit: 96.0MB
+
+ ✓ |unit| src/audio/preset-hygiene.test.ts (3 tests) 12ms
+stdout | src/sync/dedicated-sync-senders.test.ts
+[Audio] [HMR] Multiplayer: registering dispose handler
+
+ ✓ |unit| src/sync/dedicated-sync-senders.test.ts (2 tests) 5ms
+ ✓ |unit| src/shared/track-pan.test.ts (6 tests) 6ms
+ ✓ |unit| src/shared/pattern-expansion.test.ts (4 tests) 5ms
+ ✓ |unit| src/audio/sample-load-policy.test.ts (2 tests) 9ms
+ ✓ |unit| src/shared/canonical-hash.property.test.ts (4 tests) 6638ms
+     ✓ is deterministic and keeps the wire hash format for arbitrary session state  2740ms
+     ✓ is invariant to listener-local track state and server bookkeeping  1496ms
+     ✓ ignores stored array entries beyond a track loop  928ms
+     ✓ detects a changed playable step across arbitrary session state  1472ms
+
+ Test Files  23 passed (23)
+      Tests  341 passed (341)
+   Start at  02:11:06
+   Duration  14.26s (transform 1.96s, setup 3.21s, import 2.68s, tests 14.54s, environment 1.62s)
+

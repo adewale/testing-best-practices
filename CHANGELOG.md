@@ -5,6 +5,32 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Improved (portfolio audit follow-up, 2026-11-27)
+- Larger-suite audits distinguish inventoried, selected, read and executed scope; whole-layer removal still needs complete contract accounting and keeper review.
+- Added focused failure/recovery patterns and checker calibration guidance, including actual command routing, permitted changes, process failure, measurement compatibility and historical evidence.
+- Clarified that controlled responses can validly test an owned forwarding/failure boundary; real-engine availability is not by itself permission to remove that distinct proof.
+- Prompt evaluation retains a failed judge's status and provisional scores, and allocates distinct receipts for same-second trials. E75 separates the overall validation verdict from passed subchecks and uses rubric H.
+- E08, E33 and E74 execute candidate tests against the reference and specified behavioral faults; comments, skipped tests, lost retry recovery and mock-only ranking checks no longer supply the promised proof. External candidates run in a bounded offline container. Declared unavailable checker exits remain provisional through both runners.
+- After the frozen replay, added an explicit full-caller acceptance/rejection requirement and E79's executable regression for a verifier that discards a lower-level rejection. Its seven development controls are separate from the model comparison; no model replay was run for this follow-up.
+
+### Validation (larger-suite replay, 2026-11-27)
+- Retained all 48 subject attempts and 12 judge attempts across four guidance arms. The fixed historical screen scored no guidance 7/9, earlier PR41 9/9, revised candidate 8/9 and OpenClaw 9/9; no superiority claim is supported.
+- Nine larger-suite reports delivered repairs in Mermaid, Keyboardia and PDA. Independent native fault/allowed-change controls accompany three interrupted subjects, one delivered report with unavailable backend completion and one failed judge. [Results and limitations](research/campaign-replay-2026-11-27/RESULTS.md) distinguish technical proof from model comparison.
+
+### Validation (historical campaign replay, 2026-11-26)
+- Retained nine frozen historical/control scenarios, 27 independent model plans, nine arm-blinded judgments and reproducible input preparation. No-skill, pre-PR and PR #41 arms each passed 9/9. The saturated one-shot screen shows no incremental benefit; no campaign-prevention or model-uplift claim is made, and no recurring gate was added.
+
+### Corrected (historical receipt verification)
+- Current reproduction-script hash differences and retired script paths are informational, as current-manifest differences already are. Historical hashes remain unchanged; frozen evidence and recorded totals remain checked.
+- Added executable regression controls for harmless live-script edits/removal and corrupted historical evidence/totals to the deterministic gate.
+- Verify every recorded model/case/arm against the historical study's declared enrollment and repeat count, including the without-skill denominator and impossible pass counts.
+
+### Added (portfolio PR test audit, 2026-11-23)
+- Installable `references/test-audit.md`: focused candidate searches, a calibrated signal table, retain/repair/consolidate/delete decisions, expected-value provenance, keeper ownership, old-versus-new fault checks, and allowed-change controls for suspected implementation locks. It includes a reusable task brief and treats baseline failures as possible product defects.
+- Assess and Upgrade routes load the workflow for existing-suite work. No deletion targets, assertion quotas, mutation-score floors, or recurring lanes are introduced.
+- Write mode asks for the contract, credible regression, missing proof, and a real boundary before adding another test.
+- Historical per-repository PR evidence and an OpenClaw comparison are retained under `research/`; they are excluded from the installable skill directory.
+
 ### Retracted guidance
 Rules the skill has withdrawn. If your repository enforces one of these (a script, a lint, a lesson, a quota), it is enforcing guidance the skill no longer gives.
 

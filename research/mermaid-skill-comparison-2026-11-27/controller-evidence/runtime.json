@@ -1,0 +1,17 @@
+{
+  "node": "v24.22.3",
+  "bun": "1.4.4",
+  "node_path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+  "bun_binary_sha256": "10702245766b225e70bbf6235fd6b47214fd94b4760d00ffaed8ab0df57ac235",
+  "bun_lock_sha256": "1b4ce6ab4a83a2444a7be4258f8efbf8f255cdac851be535ea0787a0c7d100a8",
+  "dependency_install_exit_codes": {
+    "ours-audit": 0,
+    "openclaw-audit": 0
+  },
+  "initial_setup_error": {
+    "command": "npm view bun@1.4.4 version",
+    "exit": 1,
+    "failure": "npm cache ENOENT under unwritable /home/agent/.npm/_cacache; corrected command uses /tmp/mermaid-comparison-bootstrap-cache",
+    "scope": "controller setup before either audit; not a product/test defect"
+  }
+}

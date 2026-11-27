@@ -1,0 +1,18 @@
+{
+  "repository": "adewale/amphtml",
+  "total_prs": 0,
+  "pages_checked": [
+    {
+      "page": 1,
+      "per_page": 100,
+      "count": 0,
+      "state": "all",
+      "url": "https://api.github.com/repos/adewale/amphtml/pulls?state=all&per_page=100&page=1"
+    }
+  ],
+  "matching_prs": [],
+  "exclusions": [],
+  "limitations": [
+    "The collection covers pull requests targeting adewale/amphtml. Pull requests targeting an upstream repository are outside this repository history."
+  ]
+}

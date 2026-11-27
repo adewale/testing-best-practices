@@ -1,0 +1,175 @@
+# Golden File and Snapshot Testing
+
+Two closely related patterns for asserting on complex output:
+
+- **Golden files**: input file → output file, both on disk. Auto-discovered.
+  Best for transformation pipelines (HTML→Markdown, compilers, code generators).
+- **Snapshot tests**: any expression → stored string. Lives in or beside the
+  test file. Best when an assertion would otherwise be a long, brittle
+  field-by-field comparison.
+
+Both can use an explicit **promote workflow**: generate a candidate in authoring
+mode, review it against the intended contract, then commit it. Verification is
+read-only: missing or different expected output fails, and CI never creates or
+updates baselines. Hand-written contract-derived expectations are also valid.
+
+## Golden Files
+
+### How it works
+
+1. Put input files in `tests/fixtures/`
+2. Run the transformation and save output to `tests/expected/`
+3. On subsequent runs, compare output against expected files
+4. If no expected file exists, fail without writing one
+5. To update: use a separate authoring command to generate a candidate, review
+   its behavioral changes, and explicitly accept it
+
+### The pattern (from kepano/defuddle)
+
+```typescript
+describe('Fixtures Tests', () => {
+  const fixtures = getFixtures();  // Auto-discovers all .html files
+
+  test.each(fixtures)('should process: $name', async ({ name, path }) => {
+    const input = readFileSync(path, 'utf-8');
+    const result = transform(input);
+    const expected = loadExpected(name);
+
+    if (expected === undefined || expected === null) {
+      throw new Error(`Missing reviewed golden: ${name}`);
+    }
+
+    expect(result.trim()).toEqual(expected.trim());
+  });
+});
+```
+
+### Auto-discovery helper
+
+```typescript
+function getFixtures() {
+  const dir = join(__dirname, 'fixtures');
+  return readdirSync(dir)
+    .filter(f => f.endsWith('.html'))
+    .map(f => ({ name: basename(f, '.html'), path: join(dir, f) }));
+}
+```
+
+### Why golden files work
+
+- **Zero-code test creation**: add a fixture file = add a test case
+- **Human-readable expected output**: Markdown/text, not binary
+- **Real-world inputs**: actual web pages, documents, source files
+- **Drift detection**: any change to transformation logic is caught
+
+### When to use
+- HTML → Markdown extraction
+- Code formatting / pretty-printing
+- Template rendering, compiler output
+- Data migration / transformation pipelines
+
+### Naming convention
+
+Use `category--source-description.extension`:
+```
+codeblocks--stripe.html
+comments--news.ycombinator.com.html
+```
+
+## Snapshot Tests (the promote workflow)
+
+Snapshot tests generalize the golden-file idea: any string-renderable output
+becomes the expected value, captured on first run, asserted on subsequent
+runs. The expected output lives **inside** the test file (inline) or in a
+sidecar (`__snapshots__/`), not in a separate fixtures tree.
+
+### The promote workflow
+
+1. Write the test with an empty expected slot; ordinary verification must fail
+2. Run the framework's explicit update/authoring command to generate a candidate
+3. Subsequent runs: framework compares actual vs expected, fails with a diff
+4. When the change is intentional: run with `--update` (or interactive review)
+5. **Commit the snapshot file with the code change** — the snapshot diff in
+   your PR is the record of what observable behavior changed
+
+### Tools per language
+
+| Language | Tool | Update command |
+|----------|------|----------------|
+| Python | `syrupy` | `pytest --snapshot-update` |
+| JS/TS | Jest, Vitest | `jest -u`, `vitest -u`, or interactive `u` in watch mode |
+| Rust | `insta` | `cargo insta review` (interactive), `cargo insta accept` |
+| Go | `cupaloy` | `UPDATE_SNAPSHOTS=true go test` |
+| Multi-language | `approvaltests` | `*.received.txt` → rename to `*.approved.txt` |
+
+### Python (syrupy) example
+
+```python
+def test_render_invoice(snapshot):
+    invoice = Invoice(items=[Item("Widget", 9.99, 2)], tax_rate=0.08)
+    assert invoice.render() == snapshot
+1:# Mutation Testing
+7:## When it earns its cost
+36:## Why it works: Execute, Infect, Propagate
+49:## How to interpret a run
+91:## Focused workflow
+113:## Operating a recurring lane
+156:## Tools by language
+# Mutation Testing
+
+Mutation testing asks a focused question: **would these tests detect this class of
+small code change?** It is a diagnostic for improving tests and code, not a
+percentage-correct score for the product.
+
+## When it earns its cost
+
+Use it when one or more apply:
+
+- bugs escape despite high execution coverage;
+- a critical module has weak, indirect, or fault-masking oracles;
+- security, authorization, financial, or other high-consequence logic changed;
+- a test-quality audit found trivial assertions or untested boundaries;
+- a focused survivor harvest will drive a named test or code decision.
+
+Do not enroll every module merely for parity. Start with changed, covered code or
+a small critical module.
+
+**Try cheaper checks first.** Red-green (the new test fails against the old code)
+answers most "would the tests catch this?" questions. Next, seed one fault by hand
+in a scratch copy: neuter one central function or reintroduce one past bug, run
+only the tests that import it, and revert. The seeded fault must execute changed
+code; deleting a source string and testing the replacement script proves nothing
+about product behavior. Use a tool when these leave a question about a specific
+module.
+
+**Estimate before running.** Cost is roughly mutants × per-mutant test time ÷
+workers, plus triage time for each survivor you read. A command runner (Stryker
+`testRunner: 'command'`) reruns the whole test command for every mutant; prefer
+per-test coverage analysis. Measure any change-based selector against
+fixture-loaded and dynamically discovered tests before trusting its savings.
+Run the tool on demand (`npx`, `uvx`, `go run …@version`) rather than keeping a
+dependency nothing runs: its dependency tree still needs security patches.
+
+## Why it works: Execute, Infect, Propagate
+
+For a seeded fault to be caught, the mutated statement must be **executed**, the
+mutation must **infect** program state, and the infection must **propagate** to an
+observable assertion. A survivor can reveal a missing path, weak oracle, or code
+that masks faults before they become observable.
+
+Use this as a diagnostic, not a mandate to couple tests to private state. Prefer
+a smaller public seam or explicit observable diagnostic. Assert pre-mask or
+internal state only when it is a stable, approved testability seam. A documented
+clamp or fallback may be the behavior under test rather than a fault mask; see
+"Asserting through fault-masking code" in `references/antipatterns.md`.
+
+## How to interpret a run
+
+1. The tool applies operators such as `>=` → `>` or `True` → `False`.
+2. Relevant tests run against each generated mutant.
+3. A failing test **kills** the mutant.
+4. A passing test leaves a **survivor that requires classification**.
+5. Act on useful survivors, then compare only like-for-like runs.
+
+First separate tool/run statuses: an actual **survivor** completed with tests
+passing; no-coverage, timeout, compile/static, capture, and infrastructure

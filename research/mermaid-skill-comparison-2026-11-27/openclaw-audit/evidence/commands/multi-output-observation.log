@@ -1,0 +1,52 @@
+{
+  "argv": [
+    "bun",
+    "run",
+    "bin/am.ts",
+    "render",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/tmpnvy4_ycy/first.mmd",
+    "--format",
+    "ascii",
+    "--output",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/tmpnvy4_ycy/1.txt",
+    "--json"
+  ],
+  "input_count": 1,
+  "exit": 0,
+  "stderr": "",
+  "destination_exists": true,
+  "stdout_keys": [
+    "ok",
+    "path",
+    "bytes",
+    "receipt",
+    "warnings"
+  ],
+  "file_rows": 0,
+  "reported_path": "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/tmpnvy4_ycy/1.txt"
+}
+{
+  "argv": [
+    "bun",
+    "run",
+    "bin/am.ts",
+    "render",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/tmpnvy4_ycy/first.mmd",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/tmpnvy4_ycy/second.mmd",
+    "--format",
+    "ascii",
+    "--output",
+    "/workspace/mermaid-skill-comparison-2026-11-27/openclaw-audit/scratch/tmp/tmpnvy4_ycy/2.txt",
+    "--json"
+  ],
+  "input_count": 2,
+  "exit": 0,
+  "stderr": "",
+  "destination_exists": false,
+  "stdout_keys": [
+    "ok",
+    "files"
+  ],
+  "file_rows": 2,
+  "reported_path": null
+}

@@ -1,0 +1,18 @@
+{
+  "candidate_and_pristine_files": 985,
+  "unique_changed_path": "app/test/integration/state-machine-fuzz.test.ts",
+  "changed_model_sha256": "b68145253f7453b176fa77c62ce15dacf2be714add213dad8f50ea32f11c85c1",
+  "base_model_sha256": "2e94b53a32fa518d9157611bc7133c020dd1d1091dddbd028ffef2bf7edb8516",
+  "sampled_blob_ids_checked": 58,
+  "sealed_sha256": {
+    "response.md": "6616cbca3bec23d1bec1ae4ba769473bff84a9cf99e52af6b4c23133dd96f315",
+    "patch.diff": "274998930e204ab35ec23e5ef31cbddade794879eac2977eb8a37e094f5cd09f"
+  },
+  "submitted_evidence_files_verified": 18,
+  "submitted_artifact_earliest_mtime": "2026-11-27T01:58:00.100113+00:00",
+  "submitted_artifact_latest_mtime": "2026-11-27T02:13:38.468440+00:00",
+  "submitted_artifact_collection": "2026-11-27T02:19:03.999771+00:00",
+  "controller_sealed_utc": "2026-11-27T02:17:51.412962+00:00",
+  "all_frozen_evaluator_hashes_matched": true,
+  "patch_applies_to_pristine_with_whitespace_error_check": true
+}

@@ -1,0 +1,2 @@
+886bc94e150dfb1f10cd6912c52ed55f46e5129e test: exercise installed quickstarts and independent semantics ["+if (process.env.CI === 'true' && !HAS_CJK_FONT) throw new Error('CI requires a CJK font: install fonts-wqy-zenhei or set AM_CJK_FONT_DIR')"]
+3c296024c120764d3866dfbc1beeb0f172b3d7a8 Journey: shared parse core, experience curve, and correctness fixes ['+// PNG font fidelity — the raster font must BE the metrics font.', "+  test('long journey task label rasterizes inside its measured task box', () => {"]
