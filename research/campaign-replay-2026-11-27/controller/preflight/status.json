@@ -1,0 +1,18 @@
+{
+  "B01": {
+    "exit": 0,
+    "tests": 10
+  },
+  "B02": {
+    "exit": 0,
+    "unit_files": 23,
+    "unit_tests": 343,
+    "worker_files": 8,
+    "worker_tests": 84
+  },
+  "B03": {
+    "exit": 0,
+    "owner_tests": 31
+  },
+  "scope": "Native fresh subject-copy preflight before subject dispatch; preparation is outside model time."
+}

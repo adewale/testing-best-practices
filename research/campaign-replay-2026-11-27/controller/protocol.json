@@ -1,0 +1,71 @@
+{
+  "state": "ready for controller freeze",
+  "requested_model": "gpt-6.2-astra",
+  "requested_reasoning_effort": "max",
+  "fresh_no_history": true,
+  "concurrency_max": {
+    "A": 6,
+    "B": 3,
+    "B_per_project": 1
+  },
+  "subjects": {
+    "A": 36,
+    "B": 12
+  },
+  "judges": {
+    "A": 9,
+    "B": 3
+  },
+  "repetitions": 1,
+  "generation_retries": 0,
+  "judge_retries": 0,
+  "subject_wall_minutes": {
+    "A": 10,
+    "B": 25
+  },
+  "token_usage": "unmetered by the backend",
+  "seed": "public-test-audit-replay-v2-20261127-1",
+  "arms": {
+    "none": null,
+    "pr41": "379e0d9b53130cc29da8ef73a6287947c9bc34f6",
+    "candidate": "300a179a1d622b66134409356add50e81393e95e",
+    "openclaw": "9fd0b7de19b70c97a285d5ff4c852d66f952190e"
+  },
+  "phase_A_sources": {
+    "repository": "adewale/testing-best-practices",
+    "ref": "379e0d9b53130cc29da8ef73a6287947c9bc34f6",
+    "directory": "research/campaign-replay-2026-11-26/"
+  },
+  "phase_B": {
+    "B01": {
+      "repository": "adewale/agentic-mermaid",
+      "revision": "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+      "inventory": 660,
+      "accessible_tests": 58,
+      "priority_sample": 58,
+      "criteria": "hidden/criteria.md"
+    },
+    "B02": {
+      "repository": "adewale/keyboardia",
+      "revision": "aa67598560f8eaf2509a3ad4bc73edee2f8bea8a",
+      "inventory": 370,
+      "accessible_tests": 370,
+      "priority_sample": 58,
+      "criteria": "evaluator/hidden-controls.md"
+    },
+    "B03": {
+      "repository": "adewale/pda",
+      "revision": "c0a9a85c8f690eb77313b9627e3ea39cadc58968",
+      "inventory": 155,
+      "accessible_tests": 56,
+      "priority_sample": 56,
+      "criteria": "evaluator/SCORING.md"
+    }
+  },
+  "rules": "protocol.md",
+  "phase_A_grading": "grading-a.md",
+  "phase_B_grading": "grading-b.md",
+  "case_source_and_evaluator_manifest": "source-manifest.json",
+  "generation_map": "generation-map.json",
+  "judge_map": "judge-map.json"
+}

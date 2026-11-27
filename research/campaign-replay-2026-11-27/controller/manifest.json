@@ -1,0 +1,18 @@
+{
+  "state": "ready for controller freeze",
+  "candidate": "300a179a1d622b66134409356add50e81393e95e",
+  "files_sha256": {
+    "protocol.md": "3af70c03a75ca5135f71c1f9dddf5312f5ef1589764ba277e500d288dc030795",
+    "protocol-review.md": "7b292f0c7dc27d2194f6f2671cef8a12e6690d18cafc2e691f750162641dbdea",
+    "protocol.json": "b99ace6b320215e04577b99663076bbf0852e073f94409aef14bae4c8f22f806",
+    "build_packets.py": "bee610a03666d3ded8f462311e3ba8aac7ec06b3d407c7015e41d140209161e0",
+    "control_run.py": "d57d60e29722b7c8668d52545f1497b7560a94995d53a5ded4206e36bdf30146",
+    "grading-a.md": "def5816ef5d4fefa06ee4e0acd14dc101ec51a0fb70880519245b4824b61d821",
+    "grading-b.md": "c76926dc4f6b3dc93930d6ec140afa3d4c97f3d050d8c5432308a5835efa454b",
+    "historical-cases.json": "0217ed806908f984aa0beedd9e38b2772968f9cbe6828b728cb5dd1bc1818111",
+    "historical-response-format.txt": "c61325e5ebc9ee2da72d8614bc3c235d8b0b5ff86eb35fb5abb1fc91cc54bc5d",
+    "source-manifest.json": "01c3a66f76b8b747f13ba7da4409cff51edf3c3a85abfb859b476c4caaabfccc",
+    "generation-map.json": "caaa4237a3e128a3e6934b0bfcb5aa0a6e4382b8aaea310e6f2a7f48e1d9aadf",
+    "judge-map.json": "f62ba37e7091e42cd8a9fb61f7bb56dfbba8ab782afa3d4f46243d516d1809df"
+  }
+}

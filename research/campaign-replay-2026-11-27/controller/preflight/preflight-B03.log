@@ -1,0 +1,70 @@
+
+ RUN  v4.1.12 /workspace/test-audit-replay-v2/subjects/d3dfc73ed6d4ddba/work/repo
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mFailed to write to log file Error: ENOENT: no such file or directory, mkdir '/home/agent/.config/.wrangler'[0m
+
+      at async Object.mkdir (node:internal/fs/promises:1571:10)
+      at async ensureDirectoryExists (/tmp/pda-replay-toolchain-WlO75XPw/node_modules/wrangler/wrangler-dist/cli.js:70089:3)
+      at async /tmp/pda-replay-toolchain-WlO75XPw/node_modules/wrangler/wrangler-dist/cli.js:70170:7
+      at async Mutex.runWith (/tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/dist/src/index.js:80854:16)
+      at async appendToDebugLogFile (/tmp/pda-replay-toolchain-WlO75XPw/node_modules/wrangler/wrangler-dist/cli.js:70168:3) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'mkdir',
+    path: '/home/agent/.config/.wrangler'
+  }
+
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mWould have written: [0m
+
+  --- 2026-11-27T01:16:05.351Z debug
+  🪵  Writing logs to "/home/agent/.config/.wrangler/logs/wrangler-2026-11-27_01-16-05_018.log"
+  ---
+  
+
+
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@265a250 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@36bc870 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@36c81e0
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+exception = kj/async-io.c++:1697: disconnected: abortRead() has been called
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@5d43510 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@5d43634 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@5fb5c08 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@5d44130 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@5d3d980 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@2c56640 /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@3addb41
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+NOSENTRY SQLite alarm handler canceled with requestScheduledAlarm.; scheduledTime = 1795742179.4s; localAlarmState.orDefault(kj::UNIX_EPOCH) = 0ns; actorId = 3f2a683c35732ad26c6db51001988746dda305bbacbf55daf5e264f967e45121
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+uncaught exception; exception = workerd/api/actor-state.c++:1235: failed: broken.outputGateBroken; jsg.Error: Agent data deleted
+stack: /tmp/pda-replay-toolchain-WlO75XPw/node_modules/miniflare/node_modules/@cloudflare/workerd-linux-64/bin/workerd@39310a7
+
+ Test Files  1 passed (1)
+      Tests  31 passed (31)
+   Start at  01:16:04
+   Duration  18.62s (transform 5.08s, setup 0ms, import 10.98s, tests 5.62s, environment 0ms)
+
+🪵  Logs were written to "/home/agent/.config/.wrangler/logs/wrangler-2026-11-27_01-16-05_018.log"

@@ -1,0 +1,15 @@
+test_browser_negative_rejection_is_quality_not_fast_svg_success (mermaid_baseline_test.BaselineControls.test_browser_negative_rejection_is_quality_not_fast_svg_success) ... ok
+test_declared_fresh_window_cannot_override_mixed_or_missing_measurement_uuids (mermaid_baseline_test.BaselineControls.test_declared_fresh_window_cannot_override_mixed_or_missing_measurement_uuids) ... ok
+test_direct_mermaid_intersection_never_divides_unequal_candidate_cohorts (mermaid_baseline_test.BaselineControls.test_direct_mermaid_intersection_never_divides_unequal_candidate_cohorts) ... ok
+test_missing_or_duplicate_round_cannot_manufacture_success (mermaid_baseline_test.BaselineControls.test_missing_or_duplicate_round_cannot_manufacture_success) ... ok
+test_original_assertions_keep_unavailable_in_mermaid_denominator (mermaid_baseline_test.BaselineControls.test_original_assertions_keep_unavailable_in_mermaid_denominator) ... ok
+test_parser_workflow_cost_and_unavailable_negative_do_not_become_api_or_syntax_credit (mermaid_baseline_test.BaselineControls.test_parser_workflow_cost_and_unavailable_negative_do_not_become_api_or_syntax_credit) ... ok
+test_predeclared_control_envelope_leaves_ambiguous_or_noisy_cost_unresolved (mermaid_baseline_test.BaselineControls.test_predeclared_control_envelope_leaves_ambiguous_or_noisy_cost_unresolved) ... ok
+test_real_typescript_document_exports_remain_portable_and_reject_changed_data (mermaid_baseline_test.BaselineControls.test_real_typescript_document_exports_remain_portable_and_reject_changed_data) ... ok
+test_version_rejection_happens_before_output_writes (mermaid_baseline_test.BaselineControls.test_version_rejection_happens_before_output_writes) ... ok
+test_zero_duration_rejected_attempts_are_retained (mermaid_baseline_test.BaselineControls.test_zero_duration_rejected_attempts_are_retained) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.158s
+
+OK
