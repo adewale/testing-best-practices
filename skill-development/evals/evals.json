@@ -5329,6 +5329,71 @@
         "known_discriminates_versions": [],
         "last_reviewed": "2026-09-30"
       }
+    },
+    {
+      "id": "E79-python-public-verifier-rejection",
+      "critical": false,
+      "mode": "upgrade",
+      "hidden": false,
+      "taxonomy": {
+        "language_framework": "python/pytest",
+        "techniques": [
+          "integration",
+          "contract"
+        ],
+        "risk_classes": [
+          "test-tiering",
+          "false-confidence"
+        ],
+        "failure_modes": [
+          "silent-tier-downgrade",
+          "untested-error-path"
+        ]
+      },
+      "prompt": "Streamline a release verifier suite that rebuilds one published artifact for every damaged payload. Preserve the observable verification behavior while reducing repeated setup.",
+      "fixture": "evals/fixtures/e79-python-public-verifier-rejection provides a file-backed SHA-256 verifier, a byte-level checker, and independently published bytes and digest.",
+      "expected_behavior": [
+        "Keep a successful verification through the public entry point using a known matching artifact and manifest.",
+        "Change the artifact bytes while retaining the published digest, and assert a rejection through the public entry point.",
+        "Reuse immutable setup and move additional digest examples to the lower-level table when that saves work."
+      ],
+      "red_flags": [
+        "The public verifier sees only valid releases and every mismatch assertion calls the byte-level checker directly.",
+        "The revised suite accepts a verifier that discards the lower-level rejection or one that rejects every valid release."
+      ],
+      "rubric_focus": [
+        "C",
+        "D"
+      ],
+      "measurement": {
+        "static_checks": [],
+        "runtime_checks": [
+          "Run the same non-skipped pytest suite on the reference and each public-verdict fault. File reads and the digest checker still run in both faulty implementations."
+        ],
+        "judge_checks": [
+          "Assess the proposed setup reuse and whether the retained cases exercise the caller-visible contract."
+        ]
+      },
+      "validity": {
+        "claim": "A cleanup can retain evidence for both outcomes of the public release verifier.",
+        "warrant": "The two faults keep file access and digest comparison intact and override only the public verdict. Direct digest assertions alone survive both changes.",
+        "backing": {
+          "runtime_checks": [
+            "See research/campaign-replay-2026-11-27/tool-controls/pipeline-rejection.json for labeled controls, per-implementation pytest outcomes and isolated execution."
+          ],
+          "field_evidence": "Post-replay development regression derived from R05, where public acceptance survived a proposed optimization and direct checks carried the mismatch cases.",
+          "model_runs": "No model trial was run for E79."
+        },
+        "rebuttals": [
+          "These faults cover the two boolean results for well-formed release files. Fixture speedups and malformed-manifest handling require separate evidence."
+        ]
+      },
+      "eval_health": {
+        "difficulty": "medium",
+        "saturation_status": "unknown",
+        "known_discriminates_versions": [],
+        "last_reviewed": "2026-11-27"
+      }
     }
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "eval_id": "E79-python-public-verifier-rejection",
+  "language": "python",
+  "oracle": "oracle.py",
+  "unavailable_exit_codes": [
+    2
+  ],
+  "checks": [
+    "the same non-skipped tests pass against the real file-backed verifier",
+    "a public verifier that swallows a digest rejection fails the candidate tests",
+    "a public verifier that rejects matching published bytes also fails the candidate tests"
+  ],
+  "good_samples": [
+    "samples/good",
+    "samples/good-independent-vector"
+  ],
+  "bad_samples": [
+    "samples/bad-direct-negatives",
+    "samples/bad-rejection-only",
+    "samples/bad-comments",
+    "samples/bad-skipped",
+    "samples/bad-unrelated"
+  ]
+}

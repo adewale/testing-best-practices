@@ -11,6 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Clarified that controlled responses can validly test an owned forwarding/failure boundary; real-engine availability is not by itself permission to remove that distinct proof.
 - Prompt evaluation retains a failed judge's status and provisional scores, and allocates distinct receipts for same-second trials. E75 separates the overall validation verdict from passed subchecks and uses rubric H.
 - E08, E33 and E74 execute candidate tests against the reference and specified behavioral faults; comments, skipped tests, lost retry recovery and mock-only ranking checks no longer supply the promised proof. External candidates run in a bounded offline container. Declared unavailable checker exits remain provisional through both runners.
+- After the frozen replay, added an explicit full-caller acceptance/rejection requirement and E79's executable regression for a verifier that discards a lower-level rejection. Its seven development controls are separate from the model comparison; no model replay was run for this follow-up.
 
 ### Validation (historical campaign replay, 2026-11-26)
 - Retained nine frozen historical/control scenarios, 27 independent model plans, nine arm-blinded judgments and reproducible input preparation. No-skill, pre-PR and PR #41 arms each passed 9/9. The saturated one-shot screen shows no incremental benefit; no campaign-prevention or model-uplift claim is made, and no recurring gate was added.

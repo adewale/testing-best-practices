@@ -12,7 +12,7 @@ description: >
 compatibility: Agent Skills clients including Codex, OpenCode, Pi, Gemini CLI, and Claude Code.
 metadata:
   author: adewale
-  version: "0.3.2"
+  version: "0.3.3"
 ---
 
 # Testing Best Practices

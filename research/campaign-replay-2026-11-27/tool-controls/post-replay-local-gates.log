@@ -1,0 +1,709 @@
+P0 findings: 0
+
+P1 findings: 0
+
+OK: static audit passed
+evals: 79
+
+[mode]
+  assess: 19
+  detect: 2
+  upgrade: 19
+  write: 39
+
+[critical]
+  critical: 34
+  noncritical: 45
+
+[language_framework]
+  generic: 23
+  generic/github-actions: 2
+  go: 5
+  go/testing: 9
+  python/pytest: 26
+  python/pytest-hypothesis: 1
+  python/selenium-inventory: 1
+  python/unittest: 2
+  rust: 2
+  typescript: 2
+  typescript/fast-check: 2
+  typescript/playwright: 2
+  typescript/vitest: 1
+  unsupported/kotlin: 1
+
+[techniques]
+  anti-pattern-detection: 5
+  assertion-quality: 6
+  characterization: 3
+  combinatorial: 3
+  concurrency-stress: 1
+  contract: 8
+  correctness-by-construction: 4
+  cost-aware-portfolio: 3
+  damp-test-readability: 2
+  deliberate-test-values: 2
+  design-for-testability: 5
+  deterministic-time: 4
+  differential: 9
+  doc-sync: 1
+  e2e: 3
+  fake-implementation: 1
+  fault-injection: 2
+  fault-masking-detection: 3
+  gate-integrity: 3
+  golden-snapshot: 6
+  integration: 5
+  isolation: 1
+  literal-expectations: 2
+  logic-in-tests-detection: 2
+  mock-fidelity: 2
+  mutation: 12
+  narrow-assertions: 2
+  pirate-conformance: 1
+  property-based: 7
+  registry-conformance: 1
+  regression: 3
+  roundtrip-digest: 3
+  shadow-model: 3
+  statistical-oracle: 5
+  suite-shape-diagnostics: 1
+  table-driven: 3
+  test-data-builder: 3
+  test-tier-selection: 1
+  unit: 15
+  validation-reporting: 3
+  variable-strength: 1
+  vcr-recorded-fixture: 5
+  whole-state-roundtrip: 1
+
+[risk_classes]
+  approximate-algorithm-correctness: 4
+  brittleness: 1
+  bug-masking: 1
+  calibration: 6
+  change-detector-treadmill: 1
+  concurrency: 1
+  data-structure-correctness: 2
+  default-value-blindness: 2
+  error-handling: 2
+  external-boundary: 7
+  false-confidence: 17
+  false-failures: 1
+  fault-hiding: 2
+  flake: 6
+  flaky-async-tests: 4
+  flaky-release-blocking: 1
+  inverted-pyramid: 1
+  legacy-refactor: 1
+  maintainability: 4
+  maintenance-drift: 4
+  mock-drift: 5
+  mock-reality-drift: 1
+  operational-cost: 2
+  oracle-quality: 4
+  over-abstraction-of-tests: 1
+  over-application: 11
+  parser: 4
+  persistence-correctness: 2
+  porting: 1
+  redundant-reimplementation: 1
+  reliability: 1
+  scope-control: 4
+  security: 4
+  shared-bug-with-sut: 1
+  test-tiering: 4
+  type-invariant: 4
+  unsupported-language: 1
+  validation-honesty: 8
+  verification-cost: 2
+
+[failure_modes]
+  always-green-gate: 2
+  arbitrary-sampling: 1
+  assert-through-mask: 2
+  assertion-stuffing: 2
+  behavior-change-without-characterization: 1
+  blanket-ban-on-recurring-analysis: 1
+  blind-snapshot-update: 1
+  brittle-fixture-noise: 1
+  calendar-recurrence: 1
+  capacity-timeout-mismatch: 1
+  cartesian-explosion: 1
+  ci-retries: 1
+  computed-expected-value: 1
+  copied-registry-list: 1
+  copying-zero-value-doc-examples: 1
+  coverage-inflation: 1
+  cue-dependent-behavior: 2
+  docs-code-drift: 1
+  doubling-down-on-e2e: 1
+  dry-harder-recommendation: 1
+  enumerating-unrelated-fields: 1
+  equivalent-mutant-blindness: 1
+  example-only-tests: 2
+  expectation-mirrors-implementation: 1
+  fabricated-validation: 2
+  fake-tested-only-against-itself: 1
+  flag-specified-behavior-as-smell: 1
+  flaky-nondeterminism: 2
+  framework-mismatch: 5
+  global-state-leak: 2
+  green-by-deletion: 1
+  handcomputed-oracle-gap: 2
+  happy-path-only: 3
+  implementation-detail-coupling: 3
+  incomparable-denominator: 1
+  inlining-value-builders-for-damp: 1
+  integration-misclassification: 2
+  key-equals-value-test-data: 1
+  live-network: 4
+  logging-not-asserting: 2
+  loop-and-branch-in-test: 1
+  mock-reality-drift: 5
+  mocked-e2e: 1
+  mutant-chasing: 1
+  narrowing-a-roundtrip-identity-assertion: 1
+  no-contract-suite: 1
+  no-seam: 4
+  non-canonical-compare: 1
+  non-canonical-digest: 1
+  output-grep-validation: 1
+  over-mocking: 1
+  overbroad-e2e: 1
+  overbroad-universal-rule: 3
+  pairwise-as-proof: 1
+  partial-owner-discovery: 1
+  red-phase-claim: 1
+  registry-drift: 1
+  retry-masking: 1
+  scope-growth-while-red: 1
+  score-as-target: 1
+  shadow-model-for-trivial-pure-fn: 1
+  shared-mutable-fixture: 1
+  silent-tier-downgrade: 2
+  single-observable: 1
+  single-record-roundtrip: 2
+  skipped-test: 3
+  statistical-oracle-on-exact-output: 1
+  swallowed-exception: 4
+  test-mode-security-bypass: 1
+  test-order-dependency: 1
+  toothless-generated-test: 1
+  unmeasured-score-floor: 1
+  unowned-schedule: 1
+  unpinned-concurrency-contract: 1
+  unsafe-check-deletion: 2
+  unsafe-test-deletion: 2
+  unsafe-type-refactor: 1
+  untested-error-path: 3
+  vacuous-assertion: 1
+  visual-skip-in-ci: 1
+  voluntary-enrollment-flag: 1
+  wall-clock-sleep: 6
+  weak-assertion: 10
+  weak-oracle: 2
+  whole-object-equality-on-behavior-test: 1
+  wrong-oracle-exact-equality: 4
+  zero-value-invalid-state: 1
+  zero-value-test-data: 1
+
+OK: eval suite shape and coverage checks passed
+check-ablations: ablation:no-reference-matrix OK
+check-ablations: ablation:no-red-evidence OK
+check-ablations: ablation:no-antipatterns OK
+check-ablations: ablation:no-types-vs-tests OK
+check-ablations: ablation:no-real-objects OK
+check-ablations: ablation:no-final-report OK
+check-ablations: ablation:no-error-path-principle OK
+check-ablations: ablation:no-concurrency-contract OK
+check-ablations: ablation:no-gtb-damp-and-value-choice OK
+check-ablations: ablation:no-gtb-suite-shape-checklist OK
+OK: testing-best-practices — 48 cases, 10 ablations
+{
+  "generated_at": 1795743702,
+  "manifest": "../evals/shared-benchmark.json",
+  "skill_name": "testing-best-practices",
+  "counts": {
+    "cases": 48,
+    "positive": 30,
+    "negative": 10,
+    "adversarial": 10,
+    "holdout": 1,
+    "holdback": 1,
+    "trigger": 8,
+    "trigger_positive": 4,
+    "trigger_negative": 4,
+    "ablations": 10,
+    "objective_assertions": 77,
+    "process_assertions": 0,
+    "efficiency_assertions": 0,
+    "judge_assertions": 40,
+    "fixture_cases": 1,
+    "input_files": 3,
+    "domain_tagged": 48,
+    "difficulty_tagged": 48,
+    "success_goal_tagged": 48,
+    "trigger_type_tagged": 8
+  },
+  "taxonomy": {
+    "domains": [
+      "testing-quality"
+    ],
+    "difficulties": [
+      "core",
+      "extended"
+    ],
+    "trigger_types": [
+      "implicit",
+      "negative-near-miss"
+    ],
+    "success_goals": [
+      "outcome",
+      "style",
+      "trigger"
+    ]
+  },
+  "findings": [
+    {
+      "kind": "weak-oracle-only",
+      "severity": "recommended",
+      "message": "14 case(s) are graded only by demo/live oracles (no strong deterministic check): ['holdout-unseen-python-parser-01', 'holdback-real-weak-test-go-01', 'pos-literal-expectations', 'pos-damp-assess-shared-fixture', 'neg-keep-roundtrip-whole', 'pos-narrow-assertions-upgrade', 'pos-fake-weld-contract', 'pos-suite-shape-hourglass', 'pos-mutation-recurring-lane-contract', 'pos-mutation-survivor-triage-cuefree']. Add a strong-tier assertion, or mark a verified script oracle oracle:\"strong\".",
+      "evidence": [
+        "holdout-unseen-python-parser-01",
+        "holdback-real-weak-test-go-01",
+        "pos-literal-expectations",
+        "pos-damp-assess-shared-fixture",
+        "neg-keep-roundtrip-whole",
+        "pos-narrow-assertions-upgrade",
+        "pos-fake-weld-contract",
+        "pos-suite-shape-hourglass",
+        "pos-mutation-recurring-lane-contract",
+        "pos-mutation-survivor-triage-cuefree",
+        "pos-combinatorial-cost-aware-portfolio",
+        "pos-combinatorial-registry-sabotage",
+        "adv-mutation-valid-recurring-lane",
+        "adv-combinatorial-known-high-order-regression"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "kind": "ablation-plan",
+      "message": "Consider ablations for major skill sections not yet represented exactly by removed_component.",
+      "example": [
+        {
+          "removed_component": "First 90 seconds",
+          "expected_regressions": [
+            "Model stops following First 90 seconds guidance."
+          ]
+        },
+        {
+          "removed_component": "Core principles",
+          "expected_regressions": [
+            "Model stops following Core principles guidance."
+          ]
+        },
+        {
+          "removed_component": "Test behavior through public contracts",
+          "expected_regressions": [
+            "Model stops following Test behavior through public contracts guidance."
+          ]
+        },
+        {
+          "removed_component": "Calibrate test investment to lifetime and change kind",
+          "expected_regressions": [
+            "Model stops following Calibrate test investment to lifetime and change kind guidance."
+          ]
+        },
+        {
+          "removed_component": "Use red-green-refactor when feasible",
+          "expected_regressions": [
+            "Model stops following Use red-green-refactor when feasible guidance."
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "fixture-repos-files",
+      "message": "Add fixture-backed evals to reduce keyword gaming and verify artifacts/source evidence.",
+      "example": [
+        {
+          "name": "weak-test fixture repo",
+          "why": "Catch weak assertions, skipped tests, missing red phase, and mock drift against real test files.",
+          "files": [
+            "evals/fixtures/weak-tests/package.json",
+            "evals/fixtures/weak-tests/src/parser.ts",
+            "evals/fixtures/weak-tests/test/parser.test.ts"
+          ],
+          "guide": "docs/authoring-evals.md — Step 4: fixture-backed cases beat keyword-only prompts; ground assertions in real files"
+        }
+      ]
+    }
+  ],
+  "recommended_fixture_repos_files": [
+    {
+      "name": "weak-test fixture repo",
+      "why": "Catch weak assertions, skipped tests, missing red phase, and mock drift against real test files.",
+      "files": [
+        "evals/fixtures/weak-tests/package.json",
+        "evals/fixtures/weak-tests/src/parser.ts",
+        "evals/fixtures/weak-tests/test/parser.test.ts"
+      ],
+      "guide": "docs/authoring-evals.md — Step 4: fixture-backed cases beat keyword-only prompts; ground assertions in real files"
+    }
+  ],
+  "readiness": {
+    "ablations": {
+      "total": 10,
+      "materialized": 10,
+      "instruction_simulated": 0
+    },
+    "leak_saturated_cases": [],
+    "objective_only_cases": [],
+    "adversarial_cases": 10,
+    "judge_only_cases": 2,
+    "base_saturated_cases": [],
+    "qualitative_only_cases": [],
+    "regression_guards_holding": [],
+    "blockers": []
+  },
+  "benchmark": null
+}
+e01-typescript-vitest-sanitizer: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e08-deterministic-time: 2 good/pass + 6 bad/fail oracle self-test(s) checked
+e12-validation-honesty: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e19-order-pollution: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e20-go-zero-value: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e23-python-hypothesis-parser: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e24-python-recorded-api-fixture: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e25-go-tempdir-fake: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e26-rust-result-proptest: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e27-typescript-playwright-flake: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e33-python-fault-injection: 2 good/pass + 6 bad/fail oracle self-test(s) checked
+e35-go-concurrency-contract: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e36-python-shadow-model-lru: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e37-go-shadow-model-ringbuffer: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e38-python-ann-recall-oracle: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e39-go-approx-recall-oracle: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e40-hidden-exact-output-no-threshold: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e41-hidden-trivial-fn-no-shadow-model: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e42-python-fuzzy-search-cuefree: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e43-go-suggest-cuefree: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e44-python-testability-flush: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e45-go-testability-reaper: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e46-hidden-testability-no-bypass: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e47-python-digest-roundtrip: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e48-go-digest-roundtrip: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e49-hidden-digest-canonicalization: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e50-python-testability-compactor: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e51-go-testability-aggregator: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e52-python-fault-masking-detect: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e53-go-fault-masking-detect: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e54-hidden-spec-clamp-not-masking: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e55-python-no-logic-in-tests: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e56-go-distinct-test-values: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e57-python-damp-shared-fixture: 3 good/pass + 2 bad/fail oracle self-test(s) checked
+e58-hidden-narrow-not-roundtrip: 3 good/pass + 2 bad/fail oracle self-test(s) checked
+e59-python-narrow-assertions-upgrade: 1 good/pass + 6 bad/fail oracle self-test(s) checked
+e60-python-fake-contract-weld: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e61-suite-shape-assess: 3 good/pass + 2 bad/fail oracle self-test(s) checked
+e62-hidden-go-numeric-default-values: 1 good/pass + 1 bad/fail oracle self-test(s) checked
+e63-hidden-damp-keeps-builders: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e64-mutation-recurring-lane-contract: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e65-mutation-survivor-triage: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e66-combinatorial-cost-aware-portfolio: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e67-combinatorial-registry-sabotage: 2 good/pass + 4 bad/fail oracle self-test(s) checked
+e68-hidden-mutation-valid-recurring-lane: 2 good/pass + 2 bad/fail oracle self-test(s) checked
+e69-hidden-combinatorial-known-high-order-regression: 2 good/pass + 2 bad/fail oracle self-test(s) checked
+e70-generic-always-green-ci: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e71-python-vacuous-loop-assertions: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e72-python-mock-fidelity-expected-values: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e73-hidden-gated-lane-is-live: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e74-python-no-silent-tier-downgrade: 2 good/pass + 8 bad/fail oracle self-test(s) checked
+e75-generic-exit-status-not-output: 3 good/pass + 6 bad/fail oracle self-test(s) checked
+e76-typescript-visual-baselines-in-ci: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e77-generic-mutation-lane-no-floor: 1 good/pass + 2 bad/fail oracle self-test(s) checked
+e78-python-classify-equivalent-survivors: 1 good/pass + 3 bad/fail oracle self-test(s) checked
+e79-python-public-verifier-rejection: 2 good/pass + 5 bad/fail oracle self-test(s) checked
+
+OK: 56 fixture oracles passed self-tests
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.762s
+
+OK
+Checked reference execution, vacuous tests, lost recovery, mock-only ranking and unordered SQLite results.
+OK: shared GTB adapter emits test-discoverable Python filenames
+OK: prompt-eval runner collects complete candidates and fails closed
+e01-js-sanitizer: good=pass mutant=killed
+e23-python-parser: good=pass mutant=killed
+e25-go-report: good=pass mutant=killed
+
+OK: 3 mini-repo mutants killed
+OK: E67 shared/local candidate grading is static-only and fails closed on partial/vacuous cases
+OK: worked example preserves witnesses, full dynamic residue, value equality and budget
+OK: focused harness preparation filters cases and ablation fanout
+OK: blind-comparison parser fails closed on noisy or malformed judge output
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.280s
+
+OK
+OK: receipt artifact kind
+OK: recorded objective models
+OK: recorded objective cases for gpt-5.6-sol
+OK: recorded objective arms for gpt-5.6-sol/pos-mutation-survivor-triage-cuefree
+OK: recorded objective gpt-5.6-sol/pos-mutation-survivor-triage-cuefree/with_skill runs
+OK: recorded objective gpt-5.6-sol/pos-mutation-survivor-triage-cuefree/without_skill runs
+OK: recorded objective arms for gpt-5.6-sol/pos-mutation-recurring-lane-contract
+OK: recorded objective gpt-5.6-sol/pos-mutation-recurring-lane-contract/with_skill runs
+OK: recorded objective gpt-5.6-sol/pos-mutation-recurring-lane-contract/without_skill runs
+OK: recorded objective arms for gpt-5.6-sol/pos-combinatorial-cost-aware-portfolio
+OK: recorded objective gpt-5.6-sol/pos-combinatorial-cost-aware-portfolio/with_skill runs
+OK: recorded objective gpt-5.6-sol/pos-combinatorial-cost-aware-portfolio/without_skill runs
+OK: recorded objective cases for gpt-5.3-codex-spark
+OK: recorded objective arms for gpt-5.3-codex-spark/pos-mutation-survivor-triage-cuefree
+OK: recorded objective gpt-5.3-codex-spark/pos-mutation-survivor-triage-cuefree/with_skill runs
+OK: recorded objective gpt-5.3-codex-spark/pos-mutation-survivor-triage-cuefree/without_skill runs
+OK: recorded objective arms for gpt-5.3-codex-spark/pos-mutation-recurring-lane-contract
+OK: recorded objective gpt-5.3-codex-spark/pos-mutation-recurring-lane-contract/with_skill runs
+OK: recorded objective gpt-5.3-codex-spark/pos-mutation-recurring-lane-contract/without_skill runs
+OK: recorded objective arms for gpt-5.3-codex-spark/pos-combinatorial-cost-aware-portfolio
+OK: recorded objective gpt-5.3-codex-spark/pos-combinatorial-cost-aware-portfolio/with_skill runs
+OK: recorded objective gpt-5.3-codex-spark/pos-combinatorial-cost-aware-portfolio/without_skill runs
+OK: recorded objective cases for gpt-5.4
+OK: recorded objective arms for gpt-5.4/pos-mutation-survivor-triage-cuefree
+OK: recorded objective gpt-5.4/pos-mutation-survivor-triage-cuefree/with_skill runs
+OK: recorded objective gpt-5.4/pos-mutation-survivor-triage-cuefree/without_skill runs
+OK: recorded objective arms for gpt-5.4/pos-mutation-recurring-lane-contract
+OK: recorded objective gpt-5.4/pos-mutation-recurring-lane-contract/with_skill runs
+OK: recorded objective gpt-5.4/pos-mutation-recurring-lane-contract/without_skill runs
+OK: recorded objective arms for gpt-5.4/pos-combinatorial-cost-aware-portfolio
+OK: recorded objective gpt-5.4/pos-combinatorial-cost-aware-portfolio/with_skill runs
+OK: recorded objective gpt-5.4/pos-combinatorial-cost-aware-portfolio/without_skill runs
+OK: recorded objective cases for gpt-5.6-terra
+OK: recorded objective arms for gpt-5.6-terra/pos-mutation-survivor-triage-cuefree
+OK: recorded objective gpt-5.6-terra/pos-mutation-survivor-triage-cuefree/with_skill runs
+OK: recorded objective gpt-5.6-terra/pos-mutation-survivor-triage-cuefree/without_skill runs
+OK: recorded objective arms for gpt-5.6-terra/pos-mutation-recurring-lane-contract
+OK: recorded objective gpt-5.6-terra/pos-mutation-recurring-lane-contract/with_skill runs
+OK: recorded objective gpt-5.6-terra/pos-mutation-recurring-lane-contract/without_skill runs
+OK: recorded objective arms for gpt-5.6-terra/pos-combinatorial-cost-aware-portfolio
+OK: recorded objective gpt-5.6-terra/pos-combinatorial-cost-aware-portfolio/with_skill runs
+OK: recorded objective gpt-5.6-terra/pos-combinatorial-cost-aware-portfolio/without_skill runs
+OK: recorded objective cases for gpt-5.4-mini
+OK: recorded objective arms for gpt-5.4-mini/pos-mutation-survivor-triage-cuefree
+OK: recorded objective gpt-5.4-mini/pos-mutation-survivor-triage-cuefree/with_skill runs
+OK: recorded objective gpt-5.4-mini/pos-mutation-survivor-triage-cuefree/without_skill runs
+OK: recorded objective arms for gpt-5.4-mini/pos-mutation-recurring-lane-contract
+OK: recorded objective gpt-5.4-mini/pos-mutation-recurring-lane-contract/with_skill runs
+OK: recorded objective gpt-5.4-mini/pos-mutation-recurring-lane-contract/without_skill runs
+OK: recorded objective arms for gpt-5.4-mini/pos-combinatorial-cost-aware-portfolio
+OK: recorded objective gpt-5.4-mini/pos-combinatorial-cost-aware-portfolio/with_skill runs
+OK: recorded objective gpt-5.4-mini/pos-combinatorial-cost-aware-portfolio/without_skill runs
+OK: recorded objective cases for gpt-5.5
+OK: recorded objective arms for gpt-5.5/pos-mutation-survivor-triage-cuefree
+OK: recorded objective gpt-5.5/pos-mutation-survivor-triage-cuefree/with_skill runs
+OK: recorded objective gpt-5.5/pos-mutation-survivor-triage-cuefree/without_skill runs
+OK: recorded objective arms for gpt-5.5/pos-mutation-recurring-lane-contract
+OK: recorded objective gpt-5.5/pos-mutation-recurring-lane-contract/with_skill runs
+OK: recorded objective gpt-5.5/pos-mutation-recurring-lane-contract/without_skill runs
+OK: recorded objective arms for gpt-5.5/pos-combinatorial-cost-aware-portfolio
+OK: recorded objective gpt-5.5/pos-combinatorial-cost-aware-portfolio/with_skill runs
+OK: recorded objective gpt-5.5/pos-combinatorial-cost-aware-portfolio/without_skill runs
+OK: recorded objective cases for gpt-5.6-luna
+OK: recorded objective arms for gpt-5.6-luna/pos-mutation-survivor-triage-cuefree
+OK: recorded objective gpt-5.6-luna/pos-mutation-survivor-triage-cuefree/with_skill runs
+OK: recorded objective gpt-5.6-luna/pos-mutation-survivor-triage-cuefree/without_skill runs
+OK: recorded objective arms for gpt-5.6-luna/pos-mutation-recurring-lane-contract
+OK: recorded objective gpt-5.6-luna/pos-mutation-recurring-lane-contract/with_skill runs
+OK: recorded objective gpt-5.6-luna/pos-mutation-recurring-lane-contract/without_skill runs
+OK: recorded objective arms for gpt-5.6-luna/pos-combinatorial-cost-aware-portfolio
+OK: recorded objective gpt-5.6-luna/pos-combinatorial-cost-aware-portfolio/with_skill runs
+OK: recorded objective gpt-5.6-luna/pos-combinatorial-cost-aware-portfolio/without_skill runs
+OK: recorded objective totals
+INFO: historical manifest hash is authentication-only; its exact preimage was not retained.
+INFO: historical oracle_tree_sha256_at_attestation is authentication-only; the suite was renumbered and combined with upstream fixtures after generation.
+INFO: historical generation.skill_tree_sha256 is authentication-only; upstream skill changes landed before this PR was rebased.
+OK: pinned old skill tree
+INFO: current manifest differs from the historical compatibility snapshot; historical scores do not attest to this revision
+INFO: current script skill-development/scripts/prepare-focused-harness.py matches the receipt's compatibility snapshot
+INFO: current script skill-development/scripts/run-blind-comparison.py matches the receipt's compatibility snapshot
+INFO: current script evals/oracles/development_fixture_oracle.py matches the receipt's compatibility snapshot
+SKIP: ignored historical run trees are absent; objective outcomes are not independently verified
+SKIP: ignored v0.6 smoke run tree is absent
+INFO: prepared_tasks_sha256 is authentication-only; its ignored exact preimage was not retained and cannot be reconstructed from candidate artifacts.
+evals: 79
+hidden probes: 18
+saturation:
+  active: 9
+  hidden_probe: 18
+  saturated_public: 26
+  unknown: 26
+difficulty:
+  adversarial: 13
+  easy: 1
+  hard: 16
+  medium: 49
+saturated_public: 26
+  - E01-bugfix-red-green-project-context
+  - E08-flaky-time-tests
+  - E12-final-report-validation-honesty
+  - E19-detect-order-pollution
+  - E20-go-zero-value-invariant
+  - E23-python-hypothesis-parser-contract
+  - E24-python-recorded-api-fixture
+  - E25-go-tempdir-and-fake-dependency
+  - E26-rust-result-proptest-and-no-unwrap
+  - E27-typescript-playwright-flake-locators
+  - E38-python-ann-recall-oracle
+  - E39-go-approx-recall-oracle
+  - E44-python-testability-flush
+  - E45-go-testability-reaper
+  - E47-python-digest-roundtrip
+  - E50-python-testability-compactor
+  - E51-go-testability-aggregator
+  - E52-python-fault-masking-detect
+  - E53-go-fault-masking-detect
+  - E55-python-no-logic-in-tests
+  - E56-go-distinct-test-values
+  - E57-python-damp-shared-fixture
+  - E59-python-narrow-assertions-upgrade
+  - E60-python-fake-contract-weld
+  - E61-suite-shape-assess
+  - E67-combinatorial-registry-sabotage
+known discriminating evals: 16
+  - E28-hidden-go-assertion-calibration
+  - E29-hidden-ts-pbt-weak-oracle
+  - E30-hidden-inprocess-integration
+  - E31-hidden-cbc-security-deletion
+  - E32-hidden-vcr-msw-distinction
+  - E33-python-fault-injection-error-paths
+  - E34-hidden-fault-injection-unprompted
+  - E35-go-concurrency-contract
+  - E36-python-shadow-model-lru
+  - E37-go-shadow-model-ringbuffer
+  - E42-python-fuzzy-search-cuefree
+  - E43-go-suggest-cuefree
+  - E48-go-digest-roundtrip
+  - E64-mutation-recurring-lane-contract
+  - E65-mutation-survivor-triage
+  - E66-combinatorial-cost-aware-portfolio
+OK: eval health report generated
+{
+  "score": 110,
+  "total": 110,
+  "percent": 100.0,
+  "checks": [
+    {
+      "name": "installable skill boundary",
+      "ok": true,
+      "detail": "unexpected installable files: []",
+      "weight": 15,
+      "score": 15
+    },
+    {
+      "name": "no tracked generated run/cache artifacts",
+      "ok": true,
+      "detail": "tracked generated artifacts: 0",
+      "weight": 20,
+      "score": 20
+    },
+    {
+      "name": "claim-based validity metadata",
+      "ok": true,
+      "detail": "missing validity: []",
+      "weight": 15,
+      "score": 15
+    },
+    {
+      "name": "difficulty/saturation/discrimination metadata",
+      "ok": true,
+      "detail": "missing eval_health: []",
+      "weight": 15,
+      "score": 15
+    },
+    {
+      "name": "hidden hard/adversarial probes",
+      "ok": true,
+      "detail": "hidden hard/adversarial probes: 18",
+      "weight": 10,
+      "score": 10
+    },
+    {
+      "name": "mutation-backed mini-repos",
+      "ok": true,
+      "detail": "mini-repos: 3, languages: ['go', 'javascript', 'python']",
+      "weight": 10,
+      "score": 10
+    },
+    {
+      "name": "schema covers eval metadata",
+      "ok": true,
+      "detail": "schema should validate hidden/validity/eval_health fields",
+      "weight": 10,
+      "score": 10
+    },
+    {
+      "name": "generated-artifact ignore rules",
+      "ok": true,
+      "detail": ".gitignore covers caches and eval-runs",
+      "weight": 5,
+      "score": 5
+    },
+    {
+      "name": "new-section adversarial-probe coverage",
+      "ok": true,
+      "detail": "unguarded sections: []",
+      "weight": 10,
+      "score": 10
+    }
+  ]
+}
+score: 100.0/100.0 (100.0%)
+A router/usability: 15.0/15.0
+B safety/calibration: 25.0/25.0
+C language coverage: 15.0/15.0
+D technique breadth: 20.0/20.0
+E correctness-by-construction: 15.0/15.0
+F validation/reporting: 10.0/10.0
+
+$ /tmp/test-audit-validation/bin/python scripts/static-audit.py
+
+$ /tmp/test-audit-validation/bin/python scripts/score-evals.py --evals evals/evals.json
+
+$ skill-benchmark validate ../evals/shared-benchmark.json --strict-leakage --leakage-min-chars 1 --check-ablations
+
+$ skill-benchmark audit-manifest ../evals/shared-benchmark.json --fail-on-blockers
+
+$ /tmp/test-audit-validation/bin/python scripts/run-fixture-oracles.py
+
+$ /tmp/test-audit-validation/bin/python scripts/test-fixture-runner.py
+
+$ /tmp/test-audit-validation/bin/python scripts/test-behavioral-oracles.py
+
+$ /tmp/test-audit-validation/bin/python scripts/test-gtb-output-adapter.py
+
+$ /tmp/test-audit-validation/bin/python scripts/test-run-prompt-evals.py
+
+$ /tmp/test-audit-validation/bin/python scripts/run-mini-repos.py
+
+$ /tmp/test-audit-validation/bin/python scripts/test-untrusted-oracles.py
+
+$ node scripts/test-exhaustive-example.mjs
+
+$ /tmp/test-audit-validation/bin/python scripts/test-harness-workflow.py
+
+$ /tmp/test-audit-validation/bin/python scripts/test-blind-comparison.py
+
+$ /tmp/test-audit-validation/bin/python scripts/test-receipt-verifier.py
+
+$ /tmp/test-audit-validation/bin/python scripts/verify-issues20-21-receipt.py
+
+$ /tmp/test-audit-validation/bin/python scripts/eval-health-report.py
+
+$ /tmp/test-audit-validation/bin/python scripts/audit-best-practices.py
+
+$ /tmp/test-audit-validation/bin/python scripts/score-skill-version.py --skill-root ../testing-best-practices
+
+OK: all local gates passed

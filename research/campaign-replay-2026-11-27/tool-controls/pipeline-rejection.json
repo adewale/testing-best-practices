@@ -1,0 +1,270 @@
+{
+  "kind": "post-replay development regression",
+  "date_utc": "2026-11-27",
+  "fixture": "skill-development/evals/fixtures/e79-python-public-verifier-rejection",
+  "frozen_replay_candidate": "300a179a1d622b66134409356add50e81393e95e",
+  "model_trials_for_this_fixture": 0,
+  "motivation": "R05 retained a successful public run while assigning the damaged cases to a direct checker. E79 tests whether a cleanup preserves the rejection that a caller receives.",
+  "method": "Used the registered fixture oracle for each maintained sample. Separately ran the same candidate source against all three implementations to record per-implementation outcomes even after an oracle would have stopped. Copied one positive and the direct-negative control outside the checkout for isolated Docker grading.",
+  "scope": "Both faults keep file reads and SHA-256 comparison intact. The controls measure public verdict propagation for well-formed files. The development rubric assesses the proposed setup reuse separately.",
+  "host": {
+    "python": "3.12.14",
+    "pytest": "9.1.1"
+  },
+  "published_vector": {
+    "artifact_hex": "616263",
+    "manifest_sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "reference_public_accepts_original": true,
+    "replacement_artifact_hex": "616264",
+    "reference_public_accepts_replacement": false
+  },
+  "registered_controls": [
+    {
+      "sample": "samples/good",
+      "expected_oracle_exit": 0,
+      "observed_oracle_exit": 0,
+      "pytest_runs": {
+        "reference": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 5
+          }
+        },
+        "public verifier discards a rejection": {
+          "pytest_exit": 1,
+          "outcomes": {
+            "failure": 1,
+            "pass": 4
+          },
+          "failed_tests": [
+            "test_release.test_verifier_checks_the_bytes_shipped"
+          ]
+        },
+        "public verifier discards an acceptance": {
+          "pytest_exit": 1,
+          "outcomes": {
+            "failure": 1,
+            "pass": 4
+          },
+          "failed_tests": [
+            "test_release.test_verifier_checks_the_bytes_shipped"
+          ]
+        }
+      },
+      "oracle_detail": [
+        "public verifier discards a rejection: failed tests: test_release.test_verifier_checks_the_bytes_shipped",
+        "public verifier discards an acceptance: failed tests: test_release.test_verifier_checks_the_bytes_shipped"
+      ]
+    },
+    {
+      "sample": "samples/good-independent-vector",
+      "expected_oracle_exit": 0,
+      "observed_oracle_exit": 0,
+      "pytest_runs": {
+        "reference": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 2
+          }
+        },
+        "public verifier discards a rejection": {
+          "pytest_exit": 1,
+          "outcomes": {
+            "pass": 1,
+            "failure": 1
+          },
+          "failed_tests": [
+            "test_integrity.test_release_decision[x-False]"
+          ]
+        },
+        "public verifier discards an acceptance": {
+          "pytest_exit": 1,
+          "outcomes": {
+            "failure": 1,
+            "pass": 1
+          },
+          "failed_tests": [
+            "test_integrity.test_release_decision[-True]"
+          ]
+        }
+      },
+      "oracle_detail": [
+        "public verifier discards a rejection: failed tests: test_integrity.test_release_decision[x-False]",
+        "public verifier discards an acceptance: failed tests: test_integrity.test_release_decision[-True]"
+      ]
+    },
+    {
+      "sample": "samples/bad-direct-negatives",
+      "expected_oracle_exit": 1,
+      "observed_oracle_exit": 1,
+      "pytest_runs": {
+        "reference": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 5
+          }
+        },
+        "public verifier discards a rejection": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 5
+          }
+        },
+        "public verifier discards an acceptance": {
+          "pytest_exit": 1,
+          "outcomes": {
+            "failure": 1,
+            "pass": 4
+          },
+          "failed_tests": [
+            "test_release.test_published_release_passes"
+          ]
+        }
+      },
+      "oracle_detail": [
+        "public verifier discards a rejection: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "sample": "samples/bad-rejection-only",
+      "expected_oracle_exit": 1,
+      "observed_oracle_exit": 1,
+      "pytest_runs": {
+        "reference": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 2
+          }
+        },
+        "public verifier discards a rejection": {
+          "pytest_exit": 1,
+          "outcomes": {
+            "pass": 1,
+            "failure": 1
+          },
+          "failed_tests": [
+            "test_release.test_pipeline_rejects_damaged_file"
+          ]
+        },
+        "public verifier discards an acceptance": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 2
+          }
+        }
+      },
+      "oracle_detail": [
+        "public verifier discards a rejection: failed tests: test_release.test_pipeline_rejects_damaged_file",
+        "public verifier discards an acceptance: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    },
+    {
+      "sample": "samples/bad-comments",
+      "expected_oracle_exit": 1,
+      "observed_oracle_exit": 1,
+      "pytest_runs": {
+        "reference": {
+          "pytest_exit": 5,
+          "outcomes": {}
+        },
+        "public verifier discards a rejection": {
+          "pytest_exit": 5,
+          "outcomes": {}
+        },
+        "public verifier discards an acceptance": {
+          "pytest_exit": 5,
+          "outcomes": {}
+        }
+      },
+      "oracle_detail": [
+        "reference requires passing, non-skipped tests (pytest exit 5): {}"
+      ]
+    },
+    {
+      "sample": "samples/bad-skipped",
+      "expected_oracle_exit": 1,
+      "observed_oracle_exit": 1,
+      "pytest_runs": {
+        "reference": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "skipped": 1
+          }
+        },
+        "public verifier discards a rejection": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "skipped": 1
+          }
+        },
+        "public verifier discards an acceptance": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "skipped": 1
+          }
+        }
+      },
+      "oracle_detail": [
+        "reference requires passing, non-skipped tests (pytest exit 0): {('test_release', 'test_release_decisions'): 'skipped'}"
+      ]
+    },
+    {
+      "sample": "samples/bad-unrelated",
+      "expected_oracle_exit": 1,
+      "observed_oracle_exit": 1,
+      "pytest_runs": {
+        "reference": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 1
+          }
+        },
+        "public verifier discards a rejection": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 1
+          }
+        },
+        "public verifier discards an acceptance": {
+          "pytest_exit": 0,
+          "outcomes": {
+            "pass": 1
+          }
+        }
+      },
+      "oracle_detail": [
+        "public verifier discards a rejection: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    }
+  ],
+  "isolated_candidates": [
+    {
+      "copied_sample": "samples/good",
+      "expected_exit": 0,
+      "exit": 0,
+      "detail": [
+        "public verifier discards a rejection: failed tests: test_release.test_verifier_checks_the_bytes_shipped",
+        "public verifier discards an acceptance: failed tests: test_release.test_verifier_checks_the_bytes_shipped"
+      ]
+    },
+    {
+      "copied_sample": "samples/bad-direct-negatives",
+      "expected_exit": 1,
+      "exit": 1,
+      "detail": [
+        "public verifier discards a rejection: broken behavior survived the candidate tests (pytest exit 0)"
+      ]
+    }
+  ],
+  "unavailable_runner": {
+    "expected_exit": 2,
+    "exit": 2,
+    "detail": [
+      "grading unavailable: [Errno 2] No such file or directory: 'docker'"
+    ]
+  },
+  "reproduce": [
+    "python3 skill-development/scripts/run-fixture-oracles.py",
+    "python3 skill-development/evals/fixtures/e79-python-public-verifier-rejection/oracle.py /path/to/copied-candidate"
+  ]
+}

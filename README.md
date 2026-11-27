@@ -137,10 +137,10 @@ The project now uses layered evals rather than a single public prompt table:
 
 | Layer | Current state |
 |------|---------------|
-| Development eval suite | 78 cases in `skill-development/evals/evals.json`: 39 write, 18 upgrade, 19 assess, 2 detect |
+| Development eval suite | 79 cases in `skill-development/evals/evals.json`: 39 write, 19 upgrade, 19 assess, 2 detect |
 | Hidden probes | 18 hard/adversarial probes tracked by eval-health metadata |
 | Shared benchmark | 48 cases and 10 materializable ablations in `evals/shared-benchmark.json`, validated by the `skill-benchmark` CLI |
-| Fixture oracles | 55 fixture oracles; each good sample passes and every bad sample fails; 3 hardened against real model output in the 2026-08-28 ablation round; of E70–E78, 3 run the candidate's tests against seeded mutants, and E78 also requires that two equivalent mutants survive |
+| Fixture oracles | 56 fixture oracles; each good sample passes and every bad sample fails. Executable controls cover timing, retry recovery, real SQLite, public-verdict propagation and mutation sensitivity; E78 also requires that two equivalent mutants survive |
 | Ablation study | 44 sub-agent runs (Sonnet+Opus × base/current/new arms), all cells pass; results in `skill-development/evals/scorecard.md` |
 | Mutation mini-repos | 3 seeded mutants killed across JavaScript, Python, and Go |
 | Best-practices audit | Regression guard: all 110 checks pass, including adversarial-probe coverage for new technique sections. A pass means no known regression, not a quality score |
@@ -229,7 +229,7 @@ evals/                              # Public/shared prompt eval assets
   oracles/                          # Shared fixture oracle helpers
 
 skill-development/                  # Development-only evals and quality gates
-  evals/                            # 78 rubric evals, schema, scorecard, health plan, fixture oracles
+  evals/                            # 79 rubric evals, schema, scorecard, health plan, fixture oracles
   scripts/check-all.py              # Runs all local non-LLM gates
   scripts/                          # Static audit, oracle runners, mini-repos, prompt-eval runner, scoring tools
 

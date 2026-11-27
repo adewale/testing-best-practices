@@ -9,6 +9,11 @@ behavior. Use [the audit workflow](test-audit.md) for its owner and fixtures too
 - Inspect the public command, case type and assertion dispatch. A direct helper
   may be intentionally excluded for trigger cases or used only historically.
   Exercise the same route that produces the claimed result.
+- When sharing expensive preparation, retain a valid input and a representative
+  rejected input through the full caller. Direct checker rejection plus a
+  successful full run leaves a caller that discards rejection undetected. Check
+  that the altered artifact reaches verification and its verdict reaches the
+  caller; share only stages whose inputs remain unchanged.
 - Give each independently scored criterion a credible incorrect input and a
   correct alternative. Check their individual scores, not just the overall
   verdict, which another criterion may mask. Reuse prepared fixtures when the
