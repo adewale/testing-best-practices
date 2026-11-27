@@ -1,0 +1,1 @@
+Edit scripts/site/editor.ts for the download handlers. Hand-edit the generated editor.html and the deployed website/public/editor/index.html, then rebuild. SVG and PNG are image downloads. ASCII and Unicode are text modes.

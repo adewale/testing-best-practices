@@ -1,0 +1,21 @@
+{
+  "exit": 1,
+  "wall_seconds": 6.333,
+  "log": "technical-check/exploratory/candidate_trace_capture/run.log",
+  "sha256": "fc6b4ddd7ad72e203a63479114d51805f7ffcd649815c3abc222be5d9efb2bc2",
+  "test_files": "1 failed (1)",
+  "tests": "1 failed | 5 skipped (6)",
+  "source": "submitted",
+  "stimulus": "captured_trace",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "0c7527944f337b2a1c3be5410c0366f1917263fff875c3358b3e1bf5587b2578",
+    "eedd7a6fd7c48f281d19a5fb319558af0b5ff8d4f09a17ad3c86467fcc138571"
+  ]
+}

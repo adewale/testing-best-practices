@@ -1,0 +1,11 @@
+{
+  "cwd": "app",
+  "args": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "list",
+    "--project",
+    "unit",
+    "--filesOnly"
+  ]
+}

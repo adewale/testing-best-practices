@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/f5740f900f52bf30/work/repo/.audit-model-control/app
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  02:09:17
+   Duration  492ms (transform 90ms, setup 238ms, import 44ms, tests 11ms, environment 0ms)
+

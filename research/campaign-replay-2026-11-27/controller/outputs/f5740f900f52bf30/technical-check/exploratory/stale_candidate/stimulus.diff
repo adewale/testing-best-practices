@@ -1,0 +1,11 @@
+--- a/app/src/worker/live-session.ts
++++ b/app/src/worker/live-session.ts
+@@ -367,7 +367,7 @@
+     // Merge: KV metadata + DO state (source of truth)
+     const response = {
+       ...kvSession,
+-      state: this.state,  // Override with DO state (includes pending changes)
++      state: kvSession.state,  // Diagnostic stale persisted state
+       immutable: this.immutable,
+     };
+ 

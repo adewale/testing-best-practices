@@ -1,0 +1,761 @@
+{
+  "candidate_id": "991af762de5e1244",
+  "repository": "adewale/pda",
+  "source_commit": "c0a9a85c8f690eb77313b9627e3ea39cadc58968",
+  "patch_file": "patch.diff",
+  "patch_sha256": "02d68bb2d41b4e325a38c9593b3d5f9928de98f208149bf856d2306c01f615be",
+  "enrollment": {
+    "changed_files": [
+      "test/budget.test.ts"
+    ],
+    "added_test_files": [],
+    "added_named_cases": 1,
+    "added_case": "durable model admission and accounting counts a partial reservation toward the day's two unresolved calls after eviction",
+    "workers_file": "test/budget.test.ts",
+    "unchanged_photo_owner": "test/agent-data.test.ts",
+    "ui_file": "test/ui/attachments.test.tsx",
+    "candidate_production_changes": false,
+    "selection": "One 24-line addition between two preexisting cases. The frozen runner enrolled the 31-case photo owner and all nine budget cases on the five main controls. All 14 client-upload cases ran on clean. The three keeper controls selected their original named cases."
+  },
+  "frozen_comparison": {
+    "count_order": [
+      "passed",
+      "failed",
+      "filtered_out"
+    ],
+    "variants": {
+      "clean": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/budget.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        },
+        {
+          "project": "UI",
+          "original": [
+            14,
+            0,
+            0
+          ],
+          "submitted": [
+            14,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "submitted_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "empty-data": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/budget.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "tail-bit": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/budget.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "physical-order": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/budget.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "member-order": [
+        {
+          "project": "Workers",
+          "original": [
+            31,
+            0,
+            0
+          ],
+          "submitted": [
+            40,
+            0,
+            0
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts",
+            "test/budget.test.ts"
+          ],
+          "original_exit": 0,
+          "exit": 0,
+          "selected_name_filter": null
+        }
+      ],
+      "auth-keeper": [
+        {
+          "project": "Workers",
+          "original": [
+            0,
+            1,
+            30
+          ],
+          "submitted": [
+            0,
+            1,
+            30
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts"
+          ],
+          "original_exit": 1,
+          "exit": 1,
+          "selected_name_filter": "exports the caller's records and chunked photos",
+          "failed_case": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records",
+          "failed_assertion": "AssertionError: expected 200 to be 401 // Object.is equality",
+          "location": "at /work/test/agent-data.test.ts:99:53"
+        }
+      ],
+      "isolation-keeper": [
+        {
+          "project": "Workers",
+          "original": [
+            0,
+            1,
+            30
+          ],
+          "submitted": [
+            0,
+            1,
+            30
+          ],
+          "original_files": [
+            "test/agent-data.test.ts"
+          ],
+          "submitted_files": [
+            "test/agent-data.test.ts"
+          ],
+          "original_exit": 1,
+          "exit": 1,
+          "selected_name_filter": "exports the caller's records and chunked photos",
+          "failed_case": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records",
+          "failed_assertion": "AssertionError: expected '{\"format\":\"pda-personal-data\",\"versio\u2026' not to contain 'SOMEONE_ELSES_NOTE'",
+          "location": "at /work/test/agent-data.test.ts:92:22"
+        }
+      ],
+      "upload-byte-keeper": [
+        {
+          "project": "UI",
+          "original": [
+            0,
+            1,
+            13
+          ],
+          "submitted": [
+            0,
+            1,
+            13
+          ],
+          "original_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "submitted_files": [
+            "test/ui/attachments.test.tsx"
+          ],
+          "original_exit": 1,
+          "exit": 1,
+          "selected_name_filter": "sends a picked photo to the User's own agent",
+          "failed_case": "attaching a photo in the composer sends a picked photo to the User's own agent, shows it, and names it in the message by its marker",
+          "failed_assertion": "AssertionError: expected [ +0, +0, +0, +0, +0, +0 ] to deeply equal [ 255, 216, 255, 224, 18, 52 ]",
+          "location": "at /work/test/ui/attachments.test.tsx:128:70"
+        }
+      ]
+    },
+    "raw": "pda.json",
+    "raw_sha256": "63a7bdbb2f633ec4045468124e15902785ff2caba4516f1b174fd1726c651ed7",
+    "command_log": "pda-commands.log",
+    "command_log_sha256": "99b48cde66f1aeb5cfb0496f4f036e1a42b3894414664a1af30477f034643364",
+    "original_raw": {
+      "path": "preparation/pda/evaluator/evidence/pinned.json",
+      "sha256": "d7e8b02ae4dcd02e7ee93c4d4e2e0387c41c8005570f0186470b758ba79dab74"
+    },
+    "validation": "All eight named variants were already present. Their recorded exits, actual names, assertion counts, selected files and three corresponding failures were checked against the pinned report. This assessment reuses the retained raw evidence and its recorded hash.",
+    "photo_faults": {
+      "empty_data_detected": false,
+      "tail_bit_detected": false,
+      "physical_order_accepted": true,
+      "member_order_accepted": true,
+      "photo_owner_case": "personal data controls exports the caller's records and chunked photos without stored credentials or another person's records"
+    },
+    "preserved": "All pinned enrollment and results for the photo-owner and browser modules match. The 401, second-person sentinel and exact upload bytes failed in their original tests for their original reasons. The unchanged redaction and no-store assertions ran on clean. Their evidence is source inspection and the clean run."
+  },
+  "alternate_repair": {
+    "route": "The frozen scoring instructions allow a different demonstrated repair. The unresolved-call finding, its specific mutants, permitted SQL change and independent reachability witness were selected after submission and are exploratory. They are separate from the frozen photo comparison and from the preregistered waiver example.",
+    "case": "durable model admission and accounting counts a partial reservation toward the day's two unresolved calls after eviction",
+    "expected_contract": "At most two unresolved demo admissions in a person's local ledger on one UTC admission day, independently of remaining dollars. Known usage settles its slot. An independent day has room for new admissions.",
+    "original_blind_spot": "The existing routed overlap test starts with 0.10 in the local ledger, reaches 1.00 after the second reservation, and observes a refusal. The monetary preflight alone can explain that observation. All eight original budget cases accepted the controlled relaxation of the two-call count.",
+    "changed_test_boundary": "The sealed case constructs production Ledger with workerd SQLite, uses its public begin/reserve/complete methods, and evicts the real test StorageProbe before reconstructing the ledger. It supplies the smaller shared grant at the API boundary, supplies both UTC day keys explicitly, and compares public results to fixed dollar values. A router, live shared RPC, advancing clock and vendor are outside this new case.",
+    "expected_arithmetic": "Within a 1.00 personal allowance, unresolved amounts of 0.25 and 0.50 total 0.75. The third call must be refused with 0.25 still available. A known first cost of 0.125 gives 0.625 used and opens a 0.375 reservation. A fresh day supports a 0.50 reservation.",
+    "actual_fault": "The exact same copies of src/budget.ts relaxed the two-call guard by one. On the sealed test file, only the new third-call assertion at line 182 failed. Vitest prints a four-field object in place of null. Its 0.25 reservation is inferred from the preceding passing 0.75 spend assertion and the unchanged min(remaining, cap/2) calculation. All eight original identities passed on the same fault.",
+    "relevant_keeper": "The opposite change restricts the allowance to one unresolved call. The original routed overlap test fails at the second dispatch, and the added case also fails when the second local reservation is missing. Original cases for partial shared capacity, durable settlement replay, unknown usage and admission-day charging remain present; the compaction cost case passed on clean.",
+    "allowed_private_change": "A bounded subquery counts no more than two unresolved rows. Saturating at two has the same observable decision for every nonnegative integer count at this guard. Both complete budget files accepted the implementation.",
+    "controls": {
+      "original-clean": {
+        "attempt": 3,
+        "source_sha256": "8af041579f1bd1b4ba9c1353b203d585576a89d4a3cf3a9bb4703e0f259a255f",
+        "budget_test_sha256": "4e526214e15d9dd8ca011e9a43bb8bccc96facf7e0ef53ba996208df93e3a6a2",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              8,
+              0,
+              0
+            ],
+            "exit": 0,
+            "failed_assertions": []
+          }
+        ]
+      },
+      "candidate-clean": {
+        "attempt": 4,
+        "source_sha256": "8af041579f1bd1b4ba9c1353b203d585576a89d4a3cf3a9bb4703e0f259a255f",
+        "budget_test_sha256": "c989a6273a9590cb72114476ab9173b296c3eebec2bcde7a4925f29501ac9dd3",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              9,
+              0,
+              0
+            ],
+            "exit": 0,
+            "failed_assertions": []
+          },
+          {
+            "files": [
+              "test/compaction.test.ts"
+            ],
+            "counts": [
+              18,
+              0,
+              0
+            ],
+            "exit": 0,
+            "failed_assertions": []
+          }
+        ]
+      },
+      "original-off-by-one": {
+        "attempt": 1,
+        "source_sha256": "9633aeb3034858a0d5bfeb5a7dda73919ef432149af5c84f788d0cd494d6f71a",
+        "budget_test_sha256": "4e526214e15d9dd8ca011e9a43bb8bccc96facf7e0ef53ba996208df93e3a6a2",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              8,
+              0,
+              0
+            ],
+            "exit": 0,
+            "failed_assertions": []
+          }
+        ]
+      },
+      "candidate-off-by-one": {
+        "attempt": 2,
+        "source_sha256": "9633aeb3034858a0d5bfeb5a7dda73919ef432149af5c84f788d0cd494d6f71a",
+        "budget_test_sha256": "c989a6273a9590cb72114476ab9173b296c3eebec2bcde7a4925f29501ac9dd3",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              8,
+              1,
+              0
+            ],
+            "exit": 1,
+            "failed_assertions": [
+              {
+                "name": "durable model admission and accounting counts a partial reservation toward the day's two unresolved calls after eviction",
+                "message": "AssertionError: expected { \u2026(4) } to be null",
+                "location": "at /work/test/budget.test.ts:182:44"
+              }
+            ]
+          }
+        ]
+      },
+      "candidate-permitted-query": {
+        "attempt": 5,
+        "source_sha256": "25ba4fcd435d6c37e815c6fafbc84890957533212328f4e51c4bc759054b3364",
+        "budget_test_sha256": "c989a6273a9590cb72114476ab9173b296c3eebec2bcde7a4925f29501ac9dd3",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              9,
+              0,
+              0
+            ],
+            "exit": 0,
+            "failed_assertions": []
+          }
+        ]
+      },
+      "original-permitted-query": {
+        "attempt": 8,
+        "source_sha256": "25ba4fcd435d6c37e815c6fafbc84890957533212328f4e51c4bc759054b3364",
+        "budget_test_sha256": "4e526214e15d9dd8ca011e9a43bb8bccc96facf7e0ef53ba996208df93e3a6a2",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              8,
+              0,
+              0
+            ],
+            "exit": 0,
+            "failed_assertions": []
+          }
+        ]
+      },
+      "original-stricter": {
+        "attempt": 6,
+        "source_sha256": "16b7c76b827f71aeb663a94718e2b0a7b66c712b1476829035b1b19f3f75276b",
+        "budget_test_sha256": "4e526214e15d9dd8ca011e9a43bb8bccc96facf7e0ef53ba996208df93e3a6a2",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              7,
+              1,
+              0
+            ],
+            "exit": 1,
+            "failed_assertions": [
+              {
+                "name": "durable model admission and accounting admits two overlapping calls, refuses a third, queues notices despite holds and fixes charges to admission day",
+                "message": "AssertionError: expected false to be true // Object.is equality",
+                "location": "at /work/test/budget.test.ts:140:29"
+              }
+            ]
+          }
+        ]
+      },
+      "candidate-stricter": {
+        "attempt": 7,
+        "source_sha256": "16b7c76b827f71aeb663a94718e2b0a7b66c712b1476829035b1b19f3f75276b",
+        "budget_test_sha256": "c989a6273a9590cb72114476ab9173b296c3eebec2bcde7a4925f29501ac9dd3",
+        "results": [
+          {
+            "files": [
+              "test/budget.test.ts"
+            ],
+            "counts": [
+              7,
+              2,
+              0
+            ],
+            "exit": 1,
+            "failed_assertions": [
+              {
+                "name": "durable model admission and accounting admits two overlapping calls, refuses a third, queues notices despite holds and fixes charges to admission day",
+                "message": "AssertionError: expected false to be true // Object.is equality",
+                "location": "at /work/test/budget.test.ts:140:29"
+              },
+              {
+                "name": "durable model admission and accounting counts a partial reservation toward the day's two unresolved calls after eviction",
+                "message": "AssertionError: expected undefined to be 0.5 // Object.is equality",
+                "location": "at /work/test/budget.test.ts:174:57"
+              }
+            ]
+          }
+        ]
+      },
+      "reachability": {
+        "attempt": 9,
+        "source_sha256": "8af041579f1bd1b4ba9c1353b203d585576a89d4a3cf3a9bb4703e0f259a255f",
+        "budget_test_sha256": "4e526214e15d9dd8ca011e9a43bb8bccc96facf7e0ef53ba996208df93e3a6a2",
+        "results": [
+          {
+            "files": [
+              "test/controller-budget-reachability.test.ts"
+            ],
+            "counts": [
+              0,
+              1,
+              0
+            ],
+            "exit": 1,
+            "failed_assertions": [
+              {
+                "name": "can reach two unequal local holds through the shared budget and refuses the next call before dispatch",
+                "message": "AssertionError: expected { dispatched: false, \u2026(3) } to deeply equal { dispatched: true, \u2026(3) }",
+                "location": "at /work/test/controller-budget-reachability.test.ts:57:34"
+              }
+            ]
+          }
+        ]
+      },
+      "reachability-context": {
+        "attempt": 10,
+        "source_sha256": "8af041579f1bd1b4ba9c1353b203d585576a89d4a3cf3a9bb4703e0f259a255f",
+        "budget_test_sha256": "4e526214e15d9dd8ca011e9a43bb8bccc96facf7e0ef53ba996208df93e3a6a2",
+        "results": [
+          {
+            "files": [
+              "test/controller-budget-reachability.test.ts"
+            ],
+            "counts": [
+              1,
+              0,
+              0
+            ],
+            "exit": 0,
+            "failed_assertions": []
+          },
+          {
+            "files": [
+              "test/controller-budget-reachability-diagnostic.test.ts"
+            ],
+            "counts": [
+              0,
+              1,
+              0
+            ],
+            "exit": 1,
+            "failed_assertions": [
+              {
+                "name": "can reach two unequal local holds through the shared budget and refuses the next call before dispatch",
+                "message": "Error: Router failed before a budget refusal: Cannot perform I/O on behalf of a different Durable Object. I/O objects (such as streams, request/response bodies, and others) created in the context of one Durable Object cannot be accessed from a different Durable Object in the same isolate. This is a limitation of Cloudflare Workers which allows us to improve overall performance. (I/O type: OutgoingFactory)",
+                "location": "at /work/test/controller-budget-reachability-diagnostic.test.ts:52:42"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "original_budget_case_identities": [
+      "durable model admission and accounting admits two overlapping calls, refuses a third, queues notices despite holds and fixes charges to admission day",
+      "durable model admission and accounting atomically reserves shared room, is idempotent, and retains unknown liabilities after eviction",
+      "durable model admission and accounting does not admit invalid amounts or settle without an admission",
+      "durable model admission and accounting does not invoke the provider when shared admission commits but its reply is lost",
+      "durable model admission and accounting keeps a settlement outbox across local reconstruction and an applied RPC whose response was lost",
+      "durable model admission and accounting preserves caller output settings on the gateway wire without a fleet output policy",
+      "durable model admission and accounting recovers a committed local outbox after the agent's own Durable Object is evicted",
+      "durable model admission and accounting retains admission liability when a provider reports aborted zero usage"
+    ],
+    "attempt_count": 10,
+    "compaction_keeper": "compaction counts a summary's cost against the demo's caps, like any other call",
+    "raw": {
+      "path": "controller/outputs/991af762de5e1244/budget-runs.ndjson",
+      "sha256": "04561d9fd5cde2cc30075062aa54ba3c4122f17aa1186854eb0257eca07c10ed"
+    },
+    "reproduce": "python -B controller/outputs/991af762de5e1244/budget-controls.py",
+    "label": "Exploratory native verification after the submission was sealed"
+  },
+  "fixture_provenance": {
+    "installed_path": "The agent constructs ModelAccess with its own SQLite Ledger and selects the shared DomainBudget by domain. The router's daily preflight reads both budgets, begins the local hold, requests up to that amount from DomainBudget, records the exact granted amount locally, and only then invokes its callback. DomainBudget.reserve returns the smaller of positive available room and the requested amount.",
+    "reachability": "The repository's test configuration supplies 1.00 personal and 1.50 shared allowances. The checked-in deployment configuration uses 2 and 10, and the router reads these deployment settings. In the test configuration, other call IDs contribute one settled 0.25 and two open 0.50 reservations. The first owner's 0.50 request gets 0.25, filling the shared domain. Both other holds subsequently settle for 0.125 each, reopening 0.75 of shared room. A second 0.50 owner hold leaves 0.25 free both locally and in the domain before the third request.",
+    "runtime": "A separate evaluator-authored test on unmodified production code used the real shared Durable Object RPC, production ModelAccess, real owner SQLite and a synthetic provider callback reporting aborted zero-usage responses. Both holds persisted. After owner eviction, the router returned user_cap before calling the callback on the third request; shared spend stayed 1.25. This is fixture validation outside the candidate test. The Poppy agent constructor wiring was source-reviewed, and the external model service was not invoked.",
+    "witness_case": "can reach two unequal local holds through the shared budget and refuses the next call before dispatch",
+    "witness_attempt": "reachability-context, group 1",
+    "witness_source": {
+      "path": "controller/outputs/991af762de5e1244/budget-reachability-witness.ts",
+      "sha256": "dd111807fc89f64dbb60042fd27eb6ca19b6643be343e4f36ead0cdeda82b452"
+    },
+    "witness_context_patch": {
+      "path": "controller/outputs/991af762de5e1244/budget-reachability-context.patch",
+      "sha256": "f76560d88e683cc38c9dbf650c9a625deff7ace4e724e31cb559d986647b8340"
+    },
+    "earlier_attempt": {
+      "name": "reachability",
+      "observed": "AssertionError: expected { dispatched: false, \u2026(3) } to deeply equal { dispatched: true, \u2026(3) }",
+      "diagnostic": "Error: Router failed before a budget refusal: Cannot perform I/O on behalf of a different Durable Object. I/O objects (such as streams, request/response bodies, and others) created in the context of one Durable Object cannot be accessed from a different Durable Object in the same isolate. This is a limitation of Cloudflare Workers which allows us to improve overall performance. (I/O type: OutgoingFactory)",
+      "interpretation": "The earlier evaluator witness captured an RPC stub in a different request context. A diagnostic copy surfaced its routing error. Reacquiring a stub by the same domain name inside the owning Durable Object matched the repository\u2019s pattern. These harness results concern the evaluator witness only."
+    }
+  },
+  "secondary_finding": {
+    "kind": "Source-supported scheduling risk in the preexisting overlap test; no repair and no timed failure observed",
+    "source_evidence": "After up to 100 one-millisecond sleeps, the first diagnostic awaits result. If the route dispatches late, the successful stream only finishes when this test reaches a later push, so the diagnostic can stall until the harness timeout. The existing sibling waitingCall helper uses a dispatch promise and terminates on an early result. Clean and original off-by-one checks passed the overlap case.",
+    "references": [
+      "test/budget.test.ts:133",
+      "test/budget.test.ts:134",
+      "test/budget.test.ts:151",
+      "test/model-key-generation.test.ts:25"
+    ]
+  },
+  "static_validation": {
+    "raw": {
+      "path": "controller/outputs/991af762de5e1244/budget-static.ndjson",
+      "sha256": "b4a259dc7a987019c6ffd267cb150c9a43a9109e30740b852d6349586cada235"
+    },
+    "node": "v24.22.3",
+    "typescript": "Version 6.0.3",
+    "typecheck_exit": 0,
+    "patch_check_exit": 0,
+    "diff_check_exit": 0,
+    "patch_applies_byte_for_byte": true
+  },
+  "source_provenance": {
+    "immutable_snapshot": "controller/candidate-snapshots/991af762de5e1244",
+    "files_compared": 560,
+    "all_manifest_hashes_verified": true,
+    "installed_node": "v24.22.3",
+    "image": "node@sha256:49f7adaf9f1574bc45c20ea317139b39a59d7e758d0e93745e112fd85cb42623",
+    "primary_sources": {
+      "pda-spec.md": {
+        "sha256": "313953c8faa654542d718c57acc2bbcdb9ac797417457799adbe58e021011c43",
+        "lines": [
+          "249"
+        ]
+      },
+      "src/agent.ts": {
+        "sha256": "06ca3ce4fc5de3bbbad07c4180d7a61f40af9468719243acc9a3720c8fe011cc",
+        "lines": [
+          "202-209"
+        ]
+      },
+      "src/model-router.ts": {
+        "sha256": "6d864a630eaf3242c38b9077df7fb53af9584615b9226ce1ffa9c85046cd77db",
+        "lines": [
+          "296-305",
+          "332-335",
+          "383-405",
+          "454-471"
+        ]
+      },
+      "src/budget.ts": {
+        "sha256": "8af041579f1bd1b4ba9c1353b203d585576a89d4a3cf3a9bb4703e0f259a255f",
+        "lines": [
+          "62-83",
+          "98-120",
+          "128-133",
+          "173-187",
+          "190-196"
+        ]
+      },
+      "test/wrangler.jsonc": {
+        "sha256": "72f5f5637db135cf33b8feddcbb1c638b8dca76a89aaf5516b2b5888f7827998",
+        "lines": [
+          "33-34"
+        ]
+      },
+      "wrangler.jsonc": {
+        "sha256": "097023bf6d6b8b7b9e03449de5ea8cf3a7ce5cc68799fcf98038d48145ea14b1",
+        "lines": [
+          "53-54"
+        ]
+      },
+      "src/config.ts": {
+        "sha256": "4a63017cc69907abebcd74679c2b79b04ca282b7ea019d9bdcdb7f3f6639643b",
+        "lines": [
+          "136-140"
+        ]
+      },
+      "test/budget.test.ts": {
+        "sha256": "c989a6273a9590cb72114476ab9173b296c3eebec2bcde7a4925f29501ac9dd3",
+        "lines": [
+          "42-61",
+          "74-110",
+          "114-163",
+          "166-188",
+          "213-237"
+        ]
+      },
+      "test/compaction.test.ts": {
+        "sha256": "c5f324d147735d293dce43d87adeaba93e7b72d7622e9110366ffb55b942f2b4",
+        "lines": [
+          "233-250"
+        ]
+      },
+      "test/model-key-generation.test.ts": {
+        "sha256": "8097f721394bd95b413169a0126be25168bf89a0f8d5b378a1c30c9017fd7847",
+        "lines": [
+          "25-31"
+        ]
+      },
+      "test/agent-data.test.ts": {
+        "sha256": "b98932cc313cf0f09aaca06f7269832bcb5cfdbc2dce256238fc9adb81d8827d",
+        "lines": [
+          "86-99"
+        ]
+      },
+      "test/ui/attachments.test.tsx": {
+        "sha256": "3eb340117ae01a72fd65cfb50c4de11bee39e19514828ea89412531021837a28",
+        "lines": [
+          "111-130"
+        ]
+      },
+      ".github/workflows/ci.yml": {
+        "sha256": "ccc422eac12be941445c31c0dcd7d03a32a4b2f4a420fa0f284f7bb4380521fd",
+        "lines": [
+          "65-66"
+        ]
+      },
+      "scripts/test-projects.mjs": {
+        "sha256": "377f9a4000b750d430dc431d5ca796c13806a0e6d9c80f092d3c748ef10a5156",
+        "lines": [
+          "1-8"
+        ]
+      }
+    },
+    "evaluation_inputs": [
+      {
+        "path": "controller/outputs/991af762de5e1244/disposition.json",
+        "sha256": "d1dee1de63a132e53fb24b7fab62bb4d431c5cccf105fdadde89cf3d4e22d7a4"
+      },
+      {
+        "path": "controller/outputs/991af762de5e1244/response.md",
+        "sha256": "7335299539015e4f187c9aa0005261af137c8c8cea9bfab4cf57af68e76b13af"
+      },
+      {
+        "path": "controller/outputs/991af762de5e1244/patch.diff",
+        "sha256": "02d68bb2d41b4e325a38c9593b3d5f9928de98f208149bf856d2306c01f615be"
+      },
+      {
+        "path": "controller/outputs/991af762de5e1244/candidate-snapshot.json",
+        "sha256": "af5d7d461233dbb8d1e06af8278376a060d6a5e0b9c4e1f17e40fd7217bea48e"
+      },
+      {
+        "path": "controller/outputs/991af762de5e1244/budget-controls.py",
+        "sha256": "32f19f231ba9879eac94499290a7e2db36f4d7844f9763cca8740620285d9bba"
+      },
+      {
+        "path": "preparation/pda/README.md",
+        "sha256": "b8d832d4788960d43d95689b6492e3f12a184f8f778b4dbef0d618018d954672"
+      },
+      {
+        "path": "preparation/pda/evaluator/SCORING.md",
+        "sha256": "75587b689d500380552df45205830caf26560018a3ca95a952229c651801ac76"
+      },
+      {
+        "path": "preparation/pda/evaluator/case-lock.json",
+        "sha256": "125f5a05b9faa3131836f0c791bc3ded0eb8d45cdaa9ce91b34a01dbf76c9550"
+      },
+      {
+        "path": "preparation/pda/evaluator/controls.py",
+        "sha256": "3913d69fb2a2c0acd28f9a114c916cd07d6e965252a275a2e6ba5fe9a99b0498"
+      },
+      {
+        "path": "preparation/pda/evaluator/driver.mjs",
+        "sha256": "973e9b56f1d4ef78436212655f675b6c19f44d2fbf3f3a64e24f29acdb02fdc9"
+      },
+      {
+        "path": "preparation/pda/evaluator/source-manifest.json",
+        "sha256": "4a89263f43ee7f16911ffda118de130898b617ccc90c7f6e1dff953024ecd11d"
+      },
+      {
+        "path": "preparation/pda/participant/inventory.json",
+        "sha256": "cf827440745efe277fb6bbe7ff389ceb30e6e39f24f8d4202c1f4b517d7e8cee"
+      },
+      {
+        "path": "preparation/pda/participant/ci/jobs-45800972889.json",
+        "sha256": "e722f0ba7943aa1af4725227e1563bd0d421ece8fc5ff34081b394df2d5cb235"
+      }
+    ]
+  },
+  "limits": [
+    "The native counterfactual for the alternative covers the complete sampled budget file. The clean compaction run covers all 18 of its cases. The local results apply to these modules and the selected simulated-runtime boundaries.",
+    "The source packet includes 56 of 155 named modules. test/model-access.test.ts and test/properties/budget.test.ts are explicitly omitted. Their response to the budget fault and possible other indirect coverage are unknown.",
+    "The supplied Actions record reports a successful npm test step on main at the pinned commit before this patch. Coverage of the patched or fault-injected complete suite remains unknown.",
+    "Exact historical subject timing, scratch-copy restoration and removal remain self-reported. The controller independently verified the sealed source and named observations."
+  ]
+}

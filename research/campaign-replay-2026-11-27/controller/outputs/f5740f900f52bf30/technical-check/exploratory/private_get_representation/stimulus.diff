@@ -1,0 +1,17 @@
+--- a/app/src/worker/live-session.ts
++++ b/app/src/worker/live-session.ts
+@@ -365,11 +365,10 @@
+     }
+ 
+     // Merge: KV metadata + DO state (source of truth)
+-    const response = {
+-      ...kvSession,
+-      state: this.state,  // Override with DO state (includes pending changes)
++    const response = Object.assign({}, kvSession, {
++      state: this.state,
+       immutable: this.immutable,
+-    };
++    });
+ 
+     return new Response(JSON.stringify(response), {
+       status: 200,

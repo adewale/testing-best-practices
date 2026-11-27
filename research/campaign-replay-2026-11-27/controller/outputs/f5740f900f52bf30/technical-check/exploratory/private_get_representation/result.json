@@ -1,0 +1,21 @@
+{
+  "exit": 0,
+  "wall_seconds": 6.441,
+  "log": "technical-check/exploratory/private_get_representation/run.log",
+  "sha256": "5b3541f09d0d8cf760b35128d8d4d8f3ce66bf67d3877db4632b2e7ac4f6996f",
+  "test_files": "1 passed (1)",
+  "tests": "1 passed | 5 skipped (6)",
+  "source": "submitted",
+  "stimulus": "equivalent_get",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "8a58b43877ce60f620dd89f1b4b12de9b005e7a90856302a256fc4726cc9c9e4",
+    "12b5d32afc9ebc8ff69e8d90a3e6ce5bdb55d548130ca22de564af8df5361757"
+  ]
+}

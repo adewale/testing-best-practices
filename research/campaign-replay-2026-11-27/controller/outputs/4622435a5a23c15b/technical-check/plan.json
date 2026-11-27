@@ -1,0 +1,218 @@
+{
+  "scope": "Technical verification. Only the candidate complete tree and pristine pinned comparator are used. Open-ended mobile controls are exploratory, separate from the published frozen sync, grader and seed controls.",
+  "claimed_boundary": "Four self-generated callback cases replaced by four jsdom cases. Exactly two new touch failures on swapped callbacks, exactly two mouse failures with primary guards removed and restored total 50.",
+  "expected_sensitivity": "Identity and bounds follow separate labeled sliders, dispatch and aria limits. The exact upward deltas characterize existing calibration and do not establish immutable UX requirements.",
+  "rows": [
+    {
+      "run": "clean_original",
+      "source": "original",
+      "stimulus": "clean",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "Pinned production on the original and submitted test suites."
+    },
+    {
+      "run": "clean_candidate",
+      "source": "candidate",
+      "stimulus": "clean",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/TransportBar.test.tsx",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "Pinned production on the original and submitted test suites."
+    },
+    {
+      "run": "touch_swap_original",
+      "source": "original",
+      "stimulus": "touch_swap",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "EXPLORATORY fault: swap only the two touch-move callbacks at the mobile sliders; preserve values, selectors, mouse callbacks and drag calculation."
+    },
+    {
+      "run": "touch_swap_candidate",
+      "source": "candidate",
+      "stimulus": "touch_swap",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/TransportBar.test.tsx",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "EXPLORATORY fault: swap only the two touch-move callbacks at the mobile sliders; preserve values, selectors, mouse callbacks and drag calculation."
+    },
+    {
+      "run": "mouse_guards_original",
+      "source": "original",
+      "stimulus": "mouse_guards",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "EXPLORATORY fault: remove only the primary-button check from both mouse-move adapters. The pinned controls explicitly guard on buttons === 1."
+    },
+    {
+      "run": "mouse_guards_candidate",
+      "source": "candidate",
+      "stimulus": "mouse_guards",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/TransportBar.test.tsx",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "EXPLORATORY fault: remove only the primary-button check from both mouse-move adapters. The pinned controls explicitly guard on buttons === 1."
+    },
+    {
+      "run": "private_adapter_original",
+      "source": "original",
+      "stimulus": "private_adapter",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "EXPLORATORY allowed change: replace the private move handler\u2019s positional type/bounds and conditional sensitivity lookup with per-control objects. All public behavior, limits, sensitivity, arithmetic and callback bindings are identical."
+    },
+    {
+      "run": "private_adapter_candidate",
+      "source": "candidate",
+      "stimulus": "private_adapter",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/TransportBar.test.tsx",
+          "src/components/tempo-change.test.ts",
+          "src/components/swing-control.test.ts"
+        ]
+      },
+      "reason": "EXPLORATORY allowed change: replace the private move handler\u2019s positional type/bounds and conditional sensitivity lookup with per-control objects. All public behavior, limits, sensitivity, arithmetic and callback bindings are identical."
+    },
+    {
+      "run": "new_file_only",
+      "source": "candidate",
+      "stimulus": "clean",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/components/TransportBar.test.tsx"
+        ]
+      },
+      "reason": "New registered test in isolation, with the existing real unit project and actual added file."
+    },
+    {
+      "run": "unit_discovery",
+      "source": "candidate",
+      "stimulus": "clean",
+      "command": {
+        "cwd": "app",
+        "args": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "list",
+          "--project",
+          "unit",
+          "--filesOnly"
+        ]
+      },
+      "reason": "Unfiltered file discovery in the real CI unit project. This command lists files and does not execute the entire upstream suite."
+    },
+    {
+      "run": "demo_clean",
+      "source": "candidate",
+      "stimulus": "clean",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/data/phase44-demo-session.test.ts"
+        ]
+      },
+      "reason": "Clean control for the submitted open demo finding."
+    },
+    {
+      "run": "demo_out_of_scale",
+      "source": "candidate",
+      "stimulus": "demo_out_of_scale",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh",
+          "--reporter=verbose",
+          "src/data/phase44-demo-session.test.ts"
+        ]
+      },
+      "reason": "EXPLORATORY diagnostic for an open finding, no candidate repair: active first string lock changed from pitch offset 2 to 3, leaving scale, range and all other fields intact."
+    },
+    {
+      "run": "seed_45182094013",
+      "source": "candidate",
+      "stimulus": "valid_schedule",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-worker.sh",
+          "--reporter=verbose",
+          "state-machine-fuzz.test.ts",
+          "overlap-fuzz.test.ts",
+          "eviction-recovery.test.ts"
+        ]
+      },
+      "reason": "Existing frozen seed 45182094013, both seed variables; select the same three submitted suites to check the quota and the named preexisting Worker keepers. No variant of the frozen stimulus."
+    },
+    {
+      "run": "default_units",
+      "source": "candidate",
+      "stimulus": "clean",
+      "command": {
+        "cwd": ".",
+        "args": [
+          "/case/runtime/run-unit.sh"
+        ]
+      },
+      "reason": "Prepared default 23-file selection, including the preexisting pending-save tests. Clean original 343 recorded in the frozen preparation."
+    }
+  ]
+}

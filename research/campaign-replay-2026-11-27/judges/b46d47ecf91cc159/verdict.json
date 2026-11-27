@@ -1,0 +1,101 @@
+{
+  "case": "R07",
+  "candidates": [
+    {
+      "id": "52cffaa3fca1020b",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Temporarily flips one inclusive or exclusive comparison and reruns the same four tests with their original assertions.",
+          "reason": "This isolates whether the existing suite detects the off-by-one fault."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Records the assertion that fails at the predicted boundary. For an observable survivor, adds or strengthens a test and verifies it against both versions. Stops after one fault or ten minutes.",
+          "reason": "The observed parser result determines the test edit, and the time cap covers inconclusive runs."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Calls for a one-time manual check of the changed function and restores the predicate afterward.",
+          "reason": "The proposal can proceed without a repository score, recurring job or gate."
+        }
+      ]
+    },
+    {
+      "id": "ca375d10c9c987ba",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Seeds one grammar-relevant equality fault in a scratch copy and runs the same four tests before changing any assertion.",
+          "reason": "The two focused runs directly measure sensitivity to the selected fault."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Checks a survivor on the distinguishing public input and adds a table row for a confirmed grammar violation. Stops on detection, a verified regression or the ten-minute cap.",
+          "reason": "The public behavior establishes whether a test change is warranted and when the investigation ends."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Records the revision and focused selector, restores the parser, and keeps the regression only for a confirmed miss.",
+          "reason": "These steps complete the manual experiment without introducing standing infrastructure or a repository-wide requirement."
+        }
+      ]
+    },
+    {
+      "id": "7e3eaee27d3bec9b",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Changes one endpoint comparison in a scratch copy and reruns the original four fixtures and assertions.",
+          "reason": "The targeted edit tests the suspected fault at the cost of focused runs."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Records a detecting assertion or compares both parsers at equality. Adds one verified regression for a confirmed gap and stops after classifying the fault or at ten minutes.",
+          "reason": "This connects the grammar endpoint to a specific test decision and bounds unresolved work."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Budgets baseline, mutant and restoration runs for one fault, with one additional focused run if a regression is needed.",
+          "reason": "All runs belong to the one-off check, with no recurring lane or permanent gate."
+        }
+      ]
+    },
+    {
+      "id": "31c061efcd9e740f",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Recreates one escaped comparison fault in a disposable copy and runs the four untouched tests against both revisions.",
+          "reason": "The hand-seeded comparison directly probes existing assertions. The specified worker flag assumes runner support."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Requires the predicted public result to trigger the boundary assertion. Adds a case for a confirmed wrong result, verifies it on the mutant and stops on a conclusion or at ten minutes.",
+          "reason": "The result determines whether to ship a regression, and inconclusive outcomes have an explicit stopping point."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Discards the temporary mutation on every exit and ships only the test change if a gap is confirmed.",
+          "reason": "The approved manual run creates no recurring job, repository baseline or permanent gate."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "case": "B01",
+  "disposition": "Returned subject report and patch. The snapshot and report match their controller seal.",
+  "patch_sha256": "99c35d0a8cd4887d85aca52ba128aaf97c60be48b199faaac36d6e1d7a1c5e2f",
+  "snapshot_sha256": "06256ab48f1a3fb6fa2530002f09a1a9be7ebfb53a12ef11c03db315a47cef0d",
+  "changed_surface": {
+    "files": ["skill-evals/shared-benchmark.json", "skill-evals/ablations/no-editor-source-of-truth.patch"],
+    "manifest": "Two of 51 cases change their prompt, expected behavior and objectives. They now request raw JSON plans assigning the hand edit, standalone and hosted build roles, generated paths, actions and package scripts. The positive case also asks for SVG/PNG image and ASCII/Unicode text roles. One of four ablation descriptions and its expected regression change. The remaining 49 cases and three ablations match the original.",
+    "owners": "editor/js/app.js loads editor/js/export.js, which registers both download click handlers. scripts/site/editor.ts writes editor.html. package.json and the live-editor skill identify the editor and website build scripts and website/build.ts. The hosted browser test serves website/public and reads the downloaded artifacts. website/build.ts itself is outside the source sample."
+  },
+  "frozen_saved_prose": {
+    "selection": "Nine prespecified saved answers on pos-live-editor-source-of-truth and adv-reject-editor-html-direct-edit, in that order. The same inputs ran on the original and candidate with pinned grade_case_variant. The candidate uses structured_output and json_field_equals on output.md. Script execution was disabled.",
+    "objectives": {
+      "original_positive": ["source-of-truth", "generated-artifact-rule", "outputs"],
+      "original_adversarial": ["source-of-truth", "generated", "rebuild"],
+      "candidate_positive": ["edit-target", "standalone-artifact", "hosted-artifact", "outputs"],
+      "candidate_adversarial": ["edit-target", "standalone-artifact", "hosted-artifact"]
+    },
+    "original": "The original accepted two of seven semantically correct recommendations and eight of eleven incorrect ones. maintain_owner scored 2/3 on each row, assembler_in_context 3/3 on each, and direct_edit_negated_rebuild, wrong_owner_only, skip_rebuild_only and direct_edit_only each scored 3/3 on both. Five of 18 decisions agreed with the frozen labels.",
+    "candidate": {"accepted": 0, "rejected": 18, "invalid_format": 18, "deferred": 0, "missing": 0, "positive_passes_per_input": "0/4", "adversarial_passes_per_input": "0/3"},
+    "meaning": "None of the nine prose inputs parses as JSON. The candidate rejected the correct source advice, the correct assembler explanation and the bad plans at the format boundary. Its eleven literal matches to old rejection labels do not measure semantic discrimination."
+  },
+  "exploratory_structured_plans": {
+    "method": "After freeze, an independent operator constructed 18 positive and 16 adversarial case/plan pairs using the revised prompt. The actual original and submitted graders received identical response bytes for each pair. This supplements the immutable prose matrix. No model participated.",
+    "score_columns": ["original positive", "candidate positive", "original adversarial", "candidate adversarial"],
+    "paired_objectives_passed": {
+      "correct handler, both true builders, both rebuilds": ["3/3", "4/4", "3/3", "3/3"],
+      "swap handler and standalone builder": ["3/3", "2/4", "3/3", "1/3"],
+      "edit only assembler while keeping correct builder fields": ["3/3", "3/4", "3/3", "2/3"],
+      "hand-edit hosted artifact action": ["3/3", "3/4", "3/3", "2/3"],
+      "negate only standalone rebuild": ["3/3", "3/4", "3/3", "2/3"],
+      "swap only the two build scripts": ["3/3", "2/4", "3/3", "1/3"],
+      "omit standalone builder but give correct owner, actions and scripts": ["2/3", "3/4", "2/3", "2/3"],
+      "swap image and text roles": ["3/3", "3/4", null, null]
+    },
+    "specific_failures": "The role swap failed edit-target and standalone-artifact. Changing only the standalone or hosted action failed that artifact's objective. Putting editor.html in the hand-edit field failed edit-target. The positive row rejected missing formats and wrong format roles on outputs. The same complete plan without formats passed the adversarial row.",
+    "permitted_changes": "Both rows fully accepted editor/js instead of the precise file, the documented editor/js/ spelling, website/public/ instead of website/public, and reversed JSON key order. The correct plan names the assembler in its builder role and passes.",
+    "compatibility": "The revised prompt expressly requires naming both builder source files. Omitting the standalone builder loses that objective even when the owner, actions and scripts are correct. Both rows rejected ./editor/js/export.js, which the prompt expressly excludes, and the equivalent editor/js/./export.js, which has neither a leading ./ nor a trailing slash. An extra truthful assembler-context field also failed edit-target through the closed top-level schema. The grader measures this constrained plan format."
+  },
+  "subject_evidence": {
+    "reported": "The report describes 16 positive and 14 adversarial saved answers and gives four illustrative before/after rows. Independent examples reproduced the numerical results for correct ownership, swapped ownership, hand-editing hosted output and swapped format roles, as well as directory and key-order tolerance.",
+    "reproducibility": "The report's editor-controls/positive/swapped-owners.txt replay path and complete 30-answer corpus are absent from the sealed patch and repository snapshot. The subject's exact inputs and all 30 judgments could not be independently replayed. The 34 new pairs remain exploratory."
+  },
+  "ablation_and_manifest": {
+    "manifest": "Original and candidate public materialization and upstream validation both exited 0 with 51 cases, four ablations and the same 32 warnings. Private prompts were not hydrated.",
+    "editor_only": "Upstream materialize-ablations exited 0 on a temporary projection selecting only no-editor-source-of-truth in both trees. The original removed the standalone assembler row and generated-output warning. The candidate also removed the modular editor/js/ source-map row, including its sharing.js, rendering.js and state.js pointers. No lines were inserted. The hosted builder row and build examples remain. Model behavior under the ablation was unmeasured.",
+    "all_declared": "The unfiltered upstream materialize-ablations invocation exited 1 on both original and candidate. Both reported a patch context mismatch at line 62 of the separate no-verify-before-serialize ablation. This pre-existing failure leaves full ablation materialization incomplete."
+  },
+  "keepers_and_other_surfaces": {
+    "encoded_freshness": "On both trees the cookbook regeneration callback, cookbook CLI --check and Section B regeneration callback accepted the original bytes and rejected the lossless re-encode, visible-pixel edit and dimension change. The cookbook and Section B historical approval callbacks each rejected a substituted re-encode and accepted the original.",
+    "visual_equivalence_and_policy": "The existing cookbook RGBA-and-dimensions helper accepted the original and re-encode and rejected pixel and dimension changes on both trees. docs/testing-strategy.md and eval/section-b-brand-evidence/README.md continue to require exact Section B regenerated bytes. The pinned renderer reproducibility policy and approval hashes were preserved. Renderer output bytes were supplied by the controlled fixtures.",
+    "font_and_workflow": "The canonical font setup preceded sharding on both trees. Weekly coverage lacked the corresponding setup on both. The CI prerequisite rejected missing fonts and accepted the supplied directory. The optional local case passed. The three coverage shards and merge dependency on unit were preserved. The recorder and directory guards did not execute installation, hosted shards, merging or glyph rendering.",
+    "browser_and_units": "The actual PNG/SVG download assertions in e2e/browser.test.ts and e2e/editor-site-interactions.e2e.test.ts were preserved in source. The browser did not run. The independent focused Python suite passed 10/10 on both trees and supplies collateral preservation evidence.",
+    "historical_ci": "The frozen records support zero canonical runs on source SHA f49196e7, whose merge carried the owner-approved [skip ci]. Weekly coverage failed there, with two successful shards and a skipped merge. The older 17c400a9 quality gates failed and browser-site succeeded. Hosted candidate CI was unmeasured."
+  },
+  "coverage": {
+    "inventory": 660,
+    "accessible_conventional_tests": 58,
+    "sample_strata": 13,
+    "subject_reported_scanned": 58,
+    "subject_reported_focus": "Editor interactions, theme switch, website build, Section B visual golden, benchmark version, live-editor skill, unit/browser selectors and two public grader cases.",
+    "independently_observed_subject_reads": null,
+    "subject_runtime_seconds": null,
+    "unmeasured": "Live model performance, private splits, browser behavior, native rasterizer, the full Bun suite and candidate hosted CI."
+  },
+  "evidence": {
+    "runtime": "Original and candidate used sha256:e89a28eddc2679c648d10c127f6d0f79d892056a55f179dfded36452a5477c46. Candidate frozen wrapper exit 0, no script oracles. The independent plan and ablation probes also used the pinned image.",
+    "commands": [
+      "flock /tmp/test-audit-v2-docker.lock python3 -B preparation/agentic-mermaid/run-isolated.py --repo controller/candidate-snapshots/<sealed-id> --output controller/outputs/<sealed-id>/controls.json",
+      "flock /tmp/test-audit-v2-docker.lock python3 -B controller/outputs/<sealed-id>/exploratory-editor.py"
+    ],
+    "original": "preparation/agentic-mermaid/operator-runtime/baseline.isolated.json and baseline.isolated.runtime.json",
+    "candidate": ["controls.json", "controls.runtime.json", "exploratory-editor.json", "exploratory-editor.py", "patch.diff", "response.md", "candidate-snapshot.json", "disposition.json"]
+  }
+}

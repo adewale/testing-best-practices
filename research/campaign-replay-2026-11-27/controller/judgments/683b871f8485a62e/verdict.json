@@ -1,0 +1,101 @@
+{
+  "case": "R01",
+  "candidates": [
+    {
+      "id": "b72ecdaa37013843",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes the nightly trigger, four-job matrix, all-module enrollment and per-job floor of 60.",
+          "reason": "Only a manually dispatched, single-function diagnostic would ship."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the route suite in CI and seeds a wrong-port fault to decide whether it needs an endpoint assertion.",
+          "reason": "The focused check can settle the question before a mutation job consumes any runner time. A remaining question gets a 20-minute cap."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Stops the failed nightly schedule and requires a completed target-runner baseline within budget, a finding beyond the focused regression and a named maintainer who accepts triage.",
+          "reason": "Future automation depends on measured capacity, additional fault detection and ownership."
+        }
+      ]
+    },
+    {
+      "id": "a03334350c33eefa",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Replaces the scheduled all-module matrix with one manual route slice and removes the score floor.",
+          "reason": "The proposed sharding and threshold would stay out of recurring CI."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Preserves the current route suite and caps the pilot at 30 runner-minutes. An observable wrong-node survivor can justify an endpoint regression.",
+          "reason": "The pilot informs a specific test decision, verified by a failure on the mutant and a pass on restored source."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Removes the nightly trigger, checks its last exit reason and leaves the job idle without a result owner. Scheduling requires intended-scope measurements on the target runner, actionable findings and an agreed recurring budget.",
+          "reason": "The named maintainer handles triage, and the plan distinguishes the slice measurement from evidence for broader enrollment."
+        }
+      ]
+    },
+    {
+      "id": "a1328343d3a2a46a",
+      "overall": "FAIL",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Pauses the nightly schedule, allowlists one route module and removes the per-job floor of 60.",
+          "reason": "The only immediate workflow is an advisory manual job."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps existing route assertions and triggers. A 30-minute pilot sends survivors to a reviewer to decide whether a specific route behavior needs a new assertion.",
+          "reason": "The bounded sample can justify a targeted test change while preserving existing coverage."
+        },
+        {
+          "criterion": 3,
+          "verdict": "FAIL",
+          "evidence": "Restoring the schedule requires a full-route run within 90 minutes and an owner accepting cost and triage. The reviewer records any actionable gap found.",
+          "reason": "Those conditions allow scheduling to resume even if the review finds no actionable gap or other demonstrated benefit."
+        }
+      ]
+    },
+    {
+      "id": "a18e23703a5067a4",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Removes the timer, four-job matrix, all-module enrollment and floor of 60.",
+          "reason": "The remaining advisory workflow is manual and limited to a selected route function."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Retains the focused suite and temporarily omits the final route segment to test whether it detects a lost destination.",
+          "reason": "The observed result determines whether to strengthen the endpoint assertion. A capped mutation pilot runs only for a distinct unresolved question."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Stops the current nightly run from recurring and checks where it stopped. Future automation requires a completed target-runner baseline, measured capacity, an actionable fault beyond the regression and a named ongoing owner.",
+          "reason": "Each condition directly informs whether a maintainer can use and sustain the recurring work."
+        }
+      ]
+    }
+  ]
+}

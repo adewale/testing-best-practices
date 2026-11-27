@@ -1,0 +1,15 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+
+ Test Files  8 passed (8)
+      Tests  84 passed (84)
+   Start at  02:18:36
+   Duration  18.14s (transform 5.41s, setup 0ms, import 22.42s, tests 17.64s, environment 0ms)
+

@@ -1,0 +1,13 @@
+
+ RUN  v4.1.11 /case/repo/app
+
+ ✓ |unit| src/components/TransportBar.test.tsx > sends consecutive 'Tempo' edits during a touch drag 185ms
+ ✓ |unit| src/components/TransportBar.test.tsx > sends consecutive 'Swing' edits during a touch drag 36ms
+ ✓ |unit| src/components/TransportBar.test.tsx > ignores secondary-button 'Tempo' drags and reports a primary-button drag 22ms
+ ✓ |unit| src/components/TransportBar.test.tsx > ignores secondary-button 'Swing' drags and reports a primary-button drag 15ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  02:07:28
+   Duration  1.91s (transform 132ms, setup 194ms, import 260ms, tests 259ms, environment 1.08s)
+

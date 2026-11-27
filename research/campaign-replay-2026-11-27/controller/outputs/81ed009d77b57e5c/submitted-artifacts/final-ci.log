@@ -1,0 +1,155 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+stderr | eviction-recovery.test.ts > replays a rejected v2 operation ID instead of applying it after state changes
+[INVARIANT VIOLATION][loadFromKV] session=be27ccd1-b069-402e-82cf-e90744c27c1e {
+  violations: [
+    'Track idempotent-envelope-track: steps length 16 !== 128',
+    'Track idempotent-envelope-track: parameterLocks length 16 !== 128'
+  ],
+  trackCount: 1,
+  trackIds: [ 'idempotent-envelope-track' ]
+}
+[INVARIANT] Auto-repaired state for session=be27ccd1-b069-402e-82cf-e90744c27c1e {
+  repairs: [
+    'Padded steps array for track idempotent-envelope-track',
+    'Padded parameterLocks array for track idempotent-envelope-track',
+    'Replaced non-finite pan undefined with 0 for track idempotent-envelope-track'
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=3023cf43-991c-4f3b-b554-ff5ff95810b3 {
+  violations: [
+    'Track t1: steps length 16 !== 128',
+    'Track t1: parameterLocks length 16 !== 128',
+    'Track t2: steps length 16 !== 128',
+    'Track t2: parameterLocks length 16 !== 128'
+  ],
+  trackCount: 2,
+  trackIds: [ 't1', 't2' ]
+}
+[INVARIANT] Auto-repaired state for session=3023cf43-991c-4f3b-b554-ff5ff95810b3 {
+  repairs: [
+    'Padded steps array for track t1',
+    'Padded parameterLocks array for track t1',
+    'Replaced non-finite pan undefined with 0 for track t1',
+    'Padded steps array for track t2',
+    'Padded parameterLocks array for track t2',
+    'Replaced non-finite pan undefined with 0 for track t2'
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > replays a rejected v2 operation ID instead of applying it after state changes 54ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV 65ms
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=a68d0815-d2a5-4bad-9652-1ff858c4c6c6 {
+  violations: [
+    'Track t1: steps length 16 !== 128',
+    'Track t1: parameterLocks length 16 !== 128',
+    'Track t2: steps length 16 !== 128',
+    'Track t2: parameterLocks length 16 !== 128'
+  ],
+  trackCount: 2,
+  trackIds: [ 't1', 't2' ]
+}
+[INVARIANT] Auto-repaired state for session=a68d0815-d2a5-4bad-9652-1ff858c4c6c6 {
+  repairs: [
+    'Padded steps array for track t1',
+    'Padded parameterLocks array for track t1',
+    'Replaced non-finite pan undefined with 0 for track t1',
+    'Padded steps array for track t2',
+    'Padded parameterLocks array for track t2',
+    'Replaced non-finite pan undefined with 0 for track t2'
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=32d8251e-e60b-4293-93d3-ff820bf4a258 {
+  violations: [
+    'Track t1: steps length 16 !== 128',
+    'Track t1: parameterLocks length 16 !== 128',
+    'Track t2: steps length 16 !== 128',
+    'Track t2: parameterLocks length 16 !== 128'
+  ],
+  trackCount: 2,
+  trackIds: [ 't1', 't2' ]
+}
+[INVARIANT] Auto-repaired state for session=32d8251e-e60b-4293-93d3-ff820bf4a258 {
+  repairs: [
+    'Padded steps array for track t1',
+    'Padded parameterLocks array for track t1',
+    'Replaced non-finite pan undefined with 0 for track t1',
+    'Padded steps array for track t2',
+    'Padded parameterLocks array for track t2',
+    'Replaced non-finite pan undefined with 0 for track t2'
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > persists a real WebSocket mutation to storage and recovers it after an ungraceful eviction 53ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > restores serverSeq from storage after a graceful disconnect + eviction 32ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > documents that serverSeq below the persistence checkpoint resets on ungraceful eviction (state still survives) 27ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > hibernates a live WebSocket across eviction and restores + resumes it 24ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins) 57ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write 39ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge 27ms
+ ✓ |keyboardia-integration| overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client 293ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > closes live WebSockets when evicted with { webSockets: "close" } 25ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > recovers from the KV fallback path after eviction when DO storage was never written 19ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > evictAllDurableObjects recovers each instance from its own persisted mutation 49ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects 254ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > hibernates and restores TWO live WebSockets, preserving cross-client broadcast 75ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > closes ALL live WebSockets when two players are evicted with { webSockets: "close" } 48ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > restores only the still-connected player when a peer disconnected before eviction 55ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > drains a burst of in-flight WebSocket mutations across eviction without corruption 29ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > keeps state consistent when a mutation races an eviction 37ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > survives repeated back-to-back evictions 68ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > regression: mutations on a WebSocket that woke a hibernated DO are applied (no HTTP load) 231ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > flushes the latest state to KV when a disconnect wakes a hibernated DO 51ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > keeps a published session immutable across eviction (immutable flag reloaded on wake) 48ms
+stderr | eviction-recovery.test.ts > webSocketError on a cold wake flushes KV when it is the last connection
+[WS] error session=b6e1fdc0-cf80-4d2a-9a0e-84d9b1cc246f player=undefined Error: forced abnormal close
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/test/integration/eviction-recovery.test.ts:849:27
+    at maybeHandleRunRequest (tmp/keyboardia-v2-worker-deps/node_modules/@cloudflare/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:157:24)
+    at DurableObject.Wrapper.fetch (tmp/keyboardia-v2-worker-deps/node_modules/@cloudflare/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:552:26)
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > webSocketError on a cold wake flushes KV when it is the last connection 47ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > serverSeq stays monotonic across a graceful disconnect, eviction, and reconnect 56ms
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=c6d3e73a-4205-4744-ab36-b50f490d3c7f {
+  violations: [
+    'Track fuzz-track: steps length 16 !== 128',
+    'Track fuzz-track: parameterLocks length 16 !== 128'
+  ],
+  trackCount: 1,
+  trackIds: [ 'fuzz-track' ]
+}
+[INVARIANT] Auto-repaired state for session=c6d3e73a-4205-4744-ab36-b50f490d3c7f {
+  repairs: [
+    'Padded steps array for track fuzz-track',
+    'Padded parameterLocks array for track fuzz-track',
+    'Replaced non-finite pan undefined with 0 for track fuzz-track'
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > a non-last client close after hibernation does not prematurely flush KV 52ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction 42ms
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=30 coverage={"accepted":99,"dirtyDisconnects":3,"byKind":{"ws_tempo":10,"ws_swing":13,"rest_put":9,"rest_patch_state":11,"rest_patch_name":14,"hibernate":17,"hard_evict":11,"disconnect":8,"connect":6}}
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=60 coverage={"accepted":234,"dirtyDisconnects":6,"byKind":{"ws_tempo":22,"ws_swing":25,"rest_put":28,"rest_patch_state":36,"rest_patch_name":30,"hibernate":36,"hard_evict":31,"disconnect":16,"connect":10}}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 3339ms
+
+ Test Files  3 passed (3)
+      Tests  28 passed (28)
+   Start at  02:29:53
+   Duration  8.58s (transform 2.49s, setup 0ms, import 7.67s, tests 5.20s, environment 0ms)
+

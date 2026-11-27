@@ -1,0 +1,55 @@
+EXPLORATORY run=remove-only-hibernate-arbitrary exit=1
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=24301,1,7,42,1337,90210,12648430,2024,555,31337,4096 runsPerSeed=3 coverage={"accepted":143,"dirtyDisconnects":3,"byKind":{"ws_tempo":18,"ws_swing":12,"rest_put":21,"rest_patch_state":17,"rest_patch_name":24,"hibernate":0,"hard_evict":27,"disconnect":13,"connect":11}}
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=24301,1,7,42,1337,90210,12648430,2024,555,31337,4096 runsPerSeed=6 coverage={"accepted":251,"dirtyDisconnects":4,"byKind":{"ws_tempo":28,"ws_swing":28,"rest_put":37,"rest_patch_state":35,"rest_patch_name":37,"hibernate":0,"hard_evict":49,"disconnect":21,"connect":16}}
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=24301,1,7,42,1337,90210,12648430,2024,555,31337,4096 runsPerSeed=9 coverage={"accepted":393,"dirtyDisconnects":6,"byKind":{"ws_tempo":40,"ws_swing":35,"rest_put":62,"rest_patch_state":63,"rest_patch_name":62,"hibernate":0,"hard_evict":72,"disconnect":36,"connect":23}}
+
+ × |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 3939ms
+   → Coverage budget exhausted for seeds [24301,1,7,42,1337,90210,12648430,2024,555,31337,4096]. Expected 100 accepted commands, every modeled action, and a dirty disconnect. Observed {"accepted":393,"dirtyDisconnects":6,"byKind":{"ws_tempo":40,"ws_swing":35,"rest_put":62,"rest_patch_state":63,"rest_patch_name":62,"hibernate":0,"hard_evict":72,"disconnect":36,"connect":23}}: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+AssertionError: Coverage budget exhausted for seeds [24301,1,7,42,1337,90210,12648430,2024,555,31337,4096]. Expected 100 accepted commands, every modeled action, and a dirty disconnect. Observed {"accepted":393,"dirtyDisconnects":6,"byKind":{"ws_tempo":40,"ws_swing":35,"rest_put":62,"rest_patch_state":63,"rest_patch_name":62,"hibernate":0,"hard_evict":72,"disconnect":36,"connect":23}}: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ state-machine-fuzz.test.ts:559:5
+    557|     + `${MIN_ACCEPTED_COMMANDS} accepted commands, every modeled actio…
+    558|     + `Observed ${JSON.stringify(coverage)}`,
+    559|   ).toBe(true);
+       |     ^
+    560| }, MODEL_TIMEOUT_MS);
+    561|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:48:02
+   Duration  7.93s (transform 945ms, setup 0ms, import 2.51s, tests 3.94s, environment 0ms)
+
+

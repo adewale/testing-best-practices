@@ -1,0 +1,54 @@
+{
+  "observed_utc": "2026-11-27T02:48:13.627239+00:00",
+  "source": "Read-only metadata observation. Subject workspaces were not inspected. Public attach.py symlinks the .bin directory as a unit; shared-host subjects use dependencies as read-only procedural inputs.",
+  "operator_cleanup": false,
+  "trees": {
+    "app": {
+      "location": "/tmp/keyboardia-v2-app-deps/node_modules",
+      "root_package_lock_sha256": "7a437fe0c5417f5ece2cbdcb2f148d092e5593ece90be071304b8e2d600375a0",
+      "installed_package_lock_sha256": "13fe83b192d83db494612485f2333e40823679128f8cdc2838ab204d5e1daf43",
+      "typescript_provision_lock": null,
+      "typescript_install_lock": null,
+      "typescript_package_present": false,
+      "bin_link_targets": {
+        "esbuild": "../esbuild/bin/esbuild",
+        "lz-string": "../lz-string/bin/bin.js",
+        "nanoid": "../nanoid/bin/nanoid.cjs",
+        "node-which": "../which/bin/node-which",
+        "ot": "../@shuding/opentype.js/bin/ot",
+        "qrcode": "../qrcode/bin/qrcode",
+        "rollup": "../rollup/dist/bin/rollup",
+        "tldts": "../tldts/bin/cli.js",
+        "tsx": "../tsx/dist/cli.mjs",
+        "vite": "../vite/bin/vite.js",
+        "vitest": "../vitest/vitest.mjs",
+        "why-is-node-running": "../why-is-node-running/cli.js"
+      },
+      "bin_targets_missing_on_disk": [],
+      "current_links_disagreeing_with_installed_lock_bin_metadata": {},
+      "unrepresented_declared_root_bin_names": []
+    },
+    "worker": {
+      "location": "/tmp/keyboardia-v2-worker-deps/node_modules",
+      "root_package_lock_sha256": "b453e07d3687bed9801a219a8fbd5c45d48da928a0bcbdffeb72b05b5400393f",
+      "installed_package_lock_sha256": "347d83607fae89b42fcd6eb9068c6b66facc473d7880280207688b894d911dd0",
+      "typescript_provision_lock": "5.9.3",
+      "typescript_install_lock": "5.9.3",
+      "typescript_package_present": true,
+      "bin_link_targets": {
+        "nanoid": "../nanoid/bin/nanoid.cjs",
+        "rolldown": "../rolldown/bin/cli.mjs",
+        "semver": "../semver/bin/semver.js",
+        "tsc": "../typescript/bin/tsc",
+        "tsserver": "../typescript/bin/tsserver",
+        "vite": "../vite/bin/vite.js",
+        "vitest": "../vitest/vitest.mjs",
+        "why-is-node-running": "../why-is-node-running/cli.js"
+      },
+      "bin_targets_missing_on_disk": [],
+      "current_links_disagreeing_with_installed_lock_bin_metadata": {},
+      "unrepresented_declared_root_bin_names": []
+    }
+  },
+  "limits": "The current app .bin lacks tsc. The Worker .bin/tsc link resolves to the declared Worker compiler. This point-in-time check does not establish the earlier exact link target, duration, actions of another subject, or absence of any transient effect. No prior time-stamped hash of the shared .bin directory was supplied."
+}

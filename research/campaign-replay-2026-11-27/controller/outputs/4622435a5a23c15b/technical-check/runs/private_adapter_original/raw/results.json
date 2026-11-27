@@ -1,0 +1,18 @@
+{
+  "original": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-unit.sh",
+        "--reporter=verbose",
+        "src/components/tempo-change.test.ts",
+        "src/components/swing-control.test.ts"
+      ]
+    },
+    "log": "original.log",
+    "seconds": 21.708
+  }
+}

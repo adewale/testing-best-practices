@@ -1,0 +1,8 @@
+--- a/app/test/integration/state-machine-fuzz.test.ts
++++ b/app/test/integration/state-machine-fuzz.test.ts
+@@ -556,4 +556,5 @@
+     await runModelBatch(coverage, RUNS_PER_SEED + extraRun, 1);
+   }
+   expect(missingModelCoverage(coverage), JSON.stringify(coverage)).toEqual([]);
++  throw new Error("VERIFY_CAPTURE_COMPLETE\n" + verifierScheduleTrace.map((value) => "VERIFY_SCHEDULE=" + value).join("\n"));
+ }, MODEL_TIMEOUT_MS);

@@ -13,6 +13,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - E08, E33 and E74 execute candidate tests against the reference and specified behavioral faults; comments, skipped tests, lost retry recovery and mock-only ranking checks no longer supply the promised proof. External candidates run in a bounded offline container. Declared unavailable checker exits remain provisional through both runners.
 - After the frozen replay, added an explicit full-caller acceptance/rejection requirement and E79's executable regression for a verifier that discards a lower-level rejection. Its seven development controls are separate from the model comparison; no model replay was run for this follow-up.
 
+### Validation (larger-suite replay, 2026-11-27)
+- Retained all 48 subject attempts and 12 judge attempts across four guidance arms. The fixed historical screen scored no guidance 7/9, earlier PR41 9/9, revised candidate 8/9 and OpenClaw 9/9; no superiority claim is supported.
+- Nine larger-suite reports delivered repairs in Mermaid, Keyboardia and PDA. Independent native fault/allowed-change controls accompany three interrupted subjects, one delivered report with unavailable backend completion and one failed judge. [Results and limitations](research/campaign-replay-2026-11-27/RESULTS.md) distinguish technical proof from model comparison.
+
 ### Validation (historical campaign replay, 2026-11-26)
 - Retained nine frozen historical/control scenarios, 27 independent model plans, nine arm-blinded judgments and reproducible input preparation. No-skill, pre-PR and PR #41 arms each passed 9/9. The saturated one-shot screen shows no incremental benefit; no campaign-prevention or model-uplift claim is made, and no recurring gate was added.
 

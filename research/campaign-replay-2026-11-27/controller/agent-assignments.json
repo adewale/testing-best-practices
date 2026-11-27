@@ -1,0 +1,338 @@
+[
+  {
+    "subject_id": "889c1e114207ebea",
+    "agent_name": "/root/trial_889c1e114207ebea",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "244aa8b6a4dbdf81",
+    "agent_name": "/root/trial_244aa8b6a4dbdf81",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "a9182589c9b5e41c",
+    "agent_name": "/root/trial_a9182589c9b5e41c",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "8887cf6821a2f4a3",
+    "agent_name": "/root/trial_8887cf6821a2f4a3",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "fd103af50acf82f9",
+    "agent_name": "/root/trial_fd103af50acf82f9",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "ef042f4f27faa240",
+    "agent_name": "/root/trial_ef042f4f27faa240",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "14d68616bd52a6db",
+    "agent_name": "/root/trial_14d68616bd52a6db",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "0cc23a6d3d288c81",
+    "agent_name": "/root/trial_0cc23a6d3d288c81",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "ca0312132f599cf3",
+    "agent_name": "/root/trial_ca0312132f599cf3",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "0e9d862ce5b513d3",
+    "agent_name": "/root/trial_0e9d862ce5b513d3",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "0109a8ca161dc603",
+    "agent_name": "/root/trial_0109a8ca161dc603",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "e5e07cd4c67d8430",
+    "agent_name": "/root/trial_e5e07cd4c67d8430",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "7fae3e37bb6edc9e",
+    "agent_name": "/root/trial_7fae3e37bb6edc9e",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "8655062dec2aa24d",
+    "agent_name": "/root/trial_8655062dec2aa24d",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "f0ec335c896105d5",
+    "agent_name": "/root/trial_f0ec335c896105d5",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "f33c0902fa9e7809",
+    "agent_name": "/root/trial_f33c0902fa9e7809",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "e9830d13fc16457f",
+    "agent_name": "/root/trial_e9830d13fc16457f",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "af240a8ec78ae483",
+    "agent_name": "/root/trial_af240a8ec78ae483",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "c614295b49af98e7",
+    "agent_name": "/root/trial_c614295b49af98e7",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "a1b2e89654aaade9",
+    "agent_name": "/root/trial_a1b2e89654aaade9",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "1f2f41ad8583a869",
+    "agent_name": "/root/trial_1f2f41ad8583a869",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "f8b1a29f82f5262b",
+    "agent_name": "/root/trial_f8b1a29f82f5262b",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "b9e32ce20014cb81",
+    "agent_name": "/root/trial_b9e32ce20014cb81",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "a1aa9613d9c739e5",
+    "agent_name": "/root/trial_a1aa9613d9c739e5",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "8c00728ffb528610",
+    "agent_name": "/root/trial_8c00728ffb528610",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "0738d8d6d69c9aab",
+    "agent_name": "/root/trial_0738d8d6d69c9aab",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "09a9eb49daf17c83",
+    "agent_name": "/root/trial_09a9eb49daf17c83",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "a6cc4322822f96a3",
+    "agent_name": "/root/trial_a6cc4322822f96a3",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "2bc860e3a0dcb269",
+    "agent_name": "/root/trial_2bc860e3a0dcb269",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "1418a084344cfc04",
+    "agent_name": "/root/trial_1418a084344cfc04",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "0670c41a390a1924",
+    "agent_name": "/root/trial_0670c41a390a1924",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "cc9be1e227470f8a",
+    "agent_name": "/root/trial_cc9be1e227470f8a",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "a130425720fc9b6e",
+    "agent_name": "/root/trial_a130425720fc9b6e",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "c543a869571ed8bd",
+    "agent_name": "/root/trial_c543a869571ed8bd",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "6dbc3760966291b1",
+    "agent_name": "/root/trial_6dbc3760966291b1",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "a2c633dd5d32e6da",
+    "agent_name": "/root/trial_a2c633dd5d32e6da",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "4622435a5a23c15b",
+    "agent_name": "/root/trial_4622435a5a23c15b",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "0999ee6be9755f97",
+    "agent_name": "/root/trial_0999ee6be9755f97",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "2eafa8d74ad7622d",
+    "agent_name": "/root/trial_2eafa8d74ad7622d",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "d3dfc73ed6d4ddba",
+    "agent_name": "/root/trial_d3dfc73ed6d4ddba",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "991af762de5e1244",
+    "agent_name": "/root/trial_991af762de5e1244",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "c6e8de671b642b51",
+    "agent_name": "/root/trial_c6e8de671b642b51",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "a8fc297c98aeeca9",
+    "agent_name": "/root/trial_a8fc297c98aeeca9",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "f5740f900f52bf30",
+    "agent_name": "/root/trial_f5740f900f52bf30",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "760faa4901a0a237",
+    "agent_name": "/root/trial_760faa4901a0a237",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "d7c2dcb74d42a173",
+    "agent_name": "/root/trial_d7c2dcb74d42a173",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "81ed009d77b57e5c",
+    "agent_name": "/root/trial_81ed009d77b57e5c",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  {
+    "subject_id": "f017afaf3bd340cf",
+    "agent_name": "/root/trial_f017afaf3bd340cf",
+    "requested_model": "gpt-6.2-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  }
+]

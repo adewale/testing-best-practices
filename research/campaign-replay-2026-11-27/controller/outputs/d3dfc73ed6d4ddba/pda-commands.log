@@ -1,0 +1,8 @@
+clean: [('test/vitest.config.ts', 31, 0, None), ('test/ui/vitest.config.ts', 14, 0, None)]
+empty-data: [('test/vitest.config.ts', 30, 1, None)]
+tail-bit: [('test/vitest.config.ts', 30, 1, None)]
+physical-order: [('test/vitest.config.ts', 31, 0, None)]
+member-order: [('test/vitest.config.ts', 31, 0, None)]
+auth-keeper: [('test/vitest.config.ts', 0, 1, None)]
+isolation-keeper: [('test/vitest.config.ts', 0, 1, None)]
+upload-byte-keeper: [('test/ui/vitest.config.ts', 0, 1, None)]

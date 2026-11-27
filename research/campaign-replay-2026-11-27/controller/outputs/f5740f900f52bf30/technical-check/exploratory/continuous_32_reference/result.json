@@ -1,0 +1,21 @@
+{
+  "exit": 0,
+  "wall_seconds": 5.149,
+  "log": "technical-check/exploratory/continuous_32_reference/run.log",
+  "sha256": "896a7522b8dcfbf39a50ab221a07b9bc76d65cc9c5a3e7b30254f27201bb388b",
+  "test_files": "1 passed (1)",
+  "tests": "1 passed | 5 skipped (6)",
+  "source": "original",
+  "stimulus": "continuous_32",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "088e27cde7131170cbe63fb53922fb6656b9713117ae730d279eafa1a6dbf514",
+    "b7c3f6be16f95ef1c06561b0c3229118965f40302ffff2e101dd54c5e0510f12"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "exit": 1,
+  "wall_seconds": 3.959,
+  "log": "technical-check/exploratory/stale_candidate/run.log",
+  "sha256": "26b56a888f67271180b9e5c45546de24ba2e2472b528dc914e11f60b8bb3d079",
+  "test_files": "1 failed (1)",
+  "tests": "1 failed | 5 skipped (6)",
+  "source": "submitted",
+  "stimulus": "stale",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "8a58b43877ce60f620dd89f1b4b12de9b005e7a90856302a256fc4726cc9c9e4",
+    "d523a5dd2327c56baff858acf6868c0a09d59ab34f4ef9e116502225ce27f7d3"
+  ],
+  "promotion": {
+    "exit": 0,
+    "wall_seconds": 0.538,
+    "log": "technical-check/exploratory/stale_candidate/promotion.log",
+    "sha256": "612d03d494fd2cc79d9b2dc46402681669dc800d2345f3db6c698d3b76393bba"
+  },
+  "known_replay": {
+    "exit": 1,
+    "wall_seconds": 3.902,
+    "log": "technical-check/exploratory/stale_candidate/known-replay.log",
+    "sha256": "8bed1043014b4e092291a96c77e27d0db1db81d5d5371fbd04a3d67a4a2130f9",
+    "test_files": "1 failed (1)",
+    "tests": "1 failed | 5 skipped (6)"
+  }
+}

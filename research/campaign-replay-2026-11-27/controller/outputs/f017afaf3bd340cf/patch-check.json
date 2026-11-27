@@ -1,0 +1,9 @@
+{
+  "command": "git apply --check --whitespace=error-all <sealed patch>",
+  "input": "disposable copy of pinned original source",
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "addedLines": 42,
+  "removedLines": 35
+}

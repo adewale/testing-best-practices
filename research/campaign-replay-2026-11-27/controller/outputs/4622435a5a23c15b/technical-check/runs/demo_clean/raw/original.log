@@ -1,0 +1,14 @@
+
+ RUN  v4.1.11 /case/repo/app
+
+ ✓ |unit| src/data/phase44-demo-session.test.ts > Whisper to Roar demo session > is a valid, invariant-clean session the mock API can serve 7ms
+ ✓ |unit| src/data/phase44-demo-session.test.ts > Whisper to Roar demo session > drives the velocity filter: soft locks below bypass on anchored instruments 1ms
+ ✓ |unit| src/data/phase44-demo-session.test.ts > Whisper to Roar demo session > carries full-velocity accents that provably bypass the filter 1ms
+ ✓ |unit| src/data/phase44-demo-session.test.ts > Whisper to Roar demo session > uses the Phase 44 default room and exercises tied sustains and kit layers 0ms
+ ✓ |unit| src/data/phase44-demo-session.test.ts > Whisper to Roar demo session > keeps every locked pitch inside its instrument playable range and scale 1ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  02:09:04
+   Duration  411ms (transform 152ms, setup 100ms, import 149ms, tests 12ms, environment 0ms)
+

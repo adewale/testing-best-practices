@@ -1,0 +1,11 @@
+--- a/app/test/integration/state-machine-fuzz.test.ts
++++ b/app/test/integration/state-machine-fuzz.test.ts
+@@ -521,7 +521,7 @@
+       }),
+       {
+         seed: seed | 0,
+-        numRuns: RUNS_PER_SEED,
++        numRuns: 32,
+         interruptAfterTimeLimit: Math.max(
+           30_000,
+           Math.floor(MODEL_TIMEOUT_MS / MODEL_SEEDS.length) - 5_000,

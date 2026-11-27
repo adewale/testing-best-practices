@@ -1,0 +1,5 @@
+ M app/e2e/core.spec.ts
+ M app/e2e/phase3-refactoring.spec.ts
+ A app/src/components/TransportBar.test.tsx
+ M app/src/components/swing-control.test.ts
+ M app/src/components/tempo-change.test.ts

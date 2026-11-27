@@ -1,0 +1,10 @@
+{
+  "claim": "The existing registered Worker model keeps its workload floor (100 commands, both WS write kinds and a dirty disconnect), drawing successive schedules from the same seed for at most one additional batch. Seed 45182094013 should turn green; the original fixed final-save keeper and property failure/shrink/replay still reject damaged storage behavior. No production or configuration changes.",
+  "prepared_controls": [
+    "default_model",
+    "valid_schedule",
+    "persistence_original",
+    "persistence_fault"
+  ],
+  "supplemental_exploratory": "Check the submitted stale-GET fault on each tree, CLI promotion and replay, deliberate absence of WS swing generation, fixed non-historical seed 20261127, equivalent private GET response construction, same-stream offsets and exact observed work on the historical seed, native CI three-file selection and waveform zero-peaks open finding. These are separate from frozen inputs and outcomes."
+}

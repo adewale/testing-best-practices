@@ -37,6 +37,9 @@ Carry process status and phase through wrappers, pipelines and judges. Valid
 output followed by a nonzero judge exit is a failed/provisional measurement,
 not a transcript-backed final score. Keep diagnostics and uniquely identify each
 run so another trial cannot overwrite its receipt.
+Record artifact delivery separately from process or agent completion. Keep
+interrupted work and incremental command/result receipts with their actual
+budget and availability; do not regenerate missing observations.
 
 Required tests/fixtures disappearing must not silently become a completed pass.
 Optional/manual cases may remain skipped, but report their enrollment separately.
@@ -51,11 +54,19 @@ definition, objective and qualitative components, availability/denominators,
 grouping, ablation, and relevant runtime/version. Reject or explicitly separate
 incompatible effective metrics before computing a gain. Identical judgments
 scored under different policies can manufacture a statistically significant delta.
+For shared dependencies, isolate writable caches and command links per trial.
+A symlink into a shared installation still permits cross-trial writes unless
+the runtime enforces read-only access; describe instructional isolation honestly.
 
 Compatibility is about meaning, not identical script bytes. A checker repair or
 refactor may preserve the metric; an unchanged script may select a different
 metric through flags. Deliberate comparisons of graders are useful but measure
 the instrument, not a model/skill effect.
+
+A prompt changed from prose to structured JSON defines a different input
+condition. Separate old answers that no longer meet the requested format from
+incorrect decisions. Equivalent valid decisions in both formats can calibrate
+the instruments; their score difference alone does not measure a model gain.
 
 Keep frozen historical outputs and their declared labels. Regrading them creates
 a separately labelled analysis; it does not rewrite what was originally recorded.
@@ -72,6 +83,10 @@ bad proposals to reject. On larger suites, report inventory, selected/actually
 read sample and executed tiers rather than implying exhaustive discovery.
 
 Prefer observed edits and behavioral controls over warning vocabulary alone.
+An open audit can produce a valid repair outside a preselected finding. Apply
+the same contract, fault, permitted-change and preservation requirements to
+that repair, labelling new controls exploratory. A reference-specific adapter
+cannot establish its quality or failure merely because it lacks that route.
 Report incomplete runs, false alarms and lost proof as well as detected faults.
 A saturated planning screen or a seen-case tie establishes no incremental
 benefit. Small, known-case replays and same-family qualitative judging limit

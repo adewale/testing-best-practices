@@ -1,0 +1,29 @@
+--- a/test/controller-budget-reachability.test.ts
++++ b/test/controller-budget-reachability.test.ts
+@@ -13,7 +13,8 @@
+ const day = "2026-10-20";
+ 
+ it("can reach two unequal local holds through the shared budget and refuses the next call before dispatch", async () => {
+-  const pool = testEnv.DomainBudget.getByName(`controller-budget-${crypto.randomUUID()}`);
++  const poolName = `controller-budget-${crypto.randomUUID()}`;
++  const pool = testEnv.DomainBudget.getByName(poolName);
+   const owner = probes.get(probes.newUniqueId());
+   const cap = testEnv.DEMO_DAILY_USD_PER_DOMAIN;
+   expect(cap).toBe(1.5);
+@@ -36,7 +37,7 @@
+       const access = new ModelAccess({
+         env: testEnv, ledger, keys: new ModelKeys(state.storage.sql, () => new Sealer(testEnv), state.id.toString()),
+         profile: () => ({ provider: "google", sub: "budget-test", email: "owner@example.com", domain: null }),
+-        lists: () => testEnv, agent: state.id.toString(), domainBudget: () => pool,
++        lists: () => testEnv, agent: state.id.toString(), domainBudget: () => testEnv.DomainBudget.getByName(poolName),
+         demoLane: () => ({ provider: faux.provider, model: faux.getModel() }), ownKeyProviders: () => [],
+         onRefused: async e => { refusal = e.reason; }, onKeyRefused: async () => {},
+         now: () => Date.parse(day + "T12:00:00Z")
+@@ -49,6 +50,7 @@
+         inner.push({ type: "error", reason: "aborted", error: aborted });
+         return inner;
+       }).result();
++      if (!dispatched && !refusal) throw new Error("Router failed before a budget refusal: " + response.errorMessage);
+       return { dispatched, reason: response.stopReason, refusal, local: ledger.spent(day) };
+     });
+   }

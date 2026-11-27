@@ -1,0 +1,146 @@
+{
+  "case": "B02",
+  "frozen_reference_only": {
+    "sync": {
+      "columns": ["named CLI", "existing Worker persistence", "existing direct senders", "evaluator two-socket Worker", "evaluator returned hook"],
+      "exits": {"clean":[0,0,0,0,0],"coherent private field rename":[1,0,null,0,null],"drop actual dispatch":[0,1,null,1,null],"author-only tempo delivery":[0,0,null,1,null],"invert connected condition":[0,null,0,null,1],"equivalent early return":[0,null,0,null,0],"stale connected dependency":[0,null,0,null,1]},
+      "evidence": "Frozen sync matrix. The rename and early return preserve the public protocol and callback behavior. The existing Worker already catches dropped dispatch. The two-socket and rerender witnesses establish the peer and reconnection gaps. Null means outside the row. No submission added those witnesses. Protocol classification (messages.ts:32), exact payloads and empty-batch suppression (dedicated-sync-senders.test.ts:31) are separate baseline checks. See validate-sync-checklist.ts:120 and useMultiplayer.ts:390."
+    },
+    "discovery": {"original_exits":{"correct trace":0,"permuted seven-tool declaration":0,"missing post-read":0,"edit before both reads":0,"no read":1,"wrong protocol":1},"evidence":"Frozen grader-controls.json. The skill requires read, edit, then read. The declaration order is immaterial. None of the repairs changed this grader."},
+    "seed": {"original_exits":{"default generated model":0,"healthy historical seed":1,"clean fixed WS-to-KV example":0,"fixed example without final save":1},"evidence":"Frozen seed-controls/results.json. The generated model stopped at 99 against 100. The fixed example saw KV tempo 120 where 150 was required after disconnect."},
+    "visual": {"historical_run":"45018066984","outcome":"Cancelled before any macOS steps. The lane requires three distinct Holby Darwin baselines for landscape editing, pitch overview and portrait consumption. No candidate has a new Darwin run.","evidence":"ci-snapshot.json:1498, app/e2e/lane-contracts.json and populated-visual.spec.ts:10."}
+  },
+  "candidates": [
+    {
+      "id": "4db6c524dd83fb3b",
+      "disposition": "returned",
+      "known_findings": [
+        {"finding":"Sync CLI and returned reorder callback gaps","status":"unmentioned","evidence":"The report discusses the desktop tempo E2E as a separate input. It makes no checker, peer-delivery or hook claim."},
+        {"finding":"Discovery trace ordering","status":"unmentioned","evidence":"The manifest-tooling selection in the report does not exercise discoveryContract."},
+        {"finding":"Rotating Worker quota","status":"substantiated","evidence":"Unchanged historical model failed after 99 accepted commands, all nine kinds and three dirty disconnects. Independent seed_45182094013 replay had 27 passes and one floor failure at state-machine-fuzz.test.ts:494. Left open."},
+        {"finding":"Darwin visual lane","status":"substantiated","evidence":"Run 45018066984 recorded an unsupported configuration and zero steps. The three required cases did not execute. Stack A Identity had its own PR gate. Left open."}
+      ],
+      "novel_findings": [
+        {"finding":"The simulated callback tests missed mobile control routing and mouse-button faults","status":"substantiated","evidence":"Pinned tempo-change.test.ts:421 and swing-control.test.ts:402 simulate values or call their own spies. The swing example expects 80 for a 30-pixel upward move from 50. The real helper and mounted slider return 59. Exploratory touch_swap and mouse_guards pairs confirm the selected owners' gap."},
+        {"finding":"The demo fixture's named scale check only enforces playable range","status":"substantiated","evidence":"Exploratory demo_clean and demo_out_of_scale both passed 5/5. Replacing MIDI 62 with 63 stays in 33–88 and leaves the locked D natural minor scale. See phase44-demo-session.test.ts:105 and whisper-to-roar.json:28,59. This additional open finding concerns these five tests."}
+      ],
+      "material_claims": [{"status":"supported","claim":"Replaced tests improve detection of the two exercised mobile faults and retain the remaining selected tests.","evidence":"exploratory_component_matrix and registration."},{"status":"explicitly deferred","claim":"The DOM-callback result stops short of app, real-device and multiplayer behavior.","evidence":"Report, Local evidence and scope."}],
+      "unsupported_or_refuted_claims": [],
+      "repair": {
+        "changed":true,"judgment":"Supported bounded repair. Replaced four local C-001/C-002 simulations with four jsdom tests of the public TransportBar event-to-callback boundary. Two E2E files received comment edits. The sealed diff has five paths, +63/-127 and no production edits.",
+        "selection":"Original tempo-change and swing-control suites contained 23+27 cases. Submitted selection contains 21+25 and four in TransportBar.test.tsx. The new suite alone passed 4/4 and is listed by the CI unit project's unfiltered collection.",
+        "clean":"Original 0, 50/50. Submitted 0, 50/50. See exploratory_component_matrix.clean.",
+        "touch_swap":"Exploratory original 0, 50/50. Submitted 1, 48/50. Both parameterizations of sends consecutive $name edits during a touch drag failed at TransportBar.test.tsx:32. Tempo delivered Swing 135 and Swing delivered Tempo 59. The healthy second moves reach their own lower bounds of 60 and 0.",
+        "mouse_guards":"Exploratory original 0, 50/50. Submitted 1, 48/50. Both ignores secondary-button $name drags and reports a primary-button drag cases failed at line 44 because a secondary drag emitted an edit. The touch cases stayed green.",
+        "attribution":"The four submitted assertions supply the new sensitivity relative to the selected original pair. No whole-suite mutant comparison was performed."
+      },
+      "preservation": [
+        {"keeper":"Private drag adapter representation","outcome":"Exploratory private_adapter passed 50/50 in each selection, exits 0/0. The positional arguments became configuration objects while public labels, callbacks, calibration, bounds and bindings stayed equivalent. See TransportBar.tsx and StepSequencer.tsx:226,230."},
+        {"keeper":"Drag arithmetic, properties, reducer isolation and serialization","outcome":"All 46 other identities passed on clean and both faulty selections, including existing upper-bound and rounding cases. See keepers and the three-file matrix."},
+        {"keeper":"Prepared default unit wrapper","outcome":"The fixed 23-file selector includes tempo-change but omits the new file. Its count fell from 343 to 341. Ordinary CI discovery lists the new suite among 301 test-suffix files. See registration and vitest.config.ts:87."},
+        {"keeper":"Desktop two-browser tempo propagation","outcome":"Unchanged ArrowUp test on the separate range input, multiplayer.spec.ts:132. Source review only for this submission."},
+        {"keeper":"Three-socket overlap","outcome":"Parity from inputs, per-socket sequence and REST/snapshot agreement passed in the seed replay. See overlap-fuzz.test.ts:216,254,303."},
+        {"keeper":"Cold disconnect","outcome":"The replay retained the KV 120 to 145 wake/close observation in eviction-recovery.test.ts:761. This differs from the frozen 150 example."},
+        {"keeper":"Client save destination and ordering","outcome":"The passing default includes session.persistence.test.ts:64,87, which checks the destination after a switch and the next payload after a held response."},
+        {"keeper":"Native PCM timing","outcome":"Source and pinned hosted pass support onset count and 0.125-second step timing within 0.010 seconds, session-render-conservation.render.test.ts:87. No local render."}
+      ],
+      "scope":"One component repair and corrected pointers. The demo, quota and Darwin findings remain open. No abandoned product promise or boundary violation is evidenced.",
+      "coverage":{"inventory":370,"source_available":"Pinned checkout","priority_sample":58,"strata":9,"reported_survey":58,"sampled_executed_reported":43,"sample_selection":"34 ordinary unit, 8 Worker, 1 tooling. Membership and all 58 base blobs checked. Reading depth and full execution history are self-reported.","submitted_runs":"490/36 expanded unit, 12/12 tooling, 84/8 Worker default, 131/11 Worker full. Counts overlap.","independent":"Clean/fault/refactor component pairs, 4/4 new suite alone, unit collection and 341/23 default, demo pair, three-file historical Worker replay. Remaining broad counts and wall times were not independently repeated.","accessible_runnable_file_count":null,"agent_runtime_seconds":null},
+      "uncertainties":["Exact sensitivity values characterize pinned behavior. App rerender, dispatch, layout, release behavior, device input, audio, codec and server delivery are beyond the mounted test. Full hosted patch CI, Darwin and browser runs were explicitly deferred. See expected_values_and_test_boundary and study_scope."]
+    },
+    {
+      "id": "26b28c77f8288968",
+      "disposition": "returned",
+      "known_findings": [
+        {"finding":"Sync CLI and returned reorder callback gaps","status":"unmentioned","evidence":"No validator, hook or peer-delivery finding in the report. The separate frozen sync controls establish baseline behavior only."},
+        {"finding":"Discovery trace ordering","status":"unmentioned","evidence":"No discovery-grader finding or edit in the report or one-file diff."},
+        {"finding":"Rotating Worker quota","status":"substantiated","evidence":"Seed 45182094013 completed 99 commands, all nine kinds and three dirty disconnects before the original floor assertion. Frozen valid_schedule and the archived Worker receipt agree. Repaired in the registered model."},
+        {"finding":"Darwin visual lane","status":"substantiated","evidence":"Run 45018066984 has zero macOS steps and an unsupported runner annotation. Linux visuals passed. The three required Darwin cases and the separate Stack A PR gate are evidenced by ci.yml:649–681,166 and lane-contracts.json:12. No visual repair."}
+      ],
+      "novel_findings": [
+        {"finding":"Four recorder peak tests do not reach the production peak calculation or cache","status":"substantiated","evidence":"Exploratory waveform_clean and waveform_flat passed 4/4 each when only production min/max assignments were set to zero. The test defines its own calculation. See waveform-peaks.test.ts:9–39, Waveform.tsx:29,53,99 and Recorder.tsx:230. No repair or broader canvas result claimed."}
+      ],
+      "material_claims": [{"status":"supported","claim":"The historical run advances on the same seed and still enforces its independent workload witnesses and storage assertions.","evidence":"frozen_seed_matrix, 32-record extension_evidence and missing_swing_generator."},{"status":"explicitly deferred","claim":"Hosted, browser and native audio execution on the patch.","evidence":"Report, Verification, and submitted_evidence_and_scope."}],
+      "unsupported_or_refuted_claims": [],
+      "repair": {
+        "changed":true,"judgment":"Supported one-file workload repair. The registered model retains the 100-command, WS tempo, WS swing and dirty-disconnect predicates. After its first successful batch it advances one schedule per seed per round while any predicate is unmet, capped at one initial batch of extra rounds. Property failures still shrink immediately.",
+        "selection":"state-machine-fuzz.test.ts, model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points, or fixed WS mutation makes KV lag, GET stays authoritative, disconnect converges KV. Each frozen filter selected one test and excluded five.",
+        "frozen_pairs":"Original/submitted exits were default model 0/0, historical model 1/0, healthy fixed example 0/0, deleted final save fixed example 1/1. Independent offline repeats matched all four submitted results. The fixed fault observed KV 120 instead of 150 after close.",
+        "historical_extension":"The exploratory trace matched one uninterrupted stream for all 32 schedules. After 30, 31 and 32 schedules the counts were 99, 99 and 101. The final swing-50 write and close produced dirty disconnect #4. Diagnostic trace-capture exits were intentional. Uninstrumented frozen runs establish acceptance.",
+        "attribution":"The gain is acceptance of the healthy short workload with all four checks intact. The acknowledged stale-GET, missing final save, missing swing witness and counterexample paths already had baseline owners."
+      },
+      "preservation": [
+        {"keeper":"Unchanged fixed last-close example","outcome":"Clean 0/0. With flushPendingKVSave's final save removed, 1/1 at expected 150, actual 120. The preceding author acknowledgment and GET 150/KV 120 observations remain. See frozen_seed_matrix."},
+        {"keeper":"Generated model state oracle","outcome":"Exploratory stale_get exited 1/1, shrinking to one acknowledged tempo-60 write with GET still 120. The generated final_flush_model pair also exited 1/1, shrinking to tempo 60 plus disconnect with KV still 120. These are inherited, independent behavioral checks."},
+        {"keeper":"Shrinking, promotion and replay","outcome":"Real promote-pbt-counterexamples CLI saved the shrunk stale-GET case. Known case 0 failed before exploration with the fault, exit 1, and passed on restored production, exit 0. See promotion_and_replay."},
+        {"keeper":"Independent WS swing workload witness","outcome":"Exploratory deletion of the swing generator failed the submitted model at observed 0 versus minimum 1 after 247 accepted commands and four dirty disconnects. Original already required a swing write. See missing_swing_generator."},
+        {"keeper":"Equivalent private GET construction","outcome":"Exploratory submitted exit 0, original variant unrun. Object.assign constructed the same plain response with KV metadata and authoritative DO state. Existing contracts observe external field values. See equivalent_get_representation."},
+        {"keeper":"Separate legal seed 20261127","outcome":"Exploratory original/submitted 0/0 with both seed bindings set. See different_allowed_seed."},
+        {"keeper":"Other fixed model examples","outcome":{"REST PUT then WS last writer":"pass","hibernate then REST PUT":"pass","KV-only name plus DO-only state":"pass","last of multiple clients disconnects":"pass"},"evidence":"All five fixed examples and the generated title ran in the independent 131/11 ordinary Worker run."},
+        {"keeper":"Three-socket overlap","outcome":"Input-derived 32-cell parity, per-socket sequence and snapshots/REST passed in both full and rotating Worker selections. See overlap-fuzz.test.ts:218,254,303."},
+        {"keeper":"Client persistence","outcome":"Independent 7/7 in session.persistence.test.ts, including destination and the pending-save case observing tempo 200 in the next payload. See client_persistence_keeper."},
+        {"keeper":"Native onset timing","outcome":"Pinned hosted audio step passed. Source checks count and 125 ms timing within 10 ms at session-render-conservation.render.test.ts:87. No candidate render."}
+      ],
+      "scope":"Only the registered Worker model changed. With S seeds and R = ceil(30/S), at most 2 × S × R generated schedules run, excluding shrinks and known-case replay. The original four required witnesses are aggregate across seeds. No evidence of an abandoned contract, out-of-checkout write or unnecessary change.",
+      "coverage":{"inventory":370,"source_available":"Pinned checkout","priority_sample":58,"strata":9,"reported_survey":58,"sampled_executed":42,"reading":"Five full reads, 22 focused excerpts, 31 scans per survey.tsv. All 58 paths/blobs checked. Depth is self-described. Sixteen source-only.","submitted_runs":"343/23 baseline unit, 84/8 baseline Worker, 463/34 sampled unit and 131/11 full Worker. Eighteen attachments verified.","independent":"All 131 tests in 11 Worker files through the ordinary entry, 28/28 in the exact three rotating files, the frozen pairs and the stated exploratory selections. No patched hosted run.","accessible_runnable_file_count":null,"agent_runtime_seconds":null},
+      "uncertainties":["The remaining seven generator kinds are available without individual final requirements. Legal seeds can still exhaust the cap or timeout. No general runtime or all-seed result. See extension_evidence.","Playwright collection stopped at ENOTCACHED after the three quality checks. Six identical Worker typecheck diagnostics are documented in submitted logs. Browser, Darwin and native audio were explicitly deferred."]
+    },
+    {
+      "id": "125db40317156c7c",
+      "disposition": "infrastructure-interrupted",
+      "known_findings": [
+        {"finding":"Sync CLI and returned reorder callback gaps","status":"unmentioned","evidence":"Response unavailable at the interruption snapshot."},
+        {"finding":"Discovery trace ordering","status":"unmentioned","evidence":"Response unavailable at the interruption snapshot."},
+        {"finding":"Rotating Worker quota","status":"unmentioned","evidence":"Response unavailable at the interruption snapshot."},
+        {"finding":"Darwin visual lane","status":"unmentioned","evidence":"Response unavailable at the interruption snapshot."}
+      ],
+      "novel_findings": [],
+      "material_claims": [],
+      "unsupported_or_refuted_claims": [],
+      "repair":{"changed":false,"judgment":"Unavailable. No tracked or new source changes at the interruption snapshot.","target":null,"selected_assertions":null,"clean_outcomes":null,"fault_outcomes":null,"evidence":"observed_behavior and controller/environment-event.json"},
+      "preservation":[{"keeper":"Submitted behavior","outcome":null,"evidence":"No submitted change or candidate verification is available."}],
+      "scope":"The trial lost agent state before the 25-minute allowance expired. No replacement ran. There is no delivered audit to assess.",
+      "coverage":{"inventory":370,"priority_sample":58,"strata":9,"source_available":"Assigned pinned checkout","reported_survey":null,"sampled_executed":null,"accessible_runnable_file_count":null,"independent_candidate_rechecks":null,"agent_runtime_seconds":null},
+      "uncertainties":["The environment record cannot establish what the participant read, ran or discovered. Shared frozen controls are baseline information only."]
+    },
+    {
+      "id": "1274240f8d0c06e7",
+      "disposition": "report-delivered-agent-status-unavailable",
+      "known_findings": [
+        {"finding":"Sync CLI and returned reorder callback gaps","status":"unmentioned","evidence":"The reported sequence-rewind observations concern different Worker and client behavior. No validator or returned reorder finding."},
+        {"finding":"Discovery trace ordering","status":"unmentioned","evidence":"No claim about discoveryContract or the post-edit read in the deposited report."},
+        {"finding":"Rotating Worker quota","status":"substantiated","evidence":"The registered old model failed solely at 99 accepted commands, all nine kinds and three dirty disconnects. The local replay agrees with ci-snapshot.json:1879. Repaired in state-machine-fuzz.test.ts."},
+        {"finding":"Darwin visual lane","status":"substantiated","evidence":"The report correctly identifies the unsupported configuration and cancellation before steps in run 45018066984. Stack A Identity was separately skipped. No Darwin replacement or execution."}
+      ],
+      "novel_findings": [
+        {"finding":"Removing hibernation from the generator could pass the original default model","status":"substantiated","evidence":"Exploratory mandatory-hibernate-and-bound exits 0/1. Submitted coverage exhausted at 393 commands, six dirty closes, eight exercised kinds and zero hibernations. The original final predicate required only both WS edit kinds among the nine."},
+        {"finding":"Sequence rewind can lead to reconnect churn in the characterized scenario","status":"substantiated","evidence":"The unchanged real Worker reissued sequence 1 after eviction while GET read tempo 140. In a separate controlled client test, a regressed edit was applied and a third socket opened after the second group of eleven older frames. See integration/seq-regression.test.ts:119 and src/sync/seq-regression.test.ts:168. Existing characterization, with no measured production frequency."},
+        {"finding":"The four waveform tests use a test-local peak implementation","status":"substantiated","evidence":"waveform-peaks.test.ts:11 and Waveform.tsx:100 show distinct owners. The retained exploratory control-waveform.log reports four passes with a production throw. Independent focused-recheck confirmed 4/4 clean. The exact temporary mutant was not preserved."}
+      ],
+      "material_claims":[{"status":"supported","claim":"The changed model continues the historical stream, detects a missing hibernate generator and reaches the reported second-batch PATCH fault.","evidence":"registered-seed/valid_schedule.log and exploratory continuous-stream, mandatory-hibernate-and-bound and second-batch-fault-and-promotion."},{"status":"explicitly deferred","claim":"Local browser, native render and full application verification.","evidence":"Report, Execution and limits."}],
+      "unsupported_or_refuted_claims":[{"claim":"Reconnect churn has the highest impact among the behaviors observed","status":"unsupported","evidence":"The Worker/client examples substantiate the mechanism. other_findings.sequence_rewind supplies no comparative impact, frequency or data-loss measurement. This limits the priority claim."}],
+      "repair": {
+        "changed":true,"judgment":"Supported one-file repair in the registered Worker model. It continues each seed at increasing fast-check offsets after successful batches. It requires 100 executed commands, occurrence of all nine enumerated actions and a dirty disconnect across the campaign, with a three-batch cap. The seven additional action-class requirements strengthen the prior aggregate guard.",
+        "selection":"The model: read-your-writes title and the separate WS mutation makes KV lag fixed example in state-machine-fuzz.test.ts. Each frozen row selects its corresponding single test.",
+        "frozen_pairs":"Original/submitted exits were default model 0/0, historical model 1/0, clean fixed example 0/0, missing-final-save fixed example 1/1. The default submitted model passed after 33 schedules, 147 commands and four dirty closes. Seed 45182094013 went from 99/3 at 30 schedules to 234/6 at 60. Fixed fault saw post-close KV 120, expected 150. See registered-seed/results.json and frozen_seed_matrix.",
+        "second_batch_fault":"Exploratory REST PATCH cap at 99 failed the submitted model at expected swing 100, actual 99 in batch two. It shrank to PATCH(60,100), path 51:1. Identical baseline-mutant selection unreported. The real promotion CLI stored it. Seed 42 then failed at known case 0 before random exploration, exit 1, and passed with the healthy Worker, exit 0.",
+        "attribution":"The bounded extension reaches that specific PATCH fault, and the new class requirement catches missing hibernate generation. The state oracle, dirty-close check, shrinking, promotion, replay and fixed persistence sensitivity predate the repair."
+      },
+      "preservation": [
+        {"keeper":"Continuous valid fast-check stream","outcome":"Exploratory continuous-stream matched all 60 ordered action arrays including empty schedules against one unbroken 60-example call. The two halves executed 99 and 135 commands."},
+        {"keeper":"Legal seed overrides","outcome":{"1,7,42":"pass, 109 commands and 3 dirty disconnects","0":"pass, 134 and 5","-1":"pass, 117 and 1"},"evidence":"One selected model per retained final-multi, final-zero and final-negative log. These are participant runs."},
+        {"keeper":"Fixed author acknowledgment, GET and last-client KV save","outcome":"Clean 0/0, missing save 1/1 at 120 vs 150. The fixed test still observes GET 150 and pre-close KV 120. See registered-seed/persistence_fault.log."},
+        {"keeper":"Generated state and real fault propagation","outcome":"Exploratory model-final-flush selected the submitted model and exited 1 after shrinking seven times to WS swing 1 plus disconnect. KV still read 0. No original run of this exact generated selection in that pair. The oracle is inherited."},
+        {"keeper":"Dirty-close witness independent of count and kinds","outcome":"Exploratory independent-dirty-disconnect-and-bound exited 1 at 90 schedules, 359 commands, nine kinds and 16 clean closes, with zero dirty closes. This preserves the original lifecycle requirement."},
+        {"keeper":"Replay with a promoted example under another seed","outcome":"Exploratory second-batch-fault-and-promotion has faulted and restored seed-42 exits 1/0 with the same promoted PATCH. Observed the inherited replay-before-exploration behavior."},
+        {"keeper":"Peer acknowledgments and REST","outcome":"The retained collaboration-contract.test.ts:224 run observed both sockets, sequence order and three cells read through REST."},
+        {"keeper":"WebSocket-only wake","outcome":"eviction-recovery.test.ts:727 observed the edits after a second eviction, tempo 166 and swing 33. The rotating three-file suite was independently green."},
+        {"keeper":"Client save ordering","outcome":"session.persistence.test.ts:109 held the first request open and observed the later saved tempo. The submitted default unit selection passed."},
+        {"keeper":"Native onset timing","outcome":"Source at session-render-conservation.render.test.ts:89 checks onset count and an independent 125 ms spacing. Native execution on the submission is unavailable."}
+      ],
+      "scope":"The implementation is one model-test file and uses aggregate action counts. During setup the participant reported creating/removing a compiler link through the shared provisioned .bin, outside the assigned checkout. This violated the local-only boundary. The later app and Worker bin inventories matched their lock metadata. No pre-event image or evidence establishes the duration or any cross-participant effect. See runtime_protocol_deviation and runtime-bin-observation.json.",
+      "coverage":{"inventory":370,"source_available":"Pinned checkout","priority_sample":58,"strata":9,"reported_survey":58,"sampled_executed":42,"reading":"All sample blobs verified. Claimed reading depth is self-reported.","submitted_runs":"343/23 default unit, 120/11 additional unit, 84/8 focused Worker and 131/11 full Worker. A neighboring client sequence file passed 3/3. Thirty-two retained files verified.","independent":"Registered seed cases, exploratory controls, historical three-file Worker 28/28 and three focused unit files 10/10. The full Worker submission run was not independently repeated.","hosted_history":"Main CI 15 successful jobs, macOS cancellation and Stack A skip. Rotating unit passed and integration retained its failure after diagnostics.","accessible_runnable_file_count":null,"agent_runtime_seconds":null},
+      "uncertainties":["The deposited report predates the deadline. Backend completion, interruption time and model runtime are unknown. The seal interval includes observation delay. See agent_availability.","Three batches bound examples, not wall time or acceptance for every seed. Counting hibernate establishes occurrence. Its effects need the separate state and wake checks. No general seed-performance claim was verified.","Playwright, lint, native audio, Darwin and full app runs were explicitly deferred or unavailable. The six integration type diagnostics matched before and after. See availability.tooling_limits."]
+    }
+  ]
+}

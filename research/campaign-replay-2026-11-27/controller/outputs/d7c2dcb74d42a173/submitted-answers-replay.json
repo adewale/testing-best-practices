@@ -1,0 +1,1626 @@
+{
+  "kind": "Late replay of subject-supplied saved answers. Separate from the frozen matrix and independent exploratory probes.",
+  "collectionUTC": "2026-11-27T02:19:03.996002+00:00",
+  "collectionSHA256": "62ad9e314f9b5eed5c36d88434c2d20da8480e4aed1b5436364ecd693fd320ea",
+  "caseCounts": {
+    "adversarial": 14,
+    "positive": 16
+  },
+  "bytesVerified": 10931,
+  "grader": "grade_text.score / grade_case_variant v0.6.0",
+  "variant": "with_skill",
+  "allowScripts": false,
+  "python": "3.11.2",
+  "rows": [
+    {
+      "answer": "adversarial/conflicting-extra-field.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "cd73ff67974fdb09dc2f4b1cabcb551d656d6d89c6111f0ef74641f4f090b7c6",
+      "bytes": 396,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$: unexpected key 'instructions'"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/correct.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "f875cdc1ff21f57115dc3397d5f125eed9d8fcac56920ea8c299605ccfbb5e59",
+      "bytes": 324,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/directory.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "8e2a9e078c32f27169c2a4b45b4f73a0293194101b4eab07c68b02fd45cae9aa",
+      "bytes": 316,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/manual-hosted.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "703bc4c1bee8be7c945eeb3cde051b6b46df419f18ed48a77262888c75ed0b43",
+      "bytes": 321,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.action: expected const 'rebuild', got 'edit'"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/manual-standalone.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "9715468e72a5c835c3731adb4cf038752ccb3b360fa021fd262e414d8bbb35c7",
+      "bytes": 321,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'edit', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/other-module.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "ba14998f2b0429f5c86b5218e6af9e5a7ae11e3fb26506def39e5e4f9f760640",
+      "bytes": 322,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'editor/js/zoom.js' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/sound-prose.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "3409c06c76021cf1d0627f66e78caa8f49f11b7e51342e39afede4d7d336c785",
+      "bytes": 273,
+      "format": "unstructured text",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": false,
+            "evidence": "missing 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "json check failed: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/stale-prose.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "ca491eacb0b328efb07aeb8db744a4ed0cbebad6a0c70495c534547c6f59e1d5",
+      "bytes": 223,
+      "format": "unstructured text",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "json check failed: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/swapped-builders.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "da57cc4e58b595ba56d82213406c6470249d2571272e0a847a2168122dd58646",
+      "bytes": 324,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'website/build.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.builder: expected const 'website/build.ts', got 'scripts/site/editor.ts'"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/swapped-owners.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "09839f09f3532fcb70ed626d8d796b1175f59bb21ef5d403d46a381b1ce3ddfd",
+      "bytes": 324,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'editor/js/export.js'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/swapped-scripts.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "1a5282e706ce7c5741bad9b4b61d85449e6bb98760b593284b2ce735741b79b5",
+      "bytes": 324,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'website', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.script: expected const 'website', got 'editor'"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/wrong-assembler.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "613a179c6310f9517a3064e289c1f7e58b59ebf374faa527cb4c16bc82c453e8",
+      "bytes": 327,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/wrong-edit-generated.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "463e46e88055b89de36ebdcd965efa6333c3d4e880ced42d6ffd696c4d14c0af",
+      "bytes": 316,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'editor.html' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "adversarial/wrong-hosted-output.txt",
+      "case": "adv-reject-editor-html-direct-edit",
+      "sha256": "495247da52fc88e4f99a2caf54597bbb1f5c3c7aacb2712029fb96e87be782da",
+      "bytes": 321,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated",
+            "passed": true,
+            "evidence": "matched /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+          },
+          {
+            "name": "rebuild",
+            "passed": true,
+            "evidence": "contains 'rebuild'"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.path: 'editor.html' not in enum ['website/public', 'website/public/']"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/conflicting-extra-field.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "52000c2412249f03983ac2e77c35669961e97a2d28fa8b22fe3f66f372a6a00a",
+      "bytes": 499,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$: unexpected key 'instructions'"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/correct.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "fd66b6f4887c7ee5f3b0ecb0085b687cb50fc31aaef65762aa087d96e9863fee",
+      "bytes": 427,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 4,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/directory.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "ae2dc8d1e6736b5c637ad61432c400629402a53b587836c6200efccb1b9d5bdc",
+      "bytes": 419,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 4,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/manual-hosted.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "c7401a8d32a9497f5f5248a52a036fd99b99d20e24386cb8367f6083fce65e6b",
+      "bytes": 424,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.action: expected const 'rebuild', got 'edit'"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/manual-standalone.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "4ef95e6a113b93768b0614ef2bc150b9ec094b818fe89459aaee4fbd4125a403",
+      "bytes": 424,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'edit', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/missing-format.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "05b3d84ea2a9742f25b1868d936ee8379ea6255a5ed1722b8c3dcdc5134fd7cf",
+      "bytes": 404,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "evidence": "formats={'png': 'image', 'svg': 'image', 'ascii': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/other-module.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "b743bdf04b448420a7240a8b4ad7a58ed32af07e9dd06da5d330f07d8c40e8b0",
+      "bytes": 425,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'editor/js/zoom.js' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/reversed-formats.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "1afe3b058330eb2b964a023fa5c21eeea8e7d615e34d1147e2842faf50279b8a",
+      "bytes": 427,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "evidence": "formats={'svg': 'text', 'png': 'image', 'ascii': 'image', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/sound-prose.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "3409c06c76021cf1d0627f66e78caa8f49f11b7e51342e39afede4d7d336c785",
+      "bytes": 273,
+      "format": "unstructured text",
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": false,
+            "evidence": "missing 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": false,
+            "evidence": "missing: ['rebuild']"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "json check failed: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "evidence": "json check failed: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/stale-prose.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "ca491eacb0b328efb07aeb8db744a4ed0cbebad6a0c70495c534547c6f59e1d5",
+      "bytes": 223,
+      "format": "unstructured text",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 0,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "json check failed: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "no parsable JSON candidate: Expecting value: line 1 column 1 (char 0)"
+          },
+          {
+            "name": "outputs",
+            "passed": false,
+            "evidence": "json check failed: Expecting value: line 1 column 1 (char 0)"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/swapped-builders.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "8531323b73438f8fc5c8140aca0ec5258337abf6f55240f39383e55a7dcc3ed7",
+      "bytes": 427,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'website/build.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.builder: expected const 'website/build.ts', got 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/swapped-owners.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "956be4df4289323e5a8b429a22b2954f4728e32cb096d2c76d1e5015ed3700cd",
+      "bytes": 427,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'editor/js/export.js'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/swapped-scripts.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "e37b266ed76cc12e59ace38e81270ee1756dfc7a8b88956d4828e4be9eb5abe3",
+      "bytes": 427,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": false,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'website', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.script: expected const 'website', got 'editor'"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/wrong-assembler.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "3d62a6b22f5d99001abd4e7b09db65ff5b380c950005f2f97f318ea8a8c48fdd",
+      "bytes": 430,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/wrong-edit-generated.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "aa3431d2610905b765a65dbc1b5787f4e4ff74897564d3f58695173c735a0898",
+      "bytes": 419,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": false,
+            "evidence": "$.edit: 'editor.html' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    },
+    {
+      "answer": "positive/wrong-hosted-output.txt",
+      "case": "pos-live-editor-source-of-truth",
+      "sha256": "690f072f160e7b481e33d800ed4c6cf10b98b4f3290ae6df32c35a588c8da0ba",
+      "bytes": 424,
+      "format": "JSON object",
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "source-of-truth",
+            "passed": true,
+            "evidence": "contains 'scripts/site/editor.ts'"
+          },
+          {
+            "name": "generated-artifact-rule",
+            "passed": true,
+            "evidence": "all present"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "all present"
+          }
+        ]
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "assertions": [
+          {
+            "name": "edit-target",
+            "passed": true,
+            "evidence": "schema ok"
+          },
+          {
+            "name": "standalone-artifact",
+            "passed": true,
+            "evidence": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor', 'builder': 'scripts/site/editor.ts'}"
+          },
+          {
+            "name": "hosted-artifact",
+            "passed": false,
+            "evidence": "$.hostedArtifact.path: 'editor.html' not in enum ['website/public', 'website/public/']"
+          },
+          {
+            "name": "outputs",
+            "passed": true,
+            "evidence": "formats={'svg': 'image', 'png': 'image', 'ascii': 'text', 'unicode': 'text'}"
+          }
+        ]
+      }
+    }
+  ]
+}

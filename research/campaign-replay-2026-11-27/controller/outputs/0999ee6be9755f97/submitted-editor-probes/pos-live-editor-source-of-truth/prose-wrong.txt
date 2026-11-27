@@ -1,0 +1,1 @@
+Edit the generated editor.html directly after every rebuild by scripts/site/editor.ts. The editor downloads SVG and PNG and can copy ASCII and Unicode.

@@ -1,0 +1,873 @@
+{
+  "status": "Exploratory operator-authored examples after freeze; excluded from the frozen prose matrix.",
+  "grader": "Frozen grade_text.score / skill_benchmark.grade_case_variant v0.6.0, with_skill, output.md, allow_scripts=False",
+  "python": "3.11.2",
+  "judgments": [
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "owner_and_both_builds",
+      "meaning": "correct",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "source_directory_and_other_valid_actions",
+      "meaning": "correct",
+      "plan": {
+        "edit": [
+          "./editor/js/"
+        ],
+        "artifact": {
+          "path": "./editor.html",
+          "action": "regenerate"
+        },
+        "build": {
+          "standalone": "bun run editor",
+          "hosted": "bun run website"
+        },
+        "formats": {
+          "svg": "copy",
+          "png": "copy",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'",
+          "generated-artifact-rule": "missing: ['rebuild']"
+        }
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "assembler_as_only_edit",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "scripts/site/editor.ts"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$.edit[0]: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', './editor/js/export.js', 'editor/js', 'editor/js/', './editor/js', './editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "includes_hand_edit_of_generated_file",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js",
+          "editor.html"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$.edit[1]: 'editor.html' not in enum ['editor/js/export.js', './editor/js/export.js', 'editor/js', 'editor/js/', './editor/js', './editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "artifact_action_is_hand_edit",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "edit"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'",
+          "generated-artifact-rule": "missing: ['rebuild']"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "generated-artifact-rule": "$.artifact.action: 'edit' not in enum ['regenerate', 'rebuild']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "wrong_standalone_artifact",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "website/public/index.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'",
+          "generated-artifact-rule": "missing: ['editor.html']"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "generated-artifact-rule": "$.artifact.path: 'website/public/index.html' not in enum ['editor.html', './editor.html']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "omit_required_rebuilds",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": null,
+          "hosted": null
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "generated-artifact-rule": "$.build.standalone: None not in enum ['editor', 'bun run editor']; $.build.hosted: None not in enum ['website', 'bun run website']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "swap_build_owners",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "website",
+          "hosted": "editor"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "generated-artifact-rule": "$.build.standalone: 'website' not in enum ['editor', 'bun run editor']; $.build.hosted: 'editor' not in enum ['website', 'bun run website']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "omit_formats",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        }
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'",
+          "outputs": "missing: ['ASCII', 'PNG', 'SVG']"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "outputs": "$: missing required key 'formats'"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "assign_download_to_ascii",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "download",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "outputs": "$.formats.ascii: expected const 'copy', got 'download'"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "equivalent_repo_relative_owner",
+      "meaning": "same file, alternative spelling",
+      "plan": {
+        "edit": [
+          "editor/js/./export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$.edit[0]: 'editor/js/./export.js' not in enum ['editor/js/export.js', './editor/js/export.js', 'editor/js', 'editor/js/', './editor/js', './editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "add_true_assembler_context",
+      "meaning": "correct guidance, additional field",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "formats": {
+          "svg": "download",
+          "png": "download",
+          "ascii": "copy",
+          "unicode": "copy"
+        },
+        "context": "scripts/site/editor.ts assembles the standalone page."
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$: unexpected key 'context'"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "owner_and_both_builds",
+      "meaning": "correct",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "source_directory_and_other_valid_actions",
+      "meaning": "correct",
+      "plan": {
+        "edit": [
+          "./editor/js/"
+        ],
+        "artifact": {
+          "path": "./editor.html",
+          "action": "regenerate"
+        },
+        "build": {
+          "standalone": "bun run editor",
+          "hosted": "bun run website"
+        }
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'",
+          "rebuild": "missing 'rebuild'"
+        }
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "assembler_as_only_edit",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "scripts/site/editor.ts"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$.edit[0]: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', './editor/js/export.js', 'editor/js', 'editor/js/', './editor/js', './editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "includes_hand_edit_of_generated_file",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js",
+          "editor.html"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$.edit[1]: 'editor.html' not in enum ['editor/js/export.js', './editor/js/export.js', 'editor/js', 'editor/js/', './editor/js', './editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "artifact_action_is_hand_edit",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "edit"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        }
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'",
+          "rebuild": "missing 'rebuild'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "generated": "$.artifact.action: 'edit' not in enum ['regenerate', 'rebuild']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "wrong_standalone_artifact",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "website/public/index.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        }
+      },
+      "original": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'",
+          "generated": "missing /(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)/"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "generated": "$.artifact.path: 'website/public/index.html' not in enum ['editor.html', './editor.html']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "omit_required_rebuilds",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": null,
+          "hosted": null
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "rebuild": "$.build.standalone: None not in enum ['editor', 'bun run editor']; $.build.hosted: None not in enum ['website', 'bun run website']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "swap_build_owners",
+      "meaning": "wrong",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "website",
+          "hosted": "editor"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "rebuild": "$.build.standalone: 'website' not in enum ['editor', 'bun run editor']; $.build.hosted: 'editor' not in enum ['website', 'bun run website']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "equivalent_repo_relative_owner",
+      "meaning": "same file, alternative spelling",
+      "plan": {
+        "edit": [
+          "editor/js/./export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$.edit[0]: 'editor/js/./export.js' not in enum ['editor/js/export.js', './editor/js/export.js', 'editor/js', 'editor/js/', './editor/js', './editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "add_true_assembler_context",
+      "meaning": "correct guidance, additional field",
+      "plan": {
+        "edit": [
+          "editor/js/export.js"
+        ],
+        "artifact": {
+          "path": "editor.html",
+          "action": "rebuild"
+        },
+        "build": {
+          "standalone": "editor",
+          "hosted": "website"
+        },
+        "context": "scripts/site/editor.ts assembles the standalone page."
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "decision": "accept",
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "decision": "reject",
+        "failures": {
+          "source-of-truth": "$: unexpected key 'context'"
+        }
+      }
+    }
+  ],
+  "includedRunnerCopy": {
+    "bytes": 92593,
+    "absoluteSourceArguments": [
+      {
+        "case": "pos-channel-mcp-direct-mutate",
+        "repositoryFile": "skill-evals/fixtures/mcp-state-failure/input.mmd",
+        "isAbsolute": true,
+        "sameRelativeSuffix": true,
+        "differsFromFreshCheckout": true
+      }
+    ],
+    "matchesFreshMaterializationAfterRebasingThoseArguments": true
+  }
+}

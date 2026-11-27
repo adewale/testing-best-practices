@@ -1,0 +1,53 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=30 coverage={"accepted":110,"dirtyDisconnects":0,"byKind":{"ws_tempo":12,"ws_swing":16,"rest_put":17,"rest_patch_state":19,"rest_patch_name":12,"hibernate":12,"hard_evict":17,"disconnect":0,"connect":5}}
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=60 coverage={"accepted":239,"dirtyDisconnects":0,"byKind":{"ws_tempo":27,"ws_swing":34,"rest_put":43,"rest_patch_state":34,"rest_patch_name":34,"hibernate":23,"hard_evict":36,"disconnect":0,"connect":8}}
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=90 coverage={"accepted":382,"dirtyDisconnects":0,"byKind":{"ws_tempo":50,"ws_swing":49,"rest_put":56,"rest_patch_state":53,"rest_patch_name":66,"hibernate":40,"hard_evict":54,"disconnect":0,"connect":14}}
+
+ × |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 4608ms
+   → Coverage budget exhausted for seeds [45182094013]. Expected 100 accepted commands, WS tempo and swing, and a dirty disconnect. Observed {"accepted":382,"dirtyDisconnects":0,"byKind":{"ws_tempo":50,"ws_swing":49,"rest_put":56,"rest_patch_state":53,"rest_patch_name":66,"hibernate":40,"hard_evict":54,"disconnect":0,"connect":14}}: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+AssertionError: Coverage budget exhausted for seeds [45182094013]. Expected 100 accepted commands, WS tempo and swing, and a dirty disconnect. Observed {"accepted":382,"dirtyDisconnects":0,"byKind":{"ws_tempo":50,"ws_swing":49,"rest_put":56,"rest_patch_state":53,"rest_patch_name":66,"hibernate":40,"hard_evict":54,"disconnect":0,"connect":14}}: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ state-machine-fuzz.test.ts:560:5
+    558|     + `${MIN_ACCEPTED_COMMANDS} accepted commands, WS tempo and swing,…
+    559|     + `Observed ${JSON.stringify(coverage)}`,
+    560|   ).toBe(true);
+       |     ^
+    561| }, MODEL_TIMEOUT_MS);
+    562|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:27:18
+   Duration  8.69s (transform 829ms, setup 0ms, import 2.34s, tests 4.61s, environment 0ms)
+

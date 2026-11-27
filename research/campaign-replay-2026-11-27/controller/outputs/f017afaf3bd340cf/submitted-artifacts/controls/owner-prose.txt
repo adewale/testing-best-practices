@@ -1,0 +1,1 @@
+Change the image download handlers in editor/js/export.js. Rebuild the generated editor.html with bun run editor and the hosted page with bun run website. SVG and PNG are image downloads. ASCII and Unicode are text views.

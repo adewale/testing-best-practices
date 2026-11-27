@@ -1,0 +1,1 @@
+{"edit": "editor.html", "generated": "editor.html", "rebuild": "editor", "siteRebuild": "website", "assembler": "scripts/site/editor.ts"}

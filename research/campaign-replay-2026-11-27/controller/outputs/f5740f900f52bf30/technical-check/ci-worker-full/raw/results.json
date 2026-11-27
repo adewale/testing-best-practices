@@ -1,0 +1,18 @@
+{
+  "original": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": "app/test/integration",
+      "args": [
+        "npm",
+        "test",
+        "--",
+        "--reporter=verbose"
+      ]
+    },
+    "log": "original.log",
+    "seconds": 33.953
+  }
+}

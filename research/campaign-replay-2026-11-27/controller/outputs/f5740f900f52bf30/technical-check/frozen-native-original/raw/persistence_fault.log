@@ -1,0 +1,39 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /tmp/keyboardia-seeds-1mc93o9w/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ❯ |keyboardia-integration| state-machine-fuzz.test.ts (6 tests | 1 failed | 5 skipped) 2287ms
+   × WS mutation makes KV lag, GET stays authoritative, disconnect converges KV 2285ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+AssertionError: expected 120 to be 150 // Object.is equality
+
+- Expected
++ Received
+
+- 150
++ 120
+
+ ❯ state-machine-fuzz.test.ts:179:43
+    177|     await new Promise((r) => setTimeout(r, 20));
+    178|   }
+    179|   expect((await readKv(id))!.state.tempo).toBe(150);
+       |                                           ^
+    180| });
+    181|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:21:12
+   Duration  5.79s (transform 880ms, setup 0ms, import 2.15s, tests 2.29s, environment 0ms)
+

@@ -1,0 +1,27 @@
+case	input	before_gates	before_objective_rate	before_veto	after_gates	after_objective_rate	after_veto	after_failed_gates
+adv-reject-editor-html-direct-edit	assembler-as-assembler	3/3	1.0	False	3/3	1.0	False	
+adv-reject-editor-html-direct-edit	assembler-only	3/3	1.0	False	2/3	0.0	True	source-of-truth
+adv-reject-editor-html-direct-edit	directory	2/3	0.6666666666666666	False	3/3	1.0	False	
+adv-reject-editor-html-direct-edit	extra-edit	2/3	0.6666666666666666	False	2/3	0.0	True	source-of-truth
+adv-reject-editor-html-direct-edit	generated-edit	3/3	1.0	False	2/3	0.0	True	source-of-truth
+adv-reject-editor-html-direct-edit	missing-generated	1/3	0.3333333333333333	False	2/3	0.6666666666666666	False	generated
+adv-reject-editor-html-direct-edit	module	2/3	0.6666666666666666	False	3/3	1.0	False	
+adv-reject-editor-html-direct-edit	prose-correct	1/3	0.3333333333333333	False	0/3	0.0	True	source-of-truth,generated,rebuild
+adv-reject-editor-html-direct-edit	prose-wrong	3/3	1.0	False	0/3	0.0	True	source-of-truth,generated,rebuild
+adv-reject-editor-html-direct-edit	standalone-for-site	2/3	0.6666666666666666	False	2/3	0.6666666666666666	False	rebuild
+adv-reject-editor-html-direct-edit	wrong-module	2/3	0.6666666666666666	False	2/3	0.0	True	source-of-truth
+adv-reject-editor-html-direct-edit	wrong-rebuild	2/3	0.6666666666666666	False	2/3	0.6666666666666666	False	rebuild
+pos-live-editor-source-of-truth	assembler-as-assembler	3/3	1.0	False	3/3	1.0	False	
+pos-live-editor-source-of-truth	assembler-only	3/3	1.0	False	2/3	0.0	True	source-of-truth
+pos-live-editor-source-of-truth	directory	2/3	0.6666666666666666	False	3/3	1.0	False	
+pos-live-editor-source-of-truth	extra-edit	2/3	0.6666666666666666	False	2/3	0.0	True	source-of-truth
+pos-live-editor-source-of-truth	format-order	2/3	0.6666666666666666	False	3/3	1.0	False	
+pos-live-editor-source-of-truth	generated-edit	3/3	1.0	False	2/3	0.0	True	source-of-truth
+pos-live-editor-source-of-truth	missing-ascii	1/3	0.3333333333333333	False	2/3	0.6666666666666666	False	outputs
+pos-live-editor-source-of-truth	missing-generated	1/3	0.3333333333333333	False	2/3	0.6666666666666666	False	generated-artifact-rule
+pos-live-editor-source-of-truth	module	2/3	0.6666666666666666	False	3/3	1.0	False	
+pos-live-editor-source-of-truth	prose-correct	2/3	0.6666666666666666	False	0/3	0.0	True	source-of-truth,generated-artifact-rule,outputs
+pos-live-editor-source-of-truth	prose-wrong	3/3	1.0	False	0/3	0.0	True	source-of-truth,generated-artifact-rule,outputs
+pos-live-editor-source-of-truth	swapped-formats	2/3	0.6666666666666666	False	2/3	0.6666666666666666	False	outputs
+pos-live-editor-source-of-truth	wrong-module	2/3	0.6666666666666666	False	2/3	0.0	True	source-of-truth
+pos-live-editor-source-of-truth	wrong-rebuild	2/3	0.6666666666666666	False	2/3	0.6666666666666666	False	generated-artifact-rule

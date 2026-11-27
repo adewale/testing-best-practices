@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app
+
+
+ Test Files  23 passed (23)
+      Tests  343 passed (343)
+   Start at  02:18:35
+   Duration  14.96s (transform 2.13s, setup 2.59s, import 3.26s, tests 15.34s, environment 1.55s)
+

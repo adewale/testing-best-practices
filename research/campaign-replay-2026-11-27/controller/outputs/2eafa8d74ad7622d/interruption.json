@@ -1,0 +1,15 @@
+{
+  "observed_utc": "2026-11-27T01:56:32.035910+00:00",
+  "last_verified_ready_utc": "2026-11-27T01:54:35Z",
+  "workspace_head": "426e40c923f97dfc84ee0ea06baaa4507822247d",
+  "workspace_frozen_inputs": "verification passed",
+  "environment_observation": "starting status supplied; wait_for_environment immediately returned ready",
+  "agent_registry_observation": "only /root remained; exact former trial and operator prefixes returned empty",
+  "affected_subjects": [
+    "2eafa8d74ad7622d",
+    "c6e8de671b642b51",
+    "a8fc297c98aeeca9"
+  ],
+  "disposition": "infrastructure-interrupted; retained partial snapshot; zero model retries",
+  "limits": "No provider trace proves the precise interruption instant or work performed after the last delivered agent message."
+}

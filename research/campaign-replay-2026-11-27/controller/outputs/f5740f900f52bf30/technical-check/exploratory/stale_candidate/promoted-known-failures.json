@@ -1,0 +1,13 @@
+{
+  "stateMachine": [
+    [
+      {
+        "kind": "ws_tempo",
+        "tempo": 60
+      }
+    ]
+  ],
+  "overlap": [],
+  "evictionRecovery": [],
+  "schedulerMutationRace": []
+}

@@ -1,0 +1,11 @@
+{
+  "state": "returned",
+  "controller_sealed_utc": "2026-11-27T02:11:19.842506+00:00",
+  "dispatch_to_seal_seconds": 887.403996,
+  "response_file_mtime_utc": "2026-11-27T02:10:39.406256+00:00",
+  "files_sha256": {
+    "response.md": "4fe1bf100877fb0a0cefb009f5611495630a4a4ec3c9c42690ad31b5ec37396d",
+    "patch.diff": "99c35d0a8cd4887d85aca52ba128aaf97c60be48b199faaac36d6e1d7a1c5e2f"
+  },
+  "timing_scope": "dispatch to controller seal; includes observation delay, not precise model runtime"
+}

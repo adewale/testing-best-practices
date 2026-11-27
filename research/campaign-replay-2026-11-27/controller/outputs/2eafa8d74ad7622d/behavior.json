@@ -1,0 +1,11 @@
+{
+  "disposition": "infrastructure-interrupted",
+  "response": "unavailable",
+  "patch": "no tracked or new source changes at interruption snapshot",
+  "repair_verification": "unavailable",
+  "preservation": "no submitted change to assess; not a completed audit",
+  "environment_event": "controller/environment-event.json",
+  "limits": [
+    "Trial lost its agent state before its 25-minute allowance expired. No replacement model was run."
+  ]
+}

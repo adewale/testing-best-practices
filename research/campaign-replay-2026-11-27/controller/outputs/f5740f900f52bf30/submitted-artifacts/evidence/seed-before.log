@@ -1,0 +1,33 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/f5740f900f52bf30/work/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ❯ |keyboardia-integration| state-machine-fuzz.test.ts (6 tests | 1 failed | 5 skipped) 4450ms
+   × model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 4448ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+AssertionError: {"accepted":99,"dirtyDisconnects":3,"byKind":{"ws_tempo":10,"ws_swing":13,"rest_put":9,"rest_patch_state":11,"rest_patch_name":14,"hibernate":17,"hard_evict":11,"disconnect":8,"connect":6}}: expected 99 to be greater than or equal to 100
+ ❯ assertModelCoverage state-machine-fuzz.test.ts:494:38
+    492| function assertModelCoverage(coverage: ModelCoverage): void {
+    493|   const summary = JSON.stringify(coverage);
+    494|   expect(coverage.accepted, summary).toBeGreaterThanOrEqual(100);
+       |                                      ^
+    495|   expect(coverage.byKind.ws_tempo, summary).toBeGreaterThan(0);
+    496|   expect(coverage.byKind.ws_swing, summary).toBeGreaterThan(0);
+ ❯ state-machine-fuzz.test.ts:546:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  01:57:49
+   Duration  10.51s (transform 1.33s, setup 0ms, import 3.74s, tests 4.45s, environment 0ms)
+

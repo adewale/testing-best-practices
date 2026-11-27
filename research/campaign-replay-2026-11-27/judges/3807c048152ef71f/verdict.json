@@ -1,0 +1,41 @@
+{
+  "case": "R08",
+  "candidates": [
+    {
+      "id": "40ccb05ef34cf4b4",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Keeps the published digest and imports the original and a readable, byte-altered copy with the same manifest.", "reason": "Success for the original and rejection of the altered copy exercise the publisher's byte commitment at the public entry point."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Removes hashes of private representations and permits changes to the hash library, buffering and helpers.", "reason": "Both importer versions are judged by the same import outcomes, allowing source changes."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Independently checks the raw archive digests and uses parsed equality to confirm both fixtures decode alike.", "reason": "The test still requires rejection when decoded content agrees and the published digest differs."}
+      ]
+    },
+    {
+      "id": "f92c424190805e27",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Keeps the raw-byte manifest comparison at import and submits a corrupted temporary copy under the original manifest.", "reason": "The published digest stays fixed and the public importer must reject the mismatch."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Allows changes to reading, buffering, hashing and parsing, and applies its digest expectations to the released archive.", "reason": "The refactor can change the live source while preserving the tested import behavior."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Checks semantic output on success and requires rejection of a well-formed alternate encoding with equal parsed values.", "reason": "A verifier based solely on content equality would fail that rejection test."}
+      ]
+    },
+    {
+      "id": "307883b6a344d95e",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Pins the original archive and manifest, checks the complete byte stream and requires integrity rejection of a corrupted copy.", "reason": "The fixed manifest governs both acceptance of the original and rejection at the importer."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Removes hashes that pin importer source or private intermediates and permits changes to helpers, hash library and chunk size.", "reason": "An implementation change can pass the same behavioral checks without preserving source bytes."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Requires a different-digest archive with identical extracted contents to fail import under the original manifest.", "reason": "Parsed equality can check a separately promised result while the published archive digest remains enforceable."}
+      ]
+    },
+    {
+      "id": "8e889473c1d64ee5",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Reads the expected digest from the published manifest and submits both the original and an altered copy to the public importer.", "reason": "The importer itself must accept the original and report integrity rejection for the altered archive."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Removes assertions on the live importer's source hash and allows a historical hash to identify a previously tested revision.", "reason": "Recording provenance places no equality requirement on the refactored source."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Verifies that a format-valid copy has the same logical entries and a different digest, then requires its rejection.", "reason": "The release digest remains decisive even when a content comparison succeeds."}
+      ]
+    }
+  ]
+}

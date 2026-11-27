@@ -1,0 +1,13 @@
+--- a/app/src/components/Waveform.tsx
++++ b/app/src/components/Waveform.tsx
+@@ -50,8 +50,8 @@
+       if (datum < min) min = datum;
+       if (datum > max) max = datum;
+     }
+-    mins[i] = min;
+-    maxs[i] = max;
++    mins[i] = 0;
++    maxs[i] = 0;
+   }
+ 
+   const peaks: WaveformPeaks = { mins, maxs, width };

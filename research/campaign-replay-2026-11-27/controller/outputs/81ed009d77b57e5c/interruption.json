@@ -1,0 +1,11 @@
+{
+  "observed_utc": "2026-11-27T02:41:11.327641+00:00",
+  "event": "Second starting\u2192ready metadata transition; prior agent prefix absent from live registry",
+  "subject_id": "81ed009d77b57e5c",
+  "response_mtime_utc": "2026-11-27T02:39:04.198661+00:00",
+  "response_before_declared_deadline": true,
+  "response_before_starting_metadata": true,
+  "agent_chat_final": "unavailable",
+  "model_retries": 0,
+  "limits": "A delivered file is retained; backend turn completion and precise agent-loss instant are unavailable."
+}

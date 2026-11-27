@@ -1,0 +1,19 @@
+{
+  "source": "sealed response.md, patch.diff and git-status.txt",
+  "entry_point": "/case/runtime/run-worker.sh state-machine-fuzz.test.ts -t \"model: read-your-writes\"",
+  "changed": [
+    "app/test/integration/state-machine-fuzz.test.ts"
+  ],
+  "claim": "Keep actual DO/WS/KV assertions and failure shrinking, accept the recorded legitimate short first campaign by advancing each configured fast-check seed by a full batch, cap work at three batches and require at least 100 executed commands, all nine transitions and a dirty disconnect.",
+  "reported_baselines": [
+    "historical seed 45182094013: 99 then 234 executed commands after 30 and 60 schedules",
+    "defaults first batch",
+    "default/CI/zero/negative/multiple seed checks",
+    "unmodified targeted last-disconnect keeper"
+  ],
+  "reported_faults": [
+    "remove hibernation -> old check green, candidate red with 393 accepted and zero hibernations",
+    "cap PATCH swing at 99 -> second batch state mismatch, shrunk path 51:1, one PATCH with tempo 60 and swing 100; promote using actual project CLI and replay before generation under seed 42"
+  ],
+  "scope_limit": "No production change. Full Worker, focused unit, CI, waveform-local test and sequence-rewind observations are additional report claims, not changes to those checks."
+}

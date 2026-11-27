@@ -1,0 +1,20 @@
+{
+  "original": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": "app",
+      "args": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "list",
+        "--project",
+        "unit",
+        "--filesOnly"
+      ]
+    },
+    "log": "original.log",
+    "seconds": 17.396
+  }
+}

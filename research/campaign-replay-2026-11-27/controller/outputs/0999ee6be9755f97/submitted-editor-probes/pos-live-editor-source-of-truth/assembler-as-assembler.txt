@@ -1,0 +1,1 @@
+{"edit": "editor/js/export.js", "generated": "editor.html", "rebuild": "editor", "imageFormats": ["svg", "png"], "textFormats": ["ascii", "unicode"], "assembler": "scripts/site/editor.ts"}

@@ -1,0 +1,1295 @@
+{
+  "status": "Post-freeze independent examples outside the primary matrix. Neither the subject's saved inputs nor live runs.",
+  "python": "3.11.2",
+  "grader": "grade_text.score / grade_case_variant v0.6.0, output.md, allow_scripts=False",
+  "plans": [
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "handler_and_both_builders",
+      "meaning": "complete",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 4,
+        "total": 4,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "bare_owning_directory",
+      "meaning": "complete",
+      "plan": {
+        "edit": "editor/js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 4,
+        "total": 4,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "documented_directory_spelling",
+      "meaning": "directory spelling in shipped skill",
+      "plan": {
+        "edit": "editor/js/",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 4,
+        "total": 4,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "hosted_root_trailing_slash",
+      "meaning": "directory spelling in shipped skill",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public/",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 4,
+        "total": 4,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "reorder_object_keys",
+      "meaning": "complete",
+      "plan": {
+        "formats": {
+          "unicode": "text",
+          "ascii": "text",
+          "png": "image",
+          "svg": "image"
+        },
+        "hostedArtifact": {
+          "script": "website",
+          "action": "rebuild",
+          "builder": "website/build.ts",
+          "path": "website/public"
+        },
+        "standaloneArtifact": {
+          "script": "editor",
+          "action": "rebuild",
+          "builder": "scripts/site/editor.ts",
+          "path": "editor.html"
+        },
+        "edit": "editor/js/export.js"
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 4,
+        "total": 4,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "edit_only_assembler",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "scripts/site/editor.ts",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "swap_handler_and_standalone_builder",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "scripts/site/editor.ts",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "editor/js/export.js",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']",
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'editor/js/export.js', 'action': 'rebuild', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "hand_edit_standalone_file",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor.html",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'editor.html' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "hand_edit_standalone_action",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "edit",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'scripts/site/editor.ts', 'action': 'edit', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "hand_edit_hosted_action",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "edit",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "hosted-artifact": "$.hostedArtifact.action: expected const 'rebuild', got 'edit'"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "negate_rebuild_of_standalone",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "do not rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'scripts/site/editor.ts', 'action': 'do not rebuild', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "swap_build_scripts",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'scripts/site/editor.ts', 'action': 'rebuild', 'script': 'website'}",
+          "hosted-artifact": "$.hostedArtifact.script: expected const 'website', got 'editor'"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "omit_standalone_assembler",
+      "meaning": "correct owner and actions, missing requested builder",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "equivalent_internal_dot",
+      "meaning": "correct owner, spelled differently",
+      "plan": {
+        "edit": "editor/js/./export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'editor/js/./export.js' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "leading_dot",
+      "meaning": "correct owner, leading ./ explicitly excluded by prompt",
+      "plan": {
+        "edit": "./editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: './editor/js/export.js' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "true_extra_assembler_note",
+      "meaning": "complete plan with extra field",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "image",
+          "png": "image",
+          "ascii": "text",
+          "unicode": "text"
+        },
+        "context": "scripts/site/editor.ts assembles editor.html."
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$: unexpected key 'context'"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "omit_formats",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "outputs": "missing: ['ASCII', 'PNG', 'SVG']"
+        }
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "outputs": "json check failed: 'formats'"
+        }
+      }
+    },
+    {
+      "case": "pos-live-editor-source-of-truth",
+      "example": "swap_image_and_text_formats",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "formats": {
+          "svg": "text",
+          "png": "text",
+          "ascii": "image",
+          "unicode": "image"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 4,
+        "deferred": 0,
+        "failures": {
+          "outputs": "formats={'svg': 'text', 'png': 'text', 'ascii': 'image', 'unicode': 'image'}"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "handler_and_both_builders",
+      "meaning": "complete",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "bare_owning_directory",
+      "meaning": "complete",
+      "plan": {
+        "edit": "editor/js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "documented_directory_spelling",
+      "meaning": "directory spelling in shipped skill",
+      "plan": {
+        "edit": "editor/js/",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "hosted_root_trailing_slash",
+      "meaning": "directory spelling in shipped skill",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public/",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "reorder_object_keys",
+      "meaning": "complete",
+      "plan": {
+        "hostedArtifact": {
+          "script": "website",
+          "action": "rebuild",
+          "builder": "website/build.ts",
+          "path": "website/public"
+        },
+        "standaloneArtifact": {
+          "script": "editor",
+          "action": "rebuild",
+          "builder": "scripts/site/editor.ts",
+          "path": "editor.html"
+        },
+        "edit": "editor/js/export.js"
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "edit_only_assembler",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "scripts/site/editor.ts",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "swap_handler_and_standalone_builder",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "scripts/site/editor.ts",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "editor/js/export.js",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'scripts/site/editor.ts' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']",
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'editor/js/export.js', 'action': 'rebuild', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "hand_edit_standalone_file",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor.html",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'editor.html' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "hand_edit_standalone_action",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "edit",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'scripts/site/editor.ts', 'action': 'edit', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "hand_edit_hosted_action",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "edit",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "hosted-artifact": "$.hostedArtifact.action: expected const 'rebuild', got 'edit'"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "negate_rebuild_of_standalone",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "do not rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'scripts/site/editor.ts', 'action': 'do not rebuild', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "swap_build_scripts",
+      "meaning": "wrong",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "editor"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 1,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'builder': 'scripts/site/editor.ts', 'action': 'rebuild', 'script': 'website'}",
+          "hosted-artifact": "$.hostedArtifact.script: expected const 'website', got 'editor'"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "omit_standalone_assembler",
+      "meaning": "correct owner and actions, missing requested builder",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "source-of-truth": "missing 'scripts/site/editor.ts'"
+        }
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "standalone-artifact": "standaloneArtifact={'path': 'editor.html', 'action': 'rebuild', 'script': 'editor'}"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "equivalent_internal_dot",
+      "meaning": "correct owner, spelled differently",
+      "plan": {
+        "edit": "editor/js/./export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: 'editor/js/./export.js' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "leading_dot",
+      "meaning": "correct owner, leading ./ explicitly excluded by prompt",
+      "plan": {
+        "edit": "./editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        }
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$.edit: './editor/js/export.js' not in enum ['editor/js/export.js', 'editor/js', 'editor/js/']"
+        }
+      }
+    },
+    {
+      "case": "adv-reject-editor-html-direct-edit",
+      "example": "true_extra_assembler_note",
+      "meaning": "complete plan with extra field",
+      "plan": {
+        "edit": "editor/js/export.js",
+        "standaloneArtifact": {
+          "path": "editor.html",
+          "builder": "scripts/site/editor.ts",
+          "action": "rebuild",
+          "script": "editor"
+        },
+        "hostedArtifact": {
+          "path": "website/public",
+          "builder": "website/build.ts",
+          "action": "rebuild",
+          "script": "website"
+        },
+        "context": "scripts/site/editor.ts assembles editor.html."
+      },
+      "original": {
+        "passed": 3,
+        "total": 3,
+        "deferred": 0,
+        "failures": {}
+      },
+      "candidate": {
+        "passed": 2,
+        "total": 3,
+        "deferred": 0,
+        "failures": {
+          "edit-target": "$: unexpected key 'context'"
+        }
+      }
+    }
+  ],
+  "ablationMethod": "Full upstream materialize-ablations on the rooted manifest. The editor-only CLI run projects just that one ablation into a temporary runner manifest.",
+  "ablations": {
+    "original": {
+      "materializerExit": 0,
+      "allDeclared": {
+        "exit": 1,
+        "stdout": "",
+        "stderr": "FAIL: ablation no-verify-before-serialize: patch context mismatch at line 62: '4. `verifyMermaid(d)` \u2014 structured warnings; inspect `ok` / `warnings` / `layout`.'"
+      },
+      "editorOnly": {
+        "exit": 0,
+        "stdout": "materialized ablation:no-editor-source-of-truth -> <tmp>/original-editorOnly/no-editor-source-of-truth (answer, 1 component(s))",
+        "stderr": "",
+        "removedLines": [
+          "| `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |",
+          "Do not edit generated `editor.html` or `website/public/` files directly."
+        ],
+        "insertedLines": []
+      }
+    },
+    "candidate": {
+      "materializerExit": 0,
+      "allDeclared": {
+        "exit": 1,
+        "stdout": "",
+        "stderr": "FAIL: ablation no-verify-before-serialize: patch context mismatch at line 62: '4. `verifyMermaid(d)` \u2014 structured warnings; inspect `ok` / `warnings` / `layout`.'"
+      },
+      "editorOnly": {
+        "exit": 0,
+        "stdout": "materialized ablation:no-editor-source-of-truth -> <tmp>/candidate-editorOnly/no-editor-source-of-truth (answer, 1 component(s))",
+        "stderr": "",
+        "removedLines": [
+          "| `editor/js/` | Editor behavior. Treat `sharing.js`, `rendering.js`, and `state.js` as contract sources. |",
+          "| `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |",
+          "Do not edit generated `editor.html` or `website/public/` files directly."
+        ],
+        "insertedLines": []
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+
+> keyboardia@0.2.0 validate:test-links
+> tsx scripts/check-test-subject-links.ts
+
+✅ Every test file is linked to the code it names.

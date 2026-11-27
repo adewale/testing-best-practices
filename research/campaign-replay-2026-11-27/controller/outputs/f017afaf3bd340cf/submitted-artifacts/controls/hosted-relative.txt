@@ -1,0 +1,6 @@
+{
+  "rebuild": "website",
+  "generated": "./website/public/editor/index.html",
+  "generator": "./website/build.ts",
+  "edit": "./editor/js/export.js"
+}

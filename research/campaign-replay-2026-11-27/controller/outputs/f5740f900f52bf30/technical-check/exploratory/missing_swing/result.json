@@ -1,0 +1,21 @@
+{
+  "exit": 1,
+  "wall_seconds": 7.167,
+  "log": "technical-check/exploratory/missing_swing/run.log",
+  "sha256": "5e3eebcc7f0d0abc945d8d5e7536de363b0530a5bcd74d823acfd2c16c8e3e85",
+  "test_files": "1 failed (1)",
+  "tests": "1 failed | 5 skipped (6)",
+  "source": "submitted",
+  "stimulus": "no_swing",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "b68145253f7453b176fa77c62ce15dacf2be714add213dad8f50ea32f11c85c1",
+    "4dc98aafcf5e2b4cdbd83456bfd435352d1b083bfdc81fae78c3ca2f0e9b2798"
+  ]
+}

@@ -1,0 +1,1 @@
+Change the download listeners in editor/js/export.js. Regenerate editor.html with bun run editor and website/public/ with bun run website. Direct edits to either generated output are overwritten. The image downloads are SVG and PNG; the text outputs are ASCII and Unicode.

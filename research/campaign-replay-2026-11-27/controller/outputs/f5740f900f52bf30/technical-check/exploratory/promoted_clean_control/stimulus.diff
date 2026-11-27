@@ -1,0 +1,16 @@
+--- a/app/test/integration/known-failures.json
++++ b/app/test/integration/known-failures.json
+@@ -1,5 +1,12 @@
+ {
+-  "stateMachine": [],
++  "stateMachine": [
++    [
++      {
++        "kind": "ws_tempo",
++        "tempo": 60
++      }
++    ]
++  ],
+   "overlap": [],
+   "evictionRecovery": [],
+   "schedulerMutationRace": []

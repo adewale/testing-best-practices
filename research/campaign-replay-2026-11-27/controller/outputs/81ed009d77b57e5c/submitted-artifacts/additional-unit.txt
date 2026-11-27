@@ -1,0 +1,11 @@
+src/App.session-transitions.test.tsx
+src/audio/audio-context-safety.test.ts
+src/audio/instrument-routing.test.ts
+src/audio/metering-pipeline.test.ts
+src/audio/per-track-synths.test.ts
+src/components/XYPad.test.tsx
+src/icons/index.test.tsx
+src/utils/validate-manifests-cli.test.ts
+src/worker/mcp-adapter.test.ts
+src/worker/mcp-evals.test.ts
+test/e2e-full-stack-lifecycle.test.ts

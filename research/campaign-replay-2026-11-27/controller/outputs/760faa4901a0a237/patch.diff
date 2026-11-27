@@ -1,0 +1,33 @@
+diff --git a/test/web-push.test.ts b/test/web-push.test.ts
+index ef7d616..1930e00 100644
+--- a/test/web-push.test.ts
++++ b/test/web-push.test.ts
+@@ -225,7 +225,7 @@ describe("subscriptions", () => {
+ });
+ 
+ describe("notifications", () => {
+-  it("sends a due reminder to each subscribed device once, encrypted for it, with only a title and the reminder's words; a 410 deletes that subscription", async () => {
++  it("sends one reminder per device using its current keys and removes a subscription when its service returns 410", async () => {
+     const identity = person();
+     const { stub, cookie } = await agent(identity);
+     const phone = await browser("https://web.push.apple.com/phone");
+@@ -247,12 +247,17 @@ describe("notifications", () => {
+       expect(JSON.parse(await device.read(request.body))).toEqual({ title: "Reminder", body: "Call the bank", tag: expect.stringMatching(/^reminder-sch_/) });
+     }
+ 
+-    // The phone's subscription has gone: the next reminder deletes it, and still reaches the laptop.
++    // The laptop refreshes its keys at the same endpoint before the next reminder.
++    const renewedLaptop = await browser(laptop.subscription.endpoint);
++    expect((await subscribe(cookie, renewedLaptop.subscription)).status).toBe(201);
+     await stub.pushServe(phone.subscription.endpoint, 410);
+     await stub.scheduleCreate({ kind: "reminder", text: "Bins out", when: { in: "PT2H" }, timeZone: "Europe/London" });
+     await stub.scheduleAdvance(noon + 3 * 3_600_000);
+     await runDurableObjectAlarm(stub);
+-    expect((await stub.pushRequests()).slice(2).map((request) => request.url).sort()).toEqual([laptop.subscription.endpoint, phone.subscription.endpoint].sort());
++    const next = (await stub.pushRequests()).slice(sent.length);
++    expect(next.map((request) => request.url).sort()).toEqual([laptop.subscription.endpoint, phone.subscription.endpoint].sort());
++    const laptopRequest = next.find((request) => request.url === renewedLaptop.subscription.endpoint)!;
++    expect(JSON.parse(await renewedLaptop.read(laptopRequest.body))).toMatchObject({ body: "Bins out" });
+     expect(await endpoints(stub)).toEqual([laptop.subscription.endpoint]);
+   });
+ 

@@ -1,0 +1,10 @@
+--- a/app/test/integration/state-machine-fuzz.test.ts
++++ b/app/test/integration/state-machine-fuzz.test.ts
+@@ -515,6 +515,7 @@
+         const run = await createConnectedModelRun(coverage);
+         try {
+           await fc.asyncModelRun(() => run, commands);
++          verifierScheduleTrace.push(JSON.stringify({ actions: replayableActions(commands), accepted: coverage.accepted, dirty: coverage.dirtyDisconnects, byKind: coverage.byKind }));
+         } finally {
+           run.real.connection?.ws.close(1000, 'model done');
+         }

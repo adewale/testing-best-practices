@@ -1,0 +1,9 @@
+{
+  "cwd": ".",
+  "args": [
+    "/case/runtime/run-unit.sh",
+    "--reporter=verbose",
+    "src/components/tempo-change.test.ts",
+    "src/components/swing-control.test.ts"
+  ]
+}

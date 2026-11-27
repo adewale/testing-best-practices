@@ -1,0 +1,5 @@
+
+> keyboardia@0.2.0 validate:test-antipatterns
+> tsx scripts/check-test-antipatterns.ts
+
+✅ No always-green test patterns found (365 files).

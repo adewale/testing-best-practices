@@ -1,0 +1,12 @@
+{
+  "subject_id": "c6e8de671b642b51",
+  "phase": "B",
+  "case": "B01",
+  "controller_dispatch_utc": "2026-11-27T01:43:57.062342+00:00",
+  "deadline_utc": "2026-11-27T02:08:57.062342+00:00",
+  "budget_minutes": 25,
+  "requested_model": "gpt-6.2-astra",
+  "requested_reasoning_effort": "max",
+  "fork_turns": "none",
+  "message": "You are an independent replay subject. Read and follow only /workspace/test-audit-replay-v2/subjects/c6e8de671b642b51/packet.md. Your allowed directory is /workspace/test-audit-replay-v2/subjects/c6e8de671b642b51. Do not inspect other study directories, prior reports, controller/evaluator material, network or other agents. Your 25-minute wall budget starts now; deadline 2026-11-27T02:08:57.062342+00:00. Write the exact final response to response.md beside your packet and return it. For planning tasks, preserve the packet's JSON format and word cap. For execution tasks, leave the actual bounded change in work/repo/."
+}

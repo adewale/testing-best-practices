@@ -1,0 +1,21 @@
+{
+  "edit": "editor/js/export.js",
+  "standaloneArtifact": {
+    "path": "editor.html",
+    "action": "rebuild",
+    "script": "editor",
+    "builder": "scripts/site/editor.ts"
+  },
+  "hostedArtifact": {
+    "path": "website/public",
+    "action": "edit",
+    "script": "website",
+    "builder": "website/build.ts"
+  },
+  "formats": {
+    "svg": "image",
+    "png": "image",
+    "ascii": "text",
+    "unicode": "text"
+  }
+}

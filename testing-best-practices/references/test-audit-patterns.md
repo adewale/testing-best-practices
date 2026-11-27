@@ -39,6 +39,7 @@ selection, prerequisites and job results are known.
 | Public artifact bypassed | Install/build as documented in a clean consumer and exercise the declared command/import | Source imports remaining side-effect free and supported package variants |
 | UI selector or visual proxy is weak | Establish the named element/state exists; measure its relevant rendered result | Permitted styling, layout and encoding changes outside the contract |
 | Checker matches vocabulary | Use a credible wrong decision and a correct alternative through the public scoring command | Valid paraphrases, explicit unavailable results and optional case routes |
+| One guard masks another | Reach the guard under review while other limits still permit the operation; verify the state is reachable through supported APIs | The other guard and the adjacent accepted case |
 
 These are choices, not a matrix to run for every owner. For a boundary with a
 single clear defect, one discriminating fault and one relevant permitted change

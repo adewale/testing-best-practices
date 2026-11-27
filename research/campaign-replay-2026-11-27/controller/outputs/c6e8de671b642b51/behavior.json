@@ -1,0 +1,72 @@
+{
+  "case": "B01",
+  "disposition": {
+    "state": "infrastructure-interrupted",
+    "artifacts": "Sealed partial patch. No subject report was recovered.",
+    "completed_25_minute_audit": false,
+    "model_retries": 0,
+    "subject_runtime_seconds": null,
+    "dispatch_to_controller_seal_seconds": 755.229623,
+    "timing_limit": "The interval includes controller observation delay. The last model action and precise interruption time are unknown.",
+    "subject_claims_commands_results_and_files_read": null
+  },
+  "patch_and_owners": {
+    "patch_sha256": "bcdde75aa37345a54727a85c03d709d401dd16834579a5c7c2a51a1830489bf4",
+    "sealed_snapshot_sha256": "7a230f83073805b83149f09de06f39ccb349726cb061308700ad8e752a388cef",
+    "scope": "Two changed files among 438 sealed files. The canonical skill-evals/shared-benchmark.json revises two editor prompts, their expected behaviors, and six objectives. It also revises one ablation description and expected regression. The other 49 cases and three ablations match the original.",
+    "case_change": "The original free-prose export questions become raw-JSON plans for image download button handlers. Both plans specify hand-edited paths, a standalone artifact action and both build scripts. The positive case now asks for one supported action for each of four formats. The adversarial case requests no format listing.",
+    "owners": "editor/js/export.js wires the SVG and PNG download buttons. editor/js/buttons.js owns copying rendered text or SVG. scripts/site/editor.ts assembles editor.html. package.json and the live-editor skill identify the editor and website builds.",
+    "ablation": "The existing no-editor-source-of-truth.patch targets two lines of the live-editor SKILL.md, the assembler mapping and the warning about hand-editing generated output. The revised metadata describes that distinction. The source-directory mapping and build examples still appear in the skill. Live ablation effects were unmeasured.",
+    "derived_file": "The patch adds a 92,593-byte .audit-runner-manifest.json. Independent materialization matched its JSON after rebasing one checkout-specific absolute --source-file argument in pos-channel-mcp-direct-mutate. The canonical source uses a relative path. The repository instructions describe generating an ignored runner copy at use time. Running the unrelated case from the added copy was unmeasured."
+  },
+  "frozen_editor_controls": {
+    "method": "The pinned grade_case_variant graded the same nine saved prose answers on both rows, using the original and sealed manifests. Candidate objectives are structured_output on output.md. All six were inspected. Repository script oracles were disabled.",
+    "case_order": ["pos-live-editor-source-of-truth", "adv-reject-editor-html-direct-edit"],
+    "original_objectives": [["source-of-truth", "generated-artifact-rule", "outputs"], ["source-of-truth", "generated", "rebuild"]],
+    "original_rows": [
+      {"answer": "maintain_owner", "expected": ["accept", "accept"], "objectives_passed_of_three": [2, 2]},
+      {"answer": "regenerate_paraphrase", "expected": ["accept", "accept"], "objectives_passed_of_three": [1, 1]},
+      {"answer": "assembler_in_context", "expected": ["accept", "accept"], "objectives_passed_of_three": [3, 3]},
+      {"answer": "direct_edit_negated_rebuild", "expected": ["reject", "reject"], "objectives_passed_of_three": [3, 3]},
+      {"answer": "wrong_owner_only", "expected": ["reject", "reject"], "objectives_passed_of_three": [3, 3]},
+      {"answer": "skip_rebuild_only", "expected": ["reject", "reject"], "objectives_passed_of_three": [3, 3]},
+      {"answer": "direct_edit_only", "expected": ["reject", "reject"], "objectives_passed_of_three": [3, 3]},
+      {"answer": "behavior_without_formats", "expected": ["reject", "accept"], "objectives_passed_of_three": [1, 2]},
+      {"answer": "no_relevant_content", "expected": ["reject", "reject"], "objectives_passed_of_three": [0, 0]}
+    ],
+    "original": {"accepted": 10, "rejected": 8, "deferred": 0, "missing": 0, "agreed_with_original_semantic_expectation": 5},
+    "candidate": {"accepted": 0, "rejected": 18, "deferred": 0, "missing": 0, "invalid_format": 18, "objectives_passed_per_row": 0},
+    "interpretation": "The original rejected five of seven correct recommendations and accepted eight of eleven wrong ones. All nine prose answers fail JSON parsing. The candidate's uniform rejection agrees with eleven old rejection labels by coincidence of format. No frozen answer reached candidate content validation."
+  },
+  "exploratory_structured_plans": {
+    "status": "Post-freeze evaluator examples through the same pinned case grader on original and candidate. The submitted assertions graded identical raw JSON for both. These examples stay outside the frozen matrix.",
+    "counts": {"case_plan_pairs": 22, "positive": 12, "adversarial": 10},
+    "clean_and_fault": "Editing editor/js/export.js and rebuilding the correct standalone and hosted outputs scored 2/3 on each original row and 3/3 on each candidate row. Replacing only the hand-edit owner with scripts/site/editor.ts scored 3/3 originally and 2/3 on both candidate rows, where source-of-truth failed.",
+    "permitted_variation": "The directory spelling ./editor/js/, ./editor.html, regenerate, bun run editor and bun run website, with copy for both image formats in the positive row, scored 1/3 in both original rows and 3/3 in both candidate rows.",
+    "faults": "Both rows rejected adding editor.html to hand-edited paths, changing the artifact action to edit, naming a wrong generated path, omitting both rebuilds, swapping the two build owners, and editing the assembler as sole owner. Each fault failed its corresponding objective, with the other two passing. The positive row also rejected omitted formats and ASCII download on outputs. The corresponding complete plan without formats passed the adversarial row.",
+    "compatibility_limits": "Both candidate rows rejected the correct repository-relative spelling editor/js/./export.js and an otherwise correct object with a context field explaining the assembler's true role. Both failed only source-of-truth. The first result shows exact-string sensitivity. The second follows the closed top-level schema. Free-form explanations and advice outside the permitted fields remain ungraded."
+  },
+  "independent_checks": {
+    "manifest": "Original and candidate materializer and upstream validation exited 0. Both validated 51 cases and four ablations with the same 32 warnings. Private prompts were not hydrated.",
+    "visual_freshness": "Identical original/candidate results at the cookbook regeneration callback, cookbook CLI --check and Section B regeneration callback. Each accepted original PNG bytes and rejected the lossless re-encode, visible pixel edit and dimension change. The cookbook and Section B historical approvals accepted the original and rejected the re-encoded file substituted for the approved asset.",
+    "pixel_control_and_policy": "On both trees the cookbook RGBA-and-dimensions helper accepted original and re-encoded input and rejected the pixel and dimension changes. The Section B exact-byte requirement remains independently specified in docs/testing-strategy.md and eval/section-b-brand-evidence/README.md. Pinned renderer reproducibility and historical approval remain separate contracts. Controlled bytes exercised callbacks and CLI decisions.",
+    "workflow": "The original and candidate canonical workflow recorders invoked font setup before sharding. The weekly workflow recorder found no such setup. Its three shards and merge dependency on unit match the original. The CJK prerequisite failed for missing CI fonts, passed for a supplied directory and passed with optional fonts missing locally. A real installation, rendering fidelity, hosted candidate shards and LCOV merge were unmeasured.",
+    "browser_coverage": "The sealed e2e/browser.test.ts and e2e/editor-site-interactions.e2e.test.ts match the original bytes. Actual click, download and artifact-content assertions remain in source. No browser ran.",
+    "focused_product_unittests": "All ten original repository Python unittest cases also passed on the candidate. They exercise separate behavior.",
+    "historical_ci": "At the source SHA, weekly coverage failed on shard 1/3 at the font prerequisite. The other two shards succeeded and the merge skipped. The owner-approved merge message contains [skip ci], and the historical exact-head canonical query returned zero runs. This is historical baseline evidence."
+  },
+  "coverage_and_provenance": {
+    "source_revision": "f49196e7f5d6d2f0970a4a76fe62644ee5e9d004",
+    "inventory_conventional_tests": 660,
+    "accessible_sampled_tests": 58,
+    "participant_reads_and_selections": null,
+    "execution_scope": "No subject report, live model, browser, full Bun suite, native rasterizer or hosted candidate CI measurement. The evaluator established a bounded change in grading curated structured plans. Subject priorities, intended edits and claims cannot be inferred from the partial patch.",
+    "runtime": "Both frozen measurements used image sha256:e89a28eddc2679c648d10c127f6d0f79d892056a55f179dfded36452a5477c46. Candidate wrapper exit 0, scripts disabled. Original runtime used --assert-baseline. The exploratory data-only grader also ran in the pinned image with scripts disabled.",
+    "commands": [
+      "flock /tmp/test-audit-v2-docker.lock python3 -B preparation/agentic-mermaid/run-isolated.py --repo controller/candidate-snapshots/<sealed-id> --output controller/outputs/<sealed-id>/controls.json",
+      "flock /tmp/test-audit-v2-docker.lock python3 -B controller/outputs/<sealed-id>/exploratory-editor.py"
+    ],
+    "original_raw": "preparation/agentic-mermaid/operator-runtime/baseline.isolated.json and baseline.isolated.runtime.json",
+    "candidate_raw": ["controls.json", "controls.runtime.json", "exploratory-editor.json", "exploratory-editor.py", "candidate-snapshot.json", "patch.diff", "disposition.json", "interruption.json"]
+  }
+}

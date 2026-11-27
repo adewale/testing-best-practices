@@ -1,0 +1,17 @@
+# PDA test audit
+
+1. **The export test accepted a corrupted photo.** At the pin, `test/agent-data.test.ts:97` counted two chunks and checked one encoding label. A person could rely on that download before erasing the agent. The revised test reconstructs the 2 MiB original and its distinct preview from the authenticated response, grouping by attachment ID and part, sorting by sequence, and comparing every decoded byte with the upload. The expected bytes come from the inputs. The format comes from `pda-spec.md:230`, `pda-spec.md:344` and the download instructions at `src/agent-data-export.ts:130`. The same test also checks owner isolation, credential omission, download headers and unauthenticated access. [Changed test](/workspace/test-audit-replay-v2/subjects/d3dfc73ed6d4ddba/work/repo/test/agent-data.test.ts:101)
+2. **The cancellation test can miss a locked table.** `test/agent-data.test.ts:365` reads once from each stream. The exporter emits a header before any data row. Temporarily yielding directly from the SQLite cursor at `src/agent-data-export.ts:139` still let the HTTP cancellation check pass. A temporary workerd probe paused after the first of five memory rows. Erasure then failed with `SQLITE_LOCKED` at `src/agent-data.ts:78` and passed with the original batched reader. Keep the HTTP cancellation case and use the partial-table read for a future regression test.
+
+**Local verification.** From `repo/` on Node 24.22.3, each selection used `node node_modules/vitest/vitest.mjs run --maxWorkers=1 --config` followed by the arguments below. Both workerd projects used `WRANGLER_SEND_METRICS=false` and `XDG_CONFIG_HOME=../.audit-xdg`.
+
+| Config and file | Result |
+|---|---|
+| `test/vitest.config.ts test/agent-data.test.ts` | 31/31 before and after the change |
+| `test/ui/vitest.config.ts test/ui/agent-data.test.tsx` | 5/5 |
+| `test/durability/vitest.config.ts test/durability/crash.test.ts` | 3/3 |
+| `interop/vitest.config.ts interop/test/legacy-state-migration.test.ts` | 11/11 |
+
+With `-t "exports the caller's records"`, temporarily making `src/attachments.ts:136` write the first slice twice passed the original test. The revised test failed at byte **1,048,576** despite the correct file length. With the writer restored, reversing physical SQLite row IDs returned file sequences `[1, 0]` and the revised test passed. The cursor experiments used `-t "erases while an export is unread"` and `-t "probe a table"`. Each filter selected one case. All temporary edits were removed. `npm run typecheck`, `git diff --check` and `git diff --exit-code -- src` passed.
+
+**Scope and limits.** `inventory.json` lists 155 named modules at `c0a9a85c8f690eb77313b9627e3ea39cadc58968`, with 56 supplied. I sampled the alphabetically first supplied module in each of nine strata. Declaration or entry-point checks included `account-refresh-races.test.ts`, `check-live.test.mjs`, `node-runtime.check.mjs`, `company-security.node.mjs`, `test_handoff_direct.py` and `address.test.ts`. I read the Page, durability and migration modules above and inspected the Workers export, rollback and pagination cases. I traced the Settings link through `src/ui/agent-data.tsx:65`, `src/index.ts:537`, `src/agent-data-routes.ts:29` and `src/agent.ts:678`, including the Worker dispatch in `test/agent-helpers.ts:71`. The three supplied CI job records show successful `npm test`, interop grid and action-pin checks on the full pinned checkout. Local execution of the revised tree covers the listed selections.

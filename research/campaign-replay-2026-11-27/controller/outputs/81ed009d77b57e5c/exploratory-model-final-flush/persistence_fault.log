@@ -1,0 +1,42 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+stderr | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+PBT_COUNTEREXAMPLE={"lane":"stateMachine","example":[{"kind":"ws_swing","swing":1},{"kind":"disconnect"}],"seed":1,"path":"0:3:1:1:1:1:1:1","shrinks":7}
+
+ × |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 18164ms
+   → stateMachine property failed after 7 shrink(s) (seed=1, path=0:3:1:1:1:1:1:1): expected +0 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+Error: stateMachine property failed after 7 shrink(s) (seed=1, path=0:3:1:1:1:1:1:1): expected +0 to be 1 // Object.is equality
+ ❯ failWithPbtCounterexample ../../src/test/pbt-failure.ts:38:9
+     36|     ? details.errorInstance.message
+     37|     : String(details.errorInstance ?? 'property check failed');
+     38|   throw new Error(
+       |         ^
+     39|     `${lane} property failed after ${details.numShrinks} shrink(s) `
+     40|     + `(seed=${details.seed}, path=${details.counterexamplePath ?? 'un…
+ ❯ checkModelBatch state-machine-fuzz.test.ts:524:7
+ ❯ state-machine-fuzz.test.ts:550:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:45:27
+   Duration  22.25s (transform 805ms, setup 0ms, import 2.35s, tests 18.16s, environment 0ms)
+

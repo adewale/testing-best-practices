@@ -1,0 +1,17 @@
+{
+  "candidate_files_verified": 986,
+  "original_files": 985,
+  "changed_files": [
+    "app/e2e/core.spec.ts",
+    "app/e2e/phase3-refactoring.spec.ts",
+    "app/src/components/TransportBar.test.tsx",
+    "app/src/components/swing-control.test.ts",
+    "app/src/components/tempo-change.test.ts"
+  ],
+  "sampled_git_blobs_checked_on_original": 58,
+  "sealed_checksums": {
+    "response.md": "ae35ab66edd1c0525960268cdab8623faec5cbc6efdc9ec58613b63831555a34",
+    "patch.diff": "3ce4662a46d669c0b3cfa6f56af83af7eee233b20d4e5bb9a18091568b5d5993"
+  },
+  "snapshot_manifest_sha256": "2ffcbb0c47863fc7490bbe44e4ce624687a5e9a2daf66508d5be42ee6c91c88a"
+}

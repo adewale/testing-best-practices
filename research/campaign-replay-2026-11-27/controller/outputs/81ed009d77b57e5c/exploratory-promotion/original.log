@@ -1,0 +1,114 @@
+EXPLORATORY run=cap-REST-PATCH-at-99 exit=1
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=30 coverage={"accepted":99,"dirtyDisconnects":3,"byKind":{"ws_tempo":10,"ws_swing":13,"rest_put":9,"rest_patch_state":11,"rest_patch_name":14,"hibernate":17,"hard_evict":11,"disconnect":8,"connect":6}}
+
+stderr | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+PBT_COUNTEREXAMPLE={"lane":"stateMachine","example":[{"kind":"rest_patch_state","tempo":60,"swing":100}],"seed":-2062546243,"path":"51:1","shrinks":1}
+
+ × |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 2395ms
+   → stateMachine property failed after 1 shrink(s) (seed=-2062546243, path=51:1): expected 99 to be 100 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+Error: stateMachine property failed after 1 shrink(s) (seed=-2062546243, path=51:1): expected 99 to be 100 // Object.is equality
+ ❯ failWithPbtCounterexample ../../src/test/pbt-failure.ts:38:9
+     36|     ? details.errorInstance.message
+     37|     : String(details.errorInstance ?? 'property check failed');
+     38|   throw new Error(
+       |         ^
+     39|     `${lane} property failed after ${details.numShrinks} shrink(s) `
+     40|     + `(seed=${details.seed}, path=${details.counterexamplePath ?? 'un…
+ ❯ checkModelBatch state-machine-fuzz.test.ts:524:7
+ ❯ state-machine-fuzz.test.ts:550:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:47:05
+   Duration  6.57s (transform 852ms, setup 0ms, import 2.47s, tests 2.40s, environment 0ms)
+
+
+Promoted stateMachine seed=-2062546243 path=51:1 after 1 shrink(s).
+EXPLORATORY run=actual-promotion-replay-under-42 exit=1
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+ × |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 50ms
+   → known-failure #0 regressed: expected 99 to be 100 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+Error: known-failure #0 regressed: expected 99 to be 100 // Object.is equality
+ ❯ state-machine-fuzz.test.ts:540:13
+    538|       await replayKnownFailure(schedule);
+    539|     } catch (error) {
+    540|       throw new Error(`known-failure #${index} regressed: ${(error as …
+       |             ^
+    541|     }
+    542|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  02:47:13
+   Duration  2.88s (transform 684ms, setup 0ms, import 1.79s, tests 52ms, environment 0ms)
+
+
+EXPLORATORY run=same-promoted-example-healthy-under-42 exit=0
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins)
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge
+ ↓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=42 runsPerSeed=30 coverage={"accepted":117,"dirtyDisconnects":3,"byKind":{"ws_tempo":13,"ws_swing":8,"rest_put":18,"rest_patch_state":12,"rest_patch_name":18,"hibernate":16,"hard_evict":21,"disconnect":7,"connect":4}}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 1304ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  02:47:17
+   Duration  4.35s (transform 661ms, setup 0ms, import 1.90s, tests 1.30s, environment 0ms)
+
+
+VERIFIER_PROMOTION={"first_stimulus": {"lane": "stateMachine", "example": [{"kind": "rest_patch_state", "tempo": 60, "swing": 100}], "seed": -2062546243, "path": "51:1", "shrinks": 1}, "stored": [[{"kind": "rest_patch_state", "tempo": 60, "swing": 100}]], "replay_seed": 42, "faulted_replay_exit": 1, "restored_replay_exit": 0}

@@ -1,0 +1,142 @@
+diff --git a/skill-evals/ablations/no-editor-source-of-truth.patch b/skill-evals/ablations/no-editor-source-of-truth.patch
+index b126557..00c364e 100644
+--- a/skill-evals/ablations/no-editor-source-of-truth.patch
++++ b/skill-evals/ablations/no-editor-source-of-truth.patch
+@@ -1,4 +1,6 @@
+-@@ -21,1 +21,0 @@
++@@ -17,1 +17,0 @@
++-| `editor/js/` | Editor behavior. Treat `sharing.js`, `rendering.js`, and `state.js` as contract sources. |
++@@ -21,1 +20,0 @@
+ -| `scripts/site/editor.ts` | Assemble the standalone `editor.html`. |
+-@@ -26,1 +25,0 @@
++@@ -26,1 +24,0 @@
+ -Do not edit generated `editor.html` or `website/public/` files directly.
+diff --git a/skill-evals/shared-benchmark.json b/skill-evals/shared-benchmark.json
+index b283f8a..5ee91be 100644
+--- a/skill-evals/shared-benchmark.json
++++ b/skill-evals/shared-benchmark.json
+@@ -88,23 +88,44 @@
+       "difficulty": "extended",
+       "success_goals": ["outcome", "process"],
+       "trigger_type": "explicit",
+-      "prompt": "A coding agent must change Agentic Mermaid's live editor export behavior. What source-of-truth file should it edit, what generated artifact rule should it follow, and which export/output formats are relevant? Do not browse the repository; answer from any loaded skill if one is available.",
+-      "expected_behavior": ["Identify scripts/site/editor.ts as the source of truth.", "Do not edit generated editor.html directly; rebuild after changing the generator.", "Mention SVG/PNG editor exports and the broader ASCII, PNG, SVG output story."],
++      "prompt": "We need to change what the live editor's image download buttons do in both the standalone editor and the website. Give the maintainer a plan without browsing the repository. Return only a JSON object. In edit, name the file to change by hand, or its owning directory. For standaloneArtifact and hostedArtifact, give objects with path (standalone output file or generated website root), builder (the source file that assembles it), action (edit or rebuild), and script (the package script name to produce it). Use repository-relative paths without a leading ./ or trailing slash. In formats, map each lowercase image download and text canvas format name to image or text.",
++      "expected_behavior": ["Place the handler change in editor/js/ (specifically editor/js/export.js).", "scripts/site/editor.ts assembles editor.html via bun run editor. website/build.ts assembles website/public/ via bun run website.", "Identify SVG and PNG image downloads and ASCII and Unicode text output."],
+       "assertions": [
+         {
+-          "name": "source-of-truth",
+-          "type": "contains",
+-          "value": "scripts/site/editor.ts"
++          "name": "edit-target",
++          "type": "structured_output",
++          "path": "output.md",
++          "schema": {
++            "type": "object", "required": ["edit"], "additionalProperties": false,
++            "properties": {
++              "edit": { "enum": ["editor/js/export.js", "editor/js", "editor/js/"] },
++              "standaloneArtifact": {}, "hostedArtifact": {}, "formats": {}
++            }
++          }
+         },
+         {
+-          "name": "generated-artifact-rule",
+-          "type": "contains_all",
+-          "values": ["editor.html", "rebuild"]
++          "name": "standalone-artifact", "type": "json_field_equals", "path": "output.md", "field": "standaloneArtifact",
++          "equals": { "path": "editor.html", "builder": "scripts/site/editor.ts", "action": "rebuild", "script": "editor" }
+         },
+         {
+-          "name": "outputs",
+-          "type": "contains_all",
+-          "values": ["ASCII", "PNG", "SVG"]
++          "name": "hosted-artifact", "type": "structured_output", "path": "output.md",
++          "schema": {
++            "type": "object", "required": ["hostedArtifact"],
++            "properties": {
++              "hostedArtifact": {
++                "type": "object", "additionalProperties": false,
++                "required": ["path", "builder", "action", "script"],
++                "properties": {
++                  "path": { "enum": ["website/public", "website/public/"] },
++                  "builder": { "const": "website/build.ts" }, "action": { "const": "rebuild" }, "script": { "const": "website" }
++                }
++              }
++            }
++          }
++        },
++        {
++          "name": "outputs", "type": "json_field_equals", "path": "output.md", "field": "formats",
++          "equals": { "svg": "image", "png": "image", "ascii": "text", "unicode": "text" }
+         }
+       ],
+       "tags": ["editor", "positive"]
+@@ -741,23 +762,40 @@
+       "difficulty": "extended",
+       "success_goals": ["outcome", "process"],
+       "trigger_type": "implicit",
+-      "prompt": "I want to change the live editor export button. Please edit the generated HTML artifact directly because it is the deployed file. Give the correct repo-development guidance instead.",
+-      "expected_behavior": ["Rejects direct editor.html edits.", "Uses scripts/site/editor.ts as source of truth.", "Requires rebuilding generated editor.html."],
++      "prompt": "I want to change what the live editor's image download buttons do. Please patch the generated HTML directly because it is the deployed file. Give the correct maintenance plan for the standalone editor and the website instead. Return only a JSON object. In edit, name the file to change by hand, or its owning directory. For standaloneArtifact and hostedArtifact, give objects with path (standalone output file or generated website root), builder (the source file that assembles it), action (edit or rebuild), and script (the package script name to produce it). Use repository-relative paths without a leading ./ or trailing slash.",
++      "expected_behavior": ["Change the download handlers in editor/js/ (specifically editor/js/export.js).", "Reject hand-editing either generated output.", "scripts/site/editor.ts assembles editor.html via bun run editor. website/build.ts assembles website/public/ via bun run website."],
+       "assertions": [
+         {
+-          "name": "source-of-truth",
+-          "type": "contains",
+-          "value": "scripts/site/editor.ts"
++          "name": "edit-target",
++          "type": "structured_output",
++          "path": "output.md",
++          "schema": {
++            "type": "object", "required": ["edit"], "additionalProperties": false,
++            "properties": {
++              "edit": { "enum": ["editor/js/export.js", "editor/js", "editor/js/"] },
++              "standaloneArtifact": {}, "hostedArtifact": {}
++            }
++          }
+         },
+         {
+-          "name": "generated",
+-          "type": "regex",
+-          "pattern": "(?:editor\\.html[\\s\\S]*(?:generated|artifact)|(?:generated|artifact)[\\s\\S]*editor\\.html)"
++          "name": "standalone-artifact", "type": "json_field_equals", "path": "output.md", "field": "standaloneArtifact",
++          "equals": { "path": "editor.html", "builder": "scripts/site/editor.ts", "action": "rebuild", "script": "editor" }
+         },
+         {
+-          "name": "rebuild",
+-          "type": "contains",
+-          "value": "rebuild"
++          "name": "hosted-artifact", "type": "structured_output", "path": "output.md",
++          "schema": {
++            "type": "object", "required": ["hostedArtifact"],
++            "properties": {
++              "hostedArtifact": {
++                "type": "object", "additionalProperties": false,
++                "required": ["path", "builder", "action", "script"],
++                "properties": {
++                  "path": { "enum": ["website/public", "website/public/"] },
++                  "builder": { "const": "website/build.ts" }, "action": { "const": "rebuild" }, "script": { "const": "website" }
++                }
++              }
++            }
++          }
+         }
+       ],
+       "tags": ["adversarial", "editor"]
+@@ -1135,14 +1173,14 @@
+     },
+     {
+       "id": "no-editor-source-of-truth",
+-      "removed_component": "live editor source-of-truth file guidance",
++      "removed_component": "editor behavior and standalone assembly source-map rows and generated-output warning",
+       "mechanism": "patch",
+       "class": "instructions",
+       "target": {
+         "skill_root": "../skills/agentic-mermaid-live-editor",
+         "patch": "ablations/no-editor-source-of-truth.patch"
+       },
+-      "expected_regressions": ["May tell agents to edit generated editor.html instead of scripts/site/editor.ts."]
++      "expected_regressions": ["May direct maintainers to edit an assembler or generated output for a change owned by editor/js/."]
+     },
+     {
+       "id": "no-source-level-family-boundary",

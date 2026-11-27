@@ -1,0 +1,101 @@
+{
+  "case": "R05",
+  "candidates": [
+    {
+      "id": "32249b82e5de2f3f",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Keeps one complete run in required CI, drops the timeout increase, and times the revised suite with the same variants.",
+          "reason": "Additional downstream cases incur only an edit and a checker call."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Copies a read-only fixture, reruns stages affected by the edit, and passes each changed artifact to the production checker.",
+          "reason": "Each verdict depends on the edited artifact, while unchanged preparation is shared."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Checks acceptance of an untouched copy, checks every named rejection, and asserts one representative rejection at the public entry point after real preparation.",
+          "reason": "The full-path case verifies that a tamper rejection reaches the caller, and the focused cases retain both controls."
+        }
+      ]
+    },
+    {
+      "id": "5550b88cef4a8071",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Keeps the global timeout and reserves complete runs for a success, a representative tamper, and distinct integration risks.",
+          "reason": "Downstream mutations can be added without another complete run for each."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Shares stage output only across identical stage inputs, reruns affected dependents, and submits each row's private mutated bytes to the real checker.",
+          "reason": "The expensive work is reused only where valid, and every mutation gets its own observed rejection."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Runs a from-scratch success and a full-path tamper chosen to expose substitution of the original specimen. Focused rows assert acceptance and every expected rejection.",
+          "reason": "These controls exercise both outcomes and check that the pipeline forwards the actual specimen."
+        }
+      ]
+    },
+    {
+      "id": "dd6898d2b6632561",
+      "overall": "FAIL",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Budgets one full wiring example, shares preparation by fixture group, and keeps the existing timeout.",
+          "reason": "The full-pipeline count does not grow with the downstream variant table."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Branches before the first affected stage, preserves the trusted reference, and invokes the production checker on each row's edited bytes.",
+          "reason": "Each row obtains a fresh decision using its own artifact and valid preparation."
+        },
+        {
+          "criterion": 3,
+          "verdict": "FAIL",
+          "evidence": "The sole complete run requires acceptance of a valid raw input. Every rejection assertion calls the checker directly.",
+          "reason": "A public pipeline that discards a rejection and returns acceptance would pass the entire revised suite. No representative end-to-end tamper proof survives."
+        }
+      ]
+    },
+    {
+      "id": "d7cf2c5e9c364483",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Keeps the timeout and one ongoing uncached tamper case. The full comparison across every variant is limited to validating the change.",
+          "reason": "The expanded routine suite shares preparation and must fit the measured time budget."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Recomputes stages that consume changed data, then gives the production checker each private mutated specimen with fresh state.",
+          "reason": "An original digest can supply the expected value while the checker computes the observed value for each specimen."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Keeps an unmodified acceptance control, a separate rejection assertion per mutation, and an uncached end-to-end tamper case.",
+          "reason": "The full run exercises rejection through the pipeline, and the per-case controls retain coverage of valid and altered specimens."
+        }
+      ]
+    }
+  ]
+}

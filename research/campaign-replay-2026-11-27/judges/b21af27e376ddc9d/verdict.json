@@ -1,0 +1,41 @@
+{
+  "case": "R02",
+  "candidates": [
+    {
+      "id": "ec9e2b91500974df",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Drops all five exports, the poisoning test and the exact tie-break. Checks endpoints, legal steps, shortest length and repeatability through public calls.", "reason": "Either permitted shortest route satisfies the assertions and the helpers stay private."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Records the alternate route as contract-compliant and the eviction change as preserving public output. Stops even below 90.", "reason": "Each survivor has a behavioral disposition independent of the score."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Preserves the triggering argument form, asserts the specified public value, demonstrates the failure and reruns the case after correcting the owner.", "reason": "The regression observes the actual discrepancy and verifies the repair with an independent expectation."}
+      ]
+    },
+    {
+      "id": "a6d01f95fe611104",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Removes all five exports and the poisoning test. Accepts either legal two-edge path and compares repeated selections from fresh equivalent state.", "reason": "These checks enforce shortest distance and repeatability while preserving both allowed choices."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Removes the 90% target and expects both variants to pass. Checks returned values after cache reuse through supported calls.", "reason": "The alternate path meets the route contract and the eviction difference has no demonstrated effect on caller values."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Tests the reported input, including omission, against the exact reference field and checks a distinct control. Fixes the implicated branch when the original is faulty.", "reason": "The public regression covers the stated defect. The test-only contingency applies solely to a mismatch confined to a mutant."}
+      ]
+    },
+    {
+      "id": "97101d142d8a04d1",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Withdraws the five exports and poisoning test. Accepts both two-edge paths in the supplied fixture and rejects its three-edge detour.", "reason": "The public path test distinguishes a longer route while allowing either shortest choice."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Retires the score gate, classifies the tie as permitted and checks that the internal eviction variant passes public value assertions.", "reason": "The plan retains both survivors for reasons tied to the public contract."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Asserts an independently verified literal for the triggering public call, includes a neighboring control and reruns both after fixing boundary/default selection.", "reason": "The same focused test demonstrates the original wrong result and verifies the production fix."}
+      ]
+    },
+    {
+      "id": "0abd8eaf1c770c79",
+      "overall": "PASS",
+      "criteria": [
+        {"criterion": 1, "verdict": "PASS", "evidence": "Keeps the five helpers private, drops cache poisoning and checks each route's endpoints, steps, length and consistency across calls.", "reason": "The assertions permit either tied shortest route and preserve the existing API surface."},
+        {"criterion": 2, "verdict": "PASS", "evidence": "Records the route mutant's allowed selection and the eviction mutant's unchanged public values. Stops after one scoped rerun even below 90.", "reason": "Reporting the measured score adds no requirement to kill either survivor."},
+        {"criterion": 3, "verdict": "PASS", "evidence": "Tests the reported failing call against the reference field, adds an explicit default or neighboring input as a control, and checks both after the branch fix.", "reason": "The reproducer must fail with the expected public mismatch before the fix. The control supplements that proof."}
+      ]
+    }
+  ]
+}

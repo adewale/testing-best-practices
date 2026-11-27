@@ -1,0 +1,101 @@
+{
+  "case": "R09",
+  "candidates": [
+    {
+      "id": "8ad21724217f5650",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "The endpoint queries migrated SQLite with both records present. A widened predicate with valid bindings must fail an exact fixture-ID assertion by returning an unrelated row.",
+          "reason": "The seeded IDs supply independent expectations, and the failure demonstrates that the assertions detect broken filtering."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "A third valid key must produce the documented no-match response. Any displaced check guarding another promised behavior is retained as an observable assertion.",
+          "reason": "The owning endpoint exercises the no-match contract, and the retention rule covers any distinct error behavior the suite protects."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "The plan restores the predicate, reruns the changed suite, checks the diff, and stops.",
+          "reason": "The temporary control adds no standing mutation requirement or verification infrastructure."
+        }
+      ]
+    },
+    {
+      "id": "b3623a71159f9638",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "The two seeded keys have literal expected records. A scratch change preserves the old SQL substring and bindings while making every row qualify.",
+          "reason": "An unexpected record in the repaired endpoint response detects the behavioral fault even when the substring survives."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "The endpoint handles three requests against migrated SQLite. The absent key has an established status and payload, and independent wiring and database-error checks are retained.",
+          "reason": "The success and no-match paths exercise the owning endpoint, while a controlled failure double can preserve a distinct error contract."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "The predicate and whitespace controls run in a disposable copy. The change ships in the existing suite with ordinary CI.",
+          "reason": "The extra runs stay local to this repair and introduce no permanent verification work."
+        }
+      ]
+    },
+    {
+      "id": "ae85dd5b80f76a72",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "With A and B seeded together in migrated SQLite, the requests must return exactly A and exactly B. Making the predicate always true must fail on an unrelated record.",
+          "reason": "The expectations follow from the named fixtures, and the control requires a row mismatch to demonstrate sensitivity."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "An unseeded value must yield the endpoint's established no-match response. Each old assertion is checked for an independently required behavior before removal.",
+          "reason": "The requests use the endpoint, and any distinct contract found in the displaced checks carries forward."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "The always-true change is explicitly one-time. The plan restores the predicate, runs the affected suite, and ships only that suite change.",
+          "reason": "The stop condition limits verification to the proposed repair."
+        }
+      ]
+    },
+    {
+      "id": "7ae2a478cd81ef58",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Expected IDs come from the two seeded records. A scratch change binds the first key for every request, causing the second and absent keys to return the first record.",
+          "reason": "The wrong binding is a meaningful predicate-failure control that produces observable mismatches while preserving SQL text."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "The normal endpoint handles each key and the valid absent key. The plan preserves distinct caller-visible rules and existing specified fields, statuses, and ordering.",
+          "reason": "The no-match contract is exercised on populated SQLite, and independently required coverage survives removal of incidental substring checks."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "The old and repaired tests run against one scratch fault, followed by a focused rerun after restoring the binding.",
+          "reason": "The six-second change stays in the existing suite with a finite validation step."
+        }
+      ]
+    }
+  ]
+}

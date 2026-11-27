@@ -1,0 +1,21 @@
+{
+  "exit": 1,
+  "wall_seconds": 10.661,
+  "log": "technical-check/exploratory/final_flush_model_original/run.log",
+  "sha256": "7a6f6787be4840ff630da2a9338eb5da27e79f6442f685e84456059987b1a617",
+  "test_files": "1 failed (1)",
+  "tests": "1 failed | 5 skipped (6)",
+  "source": "original",
+  "stimulus": "frozen_flush",
+  "seed": "45182094013",
+  "selected_command": [
+    "runtime/run-worker.sh",
+    "state-machine-fuzz.test.ts",
+    "-t",
+    "model: read-your-writes"
+  ],
+  "stimulus_file_hash_before_after": [
+    "8a58b43877ce60f620dd89f1b4b12de9b005e7a90856302a256fc4726cc9c9e4",
+    "35b376d0ac4567a41ce53d44c113c141f399917d15c58ad215d306beb6a15484"
+  ]
+}

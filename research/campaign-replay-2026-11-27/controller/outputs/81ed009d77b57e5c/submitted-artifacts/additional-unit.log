@@ -1,0 +1,338 @@
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app
+
+stdout | src/audio/audio-context-safety.test.ts
+[Audio] LRUSampleCache initialized with maxSize: 64.0MB, hardLimit: 96.0MB
+
+stdout | src/audio/audio-context-safety.test.ts > AudioContext Safety > ToneEffectsChain context consistency > creates all nodes in the current context
+[Audio] Initializing ToneEffectsChain...
+[Audio] ToneEffectsChain initialized
+[Audio] Convolution reverb ready; replaced Freeverb fallback
+[Audio] Disposing ToneEffectsChain...
+[Audio] ToneEffectsChain disposed
+
+stdout | src/audio/audio-context-safety.test.ts > AudioContext Safety > ToneEffectsChain context consistency > nodes from different contexts cannot be safely connected
+[Audio] Initializing ToneEffectsChain...
+[Audio] ToneEffectsChain initialized
+[Audio] Convolution reverb ready; replaced Freeverb fallback
+[Audio] Initializing ToneEffectsChain...
+[Audio] ToneEffectsChain initialized
+[Audio] Convolution reverb ready; replaced Freeverb fallback
+[Audio] Disposing ToneEffectsChain...
+[Audio] ToneEffectsChain disposed
+[Audio] Disposing ToneEffectsChain...
+[Audio] ToneEffectsChain disposed
+
+stdout | src/audio/audio-context-safety.test.ts > AudioContext Safety > Fresh instance pattern (recommended) > engine should create fresh instances, not use singletons
+[Audio] Initializing ToneEffectsChain...
+[Audio] ToneEffectsChain initialized
+[Audio] Convolution reverb ready; replaced Freeverb fallback
+[Audio] Initializing ToneSynthManager...
+[Audio] ToneSynthManager initialized
+
+stdout | src/audio/audio-context-safety.test.ts > AudioContext Safety > Fresh instance pattern (recommended) > engine should create fresh instances, not use singletons
+[Audio] Initializing AdvancedSynthEngine...
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] Applied preset: none -> Supersaw (0 voices active)
+[Audio] AdvancedSynthEngine initialized with 8 voices
+
+stdout | src/audio/audio-context-safety.test.ts > AudioContext Safety > Fresh instance pattern (recommended) > engine should create fresh instances, not use singletons
+[Audio] Disposing ToneEffectsChain...
+[Audio] ToneEffectsChain disposed
+[Audio] Disposing ToneSynthManager...
+[Audio] ToneSynthManager disposed
+[Audio] Disposing AdvancedSynthEngine...
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthEngine disposed
+
+stdout | src/audio/audio-context-safety.test.ts > AudioContext Safety > Singleton danger scenario > demonstrates why singletons are dangerous with HMR
+[Audio] Initializing AdvancedSynthEngine...
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] AdvancedSynthVoice initialized
+[Audio] Applied preset: none -> Supersaw (0 voices active)
+[Audio] AdvancedSynthEngine initialized with 8 voices
+
+stdout | src/audio/audio-context-safety.test.ts > AudioContext Safety > Singleton danger scenario > demonstrates why singletons are dangerous with HMR
+[Audio] Initializing ToneEffectsChain...
+[Audio] ToneEffectsChain initialized
+[Audio] Convolution reverb ready; replaced Freeverb fallback
+[Audio] Disposing AdvancedSynthEngine...
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthVoice disposed
+[Audio] AdvancedSynthEngine disposed
+[Audio] Disposing ToneEffectsChain...
+[Audio] ToneEffectsChain disposed
+
+ ✓ |unit| src/audio/audio-context-safety.test.ts > AudioContext Safety > ToneEffectsChain context consistency > creates all nodes in the current context 4ms
+ ✓ |unit| src/audio/audio-context-safety.test.ts > AudioContext Safety > ToneEffectsChain context consistency > nodes from different contexts cannot be safely connected 3ms
+ ✓ |unit| src/audio/audio-context-safety.test.ts > AudioContext Safety > Fresh instance pattern (recommended) > engine should create fresh instances, not use singletons 12ms
+ ✓ |unit| src/audio/audio-context-safety.test.ts > AudioContext Safety > Singleton danger scenario > demonstrates why singletons are dangerous with HMR 8ms
+ ✓ |unit| src/audio/audio-context-safety.test.ts > Singleton audit documentation > verifies dangerous singleton patterns are not present 1ms
+stderr | src/worker/mcp-adapter.test.ts > the Durable Object session adapter > retries an uncertain KV write with the same UUID and never leaks storage text
+[SessionAllocator] create failed: SECRET sqlite:///internal/session.db
+
+stderr | src/worker/mcp-adapter.test.ts > the Durable Object session adapter > shares one allocation budget across create, remix, and publish
+[OG] Failed to purge cache for 95eed24e-84e0-472c-ae28-11a779cdcdba: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:200:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:261:5
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+[OG] Failed to purge cache for d347b792-9caa-42e7-9c42-1f1b783fcc9b: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:201:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:261:5
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+stderr | src/worker/mcp-adapter.test.ts > the Durable Object session adapter > publishes an immutable snapshot and keeps the source editable
+[OG] Failed to purge cache for 80e77534-94f1-4808-97db-0b1e88f616ab: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:200:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:286:23
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+[OG] Failed to purge cache for c6066e1b-d5d8-4c16-bde2-ba264bc27ece: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:201:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:286:23
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+stderr | src/worker/mcp-adapter.test.ts > the Durable Object session adapter > refuses to publish an already-published session
+[OG] Failed to purge cache for 023841ca-c481-43c3-a771-9d88b9f62730: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:200:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:297:23
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+[OG] Failed to purge cache for e65f444c-4bf2-4a48-9f64-b1bfb63aaf71: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:201:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:297:23
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+stderr | src/worker/mcp-adapter.test.ts > the Durable Object session adapter > defers the social-preview purge instead of blocking the publish
+[OG] Failed to purge cache for 5fb4932d-c2dd-4c4c-a50b-19fc7ce6ac6d: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:200:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:311:5
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+[OG] Failed to purge cache for 0b169589-d056-421f-b92d-bab420c4293e: ReferenceError: caches is not defined
+    at purgeOGCache (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/og-cache.ts:20:20)
+    at Object.publishSession (/workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp.ts:201:9)
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/worker/mcp-adapter.test.ts:311:5
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > creates a session that is readable straight back 24ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > records the idempotency key and replays it instead of creating again 2ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > expires durable rate windows and idempotency reservations by alarm 0ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > serializes concurrent retries onto one pre-reserved session UUID 3ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > propagates a transient replay failure instead of creating a duplicate 1ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > recreates the same reserved session when its KV write is missing 1ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > retries an uncertain KV write with the same UUID and never leaks storage text 2ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > charges creates against the same per-IP budget as the REST route 2ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > does not charge a replay against the budget, because it writes nothing 2ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > skips the limit when there is no client IP, as the REST route does 2ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > shares one allocation budget across create, remix, and publish 5ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > remixes from the live Durable Object state and leaves the source alone 1ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > publishes an immutable snapshot and keeps the source editable 1ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > refuses to publish an already-published session 1ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > defers the social-preview purge instead of blocking the publish 1ms
+ ✓ |unit| src/worker/mcp-adapter.test.ts > the Durable Object session adapter > reports a missing session rather than inventing one 1ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > gives a perfect score to a correct additive edit 4ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > hard-fails erasing a collaborator even when the new rhythm is correct 1ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > hard-fails scattershot duplicate guesses 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > does not let a new-track expectation claim an existing baseline track 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > scores a requested edit only against the named existing track 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > hard-fails collateral edits on a targeted existing track 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > gives no objective credit to a no-op one-step edit 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > hard-fails an unrequested baseline change without an explicit preserve list 1ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > uses the globally best assignment for two tracks with one instrument 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval scorer > scores the requested step count independently from the rhythm 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > ships unique cases with valid, reachable objectives 1ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an ideal run of 'four-on-the-floor' at 1 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an ideal run of 'add-without-erasing' at 1 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an ideal run of 'edit-existing-track' at 1 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an ideal run of 'clear-one-step' at 1 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an ideal run of 'clear-to-silence' at 1 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an ideal run of 'tempo-without-erasing' at 1 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an ideal run of 'two-hi-hat-patterns' at 1 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an untouched session for 'four-on-the-floor' at 0 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an untouched session for 'add-without-erasing' at 0 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an untouched session for 'edit-existing-track' at 0 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an untouched session for 'clear-one-step' at 0 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an untouched session for 'clear-to-silence' at 0 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an untouched session for 'tempo-without-erasing' at 0 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > scores an untouched session for 'two-hi-hat-patterns' at 0 0ms
+ ✓ |unit| src/worker/mcp-evals.test.ts > MCP rhythm eval cases > rejects an impossible existing-track step instead of certifying it 0ms
+stdout | src/audio/per-track-synths.test.ts
+[Audio] LRUSampleCache initialized with maxSize: 64.0MB, hardLimit: 96.0MB
+
+stdout | src/audio/per-track-synths.test.ts
+[Audio] [HMR] SynthEngine: registering dispose handler
+
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > renders the XY pad container 36ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > renders with specified size 5ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > enforces minimum size of 64px 4ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > renders the puck at correct position 4ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > renders puck at origin when x=0, y=0 10ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > renders puck at max when x=1, y=1 5ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > renders grid lines for visual reference 5ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > rendering > renders crosshair at current position 5ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > labels > shows labels by default 13ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > labels > hides labels when showLabels is false 5ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > labels > uses default labels X and Y when not specified 6ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > labels > displays current values as percentages 5ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > disabled state > applies disabled class when disabled 4ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > disabled state > sets tabIndex to -1 when disabled 5ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > disabled state > does not call onChange when disabled 7ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > mouse interactions > calls onChange on mouseDown 8ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > mouse interactions > adds dragging class while dragging 5ms
+stdout | src/audio/per-track-synths.test.ts
+[Audio] [HMR] Scheduler: registering dispose handler
+
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > accessibility > has role="slider" 104ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > accessibility > has aria-label describing both axes 16ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > accessibility > has aria-valuetext with current percentages 31ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > accessibility > is focusable when not disabled 8ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > color theming > applies custom accent color 7ms
+ ✓ |unit| src/components/XYPad.test.tsx > XYPad Component > color theming > uses default cyan color when not specified 7ms
+stdout | src/audio/per-track-synths.test.ts
+[Audio] [HMR] AudioEngine: registering dispose handler
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > creates a separate ToneSynthManager per track when pre-warmed and played on different tracks
+[Audio] Created ToneSynthManager for track trackA
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > creates a separate ToneSynthManager per track when pre-warmed and played on different tracks
+[Audio] Created ToneSynthManager for track trackB
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > passes absolute scheduler timestamps through both Tone-backed engines
+[Audio] Created ToneSynthManager for track trackA
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > passes absolute scheduler timestamps through both Tone-backed engines
+[Audio] Created AdvancedSynthEngine for track trackB
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > creates a separate AdvancedSynthEngine per track
+[Audio] Created AdvancedSynthEngine for track trackA
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > creates a separate AdvancedSynthEngine per track
+[Audio] Created AdvancedSynthEngine for track trackB
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > never disconnects a shared output when a different track plays (the hijack bug)
+[Audio] Created AdvancedSynthEngine for track trackA
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > never disconnects a shared output when a different track plays (the hijack bug)
+[Audio] Created AdvancedSynthEngine for track trackB
+
+stdout | src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > reuses the same track's synth on repeated notes
+[Audio] Created AdvancedSynthEngine for track trackA
+
+ ✓ |unit| src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > creates a separate ToneSynthManager per track when pre-warmed and played on different tracks 4ms
+ ✓ |unit| src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > passes absolute scheduler timestamps through both Tone-backed engines 1ms
+ ✓ |unit| src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > creates a separate AdvancedSynthEngine per track 1ms
+ ✓ |unit| src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > never disconnects a shared output when a different track plays (the hijack bug) 0ms
+ ✓ |unit| src/audio/per-track-synths.test.ts > Per-track tone/advanced synth instances > reuses the same track's synth on repeated notes 0ms
+ ✓ |unit| src/audio/metering-pipeline.test.ts > Metering pipeline > bug_001: meter must drop to zero after silence > updates a track level back to zero when worklet emits a zero level for it 2ms
+ ✓ |unit| src/audio/metering-pipeline.test.ts > Metering pipeline > bug_001: meter must drop to zero after silence > decays a track level to zero if a new frame omits it (defensive host behavior) 0ms
+ ✓ |unit| src/audio/metering-pipeline.test.ts > Metering pipeline > bug_008: reset accumulators when a slot is reused > posts a resetSlot message to the worklet on disconnect 0ms
+ ✓ |unit| src/audio/metering-pipeline.test.ts > Metering pipeline > bug_008: reset accumulators when a slot is reused > reuses the freed slot index for the next connectTrack 0ms
+ ✓ |unit| src/utils/validate-manifests-cli.test.ts > validate-manifests CLI > rejects the unsupported --fix mode without claiming success 263ms
+stdout | src/App.session-transitions.test.tsx
+[Audio] LRUSampleCache initialized with maxSize: 64.0MB, hardLimit: 96.0MB
+
+stdout | src/App.session-transitions.test.tsx
+[Audio] [HMR] SynthEngine: registering dispose handler
+
+ ✓ |unit| src/utils/validate-manifests-cli.test.ts > validate-manifests CLI > fails when baseNote is outside playableRange 195ms
+stdout | src/App.session-transitions.test.tsx
+ * Tone.js v15.1.22 * 
+
+stdout | src/App.session-transitions.test.tsx
+[Audio] [HMR] Scheduler: registering dispose handler
+
+stdout | src/App.session-transitions.test.tsx
+[Audio] [HMR] AudioEngine: registering dispose handler
+
+stdout | src/audio/instrument-routing.test.ts
+[Audio] LRUSampleCache initialized with maxSize: 64.0MB, hardLimit: 96.0MB
+
+ ✓ |unit| src/audio/instrument-routing.test.ts > sampled-instrument playable ranges > includes C4 in every declared playable range 2ms
+ ✓ |unit| src/audio/instrument-routing.test.ts > sampled-instrument playable ranges > loads one manifest for every active sampled instrument 0ms
+ ✓ |unit| src/App.session-transitions.test.tsx > App session transition ownership > allows only one shared Publish/Remix/New/Share action at a time 280ms
+stderr | src/App.session-transitions.test.tsx > App session transition ownership > releases shared ownership after an action fails
+Failed to publish: Error: publication failed
+    at /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app/src/App.session-transitions.test.tsx:131:41
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///tmp/keyboardia-v2-app-deps/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+ ✓ |unit| src/App.session-transitions.test.tsx > App session transition ownership > releases shared ownership after an action fails 53ms
+ ✓ |unit| src/App.session-transitions.test.tsx > App session transition ownership > loads MIDI export on demand and exports the current session 87ms
+ ✓ |unit| src/App.session-transitions.test.tsx > App session transition ownership > invalidates a stale share completion when the session changes 95ms
+ ✓ |unit| test/e2e-full-stack-lifecycle.test.ts > full-stack E2E ownership and lifecycle > accepts health only from the Worker nonce started by this run 2ms
+ ✓ |unit| test/e2e-full-stack-lifecycle.test.ts > full-stack E2E ownership and lifecycle > uses conventional non-zero signal exit codes 0ms
+ ✓ |unit| test/e2e-full-stack-lifecycle.test.ts > full-stack E2E ownership and lifecycle > rejects invalid wall-clock limits 1ms
+ ✓ |unit| test/e2e-full-stack-lifecycle.test.ts > full-stack E2E ownership and lifecycle > fails immediately when Wrangler exits before becoming ready 27ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > exposes only the production vocabulary 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Add as a currentColor SVG at the requested size 23ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders AudioWarning as a currentColor SVG at the requested size 4ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Check as a currentColor SVG at the requested size 3ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders ChevronDown as a currentColor SVG at the requested size 3ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders ChevronLeft as a currentColor SVG at the requested size 3ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders ChevronRight as a currentColor SVG at the requested size 3ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders ChevronUp as a currentColor SVG at the requested size 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Close as a currentColor SVG at the requested size 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders CopyLink as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders FxActive as a currentColor SVG at the requested size 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders FxBypass as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Minus as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Play as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders PlayerJoin as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders PlayerLeave as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Qr as a currentColor SVG at the requested size 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders RotateDevice as a currentColor SVG at the requested size 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders ScaleLock as a currentColor SVG at the requested size 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders ScaleUnlock as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Scissors as a currentColor SVG at the requested size 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Share as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Stop as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > renders Warning as a currentColor SVG at the requested size 1ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > maps Close to the intended Lucide glyph 3ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > maps Play to the intended Lucide glyph 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > maps Stop to the intended Lucide glyph 2ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > maps QR code to the intended Lucide glyph 4ms
+ ✓ |unit| src/icons/index.test.tsx > semantic icon exports > maps Scale lock to the intended Lucide glyph 2ms
+
+ Test Files  11 passed (11)
+      Tests  120 passed (120)
+   Start at  02:30:40
+   Duration  4.55s (transform 2.11s, setup 1.40s, import 3.01s, tests 1.51s, environment 1.65s)
+

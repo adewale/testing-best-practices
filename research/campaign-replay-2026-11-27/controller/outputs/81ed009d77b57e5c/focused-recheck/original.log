@@ -1,0 +1,483 @@
+VERIFIER_STANDARD=three-worker-files
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vitest.config.ts:12:11). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /case/repo/app/test/integration
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=d454695f-71df-40fe-a887-e8488e660f73 {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=d454695f-71df-40fe-a887-e8488e660f73 {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation makes KV lag, GET stays authoritative, disconnect converges KV 61ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > REST PUT then WS mutation: DO storage and GET reflect the WS write (last-writer-wins) 28ms
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=afa7eb63-f82e-4fa4-a93e-11dcb9475b6e {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=afa7eb63-f82e-4fa4-a93e-11dcb9475b6e {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+stderr | eviction-recovery.test.ts > replays a rejected v2 operation ID instead of applying it after state changes
+[INVARIANT VIOLATION][loadFromKV] session=ab15c821-b0b1-43e4-a2c8-7f787f0b6c0e {
+  violations: [
+    [32m'Track idempotent-envelope-track: steps length 16 !== 128'[39m,
+    [32m'Track idempotent-envelope-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'idempotent-envelope-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=ab15c821-b0b1-43e4-a2c8-7f787f0b6c0e {
+  repairs: [
+    [32m'Padded steps array for track idempotent-envelope-track'[39m,
+    [32m'Padded parameterLocks array for track idempotent-envelope-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track idempotent-envelope-track'[39m
+  ]
+}
+
+stderr | overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client
+[INVARIANT VIOLATION][loadFromKV] session=c100c866-e860-48ed-9892-8c52c9a6854a {
+  violations: [
+    [32m'Track t1: steps length 16 !== 128'[39m,
+    [32m'Track t1: parameterLocks length 16 !== 128'[39m,
+    [32m'Track t2: steps length 16 !== 128'[39m,
+    [32m'Track t2: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m2[39m,
+  trackIds: [ [32m't1'[39m, [32m't2'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=c100c866-e860-48ed-9892-8c52c9a6854a {
+  repairs: [
+    [32m'Padded steps array for track t1'[39m,
+    [32m'Padded parameterLocks array for track t1'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t1'[39m,
+    [32m'Padded steps array for track t2'[39m,
+    [32m'Padded parameterLocks array for track t2'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track t2'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > replays a rejected v2 operation ID instead of applying it after state changes 47ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > persists a real WebSocket mutation to storage and recovers it after an ungraceful eviction 21ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > restores serverSeq from storage after a graceful disconnect + eviction 19ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > WS mutation -> hibernate -> REST PUT -> GET reflects the REST write 32ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > PATCH name (KV-only) composes with WS state (DO-only) in the GET merge 18ms
+ ✓ |keyboardia-integration| overlap-fuzz.test.ts > concurrent mutation waves conserve sequence numbers and converge on every client 242ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > documents that serverSeq below the persistence checkpoint resets on ungraceful eviction (state still survives) 16ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > hibernates a live WebSocket across eviction and restores + resumes it 18ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > closes live WebSockets when evicted with { webSockets: "close" } 12ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > recovers from the KV fallback path after eviction when DO storage was never written 10ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > evictAllDurableObjects recovers each instance from its own persisted mutation 27ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > hibernates and restores TWO live WebSockets, preserving cross-client broadcast 28ms
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > multi-client: KV flushes only when the LAST client disconnects 241ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > closes ALL live WebSockets when two players are evicted with { webSockets: "close" } 17ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > restores only the still-connected player when a peer disconnected before eviction 15ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > drains a burst of in-flight WebSocket mutations across eviction without corruption 15ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > keeps state consistent when a mutation races an eviction 19ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > survives repeated back-to-back evictions 20ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > regression: mutations on a WebSocket that woke a hibernated DO are applied (no HTTP load) 16ms
+stderr | eviction-recovery.test.ts > webSocketError on a cold wake flushes KV when it is the last connection
+[WS] error session=aca73752-7b5d-49b3-a01e-3145e1e3b0b3 player=undefined Error: forced abnormal close
+    at /case/repo/app/test/integration/eviction-recovery.test.ts:849:27
+    at maybeHandleRunRequest (opt/keyboardia-worker/node_modules/[4m@cloudflare[24m/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:157:24)
+    at DurableObject.Wrapper.fetch (opt/keyboardia-worker/node_modules/[4m@cloudflare[24m/vitest-plugin/dist/worker/lib/cloudflare/test-internal.mjs:552:26)
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > flushes the latest state to KV when a disconnect wakes a hibernated DO 34ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > keeps a published session immutable across eviction (immutable flag reloaded on wake) 28ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > webSocketError on a cold wake flushes KV when it is the last connection 29ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > serverSeq stays monotonic across a graceful disconnect, eviction, and reconnect 22ms
+stderr | eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction
+[INVARIANT VIOLATION][loadFromKV] session=a96ef8f3-67f0-4904-a80c-f40355715b10 {
+  violations: [
+    [32m'Track fuzz-track: steps length 16 !== 128'[39m,
+    [32m'Track fuzz-track: parameterLocks length 16 !== 128'[39m
+  ],
+  trackCount: [33m1[39m,
+  trackIds: [ [32m'fuzz-track'[39m ]
+}
+[INVARIANT] Auto-repaired state for session=a96ef8f3-67f0-4904-a80c-f40355715b10 {
+  repairs: [
+    [32m'Padded steps array for track fuzz-track'[39m,
+    [32m'Padded parameterLocks array for track fuzz-track'[39m,
+    [32m'Replaced non-finite pan undefined with 0 for track fuzz-track'[39m
+  ]
+}
+
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > a non-last client close after hibernation does not prematurely flush KV 42ms
+ ✓ |keyboardia-integration| eviction-recovery.test.ts > property: recovered state reflects all acked mutations across a mid-sequence eviction 20ms
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=30 coverage={"accepted":99,"dirtyDisconnects":3,"byKind":{"ws_tempo":10,"ws_swing":13,"rest_put":9,"rest_patch_state":11,"rest_patch_name":14,"hibernate":17,"hard_evict":11,"disconnect":8,"connect":6}}
+
+stdout | state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points
+[stateMachine] seeds=45182094013 runsPerSeed=60 coverage={"accepted":234,"dirtyDisconnects":6,"byKind":{"ws_tempo":22,"ws_swing":25,"rest_put":28,"rest_patch_state":36,"rest_patch_name":30,"hibernate":36,"hard_evict":31,"disconnect":16,"connect":10}}
+
+ ✓ |keyboardia-integration| state-machine-fuzz.test.ts > model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points 2103ms
+
+ Test Files  3 passed (3)
+      Tests  28 passed (28)
+   Start at  02:47:37
+   Duration  6.53s (transform 2.14s, setup 0ms, import 7.01s, tests 3.20s, environment 1ms)
+
+VERIFIER_EXIT=three-worker-files:0
+VERIFIER_STANDARD=focused-unit-keepers
+
+ RUN  v4.1.11 /case/repo/app
+
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > computes correct peaks for a simple sine wave 2ms
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > produces identical results for same input 1ms
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > handles width larger than sample count 2ms
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > handles silence (all zeros) 1ms
+ ✓ |unit| test/unit/promote-pbt-counterexamples.test.ts > PBT counterexample promotion > extracts runner-prefixed markers and appends the minimal example to its lane 2ms
+ ✓ |unit| test/unit/promote-pbt-counterexamples.test.ts > PBT counterexample promotion > deduplicates an example already committed for that lane 0ms
+ ✓ |unit| test/unit/promote-pbt-counterexamples.test.ts > PBT counterexample promotion > rejects malformed marker payloads instead of silently losing a failure 1ms
+stdout | src/sync/seq-regression.test.ts
+[Audio] [HMR] Multiplayer: registering dispose handler
+
+stderr | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them
+[WS] Out-of-order message: seq 1
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=2be07089-3d68-4c34-887e-5f817b201fa2&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] Received: tempo_changed seq=1
+[WS] Received: tempo_changed seq=2
+[WS] Received: tempo_changed seq=3
+[WS] Received: tempo_changed seq=4
+[WS] Received: tempo_changed seq=5
+[WS] Received: tempo_changed seq=6
+[WS] Received: tempo_changed seq=7
+[WS] Received: tempo_changed seq=8
+[WS] Received: tempo_changed seq=9
+[WS] Received: tempo_changed seq=10
+[WS] Received: tempo_changed seq=11
+[WS] Received: tempo_changed seq=12
+[WS] Received: tempo_changed seq=13
+[WS] Received: tempo_changed seq=14
+[WS] Received: tempo_changed seq=15
+[WS] Received: tempo_changed seq=16
+[WS] Received: tempo_changed seq=17
+[WS] Received: tempo_changed seq=18
+[WS] Received: tempo_changed seq=19
+[WS] Received: tempo_changed seq=20
+[WS] Received: tempo_changed seq=21
+[WS] Received: tempo_changed seq=22
+[WS] Received: tempo_changed seq=23
+[WS] Received: tempo_changed seq=24
+[WS] Received: tempo_changed seq=25
+[WS] Received: tempo_changed seq=26
+[WS] Received: tempo_changed seq=27
+[WS] Received: tempo_changed seq=28
+[WS] Received: tempo_changed seq=29
+[WS] Received: tempo_changed seq=30
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 1
+[WS] Received: tempo_changed seq=1
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them
+[WS] [SYNC-HEALTH] Full reset
+
+stderr | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch
+[WS] Out-of-order message: seq 1
+[WS] Out-of-order message: seq 2
+[WS] Out-of-order message: seq 3
+[WS] Out-of-order message: seq 4
+[WS] Out-of-order message: seq 5
+[WS] Out-of-order message: seq 6
+[WS] Out-of-order message: seq 7
+[WS] Out-of-order message: seq 8
+[WS] Out-of-order message: seq 9
+[WS] Out-of-order message: seq 10
+[WS] Out-of-order message: seq 11
+[WS] Triggering reconnect: 11 out-of-order messages
+[WS] Out-of-order message: seq 12
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=bf2536e7-e308-433b-b7f7-53fc472990f2&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] Received: tempo_changed seq=1
+[WS] Received: tempo_changed seq=2
+[WS] Received: tempo_changed seq=3
+[WS] Received: tempo_changed seq=4
+[WS] Received: tempo_changed seq=5
+[WS] Received: tempo_changed seq=6
+[WS] Received: tempo_changed seq=7
+[WS] Received: tempo_changed seq=8
+[WS] Received: tempo_changed seq=9
+[WS] Received: tempo_changed seq=10
+[WS] Received: tempo_changed seq=11
+[WS] Received: tempo_changed seq=12
+[WS] Received: tempo_changed seq=13
+[WS] Received: tempo_changed seq=14
+[WS] Received: tempo_changed seq=15
+[WS] Received: tempo_changed seq=16
+[WS] Received: tempo_changed seq=17
+[WS] Received: tempo_changed seq=18
+[WS] Received: tempo_changed seq=19
+[WS] Received: tempo_changed seq=20
+[WS] Received: tempo_changed seq=21
+[WS] Received: tempo_changed seq=22
+[WS] Received: tempo_changed seq=23
+[WS] Received: tempo_changed seq=24
+[WS] Received: tempo_changed seq=25
+[WS] Received: tempo_changed seq=26
+[WS] Received: tempo_changed seq=27
+[WS] Received: tempo_changed seq=28
+[WS] Received: tempo_changed seq=29
+[WS] Received: tempo_changed seq=30
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 1
+[WS] Received: tempo_changed seq=1
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 2
+[WS] Received: tempo_changed seq=2
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 3
+[WS] Received: tempo_changed seq=3
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 4
+[WS] Received: tempo_changed seq=4
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 5
+[WS] Received: tempo_changed seq=5
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 6
+[WS] Received: tempo_changed seq=6
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 7
+[WS] Received: tempo_changed seq=7
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 8
+[WS] Received: tempo_changed seq=8
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 9
+[WS] Received: tempo_changed seq=9
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 10
+[WS] Received: tempo_changed seq=10
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 11
+[WS] Reconnecting in 1000ms (attempt 1/10, jitter applied)
+[WS] Received: tempo_changed seq=11
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=bf2536e7-e308-433b-b7f7-53fc472990f2&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 12
+[WS] Received: tempo_changed seq=12
+[WS] [MUTATION-TRACK] Tracking set_tempo seq=1 trackId= step=undefined
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch
+[WS] [SYNC-HEALTH] Full reset
+
+stderr | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists
+[WS] Out-of-order message: seq 1
+[WS] Out-of-order message: seq 2
+[WS] Out-of-order message: seq 3
+[WS] Out-of-order message: seq 4
+[WS] Out-of-order message: seq 5
+[WS] Out-of-order message: seq 6
+[WS] Out-of-order message: seq 7
+[WS] Out-of-order message: seq 8
+[WS] Out-of-order message: seq 9
+[WS] Out-of-order message: seq 10
+[WS] Out-of-order message: seq 11
+[WS] Triggering reconnect: 11 out-of-order messages
+[WS] Out-of-order message: seq 12
+[WS] Out-of-order message: seq 13
+[WS] Out-of-order message: seq 14
+[WS] Out-of-order message: seq 15
+[WS] Out-of-order message: seq 16
+[WS] Out-of-order message: seq 17
+[WS] Out-of-order message: seq 18
+[WS] Out-of-order message: seq 19
+[WS] Out-of-order message: seq 20
+[WS] Out-of-order message: seq 21
+[WS] Out-of-order message: seq 22
+[WS] Triggering reconnect: 11 out-of-order messages
+[WS] Out-of-order message: seq 23
+[WS] Out-of-order message: seq 24
+[WS] Out-of-order message: seq 25
+[WS] Out-of-order message: seq 26
+[WS] Out-of-order message: seq 27
+[WS] Out-of-order message: seq 28
+[WS] Out-of-order message: seq 29
+[WS] Out-of-order message: seq 30
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=b65e7a33-0c20-4228-8143-efd214fe7657&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] Received: tempo_changed seq=1
+[WS] Received: tempo_changed seq=2
+[WS] Received: tempo_changed seq=3
+[WS] Received: tempo_changed seq=4
+[WS] Received: tempo_changed seq=5
+[WS] Received: tempo_changed seq=6
+[WS] Received: tempo_changed seq=7
+[WS] Received: tempo_changed seq=8
+[WS] Received: tempo_changed seq=9
+[WS] Received: tempo_changed seq=10
+[WS] Received: tempo_changed seq=11
+[WS] Received: tempo_changed seq=12
+[WS] Received: tempo_changed seq=13
+[WS] Received: tempo_changed seq=14
+[WS] Received: tempo_changed seq=15
+[WS] Received: tempo_changed seq=16
+[WS] Received: tempo_changed seq=17
+[WS] Received: tempo_changed seq=18
+[WS] Received: tempo_changed seq=19
+[WS] Received: tempo_changed seq=20
+[WS] Received: tempo_changed seq=21
+[WS] Received: tempo_changed seq=22
+[WS] Received: tempo_changed seq=23
+[WS] Received: tempo_changed seq=24
+[WS] Received: tempo_changed seq=25
+[WS] Received: tempo_changed seq=26
+[WS] Received: tempo_changed seq=27
+[WS] Received: tempo_changed seq=28
+[WS] Received: tempo_changed seq=29
+[WS] Received: tempo_changed seq=30
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 1
+[WS] Received: tempo_changed seq=1
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 2
+[WS] Received: tempo_changed seq=2
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 3
+[WS] Received: tempo_changed seq=3
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 4
+[WS] Received: tempo_changed seq=4
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 5
+[WS] Received: tempo_changed seq=5
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 6
+[WS] Received: tempo_changed seq=6
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 7
+[WS] Received: tempo_changed seq=7
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 8
+[WS] Received: tempo_changed seq=8
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 9
+[WS] Received: tempo_changed seq=9
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 10
+[WS] Received: tempo_changed seq=10
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 11
+[WS] Reconnecting in 1000ms (attempt 1/10, jitter applied)
+[WS] Received: tempo_changed seq=11
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=b65e7a33-0c20-4228-8143-efd214fe7657&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 12
+[WS] Received: tempo_changed seq=12
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 13
+[WS] Received: tempo_changed seq=13
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 14
+[WS] Received: tempo_changed seq=14
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 15
+[WS] Received: tempo_changed seq=15
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 16
+[WS] Received: tempo_changed seq=16
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 17
+[WS] Received: tempo_changed seq=17
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 18
+[WS] Received: tempo_changed seq=18
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 19
+[WS] Received: tempo_changed seq=19
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 20
+[WS] Received: tempo_changed seq=20
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 21
+[WS] Received: tempo_changed seq=21
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 22
+[WS] Reconnecting in 1000ms (attempt 1/10, jitter applied)
+[WS] Received: tempo_changed seq=22
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=b65e7a33-0c20-4228-8143-efd214fe7657&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 23
+[WS] Received: tempo_changed seq=23
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 24
+[WS] Received: tempo_changed seq=24
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 25
+[WS] Received: tempo_changed seq=25
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 26
+[WS] Received: tempo_changed seq=26
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 27
+[WS] Received: tempo_changed seq=27
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 28
+[WS] Received: tempo_changed seq=28
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 29
+[WS] Received: tempo_changed seq=29
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 30
+[WS] Received: tempo_changed seq=30
+[WS] Received: tempo_changed seq=31
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists
+[WS] [SYNC-HEALTH] Full reset
+
+ ✓ |unit| src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them 18ms
+ ✓ |unit| src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch 6ms
+ ✓ |unit| src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists 4ms
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  02:47:44
+   Duration  1.10s (transform 249ms, setup 554ms, import 232ms, tests 41ms, environment 425ms)
+
+VERIFIER_EXIT=focused-unit-keepers:0

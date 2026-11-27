@@ -1,0 +1,30 @@
+{
+  "recorded_utc": "2026-11-27T03:05:08.200037+00:00",
+  "requested_model": "gpt-6.2-astra",
+  "requested_reasoning_effort": "max",
+  "provider_attestation_available": false,
+  "subject_attempts": 48,
+  "historical_attempts": 36,
+  "historical_reports": 36,
+  "execution_attempts": 12,
+  "execution_reports_delivered": 9,
+  "execution_dispositions": {
+    "returned": 8,
+    "infrastructure-interrupted": 3,
+    "report-delivered-agent-status-unavailable": 1
+  },
+  "judge_attempts": 12,
+  "judge_completed": 11,
+  "judge_failed": 1,
+  "failed_judge_case": "B02",
+  "failed_judge_state": "failed-policy-filter",
+  "retries": 0,
+  "tested_skill_commit": "300a179a1d622b66134409356add50e81393e95e",
+  "followup_skill_commit": "426e40c923f97dfc84ee0ea06baaa4507822247d",
+  "followup_model_replayed": false,
+  "environment_events": [
+    "environment-event.json",
+    "environment-event-2.json"
+  ],
+  "scope": "Public known-audit reconstructions. Subject reads/tool traces and token costs not centrally instrumented. Instructional shared-host subject isolation; independent technical controls in bounded offline containers. Failed judge JSON remains provisional. No winner or population estimate."
+}

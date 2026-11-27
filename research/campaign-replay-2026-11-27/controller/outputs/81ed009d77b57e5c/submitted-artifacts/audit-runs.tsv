@@ -1,0 +1,31 @@
+selection	cwd_from_work	command	observed_result	log_from_work
+Pinned source, focused unit	repo	../runtime/run-unit.sh	23 files, 343 passed	baseline-unit.log
+Pinned source, focused Worker	repo	../runtime/run-worker.sh	8 files, 84 passed	baseline-worker.log
+Pinned source, CI seed	repo	FC_SEED=45182094013 FUZZ_SEEDS=45182094013 ../runtime/run-worker.sh state-machine-fuzz.test.ts overlap-fuzz.test.ts eviction-recovery.test.ts --reporter=verbose	3 files, 27 passed, 1 failed. 99 accepted commands, 3 dirty disconnects	ci-seed-before.log
+First continuation check	repo	FC_SEED=45182094013 FUZZ_SEEDS=45182094013 ../runtime/run-worker.sh state-machine-fuzz.test.ts overlap-fuzz.test.ts eviction-recovery.test.ts --reporter=verbose	3 files, 28 passed	ci-seed-after.log
+Candidate with disconnect removed from generator	repo	FC_SEED=45182094013 FUZZ_SEEDS=45182094013 ../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected failed. 382 accepted, 0 dirty disconnects at 90 schedules	control-missing-disconnect.log
+Temporary action-trace instrumentation	repo	FC_SEED=45182094013 FUZZ_SEEDS=45182094013 ../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected passed. First and second batches executed 99 and 135 commands	coverage-trace.log
+REST PATCH swing capped at 99 temporarily	repo	FC_SEED=45182094013 FUZZ_SEEDS=45182094013 ../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected failed. One shrunk PATCH tempo 60, swing 100, path 51:1	control-patch-swing.log
+Counterexample promotion while fault active	repo	app/node_modules/.bin/tsx app/scripts/promote-pbt-counterexamples.ts ../control-patch-swing.log app/test/integration/known-failures.json	1 example promoted	control-promote.log
+Replay of promoted data while fault active	repo	FC_SEED=42 FUZZ_SEEDS=42 ../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected failed on known-failure #0 before exploration	control-promoted-replay.log
+Pinned model with hibernate removed from generator	repo	../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected passed	control-hibernate-before.log
+Repaired model with hibernate removed from generator	repo	../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected failed. 393 accepted, 6 dirty disconnects, 0 hibernations	control-hibernate-after.log
+Final CI seed, restored sources	repo	FC_SEED=45182094013 FUZZ_SEEDS=45182094013 ../runtime/run-worker.sh state-machine-fuzz.test.ts overlap-fuzz.test.ts eviction-recovery.test.ts --reporter=verbose	3 files, 28 passed. 99 then 234 accepted, 3 then 6 dirty disconnects	final-ci.log
+Final complete local Worker suite	repo	../runtime/run-worker.sh --all	11 files, 131 passed	final-all.log
+Final three-seed model	repo	FC_SEED=7 FUZZ_SEEDS=1,7,42 ../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected passed, 109 accepted, 3 dirty disconnects	final-multi.log
+Final zero-seed model	repo	FC_SEED=0 FUZZ_SEEDS=0 ../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected passed, 134 accepted, 5 dirty disconnects	final-zero.log
+Final signed-seed model	repo	FC_SEED=-1 FUZZ_SEEDS=-1 ../runtime/run-worker.sh state-machine-fuzz.test.ts -t '^model:' --reporter=verbose	1 selected passed, 117 accepted, 1 dirty disconnect	final-negative.log
+Additional sample unit tests	repo	../runtime/run-unit.sh src/App.session-transitions.test.tsx src/audio/audio-context-safety.test.ts src/audio/instrument-routing.test.ts src/audio/metering-pipeline.test.ts src/audio/per-track-synths.test.ts src/components/XYPad.test.tsx src/icons/index.test.tsx src/utils/validate-manifests-cli.test.ts src/worker/mcp-adapter.test.ts src/worker/mcp-evals.test.ts test/e2e-full-stack-lifecycle.test.ts --reporter=verbose	11 files, 120 passed	additional-unit.log
+Client side of the sequence-regression pair	repo	../runtime/run-unit.sh src/sync/seq-regression.test.ts --reporter=verbose	1 file, 3 passed	client-seq.log
+Production Waveform.computePeaks temporarily throws	repo	../runtime/run-unit.sh src/components/waveform-peaks.test.ts --reporter=verbose	1 file, 4 passed	control-waveform.log
+Projected app dependencies	repo/app	npm run validate:test-antipatterns	blocked at missing TypeScript	gate-antipattern.log
+With provisioned Worker TypeScript visible to app	repo/app	npm run validate:test-antipatterns	passed, 365 scanned	gate-test-antipatterns.log
+With provisioned Worker TypeScript visible to app	repo/app	npm run validate:test-links	passed	gate-test-links.log
+With provisioned Worker TypeScript visible to app	repo/app	npm run validate:dead-exports	passed	gate-dead-exports.log
+Offline collector	repo/app	npm run validate:unrun-tests	blocked at Playwright listing, ENOTCACHED	gate-collector.log
+Projected app dependencies	repo/app	npm run lint	ESLint unavailable, exit 127	gate-lint.log
+Projected app dependencies	repo/app	npm run typecheck	tsc unavailable on app command path, exit 127	gate-app-types.log
+Worker compiler on PATH	repo/app	npm run typecheck	failed, including missing Node and React type declarations	gate-app-types-worker-compiler.log
+Pinned integration project	repo/app	node test/integration/node_modules/typescript/bin/tsc --noEmit --pretty false -p test/integration/tsconfig.json	6 diagnostics in integration/vitest.config.ts	worker-types-before.log
+Repaired integration project	repo/app	node test/integration/node_modules/typescript/bin/tsc --noEmit --pretty false -p test/integration/tsconfig.json	identical 6 diagnostics in integration/vitest.config.ts	worker-types.log
+Repaired focused Worker selection after restoring fault controls	repo	../runtime/run-worker.sh collaboration-contract.test.ts eviction-recovery.test.ts mcp-journeys.test.ts overlap-fuzz.test.ts seq-regression.test.ts social-preview.test.ts state-hash-parity.test.ts state-machine-fuzz.test.ts --reporter=verbose	8 files, 84 passed. 147 accepted, 4 dirty disconnects	final-focus-worker.log

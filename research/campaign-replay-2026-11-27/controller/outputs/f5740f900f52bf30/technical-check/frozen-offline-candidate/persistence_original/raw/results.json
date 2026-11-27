@@ -1,0 +1,18 @@
+{
+  "persistence_original": {
+    "state": "observed",
+    "exit": 0,
+    "expected_behavior": "accept",
+    "command": {
+      "cwd": ".",
+      "args": [
+        "/case/runtime/run-worker.sh",
+        "state-machine-fuzz.test.ts",
+        "-t",
+        "WS mutation makes KV lag"
+      ]
+    },
+    "log": "persistence_original.log",
+    "seconds": 21.585
+  }
+}

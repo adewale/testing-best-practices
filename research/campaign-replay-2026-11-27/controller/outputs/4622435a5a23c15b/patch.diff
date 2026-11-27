@@ -1,0 +1,258 @@
+diff --git a/app/e2e/core.spec.ts b/app/e2e/core.spec.ts
+index 0331a87..d1bdc84 100644
+--- a/app/e2e/core.spec.ts
++++ b/app/e2e/core.spec.ts
+@@ -34,12 +34,8 @@ async function addTrack(page: import('@playwright/test').Page): Promise<void> {
+ // - src/components/keyboard-handlers.test.ts (step toggle state tests)
+ 
+ // NOTE: "Tempo Control" test suite was removed.
+-// These tests had visibility-dependent runtime skips and are fully covered by:
+-// - src/components/tempo-change.test.ts (23 tests against the production drag helper, including):
+-//   - Tempo drag calculation unit tests
+-//   - Property-based tests for bounds, integers, sensitivity
+-//   - Integration tests with gridReducer
+-//   - Mutation commutativity tests
++// src/components/TransportBar.test.tsx exercises the mobile slider's touch and mouse callbacks.
++// src/components/tempo-change.test.ts covers drag arithmetic, reducer updates and mutations.
+ 
+ test.describe('Track Management', () => {
+   test.beforeEach(async ({ page }) => {
+@@ -77,11 +73,8 @@ test.describe('Track Management', () => {
+ });
+ 
+ // NOTE: "Swing Control" test suite was removed.
+-// These tests had visibility-dependent runtime skips and are fully covered by:
+-// - src/components/swing-control.test.ts (27 comprehensive tests including):
+-//   - Swing drag calculation unit tests
+-//   - Property-based tests for bounds and sensitivity
+-//   - State flow integration tests
++// src/components/TransportBar.test.tsx exercises the mobile slider's touch and mouse callbacks.
++// src/components/swing-control.test.ts covers drag arithmetic, reducer updates and mutations.
+ 
+ test.describe('Session Name', () => {
+   // SessionName.tsx renders a <button class="session-name"> that swaps to an
+diff --git a/app/e2e/phase3-refactoring.spec.ts b/app/e2e/phase3-refactoring.spec.ts
+index 1d75f54..59bf221 100644
+--- a/app/e2e/phase3-refactoring.spec.ts
++++ b/app/e2e/phase3-refactoring.spec.ts
+@@ -179,7 +179,8 @@ test.describe('Core mutations (delegated to applyMutation)', () => {
+ 
+   // NOTE: "tempo change via drag" test was removed.
+   // Playwright's mouse.move() doesn't set e.buttons property (see GitHub issue #12821).
+-  // Tempo mutation logic is comprehensively tested in src/components/tempo-change.test.ts
++  // src/components/TransportBar.test.tsx exercises the mouse-button events on the tempo slider.
++  // src/components/tempo-change.test.ts covers the drag arithmetic and tempo mutations.
+ });
+ 
+ // ============================================================================
+diff --git a/app/src/components/TransportBar.test.tsx b/app/src/components/TransportBar.test.tsx
+new file mode 100644
+index 0000000..9ad712f
+--- /dev/null
++++ b/app/src/components/TransportBar.test.tsx
+@@ -0,0 +1,50 @@
++// @vitest-environment jsdom
++import { cleanup, fireEvent, render } from '@testing-library/react';
++import { afterEach, expect, it, vi } from 'vitest';
++import { TransportBar } from './TransportBar';
++
++afterEach(cleanup);
++
++const controls = [
++  { name: 'Tempo', raised: 135, minimum: 60 },
++  { name: 'Swing', raised: 59, minimum: 0 },
++] as const;
++
++function renderSlider(name: string) {
++  const edits: Array<[string, number]> = [];
++  const view = render(
++    <TransportBar
++      isPlaying={false}
++      tempo={120}
++      swing={50}
++      onPlayPause={vi.fn()}
++      onTempoChange={value => edits.push(['Tempo', value])}
++      onSwingChange={value => edits.push(['Swing', value])}
++    />,
++  );
++  return { slider: view.getByRole('slider', { name }), edits };
++}
++
++it.each(controls)('sends consecutive $name edits during a touch drag', ({ name, raised, minimum }) => {
++  const { slider, edits } = renderSlider(name);
++  fireEvent.touchStart(slider, { touches: [{ clientY: 100 }] });
++  fireEvent.touchMove(slider, { touches: [{ clientY: 70 }] });
++  expect(edits).toEqual([[name, raised]]);
++
++  fireEvent.touchMove(slider, { touches: [{ clientY: 300 }] });
++  expect(edits).toEqual([[name, raised], [name, minimum]]);
++  fireEvent.touchEnd(slider);
++});
++
++it.each(controls)('ignores secondary-button $name drags and reports a primary-button drag', ({ name, raised }) => {
++  const { slider, edits } = renderSlider(name);
++  fireEvent.mouseDown(slider, { button: 2, buttons: 2, clientY: 100 });
++  fireEvent.mouseMove(slider, { buttons: 2, clientY: 70 });
++  fireEvent.mouseUp(slider, { button: 2 });
++  expect(edits).toEqual([]);
++
++  fireEvent.mouseDown(slider, { button: 0, buttons: 1, clientY: 100 });
++  fireEvent.mouseMove(slider, { buttons: 1, clientY: 70 });
++  expect(edits).toEqual([[name, raised]]);
++  fireEvent.mouseUp(slider, { button: 0 });
++});
+diff --git a/app/src/components/swing-control.test.ts b/app/src/components/swing-control.test.ts
+index aed1619..a58adfd 100644
+--- a/app/src/components/swing-control.test.ts
++++ b/app/src/components/swing-control.test.ts
+@@ -1,19 +1,9 @@
+ /**
+- * Swing Control Tests
+- *
+- * This file provides comprehensive test coverage for swing changes that the
+- * E2E drag test couldn't reliably cover due to Playwright limitations with
+- * mouse button state (e.buttons).
+- *
+- * Replaces: e2e/core.spec.ts - "can drag to change swing" and "Swing Control" tests
+- *
+- * Test Strategy:
+- * 1. UNIT: Pure function tests for drag calculation logic
+- * 2. INTEGRATION: React state flow tests (dispatch → state → render)
+- * 3. PROPERTY-BASED: Invariant tests for swing bounds and behavior
++ * Swing drag arithmetic, reducer updates and session-state mutations.
++ * TransportBar.test.tsx covers the edits delivered by the mobile controls.
+  */
+ 
+-import { describe, it, expect, vi } from 'vitest';
++import { describe, it, expect } from 'vitest';
+ import * as fc from 'fast-check';
+ import type { GridState } from '../types';
+ import {
+@@ -395,51 +385,7 @@ describe('Swing Mutations (Property-Based Integration)', () => {
+ });
+ 
+ // =============================================================================
+-// SECTION 5: Callback Integration Tests (React Flow)
+-// =============================================================================
+-
+-describe('Swing Callback Flow (Integration)', () => {
+-  it('C-001: onSwingChange callback receives correct value', () => {
+-    const mockOnSwingChange = vi.fn();
+-
+-    // Simulate what TransportBar does when calling the callback
+-    const simulateDragResult = (startSwing: number, dragDelta: number) => {
+-      const SENSITIVITY = 1.0;
+-      const MIN = 0;
+-      const MAX = 100;
+-
+-      const newSwing = Math.round(
+-        Math.min(MAX, Math.max(MIN, startSwing + dragDelta * SENSITIVITY))
+-      );
+-      mockOnSwingChange(newSwing);
+-    };
+-
+-    // Simulate drag up by 30px from swing 50
+-    simulateDragResult(50, 30);
+-    expect(mockOnSwingChange).toHaveBeenCalledWith(80);
+-
+-    mockOnSwingChange.mockClear();
+-
+-    // Simulate drag down by 100px from swing 50
+-    simulateDragResult(50, -100);
+-    expect(mockOnSwingChange).toHaveBeenCalledWith(0); // Clamped to MIN
+-  });
+-
+-  it('C-002: rapid swing changes all call callback', () => {
+-    const mockOnSwingChange = vi.fn();
+-
+-    // Simulate rapid drag movements
+-    [0, 25, 50, 75, 100].forEach((swing) => {
+-      mockOnSwingChange(swing);
+-    });
+-
+-    expect(mockOnSwingChange).toHaveBeenCalledTimes(5);
+-    expect(mockOnSwingChange).toHaveBeenLastCalledWith(100);
+-  });
+-});
+-
+-// =============================================================================
+-// SECTION 6: Swing Timing Effect (Musical Behavior)
++// SECTION 5: Swing Timing Effect (Musical Behavior)
+ // =============================================================================
+ 
+ describe('Swing Timing Effect (Musical)', () => {
+diff --git a/app/src/components/tempo-change.test.ts b/app/src/components/tempo-change.test.ts
+index dba5b1e..0eecd90 100644
+--- a/app/src/components/tempo-change.test.ts
++++ b/app/src/components/tempo-change.test.ts
+@@ -1,19 +1,9 @@
+ /**
+- * Tempo Change Tests
+- *
+- * This file provides comprehensive test coverage for tempo changes that the
+- * E2E drag test couldn't reliably cover due to Playwright limitations with
+- * mouse button state (e.buttons).
+- *
+- * Test Strategy:
+- * 1. UNIT: Pure function tests for drag calculation logic
+- * 2. INTEGRATION: React state flow tests (dispatch → state → render)
+- * 3. PROPERTY-BASED: Invariant tests for tempo bounds and behavior
+- *
+- * These tests together provide stronger guarantees than the flaky E2E test.
++ * Tempo drag arithmetic, reducer updates and session-state mutations.
++ * TransportBar.test.tsx covers the edits delivered by the mobile controls.
+  */
+ 
+-import { describe, it, expect, vi } from 'vitest';
++import { describe, it, expect } from 'vitest';
+ import * as fc from 'fast-check';
+ import type { GridState } from '../types';
+ import { calculateDragValue, TEMPO_DRAG_SENSITIVITY } from './transport-drag';
+@@ -412,47 +402,3 @@ describe('Tempo Mutations (Property-Based Integration)', () => {
+     );
+   });
+ });
+-
+-// =============================================================================
+-// SECTION 5: Callback Integration Tests (React Flow)
+-// =============================================================================
+-
+-describe('Tempo Callback Flow (Integration)', () => {
+-  it('C-001: onTempoChange callback receives correct value', () => {
+-    const mockOnTempoChange = vi.fn();
+-
+-    // Simulate what TransportBar does when calling the callback
+-    const simulateDragResult = (startTempo: number, dragDelta: number) => {
+-      const SENSITIVITY = 0.5;
+-      const MIN = 60;
+-      const MAX = 180;
+-
+-      const newTempo = Math.round(
+-        Math.min(MAX, Math.max(MIN, startTempo + dragDelta * SENSITIVITY))
+-      );
+-      mockOnTempoChange(newTempo);
+-    };
+-
+-    // Simulate drag up by 100px from tempo 120
+-    simulateDragResult(120, 100);
+-    expect(mockOnTempoChange).toHaveBeenCalledWith(170);
+-
+-    mockOnTempoChange.mockClear();
+-
+-    // Simulate drag down by 200px from tempo 120
+-    simulateDragResult(120, -200);
+-    expect(mockOnTempoChange).toHaveBeenCalledWith(60); // Clamped to MIN
+-  });
+-
+-  it('C-002: rapid tempo changes all call callback', () => {
+-    const mockOnTempoChange = vi.fn();
+-
+-    // Simulate rapid drag movements
+-    [100, 105, 110, 115, 120].forEach((tempo) => {
+-      mockOnTempoChange(tempo);
+-    });
+-
+-    expect(mockOnTempoChange).toHaveBeenCalledTimes(5);
+-    expect(mockOnTempoChange).toHaveBeenLastCalledWith(120);
+-  });
+-});

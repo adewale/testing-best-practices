@@ -1,0 +1,11 @@
+--- a/app/scripts/demo-sessions/whisper-to-roar.json
++++ b/app/scripts/demo-sessions/whisper-to-roar.json
+@@ -56,7 +56,7 @@
+         ],
+         "parameterLocks": [
+           {
+-            "pitch": 2,
++            "pitch": 3,
+             "volume": 0.3
+           },
+           {

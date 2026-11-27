@@ -1,0 +1,9 @@
+{
+  "cwd": ".",
+  "args": [
+    "python3",
+    "-u",
+    "-c",
+    "import os, subprocess\ndef run(label, argv, env):\n    print('VERIFIER_STANDARD=' + label, flush=True)\n    child = subprocess.run(argv, env=env)\n    print('VERIFIER_EXIT=' + label + ':' + str(child.returncode), flush=True)\n    return child.returncode\nrotating = dict(os.environ, FC_SEED='45182094013', FUZZ_SEEDS='45182094013')\na = run('three-worker-files', ['/case/runtime/run-worker.sh','state-machine-fuzz.test.ts','overlap-fuzz.test.ts','eviction-recovery.test.ts','--reporter=verbose'], rotating)\nb = run('focused-unit-keepers', ['/case/runtime/run-unit.sh','test/unit/promote-pbt-counterexamples.test.ts','src/sync/seq-regression.test.ts','src/components/waveform-peaks.test.ts','--reporter=verbose'], os.environ)\nraise SystemExit(0 if a == 0 and b == 0 else 1)\n"
+  ]
+}

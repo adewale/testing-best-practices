@@ -1,0 +1,317 @@
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app
+
+stdout | src/sync/seq-regression.test.ts
+[Audio] [HMR] Multiplayer: registering dispose handler
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=8084ea8a-a3cf-4513-abd9-bd18aa877d70&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] Received: tempo_changed seq=1
+[WS] Received: tempo_changed seq=2
+[WS] Received: tempo_changed seq=3
+[WS] Received: tempo_changed seq=4
+[WS] Received: tempo_changed seq=5
+[WS] Received: tempo_changed seq=6
+[WS] Received: tempo_changed seq=7
+[WS] Received: tempo_changed seq=8
+[WS] Received: tempo_changed seq=9
+[WS] Received: tempo_changed seq=10
+[WS] Received: tempo_changed seq=11
+[WS] Received: tempo_changed seq=12
+[WS] Received: tempo_changed seq=13
+[WS] Received: tempo_changed seq=14
+[WS] Received: tempo_changed seq=15
+[WS] Received: tempo_changed seq=16
+[WS] Received: tempo_changed seq=17
+[WS] Received: tempo_changed seq=18
+[WS] Received: tempo_changed seq=19
+[WS] Received: tempo_changed seq=20
+[WS] Received: tempo_changed seq=21
+[WS] Received: tempo_changed seq=22
+[WS] Received: tempo_changed seq=23
+[WS] Received: tempo_changed seq=24
+[WS] Received: tempo_changed seq=25
+[WS] Received: tempo_changed seq=26
+[WS] Received: tempo_changed seq=27
+[WS] Received: tempo_changed seq=28
+[WS] Received: tempo_changed seq=29
+[WS] Received: tempo_changed seq=30
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 1
+[WS] Received: tempo_changed seq=1
+
+stderr | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them
+[WS] Out-of-order message: seq 1
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them
+[WS] [SYNC-HEALTH] Full reset
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=393bf92c-e5c7-476a-8f13-5e2abc38cd70&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] Received: tempo_changed seq=1
+[WS] Received: tempo_changed seq=2
+[WS] Received: tempo_changed seq=3
+[WS] Received: tempo_changed seq=4
+[WS] Received: tempo_changed seq=5
+[WS] Received: tempo_changed seq=6
+[WS] Received: tempo_changed seq=7
+[WS] Received: tempo_changed seq=8
+[WS] Received: tempo_changed seq=9
+[WS] Received: tempo_changed seq=10
+[WS] Received: tempo_changed seq=11
+[WS] Received: tempo_changed seq=12
+[WS] Received: tempo_changed seq=13
+[WS] Received: tempo_changed seq=14
+[WS] Received: tempo_changed seq=15
+[WS] Received: tempo_changed seq=16
+[WS] Received: tempo_changed seq=17
+[WS] Received: tempo_changed seq=18
+[WS] Received: tempo_changed seq=19
+[WS] Received: tempo_changed seq=20
+[WS] Received: tempo_changed seq=21
+[WS] Received: tempo_changed seq=22
+[WS] Received: tempo_changed seq=23
+[WS] Received: tempo_changed seq=24
+[WS] Received: tempo_changed seq=25
+[WS] Received: tempo_changed seq=26
+[WS] Received: tempo_changed seq=27
+[WS] Received: tempo_changed seq=28
+[WS] Received: tempo_changed seq=29
+[WS] Received: tempo_changed seq=30
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 1
+[WS] Received: tempo_changed seq=1
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 2
+[WS] Received: tempo_changed seq=2
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 3
+[WS] Received: tempo_changed seq=3
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 4
+[WS] Received: tempo_changed seq=4
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 5
+[WS] Received: tempo_changed seq=5
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 6
+[WS] Received: tempo_changed seq=6
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 7
+[WS] Received: tempo_changed seq=7
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 8
+[WS] Received: tempo_changed seq=8
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 9
+[WS] Received: tempo_changed seq=9
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 10
+[WS] Received: tempo_changed seq=10
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 11
+[WS] Reconnecting in 1000ms (attempt 1/10, jitter applied)
+[WS] Received: tempo_changed seq=11
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=393bf92c-e5c7-476a-8f13-5e2abc38cd70&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 12
+[WS] Received: tempo_changed seq=12
+[WS] [MUTATION-TRACK] Tracking set_tempo seq=1 trackId= step=undefined
+
+stderr | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch
+[WS] Out-of-order message: seq 1
+[WS] Out-of-order message: seq 2
+[WS] Out-of-order message: seq 3
+[WS] Out-of-order message: seq 4
+[WS] Out-of-order message: seq 5
+[WS] Out-of-order message: seq 6
+[WS] Out-of-order message: seq 7
+[WS] Out-of-order message: seq 8
+[WS] Out-of-order message: seq 9
+[WS] Out-of-order message: seq 10
+[WS] Out-of-order message: seq 11
+[WS] Triggering reconnect: 11 out-of-order messages
+[WS] Out-of-order message: seq 12
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch
+[WS] [SYNC-HEALTH] Full reset
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=6eb3c4da-05f5-4635-a37f-9aed50b3f22f&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] Received: tempo_changed seq=1
+[WS] Received: tempo_changed seq=2
+[WS] Received: tempo_changed seq=3
+[WS] Received: tempo_changed seq=4
+[WS] Received: tempo_changed seq=5
+[WS] Received: tempo_changed seq=6
+[WS] Received: tempo_changed seq=7
+[WS] Received: tempo_changed seq=8
+[WS] Received: tempo_changed seq=9
+[WS] Received: tempo_changed seq=10
+[WS] Received: tempo_changed seq=11
+[WS] Received: tempo_changed seq=12
+[WS] Received: tempo_changed seq=13
+[WS] Received: tempo_changed seq=14
+[WS] Received: tempo_changed seq=15
+[WS] Received: tempo_changed seq=16
+[WS] Received: tempo_changed seq=17
+[WS] Received: tempo_changed seq=18
+[WS] Received: tempo_changed seq=19
+[WS] Received: tempo_changed seq=20
+[WS] Received: tempo_changed seq=21
+[WS] Received: tempo_changed seq=22
+[WS] Received: tempo_changed seq=23
+[WS] Received: tempo_changed seq=24
+[WS] Received: tempo_changed seq=25
+[WS] Received: tempo_changed seq=26
+[WS] Received: tempo_changed seq=27
+[WS] Received: tempo_changed seq=28
+[WS] Received: tempo_changed seq=29
+[WS] Received: tempo_changed seq=30
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 1
+[WS] Received: tempo_changed seq=1
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 2
+[WS] Received: tempo_changed seq=2
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 3
+[WS] Received: tempo_changed seq=3
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 4
+[WS] Received: tempo_changed seq=4
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 5
+[WS] Received: tempo_changed seq=5
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 6
+[WS] Received: tempo_changed seq=6
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 7
+[WS] Received: tempo_changed seq=7
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 8
+[WS] Received: tempo_changed seq=8
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 9
+[WS] Received: tempo_changed seq=9
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 10
+[WS] Received: tempo_changed seq=10
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 11
+[WS] Reconnecting in 1000ms (attempt 1/10, jitter applied)
+[WS] Received: tempo_changed seq=11
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=6eb3c4da-05f5-4635-a37f-9aed50b3f22f&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 12
+[WS] Received: tempo_changed seq=12
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 13
+[WS] Received: tempo_changed seq=13
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 14
+[WS] Received: tempo_changed seq=14
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 15
+[WS] Received: tempo_changed seq=15
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 16
+[WS] Received: tempo_changed seq=16
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 17
+[WS] Received: tempo_changed seq=17
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 18
+[WS] Received: tempo_changed seq=18
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 19
+[WS] Received: tempo_changed seq=19
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 20
+[WS] Received: tempo_changed seq=20
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 21
+[WS] Received: tempo_changed seq=21
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 22
+[WS] Reconnecting in 1000ms (attempt 1/10, jitter applied)
+[WS] Received: tempo_changed seq=22
+[WS] Connecting to ws://localhost:3000/api/sessions/00000000-0000-0000-0000-0000000000aa/ws?playerId=6eb3c4da-05f5-4635-a37f-9aed50b3f22f&capabilities=track-envelope-v2%2Cstate-hash-v2
+[WS] Connected
+[WS] State hash checking disabled (no state getter provided)
+[WS] Mutation pruning enabled (every 5s, timeout 30s)
+[WS] Received: snapshot 
+[WS] [ASSERT] Snapshot received (initial connect) - OK
+[WS] [ASSERT] LOAD_STATE dispatched: reason=initial_connect, source=handleSnapshot
+[WS] [SYNC-HEALTH] Recovery flags reset
+[WS] [CONFIRMED] Rebuilt from snapshot: 0 tracks, 0 steps
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 23
+[WS] Received: tempo_changed seq=23
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 24
+[WS] Received: tempo_changed seq=24
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 25
+[WS] Received: tempo_changed seq=25
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 26
+[WS] Received: tempo_changed seq=26
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 27
+[WS] Received: tempo_changed seq=27
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 28
+[WS] Received: tempo_changed seq=28
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 29
+[WS] Received: tempo_changed seq=29
+[WS] [SYNC-HEALTH] Out-of-order: expected 31, got 30
+[WS] Received: tempo_changed seq=30
+[WS] Received: tempo_changed seq=31
+
+stderr | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists
+[WS] Out-of-order message: seq 1
+[WS] Out-of-order message: seq 2
+[WS] Out-of-order message: seq 3
+[WS] Out-of-order message: seq 4
+[WS] Out-of-order message: seq 5
+[WS] Out-of-order message: seq 6
+[WS] Out-of-order message: seq 7
+[WS] Out-of-order message: seq 8
+[WS] Out-of-order message: seq 9
+[WS] Out-of-order message: seq 10
+[WS] Out-of-order message: seq 11
+[WS] Triggering reconnect: 11 out-of-order messages
+[WS] Out-of-order message: seq 12
+[WS] Out-of-order message: seq 13
+[WS] Out-of-order message: seq 14
+[WS] Out-of-order message: seq 15
+[WS] Out-of-order message: seq 16
+[WS] Out-of-order message: seq 17
+[WS] Out-of-order message: seq 18
+[WS] Out-of-order message: seq 19
+[WS] Out-of-order message: seq 20
+[WS] Out-of-order message: seq 21
+[WS] Out-of-order message: seq 22
+[WS] Triggering reconnect: 11 out-of-order messages
+[WS] Out-of-order message: seq 23
+[WS] Out-of-order message: seq 24
+[WS] Out-of-order message: seq 25
+[WS] Out-of-order message: seq 26
+[WS] Out-of-order message: seq 27
+[WS] Out-of-order message: seq 28
+[WS] Out-of-order message: seq 29
+[WS] Out-of-order message: seq 30
+
+stdout | src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists
+[WS] [SYNC-HEALTH] Full reset
+
+ ✓ |unit| src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > applies regressed-epoch broadcasts instead of dropping them 18ms
+ ✓ |unit| src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > reconnects after the 11th regressed frame, but the reconnect does not clear the stale epoch 7ms
+ ✓ |unit| src/sync/seq-regression.test.ts > client under server sequence regression (hibernated-socket eviction) > churns through a second reconnect while the regressed epoch persists 6ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  02:26:29
+   Duration  1.32s (transform 274ms, setup 124ms, import 277ms, tests 33ms, environment 658ms)
+

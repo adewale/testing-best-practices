@@ -1,0 +1,12 @@
+{
+  "formats": {
+    "svg": "image",
+    "png": "image",
+    "ascii": "text",
+    "unicode": "text"
+  },
+  "rebuild": "editor",
+  "generated": "./editor.html",
+  "generator": "./scripts/site/editor.ts",
+  "edit": "./editor/js/export.js"
+}

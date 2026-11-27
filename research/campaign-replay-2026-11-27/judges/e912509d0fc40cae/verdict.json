@@ -1,0 +1,101 @@
+{
+  "case": "R06",
+  "candidates": [
+    {
+      "id": "28b6816a7163bf8e",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Shares equivalent renders, retains repeatability checks and covers feasible pairs across style, source complexity and output format. Browser and seed runs target specific needs.",
+          "reason": "This removes redundant executions and exercises interactions the old matrix missed."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Pins the three triggering values together with their source, format, environment and defect-specific assertion in a named mandatory row.",
+          "reason": "The original reproducer survives regeneration and still checks its symptom."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Maps retired assertions to keepers, compares suites on a pinned revision, replays the defect and challenges keepers with mutations. The 4,140 reference comes from subtracting the potential repeats and permits overruns.",
+          "reason": "Preservation checks govern retirement, and the required obligations determine the final count."
+        }
+      ]
+    },
+    {
+      "id": "225e27b30d01c375",
+      "overall": "FAIL",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Groups equivalent invocations, retains distinct assertions and builds feasible pairs across style, three source classes and supported formats. Browser and seed variation uses a nightly sample.",
+          "reason": "The replacement spends renders on missing interactions and retains purposeful repeats."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the original case under a stable ID with all three trigger values, the source, environment and visible-defect assertion. It requires the assertion to fail before the fix and pass afterward.",
+          "reason": "Both the triggering combination and its observable failure remain explicit."
+        },
+        {
+          "criterion": 3,
+          "verdict": "FAIL",
+          "evidence": "Maps obligations, shadows both suites and replays historical faults, but sets a 450-render blocking ceiling and defers overruns to a budget decision.",
+          "reason": "The overrun clause protects mandatory cases. The plan still makes an unsupported case-count target a decision threshold before measuring cost or establishing how many witnesses are needed."
+        }
+      ]
+    },
+    {
+      "id": "601d976edd918d94",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Shares deterministic artifacts while preserving leakage and repeatability runs. Its array covers style, complexity and format pairs, with seed and browser variation scoped to representative cases.",
+          "reason": "The portfolio removes duplicate work and gives the two previously constant dimensions explicit coverage."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Keeps the named regression on every change with exact values, source, environment and original assertion, independently of array generation.",
+          "reason": "The reproducer retains its own failure check even as the generated rows change."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Retains promised exhaustive enumeration, maps removals, shadows suites and compares detection on the incident and injected style and format faults. It keeps the old lane when results are inconclusive.",
+          "reason": "Demonstrated fault detection and measured savings govern retirement. The model determines the row count."
+        }
+      ]
+    },
+    {
+      "id": "0b13c72d5b9cc1d1",
+      "overall": "PASS",
+      "criteria": [
+        {
+          "criterion": 1,
+          "verdict": "PASS",
+          "evidence": "Shares matching renders, preserves intentional repeats and covers feasible pairs across style, source class and format. Additional seeds and browser versions rotate on a slower lane.",
+          "reason": "The reduced product directly exercises the missing interactions without multiplying every row."
+        },
+        {
+          "criterion": 2,
+          "verdict": "PASS",
+          "evidence": "Runs the exact triple, fixture, environment and symptom assertion on every change, even when a generated row contains the tuple.",
+          "reason": "The incident remains a separately enforced regression."
+        },
+        {
+          "criterion": 3,
+          "verdict": "PASS",
+          "evidence": "Maps displaced assertions to keepers, checks executed tuples and registry membership, shadows both suites and restores witnesses for old-only fault detections before deletion.",
+          "reason": "Retirement depends on confirmed obligations, fault detection and measured costs. The final size follows from feasible tuples and retained cases."
+        }
+      ]
+    }
+  ]
+}

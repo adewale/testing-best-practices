@@ -1,0 +1,6 @@
+vitest.config.ts(1,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+vitest.config.ts(2,25): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+vitest.config.ts(5,38): error TS5097: An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled.
+vitest.config.ts(12,11): error TS2304: Cannot find name '__dirname'.
+vitest.config.ts(23,7): error TS2353: Object literal may only specify known properties, and 'singleWorker' does not exist in type 'WorkersPoolOptions | ((ctx: WorkerPoolOptionsContext) => WorkersPoolOptions | Promise<WorkersPoolOptions>)'.
+vitest.config.ts(62,9): error TS2304: Cannot find name '__dirname'.

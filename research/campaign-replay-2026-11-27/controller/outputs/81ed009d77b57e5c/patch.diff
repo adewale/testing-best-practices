@@ -1,0 +1,119 @@
+diff --git a/app/test/integration/state-machine-fuzz.test.ts b/app/test/integration/state-machine-fuzz.test.ts
+index cc19793..1ea1cef 100644
+--- a/app/test/integration/state-machine-fuzz.test.ts
++++ b/app/test/integration/state-machine-fuzz.test.ts
+@@ -453,6 +453,8 @@ const MODEL_SEEDS = parseSeedOverride(
+   DEFAULT_MODEL_SEEDS,
+ );
+ const MIN_MODEL_CAMPAIGNS = 30;
++const MAX_MODEL_BATCHES = 3;
++const MIN_ACCEPTED_COMMANDS = 100;
+ const RUNS_PER_SEED = Math.ceil(MIN_MODEL_CAMPAIGNS / MODEL_SEEDS.length);
+ const MODEL_TIMEOUT_MS = Math.max(120_000, MODEL_SEEDS.length * 15_000);
+ 
+@@ -489,12 +491,44 @@ async function replayKnownFailure(schedule: StateMachineOp[]): Promise<void> {
+   }
+ }
+ 
+-function assertModelCoverage(coverage: ModelCoverage): void {
+-  const summary = JSON.stringify(coverage);
+-  expect(coverage.accepted, summary).toBeGreaterThanOrEqual(100);
+-  expect(coverage.byKind.ws_tempo, summary).toBeGreaterThan(0);
+-  expect(coverage.byKind.ws_swing, summary).toBeGreaterThan(0);
+-  expect(coverage.dirtyDisconnects, summary).toBeGreaterThan(0);
++function hasModelCoverage(coverage: ModelCoverage): boolean {
++  return coverage.accepted >= MIN_ACCEPTED_COMMANDS
++    && Object.values(coverage.byKind).every(count => count > 0)
++    && coverage.dirtyDisconnects > 0;
++}
++
++async function checkModelBatch(seed: number, offset: number, coverage: ModelCoverage): Promise<void> {
++  const details = await fc.check(
++    fc.asyncProperty(fc.commands(commandArbs, { maxCommands: 18 }), async (commands) => {
++      const run = await createConnectedModelRun(coverage);
++      try {
++        await fc.asyncModelRun(() => run, commands);
++      } finally {
++        run.real.connection?.ws.close(1000, 'model done');
++      }
++    }),
++    {
++      seed: seed | 0,
++      // A one-component fast-check path resumes at this example in the seed's stream.
++      path: String(offset),
++      numRuns: RUNS_PER_SEED,
++      interruptAfterTimeLimit: Math.max(
++        30_000,
++        Math.floor(MODEL_TIMEOUT_MS / MODEL_SEEDS.length) - 5_000,
++      ),
++      markInterruptAsFailure: true,
++    },
++  );
++  if (details.failed) {
++    if (details.counterexample) {
++      failWithPbtCounterexample(
++        'stateMachine',
++        replayableActions(details.counterexample[0]),
++        details,
++      );
++    }
++    throw new Error(`stateMachine property interrupted before producing a counterexample (seed=${details.seed})`);
++  }
+ }
+ 
+ it('model: read-your-writes through the DO holds across shrunk command sequences; KV converges at write/disconnect points', async () => {
+@@ -508,40 +542,20 @@ it('model: read-your-writes through the DO holds across shrunk command sequences
+   }
+ 
+   const coverage = createModelCoverage();
+-  for (const seed of MODEL_SEEDS) {
+-    const details = await fc.check(
+-      fc.asyncProperty(fc.commands(commandArbs, { maxCommands: 18 }), async (commands) => {
+-        const run = await createConnectedModelRun(coverage);
+-        try {
+-          await fc.asyncModelRun(() => run, commands);
+-        } finally {
+-          run.real.connection?.ws.close(1000, 'model done');
+-        }
+-      }),
+-      {
+-        seed: seed | 0,
+-        numRuns: RUNS_PER_SEED,
+-        interruptAfterTimeLimit: Math.max(
+-          30_000,
+-          Math.floor(MODEL_TIMEOUT_MS / MODEL_SEEDS.length) - 5_000,
+-        ),
+-        markInterruptAsFailure: true,
+-      },
+-    );
+-    if (details.failed) {
+-      if (details.counterexample) {
+-        failWithPbtCounterexample(
+-          'stateMachine',
+-          replayableActions(details.counterexample[0]),
+-          details,
+-        );
+-      }
+-      throw new Error(`stateMachine property interrupted before producing a counterexample (seed=${details.seed})`);
++  // Even on a healthy Worker, a generated sequence can be empty or contain
++  // commands whose connection preconditions do not hold. Continue successful
++  // campaigns with fresh examples until the observed work meets the contract.
++  for (let batch = 0; batch < MAX_MODEL_BATCHES && !hasModelCoverage(coverage); batch++) {
++    for (const seed of MODEL_SEEDS) {
++      await checkModelBatch(seed, batch * RUNS_PER_SEED, coverage);
+     }
++    console.info(`[stateMachine] seeds=${MODEL_SEEDS.join(',')} runsPerSeed=${(batch + 1) * RUNS_PER_SEED} `
++      + `coverage=${JSON.stringify(coverage)}`);
+   }
+-
+-  // A total command count can hide a missing transition class. These witnesses
+-  // keep the fixed and rotating campaigns honest about the WS/KV lifecycle they
+-  // claim to cover.
+-  assertModelCoverage(coverage);
++  expect(
++    hasModelCoverage(coverage),
++    `Coverage budget exhausted for seeds [${MODEL_SEEDS.join(',')}]. Expected `
++    + `${MIN_ACCEPTED_COMMANDS} accepted commands, every modeled action, and a dirty disconnect. `
++    + `Observed ${JSON.stringify(coverage)}`,
++  ).toBe(true);
+ }, MODEL_TIMEOUT_MS);

@@ -1,0 +1,9 @@
+{
+  "cwd": "app/test/integration",
+  "args": [
+    "npm",
+    "test",
+    "--",
+    "--reporter=verbose"
+  ]
+}

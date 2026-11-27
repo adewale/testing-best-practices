@@ -1,0 +1,176 @@
+{
+  "public_checkpoint": "d0414b6c374001eb9c62af706f8177cb9aa67be2",
+  "candidate": "300a179a1d622b66134409356add50e81393e95e",
+  "openclaw": "9fd0b7de19b70c97a285d5ff4c852d66f952190e",
+  "frozen_manifest_sha256": "9e1b42e7413230f9e26f075f61b989baf89d2b73588350d87b74015c791fe1b7",
+  "schedule": {
+    "A_subjects": 36,
+    "B_subjects": 12,
+    "judges": 12
+  },
+  "checkpoint_files_matches_git_commit": 33,
+  "controller": {
+    "frozen_core_files_matched_original_and_rebuild": 12,
+    "original_manifest_and_freeze_byte_equal": true,
+    "public_preflight_logs_matched_original": 4,
+    "preflight_summary_in_checkpoint": true
+  },
+  "archives": {
+    "agentic-mermaid": {
+      "sha256": "031c7df0d5dc29efdb8b0706380adb46a065304719ba8aef284a0043e61e9f50",
+      "archive_bytes": 3717248,
+      "members": 518,
+      "all_member_bytes_matched_frozen_source_or_packet_hashes": true,
+      "compressed_bytes_reproduced": true,
+      "independent_upstream_blob_receipts_recomputed": 456,
+      "operator_lock_members_matched": 517
+    },
+    "keyboardia": {
+      "sha256": "ba81420f4b88d6f0066d4335078903c3480c805a53848aed70b1f212919e28d6",
+      "archive_bytes": 4488470,
+      "members": 1100,
+      "all_member_bytes_matched_frozen_source_or_packet_hashes": true,
+      "compressed_bytes_reproduced": true,
+      "independent_upstream_blob_receipts_recomputed": 987,
+      "nested_participant_members_matched": 1001
+    },
+    "pda": {
+      "sha256": "0c861b93835169126c4020e890cb4cc4d70bf28025eb2534481dc98d154733b5",
+      "archive_bytes": 2090012,
+      "members": 602,
+      "all_member_bytes_matched_frozen_source_or_packet_hashes": true,
+      "compressed_bytes_reproduced": true,
+      "independent_upstream_blob_receipts_recomputed": 560,
+      "separate_runtime_inputs": 3
+    },
+    "openclaw": {
+      "sha256": "a41cbee340cebdefb86ed2837c4bdcccaee1d6599124164168eb43baa20d9a3a",
+      "archive_bytes": 103601,
+      "members": 20,
+      "all_member_bytes_matched_frozen_source_or_packet_hashes": true,
+      "compressed_bytes_reproduced": true,
+      "independent_upstream_blob_receipts_recomputed": 17
+    },
+    "packets": {
+      "sha256": "651c9cafdbacff2b998204737be833eae136f7b877616811123e7414c59beb54",
+      "archive_bytes": 1109643,
+      "members": 216,
+      "all_member_bytes_matched_frozen_source_or_packet_hashes": true,
+      "compressed_bytes_reproduced": true,
+      "standalone_packets": 48,
+      "guidance_files": 168
+    }
+  },
+  "retained_notices_sha256": {
+    "agentic-mermaid": {
+      "hidden/vendor/node_modules/pako/LICENSE": "a04665b3b2de56c66730c1f720f528175739e4104f79073614aa611da1e85539",
+      "hidden/vendor/node_modules/upng-js/LICENSE": "c1fb8861eca211bf5aea574358aba7039396c0c1824c2a1477cc126d398efd89",
+      "participant/repo/LICENSE": "f05f5a4009eae7fadfd4a55f77ffe10948f621982d56076667e68afbb54de894",
+      "participant/support/skill-eval-harness/LICENSE": "7ee8d3bd03289a4b3f687bb93201cea8bab4f0ae982dbff4bd05c481be15a0b6",
+      "participant/support/trident/LICENSE": "459d26818c3474a1c6efbe1bb77063633515c422edcca29c0c4ff125a2f9eb64"
+    },
+    "keyboardia": {
+      "participant/repo/LICENSE": "459d26818c3474a1c6efbe1bb77063633515c422edcca29c0c4ff125a2f9eb64",
+      "participant/repo/app/public/instruments/LICENSE.md": "0e7d8fcba791975fcff5a35554670bbddbf535f5e04b4d51fc0c269feeee74f6"
+    },
+    "pda": {
+      "participant/repo/LICENSE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "participant/repo/spec/company-kit-2026-11-11/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "participant/repo/spec/company-kit-2026-11-19/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "participant/repo/spec/draft-0.4-retrieved-2026-11-11/pages/license.md": "375f2dfe08d9a4cbea1a87d183e0fac77cef0abc464ab8ad2c4dfb287d390e95",
+      "participant/repo/spec/version-1.0-retrieved-2026-11-19/pages/license.md": "375f2dfe08d9a4cbea1a87d183e0fac77cef0abc464ab8ad2c4dfb287d390e95"
+    },
+    "openclaw": {
+      "source/LICENSE": "9efd316ecf1c4c60f6fd5d26433142fff2b6794d7d328e9bc6179b29bf9c82a4"
+    },
+    "packets": {
+      "4622435a5a23c15b/guidance/LICENSE": "9efd316ecf1c4c60f6fd5d26433142fff2b6794d7d328e9bc6179b29bf9c82a4",
+      "760faa4901a0a237/guidance/LICENSE": "9efd316ecf1c4c60f6fd5d26433142fff2b6794d7d328e9bc6179b29bf9c82a4",
+      "f017afaf3bd340cf/guidance/LICENSE": "9efd316ecf1c4c60f6fd5d26433142fff2b6794d7d328e9bc6179b29bf9c82a4"
+    }
+  },
+  "install_exclusions": {
+    "only_node_modules_members": 22,
+    "only_packages": [
+      "pako@1.0.11",
+      "upng-js@2.1.0"
+    ],
+    "nested_archive_membership_checked": [
+      "keyboardia-participant.tar.gz"
+    ],
+    "unexpected_dependency_trees_or_image_archives": 0
+  },
+  "checked_utc": "2026-11-27T01:38:43.025176+00:00",
+  "outcome": "Published input integrity passed. Literal packet verification passed. Full rebuilding needs the temporary freeze-handling step below.",
+  "counts": {
+    "top_level_archives": 5,
+    "outer_archive_members": 2456,
+    "upstream_git_blob_receipts_recomputed": 2020
+  },
+  "commands": [
+    {
+      "operation": "git ls-tree -r --name-only -z PUBLICATION_COMMIT -- research/campaign-replay-2026-11-27, then git show PUBLICATION_COMMIT:<path> for every listed file",
+      "exit": 0,
+      "result": "33 committed research checkpoint files matched the working publication byte for byte."
+    },
+    {
+      "operation": "Python tarfile open, enumerate, independently compare each path and SHA-256, then extractall with filter=data into a fresh text-and-source reconstruction",
+      "exit": 0,
+      "result": "Five archives contain exactly the expected regular files and paths. Compressed SHA-256 and size match inputs/archives.json."
+    },
+    {
+      "operation": "python -B LITERAL/controller/build_packets.py verify",
+      "exit": 0,
+      "result": "Extracted frozen sources, packets, guidance, controller hashes and assignment maps verified."
+    },
+    {
+      "operation": "python -B LITERAL/controller/build_packets.py prepare --candidate CANDIDATE --repo REPO",
+      "exit": 1,
+      "result": "A freeze exists. Use verify, judge preparation, or a separate reconstruction directory."
+    },
+    {
+      "operation": "python -B LITERAL/controller/build_packets.py verify --work",
+      "exit": 1,
+      "result": "Before rehydration the packet archive has no per-cell work/ci-snapshot.json for the first Keyboardia case. It contains 48 packets and 168 guidance files, alongside three separate case archives."
+    },
+    {
+      "operation": "python -B REBUILD/controller/build_packets.py prepare --candidate CANDIDATE --repo REPO",
+      "exit": 0,
+      "result": "With the published preparation/, openclaw/, runtime-smoke/ and controller/{build_packets.py,control_run.py,protocol.md,protocol-review.md,grading-b.md} in a second empty local layout, the builder generated 48 subjects and 12 judge assignments."
+    },
+    {
+      "operation": "python -B REBUILD/controller/build_packets.py verify --work",
+      "exit": 0,
+      "result": "All original B source bytes, the three PDA supplemental runtime files per applicable cell, every guidance bundle, and the 48 packet identities verified."
+    },
+    {
+      "operation": "python -B PUBLISHED/publish_inputs.py --study-root LITERAL --destination REPACKED",
+      "exit": 0,
+      "result": "All five compressed archives and inputs/archives.json reproduced byte for byte."
+    },
+    {
+      "operation": "In the disposable extracted LITERAL layout only, move controller/freeze.json to reference-freeze.json, run the prepare command above, return the copied receipt to controller/freeze.json, then run verify --work",
+      "exit": 0,
+      "result": "The simple README clarification also rebuilt all 48 cells and verified them against the original frozen manifest hash."
+    },
+    {
+      "operation": "Python hashlib + tarfile independently compare packaged receipt files to original frozen source, recompute Git blob SHA-1 with its Git length prefix, SHA-256 and size, and inspect nested Keyboardia archive, notice content, scoped vendor files and deterministic repack",
+      "exit": 0,
+      "result": "All checks passed, with counts and content hashes above. Extracted artifacts were local scratch copies."
+    }
+  ],
+  "labels": {
+    "PUBLISHED": "research/campaign-replay-2026-11-27 in REPO",
+    "REPO": "/workspace/testing-best-practices",
+    "CANDIDATE": "300a179a1d622b66134409356add50e81393e95e",
+    "PUBLICATION_COMMIT": "d0414b6c374001eb9c62af706f8177cb9aa67be2",
+    "LITERAL": "fresh temporary directory with the five extracted archives and copied published controller/ and runtime-smoke/",
+    "REBUILD": "second empty temporary layout supplied only static source inputs and the five controller seeds",
+    "REPACKED": "third temporary destination for republishing"
+  },
+  "limitations": [
+    "The published checkpoint omits duplicate per-subject working copies by design. Its README needs an explicit temporary-copy instruction for moving the copied freeze receipt aside during a full rebuild. Keeping the copied receipt in place supports packet-only verify.",
+    "This offline check establishes byte identity, archive membership, included notices and reproducibility of inputs. Independently running hosted CI, package installation, evaluator containers, subject/judge work and model-output verification were outside its scope.",
+    "Dependency versions, source notices and runtime setup information travel with the study. Independent runtime setup still requires the relevant package or container sources. The path audit checked expected archived files, including the one nested participant package. It was not a separate licensing opinion."
+  ]
+}

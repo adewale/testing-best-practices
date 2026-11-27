@@ -1,0 +1,13 @@
+
+ RUN  v4.1.11 /workspace/test-audit-replay-v2/subjects/81ed009d77b57e5c/work/repo/app
+
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > computes correct peaks for a simple sine wave 2ms
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > produces identical results for same input 1ms
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > handles width larger than sample count 0ms
+ ✓ |unit| src/components/waveform-peaks.test.ts > waveform peak computation logic > handles silence (all zeros) 1ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  02:32:18
+   Duration  369ms (transform 51ms, setup 147ms, import 17ms, tests 6ms, environment 0ms)
+
