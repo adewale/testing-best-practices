@@ -2,13 +2,23 @@
   "eval_id": "E74-python-no-silent-tier-downgrade",
   "language": "python",
   "oracle": "oracle.py",
-  "good_sample": "samples/good",
-  "bad_samples": [
-    "samples/bad",
-    "samples/adversarial-mocked"
-  ],
+  "unavailable_exit_codes": [2],
   "checks": [
-    "cleaned-up tests still pass against the correct implementation",
-    "cleaned-up tests still catch a behavior bug only a real-SQLite test can see"
+    "the cleaned-up suite passes on the correct query and detects lost partial matches",
+    "a test that executes search through native SQLite fails when returned titles rank lowest first"
+  ],
+  "good_samples": [
+    "samples/good",
+    "samples/good-file-database"
+  ],
+  "bad_samples": [
+    "samples/adversarial-mocked",
+    "samples/bad",
+    "samples/bad-bound-arguments",
+    "samples/bad-comments",
+    "samples/bad-mocked-order",
+    "samples/bad-skipped",
+    "samples/bad-unordered",
+    "samples/bad-unrelated"
   ]
 }

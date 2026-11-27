@@ -26,6 +26,8 @@ COMMANDS = [
         "--fail-on-blockers",
     ],
     [sys.executable, "scripts/run-fixture-oracles.py"],
+    [sys.executable, "scripts/test-fixture-runner.py"],
+    [sys.executable, "scripts/test-behavioral-oracles.py"],
     [sys.executable, "scripts/test-gtb-output-adapter.py"],
     [sys.executable, "scripts/test-run-prompt-evals.py"],
     [sys.executable, "scripts/run-mini-repos.py"],

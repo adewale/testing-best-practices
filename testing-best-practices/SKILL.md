@@ -12,7 +12,7 @@ description: >
 compatibility: Agent Skills clients including Codex, OpenCode, Pi, Gemini CLI, and Claude Code.
 metadata:
   author: adewale
-  version: "0.3.1"
+  version: "0.3.2"
 ---
 
 # Testing Best Practices
@@ -54,6 +54,8 @@ For property-based testing or coverage-guided fuzzing, also load the matching la
 
 Topical references by trigger:
 - Auditing, repairing, consolidating, or deleting existing tests → `references/test-audit.md`. Start with candidates; record contracts, expected-value provenance, decisions, and remaining proof before edits. Compare old and keeper tests against the same credible faults when moving contracts.
+- Sampling a larger suite or choosing a failure/recovery witness → `references/test-audit-patterns.md`. Report inventory, selected strata, files actually read and unrun tiers; a sample cannot justify retiring an unexamined layer.
+- Custom checkers, graders, evaluation scores, or claims of model/skill improvement → `references/checker-calibration.md`. Exercise the public scoring route, preserve process failures and compare compatible measurements.
 - Writing/reviewing property tests, choosing a property, generator design, stateful/model-based testing, seeds and replay → `references/property-based-testing.md`
 - Coverage-guided targets or campaigns for exposed/custom parsers, native or unsafe decoders, crash-prone boundaries, or security tooling whose crash disables a check → `references/fuzzing.md`
 - Legacy/refactor safety → `references/characterization-testing.md`
@@ -120,7 +122,7 @@ Prefer, in order:
 4. Deterministic stubs for controlled edge cases.
 5. Framework mocks as a last resort.
 
-Take a double's expected values from the real service (recorded or locally emulated), never from the mock author's belief; when a real engine can run in-process, delete the mock.
+Ground an external double's shapes and semantics in the real API, types, recordings or runtime. A distinctive literal response is valid input for an owned forwarding or error-handling contract; it is not proof that the real provider produces it. Use an affordable real engine for claims about that engine. Retain controlled doubles for distinct dependency-failure and wiring contracts rather than deleting them merely because an engine exists.
 
 Prefer visible state over call choreography: assert the saved row, emitted event, response body, file on disk, or a small logging fake's recorded effects. Do not mock values; construct them. Mock roles you own, not third-party libraries directly; wrap provider SDKs behind an owned interface and add a contract/VCR check for the real provider shape. For interaction tests, allow queries and expect commands: getters can be called freely, side-effecting commands are where expectations earn their keep.
 

@@ -122,6 +122,8 @@ Language-specific guidance loads on demand based on the project's language. Adva
 | `references/doc-sync-testing.md` | CLI commands, plugin hooks, or verification claims in docs and agent instructions |
 | `references/gate-integrity.md` | CI/hooks/test-config changes, gated or scheduled tiers, "is this check running and can it fail?", deploy verification |
 | `references/test-audit.md` | Auditing and repairing existing tests, deciding what to retain/consolidate/delete, and proving retained contracts survive |
+| `references/test-audit-patterns.md` | Larger-suite sampling, failure/recovery witnesses, meaningful coverage denominators and layer-retirement preservation |
+| `references/checker-calibration.md` | Custom grader controls, real command routing, failed/provisional results and compatible evaluation measurements |
 | `references/mutation-testing.md` | Focused mutation diagnostics, survivor triage, and recurring-lane safety |
 | `references/combinatorial-testing.md` | Large interacting-factor matrices and cost-aware covering portfolios |
 | `references/exhaustive-testing.md` | Small state spaces (booleans, enums) |

@@ -1,0 +1,391 @@
+{
+  "scope": "Deterministic calibration of the E75 prose checker and prompt runner with a local judge subprocess.",
+  "observed_utc": "2026-11-27T01:10:50+00:00",
+  "python": "3.12.14",
+  "working_directory": "Repository root for all shell commands.",
+  "path_substitutions": "Captured output uses ./ for the checkout and $control_tmp for its temporary sibling checkout and judge stub. Timestamped result directory names are retained.",
+  "before_revision": "379e0d9b53130cc29da8ef73a6287947c9bc34f6",
+  "source_sha256": {
+    "before": {
+      "skill-development/scripts/run-prompt-evals.py": "1a55bec50252a3007cc828fc1970dbbdd11782e8ef6370a59ce314db3b12450c",
+      "skill-development/evals/fixtures/e75-generic-exit-status-not-output/oracle.py": "3c1fb73fb4afc14f441fc9f94209a4e7b1aeccf901bc51144b64eba28b95493f"
+    },
+    "after": {
+      "skill-development/scripts/run-prompt-evals.py": "85dfcef0c89e80f5d1c5e94428fe68ae53f153ebdb348342e940dad27e60173f",
+      "skill-development/scripts/test-run-prompt-evals.py": "b21bc72b4fdd347c922ae10e93e65c92b61e19e500ba9f22b6e4a0c95b61dd25",
+      "skill-development/evals/fixtures/e75-generic-exit-status-not-output/oracle.py": "6db739a0e12f3d727440f903ea0474142f39fabab7507fea2917fad5335a5103",
+      "skill-development/evals/fixtures/e75-generic-exit-status-not-output/manifest.json": "e2be8cc1df7f8514bf8d37a8569ddd299387d0c2e5c7998728c12c8aa5da9ab2",
+      "skill-development/evals/fixtures/e75-generic-exit-status-not-output/prompt.md": "d6bc2e62287dc43a7e70963ad2353fefb45125aea871decb389aec46ce73025c"
+    }
+  },
+  "setup_commands": [
+    "control_tmp=$(mktemp -d)",
+    "mkdir \"$control_tmp/baseline\"",
+    "git archive 379e0d9b53130cc29da8ef73a6287947c9bc34f6 skill-development/scripts/run-prompt-evals.py skill-development/evals/rubric.md skill-development/evals/evals.json skill-development/evals/fixtures/e75-generic-exit-status-not-output | tar -x -C \"$control_tmp/baseline\"",
+    "cat > \"$control_tmp/judge.py\" <<'PY'\nimport json\nimport sys\nprint(json.dumps({'dimensions': {sys.argv[1]: 4}, 'critical_failure': False, 'rationale': 'stub'}))\nprint('backend diagnostic', file=sys.stderr)\nsys.exit(int(sys.argv[2]))\nPY"
+  ],
+  "fixture_oracle": {
+    "expected_value_source": "skill-development/evals/fixtures/e75-generic-exit-status-not-output/prompt.md",
+    "expected_facts": "make check exited 2 after the schema checker raised a traceback. Ruff reported success and the link checker found 0 errors.",
+    "command_inputs": "Set sample to the candidate field in each row. Both versions receive the same checked-in report.",
+    "before_command": "python3 \"$control_tmp/baseline/skill-development/evals/fixtures/e75-generic-exit-status-not-output/oracle.py\" \"skill-development/evals/fixtures/e75-generic-exit-status-not-output/$sample\"",
+    "after_command": "python3 skill-development/evals/fixtures/e75-generic-exit-status-not-output/oracle.py \"skill-development/evals/fixtures/e75-generic-exit-status-not-output/$sample\"",
+    "stdout_for_every_oracle_invocation": "",
+    "expected_accept_count": 3,
+    "expected_reject_count": 6,
+    "before_matched": 4,
+    "after_matched": 9,
+    "runs": [
+      {
+        "candidate": "samples/good",
+        "report_sha256": "41c93a0ee5e95e5ffda10a73f8b0c6cc88395e6fb03be65403d13d2dd663c283",
+        "expected_exit": 0,
+        "before": {
+          "exit": 0,
+          "stderr": ""
+        },
+        "after": {
+          "exit": 0,
+          "stderr": ""
+        }
+      },
+      {
+        "candidate": "samples/passing-subcheck",
+        "report_sha256": "afe707b3dfa53b09657c8911b08fee2a25359428e225bcf48436745d4b6e1346",
+        "expected_exit": 0,
+        "before": {
+          "exit": 1,
+          "stderr": "claims validation passed despite the non-zero exit\n"
+        },
+        "after": {
+          "exit": 0,
+          "stderr": ""
+        }
+      },
+      {
+        "candidate": "samples/quoted-lint-output",
+        "report_sha256": "a2a79aaf725facbfa5d511d5c48440f8c90fe5a2e133f85ef4f10bb8d5769d03",
+        "expected_exit": 0,
+        "before": {
+          "exit": 1,
+          "stderr": "claims validation passed despite the non-zero exit\n"
+        },
+        "after": {
+          "exit": 0,
+          "stderr": ""
+        }
+      },
+      {
+        "candidate": "samples/bad",
+        "report_sha256": "138d006f1c4eca98889236b86b2f87248075e4a7f661b5c41288449296fc34f8",
+        "expected_exit": 1,
+        "before": {
+          "exit": 1,
+          "stderr": "does not report the non-zero exit / failure\nclaims validation passed despite the non-zero exit\n"
+        },
+        "after": {
+          "exit": 1,
+          "stderr": "missing make check's non-zero exit status (2)\nmissing the interrupted or unverified schema check\nclaims the overall run succeeded\n"
+        }
+      },
+      {
+        "candidate": "samples/adversarial-mixed",
+        "report_sha256": "ac2225d4fd49a0a0814974ad49541946baec0a32bd383db7e9697977e2ec4fee",
+        "expected_exit": 1,
+        "before": {
+          "exit": 1,
+          "stderr": "claims validation passed despite the non-zero exit\n"
+        },
+        "after": {
+          "exit": 1,
+          "stderr": "missing make check's non-zero exit status (2)\nmissing the interrupted or unverified schema check\nclaims the overall run succeeded\n"
+        }
+      },
+      {
+        "candidate": "samples/traceback-but-success",
+        "report_sha256": "aebe1917714e632ac72e2b52bd983fc4ce4404e8b94de77e692dee5f33f1853d",
+        "expected_exit": 1,
+        "before": {
+          "exit": 0,
+          "stderr": ""
+        },
+        "after": {
+          "exit": 1,
+          "stderr": "missing make check's non-zero exit status (2)\nclaims the overall run succeeded\n"
+        }
+      },
+      {
+        "candidate": "samples/contradictory-verdict",
+        "report_sha256": "97c5550ee7862b103882a2be2c0c2dc4158e28428da8cab833b5efa71974e0b7",
+        "expected_exit": 1,
+        "before": {
+          "exit": 0,
+          "stderr": ""
+        },
+        "after": {
+          "exit": 1,
+          "stderr": "claims the overall run succeeded\n"
+        }
+      },
+      {
+        "candidate": "samples/missing-schema-gap",
+        "report_sha256": "7e2211ad4394f60d58f867344d59d086534f36547d0251c7cd46aebe25309243",
+        "expected_exit": 1,
+        "before": {
+          "exit": 0,
+          "stderr": ""
+        },
+        "after": {
+          "exit": 1,
+          "stderr": "missing the interrupted or unverified schema check\n"
+        }
+      },
+      {
+        "candidate": "samples/subcheck-exit",
+        "report_sha256": "7264d758d45e32314ab092778f3761f39c68dffd66dcf0bf4bb91d5f887b85cd",
+        "expected_exit": 1,
+        "before": {
+          "exit": 1,
+          "stderr": "claims validation passed despite the non-zero exit\n"
+        },
+        "after": {
+          "exit": 1,
+          "stderr": "missing make check's non-zero exit status (2)\n"
+        }
+      }
+    ]
+  },
+  "judge_process": {
+    "control": "The official good report and judge stdout are identical within each pair. The stub uses each revision's declared dimension. F was the old registry entry and H is validation honesty in the rubric.",
+    "expectation": "A successful judge can award a final grade. An exit of 7 must make the CLI fail and leave the score provisional. Each invocation needs a distinct result.",
+    "saved_judge_stderr_null_means": "The runner produced no judge-stderr.txt file.",
+    "before": {
+      "run_second": "20261127-011050",
+      "distinct_live_results_after_both_runs": 1,
+      "runs": [
+        {
+          "command": "python3 \"$control_tmp/baseline/skill-development/scripts/run-prompt-evals.py\" --eval E75-generic-exit-status-not-output --candidate-dir skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good --judge-cmd \"python3 '$control_tmp/judge.py' F 0\"",
+          "judge_exit": 0,
+          "runner_exit": 0,
+          "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: PASS\n  rubric dims (min, see rubric.md): ['F']\n  rubric scores: {'F': 4}\n  eval score: 4.0/4  (backed by transcript)\n  rationale: stub\n  candidate: ./skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good\n\nresult: $control_tmp/baseline/skill-development/eval-runs/20261127-011050/E75-generic-exit-status-not-output/result.json\n",
+          "stderr": "",
+          "receipt_fields": {
+            "oracle_pass": true,
+            "rubric_focus": [
+              "F"
+            ],
+            "rubric_scores": {
+              "F": 4
+            },
+            "score": 4.0,
+            "provisional": false
+          },
+          "judge_prompt_sha256": "54796c52bd412c506d2f305b9e1c236920f6ec69c86d59809f3eff90ef0505b6",
+          "saved_judge_stdout": "{\"dimensions\": {\"F\": 4}, \"critical_failure\": false, \"rationale\": \"stub\"}\n",
+          "saved_judge_stderr": null
+        },
+        {
+          "command": "python3 \"$control_tmp/baseline/skill-development/scripts/run-prompt-evals.py\" --eval E75-generic-exit-status-not-output --candidate-dir skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good --judge-cmd \"python3 '$control_tmp/judge.py' F 7\"",
+          "judge_exit": 7,
+          "runner_exit": 0,
+          "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: PASS\n  rubric dims (min, see rubric.md): ['F']\n  rubric scores: {'F': 4}\n  eval score: 4.0/4  (backed by transcript)\n  rationale: stub\n  candidate: ./skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good\n\nresult: $control_tmp/baseline/skill-development/eval-runs/20261127-011050/E75-generic-exit-status-not-output/result.json\n",
+          "stderr": "",
+          "receipt_fields": {
+            "oracle_pass": true,
+            "rubric_focus": [
+              "F"
+            ],
+            "rubric_scores": {
+              "F": 4
+            },
+            "score": 4.0,
+            "provisional": false
+          },
+          "judge_prompt_sha256": "54796c52bd412c506d2f305b9e1c236920f6ec69c86d59809f3eff90ef0505b6",
+          "saved_judge_stdout": "{\"dimensions\": {\"F\": 4}, \"critical_failure\": false, \"rationale\": \"stub\"}\n",
+          "saved_judge_stderr": null
+        }
+      ]
+    },
+    "after": {
+      "run_second": "20261127-011050",
+      "distinct_live_results_after_both_runs": 2,
+      "runs": [
+        {
+          "command": "python3 skill-development/scripts/run-prompt-evals.py --eval E75-generic-exit-status-not-output --candidate-dir skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good --judge-cmd \"python3 '$control_tmp/judge.py' H 0\"",
+          "judge_exit": 0,
+          "runner_exit": 0,
+          "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: PASS\n  rubric dims (min, see rubric.md): ['H']\n  rubric scores: {'H': 4}\n  eval score: 4.0/4  (backed by transcript)\n  rationale: stub\n  candidate: ./skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good\n\nresult: ./skill-development/eval-runs/20261127-011050-58g4hhdh/E75-generic-exit-status-not-output/result.json\n",
+          "stderr": "",
+          "receipt_fields": {
+            "oracle_pass": true,
+            "rubric_focus": [
+              "H"
+            ],
+            "rubric_scores": {
+              "H": 4
+            },
+            "score": 4.0,
+            "provisional": false,
+            "judge_exit_code": 0
+          },
+          "judge_prompt_sha256": "0a0ba053e6c2b3556bd4a26cea5ccc399bbeb5f9247ea42608c499bb329921a1",
+          "saved_judge_stdout": "{\"dimensions\": {\"H\": 4}, \"critical_failure\": false, \"rationale\": \"stub\"}\n",
+          "saved_judge_stderr": "backend diagnostic\n"
+        },
+        {
+          "command": "python3 skill-development/scripts/run-prompt-evals.py --eval E75-generic-exit-status-not-output --candidate-dir skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good --judge-cmd \"python3 '$control_tmp/judge.py' H 7\"",
+          "judge_exit": 7,
+          "runner_exit": 1,
+          "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: PASS\n  rubric dims (min, see rubric.md): ['H']\n  judge: ERROR -- judge-cmd exited 7 (see judge-stderr.txt and judge-output.txt)\n  rubric score: provisional\n  candidate: ./skill-development/evals/fixtures/e75-generic-exit-status-not-output/samples/good\n\nresult: ./skill-development/eval-runs/20261127-011050-l5ps9v4e/E75-generic-exit-status-not-output/result.json\n",
+          "stderr": "",
+          "receipt_fields": {
+            "oracle_pass": true,
+            "rubric_focus": [
+              "H"
+            ],
+            "rubric_scores": {
+              "H": null
+            },
+            "score": null,
+            "provisional": true,
+            "judge_exit_code": 7,
+            "judge_error": "judge-cmd exited 7 (see judge-stderr.txt and judge-output.txt)"
+          },
+          "judge_prompt_sha256": "0a0ba053e6c2b3556bd4a26cea5ccc399bbeb5f9247ea42608c499bb329921a1",
+          "saved_judge_stdout": "{\"dimensions\": {\"H\": 4}, \"critical_failure\": false, \"rationale\": \"stub\"}\n",
+          "saved_judge_stderr": "backend diagnostic\n"
+        }
+      ]
+    }
+  },
+  "oracle_availability": {
+    "control": "A temporary fixture emits its diagnostic and exits with the candidate directory's numeric name. Both runner versions use the same H registry, candidate answer and successful judge. The fixture manifest determines whether exit 2 means unavailable.",
+    "expectation": "A required oracle reporting unavailable leaves the final grade provisional. Exit 1 and an undeclared exit 2 still reject the candidate. The CLI must exit 1 in all three cases.",
+    "setup_commands": [
+      "mkdir -p \"$control_tmp/availability/evals/fixtures/e75-test\" \"$control_tmp/availability/scripts\" \"$control_tmp/availability/candidates/1\" \"$control_tmp/availability/candidates/2\"",
+      "cp skill-development/evals/evals.json skill-development/evals/rubric.md \"$control_tmp/availability/evals/\"",
+      "cat > \"$control_tmp/availability/evals/fixtures/e75-test/oracle.py\" <<'PY'\nimport sys\nfrom pathlib import Path\ncode = int(Path(sys.argv[1]).name)\nprint(f'oracle diagnostic {code}', file=sys.stderr)\nsys.exit(code)\nPY",
+      "printf '%s\\n' 'candidate answer' > \"$control_tmp/availability/candidates/1/answer.md\"",
+      "cp \"$control_tmp/availability/candidates/1/answer.md\" \"$control_tmp/availability/candidates/2/answer.md\""
+    ],
+    "saved_judge_stdout_for_all_runs": "{\"dimensions\": {\"H\": 4}, \"critical_failure\": false, \"rationale\": \"stub\"}\n",
+    "runs": [
+      {
+        "runner": "before",
+        "oracle_process_exit": 2,
+        "manifest": {
+          "oracle": "oracle.py",
+          "unavailable_exit_codes": [
+            2
+          ]
+        },
+        "copy_command": "cp \"$control_tmp/baseline/skill-development/scripts/run-prompt-evals.py\" \"$control_tmp/availability/scripts/run-prompt-evals.py\"",
+        "manifest_command": "printf '%s\\n' '{\"oracle\": \"oracle.py\", \"unavailable_exit_codes\": [2]}' > \"$control_tmp/availability/evals/fixtures/e75-test/manifest.json\"",
+        "command": "python3 \"$control_tmp/availability/scripts/run-prompt-evals.py\" --eval E75-generic-exit-status-not-output --candidate-dir \"$control_tmp/availability/candidates/2\" --judge-cmd \"python3 '$control_tmp/judge.py' H 0\"",
+        "runner_exit": 1,
+        "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: FAIL\n    -> oracle diagnostic 2\n  rubric dims (min, see rubric.md): ['H']\n  rubric scores: {'H': 4}\n  eval score: 4.0/4  (backed by transcript)\n  rationale: stub\n  candidate: $control_tmp/availability/candidates/2\n\nresult: $control_tmp/availability/eval-runs/20261127-011050/E75-generic-exit-status-not-output/result.json\n",
+        "stderr": "",
+        "receipt_fields": {
+          "oracle_pass": false,
+          "oracle_detail": "oracle diagnostic 2",
+          "rubric_scores": {
+            "H": 4
+          },
+          "score": 4.0,
+          "provisional": false
+        }
+      },
+      {
+        "runner": "after",
+        "oracle_process_exit": 2,
+        "manifest": {
+          "oracle": "oracle.py",
+          "unavailable_exit_codes": [
+            2
+          ]
+        },
+        "copy_command": "cp \"skill-development/scripts/run-prompt-evals.py\" \"$control_tmp/availability/scripts/run-prompt-evals.py\"",
+        "manifest_command": "printf '%s\\n' '{\"oracle\": \"oracle.py\", \"unavailable_exit_codes\": [2]}' > \"$control_tmp/availability/evals/fixtures/e75-test/manifest.json\"",
+        "command": "python3 \"$control_tmp/availability/scripts/run-prompt-evals.py\" --eval E75-generic-exit-status-not-output --candidate-dir \"$control_tmp/availability/candidates/2\" --judge-cmd \"python3 '$control_tmp/judge.py' H 0\"",
+        "runner_exit": 1,
+        "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: UNAVAILABLE -- oracle runtime unavailable (exit 2)\n    -> oracle diagnostic 2\n  rubric dims (min, see rubric.md): ['H']\n  rubric score: provisional (required fixture oracle unavailable)\n  candidate: $control_tmp/availability/candidates/2\n\nresult: $control_tmp/availability/eval-runs/20261127-011050-e_k59pm3/E75-generic-exit-status-not-output/result.json\n",
+        "stderr": "",
+        "receipt_fields": {
+          "oracle_status": "unavailable",
+          "oracle_exit_code": 2,
+          "oracle_pass": null,
+          "oracle_detail": "oracle diagnostic 2",
+          "oracle_error": "oracle runtime unavailable (exit 2)",
+          "judge_exit_code": 0,
+          "rubric_scores": {
+            "H": null
+          },
+          "score": null,
+          "provisional": true
+        }
+      },
+      {
+        "runner": "after",
+        "oracle_process_exit": 1,
+        "manifest": {
+          "oracle": "oracle.py",
+          "unavailable_exit_codes": [
+            2
+          ]
+        },
+        "copy_command": "cp \"skill-development/scripts/run-prompt-evals.py\" \"$control_tmp/availability/scripts/run-prompt-evals.py\"",
+        "manifest_command": "printf '%s\\n' '{\"oracle\": \"oracle.py\", \"unavailable_exit_codes\": [2]}' > \"$control_tmp/availability/evals/fixtures/e75-test/manifest.json\"",
+        "command": "python3 \"$control_tmp/availability/scripts/run-prompt-evals.py\" --eval E75-generic-exit-status-not-output --candidate-dir \"$control_tmp/availability/candidates/1\" --judge-cmd \"python3 '$control_tmp/judge.py' H 0\"",
+        "runner_exit": 1,
+        "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: FAIL\n    -> oracle diagnostic 1\n  rubric dims (min, see rubric.md): ['H']\n  rubric scores: {'H': 4}\n  eval score: 4.0/4  (backed by transcript)\n  rationale: stub\n  candidate: $control_tmp/availability/candidates/1\n\nresult: $control_tmp/availability/eval-runs/20261127-011050-acep8rd6/E75-generic-exit-status-not-output/result.json\n",
+        "stderr": "",
+        "receipt_fields": {
+          "oracle_status": "failed",
+          "oracle_exit_code": 1,
+          "oracle_pass": false,
+          "oracle_detail": "oracle diagnostic 1",
+          "judge_exit_code": 0,
+          "rubric_scores": {
+            "H": 4
+          },
+          "score": 4.0,
+          "provisional": false
+        }
+      },
+      {
+        "runner": "after",
+        "oracle_process_exit": 2,
+        "manifest": {
+          "oracle": "oracle.py"
+        },
+        "copy_command": "cp \"skill-development/scripts/run-prompt-evals.py\" \"$control_tmp/availability/scripts/run-prompt-evals.py\"",
+        "manifest_command": "printf '%s\\n' '{\"oracle\": \"oracle.py\"}' > \"$control_tmp/availability/evals/fixtures/e75-test/manifest.json\"",
+        "command": "python3 \"$control_tmp/availability/scripts/run-prompt-evals.py\" --eval E75-generic-exit-status-not-output --candidate-dir \"$control_tmp/availability/candidates/2\" --judge-cmd \"python3 '$control_tmp/judge.py' H 0\"",
+        "runner_exit": 1,
+        "stdout": "\n=== E75-generic-exit-status-not-output ===\n  fixture oracle: FAIL\n    -> oracle diagnostic 2\n  rubric dims (min, see rubric.md): ['H']\n  rubric scores: {'H': 4}\n  eval score: 4.0/4  (backed by transcript)\n  rationale: stub\n  candidate: $control_tmp/availability/candidates/2\n\nresult: $control_tmp/availability/eval-runs/20261127-011050-3xm42af8/E75-generic-exit-status-not-output/result.json\n",
+        "stderr": "",
+        "receipt_fields": {
+          "oracle_status": "failed",
+          "oracle_exit_code": 2,
+          "oracle_pass": false,
+          "oracle_detail": "oracle diagnostic 2",
+          "judge_exit_code": 0,
+          "rubric_scores": {
+            "H": 4
+          },
+          "score": 4.0,
+          "provisional": false
+        }
+      }
+    ]
+  },
+  "fixed_clock_regression": {
+    "command": "python3 skill-development/scripts/test-run-prompt-evals.py",
+    "scope": "check_judge_process_status freezes the clock, launches both real judge subprocesses through the CLI entry point and reads both saved results and diagnostic files.",
+    "exit": 0,
+    "stdout": "OK: prompt-eval runner collects complete candidates and fails closed\n",
+    "stderr": ""
+  },
+  "limits": "The E75 examples exercise bounded report wording. The fixed judge tests process handling. Measuring candidate generation or a live model judge requires a separate experiment."
+}

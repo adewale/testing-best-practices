@@ -48,6 +48,10 @@ def main() -> int:
         bad_samples = manifest.get("bad_samples")
         if bad_samples is None:
             bad_samples = [manifest["bad_sample"]]
+        unavailable = set(manifest.get("unavailable_exit_codes", []))
+        if 0 in unavailable:
+            failures.append(f"{fixture_dir.name}: success cannot be an unavailable exit code")
+            continue
         lang = manifest.get("language", "")
         if lang in CORE_LANGS:
             seen_langs.add(lang)
@@ -64,6 +68,13 @@ def main() -> int:
                 failures.append(f"{fixture_dir.name}: missing {label} sample {path}")
                 continue
             proc = run([sys.executable, str(oracle), str(path)], cwd=fixture_dir)
+            if proc.returncode in unavailable:
+                failures.append(
+                    f"{fixture_dir.name}: {label} oracle runtime unavailable (rc={proc.returncode}); "
+                    f"not a verified {'acceptance' if should_pass else 'rejection'}; "
+                    f"stdout={proc.stdout!r}; stderr={proc.stderr!r}"
+                )
+                continue
             ok = proc.returncode == 0
             if ok != should_pass:
                 failures.append(

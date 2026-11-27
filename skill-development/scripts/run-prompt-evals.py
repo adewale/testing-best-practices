@@ -24,12 +24,16 @@ Generation backends
 Judge backend
 -------------
 - ``--judge-cmd "CMD"``    Score the candidate against the rubric. The judge
-  prompt is passed on stdin; the command must print a JSON object
+  receives the prompt on stdin and must exit successfully and print a JSON object
   ``{"dimensions": {"C": 0-4, ...}, "critical_failure": bool, "rationale": ...}``
-  scoring only the eval's rubric_focus dims. Example: ``--judge-cmd 'claude -p'``.
+  scoring only the eval's rubric_focus dims. If it fails, the runner saves its
+  stdout and stderr and leaves the score provisional.
+  Example: ``--judge-cmd 'claude -p'``.
   Without it, rubric scores stay provisional (per rubric.md rule 4).
 
 Evals with no fixture (e.g. hidden probes) are judge-only and need ``--judge-cmd``.
+A required fixture that returns one of its manifest's ``unavailable_exit_codes``
+leaves the grade provisional even when the judge succeeds.
 
 Not part of ``check-all.py``: it depends on a model, so it is not a
 deterministic gate. The fixture-oracle self-tests in ``run-fixture-oracles.py``
@@ -45,6 +49,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,15 +72,28 @@ def fixture_for(eval_id: str) -> Path | None:
     return matches[0] if matches and (matches[0] / "manifest.json").exists() else None
 
 
-def run_oracle(fixture: Path, candidate_dir: Path) -> tuple[bool, str]:
+def run_oracle(fixture: Path, candidate_dir: Path) -> dict:
     manifest = json.loads((fixture / "manifest.json").read_text())
     oracle = fixture / manifest["oracle"]
+    unavailable = manifest.get("unavailable_exit_codes", [])
+    if 0 in unavailable:
+        return {
+            "oracle_status": "unavailable", "oracle_pass": None, "oracle_exit_code": None,
+            "oracle_detail": "", "oracle_error": "invalid fixture manifest: success cannot be an unavailable exit code",
+        }
     # The oracle runs with cwd=fixture, so the candidate path must be absolute.
     proc = subprocess.run(
         [sys.executable, str(oracle), str(candidate_dir.resolve())],
         cwd=fixture, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
     )
-    return proc.returncode == 0, (proc.stdout + proc.stderr).strip()
+    result = {"oracle_exit_code": proc.returncode, "oracle_detail": (proc.stdout + proc.stderr).strip()}
+    if proc.returncode in unavailable:
+        result.update(oracle_status="unavailable", oracle_pass=None,
+                      oracle_error=f"oracle runtime unavailable (exit {proc.returncode})")
+    else:
+        passed = proc.returncode == 0
+        result.update(oracle_status="passed" if passed else "failed", oracle_pass=passed)
+    return result
 
 
 def generate(agent_cmd: str, prompt: str, prompt_file: Path, candidate_dir: Path) -> int:
@@ -116,9 +134,9 @@ def build_judge_prompt(ev: dict, prompt: str, candidate_text: str) -> str:
     )
 
 
-def run_judge(judge_cmd: str, judge_prompt: str) -> str:
+def run_judge(judge_cmd: str, judge_prompt: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(judge_cmd, shell=True, input=judge_prompt, text=True,
-                          stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout
+                          capture_output=True)
 
 
 def parse_judge(stdout: str) -> dict | None:
@@ -167,7 +185,7 @@ def result_exit_code(res: dict, judge_requested: bool) -> int:
         return 0
     if res.get("status") == "generation-failed":
         return 1
-    if res.get("oracle_pass") is False:
+    if res.get("oracle_error") or res.get("oracle_pass") is False:
         return 1
     if judge_requested and res.get("score") is None:
         return 1
@@ -220,8 +238,7 @@ def score_one(ev: dict, fixture: Path | None, run_dir: Path, agent_cmd: str | No
         "provisional": True,
     }
     if fixture:
-        ok, detail = run_oracle(fixture, candidate_dir)
-        res["oracle_pass"], res["oracle_detail"] = ok, detail
+        res.update(run_oracle(fixture, candidate_dir))
 
     if judge_cmd:
         candidate_text = read_candidate(candidate_dir)
@@ -230,19 +247,26 @@ def score_one(ev: dict, fixture: Path | None, run_dir: Path, agent_cmd: str | No
         else:
             jp = build_judge_prompt(ev, prompt, candidate_text)
             (run_dir / "judge-prompt.txt").write_text(jp)
-            out = run_judge(judge_cmd, jp)
-            (run_dir / "judge-output.txt").write_text(out)
-            parsed = parse_judge(out)
+            proc = run_judge(judge_cmd, jp)
+            (run_dir / "judge-output.txt").write_text(proc.stdout)
+            (run_dir / "judge-stderr.txt").write_text(proc.stderr)
+            res["judge_exit_code"] = proc.returncode
+            if proc.returncode != 0:
+                res["judge_error"] = f"judge-cmd exited {proc.returncode} (see judge-stderr.txt and judge-output.txt)"
+                return res
+            parsed = parse_judge(proc.stdout)
             if parsed is None:
                 res["judge_error"] = "could not parse judge JSON (see judge-output.txt)"
             else:
                 score, critical = judge_score(ev, parsed)
+                if score is None:
+                    res["judge_error"] = "judge response has missing, invalid, or out-of-range scores"
+                if res.get("oracle_error"):
+                    return res
                 res["rubric_scores"] = parsed.get("dimensions", res["rubric_scores"])
                 res["judge_rationale"] = parsed.get("rationale")
                 res["judge_critical_failure"] = critical
                 res["score"] = score
-                if score is None:
-                    res["judge_error"] = "judge response has missing, invalid, or out-of-range scores"
                 # Backed by a saved transcript (+ oracle when present) -> not provisional.
                 res["provisional"] = score is None
     return res
@@ -257,7 +281,11 @@ def print_result(res: dict) -> None:
         print(f"  candidate: {res['candidate_dir']}")
         return
     print(f"\n=== {res['id']} ===")
-    if res["oracle_pass"] is not None:
+    if res.get("oracle_error"):
+        print(f"  fixture oracle: UNAVAILABLE -- {res['oracle_error']}")
+        if res["oracle_detail"]:
+            print(f"    -> {res['oracle_detail']}")
+    elif res["oracle_pass"] is not None:
         mark = "PASS" if res["oracle_pass"] else "FAIL"
         print(f"  fixture oracle: {mark}")
         if not res["oracle_pass"]:
@@ -267,6 +295,9 @@ def print_result(res: dict) -> None:
     print(f"  rubric dims (min, see rubric.md): {res['rubric_focus']}")
     if res.get("judge_error"):
         print(f"  judge: ERROR -- {res['judge_error']}")
+        print("  rubric score: provisional")
+    elif res.get("oracle_error"):
+        print("  rubric score: provisional (required fixture oracle unavailable)")
     elif res["score"] is not None:
         flag = "  [CRITICAL-FAILURE OVERRIDE -> 0]" if res.get("judge_critical_failure") else ""
         print(f"  rubric scores: {res['rubric_scores']}")
@@ -310,8 +341,9 @@ def main() -> int:
               f"Provide --judge-cmd (and produce a candidate) to score it.", file=sys.stderr)
 
     stamp = _dt.datetime.now().strftime("%Y%m%d-%H%M%S")
-    run_dir = RUNS / stamp / match["id"]
-    run_dir.mkdir(parents=True, exist_ok=True)
+    RUNS.mkdir(parents=True, exist_ok=True)
+    run_dir = Path(tempfile.mkdtemp(prefix=f"{stamp}-", dir=RUNS)) / match["id"]
+    run_dir.mkdir()
     candidate_dir = Path(args.candidate_dir).resolve() if args.candidate_dir else None
 
     res = score_one(match, fixture, run_dir, args.agent_cmd, candidate_dir, args.judge_cmd)

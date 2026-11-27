@@ -11,6 +11,15 @@ verdicts or targets.
 - Read repository instructions, CI configuration, nearby tests, and relevant open
   PRs. Pin the base SHA. Choose a coherent production owner or boundary and a time
   budget; do not start with a deletion quota.
+- Establish the asset's lifecycle and the independently promised behavior.
+  A prototype, archived reference, manual-only project or specification may
+  appropriately have no automated test scope. An internal branch is not itself
+  a public contract. Identify the active caller before judging a helper.
+- For a larger suite, inventory the whole in-scope surface, then choose and
+  disclose a risk-based and stratified sample. Record selected versus actually
+  read files, parameter rows and unrun tiers. Use
+  [sampling and witnesses](test-audit-patterns.md); a sample is not an exhaustive
+  campaign or permission to remove an unexamined layer.
 - For each in-scope tier, record the actual command, CI job/trigger, last result
   on the default branch, and whether it selects any tests and can fail. Read job
   results rather than inferring them from the workflow's overall conclusion.
@@ -26,6 +35,11 @@ verdicts or targets.
   with no maintained recipe makes historical proof difficult to reproduce. If replacing it with
   generated scenarios, verify their observable state and label old outputs as
   historical rather than claiming the original experiment was reproduced.
+- Test/receipt hashes may identify frozen inputs or independently promised
+  artifact bytes. A historical fingerprint of a live script does not forbid
+  future repairs; keep it as provenance and report that the old outcome does
+  not attest to the new revision. Check the declared enrollment and denominators
+  rather than substituting current source identity for evidence consistency.
 
 ## 2. Discover candidates cheaply
 
@@ -90,6 +104,10 @@ Tier command / CI job / baseline result:
   exists. No contract needs no artificial replacement. Missing evidence means
   retain pending investigation.
 
+Separate a current product defect from a demonstrated gap in a particular test,
+an unspecified contract, and an execution/setup limitation. A fault surviving one
+checker does not establish that every sibling or the whole suite accepts it.
+
 Before any deletion, record the old and new tier and inspect CI routing,
 parameter rows, negative/error branches, callers, and the reason the test exists.
 An internal duplicate can disappear while its boundary proof remains. An
@@ -112,6 +130,11 @@ cleanup; respect tests-only scope and report any required production repair.
    missing configuration, fixture setup, or an earlier validation is no proof of
    the claimed rejection. A loop whose assertions never run supplies no evidence
    for its per-item claim; direct emptiness assertions can be valid contracts.
+   For failure/recovery, seed distinguishable prior state, fail the relevant
+   handoff, inspect persisted/emitted effects and attempt a healthy retry. For
+   caches and migrations, include old and new or unchanged and changed records.
+   Ground provider versions and response sequences in the real API; do not
+   create an impossible fixture to make an assertion fail.
 3. For a retained contract moved into a keeper, choose a plausible fault from
    what the old assertion could detect. Use isolated scratch copies/worktrees;
    do not mutate a checkout while tests are running. Run old and new tests
@@ -157,7 +180,14 @@ specific preservation risks; a fixed number of reviewers is not a requirement.
 Report decisions, contracts retained/lost/restored, commands and actual results,
 control/fault evidence, CI state at the pushed SHA, and unresolved gaps. Separate
 test/support changes from production changes and any product defects discovered.
+When cost motivates the change, report observed focused runtime, available CI
+time and verification work separately. Measure further only when it can change
+the decision; source size and a single cached run do not establish saved CI cost.
 Do not claim quality from a lower test count or a green-only run.
+For custom checkers or evaluation claims, also use
+[checker calibration](checker-calibration.md). A valid-looking report from a
+failed judge is not a final score. A repaired instrument and an improved model
+are separate claims.
 
 ## Reusable task brief
 

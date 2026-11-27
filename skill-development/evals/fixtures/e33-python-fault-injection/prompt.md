@@ -13,3 +13,5 @@ must inject the downstream `ConnectionError` failure and assert the
 error-handling path behaves correctly (transient failures are retried and
 recover; exhausted retries surface a `ReportSaveError`, not a raw
 `ConnectionError` or a crash).
+
+Import `save_report` and `ReportSaveError` from `report` in your pytest files.

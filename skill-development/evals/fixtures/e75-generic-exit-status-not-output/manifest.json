@@ -2,13 +2,22 @@
   "eval_id": "E75-generic-exit-status-not-output",
   "language": "generic",
   "oracle": "oracle.py",
-  "good_sample": "samples/good",
+  "good_samples": [
+    "samples/good",
+    "samples/passing-subcheck",
+    "samples/quoted-lint-output"
+  ],
   "bad_samples": [
     "samples/bad",
-    "samples/adversarial-mixed"
+    "samples/adversarial-mixed",
+    "samples/traceback-but-success",
+    "samples/contradictory-verdict",
+    "samples/missing-schema-gap",
+    "samples/subcheck-exit"
   ],
   "checks": [
-    "reports the check as failed from the non-zero exit",
-    "does not claim validation passed on the strength of reassuring output"
+    "reports the failed command's exit status",
+    "identifies the interrupted schema check",
+    "allows passing subchecks while rejecting an overall success claim"
   ]
 }
